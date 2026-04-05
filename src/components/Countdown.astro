@@ -1,0 +1,51 @@
+---
+// Target: August 31, 2026 00:00:00 UTC
+---
+
+<div id="countdown-wrapper" class="font-mono">
+  <div id="countdown-display" class="flex items-center gap-2 text-sm">
+    <span class="text-[#4ade80]" id="cd-days">--</span>
+    <span class="text-[#52525b]">Days :</span>
+    <span class="text-[#4ade80]" id="cd-hours">--</span>
+    <span class="text-[#52525b]">Hours :</span>
+    <span class="text-[#4ade80]" id="cd-mins">--</span>
+    <span class="text-[#52525b]">Mins</span>
+  </div>
+  <div id="countdown-expired" class="hidden text-red-500 font-bold text-sm uppercase tracking-wide">
+    DEADLINE PASSED — EXPORT YOUR DATA NOW
+  </div>
+</div>
+
+<script>
+  function updateCountdown() {
+    const target = new Date('2026-08-31T00:00:00Z').getTime();
+    const now = Date.now();
+    const diff = target - now;
+
+    const display = document.getElementById('countdown-display');
+    const expired = document.getElementById('countdown-expired');
+
+    if (diff <= 0) {
+      display?.classList.add('hidden');
+      expired?.classList.remove('hidden');
+      return;
+    }
+
+    const totalMins = Math.floor(diff / 60000);
+    const totalHours = Math.floor(totalMins / 60);
+    const days = Math.floor(totalHours / 24);
+    const hours = totalHours % 24;
+    const mins = totalMins % 60;
+
+    const daysEl = document.getElementById('cd-days');
+    const hoursEl = document.getElementById('cd-hours');
+    const minsEl = document.getElementById('cd-mins');
+
+    if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
+    if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+    if (minsEl) minsEl.textContent = String(mins).padStart(2, '0');
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 30000);
+</script>

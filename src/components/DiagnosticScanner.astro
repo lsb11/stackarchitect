@@ -1,0 +1,145 @@
+---
+// "Find Your Profit Leak" diagnostic — replicates homepage tool
+// Systeme.io form action preserved from original site
+---
+
+<div class="border border-[#1f1f1f] bg-[#0a0a0a] p-6 my-8" id="diagnostic-scanner">
+  <h3 class="text-xs text-[#52525b] uppercase tracking-widest mb-1">PROFIT_LEAK_SCANNER</h3>
+  <p class="text-xs text-gray-500 mb-5">Select every app or tool you currently pay for:</p>
+
+  <div id="diagnostic-form">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-6" id="app-checkboxes">
+      {/* Each item: label, monthly cost */}
+    </div>
+    <button
+      id="scan-btn"
+      class="w-full bg-[#4ade80] text-black font-bold text-sm py-3 uppercase tracking-wide hover:bg-[#22c55e] transition-colors"
+    >
+      CALCULATE MY MONTHLY LOSS →
+    </button>
+  </div>
+
+  <div id="diagnostic-results" class="hidden">
+    <div class="border border-red-700 bg-red-950/30 p-4 mb-5">
+      <div class="text-xs text-red-400 uppercase tracking-wide mb-1">MONTHLY PROFIT LEAK</div>
+      <div class="text-3xl font-bold text-red-400" id="total-loss">$0</div>
+      <div class="text-xs text-gray-500 mt-1" id="annual-loss"></div>
+    </div>
+
+    <div id="recommendations" class="space-y-2 mb-6"></div>
+
+    <div class="border border-[#4ade80]/20 bg-[#4ade80]/5 p-4">
+      <div class="text-xs text-[#4ade80] uppercase tracking-wide font-bold mb-2">
+        GET YOUR FREE REPLACEMENT PLAN
+      </div>
+      <p class="text-xs text-gray-400 mb-4">
+        Enter your email to receive a personalised zero-cost stack guide.
+      </p>
+      <!-- Systeme.io embed form — replace action URL with your actual Systeme.io form action -->
+      <form
+        action="https://systeme.io/api/forms/YOUR_FORM_ID/submit"
+        method="POST"
+        class="flex flex-col sm:flex-row gap-2"
+      >
+        <input
+          type="email"
+          name="email"
+          placeholder="your@email.com"
+          required
+          class="flex-1 bg-black border border-[#1f1f1f] text-white text-sm px-3 py-2 font-mono focus:border-[#4ade80] focus:outline-none"
+        />
+        <button
+          type="submit"
+          class="bg-[#4ade80] text-black font-bold text-xs px-4 py-2 uppercase tracking-wide hover:bg-[#22c55e] transition-colors whitespace-nowrap"
+        >
+          SEND MY PLAN →
+        </button>
+      </form>
+    </div>
+
+    <button
+      id="reset-btn"
+      class="mt-4 text-xs text-[#52525b] hover:text-white underline"
+    >
+      ← Start over
+    </button>
+  </div>
+</div>
+
+<script>
+  const apps = [
+    { id: 'klaviyo', label: 'Klaviyo / email platform', cost: 45 },
+    { id: 'triplewhale', label: 'Triple Whale / Northbeam (tracking)', cost: 299 },
+    { id: 'elevar', label: 'Elevar (server-side tracking)', cost: 200 },
+    { id: 'stocky', label: 'Shopify Stocky / inventory app', cost: 19 },
+    { id: 'gorgias', label: 'Gorgias / Zendesk (support)', cost: 60 },
+    { id: 'recharge', label: 'ReCharge / subscriptions', cost: 99 },
+    { id: 'loox', label: 'Loox / Yotpo (reviews)', cost: 34 },
+    { id: 'pnl', label: 'BeProfit / profit analytics', cost: 50 },
+    { id: 'tidio', label: 'Tidio / live chat', cost: 29 },
+    { id: 'recart', label: 'Recart / SMS marketing', cost: 50 },
+  ];
+
+  const replacements: Record<string, string> = {
+    klaviyo: 'Replace Klaviyo → Systeme.io (FREE up to 2,000 contacts)',
+    triplewhale: 'Replace Triple Whale → CAPI Shield server-side tracking (FREE)',
+    elevar: 'Replace Elevar → CAPI Shield via Make.com (FREE)',
+    stocky: 'Replace Stocky → Google Sheets inventory system (FREE)',
+    pnl: 'Replace profit analytics → Live P&L Google Sheets template (FREE)',
+  };
+
+  // Build checkboxes
+  const container = document.getElementById('app-checkboxes');
+  apps.forEach(({ id, label, cost }) => {
+    const div = document.createElement('div');
+    div.innerHTML = `
+      <label class="flex items-start gap-2 cursor-pointer group">
+        <input type="checkbox" id="app-${id}" value="${cost}" class="mt-0.5 accent-[#4ade80]" />
+        <span class="text-xs text-gray-400 group-hover:text-white transition-colors">
+          ${label}
+          <span class="text-[#52525b]">($${cost}/mo)</span>
+        </span>
+      </label>
+    `;
+    container?.appendChild(div);
+  });
+
+  document.getElementById('scan-btn')?.addEventListener('click', () => {
+    const checkboxes = document.querySelectorAll<HTMLInputElement>('#app-checkboxes input:checked');
+    let total = 0;
+    const selected: string[] = [];
+
+    checkboxes.forEach((cb) => {
+      total += parseInt(cb.value, 10);
+      const id = cb.id.replace('app-', '');
+      selected.push(id);
+    });
+
+    document.getElementById('total-loss')!.textContent = `$${total.toLocaleString()}`;
+    document.getElementById('annual-loss')!.textContent = `= $${(total * 12).toLocaleString()} per year in avoidable costs`;
+
+    const recDiv = document.getElementById('recommendations')!;
+    recDiv.innerHTML = '';
+
+    selected.forEach((id) => {
+      if (replacements[id]) {
+        const div = document.createElement('div');
+        div.className =
+          'text-xs text-[#4ade80] border border-[#4ade80]/20 bg-[#4ade80]/5 px-3 py-2';
+        div.textContent = '→ ' + replacements[id];
+        recDiv.appendChild(div);
+      }
+    });
+
+    document.getElementById('diagnostic-form')!.classList.add('hidden');
+    document.getElementById('diagnostic-results')!.classList.remove('hidden');
+  });
+
+  document.getElementById('reset-btn')?.addEventListener('click', () => {
+    document.querySelectorAll<HTMLInputElement>('#app-checkboxes input').forEach((cb) => {
+      cb.checked = false;
+    });
+    document.getElementById('diagnostic-form')!.classList.remove('hidden');
+    document.getElementById('diagnostic-results')!.classList.add('hidden');
+  });
+</script>

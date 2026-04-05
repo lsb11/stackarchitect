@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+
+  --color-accent: #4ade80;
+  --color-accent-dim: #16a34a;
+  --color-surface: #0a0a0a;
+  --color-border: #1f1f1f;
+  --color-muted: #52525b;
+  --color-subtle: #27272a;
+}
+
+/* Semantic marker for AI-speakable content */
+.speakable {}
+
+/* Content visibility for long pages — improves LCP */
+.content-section {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+/* Reading progress bar */
+#reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: #4ade80;
+  z-index: 9999;
+  transition: width 0.1s linear;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: #52525b;
+  padding: 0.5rem 1rem;
+}
+
+.breadcrumb a {
+  color: #52525b;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  color: #4ade80;
+}
+
+.breadcrumb-separator {
+  color: #27272a;
+}
+
+/* Print styles for blog posts — E-E-A-T signal */
+@media print {
+  nav, footer, #reading-progress,
+  .breadcrumb { display: none; }
+  body {
+    background: white;
+    color: black;
+    font-family: serif;
+  }
+  a { color: black; }
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+  }
+}

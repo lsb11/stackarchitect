@@ -1,0 +1,229 @@
+---
+import Base from './Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import FAQSection from '../components/FAQSection.astro';
+import RelatedGuides from '../components/RelatedGuides.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'blog'>;
+}
+
+const { entry } = Astro.props;
+const {
+  title,
+  description,
+  canonical,
+  publishDate,
+  updatedDate,
+  category,
+  readTime,
+  badge,
+  faqs,
+  relatedGuides,
+} = entry.data;
+
+// Article JSON-LD
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description: description,
+  datePublished: publishDate,
+  dateModified: updatedDate ?? publishDate,
+  author: {
+    '@type': 'Person',
+    name: 'Stack Architect',
+    url: 'https://www.stackarchitect.xyz/about',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Stack Architect',
+    url: 'https://www.stackarchitect.xyz',
+  },
+  mainEntityOfPage: canonical,
+};
+
+// BreadcrumbList JSON-LD
+const categoryLabels: Record<string, string> = {
+  tracking: 'Ad Tracking',
+  inventory: 'Inventory',
+  email: 'Email Marketing',
+  automation: 'Automation',
+  workflow: 'Workflow',
+  ai: 'AI Tools',
+  support: 'Customer Support',
+  product: 'Products',
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://www.stackarchitect.xyz/',
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: categoryLabels[category] ?? category,
+      item: 'https://www.stackarchitect.xyz/shopify-automation-guides',
+    },
+    { '@type': 'ListItem', position: 3, name: title, item: canonical },
+  ],
+};
+
+// FAQPage JSON-LD — only if FAQs present
+const faqSchema =
+  faqs && faqs.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqs.map(({ question, answer }) => ({
+          '@type': 'Question',
+          name: question,
+          acceptedAnswer: { '@type': 'Answer', text: answer },
+        })),
+      }
+    : null;
+
+// SpeakableSpecification JSON-LD
+const speakableSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SpeakableSpecification',
+  cssSelector: ['h1', 'h2', '.speakable'],
+};
+
+const schemas = [
+  articleSchema,
+  breadcrumbSchema,
+  speakableSchema,
+  ...(faqSchema ? [faqSchema] : []),
+];
+
+// Visible breadcrumb trail
+const breadcrumb = [
+  { label: 'Home', href: '/' },
+  {
+    label: categoryLabels[category] ?? category,
+    href: '/shopify-automation-guides',
+  },
+  { label: title },
+];
+
+const displayDate = (d: string) =>
+  new Date(d).toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+---
+
+<!-- Reading progress bar element -->
+<div id="reading-progress"></div>
+
+<Base
+  title={`${title} | Stack Architect`}
+  description={description}
+  canonical={canonical}
+  schema={schemas}
+  pageType="article"
+  publishDate={publishDate}
+  updatedDate={updatedDate}
+  breadcrumb={breadcrumb}
+>
+  <Nav slot="header" />
+
+  <main class="flex-1 max-w-3xl mx-auto px-4 py-10 w-full">
+    <!-- Post metadata bar -->
+    <div class="flex flex-wrap items-center gap-3 text-xs text-[#52525b] font-mono mb-6 border-b border-[#1f1f1f] pb-4">
+      <span>Published: {displayDate(publishDate)}</span>
+      {updatedDate && updatedDate !== publishDate && (
+        <span>· Updated: {displayDate(updatedDate)}</span>
+      )}
+      <span>· {readTime} min read</span>
+      <span>· {categoryLabels[category] ?? category}</span>
+    </div>
+
+    <!-- Table of contents — injected by inline script if ≥3 H2s -->
+    <div id="toc-container"></div>
+
+    <!-- MDX content -->
+    <article id="post-body" class="prose-stack">
+      <slot />
+    </article>
+
+    <!-- Author block -->
+    <div class="border-t border-[#1f1f1f] pt-6 mt-8 text-xs text-[#52525b] font-mono">
+      Written by Stack Architect · Updated {displayDate(updatedDate ?? publishDate)} ·
+      <a href="/about" class="hover:text-[#4ade80] transition-colors underline">
+        About this resource
+      </a>
+    </div>
+
+    {faqs && faqs.length > 0 && <FAQSection faqs={faqs} />}
+    {relatedGuides && relatedGuides.length > 0 && <RelatedGuides guides={relatedGuides} />}
+  </main>
+
+  <Footer />
+</Base>
+
+<!-- Reading progress bar script -->
+<script>
+  const bar = document.getElementById('reading-progress');
+  if (bar) {
+    window.addEventListener('scroll', () => {
+      const body = document.body;
+      const docEl = document.documentElement;
+      const scrollTop = docEl.scrollTop || body.scrollTop;
+      const scrollHeight = docEl.scrollHeight - docEl.clientHeight;
+      const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      bar.style.width = `${Math.min(pct, 100)}%`;
+    }, { passive: true });
+  }
+</script>
+
+<!-- Table of contents script -->
+<script>
+  const body = document.getElementById('post-body');
+  const tocContainer = document.getElementById('toc-container');
+  if (body && tocContainer) {
+    const h2s = Array.from(body.querySelectorAll('h2'));
+    if (h2s.length >= 3) {
+      // Ensure each H2 has an id
+      h2s.forEach((h, i) => {
+        if (!h.id) {
+          h.id = `section-${i}-${h.textContent?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') ?? i}`;
+        }
+      });
+
+      const toc = document.createElement('nav');
+      toc.setAttribute('aria-label', 'Table of contents');
+      toc.className = 'border border-[#1f1f1f] bg-[#0a0a0a] p-4 mb-8 font-mono';
+
+      const label = document.createElement('div');
+      label.className = 'text-xs text-[#52525b] uppercase tracking-widest mb-3';
+      label.textContent = 'CONTENTS //';
+      toc.appendChild(label);
+
+      const ul = document.createElement('ul');
+      ul.className = 'space-y-1';
+      h2s.forEach((h) => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = `#${h.id}`;
+        a.textContent = h.textContent ?? '';
+        a.className = 'text-xs text-gray-400 hover:text-[#4ade80] transition-colors flex items-center gap-2 py-0.5';
+        a.innerHTML = `<span class="text-[#27272a]">→</span> ${a.textContent}`;
+        li.appendChild(a);
+        ul.appendChild(li);
+      });
+      toc.appendChild(ul);
+      tocContainer.appendChild(toc);
+    }
+  }
+</script>

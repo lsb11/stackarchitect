@@ -1,0 +1,37 @@
+---
+interface Guide {
+  title: string;
+  href: string;
+  badge?: string;
+}
+
+interface Props {
+  guides: Guide[];
+}
+
+const { guides } = Astro.props;
+---
+
+<section class="border-t border-[#1f1f1f] mt-10 pt-8 px-4 max-w-3xl mx-auto pb-10">
+  <h2 class="text-xs text-[#52525b] uppercase tracking-widest mb-5">RELATED_GUIDES</h2>
+  <div class="space-y-2">
+    {
+      guides.map(({ title, href, badge }) => (
+        <a
+          href={href}
+          class="flex items-center justify-between border border-[#1f1f1f] px-4 py-3 hover:border-[#4ade80]/40 hover:bg-[#0a0a0a] transition-colors group"
+        >
+          <div class="flex items-center gap-3 min-w-0">
+            {badge && (
+              <span class="flex-shrink-0 text-xs px-1.5 py-0.5 bg-[#4ade80]/10 text-[#4ade80] border border-[#4ade80]/20 uppercase tracking-wide">
+                {badge}
+              </span>
+            )}
+            <span class="text-sm text-gray-300 group-hover:text-white truncate">{title}</span>
+          </div>
+          <span class="text-[#52525b] group-hover:text-[#4ade80] ml-4 flex-shrink-0">→</span>
+        </a>
+      ))
+    }
+  </div>
+</section>

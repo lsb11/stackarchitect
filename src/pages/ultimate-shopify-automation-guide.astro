@@ -1,0 +1,514 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+
+const breadcrumb = [
+  { label: 'Guides', href: '/shopify-automation-guides' },
+  { label: 'Ultimate Shopify Automation Guide' },
+];
+
+const faqs = [
+  {
+    q: 'What is the best Shopify automation guide in 2026?',
+    a: 'The Stack Architect $0 Automation Stack guide covers every major area of Shopify automation in 2026: fixing the Q1 ROAS crisis from iOS 26 and Shopify\'s January pixel change, replacing Stocky before its August 31 2026 retirement, cutting email costs, and enabling AI storefront discoverability. Free, no code, deployable in 35 minutes.',
+  },
+  {
+    q: 'How do I automate my Shopify store in 2026?',
+    a: 'Use the $0 Automation Stack: Make.com free tier as the central webhook hub, CAPI Shield for server-side ad tracking, Stocky Swap for inventory, Systeme.io for email automation. Costs $0/month for stores processing under 200 orders per month.',
+  },
+  {
+    q: 'What is Shopify automation?',
+    a: 'Shopify automation connects Shopify to external tools via webhooks and APIs so that repetitive tasks — order logging, inventory updates, email sequences, conversion tracking — happen automatically without manual work or paid app subscriptions.',
+  },
+  {
+    q: 'How do I fix Shopify tracking after iOS 26?',
+    a: 'Implement server-side tracking via CAPI Shield. This sends Shopify purchase events directly from your server to Meta and Google, bypassing iOS browser restrictions, fbclid stripping, and the Shopify pixel throttle introduced January 13 2026.',
+  },
+  {
+    q: 'What happened to Shopify\'s pixel on January 13 2026?',
+    a: 'Shopify changed App Pixels to "Optimised" mode on January 13 2026, which silently throttles third-party pixel data when no attribution signals are detected — a problem compounded by iOS 26 stripping fbclid parameters.',
+  },
+  {
+    q: 'When does Shopify Stocky retire?',
+    a: 'Shopify Stocky retires on August 31 2026. After this date, all stores lose access to the app and its inventory management features. Stocky Swap is the free replacement — a Google Sheets-based real-time order logging system.',
+  },
+  {
+    q: 'Make.com vs Zapier for Shopify?',
+    a: 'Make.com offers 1,000 free operations per month versus Zapier\'s 100. Make.com supports unlimited multi-step workflows, native Shopify webhook handling with instant triggers, and built-in data transformation on the free plan. For Shopify automation, Make.com is the stronger choice at every price point.',
+  },
+  {
+    q: 'How do I get my Shopify store found by ChatGPT and Google AI Mode?',
+    a: 'Optimise for Generative Engine Optimisation (GEO): structured product data with complete titles and descriptions, FAQ schema on key pages, a populated Knowledge Base App, and an accessible sitemap and robots.txt that allows AI crawlers.',
+  },
+  {
+    q: 'What are Shopify Agentic Storefronts?',
+    a: 'Shopify Agentic Storefronts allow customers to complete purchases directly inside ChatGPT, Google AI Mode, and Microsoft Copilot without leaving the conversation. Currently US-only early access, launched in Shopify Winter \'26 Edition.',
+  },
+];
+
+const tocSections = [
+  { id: 'section-tracking', label: '01 — Ad Tracking' },
+  { id: 'section-inventory', label: '02 — Inventory' },
+  { id: 'section-automation', label: '03 — Workflow Automation' },
+  { id: 'section-ai-traffic', label: '04 — AI Traffic & GEO' },
+  { id: 'section-stability', label: '05 — Stability' },
+  { id: 'section-marketing', label: '06 — Email + Funnels' },
+  { id: 'section-freeapps', label: '07 — Free App Replacements' },
+  { id: 'section-action', label: '08 — Action Plan' },
+];
+
+const actionSteps = [
+  { time: '0–3 min', task: 'Activate Make.com', href: 'https://www.make.com/en/register?pc=techie123' },
+  { time: '3–9 min', task: 'Deploy CAPI Shield (Meta + Google server-side tracking)', href: '/capi-shield' },
+  { time: '9–14 min', task: 'Deploy Stocky Swap (inventory to Google Sheets)', href: '/stocky-swap' },
+  { time: '14–17 min', task: 'Add Google Apps Script Quota Fix', href: '/autocrat-quota-fix' },
+  { time: '17–25 min', task: 'Activate Systeme.io (email and funnels free)', href: 'https://systeme.io/?sa=sa0262937272be99703a8ea16153f5dd5ae2a3eea7' },
+  { time: '25–30 min', task: 'Enable AI discoverability (schema, product data, Knowledge Base)', href: '/blog/shopify-agentic-storefronts-setup-guide-2026' },
+  { time: '30–35 min', task: 'Audit app bill and cancel redundant paid tools', href: '/shopify-app-cost-calculator' },
+];
+---
+
+<Base
+  title="Shopify Automation Guide 2026 — Free, No Code, 35 Minutes"
+  description="The complete free Shopify automation guide for 2026. Fix your Q1 ROAS crisis, replace paid apps, automate inventory before Stocky retires — no code, 35 minutes."
+  breadcrumb={breadcrumb}
+  publishDate="2026-01-15"
+  updatedDate="2026-04-03"
+>
+  <Nav slot="header" />
+
+  <!-- Schemas -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Automate Your Shopify Store in 35 Minutes — Free",
+    "description": "Seven-step process to deploy the $0 Shopify automation stack: server-side tracking, inventory automation, email, and AI discoverability.",
+    "totalTime": "PT35M",
+    "estimatedCost": { "@type": "MonetaryAmount", "currency": "USD", "value": "0" },
+    "step": actionSteps.map((s, i) => ({
+      "@type": "HowToStep",
+      "position": i + 1,
+      "name": s.task,
+      "text": s.task,
+    })),
+  })} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.stackarchitect.xyz/" },
+      { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://www.stackarchitect.xyz/shopify-automation-guides" },
+      { "@type": "ListItem", "position": 3, "name": "Ultimate Shopify Automation Guide", "item": "https://www.stackarchitect.xyz/ultimate-shopify-automation-guide" },
+    ],
+  })} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(f => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": { "@type": "Answer", "text": f.a },
+    })),
+  })} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Free Shopify Automation Tools — $0 Stack",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "CAPI Shield", "url": "https://www.stackarchitect.xyz/capi-shield", "description": "Free Meta + Google server-side tracking" },
+      { "@type": "ListItem", "position": 2, "name": "Stocky Swap", "url": "https://www.stackarchitect.xyz/stocky-swap", "description": "Free Shopify Stocky replacement" },
+      { "@type": "ListItem", "position": 3, "name": "TikTok Events API", "url": "https://www.stackarchitect.xyz/tiktok-events-api-shopify", "description": "Free TikTok server-side tracking" },
+      { "@type": "ListItem", "position": 4, "name": "Replace Klaviyo Free", "url": "https://www.stackarchitect.xyz/replace-klaviyo-free", "description": "Free email automation via Systeme.io" },
+      { "@type": "ListItem", "position": 5, "name": "Shopify P&L Automation", "url": "https://www.stackarchitect.xyz/shopify-profit-loss-automation", "description": "Free profit and loss reporting in Google Sheets" },
+      { "@type": "ListItem", "position": 6, "name": "Autocrat Quota Fix", "url": "https://www.stackarchitect.xyz/autocrat-quota-fix", "description": "Fix Google Apps Script quota errors" },
+    ],
+  })} />
+
+  <!-- Page layout: ToC + content -->
+  <div class="max-w-7xl mx-auto px-4 py-12 lg:flex lg:gap-12">
+
+    <!-- Sticky ToC -->
+    <aside class="hidden lg:block lg:w-56 shrink-0">
+      <nav id="guide-toc" class="sticky top-8 font-mono text-xs space-y-1" aria-label="Guide sections">
+        <p class="text-zinc-500 uppercase tracking-widest mb-3 text-[10px]">Contents</p>
+        {tocSections.map(s => (
+          <a
+            href={`#${s.id}`}
+            class="toc-link block py-1 px-2 text-zinc-500 hover:text-green-400 border-l-2 border-zinc-800 hover:border-green-400 transition-colors"
+          >
+            {s.label}
+          </a>
+        ))}
+        <div class="pt-4 border-t border-zinc-800 mt-4">
+          <a href="https://www.make.com/en/register?pc=techie123" target="_blank" rel="noopener noreferrer"
+            class="block text-center py-2 px-3 bg-green-400 text-black font-bold text-[10px] tracking-widest hover:bg-green-300 transition-colors">
+            START FREE →
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="min-w-0 flex-1">
+
+      <!-- Hero -->
+      <header class="mb-12">
+        <p class="font-mono text-xs text-green-400 tracking-widest mb-3">COMPLETE GUIDE // 2026</p>
+        <h1 class="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
+          Shopify Automation Guide 2026 —<br class="hidden md:block" /> Free. No Code. 35 Minutes.
+        </h1>
+        <p class="text-zinc-300 text-lg leading-relaxed mb-6 speakable">
+          Three Q1 2026 changes are costing Shopify stores real money — iOS 26 tracking loss, Shopify's silent pixel throttle, and Stocky's August retirement. This guide fixes all of it free. $700+ monthly savings. No developer. No subscriptions.
+        </p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          {[
+            { value: '$700+', label: 'Monthly savings' },
+            { value: '35 min', label: 'Full deployment' },
+            { value: '8', label: 'Apps replaced' },
+            { value: '$0', label: 'Monthly cost' },
+          ].map(s => (
+            <div class="bg-zinc-900 border border-zinc-800 p-4 text-center">
+              <div class="text-green-400 text-2xl font-bold font-mono">{s.value}</div>
+              <div class="text-zinc-500 text-xs mt-1 font-mono uppercase tracking-wider">{s.label}</div>
+            </div>
+          ))}
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href="https://www.make.com/en/register?pc=techie123" target="_blank" rel="noopener noreferrer"
+            class="inline-block bg-green-400 text-black font-bold font-mono text-sm px-6 py-3 tracking-widest hover:bg-green-300 transition-colors">
+            DEPLOY FREE →
+          </a>
+          <a href="#section-action"
+            class="inline-block border border-zinc-700 text-zinc-300 font-mono text-sm px-6 py-3 tracking-widest hover:border-green-400 hover:text-green-400 transition-colors">
+            SKIP TO ACTION PLAN
+          </a>
+        </div>
+      </header>
+
+      <!-- Section 01: Ad Tracking -->
+      <section id="section-tracking" class="content-section mb-16 scroll-mt-8">
+        <h2 class="text-xl font-bold font-mono text-green-400 mb-1 tracking-widest">01 — AD TRACKING</h2>
+        <div class="h-px bg-zinc-800 mb-6"></div>
+
+        <div id="section-q1crisis" class="scroll-mt-8">
+          <h3 class="text-lg font-bold text-white mb-3">Shopify Conversion Tracking in 2026 — The Q1 ROAS Crisis</h3>
+          <p class="text-zinc-300 mb-4 speakable">
+            Two changes hit simultaneously. If your Meta ROAS dropped in Q1 2026, both are likely responsible.
+          </p>
+
+          <div class="grid md:grid-cols-2 gap-4 mb-6">
+            <div class="bg-zinc-900 border border-red-900 p-5">
+              <p class="font-mono text-xs text-red-400 tracking-widest mb-2">HIT 1 — iOS 26 (SEPT 2025)</p>
+              <p class="text-zinc-300 text-sm">Apple expanded Link Tracking Protection to strip <code class="text-green-400">fbclid</code> parameters from Private Browsing links and from links shared via Mail and Messages. Attribution for iOS email and Messenger traffic breaks silently.</p>
+            </div>
+            <div class="bg-zinc-900 border border-red-900 p-5">
+              <p class="font-mono text-xs text-red-400 tracking-widest mb-2">HIT 2 — SHOPIFY PIXEL CHANGE (JAN 13)</p>
+              <p class="text-zinc-300 text-sm">Shopify changed App Pixels to "Optimised" mode. When no attribution signals are detected — which happens when iOS strips click IDs — Shopify throttles or pauses data sharing to that pixel. The two effects compound.</p>
+            </div>
+          </div>
+
+          <p class="text-zinc-300 mb-4">Average conversion data loss from the combined effect: <span class="text-white font-bold">30–45%</span>. Meta's algorithm doesn't just underreport — it actively makes worse decisions, training toward lower-quality signals over weeks.</p>
+        </div>
+
+        <div id="section-capi" class="scroll-mt-8 mt-8">
+          <h3 class="text-lg font-bold text-white mb-3">How to Deploy CAPI Shield — Step by Step</h3>
+          <p class="text-zinc-300 mb-4">
+            Server-side tracking sends Shopify purchase events directly from your server to Meta and Google, bypassing iOS restrictions, fbclid stripping, and the pixel throttle entirely. A Make.com webhook fires the moment payment confirms — no browser involved.
+          </p>
+          <div class="bg-zinc-900 border border-zinc-800 p-5 mb-6">
+            <div class="flex flex-col sm:flex-row gap-4 sm:items-center">
+              <div class="flex-1">
+                <p class="font-mono text-xs text-green-400 tracking-widest mb-1">CAPI SHIELD</p>
+                <p class="text-white font-bold mb-1">Free Meta + Google Server-Side Tracking</p>
+                <p class="text-zinc-400 text-sm">Recovers 20–40% of invisible conversions. Replaces Elevar and Triple Whale at $0.</p>
+              </div>
+              <a href="/capi-shield" class="shrink-0 inline-block bg-green-400 text-black font-bold font-mono text-xs px-5 py-3 tracking-widest hover:bg-green-300 transition-colors">
+                READ GUIDE →
+              </a>
+            </div>
+          </div>
+          <p class="text-zinc-400 text-sm">Related: <a href="/blog/shopify-meta-roas-dropped-2026-fix" class="text-green-400 hover:underline">Shopify Meta ROAS dropped in 2026 — exact diagnosis and fix</a> · <a href="/blog/shopify-server-side-tracking-complete-setup-guide" class="text-green-400 hover:underline">Shopify server-side tracking complete setup guide</a></p>
+        </div>
+      </section>
+
+      <!-- Section 02: Inventory -->
+      <section id="section-inventory" class="content-section mb-16 scroll-mt-8">
+        <h2 class="text-xl font-bold font-mono text-green-400 mb-1 tracking-widest">02 — INVENTORY</h2>
+        <div class="h-px bg-zinc-800 mb-6"></div>
+
+        <div id="section-stockyswap" class="scroll-mt-8">
+          <h3 class="text-lg font-bold text-white mb-3">Shopify Inventory Automation — Stocky Retires August 31 2026</h3>
+
+          <div class="bg-zinc-900 border border-amber-700 p-5 mb-6">
+            <p class="font-mono text-xs text-amber-400 tracking-widest mb-2">DEADLINE</p>
+            <p class="text-white font-bold mb-1">Shopify Stocky retires August 31 2026.</p>
+            <p class="text-zinc-300 text-sm">After this date, all stores lose access to the app and its inventory management features. Data migration cannot be done retroactively — start your migration now.</p>
+          </div>
+
+          <p class="text-zinc-300 mb-4">Stocky Swap is the free replacement. When a Shopify order is paid, a Make.com webhook fires and logs the order line items directly to a Google Sheet — real-time inventory ledger, zero monthly cost, no app installation required.</p>
+
+          <div class="bg-zinc-900 border border-zinc-800 p-5 mb-6">
+            <div class="flex flex-col sm:flex-row gap-4 sm:items-center">
+              <div class="flex-1">
+                <p class="font-mono text-xs text-green-400 tracking-widest mb-1">STOCKY SWAP</p>
+                <p class="text-white font-bold mb-1">Free Shopify Stocky Replacement</p>
+                <p class="text-zinc-400 text-sm">Real-time order logging to Google Sheets. Replaces Stocky before August 31 2026 shutdown.</p>
+              </div>
+              <a href="/stocky-swap" class="shrink-0 inline-block bg-green-400 text-black font-bold font-mono text-xs px-5 py-3 tracking-widest hover:bg-green-300 transition-colors">
+                DEPLOY FREE →
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 03: Workflow Automation -->
+      <section id="section-automation" class="content-section mb-16 scroll-mt-8">
+        <h2 class="text-xl font-bold font-mono text-green-400 mb-1 tracking-widest">03 — WORKFLOW AUTOMATION</h2>
+        <div class="h-px bg-zinc-800 mb-6"></div>
+
+        <div id="section-make" class="scroll-mt-8">
+          <h3 class="text-lg font-bold text-white mb-3">Make.com vs Zapier — The Actual Comparison</h3>
+          <p class="text-zinc-300 mb-4">Make.com is the automation platform underlying the entire $0 stack. The comparison with Zapier matters because most guides recommend Zapier by default.</p>
+
+          <div class="overflow-x-auto mb-6">
+            <table class="w-full text-sm font-mono border-collapse">
+              <thead>
+                <tr class="border-b border-zinc-700">
+                  <th class="text-left py-3 px-4 text-zinc-400 font-normal">Feature</th>
+                  <th class="text-left py-3 px-4 text-green-400 font-bold">Make.com Free</th>
+                  <th class="text-left py-3 px-4 text-zinc-400 font-normal">Zapier Free</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-zinc-800">
+                {[
+                  ['Free operations/month', '1,000', '100'],
+                  ['Multi-step workflows', 'Unlimited', 'Single-step only'],
+                  ['Data transformation', 'Built-in', 'Requires paid tier'],
+                  ['Shopify webhook handling', 'Native instant triggers', 'Polling (15 min delay)'],
+                ].map(([feature, make, zapier]) => (
+                  <tr>
+                    <td class="py-3 px-4 text-zinc-400">{feature}</td>
+                    <td class="py-3 px-4 text-white">{make}</td>
+                    <td class="py-3 px-4 text-zinc-500">{zapier}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <p class="text-zinc-300 mb-4">
+            <span class="font-bold text-white">How many Make.com operations does a typical Shopify store use?</span> Each paid order fires one webhook execution. With Meta, Google, and TikTok branches, that's three operations per order. 1,000 free operations covers approximately 300 orders per month before needing an upgrade.
+          </p>
+
+          <a href="https://www.make.com/en/register?pc=techie123" target="_blank" rel="noopener noreferrer"
+            class="inline-block border border-green-400 text-green-400 font-mono text-sm px-5 py-2 tracking-widest hover:bg-green-400 hover:text-black transition-colors">
+            ACTIVATE MAKE.COM FREE →
+          </a>
+        </div>
+      </section>
+
+      <!-- Section 04: AI Traffic & GEO -->
+      <section id="section-ai-traffic" class="content-section mb-16 scroll-mt-8">
+        <h2 class="text-xl font-bold font-mono text-green-400 mb-1 tracking-widest">04 — AI TRAFFIC &amp; GEO <span class="text-xs text-green-400 border border-green-400 px-1 ml-1">NEW</span></h2>
+        <div class="h-px bg-zinc-800 mb-6"></div>
+
+        <div id="section-agentic" class="scroll-mt-8">
+          <h3 class="text-lg font-bold text-white mb-3">Shopify Agentic Storefronts — Enable Checkout Inside ChatGPT</h3>
+
+          <p class="text-zinc-300 mb-4 speakable">
+            AI-driven traffic to Shopify stores grew 8× year-on-year in 2025. Conversion rates from AI-referred traffic typically run 2–4× higher than equivalent search traffic. Shopify Agentic Storefronts let customers complete purchases directly inside ChatGPT, Google AI Mode, and Microsoft Copilot.
+          </p>
+
+          <p class="text-zinc-300 mb-4">
+            <span class="font-bold text-white">What is Generative Engine Optimisation (GEO) for Shopify?</span> GEO is the practice of structuring your store content — product titles, descriptions, FAQ schema, Knowledge Base entries — so that AI platforms cite your products accurately when answering shopping queries. Unlike traditional SEO, GEO optimises for inclusion in AI-generated answers, not just search rankings.
+          </p>
+
+          <div class="bg-zinc-900 border border-zinc-800 p-5 mb-6">
+            <p class="font-mono text-xs text-zinc-500 tracking-widest mb-3">GEO CHECKLIST</p>
+            <ul class="space-y-2 text-sm text-zinc-300">
+              <li class="flex gap-2"><span class="text-green-400 shrink-0">✓</span> Product titles include type, material, and key attribute</li>
+              <li class="flex gap-2"><span class="text-green-400 shrink-0">✓</span> Product descriptions are 150–300 words with use-case coverage</li>
+              <li class="flex gap-2"><span class="text-green-400 shrink-0">✓</span> Knowledge Base App installed and all three sections populated</li>
+              <li class="flex gap-2"><span class="text-green-400 shrink-0">✓</span> FAQ schema added to blog posts and product pages</li>
+              <li class="flex gap-2"><span class="text-green-400 shrink-0">✓</span> robots.txt allows AI crawlers (GPTBot, ClaudeBot, PerplexityBot)</li>
+              <li class="flex gap-2"><span class="text-green-400 shrink-0">✓</span> Sitemap includes all product, collection, and policy pages</li>
+            </ul>
+          </div>
+
+          <p class="text-zinc-400 text-sm">Full guide: <a href="/blog/shopify-agentic-storefronts-setup-guide-2026" class="text-green-400 hover:underline">Shopify Agentic Storefronts: Complete Setup Guide 2026</a> · <a href="/best-ai-tools-shopify" class="text-green-400 hover:underline">Best AI Tools for Shopify 2026 — Ranked by ROI</a></p>
+        </div>
+      </section>
+
+      <!-- Section 05: Stability -->
+      <section id="section-stability" class="content-section mb-16 scroll-mt-8">
+        <h2 class="text-xl font-bold font-mono text-green-400 mb-1 tracking-widest">05 — STABILITY</h2>
+        <div class="h-px bg-zinc-800 mb-6"></div>
+
+        <div id="section-quota" class="scroll-mt-8">
+          <h3 class="text-lg font-bold text-white mb-3">Google Apps Script Quota Errors — Why Your Automation Breaks Mid-Month</h3>
+
+          <p class="text-zinc-300 mb-4">
+            Google Apps Script runs free but has hard daily and monthly quotas. Consumer Google accounts (gmail.com) are limited to 90 minutes of script runtime per day and 20,000 URL Fetch calls per day. When these limits are hit, automation stops silently — no error email, no retry, just missing data.
+          </p>
+
+          <p class="text-zinc-300 mb-4">
+            The three causes of quota exhaustion: unbounded loops that process entire sheets instead of new rows only; triggers firing on every edit instead of on time intervals; and multiple scripts duplicating the same work across overlapping triggers.
+          </p>
+
+          <p class="text-zinc-400 text-sm">Fix guide: <a href="/autocrat-quota-fix" class="text-green-400 hover:underline">Autocrat Quota Fix — Google Apps Script quota errors solved free</a> · <a href="/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations" class="text-green-400 hover:underline">Google Apps Script Quotas Explained</a></p>
+        </div>
+      </section>
+
+      <!-- Section 06: Email + Funnels -->
+      <section id="section-marketing" class="content-section mb-16 scroll-mt-8">
+        <h2 class="text-xl font-bold font-mono text-green-400 mb-1 tracking-widest">06 — EMAIL + FUNNELS</h2>
+        <div class="h-px bg-zinc-800 mb-6"></div>
+
+        <div id="section-klaviyo" class="scroll-mt-8 mb-8">
+          <h3 class="text-lg font-bold text-white mb-3">The Klaviyo Billing Change You May Have Missed (February 2025)</h3>
+          <p class="text-zinc-300 mb-4">
+            Klaviyo now charges for all active profiles — previously suppressible unengaged contacts now count toward billable contact totals. For stores with large lists of lapsed purchasers, this change can double the effective monthly bill without any increase in active subscribers or email sends.
+          </p>
+          <p class="text-zinc-300 mb-4">
+            The exit path: migrate abandoned cart and welcome sequences to Systeme.io (permanently free for up to 2,000 contacts and three automation workflows), then suppress or delete unengaged profiles from Klaviyo before the next billing cycle.
+          </p>
+        </div>
+
+        <div id="section-systeme" class="scroll-mt-8">
+          <h3 class="text-lg font-bold text-white mb-3">What Systeme.io's Free Plan Actually Covers</h3>
+          <p class="text-zinc-300 mb-4">
+            Systeme.io's permanent free plan includes: up to 2,000 contacts, unlimited emails, three automation workflows, one funnel with unlimited pages, and one blog. No credit card required, no trial expiry. For a Shopify store migrating from Klaviyo's basic abandoned cart and welcome sequences, the free plan covers the full migration.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <a href="https://systeme.io/?sa=sa0262937272be99703a8ea16153f5dd5ae2a3eea7" target="_blank" rel="noopener noreferrer"
+              class="inline-block bg-green-400 text-black font-bold font-mono text-xs px-5 py-3 tracking-widest hover:bg-green-300 transition-colors">
+              ACTIVATE SYSTEME.IO FREE →
+            </a>
+            <a href="/replace-klaviyo-free" class="inline-block border border-zinc-700 text-zinc-300 font-mono text-xs px-5 py-3 tracking-widest hover:border-green-400 hover:text-green-400 transition-colors">
+              MIGRATION GUIDE →
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 07: Free App Replacements -->
+      <section id="section-freeapps" class="content-section mb-16 scroll-mt-8">
+        <h2 class="text-xl font-bold font-mono text-green-400 mb-1 tracking-widest">07 — FREE APP REPLACEMENTS <span class="text-xs text-green-400 border border-green-400 px-1 ml-1">NEW</span></h2>
+        <div class="h-px bg-zinc-800 mb-6"></div>
+
+        <p class="text-zinc-300 mb-6">Six paid tools replaced by the $0 stack. Average store saves $700+/month.</p>
+
+        <div class="grid md:grid-cols-2 gap-4 mb-6">
+          {[
+            { tool: 'CAPI Shield', replaces: 'Elevar · Triple Whale · Northbeam', href: '/capi-shield', desc: 'Free Meta + Google server-side tracking' },
+            { tool: 'Stocky Swap', replaces: 'Shopify Stocky (retiring Aug 2026)', href: '/stocky-swap', desc: 'Real-time inventory logging to Google Sheets' },
+            { tool: 'TikTok Events API', replaces: 'WeltPixel TikTok · paid CAPI tools', href: '/tiktok-events-api-shopify', desc: 'Free TikTok server-side tracking via Make.com' },
+            { tool: 'Replace Klaviyo Free', replaces: 'Klaviyo Basic Plan ($45–$800+/mo)', href: '/replace-klaviyo-free', desc: 'Email automation via Systeme.io free forever' },
+            { tool: 'Shopify P&L Automation', replaces: 'BeProfit · Profiteer · Proftit', href: '/shopify-profit-loss-automation', desc: 'Live P&L reporting in Google Sheets, free' },
+            { tool: 'Autocrat Quota Fix', replaces: 'Paid workflow tools for Apps Script', href: '/autocrat-quota-fix', desc: 'Fix Google Apps Script quota errors free' },
+          ].map(item => (
+            <a href={item.href} class="block bg-zinc-900 border border-zinc-800 p-5 hover:border-green-400 transition-colors group">
+              <p class="font-mono text-xs text-green-400 tracking-widest mb-1 group-hover:text-green-300">{item.tool}</p>
+              <p class="text-white font-bold text-sm mb-1">{item.desc}</p>
+              <p class="text-zinc-500 text-xs">Replaces: {item.replaces}</p>
+            </a>
+          ))}
+        </div>
+
+        <p class="text-zinc-400 text-sm">Full list: <a href="/shopify-automation-guides" class="text-green-400 hover:underline">All Shopify automation guides →</a></p>
+      </section>
+
+      <!-- Section 08: Action Plan -->
+      <section id="section-action" class="content-section mb-16 scroll-mt-8">
+        <h2 class="text-xl font-bold font-mono text-green-400 mb-1 tracking-widest">08 — ACTION PLAN</h2>
+        <div class="h-px bg-zinc-800 mb-6"></div>
+
+        <p class="text-zinc-300 mb-6">Deploy the full stack in 35 minutes. Each step is independent — skip sections that don't apply to your store.</p>
+
+        <ol class="space-y-4 mb-8">
+          {actionSteps.map((step, i) => (
+            <li class="flex gap-4 bg-zinc-900 border border-zinc-800 p-4">
+              <span class="shrink-0 font-mono text-green-400 font-bold text-sm w-20">{step.time}</span>
+              <a href={step.href} class={step.href.startsWith('http') ? 'text-zinc-300 hover:text-green-400 transition-colors' : 'text-zinc-300 hover:text-green-400 transition-colors'} target={step.href.startsWith('http') ? '_blank' : undefined} rel={step.href.startsWith('http') ? 'noopener noreferrer' : undefined}>
+                {step.task}
+              </a>
+            </li>
+          ))}
+        </ol>
+
+        <div class="bg-zinc-900 border border-green-400 p-6 text-center">
+          <p class="font-mono text-xs text-green-400 tracking-widest mb-2">START HERE</p>
+          <p class="text-white font-bold text-lg mb-1">Deploy the $0 Stack Free</p>
+          <p class="text-zinc-400 text-sm mb-4">Make.com free tier · no credit card · no developer</p>
+          <a href="https://www.make.com/en/register?pc=techie123" target="_blank" rel="noopener noreferrer"
+            class="inline-block bg-green-400 text-black font-bold font-mono text-sm px-8 py-3 tracking-widest hover:bg-green-300 transition-colors">
+            ACTIVATE MAKE.COM FREE →
+          </a>
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section id="section-faq" class="content-section mb-16 scroll-mt-8">
+        <h2 class="text-xl font-bold font-mono text-green-400 mb-1 tracking-widest">FAQ</h2>
+        <div class="h-px bg-zinc-800 mb-6"></div>
+
+        <dl class="space-y-6">
+          {faqs.map(faq => (
+            <div class="border-b border-zinc-800 pb-6">
+              <dt class="text-white font-bold mb-2">{faq.q}</dt>
+              <dd class="text-zinc-300 leading-relaxed">{faq.a}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Affiliate disclosure -->
+  <div class="border-t border-zinc-800 py-4 px-4 text-center">
+    <p class="font-mono text-xs text-zinc-600">
+      Stack Architect uses affiliate links. We may earn a commission if you sign up for tools via our links — at no extra cost to you. We only recommend tools we use ourselves.
+    </p>
+  </div>
+
+  <script>
+    // Highlight active ToC section on scroll
+    const tocLinks = document.querySelectorAll('.toc-link');
+    const sections = document.querySelectorAll('section[id]');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            tocLinks.forEach(link => {
+              link.classList.toggle(
+                'text-green-400',
+                link.getAttribute('href') === `#${entry.target.id}`
+              );
+              link.classList.toggle(
+                'border-green-400',
+                link.getAttribute('href') === `#${entry.target.id}`
+              );
+              link.classList.toggle(
+                'text-zinc-500',
+                link.getAttribute('href') !== `#${entry.target.id}`
+              );
+              link.classList.toggle(
+                'border-zinc-800',
+                link.getAttribute('href') !== `#${entry.target.id}`
+              );
+            });
+          }
+        });
+      },
+      { rootMargin: '-10% 0px -80% 0px' }
+    );
+
+    sections.forEach(section => observer.observe(section));
+  </script>
+</Base>

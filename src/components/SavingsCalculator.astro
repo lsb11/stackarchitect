@@ -1,0 +1,69 @@
+---
+// Klaviyo savings calculator — replicates /replace-klaviyo-free
+---
+
+<div class="border border-[#1f1f1f] bg-[#0a0a0a] p-6 my-8">
+  <h3 class="text-xs text-[#52525b] uppercase tracking-widest mb-4">KLAVIYO_COST_CALCULATOR</h3>
+  <div class="mb-4">
+    <label class="text-xs text-gray-400 uppercase tracking-wide block mb-2" for="list-size">
+      How many email subscribers do you have?
+    </label>
+    <select
+      id="list-size"
+      class="w-full bg-black border border-[#1f1f1f] text-white text-sm px-3 py-2 font-mono focus:border-[#4ade80] focus:outline-none"
+    >
+      <option value="1000">Up to 1,000</option>
+      <option value="5000" selected>1,001 – 5,000</option>
+      <option value="10000">5,001 – 10,000</option>
+      <option value="15000">10,001 – 15,000</option>
+      <option value="25000">15,001 – 25,000</option>
+      <option value="50000">25,001 – 50,000</option>
+      <option value="100000">50,001 – 100,000</option>
+      <option value="150000">100,001 – 150,000</option>
+    </select>
+  </div>
+
+  <div id="savings-result" class="border border-[#4ade80]/20 bg-[#4ade80]/5 p-4">
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <div class="text-xs text-[#52525b] uppercase tracking-wide mb-1">Klaviyo monthly</div>
+        <div class="text-xl font-bold text-red-400" id="klaviyo-cost">$45</div>
+      </div>
+      <div>
+        <div class="text-xs text-[#52525b] uppercase tracking-wide mb-1">Systeme.io monthly</div>
+        <div class="text-xl font-bold text-[#4ade80]">$0</div>
+      </div>
+    </div>
+    <div class="border-t border-[#1f1f1f] mt-4 pt-4">
+      <div class="text-xs text-[#52525b] uppercase tracking-wide mb-1">You save annually</div>
+      <div class="text-2xl font-bold text-[#4ade80]" id="annual-savings">$540</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const costs: Record<string, number> = {
+    '1000': 20,
+    '5000': 45,
+    '10000': 100,
+    '15000': 175,
+    '25000': 400,
+    '50000': 700,
+    '100000': 1190,
+    '150000': 1625,
+  };
+
+  const select = document.getElementById('list-size') as HTMLSelectElement;
+  const klaviyoCostEl = document.getElementById('klaviyo-cost');
+  const annualSavingsEl = document.getElementById('annual-savings');
+
+  function update() {
+    const val = select?.value ?? '5000';
+    const monthly = costs[val] ?? 45;
+    if (klaviyoCostEl) klaviyoCostEl.textContent = `$${monthly.toLocaleString()}`;
+    if (annualSavingsEl) annualSavingsEl.textContent = `$${(monthly * 12).toLocaleString()}`;
+  }
+
+  select?.addEventListener('change', update);
+  update();
+</script>

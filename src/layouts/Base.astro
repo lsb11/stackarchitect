@@ -1,0 +1,172 @@
+---
+import '../styles/global.css';
+
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  schema?: object | object[];
+  noindex?: boolean;
+  pageType?: 'website' | 'article' | 'product';
+  updatedDate?: string;
+  publishDate?: string;
+  breadcrumb?: BreadcrumbItem[];
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogTitle,
+  ogDescription,
+  ogImage,
+  schema,
+  noindex = false,
+  pageType = 'website',
+  updatedDate,
+  publishDate,
+  breadcrumb,
+} = Astro.props;
+
+const schemaArray = schema
+  ? Array.isArray(schema)
+    ? schema
+    : [schema]
+  : [];
+
+const siteNavSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SiteNavigationElement',
+  name: [
+    'Home',
+    'CAPI Shield',
+    'Stocky Swap',
+    'TikTok Events API',
+    'Replace Klaviyo Free',
+    'Shopify P&L Automation',
+    'All Guides',
+    'Ultimate Automation Guide',
+    'Shopify Automation Scanner',
+    'App Cost Calculator',
+    'Best AI Tools for Shopify',
+  ],
+  url: [
+    'https://www.stackarchitect.xyz/',
+    'https://www.stackarchitect.xyz/capi-shield',
+    'https://www.stackarchitect.xyz/stocky-swap',
+    'https://www.stackarchitect.xyz/tiktok-events-api-shopify',
+    'https://www.stackarchitect.xyz/replace-klaviyo-free',
+    'https://www.stackarchitect.xyz/shopify-profit-loss-automation',
+    'https://www.stackarchitect.xyz/shopify-automation-guides',
+    'https://www.stackarchitect.xyz/ultimate-shopify-automation-guide',
+    'https://www.stackarchitect.xyz/shopify-automation-scanner',
+    'https://www.stackarchitect.xyz/shopify-app-cost-calculator',
+    'https://www.stackarchitect.xyz/best-ai-tools-shopify',
+  ],
+};
+
+const allSchemas = [...schemaArray, siteNavSchema];
+
+const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
+---
+
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary SEO -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta
+      name="robots"
+      content={noindex
+        ? 'noindex, nofollow'
+        : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1'}
+    />
+
+    <!-- Preconnect to affiliate domains -->
+    <link rel="preconnect" href="https://www.make.com" />
+    <link rel="preconnect" href="https://systeme.io" />
+
+    <!-- Mobile browser chrome colour -->
+    <meta name="theme-color" content="#0a0a0a" />
+
+    <!-- Article modified time -->
+    <meta
+      property="article:modified_time"
+      content={updatedDate ?? publishDate ?? new Date().toISOString()}
+    />
+
+    <!-- Hreflang — UK English primary audience -->
+    <link rel="alternate" hreflang="en-gb" href={canonical} />
+    <link rel="alternate" hreflang="en" href={canonical} />
+    <link rel="alternate" hreflang="x-default" href={canonical} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={ogTitle ?? title} />
+    <meta property="og:description" content={ogDescription ?? description} />
+    <meta property="og:type" content={pageType === 'article' ? 'article' : 'website'} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Stack Architect" />
+    <meta property="og:locale" content="en_GB" />
+
+    <!-- Twitter/X Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={ogTitle ?? title} />
+    <meta name="twitter:description" content={ogDescription ?? description} />
+    <meta
+      name="twitter:image"
+      content={ogImage ?? 'https://www.stackarchitect.xyz/og.png'}
+    />
+
+    <!-- JSON-LD Schema -->
+    {allSchemas.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+    <!-- GA4 — replace GA_MEASUREMENT_ID with your actual ID -->
+    <!-- GA4_PLACEHOLDER_START -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'GA_MEASUREMENT_ID');
+    </script> -->
+    <!-- GA4_PLACEHOLDER_END -->
+
+    <slot name="head" />
+  </head>
+  <body class="bg-black text-white font-mono min-h-screen flex flex-col">
+    <!-- Named slot so child layouts can position Nav before breadcrumb -->
+    <slot name="header" />
+
+    {hasBreadcrumb && (
+      <nav aria-label="Breadcrumb" class="breadcrumb border-b border-[#1f1f1f]">
+        {breadcrumb!.map((item, i) => (
+          <>
+            {i > 0 && <span class="breadcrumb-separator">/</span>}
+            {item.href
+              ? <a href={item.href}>{item.label}</a>
+              : <span class="text-white">{item.label}</span>
+            }
+          </>
+        ))}
+      </nav>
+    )}
+
+    <slot />
+  </body>
+</html>

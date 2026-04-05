@@ -1,0 +1,62 @@
+---
+interface Props {
+  number: string | number;
+  title: string;
+  timeEstimate?: string;
+  urgency?: 'immediate' | 'high' | 'medium';
+  pathLabel?: string;
+}
+
+const { number, title, timeEstimate, urgency, pathLabel } = Astro.props;
+
+const urgencyColors: Record<string, string> = {
+  immediate: 'text-red-400 border-red-800',
+  high: 'text-amber-400 border-amber-800',
+  medium: 'text-yellow-400 border-yellow-800',
+};
+
+const urgencyLabels: Record<string, string> = {
+  immediate: 'IMMEDIATE',
+  high: 'HIGH',
+  medium: 'MEDIUM',
+};
+---
+
+<div class="border border-[#1f1f1f] bg-[#0a0a0a] p-5 my-5 relative">
+  <div class="flex items-start gap-4">
+    <div
+      class="flex-shrink-0 w-8 h-8 border border-[#4ade80] text-[#4ade80] flex items-center justify-center text-sm font-bold"
+    >
+      {number}
+    </div>
+    <div class="flex-1 min-w-0">
+      <div class="flex flex-wrap items-center gap-3 mb-2">
+        <h3 class="text-white font-bold text-sm uppercase tracking-wide">{title}</h3>
+        {
+          urgency && (
+            <span
+              class={`text-xs px-2 py-0.5 border font-bold ${urgencyColors[urgency] ?? ''}`}
+            >
+              {urgencyLabels[urgency]}
+            </span>
+          )
+        }
+        {
+          timeEstimate && (
+            <span class="text-xs text-[#52525b]">~ {timeEstimate}</span>
+          )
+        }
+      </div>
+      {
+        pathLabel && (
+          <div class="text-xs text-[#52525b] mb-3 font-mono bg-[#111] px-2 py-1 inline-block border border-[#1f1f1f]">
+            {pathLabel}
+          </div>
+        )
+      }
+      <div class="text-sm text-gray-300 space-y-2">
+        <slot />
+      </div>
+    </div>
+  </div>
+</div>
