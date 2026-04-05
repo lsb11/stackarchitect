@@ -50,8 +50,12 @@ gtag('config', 'G-TE6Z6CW514', { send_page_view: true, anonymize_ip: true });
       "author": { "@type": "Organization", "name": "Stack Architect", "url": "https://www.stackarchitect.xyz" },
       "publisher": { "@type": "Organization", "name": "Stack Architect", "url": "https://www.stackarchitect.xyz" },
       "datePublished": "2026-03-22",
-      "dateModified": "2026-04-03",
-      "image": "https://d1yei2z3i6k35z.cloudfront.net/16370908/69b2fbee2e5344.74350835_StackArchitectLogo.png"
+      "dateModified": "2026-04-05",
+      "image": "https://d1yei2z3i6k35z.cloudfront.net/16370908/69b2fbee2e5344.74350835_StackArchitectLogo.png",
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [".answer-box", ".quota-numbers", ".faq-wrap"]
+      }
     },
     {
       "@type": "BreadcrumbList",
@@ -59,6 +63,49 @@ gtag('config', 'G-TE6Z6CW514', { send_page_view: true, anonymize_ip: true });
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.stackarchitect.xyz/" },
         { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://www.stackarchitect.xyz/shopify-automation-guides" },
         { "@type": "ListItem", "position": 3, "name": "Google Apps Script Quotas 2026" }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to Stay Under Google Apps Script Quotas Without Breaking Your Workflow",
+      "description": "Six techniques to reduce quota pressure and sustain medium-volume automations on consumer Google accounts without upgrading to Google Workspace.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Batch smaller chunks",
+          "text": "Process 50–100 rows per run instead of everything at once. This keeps individual executions well inside the 6-minute consumer ceiling and prevents mid-batch timeouts."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Reduce API calls aggressively",
+          "text": "Cache sheet values at the start of each run using getValues() once, operate on the array in memory, then write back with a single setValues() call. This can reduce service calls by 80–90%."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Stagger time-based triggers",
+          "text": "Separate time-based triggers by at least 5–10 minutes to prevent overlapping executions that compete for the same service quota pool."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Persist state with PropertiesService",
+          "text": "Save progress checkpoints at regular intervals so a timed-out script can resume processing from where it stopped rather than restarting from row one."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "name": "Add exponential backoff on retries",
+          "text": "When a service call fails with a quota error, wait and retry with increasing delays — 1 second, then 2, then 4. This handles transient rate limits without failing the entire run."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 6,
+          "name": "Use LockService deliberately",
+          "text": "Acquire a lock at the start of any execution that touches shared spreadsheet data. This prevents concurrent executions from causing 'Could not obtain lock' errors and data corruption."
+        }
       ]
     },
     {
@@ -88,6 +135,21 @@ gtag('config', 'G-TE6Z6CW514', { send_page_view: true, anonymize_ip: true });
           "@type": "Question",
           "name": "Why does my script work in the morning but fail in the afternoon?",
           "acceptedAnswer": { "@type": "Answer", "text": "This is the clearest sign of a daily quota problem. Your automations are exhausting the 90-minute daily runtime in the first half of the day, leaving nothing for afternoon processing. The quota resets at midnight Pacific Time." }
+        },
+        {
+          "@type": "Question",
+          "name": "Have Google Apps Script quotas changed for 2026?",
+          "acceptedAnswer": { "@type": "Answer", "text": "The core limits — 6-minute consumer execution, 30-minute Workspace execution, 90-minute daily consumer runtime — have remained consistent. If you are seeing new failures in 2026, it is more likely that your volume has grown into the limits rather than that Google has tightened them." }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does the same script work one day and fail the next?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Variable load. A day with higher order volume or more form submissions hits limits that a quieter day never reached. The script did not change — the pressure on its quota allowance did." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Apps Script still useful for automation in 2026?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes — as a lightweight trigger and orchestration layer for simple spreadsheet actions and low-volume workflows. It becomes a liability when it is the execution engine for mission-critical, high-volume processing." }
         }
       ]
     }
@@ -219,6 +281,17 @@ a{text-decoration:none;}
 .related-articles ul li a:hover{color:var(--accent);}
 .meta-line{text-align:center;color:var(--soft);font-size:14px;margin:-4px 0 20px;}
 
+/* TABLE OF CONTENTS */
+.toc{background:linear-gradient(180deg,#121212,#0d0d0d);border:1px solid var(--border-strong);border-radius:16px;padding:20px 22px 16px;margin:0 0 32px;}
+.toc-label{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:var(--accent);margin:0 0 14px;}
+.toc-list{list-style:none;padding:0;margin:0;columns:2;column-gap:24px;}
+.toc-list li{border:none;padding:5px 0;break-inside:avoid;}
+.toc-list li::before{content:none;}
+.toc-list li a{color:var(--soft);font-size:14px;font-weight:500;transition:color .2s;display:flex;align-items:flex-start;gap:8px;line-height:1.4;}
+.toc-list li a::before{content:"→";color:var(--accent);font-size:11px;flex-shrink:0;margin-top:2px;}
+.toc-list li a:hover{color:#fff;}
+@media(max-width:600px){.toc-list{columns:1;}}
+
 /* FOOTER */
 .architect-footer{background:#020617;position:relative;padding:60px 24px 30px;font-family:'Inter',sans-serif;color:#475569;text-align:center;border-top:1px solid #1e293b;margin-top:80px;}
 .architect-footer::before{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background-image:radial-gradient(#00a854 0.5px,transparent 0.5px);background-size:30px 30px;opacity:.1;pointer-events:none;}
@@ -338,7 +411,7 @@ a{text-decoration:none;}
     <p>You have hit a quota limit. Here is exactly which one and how to fix it &mdash; free, no upgrade required, works at any order volume.</p>
   </div>
 
-  <div class="answer-box">
+  <div class="answer-box" id="quick-answer">
     <p><strong>Quick answer &mdash; the numbers that matter in 2026:</strong> Consumer (free) Google accounts get a <strong>6-minute maximum execution time</strong> per script run and <strong>90 minutes of total daily runtime</strong>. Google Workspace accounts get <strong>30 minutes per execution</strong> and <strong>6 hours of daily runtime</strong>. UrlFetch calls are capped at <strong>20,000 per day</strong> on consumer accounts. These are the hard limits that cannot be increased &mdash; they are why Autocrat, Sheets automations, and document workflows fail at scale.</p>
   </div>
 
@@ -350,6 +423,22 @@ a{text-decoration:none;}
     <span class="pill"><b>100</b> concurrent executions</span>
   </div>
 
+  <nav class="toc" aria-label="Table of contents">
+    <p class="toc-label">// Contents &mdash; jump to section</p>
+    <ol class="toc-list">
+      <li><a href="#quick-answer">Quick Answer &mdash; 2026 Quota Numbers</a></li>
+      <li><a href="#what-are-quotas">What Are Google Apps Script Quotas?</a></li>
+      <li><a href="#exact-limits">The Exact Quota Limits in 2026</a></li>
+      <li><a href="#why-break">Why Quota Limits Break Your Automations</a></li>
+      <li><a href="#error-messages">Common Quota Errors and What They Mean</a></li>
+      <li><a href="#stay-under">How to Stay Under Quotas (6 Steps)</a></li>
+      <li><a href="#autocrat">Autocrat &mdash; Why It Hits Limits &amp; the Fix</a></li>
+      <li><a href="#outgrown">When You&apos;ve Outgrown Apps Script</a></li>
+      <li><a href="#best-architecture">Best Architecture for Scale</a></li>
+      <li><a href="#faq">Frequently Asked Questions</a></li>
+    </ol>
+  </nav>
+
   <p>If you have ever seen <strong>&ldquo;Service invoked too many times&rdquo;</strong>, <strong>&ldquo;Exceeded maximum execution time&rdquo;</strong>, or <strong>&ldquo;Could not obtain lock&rdquo;</strong>, you already know the symptom. This guide explains the exact numbers behind those errors, when they appear by account type, and what actually works when order or document volume gets serious.</p>
 
   <div class="callout-warning">
@@ -357,7 +446,7 @@ a{text-decoration:none;}
     <p>Shopify Stocky shuts down August 31, 2026. The free replacement &mdash; <a href="https://www.stackarchitect.xyz/stocky-swap" style="color:var(--accent);">Stocky Swap</a> &mdash; logs every order to Google Sheets via Make.com, bypassing Apps Script quota limits entirely. Deploys in 4 minutes. Don&apos;t wait until August.</p>
   </div>
 
-  <h2>What Are Google Apps Script Quotas?</h2>
+  <h2 id="what-are-quotas">What Are Google Apps Script Quotas?</h2>
   <p>Google Apps Script quotas are hard limits on how much work a script can do. They exist to protect shared infrastructure &mdash; stopping one workflow from consuming resources that affect thousands of other users. Quotas appear across four layers, and they all apply simultaneously:</p>
 
   <ul>
@@ -369,7 +458,7 @@ a{text-decoration:none;}
 
   <p>The critical point is that these limits <strong>stack independently</strong>. A workflow can be fine on execution time but fail on service call rate &mdash; which is why the same script can work perfectly for a small operation and break as soon as volume rises.</p>
 
-  <h2>The Exact Google Apps Script Quota Limits in 2026</h2>
+  <h2 id="exact-limits">The Exact Google Apps Script Quota Limits in 2026</h2>
   <p>These are the official limits as of April 2026. Google does not announce changes widely &mdash; they update the quotas page without notice, which is why searches for &ldquo;quotas 2026&rdquo; are so common.</p>
 
   <div class="quota-numbers">
@@ -417,7 +506,7 @@ a{text-decoration:none;}
 
   <div class="callout">
     <span class="label">Consumer vs Workspace &mdash; when to upgrade</span>
-    <p>The 6-minute vs 30-minute execution gap is the single biggest reason to upgrade to Google Workspace for automation-heavy operations. If your Shopify order volume means scripts regularly hit the 6-minute ceiling, <a href="https://www.stackarchitect.xyz/blog/when-to-upgrade-free-make-google-workspace">the upgrade decision guide covers the exact trigger point and $21/month cost calculation</a>.</p>
+    <p>The 6-minute vs 30-minute execution gap is the single biggest reason to upgrade to Google Workspace for automation-heavy operations. If your Shopify order volume means scripts regularly hit the 6-minute ceiling, the upgrade decision covers the exact trigger point and $21/month cost calculation in our <a href="https://www.stackarchitect.xyz/blog/when-to-upgrade-free-make-google-workspace">Upgrade Guide</a>.</p>
   </div>
 
   <table class="comparison-table">
@@ -440,7 +529,7 @@ a{text-decoration:none;}
     </tbody>
   </table>
 
-  <h2>Why Quota Limits Break Your Automations</h2>
+  <h2 id="why-break">Why Quota Limits Break Your Automations</h2>
   <p>Quota failures are rarely random. They follow predictable patterns based on four root causes:</p>
   <ul>
     <li><strong>Burst processing</strong> &mdash; too many reads, writes, or document operations concentrated in one short window.</li>
@@ -459,7 +548,7 @@ a{text-decoration:none;}
     <strong>The honest truth about Apps Script quotas:</strong> they are a capacity problem, not a coding problem. You can reduce the pain with better architecture &mdash; but you cannot build unlimited scale on top of limits that Google has fixed at the infrastructure level.
   </div>
 
-  <h2>Common Quota Errors and What They Mean</h2>
+  <h2 id="error-messages">Common Quota Errors and What They Mean</h2>
   <p>Each error message maps to a specific quota breach. Knowing which limit you hit tells you which fix applies.</p>
 
   <table class="comparison-table">
@@ -479,8 +568,8 @@ a{text-decoration:none;}
 
   <p>If your quota errors are tied to <strong>Shopify order volume</strong> &mdash; particularly inventory sync or order logging workflows &mdash; the <a href="https://www.stackarchitect.xyz/stocky-swap">Stocky Swap free replacement</a> routes every order through Make.com directly to Google Sheets, bypassing Apps Script execution entirely. No quota ceiling, no 6-minute limit, no document create cap. <a href="https://www.stackarchitect.xyz/stocky-swap">Deploy free in 4 minutes &rarr;</a></p>
 
-  <h2>How to Stay Under Quotas Without Breaking Your Workflow</h2>
-  <p>These techniques reduce quota pressure and can sustain most medium-volume automations on consumer accounts. They are mitigation strategies &mdash; not architectural solutions for serious scale.</p>
+  <h2 id="stay-under">How to Stay Under Quotas Without Breaking Your Workflow</h2>
+  <p>These six techniques reduce quota pressure and can sustain most medium-volume automations on consumer accounts. They are mitigation strategies &mdash; not architectural solutions for serious scale.</p>
   <ul>
     <li><strong>Batch smaller chunks</strong> &mdash; process 50&ndash;100 rows per run instead of everything at once.</li>
     <li><strong>Reduce API calls aggressively</strong> &mdash; cache sheet values at the start using <code>getValues()</code> once, operate on the array in memory, then write back with a single <code>setValues()</code> call.</li>
@@ -495,7 +584,7 @@ a{text-decoration:none;}
     <p>Batching and backoff can take a stable 100-row workflow and scale it to 500 rows. They cannot take a 500-row workflow to 5,000 rows. At that point, the daily runtime ceiling is the binding constraint &mdash; and no code optimisation changes a 90-minute daily limit.</p>
   </div>
 
-  <div class="autocrat-section">
+  <div class="autocrat-section" id="autocrat">
     <p class="section-eyebrow">Autocrat &middot; Document Automation &middot; Quota Fix</p>
     <h2>Why Autocrat Specifically Hits Quota Limits &mdash; and the Structural Fix</h2>
 
@@ -527,7 +616,7 @@ a{text-decoration:none;}
     </div>
   </div>
 
-  <h2>When You Have Outgrown Apps Script Entirely</h2>
+  <h2 id="outgrown">When You Have Outgrown Apps Script Entirely</h2>
   <p>The signal is usually obvious: document generation starts missing rows, order sync gets delayed, or the workflow behaves differently depending on the time of day. That last symptom &mdash; time-dependent behaviour &mdash; is the clearest sign of a daily quota problem.</p>
 
   <ul>
@@ -536,16 +625,16 @@ a{text-decoration:none;}
     <li>Write results back only after the heavy work is complete</li>
   </ul>
 
-  <h2>Best Architecture for Scale</h2>
+  <h2 id="best-architecture">Best Architecture for Scale</h2>
   <p>Keep lightweight logic close to the spreadsheet &mdash; change detection, simple calculations, notification sends &mdash; and move heavy lifting to a system built for throughput.</p>
-  <p><strong>Apps Script detects the event. Make.com or a dedicated service does the processing. The result lands back in Sheets.</strong> This pattern removes the quota ceiling from every expensive operation.</p>
+  <p><strong>Apps Script detects the event. Make.com or a dedicated service does the processing. The result lands back in Sheets.</strong> This pattern removes the quota ceiling from every expensive operation. The <a href="https://www.stackarchitect.xyz/blog/make-com-shopify-automation-guide">Make.com for Shopify complete guide</a> covers exactly how to set this up from scratch.</p>
 
   <div class="cta-block">
     <a href="https://www.stackarchitect.xyz/autocrat-quota-fix" class="btn-green">Deploy the Autocrat Quota Fix &mdash; Free &rarr;</a>
-    <div class="secondary-link">For the broader workflow pattern, read <a href="https://www.stackarchitect.xyz/blog/scalable-google-sheets-automation-for-high-volume-workflows">Scalable Google Sheets Automation for High-Volume Workflows</a></div>
+    <div class="secondary-link">For the broader Make.com setup: <a href="https://www.stackarchitect.xyz/blog/make-com-shopify-automation-guide">Make.com for Shopify: Complete Beginner&apos;s Guide</a></div>
   </div>
 
-  <h2>Frequently Asked Questions</h2>
+  <h2 id="faq">Frequently Asked Questions</h2>
   <div class="faq-wrap">
     <div class="faq-item">
       <p class="q">What is the Google Apps Script execution time limit in 2026?</p>
@@ -565,7 +654,7 @@ a{text-decoration:none;}
     </div>
     <div class="faq-item">
       <p class="q">Can Google Apps Script quotas be increased?</p>
-      <p class="a">No. The limits are set by Google at the infrastructure level and cannot be increased by request, payment, or configuration. The only way to operate above the hard ceilings is to move the work outside of Apps Script execution.</p>
+      <p class="a">No. The limits are set by Google at the infrastructure level and cannot be increased by request, payment, or configuration. The only way to operate above the hard ceilings is to move the work outside of Apps Script execution &mdash; into Make.com or a dedicated API layer.</p>
     </div>
     <div class="faq-item">
       <p class="q">Why does my script work in the morning but fail in the afternoon?</p>
@@ -577,7 +666,7 @@ a{text-decoration:none;}
     </div>
     <div class="faq-item">
       <p class="q">Is Apps Script still useful for automation in 2026?</p>
-      <p class="a">Yes &mdash; as a lightweight trigger and orchestration layer for simple spreadsheet actions and low-volume workflows. It becomes a liability when it is the execution engine for mission-critical, high-volume processing.</p>
+      <p class="a">Yes &mdash; as a lightweight trigger and orchestration layer for simple spreadsheet actions and low-volume workflows. It becomes a liability when it is the execution engine for mission-critical, high-volume processing. For those cases, Make.com is the right tool.</p>
     </div>
   </div>
 
@@ -586,20 +675,20 @@ a{text-decoration:none;}
 
   <div class="cta-block">
     <a href="https://www.stackarchitect.xyz/autocrat-quota-fix" class="btn-green">Fix Quota Errors &mdash; Free, 15 Minutes &rarr;</a>
-    <div class="secondary-link">Related: <a href="https://www.stackarchitect.xyz/blog/how-to-run-high-volume-document-automation-without-errors">How to Run High-Volume Document Automation Without Errors</a></div>
+    <div class="secondary-link">Related: <a href="https://www.stackarchitect.xyz/blog/make-com-shopify-automation-guide">Make.com for Shopify &mdash; Complete Beginner&apos;s Guide 2026</a></div>
   </div>
 
   <section class="related-articles">
     <h2>Related Articles</h2>
     <ul>
+      <li><a href="https://www.stackarchitect.xyz/blog/fix-autocrat-quota-errors-stop-service-invoked-too-many-times-failures">Fix Autocrat Quota Errors &mdash; Stop &ldquo;Service Invoked Too Many Times&rdquo; Failures</a></li>
       <li><a href="https://www.stackarchitect.xyz/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script">How to Fix &ldquo;Service Invoked Too Many Times&rdquo; in Google Apps Script</a></li>
       <li><a href="https://www.stackarchitect.xyz/blog/how-to-run-high-volume-document-automation-without-errors">How to Run High-Volume Document Automation Without Errors</a></li>
       <li><a href="https://www.stackarchitect.xyz/blog/scalable-google-sheets-automation-for-high-volume-workflows">Scalable Google Sheets Automation for High-Volume Workflows</a></li>
-      <li><a href="https://www.stackarchitect.xyz/blog/when-to-upgrade-free-make-google-workspace">When to Upgrade from Free Make.com to Google Workspace</a></li>
+      <li><a href="https://www.stackarchitect.xyz/blog/the-complete-guide-to-reliable-shopify-automations">The Complete Guide to Reliable Shopify Automations</a></li>
       <li><a href="https://www.stackarchitect.xyz/blog/make-com-shopify-automation-guide">Make.com for Shopify: Complete Beginner&apos;s Guide to Free Automation 2026</a></li>
-      <li><a href="https://www.stackarchitect.xyz/stocky-swap">Stocky Swap &mdash; Free Shopify Inventory Before August 2026 Shutdown</a></li>
-      <li><a href="https://www.stackarchitect.xyz/autocrat-quota-fix">Autocrat Quota Fix &mdash; Free Google Apps Script Fix</a></li>
-      <li><a href="https://www.stackarchitect.xyz/ultimate-shopify-automation-guide">The Complete Shopify Automation Guide 2026</a></li>
+      <li><a href="https://www.stackarchitect.xyz/blog/when-to-upgrade-free-make-google-workspace">When to Upgrade from Free Make.com to Google Workspace &mdash; Shopify Operator&apos;s Guide</a></li>
+      <li><a href="https://www.stackarchitect.xyz/blog/replace-shopify-stocky-with-a-0-inventory-system">Shopify Stocky Is Shutting Down August 2026 &mdash; Replace It Free</a></li>
     </ul>
   </section>
 
