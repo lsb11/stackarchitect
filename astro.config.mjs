@@ -1,5 +1,4 @@
 import { defineConfig } from 'astro/config';
-import cloudflare from '@astrojs/cloudflare';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
@@ -7,7 +6,6 @@ import mdx from '@astrojs/mdx';
 export default defineConfig({
   site: 'https://www.stackarchitect.xyz',
   output: 'static',
-  adapter: cloudflare(),
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
@@ -36,11 +34,9 @@ export default defineConfig({
         'https://www.stackarchitect.xyz/sitemap',
       ],
       serialize(item) {
-        // Homepage — highest priority
         if (item.url === 'https://www.stackarchitect.xyz/') {
           return { ...item, priority: 1.0, changefreq: 'weekly' };
         }
-        // Core product pages
         const productPages = [
           '/capi-shield',
           '/stocky-swap',
@@ -53,11 +49,9 @@ export default defineConfig({
         if (productPages.some((p) => item.url.endsWith(p))) {
           return { ...item, priority: 0.9, changefreq: 'weekly' };
         }
-        // Blog posts
         if (item.url.includes('/blog/')) {
           return { ...item, priority: 0.8, changefreq: 'monthly' };
         }
-        // Everything else
         return { ...item, priority: 0.6, changefreq: 'monthly' };
       },
     }),
