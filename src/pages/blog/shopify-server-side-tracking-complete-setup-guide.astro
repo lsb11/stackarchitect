@@ -893,7 +893,7 @@
           <br/><br/>Add an HTTP module after the webhook trigger in Make.com. Set Method to POST, URL to <span class="code-ref">https://graph.facebook.com/v19.0/YOUR_PIXEL_ID/events?access_token=YOUR_TOKEN</span>. In the body, send:
           <ul style="margin-top:10px;margin-bottom:10px;">
             <li><span class="code-ref">event_name</span>: Purchase</li>
-            <li><span class="code-ref">event_id</span>: <span class="code-ref">{{order.id}}</span></li>
+            <li><span class="code-ref">event_id</span>: <span class="code-ref">&#123;&#123;order.id&#125;&#125;</span></li>
             <li><span class="code-ref">event_time</span>: current Unix timestamp</li>
             <li><span class="code-ref">value</span>: order total &amp; <span class="code-ref">currency</span></li>
             <li><span class="code-ref">em</span>: SHA-256 hashed customer email</li>
@@ -909,7 +909,7 @@
 
   <div class="callout warn">
     <span class="callout-label">Deduplication is Required &mdash; Do Not Skip</span>
-    <p>Set <span class="code-ref">event_id</span> to the Shopify order ID in your server event. In your browser Meta Pixel code, also pass <span class="code-ref">eventID: '{{order.id}}'</span> in the Purchase event. Meta uses matching event IDs to deduplicate &mdash; you see one purchase, not two. <strong>Without this, you will double-count every conversion and your ROAS will appear inflated.</strong></p>
+    <p>Set <span class="code-ref">event_id</span> to the Shopify order ID in your server event. In your browser Meta Pixel code, also pass <span class="code-ref">eventID: '&#123;&#123;order.id&#125;&#125;'</span> in the Purchase event. Meta uses matching event IDs to deduplicate &mdash; you see one purchase, not two. <strong>Without this, you will double-count every conversion and your ROAS will appear inflated.</strong></p>
   </div>
 
   <div class="step-cards">
@@ -943,7 +943,7 @@
           <br/><br/>Add a third HTTP module. Set Method to POST, URL to <span class="code-ref">https://business-api.tiktok.com/open_api/v1.3/event/track/</span>. In the body, include:
           <ul style="margin-top:10px;margin-bottom:10px;">
             <li><span class="code-ref">event_name</span>: <strong>CompletePayment</strong> (not &ldquo;Purchase&rdquo; &mdash; see warning below)</li>
-            <li><span class="code-ref">event_id</span>: <span class="code-ref">{{order.id}}</span></li>
+            <li><span class="code-ref">event_id</span>: <span class="code-ref">&#123;&#123;order.id&#125;&#125;</span></li>
             <li>Value, currency, hashed email and phone</li>
             <li>Customer IP address and user agent (from Shopify order payload)</li>
           </ul>
