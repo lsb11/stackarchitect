@@ -1,0 +1,1204 @@
+---
+// app-audit.astro — migrated from audit.stackarchitect.xyz
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Shopify App Audit — Replace Paid Apps for $0 | Stack Architect</title>
+<meta name="description" content="Free Shopify app audit tool. Enter your apps, get an instant report showing exactly which paid apps you can replace for $0 using Make.com and Systeme.io. Used by 500+ stores. No sign-up required.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.stackarchitect.xyz/app-audit">
+<meta property="og:title" content="Free Shopify App Audit — Replace Paid Apps for $0">
+<meta property="og:description" content="Instant AI audit shows exactly which Shopify apps you can replace for free. 500+ stores. $700+ avg savings.">
+<meta property="og:url" content="https://www.stackarchitect.xyz/app-audit">
+<meta property="og:image" content="https://d1yei2z3i6k35z.cloudfront.net/16370908/69a093a668d36_Gemini_Generated_Image_3i6wmo3i6wmo3i6w.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="geo.region" content="GB">
+<link rel="alternate" hreflang="en" href="https://www.stackarchitect.xyz/app-audit">
+<link rel="alternate" hreflang="x-default" href="https://www.stackarchitect.xyz/app-audit">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Free Shopify App Audit Tool","url":"https://www.stackarchitect.xyz/app-audit","description":"Free tool that analyses your Shopify app stack and identifies which paid apps can be replaced for $0 using Make.com and Systeme.io.","offers":{"@type":"Offer","price":"0","priceCurrency":"GBP"},"isAccessibleForFree":true}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Which Shopify apps can I replace for free?","acceptedAnswer":{"@type":"Answer","text":"Klaviyo ($150-$400/mo) can be replaced with Systeme.io free. Triple Whale and Northbeam ($149-$299/mo) with CAPI Shield on Make.com. Inventory apps like Stocky and Linnworks with Make.com and Google Sheets. Review apps like Loox and Yotpo with Judge.me free tier."}},{"@type":"Question","name":"How much do Shopify apps cost per month?","acceptedAnswer":{"@type":"Answer","text":"The average Shopify store spends $300-$800 per month on third-party apps. Stack Architect audit data from 500+ stores shows an average of $700+ per month recoverable through free alternatives."}}]}</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TE6Z6CW514"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-TE6Z6CW514');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#020617;--bg2:#0f172a;--bg3:#1e293b;
+  --border:#1e293b;--border2:#334155;
+  --text:#f8fafc;--muted:#64748b;--hint:#334155;
+  --green:#00a854;--gborder:rgba(0,168,84,.3);--gdim:rgba(0,168,84,.12);
+  --red:#ff4d4d;--warn:#ffbb33;--blue:#3b82f6;
+  --mono:'JetBrains Mono',monospace;--sans:'Inter',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+/* NAV */
+.nav{width:100%;background:#020617;padding:12px 0;border-bottom:1px solid #1e293b;position:sticky;top:0;z-index:1000;transition:all .3s}
+.nav.scrolled{background:rgba(2,6,23,.95);backdrop-filter:blur(12px);padding:8px 0;border-bottom:1px solid rgba(0,168,84,.3);box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.nav-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:0 24px}
+.nav-status{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:9px;color:#475569;letter-spacing:1.5px;font-weight:800}
+.nav-dot{width:5px;height:5px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green);animation:navpulse 2s infinite}
+@keyframes navpulse{0%,100%{box-shadow:0 0 8px var(--green)}50%{box-shadow:0 0 16px var(--green)}}
+.nav-links{display:flex;gap:clamp(12px,2.5vw,28px);list-style:none;align-items:center}
+.nl{font-family:var(--mono);font-size:10px;font-weight:800;color:#94a3b8;text-decoration:none;text-transform:uppercase;letter-spacing:1px;transition:all .3s;display:flex;align-items:center;gap:4px}
+.nl::before{content:'[';color:#334155;transition:color .3s}.nl::after{content:']';color:#334155;transition:color .3s}
+.nl:hover,.nl.on{color:#fff;transform:translateY(-1px)}.nl:hover::before,.nl:hover::after,.nl.on::before,.nl.on::after{color:var(--green)}.nl.on{color:var(--green)}
+.nav-cta-wrap{display:flex;align-items:center;margin-left:16px}
+.nav-ticker{font-family:var(--mono);font-size:8px;font-weight:800;color:var(--green);letter-spacing:1px;margin-right:10px;opacity:.8}
+.nav-cta{font-family:var(--mono);font-size:10px;font-weight:900;color:var(--green);text-decoration:none;text-transform:uppercase;padding:6px 14px;border:1px solid var(--green);border-radius:4px;transition:all .3s;white-space:nowrap}
+.nav-cta:hover{background:var(--green);color:#fff}
+.dd{position:relative;cursor:pointer}
+.ddm{display:none;position:absolute;top:100%;left:0;background:#020617;border:1px solid #1e293b;border-radius:4px;padding:8px 0;min-width:240px;z-index:1001;flex-direction:column;list-style:none;box-shadow:0 20px 40px rgba(0,0,0,.4)}
+.ddm .nl::before,.ddm .nl::after{content:''}
+.ddm .nl{display:block;padding:8px 16px;font-size:10px;color:#94a3b8}
+.ddm .nl:hover{color:#fff;background:rgba(0,168,84,.1);transform:none}
+.ddd{display:block;font-family:var(--sans);font-size:9px;font-weight:400;color:#475569;text-transform:none;margin-top:2px;line-height:1.4;letter-spacing:0}
+@media(min-width:851px){.dd:hover .ddm{display:flex}}
+@media(max-width:850px){
+  .nav-status,.nav-ticker{display:none}
+  .nav-inner{flex-direction:column;gap:12px}
+  .nav-links{display:grid;grid-template-columns:repeat(2,auto);gap:10px 18px}
+  .nav-cta-wrap{margin-left:0;order:-1;width:100%;justify-content:center}
+  .nav-cta{background:var(--green);color:#fff;width:80%;text-align:center}
+}
+/* BREADCRUMB */
+.bc{background:var(--bg);padding:14px 40px 0}
+.bcl{list-style:none;display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;color:#334155;max-width:1100px;margin:0 auto}
+.bcl a{color:#334155;text-decoration:none;transition:color .2s}.bcl a:hover{color:var(--green)}
+/* HERO */
+.hero{max-width:900px;margin:0 auto;padding:64px 28px 48px;text-align:center}
+.htag{font-family:var(--mono);font-size:10px;font-weight:800;color:var(--green);letter-spacing:4px;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;justify-content:center;gap:10px}
+.hdot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+h1{font-size:clamp(30px,5vw,60px);font-weight:900;line-height:1.05;letter-spacing:-3px;color:var(--text);margin-bottom:18px}
+h1 em{font-style:normal;color:var(--green)}
+.hsub{font-size:clamp(15px,1.8vw,18px);color:var(--muted);max-width:600px;margin:0 auto 36px;line-height:1.65}
+.hpills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.hpill{font-family:var(--mono);font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#64748b;border:1px solid rgba(255,255,255,.08);padding:7px 14px;border-radius:20px;display:flex;align-items:center;gap:7px}
+.hpill .pd{width:5px;height:5px;background:var(--green);border-radius:50%}.hpill strong{color:var(--text)}
+/* MAIN */
+.main{max-width:820px;margin:0 auto;padding:36px 28px 80px}
+/* STEP BAR */
+.stepbar{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:28px;font-family:var(--mono)}
+.step{padding:12px 16px;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--hint);border-right:1px solid var(--border);display:flex;align-items:center;gap:8px;transition:all .25s}
+.step:last-child{border-right:none}.step.active{background:var(--bg2);color:var(--green)}.step.done{color:#00c864;background:rgba(0,168,84,.04)}
+.sn{opacity:.45;font-size:8px}
+/* PHASES */
+.phase{display:none}.phase.on{display:block}
+/* CARD */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:14px}
+.clabel{font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+.chint{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6}
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.chip{display:inline-flex;align-items:center;gap:5px;font-family:var(--sans);font-size:12px;font-weight:600;color:var(--muted);background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:7px 13px;cursor:pointer;transition:all .15s;user-select:none}
+.chip:hover{border-color:var(--green);color:var(--text);background:rgba(0,168,84,.06)}
+.chip.on{background:rgba(0,168,84,.12);border-color:var(--green);color:var(--green)}
+.chip.on::before{content:'+ ';font-size:10px}
+.chipcost{font-family:var(--mono);font-size:9px;color:var(--hint);margin-left:2px}
+.chip.on .chipcost{color:rgba(0,168,84,.6)}
+/* SEARCH */
+.swrap{position:relative;margin-top:4px}
+.sinp{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:var(--sans);font-size:13px;padding:10px 12px;outline:none;transition:border-color .15s}
+.sinp:focus{border-color:var(--green)}.sinp::placeholder{color:var(--hint)}
+.sdd{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;z-index:200;box-shadow:0 12px 32px rgba(0,0,0,.5);max-height:220px;overflow-y:auto}
+.sdd.on{display:block}
+.sdi{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;font-size:13px;color:var(--muted);border-bottom:1px solid var(--border);transition:background .1s}
+.sdi:last-child{border-bottom:none}.sdi:hover{background:rgba(0,168,84,.08);color:var(--text)}.sdi.added{color:var(--hint);cursor:default}
+.sdi-cost{font-family:var(--mono);font-size:10px;color:var(--hint)}
+.sdi-badge{font-family:var(--mono);font-size:8px;color:var(--green);background:rgba(0,168,84,.1);border:1px solid var(--gborder);padding:2px 6px;border-radius:3px;margin-left:8px}
+.sdi-cat{font-size:10px;color:var(--hint);margin-left:6px}
+/* TABLE */
+.thead{display:grid;grid-template-columns:1fr 130px 40px;gap:10px;padding:0 0 10px;border-bottom:1px solid var(--border);margin-bottom:4px}
+.thead span{font-family:var(--mono);font-size:9px;color:var(--hint);text-transform:uppercase;letter-spacing:.1em}
+.arow{display:grid;grid-template-columns:1fr 130px 40px;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);animation:rowin .2s ease}
+.arow:last-child{border-bottom:none}
+@keyframes rowin{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.ainp{background:var(--bg3);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--sans);font-size:13px;padding:9px 11px;width:100%;outline:none;transition:border-color .15s}
+.ainp:focus{border-color:var(--green)}.ainp::placeholder{color:var(--hint)}
+.cwrap{position:relative}.cwrap::before{content:'$';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:11px;color:var(--muted);pointer-events:none}
+.cwrap .ainp{padding-left:22px}
+.rmbtn{background:none;border:1px solid var(--border);border-radius:6px;color:var(--hint);font-size:18px;line-height:1;cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.rmbtn:hover{border-color:var(--red);color:var(--red)}
+.addbtn{width:100%;background:none;border:1px dashed var(--border2);border-radius:6px;color:var(--muted);font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:10px;cursor:pointer;margin-top:12px;transition:all .2s}
+.addbtn:hover{border-color:var(--green);color:var(--green)}
+/* TOTAL BAR */
+.totbar{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;margin-bottom:14px}
+.totlabel{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.totval{font-family:var(--mono);font-size:22px;font-weight:700;color:var(--warn);transition:color .3s}
+.totval.zero{color:var(--green)}.totval.high{color:var(--red)}
+/* CONTEXT SELECTS */
+.ctxgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.flabel{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:6px}
+.fsel{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--sans);font-size:13px;padding:9px 32px 9px 11px;cursor:pointer;outline:none;transition:border-color .15s;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23475569' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+.fsel:focus{border-color:var(--green)}
+/* ERROR MESSAGE */
+.errmsg{background:rgba(255,77,77,.08);border:1px solid rgba(255,77,77,.3);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--red);margin-bottom:14px;display:none}
+/* BUTTONS */
+.pbtn{width:100%;background:var(--green);border:none;border-radius:10px;color:#fff;font-family:var(--mono);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:17px 24px;cursor:pointer;transition:all .2s;margin-bottom:10px}
+.pbtn:hover{background:#00c464;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,168,84,.4)}.pbtn:active{transform:translateY(0)}.pbtn:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none}
+.disc{font-family:var(--mono);font-size:9px;color:var(--hint);text-align:center;letter-spacing:.07em}
+/* SEL SUMMARY */
+.selsum{display:none;margin-bottom:14px}
+/* LOADING */
+.lwrap{padding:80px 24px;text-align:center}
+.spinner{width:40px;height:40px;border:1.5px solid var(--border2);border-top-color:var(--green);border-radius:50%;margin:0 auto 28px;animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ltitle{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px}
+.ltrack{width:240px;height:2px;background:var(--border);margin:0 auto 16px;border-radius:1px;overflow:hidden}
+.lfill{height:100%;background:var(--green);width:0;border-radius:1px;transition:width .3s}
+.lstatus{font-family:var(--mono);font-size:10px;color:var(--green);opacity:.7;min-height:16px;animation:fp 1.8s ease-in-out infinite}
+@keyframes fp{0%,100%{opacity:.7}50%{opacity:.3}}
+/* RESULTS */
+.reyebrow{font-family:var(--mono);font-size:9px;color:var(--green);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+.rtitle{font-size:21px;font-weight:700;color:var(--text);line-height:1.2;letter-spacing:-.5px;margin-bottom:22px}
+/* TILES */
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
+.tile{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:15px}
+.tv{font-family:var(--mono);font-size:21px;font-weight:800;margin-bottom:4px}
+.tl{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.cr{color:var(--red)}.cg{color:var(--green)}.cw{color:var(--warn)}.cb{color:var(--blue)}
+/* SCORE */
+.scorebar{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:22px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.ring{width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:20px;font-weight:800;border:3px solid var(--border2);flex-shrink:0}
+.ring.ga{border-color:var(--green);color:var(--green);background:rgba(0,168,84,.08)}
+.ring.gb{border-color:var(--warn);color:var(--warn);background:rgba(255,187,51,.08)}
+.ring.gc{border-color:var(--red);color:var(--red);background:rgba(255,77,77,.08)}
+.sbody{flex:1;min-width:160px}
+.slabel{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.shead{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;letter-spacing:-.3px}
+.ssub{font-size:13px;color:var(--muted);line-height:1.55}
+.sbd{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px}
+.sstat{font-family:var(--mono);font-size:10px;color:var(--muted)}.sstat strong{color:var(--text)}
+/* RECOVERY BANNER */
+.rbanner{display:flex;align-items:center;gap:18px;flex-wrap:wrap;background:rgba(0,168,84,.06);border:1px solid var(--gborder);border-radius:10px;padding:15px 18px;margin-bottom:14px}
+.rblabel{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;flex-shrink:0}
+.rbval{font-family:var(--mono);font-size:26px;font-weight:800;color:var(--green);flex-shrink:0}
+.rbsub{font-size:13px;color:var(--muted);flex:1;min-width:140px}
+.rbbtn{background:var(--green);color:#fff;font-family:var(--mono);font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:9px 15px;border-radius:6px;text-decoration:none;flex-shrink:0;transition:background .15s}
+.rbbtn:hover{background:#00c464}
+/* SECTION LABEL */
+.sl{font-family:var(--mono);font-size:9px;color:var(--hint);letter-spacing:.12em;text-transform:uppercase;margin:22px 0 10px}
+/* RESULT CARDS */
+.rcard{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:10px;transition:border-color .2s;animation:cin .3s ease both}
+@keyframes cin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.rcard:hover{border-color:var(--border2)}
+.rcard.free{border-left:3px solid var(--green)}.rcard.check{border-left:3px solid var(--warn)}.rcard.keep{border-left:3px solid var(--hint)}
+.rctop{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.rcname{font-weight:700;font-size:15px;flex:1;min-width:100px;letter-spacing:-.3px}
+.rccost{font-family:var(--mono);font-size:12px;color:var(--warn);flex-shrink:0;margin-top:2px}
+.rcbadge{font-family:var(--mono);font-size:8px;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:4px;flex-shrink:0}
+.bfree{background:rgba(0,168,84,.1);color:var(--green);border:1px solid var(--gborder)}
+.bkeep{background:rgba(100,116,139,.1);color:var(--muted);border:1px solid rgba(100,116,139,.25)}
+.bcheck{background:rgba(255,187,51,.1);color:var(--warn);border:1px solid rgba(255,187,51,.25)}
+.rcverdict{font-size:13px;color:var(--text);font-weight:600;margin-bottom:6px}
+.rcexpl{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:12px}
+/* INSIGHT GRID */
+.igrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:14px}
+.iblk{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 12px}
+.iblabel{font-family:var(--mono);font-size:8px;color:var(--hint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.ibval{font-family:var(--mono);font-size:14px;font-weight:800}
+.ibsub{font-size:11px;color:var(--hint);margin-top:2px;line-height:1.4}
+/* KEEP/LOSE */
+.kl{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.klb{background:var(--bg3);border-radius:8px;padding:10px 12px;font-size:12px;line-height:1.7}
+.kllabel{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.klkeep{border:1px solid rgba(0,168,84,.2)}.kllose{border:1px solid rgba(255,77,77,.15)}
+.klkeep .kllabel{color:var(--green)}.kllose .kllabel{color:var(--red)}
+.kli{color:var(--muted);padding-left:12px;position:relative}.kli::before{content:'*';position:absolute;left:2px;color:var(--hint)}
+.klkeep .kli::before{color:var(--green)}.kllose .kli::before{color:var(--red)}
+/* DIFF METER */
+.drow{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.dlabel{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;flex-shrink:0}
+.ddots{display:flex;gap:4px}
+.ddot{width:10px;height:10px;border-radius:50%;background:var(--border2)}
+.ddot.easy{background:var(--green)}.ddot.medium{background:var(--warn)}.ddot.hard{background:var(--red)}
+.dtext{font-family:var(--mono);font-size:9px;color:var(--muted)}
+/* QUICK WINS */
+.qw{margin-bottom:14px}
+.qwlabel{font-family:var(--mono);font-size:8px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.qwi{display:flex;gap:8px;margin-bottom:6px;font-size:12px;color:var(--muted)}
+.qwn{font-family:var(--mono);font-size:9px;color:var(--green);flex-shrink:0;margin-top:1px}
+/* RC ACTIONS */
+.rcactions{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.rcbtn{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:6px;text-decoration:none;cursor:pointer;transition:all .15s;display:inline-block;border:none}
+.rcprimary{background:var(--green);color:#fff}.rcprimary:hover{background:#00c464}
+.rcsecondary{background:none;color:var(--muted);border:1px solid var(--border2)}.rcsecondary:hover{color:var(--text);border-color:var(--text)}
+/* WHO SHOULD KEEP */
+.wsk{background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.2);border-radius:8px;padding:10px 13px;margin-bottom:14px;font-size:12px;color:var(--muted);line-height:1.6}
+.wsklabel{font-family:var(--mono);font-size:8px;color:var(--blue);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:4px}
+/* CHECKLIST */
+.ckl{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:14px}
+.ckltitle{font-size:15px;font-weight:700;color:var(--text);margin-bottom:14px;letter-spacing:-.3px}
+.cki{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.cki:last-child{border-bottom:none}
+.cknum{font-family:var(--mono);font-size:10px;font-weight:800;color:var(--green);background:rgba(0,168,84,.1);border:1px solid var(--gborder);border-radius:4px;padding:3px 7px;flex-shrink:0;margin-top:1px}
+.ckbody{flex:1}
+.ckaction{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
+.ckdetail{font-size:12px;color:var(--muted);line-height:1.5}
+.cksaving{font-family:var(--mono);font-size:10px;color:var(--green);margin-top:3px}
+/* EMAIL CAPTURE */
+.ecap{background:linear-gradient(135deg,rgba(0,168,84,.1),rgba(0,168,84,.04));border:1px solid var(--gborder);border-radius:14px;padding:26px;margin:8px 0 22px;position:relative;overflow:hidden}
+.ecap::before{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(0,168,84,.06) 1px,transparent 1px);background-size:20px 20px;pointer-events:none}
+.eceyebrow{font-family:var(--mono);font-size:9px;color:var(--green);letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px;position:relative;display:flex;align-items:center;gap:8px}
+.eceyebrow::before{content:'';width:5px;height:5px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green);flex-shrink:0}
+.ectitle{font-size:17px;font-weight:800;color:var(--text);margin-bottom:6px;letter-spacing:-.4px;position:relative}
+.ecsub{font-size:13px;color:var(--muted);margin-bottom:16px;position:relative;line-height:1.55}
+.ecform{display:flex;gap:10px;flex-wrap:wrap;position:relative}
+.ecinp{flex:1;min-width:180px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:var(--sans);font-size:14px;padding:11px 13px;outline:none;transition:border-color .15s}
+.ecinp:focus{border-color:var(--green)}.ecinp::placeholder{color:var(--hint)}
+.ecbtn{background:var(--green);color:#fff;font-family:var(--mono);font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:11px 18px;border:none;border-radius:8px;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0}
+.ecbtn:hover{background:#00c464}.ecbtn:disabled{opacity:.5;cursor:not-allowed}
+.ecdisc{font-family:var(--mono);font-size:9px;color:var(--hint);margin-top:10px;position:relative}
+.ecsuccess{display:none;text-align:center;padding:8px 0;position:relative}
+.ecsicon{font-size:28px;display:block;margin-bottom:6px}
+.ecstitle{font-family:var(--mono);font-size:13px;font-weight:800;color:var(--green);margin-bottom:4px}
+.ecssub{font-size:13px;color:var(--muted)}
+/* BOTTOM CTA */
+.bcta{margin-top:30px;background:linear-gradient(135deg,rgba(0,168,84,.12),rgba(0,168,84,.04));border:1px solid var(--gborder);border-radius:20px;padding:38px 30px;text-align:center;position:relative;overflow:hidden}
+.bcta::before{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(0,168,84,.07) 1px,transparent 1px);background-size:24px 24px;pointer-events:none}
+.bctaey{font-family:var(--mono);font-size:9px;color:var(--green);letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px;position:relative}
+.bctat{font-size:21px;font-weight:800;color:var(--text);margin-bottom:10px;letter-spacing:-.5px;position:relative}
+.bctas{font-size:14px;color:var(--muted);margin-bottom:22px;max-width:440px;margin-left:auto;margin-right:auto;position:relative}
+.bctabtn{display:inline-block;background:var(--green);color:#fff;font-family:var(--mono);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:13px 26px;border-radius:8px;text-decoration:none;transition:all .2s;position:relative}
+.bctabtn:hover{background:#00c464;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,168,84,.4)}
+/* RESTART */
+.rwrap{text-align:center;margin-top:22px}
+.rbtn{background:none;border:1px solid var(--border);color:var(--muted);font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:9px 16px;border-radius:6px;cursor:pointer;transition:all .2s}
+.rbtn:hover{border-color:var(--border2);color:var(--text)}
+.affnotice{font-family:var(--mono);font-size:9px;color:var(--hint);text-align:center;margin-top:14px;letter-spacing:.06em;line-height:1.6}
+/* AI CONTEXT */
+.aictx{max-width:820px;margin:0 auto;padding:0 28px 80px;color:var(--muted)}
+.aic-inner{border-top:1px solid var(--border);padding-top:44px}
+.aic-h2{font-size:16px;font-weight:800;color:var(--text);letter-spacing:-.4px;margin-bottom:12px;margin-top:30px}
+.aic-h2:first-child{margin-top:0}
+.aic-p{font-size:13px;line-height:1.85;margin-bottom:18px}
+.aic-ul{font-size:13px;line-height:2;padding-left:20px;margin-bottom:18px}
+/* FOOTER */
+.footer{background:var(--bg);position:relative;padding:48px 24px 28px;text-align:center;border-top:1px solid #1e293b}
+.footer::before{content:'';position:absolute;inset:0;background-image:radial-gradient(#00a854 .5px,transparent .5px);background-size:30px 30px;opacity:.05;pointer-events:none}
+.footer-inner{max-width:900px;margin:0 auto;position:relative;z-index:2}
+.fbrand{font-size:17px;font-weight:900;color:#f8fafc;letter-spacing:-1px;margin-bottom:22px;display:block}
+.flinks{display:flex;justify-content:center;gap:18px;margin-bottom:18px;flex-wrap:wrap}
+.flinks a{font-size:12px;font-weight:700;color:#f8fafc;text-decoration:none;transition:color .2s}.flinks a:hover{color:var(--green)}
+.fsub{display:flex;justify-content:center;gap:18px;margin-bottom:22px;flex-wrap:wrap}
+.fsub a{font-family:var(--mono);font-size:9px;color:#475569;text-decoration:none;transition:color .2s}.fsub a:hover{color:#f8fafc}
+.fcopy{font-family:var(--mono);font-size:8px;color:#1e293b;margin-top:14px;text-transform:uppercase}
+.fdisc{font-size:10px;color:#334155;margin-top:10px;line-height:1.5;max-width:600px;margin-left:auto;margin-right:auto}
+/* RESPONSIVE */
+@media(max-width:580px){
+  .hero{padding:44px 20px 36px}.main{padding:18px 20px 70px}
+  .ctxgrid{grid-template-columns:1fr}.tiles{grid-template-columns:1fr 1fr}
+  h1{font-size:28px;letter-spacing:-2px}
+  .rbanner{flex-direction:column;align-items:flex-start}
+  .thead,.arow{grid-template-columns:1fr 110px 40px}
+  .bc{padding:10px 20px 0}.ecform{flex-direction:column}.ecbtn{width:100%}
+  .kl{grid-template-columns:1fr}
+}
+@media(max-width:380px){.tiles{grid-template-columns:1fr}.step{font-size:8px;padding:10px}}
+</style>
+</head>
+<body>
+<!-- NAV -->
+<nav class="nav" id="main-nav" aria-label="Main navigation">
+  <div class="nav-inner">
+    <div class="nav-status" aria-hidden="true"><span class="nav-dot"></span>PRODUCT_NODES // ACCESS_OPEN</div>
+    <ul class="nav-links">
+      <li><a href="https://www.stackarchitect.xyz/" class="nl">~/HOME</a></li>
+      <li><a href="https://www.stackarchitect.xyz/capi-shield" class="nl">CAPI_Shield</a></li>
+      <li><a href="https://www.stackarchitect.xyz/stocky-swap" class="nl">$0_Stocky_Swap</a></li>
+      <li><a href="https://www.stackarchitect.xyz/autocrat-quota-fix" class="nl">Autocrat_Fix</a></li>
+      <li class="dd">
+        <a href="#" class="nl on" aria-haspopup="true">Tools <span style="font-size:8px;margin-left:4px;">&#9662;</span></a>
+        <ul class="ddm">
+          <li><a href="https://www.stackarchitect.xyz/tools" class="nl">All Tools<span class="ddd">Free tools to audit and automate your store</span></a></li>
+          <li><a href="https://www.stackarchitect.xyz/shopify-automation-scanner" class="nl">Automation Scanner<span class="ddd">Scan any Shopify store to detect their apps</span></a></li>
+          <li><a href="/app-audit" class="nl on">App Cost Audit<span class="ddd">Enter your apps and find what to replace for $0</span></a></li>
+        </ul>
+      </li>
+      <li class="dd">
+        <a href="#" class="nl" aria-haspopup="true">Guides <span style="font-size:8px;margin-left:4px;">&#9662;</span></a>
+        <ul class="ddm">
+          <li><a href="https://www.stackarchitect.xyz/shopify-automation-guides" class="nl">All Guides<span class="ddd">Tracking, inventory and workflow guides</span></a></li>
+          <li><a href="https://www.stackarchitect.xyz/ultimate-shopify-automation-guide" class="nl">Ultimate Automation Guide<span class="ddd">The complete $0 automation setup guide</span></a></li>
+        </ul>
+      </li>
+    </ul>
+    <div class="nav-cta-wrap">
+      <span class="nav-ticker" aria-hidden="true">SAVE $500+/MO &rarr;</span>
+      <a href="https://www.make.com/en/register?pc=techie123" class="nav-cta" target="_blank" rel="noopener sponsored">REPLACE MY APPS FREE &rarr;</a>
+    </div>
+  </div>
+</nav>
+<!-- BREADCRUMB -->
+<nav class="bc" aria-label="Breadcrumb">
+  <ol class="bcl" itemscope itemtype="https://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="https://www.stackarchitect.xyz"><span itemprop="name">Home</span></a><meta itemprop="position" content="1"/></li>
+    <li aria-hidden="true" style="color:#1e293b;">&#8250;</li>
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="https://www.stackarchitect.xyz/tools"><span itemprop="name">Tools</span></a><meta itemprop="position" content="2"/></li>
+    <li aria-hidden="true" style="color:#1e293b;">&#8250;</li>
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><span itemprop="name" style="color:#475569;">App Audit</span><meta itemprop="position" content="3"/></li>
+  </ol>
+</nav>
+<!-- HERO -->
+<section class="hero" aria-label="Free Shopify app audit tool">
+  <div class="htag"><span class="hdot"></span>Instant Audit &middot; No Sign-Up &middot; $0 Forever</div>
+  <h1>Find out <em>exactly</em> which Shopify apps<br>are bleeding you dry.</h1>
+  <p class="hsub">Tap your apps, get an instant personalised report. We show you what to replace for $0, what to keep, your efficiency score, annual savings, and a step-by-step action plan.</p>
+  <div class="hpills">
+    <div class="hpill"><span class="pd"></span><strong>$700+</strong> avg monthly savings</div>
+    <div class="hpill"><span class="pd"></span><strong>Instant</strong> results, no API needed</div>
+    <div class="hpill"><span class="pd"></span><strong>500+</strong> stores audited</div>
+    <div class="hpill"><span class="pd"></span><strong>$0</strong> forever</div>
+  </div>
+</section>
+<!-- MAIN TOOL -->
+<main class="main">
+  <div class="stepbar" id="step-bar">
+    <div class="step active" id="s1"><span class="sn">01</span> Select your apps</div>
+    <div class="step" id="s2"><span class="sn">02</span> Confirm costs</div>
+    <div class="step" id="s3"><span class="sn">03</span> Your report</div>
+  </div>
+  <!-- PHASE 1: SELECT APPS -->
+  <div class="phase on" id="phase-input">
+    <div class="card" id="card-chips">
+      <div class="clabel">// Step 1 &mdash; Tap every app you currently pay for</div>
+      <p class="chint">Tap to select. We pre-fill typical costs which you confirm next.</p>
+      <div class="chips" id="chip-grid"></div>
+      <div class="swrap">
+        <input id="chip-search" class="sinp" type="text"
+          placeholder="Don't see yours? Type any app name..."
+          autocomplete="off" oninput="filterSearch(this.value)" onkeydown="searchKey(event)"/>
+        <div class="sdd" id="search-dd"></div>
+      </div>
+    </div>
+    <div class="selsum" id="sel-summary">
+      <div class="totbar">
+        <span class="totlabel">&#10003;&nbsp;<span id="sel-count">0</span> apps selected</span>
+        <span class="totval" id="sel-total">$0 / mo</span>
+      </div>
+    </div>
+    <div class="card" id="card-costs" style="display:none;">
+      <div class="clabel">// Step 2 &mdash; Confirm your monthly costs</div>
+      <p class="chint">We have pre-filled typical prices. Update any that do not match your plan.</p>
+      <div class="thead"><span>App</span><span>Monthly cost</span><span></span></div>
+      <div id="app-list"></div>
+      <button class="addbtn" type="button" onclick="addRow('','')">+ Add an app manually</button>
+    </div>
+    <div class="totbar" id="total-bar-main" style="display:none;">
+      <span class="totlabel">Total monthly app spend</span>
+      <span class="totval zero" id="total-main">$0 / mo</span>
+    </div>
+    <div class="ctxgrid" id="ctx-grid" style="display:none;">
+      <div>
+        <label class="flabel" for="revenue">Monthly store revenue</label>
+        <select class="fsel" id="revenue">
+          <option value="">Select range...</option>
+          <option value="under_5k">Under $5k / mo</option>
+          <option value="5k_20k">$5k to $20k / mo</option>
+          <option value="20k_100k">$20k to $100k / mo</option>
+          <option value="100k_plus">$100k+ / mo</option>
+        </select>
+      </div>
+      <div>
+        <label class="flabel" for="tech">Technical comfort level</label>
+        <select class="fsel" id="tech">
+          <option value="">Select level...</option>
+          <option value="none">Non-technical (no code)</option>
+          <option value="basic">Comfortable following guides</option>
+          <option value="intermediate">Intermediate (Zapier / Make)</option>
+          <option value="advanced">Developer / Advanced</option>
+        </select>
+      </div>
+    </div>
+    <div class="errmsg" id="errmsg">Please select or add at least one app before running the audit.</div>
+    <button class="pbtn" id="next-btn" type="button" onclick="goToCosts()" style="display:none;">Confirm costs &amp; continue &rarr;</button>
+    <button class="pbtn" id="audit-btn" type="button" onclick="runAudit()" style="display:none;">Get My Free Audit Report &rarr;</button>
+    <p class="disc">Instant results &middot; No account required &middot; Affiliate links keep this tool free</p>
+  </div>
+  <!-- PHASE 2: LOADING -->
+  <div class="phase" id="phase-loading">
+    <div class="lwrap">
+      <div class="spinner"></div>
+      <div class="ltitle">Analysing your stack</div>
+      <div class="ltrack"><div class="lfill" id="load-fill"></div></div>
+      <div class="lstatus" id="load-status">Matching apps to database...</div>
+    </div>
+  </div>
+  <!-- PHASE 3: RESULTS -->
+  <div class="phase" id="phase-results"></div>
+</main>
+<!-- AI CONTEXT -->
+<section class="aictx" aria-label="About this Shopify app audit tool">
+  <div class="aic-inner">
+    <h2 class="aic-h2">What is the Stack Architect Shopify App Audit?</h2>
+    <p class="aic-p">The Stack Architect Shopify App Audit is a free instant tool that analyses your Shopify store app stack and calculates exactly how much you could save by switching to free alternatives. It cross-references your paid apps against a verified database of free replacements using Make.com and Systeme.io, and produces a personalised savings report with an efficiency score, annual savings projection, difficulty ratings, and a step-by-step action plan. No account or sign-up required.</p>
+    <h2 class="aic-h2">Which Shopify apps can be replaced for free in 2026?</h2>
+    <ul class="aic-ul">
+      <li><strong>Klaviyo, Mailchimp, Omnisend</strong> (email marketing) &rarr; Systeme.io free plan. Saves $150&ndash;$400/mo.</li>
+      <li><strong>Triple Whale, Northbeam, Elevar, Analyzify</strong> (attribution) &rarr; CAPI Shield on Make.com. Saves $149&ndash;$299/mo.</li>
+      <li><strong>Stocky, Linnworks, Inventory Planner</strong> (inventory) &rarr; Make.com + Google Sheets. Saves $29&ndash;$199/mo.</li>
+      <li><strong>Loox, Yotpo, Stamped.io</strong> (reviews) &rarr; Judge.me free tier. Saves $30&ndash;$100/mo.</li>
+      <li><strong>Glew.io, BeProfit, Peel</strong> (analytics) &rarr; Make.com + Google Sheets. Saves $19&ndash;$299/mo.</li>
+      <li><strong>Zapier paid tiers</strong> &rarr; Make.com free tier. Saves $49&ndash;$99/mo.</li>
+    </ul>
+    <h2 class="aic-h2">How much do Shopify apps cost per month?</h2>
+    <p class="aic-p">The average Shopify store spends between <strong>$300 and $800 per month</strong> on third-party apps. Stack Architect audit data from 500+ stores shows an average of <strong>$700+ per month recoverable</strong> through free alternatives without losing meaningful functionality.</p>
+    <h2 class="aic-h2">Is this tool free?</h2>
+    <p class="aic-p">Yes, completely free. Stack Architect earns affiliate commissions if you sign up for Make.com, Systeme.io, Tidio, Judge.me, or Seal Subscriptions through the result links. This costs you nothing extra. The tool will always be free to use.</p>
+  </div>
+</section>
+<!-- FOOTER -->
+<footer class="footer" role="contentinfo">
+  <div class="footer-inner">
+    <span class="fbrand">THE $0 AUTOMATION STACK</span>
+    <div class="flinks">
+      <a href="https://www.stackarchitect.xyz/">$0 AUTOMATION STACK</a>
+      <a href="https://www.stackarchitect.xyz/capi-shield">CAPI SHIELD</a>
+      <a href="https://www.stackarchitect.xyz/stocky-swap">STOCKY SWAP</a>
+      <a href="https://www.stackarchitect.xyz/autocrat-quota-fix">AUTOCRAT FIX</a>
+      <a href="https://www.stackarchitect.xyz/tiktok-events-api-shopify">TIKTOK EVENTS API</a>
+      <a href="https://www.stackarchitect.xyz/replace-klaviyo-free">REPLACE KLAVIYO</a>
+      <a href="https://www.stackarchitect.xyz/shopify-profit-loss-automation">P&amp;L AUTOMATION</a>
+      <a href="https://www.stackarchitect.xyz/tools">TOOLS</a>
+      <a href="https://www.stackarchitect.xyz/shopify-automation-guides">GUIDES</a>
+    </div>
+    <div class="fsub">
+      <a href="https://www.stackarchitect.xyz/sitemap">Sitemap</a>
+      <a href="https://www.stackarchitect.xyz/privacy">Privacy</a>
+      <a href="https://www.stackarchitect.xyz/terms">Terms</a>
+      <a href="mailto:support@stackarchitect.xyz">Support</a>
+    </div>
+    <div class="fcopy" id="fcopy"></div>
+    <p class="fdisc">Stack Architect uses affiliate links. We may earn a commission if you sign up via our links &mdash; at no extra cost to you.</p>
+  </div>
+</footer>
+// Affiliate URLs
+var AFF = {
+  make:'https://www.make.com/en/register?pc=techie123',
+  systeme:'https://systeme.io/?sa=sa0262937272be99703a8ea16153f5dd5ae2a3eea7',
+  judge_me:'https://judge.me/',
+  tidio:'https://affiliate.tidio.com/5kfhrx3ot6tf',
+  seal:'https://apps.shopify.com/seal-subscriptions',
+  beehiiv:'https://embeds.beehiiv.com/7b5cd5ef-5cfd-4337-a011-b3b7aa9e3f17'
+};
+var SA = {
+  capi:'https://www.stackarchitect.xyz/capi-shield',
+  stocky:'https://www.stackarchitect.xyz/stocky-swap',
+  klaviyo:'https://www.stackarchitect.xyz/replace-klaviyo-free',
+  tiktok:'https://www.stackarchitect.xyz/tiktok-events-api-shopify',
+  pnl:'https://www.stackarchitect.xyz/shopify-profit-loss-automation',
+  autocrat:'https://www.stackarchitect.xyz/autocrat-quota-fix'
+};
+// Knowledge base
+var KB = [
+{n:'Klaviyo',a:['klaviyo'],c:'Email Marketing',p:200,v:'REPLACE_FREE',sa:'klaviyo',af:'systeme',rep:'Systeme.io free plan',sm:400,su:'20 min',d:1,
+hl:'Replace with Systeme.io and pay $0.',
+ex:'Klaviyo charges $150-$400/mo for email automation that Systeme.io delivers free for up to 2,000 contacts with unlimited sends. Migrate your welcome sequences, abandoned cart flows, and post-purchase automations once and never pay again.',
+k:['All email automations and flows','Abandoned cart recovery','Welcome sequences','Pop-up forms and landing pages'],
+l:['Klaviyo predictive analytics (LTV)','Deep Shopify reporting dashboard'],
+wsk:'Stores with 10k+ subscribers relying on Klaviyo predictive analytics.',
+qw:['Export subscriber list as CSV','Import into Systeme.io free account','Rebuild your top 3 flows','Cancel Klaviyo']},
+
+{n:'Omnisend',a:['omnisend'],c:'Email Marketing',p:99,v:'REPLACE_FREE',sa:'klaviyo',af:'systeme',rep:'Systeme.io free plan',sm:150,su:'15 min',d:1,
+hl:'Systeme.io replaces Omnisend at $0 for stores under 2k contacts.',
+ex:'Omnisend and Systeme.io cover near-identical functionality: email automation, pop-ups, and segmentation. The free plan handles everything a typical Shopify store needs. Migration is straightforward.',
+k:['Email automation workflows','Welcome and abandoned cart flows','Pop-up forms'],
+l:['Omnisend native SMS','Pre-built Shopify-specific templates'],
+wsk:'Stores relying heavily on Omnisend native SMS sending.',
+qw:['Sign up for Systeme.io free','Import subscriber list','Rebuild abandoned cart flow','Cancel Omnisend']},
+
+{n:'Mailchimp',a:['mailchimp'],c:'Email Marketing',p:79,v:'REPLACE_FREE',sa:'klaviyo',af:'systeme',rep:'Systeme.io free plan',sm:150,su:'15 min',d:1,
+hl:'Systeme.io is a direct Mailchimp replacement at zero cost.',
+ex:'Systeme.io free plan is more capable than Mailchimp for Shopify stores: it includes automation workflows, landing pages, and funnels that Mailchimp charges extra for. Most stores can migrate in under an hour.',
+k:['Email campaigns and newsletters','Basic automation sequences','Landing page builder'],
+l:['Mailchimp brand recognition','Some legacy integrations'],
+wsk:'Large agencies managing multiple brand accounts under one Mailchimp login.',
+qw:['Export Mailchimp audience','Create Systeme.io free account','Set up abandoned cart automation','Cancel Mailchimp']},
+
+{n:'Privy',a:['privy'],c:'Email and Popups',p:45,v:'REPLACE_FREE',sa:'klaviyo',af:'systeme',rep:'Systeme.io free plan',sm:80,su:'10 min',d:1,
+hl:'Systeme.io includes free pop-ups, spin-to-wins, and email capture.',
+ex:'Privy is primarily a pop-up and email capture tool. Systeme.io free plan includes pop-ups, exit-intent triggers, and email capture that feed directly into automated sequences at zero cost.',
+k:['Exit-intent pop-ups','Email capture forms','Discount code pop-ups'],
+l:['Privy SMS cart recovery','Some A/B testing features'],
+wsk:'Stores using Privy SMS cart recovery as a primary revenue channel.',
+qw:['Build pop-up in Systeme.io','Connect to email automation','Remove Privy script from store']},
+
+{n:'Triple Whale',a:['triple whale','triplewhale'],c:'Attribution',p:199,v:'REPLACE_FREE',sa:'capi',af:'make',rep:'CAPI Shield on Make.com',sm:299,su:'20 min',d:2,
+hl:'CAPI Shield replaces Triple Whale core tracking for $0.',
+ex:'Triple Whale charges $149-$299/mo for post-iOS14 attribution. Stack Architect CAPI Shield does the same: it sends first-party purchase events to Meta Conversions API and Google Enhanced Conversions via Make.com, giving accurate ROAS data without the middleman fee.',
+k:['Accurate Meta ROAS attribution','Google Ads conversion data','First-party server-side tracking'],
+l:['Triple Whale unified dashboard UI','Creative analytics by ad','Pixel vs API comparison view'],
+wsk:'Stores spending $50k+/mo on ads who need creative analytics for daily budget decisions.',
+qw:['Deploy CAPI Shield Make.com scenario','Connect to your Meta Pixel','Verify events in Meta Events Manager','Cancel Triple Whale after 30-day overlap']},
+
+{n:'Northbeam',a:['northbeam'],c:'Attribution',p:299,v:'REPLACE_FREE',sa:'capi',af:'make',rep:'CAPI Shield on Make.com',sm:399,su:'20 min',d:2,
+hl:'CAPI Shield replaces Northbeam server-side tracking for $0.',
+ex:'Northbeam is one of the most expensive attribution tools. Its core value of server-side event firing to Meta and Google is exactly what CAPI Shield delivers for free. Unless you rely on Northbeam multi-touch attribution across 10+ channels, you are significantly overpaying.',
+k:['Server-side Meta event tracking','Google Enhanced Conversions','First-party data quality'],
+l:['Northbeam cross-channel MTA model','Predictive budget allocation'],
+wsk:'Performance teams spending $100k+/mo across 5+ channels who use MTA daily.',
+qw:['Deploy CAPI Shield','Run both in parallel for 30 days','Cancel Northbeam when confident']},
+
+{n:'Elevar',a:['elevar'],c:'Attribution',p:199,v:'REPLACE_FREE',sa:'capi',af:'make',rep:'CAPI Shield on Make.com',sm:299,su:'25 min',d:2,
+hl:'CAPI Shield replicates Elevar server-side tracking at zero cost.',
+ex:'Elevar forwards purchase events server-side to Meta, Google, and TikTok. CAPI Shield does the same for Meta and Google via Make.com. The TikTok Events API guide covers TikTok separately. Combined they replace Elevar completely for $0.',
+k:['Meta Conversions API events','Google Enhanced Conversions','Improved signal quality post-iOS14'],
+l:['Elevar one-click platform connections','GTM integration layer'],
+wsk:'Stores without technical resource to set up Make.com scenarios.',
+qw:['Deploy CAPI Shield for Meta and Google','Deploy TikTok Events API if needed','Cancel Elevar after verification']},
+
+{n:'Analyzify',a:['analyzify'],c:'Attribution',p:149,v:'REPLACE_FREE',sa:'capi',af:'make',rep:'CAPI Shield on Make.com',sm:249,su:'20 min',d:2,
+hl:'CAPI Shield replaces Analyzify conversion tracking for $0.',
+ex:'Analyzify provides GA4 and Meta Conversions API tracking for Shopify. CAPI Shield covers the Meta CAPI component, and GA4 enhanced ecommerce can be set up natively in Shopify for free.',
+k:['Meta server-side conversion events','GA4 enhanced ecommerce','First-party tracking accuracy'],
+l:['Analyzify one-click GA4 setup wizard','Automated GTM container'],
+wsk:'Non-technical owners who prefer a fully managed tracking setup.',
+qw:['Enable GA4 natively in Shopify admin','Deploy CAPI Shield for Meta','Cancel Analyzify']},
+
+{n:'WeltPixel',a:['weltpixel'],c:'Tracking',p:79,v:'REPLACE_FREE',sa:'capi',af:'make',rep:'CAPI Shield plus native Shopify pixels',sm:99,su:'15 min',d:2,
+hl:'Native Shopify pixels plus CAPI Shield replace WeltPixel for $0.',
+ex:'WeltPixel bundles pixel management for Meta, Google, and TikTok. Each platform now has free native Shopify integration. CAPI Shield adds the server-side layer. Remove WeltPixel and set each up natively.',
+k:['All pixel tracking','Meta, Google, TikTok event firing','Server-side CAPI layer'],
+l:['Single dashboard for all pixels','WeltPixel GTM tag management'],
+wsk:'Stores using WeltPixel advanced GTM customisation for specific event tracking.',
+qw:['Enable native Meta and Google channels in Shopify','Deploy CAPI Shield','Remove WeltPixel']},
+
+{n:'Gorgias',a:['gorgias'],c:'Helpdesk',p:100,v:'CHECK_CHEAPER',sa:null,af:'tidio',rep:'Tidio (free for small stores)',sm:100,su:'30 min',d:1,
+hl:'Switch to Tidio free tier if you handle under 100 tickets per month.',
+ex:'Gorgias is the premium helpdesk for high-volume DTC brands. If you handle under 100 tickets per month, Tidio free plan covers everything: live chat, shared inbox, basic automation, and Shopify order lookup. Gorgias makes sense above 200 tickets/month.',
+k:['Live chat','Shared team inbox','Order lookup from chat'],
+l:['Gorgias Shopify macro system','Advanced intent detection','Revenue attribution per ticket'],
+wsk:'Stores handling 200+ tickets/month where Gorgias automation macros save meaningful agent hours.',
+qw:['Install Tidio free','Set up Shopify integration','Cancel Gorgias if under 200 tickets/mo']},
+
+{n:'Zendesk',a:['zendesk'],c:'Helpdesk',p:150,v:'CHECK_CHEAPER',sa:null,af:'tidio',rep:'Tidio free',sm:150,su:'30 min',d:2,
+hl:'Zendesk is over-engineered for most Shopify stores.',
+ex:'Zendesk is built for enterprise SaaS, not ecommerce. Most Shopify stores pay for features they never use. Tidio free covers the basics. For Shopify-specific features, Gorgias starter at $10/mo is a better fit.',
+k:['Full ticket management','Live chat','Email support inbox'],
+l:['Zendesk extensive reporting','SLA management'],
+wsk:'Stores that use Zendesk for internal IT support or have an enterprise-wide contract.',
+qw:['Trial Tidio free for 30 days','Assess if it covers your volume','Cancel Zendesk if it does']},
+
+{n:'Freshdesk',a:['freshdesk'],c:'Helpdesk',p:79,v:'CHECK_CHEAPER',sa:null,af:'tidio',rep:'Tidio (free)',sm:79,su:'20 min',d:1,
+hl:'Tidio free tier covers Freshdesk Shopify use case at $0.',
+ex:'Freshdesk is not Shopify-native. Tidio integrates directly with Shopify so agents see order history mid-conversation. For under 100 tickets/month, Tidio free is superior and costs nothing.',
+k:['Live chat','Ticket inbox','Shopify order context'],
+l:['Freshdesk phone support integration'],
+wsk:'Stores using Freshdesk across multiple channels including phone and social.',
+qw:['Install Tidio free plan','Connect Shopify store','Test for 2 weeks','Cancel Freshdesk']},
+
+{n:'Tidio',a:['tidio'],c:'Helpdesk',p:29,v:'KEEP',sa:null,af:null,rep:null,sm:0,su:null,d:0,
+hl:'Tidio is already cost-effective. Check if you can use the free tier.',
+ex:'Tidio is exactly what Stack Architect recommends for Shopify helpdesk. If you are on a paid plan, verify you are using the features it enables. The free plan covers live chat and basic automation for most stores.',
+k:['Live chat','Order lookup','Email inbox','Basic automation'],l:[],wsk:null,qw:['Review your Tidio plan tier','Downgrade to free if under usage limits']},
+
+{n:'Loox',a:['loox'],c:'Product Reviews',p:49,v:'REPLACE_FREE',sa:null,af:'judge_me',rep:'Judge.me free plan',sm:79,su:'15 min',d:1,
+hl:'Judge.me free plan replaces Loox with photo reviews at $0.',
+ex:'Loox charges $30-$80/mo for photo review collection that Judge.me provides free. Judge.me collects photo and video reviews, displays them in widgets, and sends automated review request emails. Migration takes 15 minutes and existing reviews transfer.',
+k:['Photo review collection','Automated review request emails','Star rating schema for SEO'],
+l:['Loox referral rewards integration'],
+wsk:'Stores where Loox referral programme is a meaningful revenue driver.',
+qw:['Install Judge.me free','Import existing Loox reviews','Set up review request automation','Remove Loox']},
+
+{n:'Yotpo',a:['yotpo'],c:'Product Reviews',p:99,v:'REPLACE_FREE',sa:null,af:'judge_me',rep:'Judge.me free plan',sm:149,su:'20 min',d:2,
+hl:'Judge.me replaces Yotpo core review functionality for $0.',
+ex:'Yotpo is significantly over-priced for stores that only use it for reviews. Judge.me free delivers photo reviews, automated emails, and Google Shopping integration at zero cost. Use Judge.me built-in importer to migrate.',
+k:['Photo and video review collection','Automated review request sequences','Google rich snippets'],
+l:['Yotpo loyalty programme integration','SMS review requests'],
+wsk:'Stores using Yotpo as a combined reviews and loyalty platform.',
+qw:['Install Judge.me free','Export Yotpo reviews','Import to Judge.me','Cancel Yotpo']},
+
+{n:'Stamped.io',a:['stamped','stamped.io'],c:'Product Reviews',p:59,v:'REPLACE_FREE',sa:null,af:'judge_me',rep:'Judge.me free plan',sm:89,su:'15 min',d:1,
+hl:'Judge.me free is a direct Stamped.io replacement.',
+ex:'Stamped.io and Judge.me cover near-identical feature sets. Judge.me free plan has no meaningful limitations: unlimited review requests, photo reviews, and Google integration. Migration is straightforward using the built-in importer.',
+k:['Photo reviews','Automated email requests','Review widgets','Google Shopping feed'],
+l:['Stamped NPS survey tool'],
+wsk:'Stores using Stamped combined reviews and loyalty and NPS as one platform.',
+qw:['Install Judge.me','Import Stamped reviews','Recreate email automation','Cancel Stamped.io']},
+
+{n:'Stocky',a:['stocky'],c:'Inventory',p:29,v:'REPLACE_FREE',sa:'stocky',af:'make',rep:'Stocky Swap on Make.com',sm:29,su:'30 min',d:2,
+hl:'Stocky is being shut down August 2026. Replace now with Stocky Swap.',
+ex:'Shopify is retiring Stocky in August 2026. Stack Architect Stocky Swap uses Make.com and Google Sheets to replicate all core functionality: purchase order creation, stock level monitoring, reorder point alerts, and supplier management.',
+k:['Purchase order management','Reorder point alerts','Stock level monitoring'],
+l:['Stocky demand forecasting (basic)'],
+wsk:'Nobody. Stocky is shutting down. Everyone needs to migrate before August 2026.',
+qw:['Deploy Stocky Swap Make.com scenario immediately','Set up Google Sheets inventory dashboard','Be ready before August 2026 deadline']},
+
+{n:'Inventory Planner',a:['inventory planner'],c:'Inventory',p:99,v:'REPLACE_FREE',sa:'stocky',af:'make',rep:'Stocky Swap on Make.com',sm:149,su:'45 min',d:3,
+hl:'Stocky Swap covers core inventory planning for $0.',
+ex:'Inventory Planner charges $99+/mo for demand forecasting and PO automation. Make.com and Google Sheets in Stocky Swap covers reorder points, stock alerts, and PO management for free. Most stores do not actually need advanced forecasting.',
+k:['Reorder point monitoring','Purchase order creation','Stock level visibility'],
+l:['AI demand forecasting','Seasonal trend prediction'],
+wsk:'High-SKU stores (500+) with seasonal demand where accurate forecasting prevents significant losses.',
+qw:['Deploy Stocky Swap scenario','Set up reorder alerts in Google Sheets','Cancel Inventory Planner if forecasting is not critical']},
+
+{n:'Linnworks',a:['linnworks'],c:'Inventory',p:449,v:'REPLACE_FREE',sa:'stocky',af:'make',rep:'Stocky Swap on Make.com',sm:549,su:'60 min',d:3,
+hl:'Linnworks is enterprise-priced. Most Shopify-only stores need 10% of it.',
+ex:'Linnworks charges $449+/mo for multi-channel inventory management. If you sell purely on Shopify, you pay for multi-channel sync you do not use. Stocky Swap covers Shopify inventory management for free. The difference is $4,000+/yr.',
+k:['Shopify inventory management','Purchase orders','Reorder alerts'],
+l:['Multi-channel sync (Amazon, eBay)','Advanced warehouse management'],
+wsk:'Multi-channel retailers selling on Amazon, eBay, or other marketplaces.',
+qw:['Confirm you are Shopify-only or primary','Deploy Stocky Swap','Cancel Linnworks']},
+
+{n:'Glew.io',a:['glew','glew.io'],c:'Analytics',p:99,v:'REPLACE_FREE',sa:'pnl',af:'make',rep:'P&L Auto on Make.com',sm:149,su:'45 min',d:2,
+hl:'P&L Auto replicates Glew reporting in Google Sheets for $0.',
+ex:'Glew.io charges $99+/mo for Shopify analytics. Stack Architect P&L Auto uses Make.com to pull order, cost, and ad spend data into a Google Sheets dashboard automatically, covering revenue, COGS, and channel performance at zero cost.',
+k:['Revenue by channel','Gross margin tracking','Product performance'],
+l:['Glew polished dashboard UI','Automatic cohort analysis'],
+wsk:'Stores sharing reports with investors who need polished visualisations rather than spreadsheets.',
+qw:['Deploy P&L Auto Make.com scenario','Connect Shopify and ad platforms','Cancel Glew after data parity confirmed']},
+
+{n:'BeProfit',a:['beprofit'],c:'Analytics',p:49,v:'REPLACE_FREE',sa:'pnl',af:'make',rep:'P&L Auto on Make.com',sm:99,su:'45 min',d:2,
+hl:'P&L Auto delivers BeProfit reporting for free.',
+ex:'BeProfit pulls Shopify data and ad costs into a profit dashboard. P&L Auto does the same via Make.com: Shopify orders, COGS, Meta ad spend, and Google ad spend flow into a Google Sheets P&L automatically.',
+k:['Revenue tracking','Ad spend vs revenue','COGS and margin tracking'],
+l:['BeProfit clean mobile dashboard'],
+wsk:'Founders who review P&L daily on mobile and need a polished app.',
+qw:['Deploy P&L Auto','Set up COGS in Shopify product costs','Cancel BeProfit']},
+
+{n:'Peel',a:['peel'],c:'Analytics',p:199,v:'REPLACE_FREE',sa:'pnl',af:'make',rep:'P&L Auto on Make.com',sm:249,su:'60 min',d:3,
+hl:'P&L Auto covers Peel core analytics for $0.',
+ex:'If you use Peel purely for P&L and revenue dashboards, P&L Auto replaces it for free. If you rely on Peel cohort and LTV analysis for strategic decisions, that is harder to replicate in Sheets.',
+k:['Revenue and margin tracking','Channel performance'],
+l:['Peel cohort analysis','Retention and LTV curves'],
+wsk:'Stores where cohort analysis drives acquisition spend decisions, typically $50k+/mo revenue.',
+qw:['Identify which Peel reports you use weekly','Deploy P&L Auto for core reporting','Keep Peel only if cohort analysis is essential']},
+
+{n:'Zapier',a:['zapier'],c:'Automation',p:79,v:'REPLACE_FREE',sa:'autocrat',af:'make',rep:'Make.com free tier',sm:99,su:'30 min',d:2,
+hl:'Make.com replaces Zapier with more power and a generous free tier.',
+ex:'Make.com is a direct Zapier replacement with 1,000 operations/month free versus Zapier 100 tasks/month free. Most Shopify automation workflows run perfectly on Make.com free. The Autocrat Quota Fix guide covers migration from Zapier.',
+k:['All automation workflows','Shopify triggers and actions','Multi-step automation chains'],
+l:['Zapier wider app directory (6,000+ apps)','Some niche integrations'],
+wsk:'Stores using Zapier to connect obscure apps not available in Make.com.',
+qw:['Identify your 3 most important Zaps','Rebuild in Make.com (faster and more powerful)','Cancel Zapier']},
+
+{n:'Make.com',a:['make','make.com','integromat'],c:'Automation',p:29,v:'KEEP',sa:null,af:null,rep:null,sm:0,su:null,d:0,
+hl:'Make.com is the correct choice. Check if you can use the free tier.',
+ex:'Make.com is exactly what Stack Architect recommends. If you are on a paid plan, check your monthly operation count. The free tier includes 1,000 operations/month which covers most Shopify stores. You may be able to downgrade.',
+k:['All automation scenarios','Shopify integrations','1,000 ops/mo on free tier'],l:[],wsk:null,qw:['Check monthly operation usage in Make.com','Downgrade to free if under 1,000 ops/mo']},
+
+{n:'PageFly',a:['pagefly'],c:'Page Builder',p:99,v:'CHECK_CHEAPER',sa:null,af:null,rep:'Shopify 2.0 native sections',sm:119,su:'60 min',d:2,
+hl:'Shopify 2.0 native sections may eliminate PageFly entirely.',
+ex:'Shopify 2.0 themes include drag-and-drop section editing that covers most landing page use cases. If your theme is OS 2.0 compatible, you can likely build the same pages natively. PageFly makes sense only for very complex custom layouts.',
+k:['Drag-and-drop page building','Custom landing pages'],
+l:['Nothing for most stores. Shopify 2.0 covers it.'],
+wsk:'Stores building complex funnels with custom sections and countdown timers that Shopify sections cannot replicate.',
+qw:['Audit which pages use PageFly','Rebuild simplest in Shopify sections','Cancel if Shopify native covers 90%+']},
+
+{n:'Shogun',a:['shogun'],c:'Page Builder',p:149,v:'CHECK_CHEAPER',sa:null,af:null,rep:'Shopify 2.0 native sections',sm:149,su:'60 min',d:2,
+hl:'Shopify 2.0 native sections replace most Shogun use cases for free.',
+ex:'Before paying $149/mo, test whether your OS 2.0 theme section editor meets your needs. Most modern themes create professional landing pages natively. Shogun value is mainly in very custom layouts and A/B testing.',
+k:['Custom page layouts','A/B testing capability'],
+l:['Most stores do not need this over Shopify native'],
+wsk:'Stores actively A/B testing landing pages where Shogun data drives conversion improvements.',
+qw:['Check theme native section editor','Rebuild one page in Shopify sections','Cancel Shogun if parity achieved']},
+
+{n:'ReCharge',a:['recharge'],c:'Subscriptions',p:299,v:'CHECK_CHEAPER',sa:null,af:'seal',rep:'Seal Subscriptions free tier',sm:299,su:'60 min',d:3,
+hl:'Seal Subscriptions free tier replaces ReCharge for most stores.',
+ex:'ReCharge charges a percentage of subscription revenue on top of the monthly fee. Seal Subscriptions has a genuinely free tier and its paid tiers are a fraction of ReCharge cost. Migration is complex but well-documented.',
+k:['Recurring billing','Subscriber portal','Pause, skip, cancel flows'],
+l:['ReCharge large ecosystem of native integrations'],
+wsk:'Stores with $50k+/mo subscription revenue where ReCharge integrations justify the percentage fee.',
+qw:['Check Seal Subscriptions free tier limits','Pilot Seal with a new subscription product','Migrate existing subscribers once confident']},
+
+{n:'Bold Subscriptions',a:['bold subscriptions','bold'],c:'Subscriptions',p:199,v:'CHECK_CHEAPER',sa:null,af:'seal',rep:'Seal Subscriptions free tier',sm:199,su:'45 min',d:3,
+hl:'Seal Subscriptions free tier is a direct Bold replacement.',
+ex:'Bold Subscriptions is capable but expensive relative to Seal Subscriptions which offers comparable features at a far lower price point including a free tier. Unless you have complex subscription logic like build-a-box, Seal handles the standard use case.',
+k:['Recurring billing','Customer subscriber portal'],
+l:['Bold build-a-box functionality'],
+wsk:'Stores using Bold build-a-box or complex tiered subscription logic.',
+qw:['Install Seal Subscriptions','Compare features to your Bold usage','Migrate lower-risk products first']},
+
+{n:'ShipStation',a:['shipstation'],c:'Shipping',p:99,v:'CHECK_CHEAPER',sa:null,af:null,rep:'Shopify Shipping (native)',sm:99,su:'30 min',d:2,
+hl:'Shopify native Shipping may replace ShipStation for single-channel stores.',
+ex:'Shopify native Shipping covers label printing, carrier rate comparison, and tracking for Shopify-only stores free as part of your Shopify plan. If you ship only from Shopify, audit whether ShipStation extra features justify the cost.',
+k:['Label printing','Carrier rate comparison','Order fulfilment workflow'],
+l:['ShipStation multi-platform order aggregation'],
+wsk:'Multi-channel sellers where ShipStation aggregation across Amazon, eBay, and own website is the core value.',
+qw:['Enable Shopify Shipping in Settings','Compare carrier rates','Cancel ShipStation if native covers your workflow']},
+
+{n:'Smile.io',a:['smile','smile.io'],c:'Loyalty',p:49,v:'KEEP',sa:null,af:null,rep:null,sm:0,su:null,d:0,
+hl:'Smile.io is cost-effective. Verify it is driving repeat purchases.',
+ex:'Smile.io is one of the most affordable loyalty platforms and repeat purchase impact typically justifies the cost when the programme is active. Check your redemption rate. If under 5%, reconfigure the programme rather than keep paying for dormant loyalty.',
+k:['Points programme','Referral rewards','VIP tiers'],l:[],wsk:null,qw:['Check Smile.io redemption rate','If under 5%, reconfigure the programme']},
+
+{n:'LoyaltyLion',a:['loyaltylion'],c:'Loyalty',p:399,v:'CHECK_CHEAPER',sa:null,af:null,rep:'Smile.io',sm:399,su:'45 min',d:3,
+hl:'LoyaltyLion is enterprise-priced. Smile.io covers most use cases for far less.',
+ex:'LoyaltyLion charges $399+/mo for features that Smile.io covers at $49/mo. Unless you use LoyaltyLion enterprise API integrations, you are significantly overpaying.',
+k:['Points programme','Referral programme','VIP tiers'],
+l:['LoyaltyLion enterprise API capabilities'],
+wsk:'Enterprise brands with custom loyalty integrations into enterprise systems.',
+qw:['Compare LoyaltyLion features to Smile.io','Pilot Smile.io','Migrate if feature parity achieved']},
+
+{n:'Attentive',a:['attentive'],c:'SMS Marketing',p:299,v:'KEEP',sa:null,af:null,rep:null,sm:0,su:null,d:0,
+hl:'Attentive is worth keeping if SMS is a top revenue channel.',
+ex:'If SMS generates meaningful revenue (typically 10-20% of total for stores where it is deployed well), the cost is justified. Check Attentive revenue attribution for the last 30 days versus the $299/mo cost.',
+k:['SMS automation flows','Subscriber growth tools','Advanced segmentation'],l:[],wsk:null,qw:['Check Attentive revenue attribution for last 30 days','Keep if generating 5x+ return on $299/mo']},
+
+{n:'Postscript',a:['postscript'],c:'SMS Marketing',p:150,v:'KEEP',sa:null,af:null,rep:null,sm:0,su:null,d:0,
+hl:'Postscript is cost-effective for SMS if it is generating revenue.',
+ex:'Postscript is a solid SMS platform. SMS typically converts at 3-5x email. Review your last 30 days of attributed revenue and calculate the return on the $150/mo cost.',
+k:['SMS automation','Abandoned cart SMS','Campaign broadcasting'],l:[],wsk:null,qw:['Review 30-day attributed revenue','Keep if generating 3x+ return on cost']}
+];
+// Category fallback for unknown apps
+var CAT = [
+  {kw:['email','newsletter','campaign'],v:'REPLACE_FREE',sa:'klaviyo',af:'systeme',rep:'Systeme.io free plan',sm:100,su:'20 min',d:1,hl:'This email marketing tool can likely be replaced by Systeme.io for free.',ex:'Systeme.io free plan covers up to 2,000 contacts with unlimited sends, automation workflows, and pop-ups. Check the Stack Architect Klaviyo replacement guide for migration steps.'},
+  {kw:['track','pixel','attribution','capi','conversion'],v:'REPLACE_FREE',sa:'capi',af:'make',rep:'CAPI Shield on Make.com',sm:149,su:'20 min',d:2,hl:'This tracking app is likely replaceable with CAPI Shield for $0.',ex:'Server-side tracking tools can typically be replaced with Stack Architect CAPI Shield, a Make.com automation that fires purchase events to Meta Conversions API and Google Enhanced Conversions.'},
+  {kw:['inventor','stock','warehouse','purchase order'],v:'REPLACE_FREE',sa:'stocky',af:'make',rep:'Stocky Swap on Make.com',sm:99,su:'45 min',d:2,hl:'This inventory tool can be replaced with Stocky Swap for free.',ex:'Make.com and Google Sheets can handle purchase order management, reorder alerts, and stock visibility for most Shopify stores at zero cost.'},
+  {kw:['review','star','rating','ugc','testimonial'],v:'REPLACE_FREE',sa:null,af:'judge_me',rep:'Judge.me free plan',sm:49,su:'15 min',d:1,hl:'Judge.me free tier likely replaces this reviews app.',ex:'Judge.me free plan handles photo reviews, automated request emails, and display widgets. Import your existing reviews and cancel your current app.'},
+  {kw:['helpdesk','support','ticket','chat','inbox'],v:'CHECK_CHEAPER',sa:null,af:'tidio',rep:'Tidio (free for small stores)',sm:50,su:'30 min',d:1,hl:'Tidio free tier may cover this helpdesk tool.',ex:'Tidio free plan includes live chat, a shared inbox, and Shopify order lookup, covering most small store helpdesk needs.'},
+  {kw:['analytic','report','profit','dashboard'],v:'REPLACE_FREE',sa:'pnl',af:'make',rep:'P&L Auto on Make.com',sm:79,su:'45 min',d:2,hl:'P&L Auto likely replaces this analytics app for $0.',ex:'Stack Architect P&L Auto uses Make.com to pull Shopify order data and ad costs into a Google Sheets P&L dashboard automatically.'},
+  {kw:['automat','workflow','zapier','integrat'],v:'REPLACE_FREE',sa:'autocrat',af:'make',rep:'Make.com free tier',sm:49,su:'30 min',d:2,hl:'Make.com free tier likely replaces this automation tool.',ex:'Make.com free tier includes 1,000 operations/month and covers the vast majority of Shopify automation workflows.'},
+  {kw:['subscript','recurring','bundle'],v:'CHECK_CHEAPER',sa:null,af:'seal',rep:'Seal Subscriptions free tier',sm:99,su:'45 min',d:3,hl:'Seal Subscriptions free tier may cover this subscriptions tool.',ex:'Seal Subscriptions has a generous free tier for Shopify subscriptions. If your current tool charges more, Seal is worth evaluating.'}
+];
+
+// Chips to display by default
+var CHIPS = ['Klaviyo','Triple Whale','Gorgias','Loox','Northbeam','Elevar','Omnisend','Zapier','Stocky','Yotpo','Analyzify','Privy','Glew.io','ReCharge','PageFly','ShipStation','Attentive','BeProfit','Shogun','Postscript','LoyaltyLion','Linnworks','Freshdesk','Stamped.io'];
+
+// State
+var sel = {}, rowId = 0;
+
+// Escape HTML
+function h(s) {
+  return String(s).replace(/[&<>"']/g, function(c) {
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+
+// Find in KB
+function find(name) {
+  var n = name.toLowerCase().trim();
+  for (var i = 0; i < KB.length; i++) {
+    var k = KB[i];
+    if (k.n.toLowerCase() === n) return k;
+    for (var j = 0; j < k.a.length; j++) {
+      if (n.indexOf(k.a[j]) !== -1 || k.a[j].indexOf(n) !== -1) return k;
+    }
+  }
+  return null;
+}
+
+// Category fallback
+function catFind(name, cost) {
+  var n = name.toLowerCase();
+  for (var i = 0; i < CAT.length; i++) {
+    for (var j = 0; j < CAT[i].kw.length; j++) {
+      if (n.indexOf(CAT[i].kw[j]) !== -1) {
+        var r = CAT[i];
+        return {n:name,p:cost,v:r.v,sa:r.sa,af:r.af,rep:r.rep,sm:Math.min(cost,r.sm),su:r.su,d:r.d,hl:r.hl,ex:r.ex,k:[],l:[],wsk:null,qw:[]};
+      }
+    }
+  }
+  return null;
+}
+
+// Audit single app
+function audit(name, cost) {
+  var kb = find(name);
+  if (kb) {
+    var sav = (kb.v === 'REPLACE_FREE' || kb.v === 'CHECK_CHEAPER') ? Math.min(cost, kb.sm) : 0;
+    return {n:name,p:cost,v:kb.v,sa:kb.sa||null,af:kb.af||null,rep:kb.rep||null,sm:sav,su:kb.su||null,d:kb.d||0,hl:kb.hl,ex:kb.ex,k:kb.k||[],l:kb.l||[],wsk:kb.wsk||null,qw:kb.qw||[]};
+  }
+  var cat = catFind(name, cost);
+  if (cat) return cat;
+  return {n:name,p:cost,v:'KEEP',sa:null,af:null,rep:null,sm:0,su:null,d:0,
+    hl:name+' — no verified free replacement found yet.',
+    ex:'We do not have a verified free replacement for '+name+' in our database. Keep using it if it generates value. Email support@stackarchitect.xyz if you think a free alternative exists.',
+    k:[],l:[],wsk:null,qw:[]};
+}
+
+// Init chips
+function initChips() {
+  var g = document.getElementById('chip-grid');
+  if (!g) return;
+  g.innerHTML = '';
+  for (var i = 0; i < CHIPS.length; i++) {
+    (function(name) {
+      var kb = find(name), cost = kb ? kb.p : 0;
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip';
+      b.setAttribute('data-name', name);
+      b.innerHTML = h(name) + '<span class="chipcost">~$' + cost + '/mo</span>';
+      b.addEventListener('click', function() { toggleChip(name, cost, b); });
+      g.appendChild(b);
+    }(CHIPS[i]));
+  }
+}
+
+// Toggle chip
+function toggleChip(name, cost, el) {
+  if (sel.hasOwnProperty(name)) {
+    delete sel[name];
+    el.classList.remove('on');
+  } else {
+    sel[name] = cost;
+    el.classList.add('on');
+  }
+  updateSummary();
+}
+
+// Update summary bar
+function updateSummary() {
+  var keys = Object.keys(sel), total = 0;
+  for (var i = 0; i < keys.length; i++) total += sel[keys[i]];
+  var ss = document.getElementById('sel-summary');
+  var nb = document.getElementById('next-btn');
+  var sc = document.getElementById('sel-count');
+  var st = document.getElementById('sel-total');
+  if (keys.length > 0) {
+    if (ss) ss.style.display = 'block';
+    if (nb) nb.style.display = 'block';
+    if (sc) sc.textContent = keys.length;
+    if (st) { st.textContent = '$' + Math.round(total).toLocaleString() + ' / mo'; st.className = 'totval' + (total > 499 ? ' high' : ''); }
+  } else {
+    if (ss) ss.style.display = 'none';
+    if (nb) nb.style.display = 'none';
+  }
+}
+
+// Search
+function filterSearch(val) {
+  var dd = document.getElementById('search-dd');
+  if (!dd) return;
+  var q = val.trim().toLowerCase();
+  if (!q) { dd.classList.remove('on'); dd.innerHTML = ''; return; }
+  var matches = [];
+  for (var i = 0; i < KB.length && matches.length < 8; i++) {
+    if (KB[i].n.toLowerCase().indexOf(q) !== -1) matches.push(KB[i]);
+  }
+  dd.innerHTML = '';
+  if (!matches.length) {
+    var ci = document.createElement('div');
+    ci.className = 'sdi';
+    ci.innerHTML = h(val) + '<span class="sdi-badge">Add custom</span>';
+    (function(v) { ci.addEventListener('click', function() { addCustom(v); }); }(val));
+    dd.appendChild(ci);
+    dd.classList.add('on');
+    return;
+  }
+  for (var j = 0; j < matches.length; j++) {
+    (function(k) {
+      var added = sel.hasOwnProperty(k.n);
+      var item = document.createElement('div');
+      item.className = 'sdi' + (added ? ' added' : '');
+      item.innerHTML = '<span>' + h(k.n) + '<span class="sdi-cat">' + h(k.c) + '</span></span><span class="sdi-cost">' + (added ? '&#10003; added' : '$' + k.p + '/mo') + '</span>';
+      if (!added) { item.addEventListener('click', function() { pickSearch(k.n, k.p); }); }
+      dd.appendChild(item);
+    }(matches[j]));
+  }
+  dd.classList.add('on');
+}
+
+function pickSearch(name, cost) {
+  sel[name] = cost;
+  var c = document.querySelector('.chip[data-name="' + name + '"]');
+  if (c) c.classList.add('on');
+  var si = document.getElementById('chip-search'); if (si) si.value = '';
+  var dd = document.getElementById('search-dd'); if (dd) { dd.classList.remove('on'); dd.innerHTML = ''; }
+  updateSummary();
+}
+
+function addCustom(name) {
+  if (!name.trim()) return;
+  if (!sel.hasOwnProperty(name)) sel[name] = 0;
+  var si = document.getElementById('chip-search'); if (si) si.value = '';
+  var dd = document.getElementById('search-dd'); if (dd) { dd.classList.remove('on'); dd.innerHTML = ''; }
+  updateSummary();
+}
+
+function searchKey(e) {
+  if (e.key === 'Enter') { var v = e.target.value.trim(); if (v) addCustom(v); }
+  if (e.key === 'Escape') { var dd = document.getElementById('search-dd'); if (dd) dd.classList.remove('on'); }
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.swrap')) { var dd = document.getElementById('search-dd'); if (dd) dd.classList.remove('on'); }
+});
+
+// Go to cost step
+function goToCosts() {
+  var list = document.getElementById('app-list');
+  if (!list) return;
+  list.innerHTML = '';
+  rowId = 0;
+  var keys = Object.keys(sel);
+  if (!keys.length) { showErr('Please select at least one app before continuing.'); return; }
+  for (var i = 0; i < keys.length; i++) addRow(keys[i], sel[keys[i]]);
+  document.getElementById('card-chips').style.display = 'none';
+  document.getElementById('sel-summary').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+  document.getElementById('card-costs').style.display = 'block';
+  document.getElementById('total-bar-main').style.display = 'flex';
+  document.getElementById('ctx-grid').style.display = 'grid';
+  document.getElementById('audit-btn').style.display = 'block';
+  document.getElementById('s1').className = 'step done';
+  document.getElementById('s2').className = 'step active';
+  recalc(); scrollTo();
+}
+
+function showErr(msg) {
+  var e = document.getElementById('errmsg');
+  if (!e) return;
+  e.textContent = msg;
+  e.style.display = 'block';
+  setTimeout(function() { e.style.display = 'none'; }, 4000);
+}
+
+// Row management
+function addRow(name, cost) {
+  var id = rowId++, list = document.getElementById('app-list');
+  if (!list) return;
+  var row = document.createElement('div');
+  row.className = 'arow'; row.id = 'row-' + id;
+  row.innerHTML = '<input class="ainp" type="text" placeholder="App name" value="' + h(String(name||'')) + '" oninput="recalc()" autocomplete="off"/>' +
+    '<div class="cwrap"><input class="ainp" type="number" placeholder="0" value="' + (cost||'') + '" min="0" step="1" oninput="recalc()"/></div>' +
+    '<button class="rmbtn" type="button" onclick="removeRow(' + id + ')">&times;</button>';
+  list.appendChild(row); recalc();
+}
+function removeRow(id) { var e = document.getElementById('row-' + id); if (e) e.remove(); recalc(); }
+function getApps() {
+  var rows = document.querySelectorAll('#app-list .arow'), apps = [];
+  for (var i = 0; i < rows.length; i++) {
+    var inp = rows[i].querySelectorAll('.ainp');
+    var name = inp[0].value.trim(), cost = parseFloat(inp[1].value) || 0;
+    if (name) apps.push({name:name, cost:cost});
+  }
+  return apps;
+}
+function recalc() {
+  var apps = getApps(), total = 0;
+  for (var i = 0; i < apps.length; i++) total += apps[i].cost;
+  var el = document.getElementById('total-main');
+  if (!el) return;
+  el.textContent = '$' + Math.round(total).toLocaleString() + ' / mo';
+  el.className = 'totval' + (total === 0 ? ' zero' : total > 499 ? ' high' : '');
+}
+
+// Phase control
+function showPhase(p) {
+  var ps = ['input','loading','results'];
+  for (var i = 0; i < ps.length; i++) {
+    var el = document.getElementById('phase-' + ps[i]);
+    if (el) el.className = 'phase' + (ps[i] === p ? ' on' : '');
+  }
+  var s1 = document.getElementById('s1'), s2 = document.getElementById('s2'), s3 = document.getElementById('s3');
+  if (p === 'input')   { s1.className = 'step active'; s2.className = 'step'; s3.className = 'step'; }
+  if (p === 'loading') { s1.className = 'step done'; s2.className = 'step active'; s3.className = 'step'; }
+  if (p === 'results') { s1.className = 'step done'; s2.className = 'step done'; s3.className = 'step active'; }
+}
+function scrollTo() {
+  var t = document.getElementById('step-bar');
+  if (!t) return;
+  var nav = document.getElementById('main-nav');
+  var off = nav ? nav.offsetHeight : 60;
+  window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - off - 16, behavior: 'smooth' });
+}
+
+// Loading animation
+function loadAnim(cb) {
+  showPhase('loading');
+  var pct = 0, mi = 0;
+  var msgs = ['Matching apps to database...','Calculating savings...','Scoring your stack...','Building action plan...'];
+  var fill = document.getElementById('load-fill');
+  var stat = document.getElementById('load-status');
+  var iv = setInterval(function() {
+    pct = Math.min(pct + 25, 100);
+    if (fill) fill.style.width = pct + '%';
+    if (stat && mi < msgs.length) stat.textContent = msgs[mi++];
+    if (pct >= 100) { clearInterval(iv); setTimeout(cb, 200); }
+  }, 160);
+}
+
+// Main audit
+function runAudit() {
+  var apps = getApps();
+  if (!apps.length) { showErr('Please add at least one app before running the audit.'); return; }
+  var btn = document.getElementById('audit-btn');
+  if (btn) btn.disabled = true;
+  var total = 0;
+  for (var i = 0; i < apps.length; i++) total += apps[i].cost;
+  try { gtag('event','audit_started',{event_category:'tool_engagement',app_count:apps.length,total_spend:Math.round(total),source_page:'app-audit'}); } catch(e){}
+  loadAnim(function() {
+    var results = [];
+    for (var i = 0; i < apps.length; i++) results.push(audit(apps[i].name, apps[i].cost));
+    var ts = 0, rc = 0;
+    for (var j = 0; j < results.length; j++) { ts += results[j].sm || 0; if (results[j].v === 'REPLACE_FREE') rc++; }
+    try { gtag('event','audit_completed',{event_category:'tool_engagement',app_count:apps.length,replace_count:rc,total_savings:Math.round(ts),annual_savings:Math.round(ts*12),source_page:'app-audit'}); } catch(e){}
+    renderResults(results, total);
+  });
+}
+
+// Render results
+function renderResults(results, totalSpend) {
+  var ts = 0, rc = 0, cc = 0, kc = 0;
+  for (var i = 0; i < results.length; i++) {
+    ts += results[i].sm || 0;
+    if (results[i].v === 'REPLACE_FREE') rc++;
+    else if (results[i].v === 'CHECK_CHEAPER') cc++;
+    else kc++;
+  }
+  var remaining = Math.max(0, totalSpend - ts);
+  var annual = ts * 12;
+  var rf = results.length ? rc / results.length : 0;
+  var cf = results.length ? cc / results.length : 0;
+  var score = Math.max(5, Math.min(100, Math.round(100 - rf*60 - cf*25)));
+  var grade = score >= 75 ? 'A' : score >= 45 ? 'B' : 'C';
+  var gc = grade === 'A' ? 'ga' : grade === 'B' ? 'gb' : 'gc';
+  var gm = grade === 'A' ? 'Your stack is reasonably lean. Focus on the recommendations below to optimise further.'
+    : grade === 'B' ? 'Your stack has meaningful savings available. The action plan below will recover significant monthly spend.'
+    : 'Your stack has significant overspend. The free replacements below could transform your margins.';
+  var sorted = results.slice().sort(function(a,b) { var o={REPLACE_FREE:0,CHECK_CHEAPER:1,KEEP:2}; return (o[a.v]||0)-(o[b.v]||0); });
+  var topAct = [];
+  for (var i = 0; i < sorted.length && topAct.length < 4; i++) { if (sorted[i].v === 'REPLACE_FREE') topAct.push(sorted[i]); }
+
+  var html = '<div class="reyebrow">// Audit complete &mdash; ' + results.length + ' app' + (results.length > 1 ? 's' : '') + ' analysed</div>';
+  html += '<div class="rtitle">' + (rc > 0 ? rc + ' app' + (rc > 1 ? 's' : '') + ' you can replace for <span style="color:var(--green)">$0</span>.' : 'Here is your full stack analysis.') + '</div>';
+  html += '<div class="tiles"><div class="tile"><div class="tv cr">$' + Math.round(totalSpend).toLocaleString() + '</div><div class="tl">Current / mo</div></div><div class="tile"><div class="tv cg">$' + Math.round(ts).toLocaleString() + '</div><div class="tl">Recoverable / mo</div></div><div class="tile"><div class="tv cw">$' + Math.round(remaining).toLocaleString() + '</div><div class="tl">Remaining / mo</div></div></div>';
+  html += '<div class="scorebar"><div class="ring ' + gc + '">' + grade + '</div><div class="sbody"><div class="slabel">Stack Efficiency Score</div><div class="shead">' + score + '/100 &mdash; Grade ' + grade + '</div><div class="ssub">' + gm + '</div><div class="sbd"><span class="sstat"><strong style="color:var(--green)">' + rc + '</strong> replaceable</span><span class="sstat"><strong style="color:var(--warn)">' + cc + '</strong> worth reviewing</span><span class="sstat"><strong style="color:var(--muted)">' + kc + '</strong> worth keeping</span>' + (annual > 0 ? '<span class="sstat"><strong style="color:var(--green)">$' + Math.round(annual).toLocaleString() + '/yr</strong> annual saving</span>' : '') + '</div></div></div>';
+  if (annual > 0) {
+    html += '<div class="rbanner"><span class="rblabel">Annual recovery</span><span class="rbval">$' + Math.round(annual).toLocaleString() + ' / yr</span><span class="rbsub">Deploy the free alternatives below and keep this in your business.</span><a href="' + AFF.make + '" target="_blank" rel="noopener sponsored" class="rbbtn" onclick="trk(\'make\',\'banner\')">Start for Free &rarr;</a></div>';
+  }
+  html += buildEC(ts);
+  if (topAct.length > 0) {
+    html += '<div class="sl">// Priority action plan &mdash; do these first</div><div class="ckl"><div class="ckltitle">&#9889; Highest-impact replacements, in order</div>';
+    for (var i = 0; i < topAct.length; i++) {
+      var r = topAct[i];
+      var link = (r.sa && SA[r.sa]) ? SA[r.sa] : (r.af && AFF[r.af]) ? AFF[r.af] : '#';
+      html += '<div class="cki"><span class="cknum">' + (i+1) + '</span><div class="ckbody"><div class="ckaction">' + h(r.n) + ' &rarr; ' + h(r.rep||'Free alternative') + '</div><div class="ckdetail">' + (r.su ? '~'+h(r.su)+' to deploy' : 'Quick setup') + (r.ex ? ' &middot; ' + h(r.ex.split('.')[0]+'.') : '') + '</div>' + (r.sm > 0 ? '<div class="cksaving">Saves $' + Math.round(r.sm).toLocaleString() + '/mo &mdash; $' + Math.round(r.sm*12).toLocaleString() + '/yr</div>' : '') + '</div><a href="' + link + '" target="_blank" rel="noopener sponsored" class="rcbtn rcprimary" style="margin-left:auto;flex-shrink:0;align-self:center;" onclick="trk(\'' + (r.af||'sa') + '\',\'checklist\')">Start &rarr;</a></div>';
+    }
+    html += '</div>';
+  }
+  html += '<div class="sl">// Full app-by-app breakdown</div>';
+  for (var i = 0; i < sorted.length; i++) html += renderCard(sorted[i], i);
+  html += '<div class="bcta"><div class="bctaey">// Full deployment guides</div><div class="bctat">Get the complete $0 automation stack</div><div class="bctas">All six free tools, step-by-step Make.com blueprints, and setup guides &mdash; free forever.</div><a href="' + AFF.make + '" target="_blank" rel="noopener sponsored" class="bctabtn" onclick="trk(\'make\',\'bottom_cta\')">Get Make.com Free &rarr;</a></div>';
+  html += '<div class="rwrap"><button class="rbtn" type="button" onclick="reset()">&larr; Run another audit</button></div>';
+  html += '<div class="affnotice">Affiliate links keep this tool free &mdash; at no extra cost to you.<br><a href="https://www.stackarchitect.xyz/privacy" style="color:var(--hint);text-decoration:underline;">Privacy policy</a></div>';
+  var el = document.getElementById('phase-results');
+  if (el) el.innerHTML = html;
+  showPhase('results');
+  scrollTo();
+}
+
+// Render single card
+function renderCard(r, idx) {
+  var cls = r.v === 'REPLACE_FREE' ? 'free' : r.v === 'KEEP' ? 'keep' : 'check';
+  var bc  = r.v === 'REPLACE_FREE' ? 'bfree' : r.v === 'KEEP' ? 'bkeep' : 'bcheck';
+  var bt  = r.v === 'REPLACE_FREE' ? 'Replace Free' : r.v === 'KEEP' ? 'Worth Keeping' : 'Review Cost';
+  var sUrl = r.sa && SA[r.sa] ? SA[r.sa] : null;
+  var aUrl = r.af && AFF[r.af] ? AFF[r.af] : null;
+  var ann  = (r.sm || 0) * 12;
+  var html = '<div class="rcard ' + cls + '" style="animation-delay:' + (idx*50) + 'ms">';
+  html += '<div class="rctop"><span class="rcname">' + h(r.n||'App') + '</span><span class="rccost">$' + Math.round(r.p||0).toLocaleString() + ' / mo</span><span class="rcbadge ' + bc + '">' + bt + '</span></div>';
+  html += '<div class="rcverdict">' + h(r.hl||'') + '</div>';
+  html += '<div class="rcexpl">' + h(r.ex||'') + '</div>';
+  if (r.v === 'REPLACE_FREE' && r.sm > 0) {
+    html += '<div class="igrid"><div class="iblk"><div class="iblabel">Monthly saving</div><div class="ibval cg">$' + Math.round(r.sm).toLocaleString() + '</div><div class="ibsub">per month freed up</div></div><div class="iblk"><div class="iblabel">Annual saving</div><div class="ibval cg">$' + Math.round(ann).toLocaleString() + '</div><div class="ibsub">back in your business</div></div>' + (r.su ? '<div class="iblk"><div class="iblabel">Setup time</div><div class="ibval cb">~'+h(r.su)+'</div><div class="ibsub">one-time deployment</div></div>' : '') + '<div class="iblk"><div class="iblabel">Replacement cost</div><div class="ibval cg">$0</div><div class="ibsub">free forever</div></div></div>';
+  } else if (r.v === 'CHECK_CHEAPER' && r.sm > 0) {
+    html += '<div class="igrid"><div class="iblk"><div class="iblabel">Potential saving</div><div class="ibval cw">$'+Math.round(r.sm).toLocaleString()+'/mo</div><div class="ibsub">if you switch</div></div><div class="iblk"><div class="iblabel">Annual potential</div><div class="ibval cw">$'+Math.round(ann).toLocaleString()+'/yr</div><div class="ibsub">worth evaluating</div></div></div>';
+  }
+  if ((r.k && r.k.length) || (r.l && r.l.length)) {
+    html += '<div class="kl">';
+    if (r.k && r.k.length) { html += '<div class="klb klkeep"><div class="kllabel">&#10003; What you keep</div>'; for (var i=0;i<r.k.length;i++) html += '<div class="kli">'+h(r.k[i])+'</div>'; html += '</div>'; }
+    if (r.l && r.l.length) { html += '<div class="klb kllose"><div class="kllabel">&#10005; What you lose</div>'; for (var i=0;i<r.l.length;i++) html += '<div class="kli">'+h(r.l[i])+'</div>'; html += '</div>'; }
+    html += '</div>';
+  }
+  if (r.wsk) html += '<div class="wsk"><span class="wsklabel">&#9432; Who should keep this</span>' + h(r.wsk) + '</div>';
+  if (r.d > 0) {
+    var dl = ['','Easy','Medium','Hard'], dc = ['','easy','medium','hard'];
+    html += '<div class="drow"><span class="dlabel">Setup difficulty</span><div class="ddots">';
+    for (var d=1;d<=3;d++) html += '<div class="ddot' + (d<=r.d ? ' '+dc[r.d] : '') + '"></div>';
+    html += '</div><span class="dtext">'+dl[r.d]+'</span></div>';
+  }
+  if (r.qw && r.qw.length) {
+    html += '<div class="qw"><div class="qwlabel">Quick wins</div>';
+    for (var i=0;i<r.qw.length;i++) html += '<div class="qwi"><span class="qwn">'+(i+1)+'.</span><span>'+h(r.qw[i])+'</span></div>';
+    html += '</div>';
+  }
+  html += '<div class="rcactions">';
+  if (sUrl) html += '<a href="' + sUrl + '" target="_blank" rel="noopener" class="rcbtn rcprimary" onclick="trk(\'sa_' + (r.sa||'') + '\',\'card\')">View Free Setup Guide &rarr;</a>';
+  if (aUrl) html += '<a href="' + aUrl + '" target="_blank" rel="noopener sponsored" class="rcbtn rcsecondary" onclick="trk(\'' + (r.af||'') + '\',\'card\')">Get ' + h(r.rep||'Free Tool') + '</a>';
+  html += '</div></div>';
+  return html;
+}
+
+// Email capture
+function buildEC(savings) {
+  var sub = savings > 0 ? 'You have got <strong style="color:var(--green)">$' + Math.round(savings*12).toLocaleString() + '/yr</strong> on the table. Get the step-by-step Make.com setup guides sent to your inbox free.' : 'Get step-by-step Make.com blueprints for your Shopify stack sent to your inbox.';
+  return '<div class="ecap"><div class="eceyebrow">Free setup guide &mdash; sent to your inbox</div><div class="ectitle">Get the exact blueprints to deploy your free stack.</div><div class="ecsub">'+sub+'</div><div id="ecform"><div class="ecform"><input id="ecemail" class="ecinp" type="email" placeholder="your@email.com" autocomplete="email" onkeydown="if(event.key===\'Enter\')sendEmail()"/><button id="ecbtn" class="ecbtn" onclick="sendEmail()" type="button">Send me the guide &rarr;</button></div><div class="ecdisc">Via Stack Architect newsletter on Beehiiv &middot; Unsubscribe anytime &middot; No spam</div></div><div id="ecsuccess" class="ecsuccess"><span class="ecsicon">&#10003;</span><div class="ecstitle">You are in &mdash; check your inbox.</div><div class="ecssub">Your setup guide is on its way. Start with your biggest win below.</div></div></div>';
+}
+
+function sendEmail() {
+  var inp = document.getElementById('ecemail');
+  var em = inp ? inp.value.trim() : '';
+  if (!em || em.indexOf('@') === -1) {
+    if (inp) { inp.style.borderColor='var(--red)'; setTimeout(function(){inp.style.borderColor='';},1500); }
+    return;
+  }
+  var btn = document.getElementById('ecbtn');
+  if (btn) { btn.disabled=true; btn.textContent='Sending...'; }
+  fetch(AFF.beehiiv, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em})})
+    .then(function(){ecOk();}).catch(function(){ecOk();});
+  try { gtag('event','email_capture',{event_category:'lead_generation',source_page:'app-audit'}); } catch(e){}
+}
+function ecOk() {
+  var f=document.getElementById('ecform'), s=document.getElementById('ecsuccess');
+  if(f) f.style.display='none'; if(s) s.style.display='block';
+}
+
+// GA4
+function trk(k,p) { try { gtag('event','affiliate_click',{event_category:'affiliate',event_label:k,cta_position:p,source_page:'app-audit'}); } catch(e){} }
+
+// Reset
+function reset() {
+  sel = {}; rowId = 0;
+  var pr = document.getElementById('phase-results'); if(pr) pr.innerHTML = '';
+  var ab = document.getElementById('audit-btn'); if(ab) ab.disabled = false;
+  document.getElementById('card-chips').style.display = 'block';
+  document.getElementById('card-costs').style.display = 'none';
+  document.getElementById('total-bar-main').style.display = 'none';
+  document.getElementById('ctx-grid').style.display = 'none';
+  document.getElementById('audit-btn').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+  document.getElementById('sel-summary').style.display = 'none';
+  var si = document.getElementById('chip-search'); if(si) si.value = '';
+  var lf = document.getElementById('load-fill'); if(lf) lf.style.width = '0%';
+  initChips();
+  showPhase('input');
+  scrollTo();
+}
+
+// Nav scroll
+window.addEventListener('scroll', function() {
+  var n = document.getElementById('main-nav');
+  if (n) n.classList.toggle('scrolled', window.scrollY > 50);
+}, {passive:true});
+
+// Dropdown mobile
+document.querySelectorAll('.dd > .nl').forEach(function(link) {
+  link.addEventListener('click', function(e) {
+    if (window.innerWidth <= 850) {
+      e.preventDefault();
+      link.parentElement.classList.toggle('active');
+    }
+  });
+});
+var ds = document.createElement('style');
+ds.textContent = '.dd.active .ddm{display:flex}';
+document.head.appendChild(ds);
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.dd')) document.querySelectorAll('.dd').forEach(function(d){d.classList.remove('active');});
+});
+
+// Init
+var fc = document.getElementById('fcopy');
+if (fc) fc.textContent = '\u00a9 ' + new Date().getFullYear() + ' Stack Architect';
+</script>
+</body>
+</html>
