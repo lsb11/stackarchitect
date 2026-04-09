@@ -77,9 +77,9 @@ const flowSteps = [
 const setupSteps = [
   { pos: 1, title: "Activate Make.com free",                      tool: "make.com/en/register — free tier, no credit card",            desc: "Sign up for Make.com free — 1,000 operations per month at no cost, enough for stores processing up to 300 orders per month. No credit card required. Make.com is your automation hub connecting Shopify to Meta and Google." },
   { pos: 2, title: "Create a new scenario with Webhooks trigger",  tool: "Make.com → Create scenario → Webhooks",                       desc: "In Make.com, create a new scenario. Add a Webhooks module as the trigger. Copy the generated webhook URL — you will paste this into Shopify in the next step." },
-  { pos: 3, title: "Add Shopify webhook for order payment",        tool: "Shopify Admin → Settings → Notifications → Webhooks",         desc: "In Shopify Admin → Settings → Notifications → Webhooks, create a new webhook. Select "Order payment" as the event. Paste the Make.com webhook URL. Set format to JSON. Save. This is the server-to-server trigger — entirely independent of the browser." },
-  { pos: 4, title: "Add Meta Conversions API module",              tool: "Make.com → Meta Conversions API module",                      desc: "In Make.com, add the Meta Conversions API module after the webhook trigger. Connect your Meta Business account. Set event_name to "Purchase". Map: event_id to order.id, value to order.total_price, currency to order.currency, and all customer information parameters. Enable SHA-256 hashing for all PII fields." },
-  { pos: 5, title: "Add Google Enhanced Conversions branch",       tool: "Make.com → Router → Google Ads Enhanced Conversions",         desc: "Add a second branch to the same scenario using a Router module. Add the Google Ads module and select "Create a conversion". Map order value, currency, and hashed email. This recovers Google Ads conversion data with no additional Shopify setup — same webhook, second destination." },
+  { pos: 3, title: "Add Shopify webhook for order payment",        tool: "Shopify Admin → Settings → Notifications → Webhooks",         desc: "In Shopify Admin → Settings → Notifications → Webhooks, create a new webhook. Select \\\"Order payment\\\" as the event. Paste the Make.com webhook URL. Set format to JSON. Save. This is the server-to-server trigger — entirely independent of the browser." },
+  { pos: 4, title: "Add Meta Conversions API module",              tool: "Make.com → Meta Conversions API module",                      desc: "In Make.com, add the Meta Conversions API module after the webhook trigger. Connect your Meta Business account. Set event_name to \\\"Purchase\\\". Map: event_id to order.id, value to order.total_price, currency to order.currency, and all customer information parameters. Enable SHA-256 hashing for all PII fields." },
+  { pos: 5, title: "Add Google Enhanced Conversions branch",       tool: "Make.com → Router → Google Ads Enhanced Conversions",         desc: "Add a second branch to the same scenario using a Router module. Add the Google Ads module and select \\\"Create a conversion\\\". Map order value, currency, and hashed email. This recovers Google Ads conversion data with no additional Shopify setup — same webhook, second destination." },
   { pos: 6, title: "Test and verify both platforms",               tool: "Meta Events Manager → Test Events",                           desc: "Place a test order. In Meta Events Manager → Test Events, verify a server Purchase event appears alongside the browser event — confirming deduplication is working. In Google Ads, check Conversion Actions for an Enhanced Conversion entry. Both should show within minutes." },
 ];
 
@@ -911,30 +911,10 @@ const schemaGraph = {
 })();
 </script>
 
-</body>
-</html>
-
 <!-- ════════════════════════════════════════════════════════════════════════════
-     STYLES — pixel-perfect match to source HTML; single merged block
+     STYLES
      ════════════════════════════════════════════════════════════════════════════ -->
 <style is:global>
-/* ── Systeme page-builder override (applied when page is loaded inside Systeme) ── */
-html,body,
-.page-container,.page-content,.page-body,
-div[data-lp],div[data-section],
-[class*="eluid"],[class*="sib-"],[class*="ss-"],[class*="section-"]{
-  background-color:#020617!important;
-  font-family:'Inter',-apple-system,sans-serif!important;
-}
-html,body,p,h1,h2,h3,h4,h5,h6,
-span,div,a,li,ul,ol,input,button,textarea,
-[class*="eluid"],[class*="sib-"],[class*="ss-"]{
-  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif!important;
-}
-[class*="eluid"] p,[class*="eluid"] h1,[class*="eluid"] h2,
-[class*="eluid"] h3,[class*="eluid"] h4{color:inherit!important;}
-[class*="eluid"] a{color:inherit!important;text-decoration:none!important;}
-[class*="eluid"] button{font-family:inherit!important;}
 
 /* ── Base ── */
 html{scroll-behavior:smooth;}
@@ -1220,3 +1200,6 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
   body{background:#fff;color:#000;}
 }
 </style>
+
+</body>
+</html>
