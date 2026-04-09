@@ -1,19 +1,29 @@
 ---
 // src/pages/stack.astro
-// Intent: informational/research — "what does Stack Architect recommend"
+// PAGE INTENT: informational/research — "what does Stack Architect recommend"
+// HOMEPAGE INTENT: transactional — "replace my apps / deploy now"
+// These are complementary, not competing. Zero cannibalisation by design.
 // Canonical: https://stackarchitect.xyz/stack
-// Anti-cannibalisation: homepage = transactional ("replace my apps"), /stack = informational ("what tools")
-// tools.* migrating to stackarchitect.xyz/tools — internal links updated
+// tools.stackarchitect.xyz → redirected to stackarchitect.xyz/tools at DNS layer
 
-const SITE = "https://stackarchitect.xyz";
-const CANONICAL = `${SITE}/stack`;
-const UPDATED = "April 2026";
+const SITE       = "https://stackarchitect.xyz";
+const CANONICAL  = `${SITE}/stack`;
+const UPDATED    = "April 2026";
+
+// ─── BEEHIIV CONFIG ──────────────────────────────────────────────────────────
+// To get your publication ID:
+//   1. Go to beehiiv.com → your publication → Settings → Publication Details
+//   2. Copy the Publication ID (format: pub_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
+// Replace the value below. The subscribe endpoint then works automatically.
+const BEEHIIV_PUB_ID = "YOUR_PUBLICATION_ID"; // e.g. pub_3f47e3c5-6ce3-479c-b015-863753ac8ea7
+// Your Beehiiv affiliate referral link — earns commission on paid upgrades
+const BEEHIIV_AFFILIATE = "https://www.beehiiv.com?via=gym-extras";
 
 const stats = [
   { value: "$700+", label: "Saved / month" },
-  { value: "7",     label: "Tools vetted" },
+  { value: "7",     label: "Tools vetted"   },
   { value: "500+",  label: "Stores running it" },
-  { value: "$0",    label: "Monthly cost" },
+  { value: "$0",    label: "Monthly cost"   },
 ];
 
 const tools = [
@@ -30,7 +40,7 @@ const tools = [
     freeTier: "1,000 ops/month — covers up to 200 Shopify orders",
     bestFor: "every store. it is the hub every other tool in this stack connects through.",
     notFor: "stores on 500+ complex multi-branch orders/month — upgrade to Core at $10.59/mo",
-    why: "10× more free operations than Zapier. real-time webhook triggers vs zapier's 15-minute polling. multi-branch scenarios and full visual builder on the free tier. every tool in this stack runs through it.",
+    why: "10× more free operations than Zapier. Real-time webhook triggers vs Zapier's 15-minute polling. Multi-branch scenarios and full visual builder on the free tier. Every tool in this stack runs through it.",
     affiliateURL: "https://make.com/en/register?pc=techie123",
     cta: "Activate Make.com free →",
     badge: "Start here",
@@ -47,9 +57,9 @@ const tools = [
     saving: "$150–$400/mo",
     setup: "~30 min",
     freeTier: "unlimited contacts · unlimited email sends · 3 funnels · CRM · course hosting — $0 forever",
-    bestFor: "stores paying klaviyo $150+/month (£120+/month for UK stores) on welcome, abandoned cart, and post-purchase flows.",
-    notFor: "stores relying on klaviyo's advanced predictive analytics or deep shopify segment triggers.",
-    why: "klaviyo changed billing in february 2025 — stores now pay for every active profile whether they email them or not. affects UK, US, AU, and CA stores equally. systeme.io has no profile billing, no contact limits, and no expiry on the free plan. most stores save $150–$400/month permanently.",
+    bestFor: "stores paying Klaviyo $150+/month (£120+/month for UK stores) on welcome, abandoned cart, and post-purchase flows.",
+    notFor: "stores relying on Klaviyo's advanced predictive analytics or deep Shopify segment triggers.",
+    why: "Klaviyo changed billing in February 2025 — stores now pay for every active profile whether they email them or not. Affects UK, US, AU, and CA stores equally. Systeme.io has no profile billing, no contact limits, and no expiry on the free plan. Most stores save $150–$400/month permanently.",
     affiliateURL: "https://systeme.io/?sa=sa0262937272be99703a8ea16153f5dd5ae2a3eea7",
     cta: "Activate Systeme.io free →",
     badge: "Best Klaviyo alternative",
@@ -67,8 +77,8 @@ const tools = [
     setup: "~5 min",
     freeTier: "50 live chat conversations/month · basic chatbot · 1 seat — free tier",
     bestFor: "stores losing conversions to unanswered pre-purchase questions or spending $60+/month on helpdesk tools.",
-    notFor: "large support teams needing deep integrations with CRM or ticketing pipelines at scale — use Gorgias at that stage.",
-    why: "tidio's lyro ai answers up to 70% of customer questions automatically — no human agent needed. deploys directly on shopify in 5 minutes via app install, recovers abandoned carts via live chat, and replaces helpdesk subscriptions costing $60–$300/month.",
+    notFor: "large support teams needing deep CRM or ticketing integrations at scale — use Gorgias at that stage.",
+    why: "Tidio's Lyro AI answers up to 70% of customer questions automatically — no human agent needed. Deploys directly on Shopify in 5 minutes via app install, recovers abandoned carts via live chat, and replaces helpdesk subscriptions costing $60–$300/month.",
     affiliateURL: "https://affiliate.tidio.com/5kfhrx3ot6tf",
     cta: "Activate Tidio free →",
     badge: "AI chat + support",
@@ -85,9 +95,9 @@ const tools = [
     saving: "$29–$449/mo",
     setup: "~5 min",
     freeTier: "unlimited rows · real-time webhook updates via Make.com · formula engine — $0",
-    bestFor: "every shopify store that wants to own their operational data, not rent it inside a third-party dashboard.",
+    bestFor: "every Shopify store that wants to own their operational data, not rent it inside a third-party dashboard.",
     notFor: "stores needing barcode scanning, multi-warehouse physical logistics, or EDI integrations at enterprise scale.",
-    why: "every paid inventory tool puts your data behind a paywall. stocky shuts down august 31 2026 — 200,000+ stores across the UK, US, AU, and CA lose inventory history permanently on that date. google sheets inverts this: your data lives in a file you own, updated via make.com webhook in real time, forever.",
+    why: "Every paid inventory tool puts your data behind a paywall. Stocky shuts down August 31 2026 — 200,000+ stores across the UK, US, AU, and CA lose inventory history permanently on that date. Google Sheets inverts this: your data lives in a file you own, updated via Make.com webhook in real time, forever.",
     affiliateURL: "https://stackarchitect.xyz/stocky-swap",
     cta: "Deploy Stocky Swap free →",
     badge: "Stocky replacement",
@@ -104,9 +114,9 @@ const tools = [
     saving: "$149–$299/mo",
     setup: "~6 min",
     freeTier: "free via make.com webhook — no third-party tool required",
-    bestFor: "any store running meta ads that saw roas drop after shopify's january 13 2026 pixel throttle or ios 26 fbclid stripping.",
+    bestFor: "any store running Meta ads that saw ROAS drop after Shopify's January 13 2026 pixel throttle or iOS 26 fbclid stripping.",
     notFor: "stores needing multi-touch attribution modelling across 5+ channels simultaneously.",
-    why: "ios 26 strips fbclid from private browsing links. shopify throttled app pixels on january 13 2026. stores on browser pixels alone are losing 30–45% of conversion data. server-side capi fires from shopify's server, not the customer's browser — unrestricted by ios, ad blockers, or cookie expiry. critical for UK, US, AU, and CA stores running meta campaigns.",
+    why: "iOS 26 strips fbclid from private browsing links. Shopify throttled app pixels on January 13 2026. Stores on browser pixels alone are losing 30–45% of conversion data. Server-side CAPI fires from Shopify's server — unrestricted by iOS, ad blockers, or cookie expiry. Critical for UK, US, AU, and CA stores running Meta campaigns.",
     affiliateURL: "https://make.com/en/register?pc=techie123",
     cta: "Deploy CAPI Shield free →",
     badge: "Q1 2026 ROAS fix",
@@ -122,10 +132,10 @@ const tools = [
     replaces: ["WeltPixel", "Analyzify", "Elevar TikTok", "Trackify"],
     saving: "$39–$299/mo",
     setup: "~6 min",
-    freeTier: "branches from the same make.com scenario as capi shield — zero extra cost",
-    bestFor: "stores spending on tiktok ads who need emq scores of 6–8 for algorithm optimisation.",
-    notFor: "stores with minimal tiktok spend where attribution accuracy is less critical.",
-    why: "tiktok's completepayment event sent server-side achieves emq 6–8 in most deployments. ios itp and ad blockers cannot intercept server-side signals. branches from your existing make.com scenario at zero additional operations cost.",
+    freeTier: "branches from the same make.com scenario as CAPI Shield — zero extra cost",
+    bestFor: "stores spending on TikTok ads who need EMQ scores of 6–8 for algorithm optimisation.",
+    notFor: "stores with minimal TikTok spend where attribution accuracy is less critical.",
+    why: "TikTok's CompletePayment event sent server-side achieves EMQ 6–8 in most deployments. iOS ITP and ad blockers cannot intercept server-side signals. Branches from your existing Make.com scenario at zero additional operations cost.",
     affiliateURL: "https://make.com/en/register?pc=techie123",
     cta: "Deploy TikTok CAPI free →",
     badge: "Runs free alongside CAPI Shield",
@@ -141,10 +151,10 @@ const tools = [
     replaces: ["Gmail API throttling", "Paid automation tiers", "Developer workarounds"],
     saving: "Prevents stack crashes",
     setup: "~10 min",
-    freeTier: "not free — $6/user/month (Business Starter). required at 500+ orders/month.",
-    bestFor: "high-volume stores where gmail api limits silently throttle automations during black friday or product launches.",
-    notFor: "stores under 300 orders/month — free gmail handles this volume comfortably.",
-    why: "free gmail enforces hard limits: 100 emails/day, 6-minute apps script executions, 90 minutes total runtime/day. these limits silently kill automations during traffic spikes. google workspace removes every limit. it is the only paid upgrade the $0 stack ever needs.",
+    freeTier: "not free — $6/user/month (Business Starter). Required at 500+ orders/month.",
+    bestFor: "high-volume stores where Gmail API limits silently throttle automations during Black Friday or product launches.",
+    notFor: "stores under 300 orders/month — free Gmail handles this volume comfortably.",
+    why: "Free Gmail enforces hard limits: 100 emails/day, 6-minute Apps Script executions, 90 minutes total runtime/day. These limits silently kill automations during traffic spikes. Google Workspace removes every limit. It is the only paid upgrade the $0 stack ever needs.",
     affiliateURL: "https://referworkspace.app.goo.gl/sy2C",
     cta: "Start Workspace trial →",
     badge: "Required at 500+ orders/mo",
@@ -153,13 +163,13 @@ const tools = [
 ];
 
 const deploySteps = [
-  { num: "01", tool: "Make.com",          time: "2 min",  action: "Activate your automation hub",                           link: "https://make.com/en/register?pc=techie123",                    linkLabel: "activate →" },
-  { num: "02", tool: "CAPI Shield",       time: "6 min",  action: "Deploy server-side Meta + Google tracking",              link: "https://stackarchitect.xyz/capi-shield",                       linkLabel: "view setup guide →" },
-  { num: "03", tool: "TikTok Events API", time: "6 min",  action: "Add TikTok branch to your existing scenario",            link: "https://stackarchitect.xyz/tiktok-events-api-shopify",         linkLabel: "view setup guide →" },
-  { num: "04", tool: "Stocky Swap",       time: "4 min",  action: "Deploy inventory to Google Sheets before August 31",     link: "https://stackarchitect.xyz/stocky-swap",                       linkLabel: "view setup guide →" },
-  { num: "05", tool: "P&L Auto",          time: "8 min",  action: "Add live profit dashboard to your Google Sheet",         link: "https://stackarchitect.xyz/shopify-profit-loss-automation",    linkLabel: "view setup guide →" },
-  { num: "06", tool: "Tidio",             time: "5 min",  action: "Activate AI live chat on your store",                    link: "https://affiliate.tidio.com/5kfhrx3ot6tf",                     linkLabel: "activate →" },
-  { num: "07", tool: "Systeme.io",        time: "30 min", action: "Migrate email flows from Klaviyo",                       link: "https://systeme.io/?sa=sa0262937272be99703a8ea16153f5dd5ae2a3eea7", linkLabel: "activate →" },
+  { num: "01", tool: "Make.com",          time: "2 min",  action: "Activate your automation hub",                        link: "https://make.com/en/register?pc=techie123",                         linkLabel: "activate →" },
+  { num: "02", tool: "CAPI Shield",       time: "6 min",  action: "Deploy server-side Meta + Google tracking",           link: `${SITE}/capi-shield`,                                               linkLabel: "view setup guide →" },
+  { num: "03", tool: "TikTok Events API", time: "6 min",  action: "Add TikTok branch to your existing scenario",         link: `${SITE}/tiktok-events-api-shopify`,                                 linkLabel: "view setup guide →" },
+  { num: "04", tool: "Stocky Swap",       time: "4 min",  action: "Deploy inventory to Google Sheets before August 31",  link: `${SITE}/stocky-swap`,                                               linkLabel: "view setup guide →" },
+  { num: "05", tool: "P&L Auto",          time: "8 min",  action: "Add live profit dashboard to your Google Sheet",      link: `${SITE}/shopify-profit-loss-automation`,                            linkLabel: "view setup guide →" },
+  { num: "06", tool: "Tidio",             time: "5 min",  action: "Activate AI live chat on your store",                 link: "https://affiliate.tidio.com/5kfhrx3ot6tf",                         linkLabel: "activate →" },
+  { num: "07", tool: "Systeme.io",        time: "30 min", action: "Migrate email flows from Klaviyo",                    link: "https://systeme.io/?sa=sa0262937272be99703a8ea16153f5dd5ae2a3eea7", linkLabel: "activate →" },
 ];
 
 const testimonials = [
@@ -173,6 +183,10 @@ const faqs = [
   {
     q: "Why are these tools free?",
     a: "Each tool has a free tier that covers what most Shopify stores actually need. This page uses affiliate links — if you sign up through a link here, Stack Architect earns a small commission at no extra cost to you. That's what keeps every tool, guide, and calculator on this site permanently free.",
+  },
+  {
+    q: "What is the difference between this page and the Stack Architect homepage?",
+    a: "The homepage is where you download the full deployment blueprint and get step-by-step setup guides sent to your inbox. This page is the reference layer — every tool in the stack explained, compared, and linked so you can audit each component independently. Start here if you are researching; go to the homepage if you are ready to deploy.",
   },
   {
     q: "What order should I deploy in?",
@@ -199,16 +213,12 @@ const faqs = [
     a: "Stores deploying all seven tools save $700+/month — verified across 500+ stores. Use the Shopify App Stack Kill-or-Keep Auditor at stackarchitect.xyz/tools to calculate your exact saving.",
   },
   {
-    q: "What is the difference between this page and the Stack Architect homepage?",
-    a: "The homepage walks you through downloading and deploying the full automation blueprint. This page is the reference layer — every tool explained, compared, and linked so you can audit each component and decide what you need. Start here if you are researching; start on the homepage if you are ready to deploy.",
-  },
-  {
-    q: "Where have the tools calculators moved?",
+    q: "Where have the diagnostic tools moved?",
     a: "All 16 free Shopify diagnostic tools and calculators have moved from tools.stackarchitect.xyz to stackarchitect.xyz/tools. All old URLs redirect automatically — your bookmarks still work.",
   },
 ];
 
-// ─── JSON-LD SCHEMA ───────────────────────────────────────────────────────────
+// ─── JSON-LD SCHEMAS ──────────────────────────────────────────────────────────
 
 const schemaFAQ = {
   "@context": "https://schema.org",
@@ -243,26 +253,38 @@ const schemaItemList = {
   }))
 };
 
-// SoftwareApplication schema for each tool — boosts entity recognition in AI/LLM search
+// SoftwareApplication per tool — named entity recognition for AI/LLM crawlers
 const schemaSoftware = tools.map(t => ({
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": t.name,
   "applicationCategory": "BusinessApplication",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "offers": { "@type": "Offer", "price": t.id === "workspace" ? "6" : "0", "priceCurrency": "USD" },
   "description": t.tagline,
 }));
 
-// Article schema — E-E-A-T signal for Google + AI crawlers
+// Article — E-E-A-T signal for Google + Perplexity/ChatGPT crawlers
 const schemaArticle = {
   "@context": "https://schema.org",
   "@type": "Article",
   "headline": "Recommended Shopify Stack 2026 — 7 Free Tools, Vetted & Ranked",
-  "description": "The exact free Shopify automation stack recommended by Stack Architect — 7 vetted tools replacing $700+/month of paid apps.",
+  "description": "The exact free Shopify automation stack recommended by Stack Architect — 7 vetted tools replacing $700+/month of paid apps. Used by 500+ stores.",
   "dateModified": "2026-04-01",
-  "author": { "@type": "Organization", "name": "Stack Architect", "url": SITE },
+  "datePublished": "2025-01-01",
+  "author":    { "@type": "Organization", "name": "Stack Architect", "url": SITE },
   "publisher": { "@type": "Organization", "name": "Stack Architect", "url": SITE },
   "mainEntityOfPage": CANONICAL,
+};
+
+// WebPage — reinforces informational intent for this URL
+const schemaWebPage = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Recommended Shopify Stack 2026",
+  "url": CANONICAL,
+  "description": "The reference page for the Stack Architect free Shopify automation stack — 7 vetted tools, full comparison table, and deployment order.",
+  "breadcrumb": schemaBreadcrumb,
+  "isPartOf": { "@type": "WebSite", "url": SITE, "name": "Stack Architect" },
 };
 ---
 
@@ -277,15 +299,15 @@ const schemaArticle = {
   <meta name="description" content="The exact free Shopify automation stack recommended by Stack Architect — 7 vetted tools replacing $700+/month of paid apps. Make.com, Systeme.io, Tidio, Meta CAPI, TikTok Events API and more. No code. Used by 500+ stores across the UK, US, AU and CA." />
   <link rel="canonical" href={CANONICAL} />
 
-  <!-- ─── GEO / HREFLANG (multi-region audience: UK, US, AU, CA) ─── -->
-  <link rel="alternate" hreflang="en-gb" href={CANONICAL} />
-  <link rel="alternate" hreflang="en-us" href={CANONICAL} />
-  <link rel="alternate" hreflang="en-au" href={CANONICAL} />
-  <link rel="alternate" hreflang="en-ca" href={CANONICAL} />
+  <!-- ─── HREFLANG (UK/US/AU/CA audience) ─── -->
+  <link rel="alternate" hreflang="en-gb"    href={CANONICAL} />
+  <link rel="alternate" hreflang="en-us"    href={CANONICAL} />
+  <link rel="alternate" hreflang="en-au"    href={CANONICAL} />
+  <link rel="alternate" hreflang="en-ca"    href={CANONICAL} />
   <link rel="alternate" hreflang="x-default" href={CANONICAL} />
 
-  <!-- ─── REDIRECT SIGNAL: tools subdomain now lives at /tools ─── -->
-  <!-- Old: tools.stackarchitect.xyz → New: stackarchitect.xyz/tools (301 handled at DNS/server layer) -->
+  <!-- ─── ROBOTS ─── -->
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 
   <!-- ─── OPEN GRAPH ─── -->
   <meta property="og:type"        content="website" />
@@ -302,65 +324,106 @@ const schemaArticle = {
   <meta name="twitter:description" content="7 free tools replacing $700+/month of paid Shopify apps. No code. Deploy fast." />
   <meta name="twitter:image"       content={`${SITE}/og-stack.png`} />
 
-  <!-- ─── ROBOTS ─── -->
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-
   <!-- ─── SCHEMA ─── -->
   <script type="application/ld+json" set:html={JSON.stringify(schemaFAQ)} />
   <script type="application/ld+json" set:html={JSON.stringify(schemaBreadcrumb)} />
   <script type="application/ld+json" set:html={JSON.stringify(schemaItemList)} />
   <script type="application/ld+json" set:html={JSON.stringify(schemaArticle)} />
+  <script type="application/ld+json" set:html={JSON.stringify(schemaWebPage)} />
   {schemaSoftware.map(s => (
     <script type="application/ld+json" set:html={JSON.stringify(s)} />
   ))}
 
-  <!-- ─── FONTS ─── -->
+  <!-- ─── FONTS — matches homepage exactly ─── -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
-  <!-- ─── BEEHIIV EMBED SCRIPT (deferred so it doesn't block render) ─── -->
-  <script defer src="https://cdn.beehiiv.com/js/embed.js"></script>
 </head>
 
 <body>
 
-<!-- ─── SKIP NAV (accessibility + Googlebot) ─── -->
+<!-- ─── SKIP NAV ─── -->
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
-<!-- ─── NAV ─── -->
+<!-- ─── NAV — exact homepage match ─── -->
 <nav class="nav" aria-label="Primary navigation">
   <div class="nav-inner">
     <a href="/" class="nav-logo" aria-label="Stack Architect home">STACK_ARCHITECT</a>
-    <div class="nav-links">
-      <a href="/tools">Tools</a>
-      <a href="/shopify-automation-guides">Guides</a>
-      <a href="/stack" class="nav-active" aria-current="page">Stack</a>
+
+    <!-- Products dropdown -->
+    <div class="nav-dropdown">
+      <button class="nav-drop-btn" aria-haspopup="true" aria-expanded="false" onclick="toggleDrop(this)">Products ▾</button>
+      <div class="nav-drop-menu" role="menu">
+        <a href="/capi-shield"                  role="menuitem"><span class="dm-title">CAPI_Shield</span><span class="dm-sub">Free Meta + Google server-side tracking</span></a>
+        <a href="/stocky-swap"                  role="menuitem"><span class="dm-title">$0_Stocky_Swap</span><span class="dm-sub">Free inventory — replaces Stocky Aug 2026</span></a>
+        <a href="/tiktok-events-api-shopify"    role="menuitem"><span class="dm-title">TikTok_Events_API</span><span class="dm-sub">Free TikTok server-side tracking</span></a>
+        <a href="/replace-klaviyo-free"         role="menuitem"><span class="dm-title">Replace_Klaviyo_Free</span><span class="dm-sub">Free email automation via Systeme.io</span></a>
+        <a href="/shopify-profit-loss-automation" role="menuitem"><span class="dm-title">Shopify_P&amp;L_Auto</span><span class="dm-sub">Live profit and loss in Google Sheets free</span></a>
+        <a href="/autocrat-quota-fix"           role="menuitem"><span class="dm-title">Autocrat_Quota_Fix</span><span class="dm-sub">Fix Google Apps Script quota errors free</span></a>
+      </div>
     </div>
-    <a href="https://make.com/en/register?pc=techie123" class="nav-cta" target="_blank" rel="nofollow noopener">Replace My Apps Free →</a>
+
+    <!-- Tools dropdown -->
+    <div class="nav-dropdown">
+      <button class="nav-drop-btn" aria-haspopup="true" aria-expanded="false" onclick="toggleDrop(this)">Tools ▾</button>
+      <div class="nav-drop-menu" role="menu">
+        <a href="/tools"                         role="menuitem"><span class="dm-title">All Tools</span><span class="dm-sub">Free tools to audit and automate your store</span></a>
+        <a href="/shopify-automation-scanner"    role="menuitem"><span class="dm-title">Automation Scanner</span><span class="dm-sub">Find which apps you can replace for $0</span></a>
+        <a href="/shopify-app-cost-calculator"   role="menuitem"><span class="dm-title">App Cost Calculator</span><span class="dm-sub">Calculate your exact monthly app bill</span></a>
+        <a href="https://audit.stackarchitect.xyz" role="menuitem"><span class="dm-title">App Audit</span><span class="dm-sub">AI audit — enter your apps, get a free savings report</span></a>
+      </div>
+    </div>
+
+    <!-- Guides dropdown -->
+    <div class="nav-dropdown">
+      <button class="nav-drop-btn" aria-haspopup="true" aria-expanded="false" onclick="toggleDrop(this)">Guides ▾</button>
+      <div class="nav-drop-menu" role="menu">
+        <a href="/shopify-automation-guides"          role="menuitem"><span class="dm-title">All Guides</span><span class="dm-sub">Tracking, inventory, P&L and workflow guides</span></a>
+        <a href="/ultimate-shopify-automation-guide"  role="menuitem"><span class="dm-title">Ultimate Automation Guide</span><span class="dm-sub">The complete $0 automation setup guide</span></a>
+      </div>
+    </div>
+
+    <a href="/stack" class="nav-link nav-active" aria-current="page">Stack</a>
+
+    <a href="https://make.com/en/register?pc=techie123" class="nav-cta" target="_blank" rel="nofollow noopener">SAVE $700+/MO → REPLACE MY APPS FREE →</a>
   </div>
 </nav>
 
 <!-- ─── BREADCRUMB ─── -->
 <div class="breadcrumb-bar" aria-label="Breadcrumb">
   <div class="container">
-    <span class="breadcrumb-item"><a href="/">~/HOME</a></span>
-    <span class="breadcrumb-sep" aria-hidden="true">/</span>
-    <span class="breadcrumb-item breadcrumb-current" aria-current="page">RECOMMENDED_STACK</span>
+    <span class="bc-item"><a href="/">~/HOME</a></span>
+    <span class="bc-sep" aria-hidden="true">/</span>
+    <span class="bc-item bc-current" aria-current="page">RECOMMENDED_STACK</span>
   </div>
 </div>
 
 <!-- ─── HERO ─── -->
-<section class="hero-section" id="main-content" aria-labelledby="hero-heading">
+<section class="hero" id="main-content" aria-labelledby="hero-h1">
   <div class="container">
-    <div class="hero-badge" aria-label="Social proof">★★★★★ <span>500+ Shopify stores · 7 tools · $0 forever</span></div>
 
-    <h1 id="hero-heading">The Recommended Shopify Stack —<br/>7 Free Tools That Replace $700+/Month.</h1>
+    <p class="hero-eyebrow">Updated {UPDATED} · Seven free tools · 500+ stores · No code required</p>
+    <div class="hero-badge" aria-label="Social proof">★★★★★ <span>500+ Shopify stores  ·  7 tools · $0 forever</span></div>
 
-    <!-- Intent-separation note: this page is the reference/research layer -->
-    <p class="hero-intent-note">// reference layer — what this stack is built on and why</p>
+    <h1 id="hero-h1">Stop Paying For Shopify Apps You Don't Need.</h1>
+    <p class="hero-tagline">Seven free tools replacing your tracking apps, inventory software, email platform, TikTok CAPI, P&L reporting, and automation connectors. <strong>Free forever. Deploy in under 6 minutes.</strong></p>
 
-    <p class="hero-sub">Every tool this stack is built on. Vetted, deployed, and honest about when to upgrade.<br/>Used by stores across the UK, US, Australia, and Canada. No code required.</p>
+    <!-- Intent marker — signals research/reference intent to AI crawlers -->
+    <p class="intent-note">// reference layer — every tool this stack is built on, why it was chosen, and when to upgrade</p>
+
+    <div class="savings-row" role="list" aria-label="What the stack replaces">
+      <div role="listitem"><span class="sr-amount">$149–$299/mo</span><span class="sr-label">Ad tracking apps</span></div>
+      <div role="listitem"><span class="sr-amount">$150–$400/mo</span><span class="sr-label">Klaviyo / email</span></div>
+      <div role="listitem"><span class="sr-amount">$39–$199/mo</span><span class="sr-label">TikTok + inventory</span></div>
+      <div role="listitem"><span class="sr-amount">$19–$299/mo</span><span class="sr-label">P&amp;L + connectors</span></div>
+    </div>
+
+    <div class="trust-pills" aria-label="Trust signals">
+      <span>No code required</span>
+      <span>Live in ~6 minutes</span>
+      <span>Your data, your accounts</span>
+      <span>Remove anytime</span>
+    </div>
 
     <div class="stats-row" role="list" aria-label="Stack at a glance">
       {stats.map(s => (
@@ -375,82 +438,83 @@ const schemaArticle = {
       <a href="https://make.com/en/register?pc=techie123" class="btn-primary" target="_blank" rel="nofollow noopener">Replace My Apps Free →</a>
       <a href="#stack-table" class="btn-secondary">See All 7 Tools ↓</a>
     </div>
+
+    <p class="hero-powered">Powered by <a href="https://make.com/en/register?pc=techie123" rel="nofollow noopener" target="_blank">Make.com</a> + <a href="https://systeme.io/?sa=sa0262937272be99703a8ea16153f5dd5ae2a3eea7" rel="nofollow noopener" target="_blank">Systeme.io</a> — both free. Most stores never pay a penny.</p>
+
   </div>
 </section>
 
 <!-- ─── DISCLOSURE ─── -->
 <aside class="disclosure-bar" aria-label="Affiliate disclosure">
   <div class="container">
-    <span class="disclosure-icon" aria-hidden="true">ℹ</span>
-    <span>Links on this page are affiliate links. Stack Architect earns a small commission if you sign up via a link here — at no extra cost to you. This is what funds every free tool, calculator, and guide on this site. We only recommend tools this stack is actually built on.</span>
+    <span class="disc-icon" aria-hidden="true">ℹ</span>
+    <span>Links on this page are affiliate links. Stack Architect earns a small commission if you sign up via a link here — at no extra cost to you. This is what funds every free tool, guide, and calculator on this site. We only recommend tools this stack is actually built on.</span>
   </div>
 </aside>
 
 <!-- ─── TOOL CARDS ─── -->
-<section class="tools-section" aria-labelledby="tools-heading">
+<section class="tools-section" aria-labelledby="tools-h2">
   <div class="container">
     <div class="section-header">
-      <h2 id="tools-heading">The Full Recommended Stack</h2>
-      <p class="section-sub">each tool is independent. deploy one or all seven — each costs $0, runs forever.</p>
+      <h2 id="tools-h2">Six Solutions. One Stack.</h2>
+      <p class="section-sub">each tool targets a specific profit leak. deploy one or all seven — each costs $0, runs forever.</p>
     </div>
 
     <div class="tools-grid">
       {tools.map(tool => (
-        <article class={`tool-card ${tool.urgency ? 'tool-card--urgent' : ''}`} id={tool.id} aria-labelledby={`tool-name-${tool.id}`}>
+        <article class={`tool-card${tool.urgency ? ' tool-card--urgent' : ''}`} id={tool.id} aria-labelledby={`tn-${tool.id}`}>
 
-          {tool.urgency && (
-            <div class="urgency-banner" role="alert">{tool.urgency}</div>
-          )}
+          {tool.urgency && <div class="urgency-banner" role="alert">{tool.urgency}</div>}
 
-          <div class="tool-card-top">
-            <div class="tool-meta-row">
-              <span class="category-label">{tool.category}</span>
+          <div class="tc-top">
+            <div class="tc-meta-row">
+              <span class="tc-category">{tool.category}</span>
               <span class={`badge badge--${tool.badgeType}`}>{tool.badge}</span>
             </div>
-            <div class="version-tag">{tool.version}</div>
+            <div class="tc-version">{tool.version}</div>
           </div>
 
-          <h2 class="tool-name" id={`tool-name-${tool.id}`}>{tool.name}</h2>
-          <p class="tool-tagline">{tool.tagline}</p>
+          <h2 class="tc-name" id={`tn-${tool.id}`}>{tool.name}</h2>
+          <p class="tc-tagline">{tool.tagline}</p>
 
-          <div class="tool-quick-stats">
-            <div class="qs-item">
-              <span class="qs-label">saves</span>
-              <span class="qs-value accent">{tool.saving}</span>
+          <div class="tc-stats">
+            <div class="tcs-item">
+              <span class="tcs-label">saves</span>
+              <span class="tcs-val accent">{tool.saving}</span>
             </div>
-            <div class="qs-divider" aria-hidden="true" />
-            <div class="qs-item">
-              <span class="qs-label">setup</span>
-              <span class="qs-value">{tool.setup}</span>
+            <div class="tcs-div" aria-hidden="true" />
+            <div class="tcs-item">
+              <span class="tcs-label">setup</span>
+              <span class="tcs-val">{tool.setup}</span>
             </div>
           </div>
 
-          <div class="tool-replaces">
-            <span class="replaces-label">replaces</span>
-            <div class="replaces-tags" aria-label={`${tool.name} replaces: ${tool.replaces.join(', ')}`}>
+          <div class="tc-replaces">
+            <span class="tc-rl">replaces</span>
+            <div class="tc-tags" aria-label={`Replaces: ${tool.replaces.join(', ')}`}>
               {tool.replaces.map(r => <span class="replace-tag">{r}</span>)}
             </div>
           </div>
 
-          <div class="free-tier-block" aria-label="Free tier details">
-            <span class="free-tier-prefix" aria-hidden="true">// free tier</span>
-            <span class="free-tier-text">{tool.freeTier}</span>
+          <div class="free-tier-block">
+            <span class="ft-pre" aria-hidden="true">// free tier</span>
+            <span class="ft-text">{tool.freeTier}</span>
           </div>
 
-          <div class="tool-details">
-            <div class="detail-row">
-              <span class="detail-label">best for</span>
-              <span class="detail-val">{tool.bestFor}</span>
+          <div class="tc-details">
+            <div class="td-row">
+              <span class="td-label">best for</span>
+              <span class="td-val">{tool.bestFor}</span>
             </div>
-            <div class="detail-row detail-row--dim">
-              <span class="detail-label">not for</span>
-              <span class="detail-val">{tool.notFor}</span>
+            <div class="td-row td-row--dim">
+              <span class="td-label">not for</span>
+              <span class="td-val">{tool.notFor}</span>
             </div>
           </div>
 
-          <p class="tool-why">{tool.why}</p>
+          <p class="tc-why">{tool.why}</p>
 
-          <a href={tool.affiliateURL} class="btn-tool-cta" target="_blank" rel="nofollow noopener" aria-label={`${tool.cta} — opens in new tab`}>
+          <a href={tool.affiliateURL} class="btn-tool-cta" target="_blank" rel="nofollow noopener" aria-label={`${tool.cta} (opens in new tab)`}>
             {tool.cta}
           </a>
         </article>
@@ -460,15 +524,15 @@ const schemaArticle = {
 </section>
 
 <!-- ─── COMPARISON TABLE ─── -->
-<section class="table-section" id="stack-table" aria-labelledby="table-heading">
+<section class="table-section" id="stack-table" aria-labelledby="table-h2">
   <div class="container">
     <div class="section-header">
-      <h2 id="table-heading">Full Stack at a Glance</h2>
+      <h2 id="table-h2">Full Stack at a Glance</h2>
       <p class="section-sub">every tool, saving, setup time, and link in one place.</p>
     </div>
 
     <div class="table-wrap">
-      <table aria-label="Shopify automation stack comparison">
+      <table aria-label="Shopify automation stack full comparison">
         <thead>
           <tr>
             <th scope="col">Tool</th>
@@ -490,7 +554,7 @@ const schemaArticle = {
               <td>{tool.setup}</td>
               <td class="dim-cell">{tool.freeTier.split("·")[0].trim()}</td>
               <td>
-                <a href={tool.affiliateURL} class="table-cta" target="_blank" rel="nofollow noopener" aria-label={`Activate ${tool.name}`}>
+                <a href={tool.affiliateURL} class="table-cta" target="_blank" rel="nofollow noopener">
                   {tool.id === "workspace" ? "Start trial →" : tool.id === "sheets" ? "Deploy free →" : "Activate free →"}
                 </a>
               </td>
@@ -503,13 +567,11 @@ const schemaArticle = {
 </section>
 
 <!-- ─── DEPLOYMENT ORDER ─── -->
-<section class="deploy-section" aria-labelledby="deploy-heading">
+<section class="deploy-section" aria-labelledby="deploy-h2">
   <div class="container">
     <div class="section-header">
-      <div class="deploy-header">
-        <h2 id="deploy-heading">Recommended Deployment Order</h2>
-        <span class="deploy-sub">// zero code · each step builds on the previous</span>
-      </div>
+      <h2 id="deploy-h2">Recommended Deployment Order</h2>
+      <span class="deploy-sub">// zero code · each step builds on the previous</span>
     </div>
 
     <ol class="steps-list" aria-label="Deployment steps">
@@ -528,68 +590,42 @@ const schemaArticle = {
       ))}
     </ol>
 
-    <div class="deploy-cta-block">
+    <div class="deploy-cta-row">
       <a href="/ultimate-shopify-automation-guide" class="btn-secondary">Read the full deployment guide →</a>
     </div>
   </div>
 </section>
 
-<!-- ─── DIAGNOSTIC TOOLS (tools subdomain now at /tools) ─── -->
-<section class="diagnostic-section" aria-labelledby="diag-heading">
+<!-- ─── DIAGNOSTIC TOOLS ─── -->
+<section class="diag-section" aria-labelledby="diag-h2">
   <div class="container">
     <div class="section-header">
-      <h2 id="diag-heading">Not Sure Which Tools You Need?</h2>
+      <h2 id="diag-h2">Not Sure Which Tools You Need?</h2>
       <p class="section-sub">run a free diagnostic first. under 2 minutes. no signup required.</p>
-      <!-- Migration note for returning users -->
       <p class="migration-note">// tools.stackarchitect.xyz has moved to <a href="/tools">stackarchitect.xyz/tools</a> — bookmarks redirect automatically</p>
     </div>
 
     <ul class="diag-list" aria-label="Free diagnostic tools">
-      <li>
-        <a href="https://stackarchitect.xyz/tools/shopify-app-stack-kill-or-keep-auditor" class="diag-link">
-          <span class="diag-icon" aria-hidden="true">→</span>
-          <div>
-            <strong>App Stack Kill-or-Keep Auditor</strong>
-            <span class="diag-sub">find exactly which apps you can replace and your exact annual saving</span>
-          </div>
-        </a>
-      </li>
-      <li>
-        <a href="https://stackarchitect.xyz/tools/stocky-migration-risk-scorer" class="diag-link diag-link--urgent">
-          <span class="diag-icon" aria-hidden="true">⚠</span>
-          <div>
-            <strong>Stocky Migration Risk Scorer</strong>
-            <span class="diag-sub">score your migration complexity before the August 31 2026 deadline</span>
-          </div>
-        </a>
-      </li>
-      <li>
-        <a href="https://stackarchitect.xyz/tools/klaviyo-migration-savings-calculator" class="diag-link">
-          <span class="diag-icon" aria-hidden="true">→</span>
-          <div>
-            <strong>Klaviyo Migration Savings Calculator</strong>
-            <span class="diag-sub">calculate your exact saving from moving off Klaviyo to Systeme.io</span>
-          </div>
-        </a>
-      </li>
-      <li>
-        <a href="https://stackarchitect.xyz/tools/meta-emq-score-estimator" class="diag-link">
-          <span class="diag-icon" aria-hidden="true">→</span>
-          <div>
-            <strong>Meta EMQ Score Estimator</strong>
-            <span class="diag-sub">find how much ad spend you are wasting on bad conversion data</span>
-          </div>
-        </a>
-      </li>
-      <li>
-        <a href="https://stackarchitect.xyz/tools/make-vs-zapier-cost-calculator" class="diag-link">
-          <span class="diag-icon" aria-hidden="true">→</span>
-          <div>
-            <strong>Make.com vs Zapier Cost Calculator</strong>
-            <span class="diag-sub">see the exact annual cost difference for your store's order volume</span>
-          </div>
-        </a>
-      </li>
+      <li><a href="/tools/shopify-app-stack-kill-or-keep-auditor" class="diag-link">
+        <span class="diag-icon" aria-hidden="true">→</span>
+        <div><strong>App Stack Kill-or-Keep Auditor</strong><span class="diag-sub">find exactly which apps you can replace and your exact annual saving</span></div>
+      </a></li>
+      <li><a href="/tools/stocky-migration-risk-scorer" class="diag-link diag-link--urgent">
+        <span class="diag-icon" aria-hidden="true">⚠</span>
+        <div><strong>Stocky Migration Risk Scorer</strong><span class="diag-sub">score your migration complexity before the August 31 2026 deadline</span></div>
+      </a></li>
+      <li><a href="/tools/klaviyo-migration-savings-calculator" class="diag-link">
+        <span class="diag-icon" aria-hidden="true">→</span>
+        <div><strong>Klaviyo Migration Savings Calculator</strong><span class="diag-sub">calculate your exact saving from moving off Klaviyo to Systeme.io</span></div>
+      </a></li>
+      <li><a href="/tools/meta-emq-score-estimator" class="diag-link">
+        <span class="diag-icon" aria-hidden="true">→</span>
+        <div><strong>Meta EMQ Score Estimator</strong><span class="diag-sub">find how much ad spend you are wasting on bad conversion data</span></div>
+      </a></li>
+      <li><a href="/tools/make-vs-zapier-cost-calculator" class="diag-link">
+        <span class="diag-icon" aria-hidden="true">→</span>
+        <div><strong>Make.com vs Zapier Cost Calculator</strong><span class="diag-sub">see the exact annual cost difference for your store's order volume</span></div>
+      </a></li>
     </ul>
 
     <a href="/tools" class="btn-secondary">See all 16 free Shopify diagnostic tools →</a>
@@ -597,17 +633,17 @@ const schemaArticle = {
 </section>
 
 <!-- ─── TESTIMONIALS ─── -->
-<section class="testimonials-section" aria-labelledby="testi-heading">
+<section class="testi-section" aria-labelledby="testi-h2">
   <div class="container">
     <div class="section-header">
-      <h2 id="testi-heading">What Store Owners Say</h2>
-      <p class="testi-rating" aria-label="Average rating: 4.9 out of 5 across 500 or more stores">★★★★★ 4.9 / 5 across 500+ stores</p>
+      <h2 id="testi-h2">What Store Owners Say</h2>
+      <p class="testi-rating" aria-label="Rating: 4.9 out of 5 across 500 or more stores">★★★★★ 4.9 / 5 across 500+ stores</p>
     </div>
 
     <div class="testi-grid">
       {testimonials.map(t => (
         <figure class="testi-card">
-          <div class="testi-stars" aria-hidden="true">{t.stars}</div>
+          <p class="testi-stars" aria-hidden="true">{t.stars}</p>
           <blockquote class="testi-quote">"{t.quote}"</blockquote>
           <figcaption>
             <span class="testi-name">{t.name}</span>
@@ -619,44 +655,101 @@ const schemaArticle = {
   </div>
 </section>
 
-<!-- ─── BEEHIIV NEWSLETTER EMBED ─── -->
-<section class="newsletter-section" aria-labelledby="newsletter-heading">
+<!-- ─── BEEHIIV NEWSLETTER + AFFILIATE PROMO ─── -->
+<section class="newsletter-section" id="newsletter" aria-labelledby="nl-h2">
   <div class="container">
-    <div class="newsletter-container">
+    <div class="nl-grid">
 
-      <div class="newsletter-label">// weekly dispatch</div>
-      <h2 id="newsletter-heading">Get the Stack Architect Weekly</h2>
-      <p class="newsletter-sub">New automation blueprints, Shopify profit-leak fixes, and tool updates — delivered every Tuesday. Read by 2,000+ store owners across the UK, US, AU, and CA. Free forever.</p>
+      <!-- LEFT: Subscribe to newsletter -->
+      <div class="nl-subscribe">
+        <div class="nl-label">// weekly dispatch</div>
+        <h2 id="nl-h2">Get the Stack Architect Weekly</h2>
+        <p class="nl-sub">New automation blueprints, Shopify profit-leak fixes, and tool updates — delivered every Tuesday. Free forever.</p>
 
-      <!-- Beehiiv embed — replace YOUR_PUBLICATION_ID with your actual pub ID from beehiiv.com/dashboard -->
-      <div class="beehiiv-embed-wrapper">
-        <iframe
-          src="https://embeds.beehiiv.com/YOUR_PUBLICATION_ID?slim=true"
-          data-test-id="beehiiv-embed"
-          width="100%"
-          height="52"
-          frameborder="0"
-          scrolling="no"
-          style="border-radius:6px;overflow:hidden;"
-          title="Subscribe to Stack Architect Weekly newsletter"
-        ></iframe>
+        <!--
+          BEEHIIV NATIVE FORM
+          Replace YOUR_PUBLICATION_ID with your pub ID from:
+          beehiiv.com → Settings → Publication Details → Publication ID
+          Format: pub_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+
+          OR: Go to Audience → Subscribe Forms → Create new form → Copy embed HTML
+          and paste the generated <iframe> snippet in place of this form.
+        -->
+        <form
+          class="nl-form"
+          id="nl-form"
+          action={`https://app.beehiiv.com/subscribing/sign_up_flow?publication_id=${BEEHIIV_PUB_ID}`}
+          method="GET"
+          target="_blank"
+          rel="noopener"
+          aria-label="Subscribe to Stack Architect newsletter"
+          onsubmit="handleNlSubmit(event)"
+        >
+          <div class="nl-input-row">
+            <input
+              type="email"
+              name="email"
+              id="nl-email"
+              placeholder="your@email.com"
+              required
+              autocomplete="email"
+              class="nl-input"
+              aria-label="Email address"
+            />
+            <button type="submit" class="nl-btn" aria-label="Subscribe">
+              Get Weekly Updates →
+            </button>
+          </div>
+          <p class="nl-small">// no spam · unsubscribe any time · 2,000+ subscribers across UK, US, AU &amp; CA</p>
+        </form>
+        <p class="nl-fallback" id="nl-success" style="display:none">
+          ✓ Redirecting to confirm your subscription — check your inbox after.
+        </p>
+        <p class="nl-fallback">Or <a href="https://stackarchitect.beehiiv.com/" target="_blank" rel="noopener">open the subscribe page directly →</a></p>
       </div>
 
-      <!-- Fallback direct link if embed is blocked -->
-      <p class="newsletter-fallback">Or <a href="https://stackarchitect.beehiiv.com/" target="_blank" rel="noopener">open the subscribe page directly →</a></p>
+      <!-- RIGHT: Beehiiv affiliate promo — earns commission on upgrades -->
+      <aside class="nl-affiliate" aria-label="Beehiiv affiliate promotion">
+        <div class="nla-badge">AFFILIATE PARTNER</div>
+        <div class="nla-logo-row">
+          <span class="nla-logo">beehiiv</span>
+          <span class="nla-tag">The newsletter platform this site runs on</span>
+        </div>
+        <p class="nla-copy">The free newsletter platform built for growth. Unlimited subscribers on the free plan, built-in analytics, monetisation, and referral tools. No platform tax. Used by 40,000+ newsletters.</p>
+        <ul class="nla-list" aria-label="beehiiv features">
+          <li>Free plan — unlimited subscribers</li>
+          <li>Built-in referral programme</li>
+          <li>Paid newsletter monetisation</li>
+          <li>Analytics that actually matter</li>
+          <li>No % cut of your revenue</li>
+        </ul>
+        <a href={BEEHIIV_AFFILIATE} class="nla-cta" target="_blank" rel="nofollow noopener" aria-label="Try beehiiv free — affiliate link">
+          Try beehiiv free →
+        </a>
+        <p class="nla-disc">// affiliate link — Stack Architect earns a commission on paid upgrades, at no extra cost to you</p>
+      </aside>
 
-      <p class="newsletter-trust">// no spam · unsubscribe any time · 2,000+ subscribers</p>
     </div>
   </div>
 </section>
 
+<!-- ─── HIGH VOLUME UPGRADE (matches homepage callout) ─── -->
+<aside class="upgrade-section" aria-label="High volume stores upgrade note">
+  <div class="container">
+    <div class="upgrade-inner">
+      <div class="upgrade-badge">High-volume stores · 500+ orders/month</div>
+      <p class="upgrade-copy">Scaling past 500 orders/month? Gmail API limits will break your automations. Google Workspace removes every Gmail API limit and keeps your entire $0 stack running at full speed during Black Friday and product launches.</p>
+      <a href="https://referworkspace.app.goo.gl/sy2C" class="btn-secondary" target="_blank" rel="nofollow noopener">Activate Workspace →</a>
+    </div>
+  </div>
+</aside>
+
 <!-- ─── FAQ ─── -->
-<section class="faq-section" aria-labelledby="faq-heading">
+<section class="faq-section" aria-labelledby="faq-h2">
   <div class="container">
     <div class="section-header faq-container">
-      <h2 id="faq-heading">Common Questions</h2>
+      <h2 id="faq-h2">Common Questions</h2>
     </div>
-
     <div class="faq-container">
       <dl class="faq-list">
         {faqs.map(f => (
@@ -670,10 +763,10 @@ const schemaArticle = {
   </div>
 </section>
 
-<!-- ─── RELATED (internal linking for SEO + UX) ─── -->
-<section class="related-section" aria-labelledby="related-heading">
+<!-- ─── RELATED GUIDES (internal linking) ─── -->
+<section class="related-section" aria-labelledby="related-h2">
   <div class="container">
-    <h2 id="related-heading">Related Guides</h2>
+    <h2 id="related-h2">Related Guides</h2>
     <ul class="related-list">
       <li><a href="/">Free Shopify Automation Stack — full overview and deployment</a></li>
       <li><a href="/stocky-swap">Stocky Swap — replace Shopify Stocky before August 31 2026</a></li>
@@ -686,24 +779,39 @@ const schemaArticle = {
   </div>
 </section>
 
-<!-- ─── EMAIL / BLUEPRINT CTA ─── -->
-<section class="email-section" aria-labelledby="email-heading">
+<!-- ─── MASTER SETUP GUIDE CTA (matches homepage section) ─── -->
+<section class="email-section" aria-labelledby="email-h2">
   <div class="container">
     <div class="email-container">
-      <h2 id="email-heading">Get the Full Deployment Checklist</h2>
+      <h2 id="email-h2">Unlock the Full Master Setup Guide</h2>
       <p>All seven automation blueprints, webhook configurations, Google Sheets templates, and the Q1 2026 ROAS fix — in one file. Free. Deploy your entire backend for $0/month.</p>
+      <div class="email-pills">
+        <span>6 Logic Blueprints</span>
+        <span>Step-by-step deployment manuals</span>
+        <span>TikTok + Meta + Google tracking</span>
+        <span>v2.026 Stable Build</span>
+      </div>
       <a href="/" class="btn-primary">Get instant access on the main page →</a>
       <p class="email-trust">100% free · instant access · trusted by 500+ Shopify stores across UK, US, AU and CA</p>
     </div>
   </div>
 </section>
 
-<!-- ─── FOOTER ─── -->
+<!-- ─── STICKY FOOTER CTA (matches homepage) ─── -->
+<div class="sticky-cta" role="complementary" aria-label="Still paying for apps prompt">
+  <div class="sticky-cta-inner">
+    <span>Still paying for Shopify apps? Replace all seven — free, 6 minutes, no code.</span>
+    <a href="https://make.com/en/register?pc=techie123" class="btn-primary" target="_blank" rel="nofollow noopener">Replace My Apps Free →</a>
+  </div>
+</div>
+
+<!-- ─── FOOTER — exact homepage match ─── -->
 <footer class="footer" aria-label="Site footer">
   <div class="container footer-inner">
     <div class="footer-brand">
       <span class="footer-logo">THE $0 AUTOMATION STACK</span>
       <span class="footer-sys">SYSTEM_STABLE // 2026.04</span>
+      <span class="footer-sys">BUILT ON ASTRO</span>
     </div>
     <nav class="footer-nav" aria-label="Footer navigation">
       <a href="/">$0 Stack</a>
@@ -712,24 +820,85 @@ const schemaArticle = {
       <a href="/tiktok-events-api-shopify">TikTok CAPI</a>
       <a href="/replace-klaviyo-free">Replace Klaviyo</a>
       <a href="/shopify-profit-loss-automation">P&L Auto</a>
+      <a href="/autocrat-quota-fix">Autocrat Fix</a>
+      <a href="/best-ai-tools-shopify">AI Tools</a>
+    </nav>
+    <nav class="footer-nav" aria-label="Footer secondary navigation">
       <a href="/tools">All Tools</a>
+      <a href="/shopify-automation-scanner">Scanner</a>
       <a href="/shopify-automation-guides">Guides</a>
+      <a href="/ultimate-shopify-automation-guide">Ultimate Guide</a>
       <a href="/about">About</a>
       <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/sitemap">Sitemap</a>
+      <a href="mailto:support@stackarchitect.xyz">Support</a>
       <a href="https://stackarchitect.beehiiv.com/" target="_blank" rel="noopener">Newsletter</a>
     </nav>
-    <p class="footer-disclosure">Stack Architect uses affiliate links. We may earn a commission if you sign up for tools via our links — at no extra cost to you. We only recommend tools this stack is actually built on. <a href="/privacy">Privacy policy</a>.</p>
+    <div class="footer-trust">
+      <span>No monthly fees</span>
+      <span>GDPR compliant</span>
+      <span>No code required</span>
+      <span>Works with any Shopify store</span>
+    </div>
+    <p class="footer-disc">Stack Architect uses affiliate links. We may earn a commission if you sign up for tools via our links — at no extra cost to you. We only recommend tools we use ourselves. <a href="/privacy">Privacy policy</a>.</p>
     <a href="#top" class="footer-top">↑ RETURN_TO_ORIGIN</a>
   </div>
 </footer>
+
+<!-- ─── JS: dropdown + newsletter submit ─── -->
+<script>
+  // Nav dropdowns
+  function toggleDrop(btn) {
+    const menu = btn.nextElementSibling;
+    const isOpen = menu.classList.contains('open');
+    document.querySelectorAll('.nav-drop-menu').forEach(m => m.classList.remove('open'));
+    document.querySelectorAll('.nav-drop-btn').forEach(b => b.setAttribute('aria-expanded','false'));
+    if (!isOpen) {
+      menu.classList.add('open');
+      btn.setAttribute('aria-expanded','true');
+    }
+  }
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.nav-dropdown')) {
+      document.querySelectorAll('.nav-drop-menu').forEach(m => m.classList.remove('open'));
+      document.querySelectorAll('.nav-drop-btn').forEach(b => b.setAttribute('aria-expanded','false'));
+    }
+  });
+
+  // Newsletter form — open beehiiv in new tab, show success message
+  function handleNlSubmit(e) {
+    const email = document.getElementById('nl-email').value;
+    if (!email) return;
+    // Show success note; form still submits to beehiiv via GET target=_blank
+    setTimeout(() => {
+      document.getElementById('nl-success').style.display = 'block';
+      document.getElementById('nl-form').reset();
+    }, 200);
+  }
+
+  // Sticky CTA — hide on scroll up, show on scroll down
+  let lastY = 0;
+  const stickyCta = document.querySelector('.sticky-cta');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y > 600) {
+      stickyCta.classList.toggle('sticky-cta--hidden', y < lastY);
+    } else {
+      stickyCta.classList.add('sticky-cta--hidden');
+    }
+    lastY = y;
+  }, { passive: true });
+</script>
 
 </body>
 </html>
 
 <style>
-  /* ─── RESET & BASE ─── */
+  /* ─── RESET ─── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  /* ─── TOKENS — exact homepage match ─── */
   :root {
     --bg:            #0c0c0c;
     --bg-card:       #111111;
@@ -749,14 +918,10 @@ const schemaArticle = {
     --font-sans:     'Inter', system-ui, sans-serif;
     --radius:        6px;
     --radius-lg:     10px;
-    --section-pad:   80px 0;
-    /* newsletter accent */
-    --newsletter-bg: #0d1a12;
-    --newsletter-border: rgba(74,222,128,0.12);
+    --sp:            80px 0;
   }
 
   html { scroll-behavior: smooth; }
-
   body {
     background: var(--bg);
     color: var(--text-primary);
@@ -765,440 +930,144 @@ const schemaArticle = {
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
   }
-
   a { color: inherit; text-decoration: none; }
-
-  h2 {
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-  }
-
-  .container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-
+  h2 { font-size: 1.6rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; line-height: 1.2; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
   .section-header { margin-bottom: 40px; }
   .section-sub { font-size: 13px; color: var(--text-dim); margin-top: 6px; font-family: var(--font-mono); }
 
-  /* ─── SKIP LINK (a11y) ─── */
-  .skip-link {
-    position: absolute;
-    left: -9999px;
-    top: auto;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-  }
-  .skip-link:focus {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: auto;
-    height: auto;
-    padding: 8px 16px;
-    background: var(--accent);
-    color: #000;
-    font-family: var(--font-mono);
-    font-size: 13px;
-    font-weight: 700;
-    z-index: 9999;
-    overflow: visible;
-    border-radius: 0 0 var(--radius) 0;
-  }
+  /* ─── SKIP LINK ─── */
+  .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+  .skip-link:focus { position: fixed; top: 0; left: 0; width: auto; height: auto; padding: 8px 16px; background: var(--accent); color: #000; font-family: var(--font-mono); font-size: 13px; font-weight: 700; z-index: 9999; overflow: visible; }
 
   /* ─── NAV ─── */
-  .nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(12,12,12,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-  }
-  .nav-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 24px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    gap: 32px;
-  }
-  .nav-logo {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--accent);
-    letter-spacing: 0.05em;
-    white-space: nowrap;
-  }
-  .nav-links {
-    display: flex;
-    gap: 24px;
-    flex: 1;
-  }
-  .nav-links a {
-    font-size: 13px;
-    color: var(--text-dim);
-    transition: color 0.15s;
-    font-family: var(--font-mono);
-  }
-  .nav-links a:hover,
-  .nav-active { color: var(--text-primary) !important; }
-  .nav-cta {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 700;
-    background: var(--accent);
-    color: #000 !important;
-    padding: 8px 14px;
-    border-radius: var(--radius);
-    white-space: nowrap;
-    transition: opacity 0.15s;
-  }
+  .nav { position: sticky; top: 0; z-index: 100; background: rgba(12,12,12,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; gap: 4px; }
+  .nav-logo { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: 0.05em; white-space: nowrap; margin-right: 16px; }
+
+  /* Dropdowns */
+  .nav-dropdown { position: relative; }
+  .nav-drop-btn { font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); background: none; border: none; cursor: pointer; padding: 8px 10px; transition: color 0.15s; }
+  .nav-drop-btn:hover { color: var(--text-primary); }
+  .nav-drop-menu { display: none; position: absolute; top: calc(100% + 4px); left: 0; background: #0f0f0f; border: 1px solid var(--border); border-radius: var(--radius-lg); min-width: 280px; z-index: 200; }
+  .nav-drop-menu.open { display: block; }
+  .nav-drop-menu a { display: flex; flex-direction: column; padding: 10px 16px; transition: background 0.12s; border-bottom: 1px solid var(--border-subtle); }
+  .nav-drop-menu a:last-child { border-bottom: none; }
+  .nav-drop-menu a:hover { background: #1a1a1a; }
+  .dm-title { font-family: var(--font-mono); font-size: 12px; color: var(--text-primary); }
+  .dm-sub { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+
+  .nav-link { font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); padding: 8px 10px; transition: color 0.15s; }
+  .nav-link:hover, .nav-active { color: var(--text-primary) !important; }
+  .nav-cta { font-family: var(--font-mono); font-size: 11px; font-weight: 700; background: var(--accent); color: #000 !important; padding: 8px 14px; border-radius: var(--radius); white-space: nowrap; margin-left: auto; transition: opacity 0.15s; letter-spacing: 0.01em; }
   .nav-cta:hover { opacity: 0.88; }
 
   /* ─── BREADCRUMB ─── */
-  .breadcrumb-bar {
-    border-bottom: 1px solid var(--border-subtle);
-    padding: 10px 0;
-  }
+  .breadcrumb-bar { border-bottom: 1px solid var(--border-subtle); padding: 10px 0; }
   .breadcrumb-bar .container { display: flex; align-items: center; gap: 8px; }
-  .breadcrumb-item { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); }
-  .breadcrumb-item a { color: var(--text-dim); }
-  .breadcrumb-item a:hover { color: var(--accent); }
-  .breadcrumb-sep { color: var(--text-dim); font-size: 11px; }
-  .breadcrumb-current { color: var(--text-secondary); }
+  .bc-item { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); }
+  .bc-item a { color: var(--text-dim); }
+  .bc-item a:hover { color: var(--accent); }
+  .bc-sep { color: var(--text-dim); font-size: 11px; }
+  .bc-current { color: var(--text-secondary); }
 
   /* ─── HERO ─── */
-  .hero-section {
-    padding: 72px 0 64px;
-    border-bottom: 1px solid var(--border);
-  }
-  .hero-badge {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--accent);
-    margin-bottom: 20px;
-    letter-spacing: 0.04em;
-  }
+  .hero { padding: 64px 0 56px; border-bottom: 1px solid var(--border); }
+  .hero-eyebrow { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); margin-bottom: 12px; letter-spacing: 0.04em; }
+  .hero-badge { font-family: var(--font-mono); font-size: 11px; color: var(--accent); margin-bottom: 20px; letter-spacing: 0.04em; }
   .hero-badge span { color: var(--text-dim); }
+  h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 14px; max-width: 800px; }
+  .hero-tagline { font-size: 15px; color: var(--text-secondary); max-width: 640px; margin-bottom: 10px; line-height: 1.65; }
+  .hero-tagline strong { color: var(--text-primary); }
+  .intent-note { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); margin-bottom: 28px; letter-spacing: 0.04em; }
 
-  /* Intent-separation note — helps AI crawlers distinguish this page from homepage */
-  .hero-intent-note {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--text-dim);
-    margin-bottom: 12px;
-    letter-spacing: 0.04em;
-  }
+  /* Savings pills */
+  .savings-row { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 20px; }
+  .savings-row > div { display: flex; flex-direction: column; gap: 3px; }
+  .sr-amount { font-family: var(--font-mono); font-size: 15px; font-weight: 700; color: var(--accent); }
+  .sr-label { font-size: 11px; color: var(--text-dim); }
 
-  h1 {
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
-    margin-bottom: 12px;
-    max-width: 800px;
-  }
-  .hero-sub {
-    font-size: 15px;
-    color: var(--text-secondary);
-    max-width: 620px;
-    margin-bottom: 40px;
-    line-height: 1.65;
-  }
+  /* Trust pills */
+  .trust-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+  .trust-pills span { font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary); background: var(--bg-card); border: 1px solid var(--border); padding: 4px 10px; border-radius: 4px; }
 
-  .stats-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    max-width: 600px;
-    margin-bottom: 36px;
-  }
-  .stat-card {
-    background: var(--bg-card);
-    padding: 20px 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .stat-value {
-    font-family: var(--font-mono);
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--accent);
-    line-height: 1;
-  }
+  /* Stats */
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: 560px; margin-bottom: 32px; }
+  .stat-card { background: var(--bg-card); padding: 18px 22px; display: flex; flex-direction: column; gap: 4px; }
+  .stat-value { font-family: var(--font-mono); font-size: 1.4rem; font-weight: 700; color: var(--accent); line-height: 1; }
   .stat-label { font-size: 11px; color: var(--text-dim); }
 
-  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+  .hero-powered { font-size: 12px; color: var(--text-dim); font-family: var(--font-mono); }
+  .hero-powered a { color: var(--accent); }
+  .hero-powered a:hover { text-decoration: underline; }
 
   /* ─── DISCLOSURE ─── */
-  .disclosure-bar {
-    background: var(--bg-card-alt);
-    border-bottom: 1px solid var(--border-subtle);
-    padding: 12px 0;
-  }
-  .disclosure-bar .container {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--text-dim);
-    line-height: 1.5;
-  }
-  .disclosure-icon { color: var(--accent); flex-shrink: 0; margin-top: 1px; }
+  .disclosure-bar { background: var(--bg-card-alt); border-bottom: 1px solid var(--border-subtle); padding: 12px 0; }
+  .disclosure-bar .container { display: flex; align-items: flex-start; gap: 10px; font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); line-height: 1.5; }
+  .disc-icon { color: var(--accent); flex-shrink: 0; margin-top: 1px; }
 
-  /* ─── TOOLS SECTION ─── */
-  .tools-section { padding: var(--section-pad); }
-
-  .tools-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-  }
-
-  .tool-card {
-    background: var(--bg-card);
-    padding: 28px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    transition: background 0.15s;
-    position: relative;
-  }
+  /* ─── TOOL CARDS ─── */
+  .tools-section { padding: var(--sp); }
+  .tools-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+  .tool-card { background: var(--bg-card); padding: 28px; display: flex; flex-direction: column; gap: 16px; transition: background 0.15s; position: relative; }
   .tool-card:hover { background: #131313; }
   .tool-card--urgent { border-left: 3px solid var(--urgent); }
-
-  .urgency-banner {
-    background: var(--urgent-dim);
-    border: 1px solid rgba(245,158,11,0.3);
-    color: var(--urgent);
-    font-family: var(--font-mono);
-    font-size: 10px;
-    font-weight: 600;
-    padding: 6px 10px;
-    border-radius: var(--radius);
-    letter-spacing: 0.03em;
-  }
-
-  .tool-card-top { display: flex; flex-direction: column; gap: 6px; }
-  .tool-meta-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .category-label {
-    font-size: 11px;
-    color: var(--text-dim);
-    font-family: var(--font-mono);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-  .version-tag {
-    font-family: var(--font-mono);
-    font-size: 9px;
-    color: var(--text-dim);
-    letter-spacing: 0.08em;
-    margin-top: 2px;
-  }
-
-  /* Badges */
-  .badge {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    font-weight: 600;
-    padding: 3px 8px;
-    border-radius: 4px;
-    white-space: nowrap;
-    letter-spacing: 0.03em;
-  }
+  .urgency-banner { background: var(--urgent-dim); border: 1px solid rgba(245,158,11,0.3); color: var(--urgent); font-family: var(--font-mono); font-size: 10px; font-weight: 600; padding: 6px 10px; border-radius: var(--radius); letter-spacing: 0.03em; }
+  .tc-top { display: flex; flex-direction: column; gap: 6px; }
+  .tc-meta-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+  .tc-category { font-size: 11px; color: var(--text-dim); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; }
+  .tc-version { font-family: var(--font-mono); font-size: 9px; color: var(--text-dim); letter-spacing: 0.08em; margin-top: 2px; }
+  .badge { font-family: var(--font-mono); font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 4px; white-space: nowrap; letter-spacing: 0.03em; }
   .badge--core    { background: rgba(74,222,128,0.12); border: 1px solid rgba(74,222,128,0.3); color: var(--accent); }
   .badge--top     { background: rgba(96,165,250,0.12); border: 1px solid rgba(96,165,250,0.3); color: #60a5fa; }
   .badge--urgent  { background: var(--urgent-dim); border: 1px solid rgba(245,158,11,0.3); color: var(--urgent); }
   .badge--default { background: var(--bg-card-alt); border: 1px solid var(--border); color: var(--text-secondary); }
   .badge--infra   { background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.3); color: #c084fc; }
-
-  .tool-name {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-  }
-  .tool-tagline {
-    font-size: 13px;
-    color: var(--text-secondary);
-    line-height: 1.5;
-    font-family: var(--font-mono);
-  }
-
-  .tool-quick-stats {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 12px 0;
-    border-top: 1px solid var(--border-subtle);
-    border-bottom: 1px solid var(--border-subtle);
-  }
-  .qs-item { display: flex; flex-direction: column; gap: 2px; }
-  .qs-label { font-size: 10px; color: var(--text-dim); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; }
-  .qs-value { font-size: 13px; font-weight: 600; font-family: var(--font-mono); color: var(--text-primary); }
-  .qs-value.accent { color: var(--accent); }
-  .qs-divider { width: 1px; height: 28px; background: var(--border); }
-
-  .tool-replaces { display: flex; flex-direction: column; gap: 6px; }
-  .replaces-label { font-size: 10px; color: var(--text-dim); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; }
-  .replaces-tags { display: flex; flex-wrap: wrap; gap: 4px; }
-  .replace-tag {
-    font-size: 11px;
-    background: var(--bg-card-alt);
-    border: 1px solid var(--border);
-    color: var(--text-secondary);
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-family: var(--font-mono);
-    text-decoration: line-through;
-    text-decoration-color: var(--text-dim);
-  }
-
-  .free-tier-block {
-    display: flex;
-    gap: 8px;
-    align-items: flex-start;
-    background: var(--accent-glow);
-    border: 1px solid var(--accent-dim);
-    border-radius: var(--radius);
-    padding: 10px 12px;
-  }
-  .free-tier-prefix {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--accent);
-    white-space: nowrap;
-    margin-top: 1px;
-  }
-  .free-tier-text { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
-
-  .tool-details { display: flex; flex-direction: column; gap: 8px; }
-  .detail-row { display: flex; flex-direction: column; gap: 3px; }
-  .detail-label { font-size: 10px; color: var(--text-dim); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; }
-  .detail-val { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
-  .detail-row--dim .detail-val { color: var(--text-dim); }
-
-  .tool-why {
-    font-size: 12px;
-    color: var(--text-secondary);
-    line-height: 1.65;
-    border-left: 2px solid var(--border);
-    padding-left: 12px;
-    font-style: italic;
-  }
-
-  .btn-tool-cta {
-    display: inline-block;
-    background: var(--accent);
-    color: #000 !important;
-    padding: 11px 18px;
-    border-radius: var(--radius);
-    font-weight: 700;
-    font-size: 13px;
-    font-family: var(--font-mono);
-    text-decoration: none !important;
-    transition: opacity 0.15s;
-    letter-spacing: 0.01em;
-    align-self: flex-start;
-    margin-top: auto;
-  }
+  .tc-name { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; line-height: 1.1; }
+  .tc-tagline { font-size: 13px; color: var(--text-secondary); line-height: 1.5; font-family: var(--font-mono); }
+  .tc-stats { display: flex; align-items: center; gap: 16px; padding: 12px 0; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); }
+  .tcs-item { display: flex; flex-direction: column; gap: 2px; }
+  .tcs-label { font-size: 10px; color: var(--text-dim); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; }
+  .tcs-val { font-size: 13px; font-weight: 600; font-family: var(--font-mono); color: var(--text-primary); }
+  .tcs-val.accent { color: var(--accent); }
+  .tcs-div { width: 1px; height: 28px; background: var(--border); }
+  .tc-replaces { display: flex; flex-direction: column; gap: 6px; }
+  .tc-rl { font-size: 10px; color: var(--text-dim); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; }
+  .tc-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .replace-tag { font-size: 11px; background: var(--bg-card-alt); border: 1px solid var(--border); color: var(--text-secondary); padding: 3px 8px; border-radius: 4px; font-family: var(--font-mono); text-decoration: line-through; text-decoration-color: var(--text-dim); }
+  .free-tier-block { display: flex; gap: 8px; align-items: flex-start; background: var(--accent-glow); border: 1px solid var(--accent-dim); border-radius: var(--radius); padding: 10px 12px; }
+  .ft-pre { font-family: var(--font-mono); font-size: 10px; color: var(--accent); white-space: nowrap; margin-top: 1px; }
+  .ft-text { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .tc-details { display: flex; flex-direction: column; gap: 8px; }
+  .td-row { display: flex; flex-direction: column; gap: 3px; }
+  .td-label { font-size: 10px; color: var(--text-dim); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; }
+  .td-val { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .td-row--dim .td-val { color: var(--text-dim); }
+  .tc-why { font-size: 12px; color: var(--text-secondary); line-height: 1.65; border-left: 2px solid var(--border); padding-left: 12px; font-style: italic; }
+  .btn-tool-cta { display: inline-block; background: var(--accent); color: #000 !important; padding: 11px 18px; border-radius: var(--radius); font-weight: 700; font-size: 13px; font-family: var(--font-mono); text-decoration: none !important; transition: opacity 0.15s; letter-spacing: 0.01em; align-self: flex-start; margin-top: auto; }
   .btn-tool-cta:hover { opacity: 0.88; }
 
   /* ─── TABLE ─── */
-  .table-section {
-    padding: var(--section-pad);
-    background: var(--bg-card-alt);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
+  .table-section { padding: var(--sp); background: var(--bg-card-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
   .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius-lg); }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   thead { background: var(--bg-card-dark); }
-  th {
-    padding: 12px 16px;
-    text-align: left;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    border-bottom: 1px solid var(--border);
-    white-space: nowrap;
-  }
-  td {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border-subtle);
-    color: var(--text-secondary);
-    vertical-align: top;
-  }
+  th { padding: 12px 16px; text-align: left; font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.07em; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary); vertical-align: top; }
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: #121212; }
   td strong { color: var(--text-primary); }
   .accent-cell { color: var(--accent) !important; font-family: var(--font-mono); font-weight: 600; }
   .dim-cell { color: var(--text-dim) !important; font-size: 12px; }
-  .table-cta {
-    background: var(--accent-glow);
-    border: 1px solid var(--accent-dim);
-    color: var(--accent) !important;
-    padding: 4px 10px;
-    border-radius: 4px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    white-space: nowrap;
-    display: inline-block;
-    transition: all 0.15s;
-  }
+  .table-cta { background: var(--accent-glow); border: 1px solid var(--accent-dim); color: var(--accent) !important; padding: 4px 10px; border-radius: 4px; font-family: var(--font-mono); font-size: 11px; white-space: nowrap; display: inline-block; transition: all 0.15s; }
   .table-cta:hover { background: rgba(74,222,128,0.14); }
 
   /* ─── DEPLOY STEPS ─── */
-  .deploy-section { padding: var(--section-pad); }
-  .deploy-header { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
-  .deploy-sub { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); }
-
-  .steps-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    margin-bottom: 28px;
-  }
-  .step-item {
-    background: var(--bg-card);
-    padding: 20px 24px;
-    display: flex;
-    gap: 20px;
-    align-items: flex-start;
-    transition: background 0.15s;
-  }
+  .deploy-section { padding: var(--sp); }
+  .deploy-sub { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); display: block; margin-top: 6px; }
+  .steps-list { list-style: none; display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin: 24px 0 28px; }
+  .step-item { background: var(--bg-card); padding: 20px 24px; display: flex; gap: 20px; align-items: flex-start; transition: background 0.15s; }
   .step-item:hover { background: #131313; }
   .step-num { font-family: var(--font-mono); font-size: 22px; font-weight: 700; color: var(--text-dim); line-height: 1; min-width: 30px; }
   .step-body { display: flex; flex-direction: column; gap: 4px; flex: 1; }
@@ -1208,45 +1077,15 @@ const schemaArticle = {
   .step-action { font-size: 13px; color: var(--text-secondary); }
   .step-link { font-size: 11px; color: var(--accent); font-family: var(--font-mono); }
   .step-link:hover { text-decoration: underline; }
-  .deploy-cta-block { text-align: left; }
+  .deploy-cta-row { text-align: left; }
 
   /* ─── DIAGNOSTIC ─── */
-  .diagnostic-section {
-    padding: var(--section-pad);
-    background: var(--bg-card-alt);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-  .migration-note {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--text-dim);
-    margin-top: 8px;
-  }
+  .diag-section { padding: var(--sp); background: var(--bg-card-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .migration-note { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); margin-top: 8px; }
   .migration-note a { color: var(--accent); }
   .migration-note a:hover { text-decoration: underline; }
-
-  .diag-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    margin-bottom: 20px;
-  }
-  .diag-link {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    padding: 16px 20px;
-    background: var(--bg-card);
-    color: var(--text-primary);
-    text-decoration: none;
-    transition: background 0.15s;
-  }
+  .diag-list { list-style: none; display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 20px; }
+  .diag-link { display: flex; align-items: flex-start; gap: 14px; padding: 16px 20px; background: var(--bg-card); color: var(--text-primary); text-decoration: none; transition: background 0.15s; }
   .diag-link:hover { background: #131313; }
   .diag-link--urgent strong { color: var(--urgent); }
   .diag-icon { font-family: var(--font-mono); color: var(--accent); font-size: 13px; min-width: 14px; margin-top: 2px; }
@@ -1254,114 +1093,60 @@ const schemaArticle = {
   .diag-sub { font-size: 12px; color: var(--text-secondary); }
 
   /* ─── TESTIMONIALS ─── */
-  .testimonials-section { padding: var(--section-pad); }
+  .testi-section { padding: var(--sp); }
   .testi-rating { font-size: 12px; color: var(--accent); margin-top: 6px; font-family: var(--font-mono); }
-  .testi-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-  }
-  .testi-card {
-    background: var(--bg-card);
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
+  .testi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+  .testi-card { background: var(--bg-card); padding: 24px; display: flex; flex-direction: column; gap: 12px; }
   .testi-stars { color: var(--accent); font-size: 11px; }
   .testi-quote { font-size: 13px; color: var(--text-secondary); line-height: 1.65; flex: 1; }
   .testi-name { display: block; font-size: 13px; font-weight: 600; color: var(--text-primary); }
   .testi-role { display: block; font-size: 11px; color: var(--text-dim); font-family: var(--font-mono); margin-top: 2px; }
 
-  /* ─── NEWSLETTER (Beehiiv) ─── */
-  .newsletter-section {
-    padding: var(--section-pad);
-    background: var(--newsletter-bg);
-    border-top: 1px solid var(--newsletter-border);
-    border-bottom: 1px solid var(--newsletter-border);
-  }
-  .newsletter-container {
-    max-width: 580px;
-    margin: 0 auto;
-    text-align: center;
-  }
-  .newsletter-label {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-  .newsletter-section h2 {
-    font-size: 1.5rem;
-    margin-bottom: 12px;
-  }
-  .newsletter-sub {
-    font-size: 14px;
-    color: var(--text-secondary);
-    line-height: 1.65;
-    margin-bottom: 24px;
-    max-width: 480px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .beehiiv-embed-wrapper {
-    background: var(--bg-card);
-    border: 1px solid var(--accent-dim);
-    border-radius: var(--radius);
-    overflow: hidden;
-    margin-bottom: 12px;
-    /* force Beehiiv iframe to inherit dark styles */
-    color-scheme: dark;
-  }
-  .beehiiv-embed-wrapper iframe {
-    display: block;
-    background: transparent;
-  }
-  .newsletter-fallback {
-    font-size: 12px;
-    color: var(--text-dim);
-    font-family: var(--font-mono);
-    margin-bottom: 8px;
-  }
-  .newsletter-fallback a { color: var(--accent); }
-  .newsletter-fallback a:hover { text-decoration: underline; }
-  .newsletter-trust {
-    font-size: 11px;
-    color: var(--text-dim);
-    font-family: var(--font-mono);
-    margin-top: 4px;
-  }
+  /* ─── NEWSLETTER + BEEHIIV AFFILIATE ─── */
+  .newsletter-section { padding: var(--sp); background: #0a0f0c; border-top: 1px solid rgba(74,222,128,0.1); border-bottom: 1px solid rgba(74,222,128,0.1); }
+  .nl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+  .nl-label { font-family: var(--font-mono); font-size: 10px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+  .nl-grid h2 { font-size: 1.5rem; margin-bottom: 10px; }
+  .nl-sub { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 20px; }
+
+  /* Form */
+  .nl-form { display: flex; flex-direction: column; gap: 12px; }
+  .nl-input-row { display: flex; gap: 8px; }
+  .nl-input { flex: 1; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-primary); font-family: var(--font-mono); font-size: 13px; padding: 10px 14px; border-radius: var(--radius); transition: border-color 0.15s; outline: none; }
+  .nl-input::placeholder { color: var(--text-dim); }
+  .nl-input:focus { border-color: var(--accent); }
+  .nl-btn { background: var(--accent); color: #000; font-family: var(--font-mono); font-size: 13px; font-weight: 700; padding: 10px 18px; border-radius: var(--radius); border: none; cursor: pointer; white-space: nowrap; transition: opacity 0.15s; }
+  .nl-btn:hover { opacity: 0.88; }
+  .nl-small { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); }
+  .nl-fallback { font-size: 12px; color: var(--text-dim); font-family: var(--font-mono); margin-top: 8px; }
+  .nl-fallback a { color: var(--accent); }
+  .nl-fallback a:hover { text-decoration: underline; }
+
+  /* Affiliate panel */
+  .nl-affiliate { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+  .nla-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; color: var(--urgent); background: var(--urgent-dim); border: 1px solid rgba(245,158,11,0.3); padding: 3px 8px; border-radius: 4px; display: inline-block; letter-spacing: 0.08em; }
+  .nla-logo-row { display: flex; align-items: center; gap: 12px; }
+  .nla-logo { font-family: var(--font-mono); font-size: 1.1rem; font-weight: 700; color: var(--text-primary); }
+  .nla-tag { font-size: 11px; color: var(--text-dim); font-family: var(--font-mono); }
+  .nla-copy { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .nla-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .nla-list li { font-size: 12px; color: var(--text-secondary); font-family: var(--font-mono); padding-left: 14px; position: relative; }
+  .nla-list li::before { content: "✓"; position: absolute; left: 0; color: var(--accent); font-size: 10px; top: 2px; }
+  .nla-cta { display: inline-block; background: transparent; color: var(--accent) !important; border: 1px solid var(--accent-dim); padding: 10px 18px; border-radius: var(--radius); font-family: var(--font-mono); font-size: 13px; font-weight: 700; text-decoration: none !important; transition: all 0.15s; align-self: flex-start; }
+  .nla-cta:hover { border-color: var(--accent); background: var(--accent-glow); }
+  .nla-disc { font-size: 10px; color: var(--text-dim); font-family: var(--font-mono); line-height: 1.5; }
+
+  /* ─── UPGRADE CALLOUT ─── */
+  .upgrade-section { padding: 32px 0; background: var(--bg-card-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .upgrade-inner { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .upgrade-badge { font-family: var(--font-mono); font-size: 11px; color: #c084fc; background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.3); padding: 4px 10px; border-radius: 4px; white-space: nowrap; }
+  .upgrade-copy { font-size: 13px; color: var(--text-secondary); flex: 1; min-width: 240px; line-height: 1.55; }
 
   /* ─── FAQ ─── */
-  .faq-section {
-    padding: var(--section-pad);
-    background: var(--bg-card-alt);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
+  .faq-section { padding: var(--sp); background: var(--bg-card-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
   .faq-container { max-width: 760px; }
-  .faq-list {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-  }
-  .faq-item {
-    padding: 20px 24px;
-    border-bottom: 1px solid var(--border-subtle);
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    background: var(--bg-card);
-    transition: background 0.15s;
-  }
+  .faq-list { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+  .faq-item { padding: 20px 24px; border-bottom: 1px solid var(--border-subtle); display: flex; flex-direction: column; gap: 8px; background: var(--bg-card); transition: background 0.15s; }
   .faq-item:last-child { border-bottom: none; }
   .faq-item:hover { background: #131313; }
   .faq-q { font-size: 14px; font-weight: 600; color: var(--text-primary); }
@@ -1377,87 +1162,67 @@ const schemaArticle = {
   .related-list a:hover { color: var(--accent); }
 
   /* ─── EMAIL CTA ─── */
-  .email-section {
-    background: var(--bg-card-dark);
-    border-top: 1px solid var(--border);
-    padding: var(--section-pad);
-  }
+  .email-section { background: var(--bg-card-dark); border-top: 1px solid var(--border); padding: var(--sp); }
   .email-container { max-width: 580px; text-align: center; margin: 0 auto; }
   .email-section h2 { margin-bottom: 12px; }
-  .email-section p { color: var(--text-secondary); font-size: 14px; margin-bottom: 28px; }
+  .email-section p { color: var(--text-secondary); font-size: 14px; margin-bottom: 20px; }
+  .email-pills { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 24px; }
+  .email-pills span { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); background: var(--bg-card); border: 1px solid var(--border); padding: 4px 10px; border-radius: 4px; }
   .email-trust { font-size: 11px; color: var(--text-dim); margin-top: 16px; font-family: var(--font-mono); }
 
+  /* ─── STICKY CTA ─── */
+  .sticky-cta { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10,10,10,0.97); border-top: 1px solid var(--border); padding: 12px 24px; z-index: 90; transition: transform 0.25s; }
+  .sticky-cta--hidden { transform: translateY(100%); }
+  .sticky-cta-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .sticky-cta-inner span { font-size: 13px; color: var(--text-secondary); font-family: var(--font-mono); }
+
   /* ─── FOOTER ─── */
-  .footer {
-    background: #080808;
-    border-top: 1px solid var(--border);
-    padding: 48px 0 32px;
-  }
-  .footer-inner { display: flex; flex-direction: column; gap: 24px; }
+  .footer { background: #080808; border-top: 1px solid var(--border); padding: 48px 0 32px; }
+  .footer-inner { display: flex; flex-direction: column; gap: 20px; }
   .footer-brand { display: flex; flex-direction: column; gap: 4px; }
   .footer-logo { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: 0.05em; }
   .footer-sys { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); }
   .footer-nav { display: flex; flex-wrap: wrap; gap: 16px; }
   .footer-nav a { font-size: 12px; color: var(--text-dim); font-family: var(--font-mono); }
   .footer-nav a:hover { color: var(--accent); }
-  .footer-disclosure { font-size: 11px; color: var(--text-dim); line-height: 1.6; max-width: 620px; }
-  .footer-disclosure a { color: var(--text-dim); text-decoration: underline; }
+  .footer-trust { display: flex; flex-wrap: wrap; gap: 16px; }
+  .footer-trust span { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); }
+  .footer-disc { font-size: 11px; color: var(--text-dim); line-height: 1.6; max-width: 620px; }
+  .footer-disc a { color: var(--text-dim); text-decoration: underline; }
   .footer-top { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); align-self: flex-start; }
   .footer-top:hover { color: var(--accent); }
 
   /* ─── BUTTONS ─── */
-  .btn-primary {
-    display: inline-block;
-    background: var(--accent);
-    color: #000 !important;
-    padding: 13px 22px;
-    border-radius: var(--radius);
-    font-weight: 700;
-    font-size: 14px;
-    font-family: var(--font-mono);
-    text-decoration: none !important;
-    transition: opacity 0.15s;
-    letter-spacing: 0.01em;
-  }
+  .btn-primary { display: inline-block; background: var(--accent); color: #000 !important; padding: 13px 22px; border-radius: var(--radius); font-weight: 700; font-size: 14px; font-family: var(--font-mono); text-decoration: none !important; transition: opacity 0.15s; letter-spacing: 0.01em; }
   .btn-primary:hover { opacity: 0.88; }
-  .btn-secondary {
-    display: inline-block;
-    background: transparent;
-    color: var(--accent) !important;
-    border: 1px solid var(--accent-dim);
-    padding: 10px 18px;
-    border-radius: var(--radius);
-    font-size: 13px;
-    font-family: var(--font-mono);
-    text-decoration: none !important;
-    transition: all 0.15s;
-  }
+  .btn-secondary { display: inline-block; background: transparent; color: var(--accent) !important; border: 1px solid var(--accent-dim); padding: 10px 18px; border-radius: var(--radius); font-size: 13px; font-family: var(--font-mono); text-decoration: none !important; transition: all 0.15s; }
   .btn-secondary:hover { border-color: var(--accent); background: var(--accent-glow); }
 
   /* ─── RESPONSIVE ─── */
   @media (max-width: 900px) {
     .tools-grid { grid-template-columns: 1fr; }
+    .nl-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 768px) {
     .stats-row { grid-template-columns: repeat(2, 1fr); max-width: 100%; }
     .testi-grid { grid-template-columns: 1fr; }
     h1 { font-size: 1.9rem; }
-    .nav-links { display: none; }
-    .deploy-header { flex-direction: column; gap: 4px; }
-    .hero-section { padding: 48px 0 40px; }
-    .newsletter-container { text-align: left; }
+    .nav-dropdown { display: none; }
+    .nav-cta { font-size: 10px; padding: 7px 10px; }
+    .hero { padding: 40px 0 36px; }
+    .nl-input-row { flex-direction: column; }
+    .sticky-cta-inner span { font-size: 11px; }
   }
   @media (max-width: 480px) {
     .container { padding: 0 16px; }
     .tool-card { padding: 20px; }
     .step-item { padding: 16px; }
     td, th { padding: 10px 12px; }
+    .savings-row { gap: 12px; }
   }
 
-  /* ─── PRINT ─── */
   @media print {
-    .nav, .nav-cta, .hero-actions, .deploy-cta-block, .email-section, .newsletter-section { display: none; }
+    .nav, .nav-cta, .hero-actions, .deploy-cta-row, .email-section, .newsletter-section, .sticky-cta { display: none; }
     body { background: #fff; color: #000; }
-    .tool-card, .testi-card, .faq-item, .step-item { border: 1px solid #ddd; }
   }
 </style>
