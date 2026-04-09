@@ -8,11 +8,6 @@ export default defineConfig({
   output: 'static',
   trailingSlash: 'never',
 
-  build: {
-    inlineStylesheets: 'auto',
-    assets: '_assets',
-  },
-
   prefetch: {
     prefetchAll: false,
     defaultStrategy: 'hover',
