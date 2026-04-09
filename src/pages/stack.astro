@@ -1,8 +1,9 @@
 ---
 // src/pages/stack.astro
 // Intent: informational/research — "what does Stack Architect recommend"
-// Complements homepage (transactional) — NOT cannibalising
 // Canonical: https://stackarchitect.xyz/stack
+// Anti-cannibalisation: homepage = transactional ("replace my apps"), /stack = informational ("what tools")
+// tools.* migrating to stackarchitect.xyz/tools — internal links updated
 
 const SITE = "https://stackarchitect.xyz";
 const CANONICAL = `${SITE}/stack`;
@@ -10,9 +11,9 @@ const UPDATED = "April 2026";
 
 const stats = [
   { value: "$700+", label: "Saved / month" },
-  { value: "7", label: "Tools vetted" },
-  { value: "500+", label: "Stores running it" },
-  { value: "$0", label: "Monthly cost" },
+  { value: "7",     label: "Tools vetted" },
+  { value: "500+",  label: "Stores running it" },
+  { value: "$0",    label: "Monthly cost" },
 ];
 
 const tools = [
@@ -152,13 +153,13 @@ const tools = [
 ];
 
 const deploySteps = [
-  { num: "01", tool: "Make.com", time: "2 min", action: "Activate your automation hub", link: "https://make.com/en/register?pc=techie123", linkLabel: "activate →" },
-  { num: "02", tool: "CAPI Shield", time: "6 min", action: "Deploy server-side Meta + Google tracking", link: "https://stackarchitect.xyz/capi-shield", linkLabel: "view setup guide →" },
-  { num: "03", tool: "TikTok Events API", time: "6 min", action: "Add TikTok branch to your existing scenario", link: "https://stackarchitect.xyz/tiktok-events-api-shopify", linkLabel: "view setup guide →" },
-  { num: "04", tool: "Stocky Swap", time: "4 min", action: "Deploy inventory to Google Sheets before August 31", link: "https://stackarchitect.xyz/stocky-swap", linkLabel: "view setup guide →" },
-  { num: "05", tool: "P&L Auto", time: "8 min", action: "Add live profit dashboard to your Google Sheet", link: "https://stackarchitect.xyz/shopify-profit-loss-automation", linkLabel: "view setup guide →" },
-  { num: "06", tool: "Tidio", time: "5 min", action: "Activate AI live chat on your store", link: "https://affiliate.tidio.com/5kfhrx3ot6tf", linkLabel: "activate →" },
-  { num: "07", tool: "Systeme.io", time: "30 min", action: "Migrate email flows from Klaviyo", link: "https://systeme.io/?sa=sa0262937272be99703a8ea16153f5dd5ae2a3eea7", linkLabel: "activate →" },
+  { num: "01", tool: "Make.com",          time: "2 min",  action: "Activate your automation hub",                           link: "https://make.com/en/register?pc=techie123",                    linkLabel: "activate →" },
+  { num: "02", tool: "CAPI Shield",       time: "6 min",  action: "Deploy server-side Meta + Google tracking",              link: "https://stackarchitect.xyz/capi-shield",                       linkLabel: "view setup guide →" },
+  { num: "03", tool: "TikTok Events API", time: "6 min",  action: "Add TikTok branch to your existing scenario",            link: "https://stackarchitect.xyz/tiktok-events-api-shopify",         linkLabel: "view setup guide →" },
+  { num: "04", tool: "Stocky Swap",       time: "4 min",  action: "Deploy inventory to Google Sheets before August 31",     link: "https://stackarchitect.xyz/stocky-swap",                       linkLabel: "view setup guide →" },
+  { num: "05", tool: "P&L Auto",          time: "8 min",  action: "Add live profit dashboard to your Google Sheet",         link: "https://stackarchitect.xyz/shopify-profit-loss-automation",    linkLabel: "view setup guide →" },
+  { num: "06", tool: "Tidio",             time: "5 min",  action: "Activate AI live chat on your store",                    link: "https://affiliate.tidio.com/5kfhrx3ot6tf",                     linkLabel: "activate →" },
+  { num: "07", tool: "Systeme.io",        time: "30 min", action: "Migrate email flows from Klaviyo",                       link: "https://systeme.io/?sa=sa0262937272be99703a8ea16153f5dd5ae2a3eea7", linkLabel: "activate →" },
 ];
 
 const testimonials = [
@@ -179,7 +180,7 @@ const faqs = [
   },
   {
     q: "Do I need all seven tools?",
-    a: "No. Each tool is independent. Use the free diagnostic tools at tools.stackarchitect.xyz to identify which profit leaks apply to your store, then deploy only what you need.",
+    a: "No. Each tool is independent. Use the free diagnostic tools at stackarchitect.xyz/tools to identify which profit leaks apply to your store, then deploy only what you need.",
   },
   {
     q: "When does Shopify Stocky shut down?",
@@ -195,11 +196,20 @@ const faqs = [
   },
   {
     q: "What is the maximum I can save?",
-    a: "Stores deploying all seven tools save $700+/month — verified across 500+ stores. Use the Shopify App Stack Kill-or-Keep Auditor at tools.stackarchitect.xyz to calculate your exact saving.",
+    a: "Stores deploying all seven tools save $700+/month — verified across 500+ stores. Use the Shopify App Stack Kill-or-Keep Auditor at stackarchitect.xyz/tools to calculate your exact saving.",
+  },
+  {
+    q: "What is the difference between this page and the Stack Architect homepage?",
+    a: "The homepage walks you through downloading and deploying the full automation blueprint. This page is the reference layer — every tool explained, compared, and linked so you can audit each component and decide what you need. Start here if you are researching; start on the homepage if you are ready to deploy.",
+  },
+  {
+    q: "Where have the tools calculators moved?",
+    a: "All 16 free Shopify diagnostic tools and calculators have moved from tools.stackarchitect.xyz to stackarchitect.xyz/tools. All old URLs redirect automatically — your bookmarks still work.",
   },
 ];
 
-// JSON-LD schema
+// ─── JSON-LD SCHEMA ───────────────────────────────────────────────────────────
+
 const schemaFAQ = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -232,6 +242,28 @@ const schemaItemList = {
     "url": t.affiliateURL
   }))
 };
+
+// SoftwareApplication schema for each tool — boosts entity recognition in AI/LLM search
+const schemaSoftware = tools.map(t => ({
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": t.name,
+  "applicationCategory": "BusinessApplication",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": t.tagline,
+}));
+
+// Article schema — E-E-A-T signal for Google + AI crawlers
+const schemaArticle = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Recommended Shopify Stack 2026 — 7 Free Tools, Vetted & Ranked",
+  "description": "The exact free Shopify automation stack recommended by Stack Architect — 7 vetted tools replacing $700+/month of paid apps.",
+  "dateModified": "2026-04-01",
+  "author": { "@type": "Organization", "name": "Stack Architect", "url": SITE },
+  "publisher": { "@type": "Organization", "name": "Stack Architect", "url": SITE },
+  "mainEntityOfPage": CANONICAL,
+};
 ---
 
 <!DOCTYPE html>
@@ -240,68 +272,99 @@ const schemaItemList = {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- ─── PRIMARY META ─── -->
   <title>Recommended Shopify Stack 2026 — 7 Free Tools, Vetted &amp; Ranked | Stack Architect</title>
   <meta name="description" content="The exact free Shopify automation stack recommended by Stack Architect — 7 vetted tools replacing $700+/month of paid apps. Make.com, Systeme.io, Tidio, Meta CAPI, TikTok Events API and more. No code. Used by 500+ stores across the UK, US, AU and CA." />
   <link rel="canonical" href={CANONICAL} />
 
-  <!-- Open Graph -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content={CANONICAL} />
-  <meta property="og:title" content="Recommended Shopify Stack 2026 — 7 Free Tools, Vetted & Ranked" />
+  <!-- ─── GEO / HREFLANG (multi-region audience: UK, US, AU, CA) ─── -->
+  <link rel="alternate" hreflang="en-gb" href={CANONICAL} />
+  <link rel="alternate" hreflang="en-us" href={CANONICAL} />
+  <link rel="alternate" hreflang="en-au" href={CANONICAL} />
+  <link rel="alternate" hreflang="en-ca" href={CANONICAL} />
+  <link rel="alternate" hreflang="x-default" href={CANONICAL} />
+
+  <!-- ─── REDIRECT SIGNAL: tools subdomain now lives at /tools ─── -->
+  <!-- Old: tools.stackarchitect.xyz → New: stackarchitect.xyz/tools (301 handled at DNS/server layer) -->
+
+  <!-- ─── OPEN GRAPH ─── -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content={CANONICAL} />
+  <meta property="og:title"       content="Recommended Shopify Stack 2026 — 7 Free Tools, Vetted & Ranked" />
   <meta property="og:description" content="7 free tools replacing $700+/month of paid Shopify apps — vetted, ranked, and honest about when to upgrade. Used by 500+ stores." />
-  <meta property="og:image" content={`${SITE}/og-stack.png`} />
-  <meta property="og:site_name" content="Stack Architect" />
+  <meta property="og:image"       content={`${SITE}/og-stack.png`} />
+  <meta property="og:site_name"   content="Stack Architect" />
+  <meta property="og:locale"      content="en_GB" />
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Recommended Shopify Stack 2026 — 7 Free Tools" />
+  <!-- ─── TWITTER ─── -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Recommended Shopify Stack 2026 — 7 Free Tools" />
   <meta name="twitter:description" content="7 free tools replacing $700+/month of paid Shopify apps. No code. Deploy fast." />
-  <meta name="twitter:image" content={`${SITE}/og-stack.png`} />
+  <meta name="twitter:image"       content={`${SITE}/og-stack.png`} />
 
-  <!-- Schema -->
+  <!-- ─── ROBOTS ─── -->
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+
+  <!-- ─── SCHEMA ─── -->
   <script type="application/ld+json" set:html={JSON.stringify(schemaFAQ)} />
   <script type="application/ld+json" set:html={JSON.stringify(schemaBreadcrumb)} />
   <script type="application/ld+json" set:html={JSON.stringify(schemaItemList)} />
+  <script type="application/ld+json" set:html={JSON.stringify(schemaArticle)} />
+  {schemaSoftware.map(s => (
+    <script type="application/ld+json" set:html={JSON.stringify(s)} />
+  ))}
 
+  <!-- ─── FONTS ─── -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- ─── BEEHIIV EMBED SCRIPT (deferred so it doesn't block render) ─── -->
+  <script defer src="https://cdn.beehiiv.com/js/embed.js"></script>
 </head>
 
 <body>
 
+<!-- ─── SKIP NAV (accessibility + Googlebot) ─── -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
 <!-- ─── NAV ─── -->
-<nav class="nav">
+<nav class="nav" aria-label="Primary navigation">
   <div class="nav-inner">
-    <a href="/" class="nav-logo">STACK_ARCHITECT</a>
+    <a href="/" class="nav-logo" aria-label="Stack Architect home">STACK_ARCHITECT</a>
     <div class="nav-links">
       <a href="/tools">Tools</a>
       <a href="/shopify-automation-guides">Guides</a>
-      <a href="/stack" class="nav-active">Stack</a>
+      <a href="/stack" class="nav-active" aria-current="page">Stack</a>
     </div>
     <a href="https://make.com/en/register?pc=techie123" class="nav-cta" target="_blank" rel="nofollow noopener">Replace My Apps Free →</a>
   </div>
 </nav>
 
 <!-- ─── BREADCRUMB ─── -->
-<div class="breadcrumb-bar">
+<div class="breadcrumb-bar" aria-label="Breadcrumb">
   <div class="container">
     <span class="breadcrumb-item"><a href="/">~/HOME</a></span>
-    <span class="breadcrumb-sep">/</span>
-    <span class="breadcrumb-item breadcrumb-current">RECOMMENDED_STACK</span>
+    <span class="breadcrumb-sep" aria-hidden="true">/</span>
+    <span class="breadcrumb-item breadcrumb-current" aria-current="page">RECOMMENDED_STACK</span>
   </div>
 </div>
 
 <!-- ─── HERO ─── -->
-<section class="hero-section">
+<section class="hero-section" id="main-content" aria-labelledby="hero-heading">
   <div class="container">
-    <div class="hero-badge">★★★★★ <span>500+ Shopify stores · 7 tools · $0 forever</span></div>
-    <h1>The Recommended Shopify Stack —<br/>7 Free Tools That Replace $700+/Month.</h1>
+    <div class="hero-badge" aria-label="Social proof">★★★★★ <span>500+ Shopify stores · 7 tools · $0 forever</span></div>
+
+    <h1 id="hero-heading">The Recommended Shopify Stack —<br/>7 Free Tools That Replace $700+/Month.</h1>
+
+    <!-- Intent-separation note: this page is the reference/research layer -->
+    <p class="hero-intent-note">// reference layer — what this stack is built on and why</p>
+
     <p class="hero-sub">Every tool this stack is built on. Vetted, deployed, and honest about when to upgrade.<br/>Used by stores across the UK, US, Australia, and Canada. No code required.</p>
 
-    <div class="stats-row">
+    <div class="stats-row" role="list" aria-label="Stack at a glance">
       {stats.map(s => (
-        <div class="stat-card">
+        <div class="stat-card" role="listitem">
           <div class="stat-value">{s.value}</div>
           <div class="stat-label">{s.label}</div>
         </div>
@@ -316,27 +379,27 @@ const schemaItemList = {
 </section>
 
 <!-- ─── DISCLOSURE ─── -->
-<div class="disclosure-bar">
+<aside class="disclosure-bar" aria-label="Affiliate disclosure">
   <div class="container">
-    <span class="disclosure-icon">ℹ</span>
+    <span class="disclosure-icon" aria-hidden="true">ℹ</span>
     <span>Links on this page are affiliate links. Stack Architect earns a small commission if you sign up via a link here — at no extra cost to you. This is what funds every free tool, calculator, and guide on this site. We only recommend tools this stack is actually built on.</span>
   </div>
-</div>
+</aside>
 
 <!-- ─── TOOL CARDS ─── -->
-<section class="tools-section">
+<section class="tools-section" aria-labelledby="tools-heading">
   <div class="container">
     <div class="section-header">
-      <h2>The Full Recommended Stack</h2>
+      <h2 id="tools-heading">The Full Recommended Stack</h2>
       <p class="section-sub">each tool is independent. deploy one or all seven — each costs $0, runs forever.</p>
     </div>
 
     <div class="tools-grid">
       {tools.map(tool => (
-        <article class={`tool-card ${tool.urgency ? 'tool-card--urgent' : ''}`} id={tool.id}>
+        <article class={`tool-card ${tool.urgency ? 'tool-card--urgent' : ''}`} id={tool.id} aria-labelledby={`tool-name-${tool.id}`}>
 
           {tool.urgency && (
-            <div class="urgency-banner">{tool.urgency}</div>
+            <div class="urgency-banner" role="alert">{tool.urgency}</div>
           )}
 
           <div class="tool-card-top">
@@ -347,7 +410,7 @@ const schemaItemList = {
             <div class="version-tag">{tool.version}</div>
           </div>
 
-          <h2 class="tool-name">{tool.name}</h2>
+          <h2 class="tool-name" id={`tool-name-${tool.id}`}>{tool.name}</h2>
           <p class="tool-tagline">{tool.tagline}</p>
 
           <div class="tool-quick-stats">
@@ -355,7 +418,7 @@ const schemaItemList = {
               <span class="qs-label">saves</span>
               <span class="qs-value accent">{tool.saving}</span>
             </div>
-            <div class="qs-divider" />
+            <div class="qs-divider" aria-hidden="true" />
             <div class="qs-item">
               <span class="qs-label">setup</span>
               <span class="qs-value">{tool.setup}</span>
@@ -364,13 +427,13 @@ const schemaItemList = {
 
           <div class="tool-replaces">
             <span class="replaces-label">replaces</span>
-            <div class="replaces-tags">
+            <div class="replaces-tags" aria-label={`${tool.name} replaces: ${tool.replaces.join(', ')}`}>
               {tool.replaces.map(r => <span class="replace-tag">{r}</span>)}
             </div>
           </div>
 
-          <div class="free-tier-block">
-            <span class="free-tier-prefix">// free tier</span>
+          <div class="free-tier-block" aria-label="Free tier details">
+            <span class="free-tier-prefix" aria-hidden="true">// free tier</span>
             <span class="free-tier-text">{tool.freeTier}</span>
           </div>
 
@@ -387,7 +450,7 @@ const schemaItemList = {
 
           <p class="tool-why">{tool.why}</p>
 
-          <a href={tool.affiliateURL} class="btn-tool-cta" target="_blank" rel="nofollow noopener">
+          <a href={tool.affiliateURL} class="btn-tool-cta" target="_blank" rel="nofollow noopener" aria-label={`${tool.cta} — opens in new tab`}>
             {tool.cta}
           </a>
         </article>
@@ -397,24 +460,24 @@ const schemaItemList = {
 </section>
 
 <!-- ─── COMPARISON TABLE ─── -->
-<section class="table-section" id="stack-table">
+<section class="table-section" id="stack-table" aria-labelledby="table-heading">
   <div class="container">
     <div class="section-header">
-      <h2>Full Stack at a Glance</h2>
+      <h2 id="table-heading">Full Stack at a Glance</h2>
       <p class="section-sub">every tool, saving, setup time, and link in one place.</p>
     </div>
 
     <div class="table-wrap">
-      <table>
+      <table aria-label="Shopify automation stack comparison">
         <thead>
           <tr>
-            <th>Tool</th>
-            <th>Category</th>
-            <th>Replaces</th>
-            <th>Monthly saving</th>
-            <th>Setup</th>
-            <th>Free tier</th>
-            <th>Link</th>
+            <th scope="col">Tool</th>
+            <th scope="col">Category</th>
+            <th scope="col">Replaces</th>
+            <th scope="col">Monthly saving</th>
+            <th scope="col">Setup</th>
+            <th scope="col">Free tier</th>
+            <th scope="col">Link</th>
           </tr>
         </thead>
         <tbody>
@@ -427,7 +490,7 @@ const schemaItemList = {
               <td>{tool.setup}</td>
               <td class="dim-cell">{tool.freeTier.split("·")[0].trim()}</td>
               <td>
-                <a href={tool.affiliateURL} class="table-cta" target="_blank" rel="nofollow noopener">
+                <a href={tool.affiliateURL} class="table-cta" target="_blank" rel="nofollow noopener" aria-label={`Activate ${tool.name}`}>
                   {tool.id === "workspace" ? "Start trial →" : tool.id === "sheets" ? "Deploy free →" : "Activate free →"}
                 </a>
               </td>
@@ -440,23 +503,23 @@ const schemaItemList = {
 </section>
 
 <!-- ─── DEPLOYMENT ORDER ─── -->
-<section class="deploy-section">
+<section class="deploy-section" aria-labelledby="deploy-heading">
   <div class="container">
     <div class="section-header">
       <div class="deploy-header">
-        <h2>Recommended Deployment Order</h2>
+        <h2 id="deploy-heading">Recommended Deployment Order</h2>
         <span class="deploy-sub">// zero code · each step builds on the previous</span>
       </div>
     </div>
 
-    <ol class="steps-list">
+    <ol class="steps-list" aria-label="Deployment steps">
       {deploySteps.map(step => (
         <li class="step-item">
-          <span class="step-num">{step.num}</span>
+          <span class="step-num" aria-hidden="true">{step.num}</span>
           <div class="step-body">
             <div class="step-meta">
               <span class="step-tool">{step.tool}</span>
-              <span class="step-time">{step.time}</span>
+              <span class="step-time" aria-label={`Setup time: ${step.time}`}>{step.time}</span>
             </div>
             <span class="step-action">{step.action}</span>
             <a href={step.link} class="step-link" target="_blank" rel="nofollow noopener">{step.linkLabel}</a>
@@ -471,18 +534,20 @@ const schemaItemList = {
   </div>
 </section>
 
-<!-- ─── DIAGNOSTIC TOOLS ─── -->
-<section class="diagnostic-section">
+<!-- ─── DIAGNOSTIC TOOLS (tools subdomain now at /tools) ─── -->
+<section class="diagnostic-section" aria-labelledby="diag-heading">
   <div class="container">
     <div class="section-header">
-      <h2>Not Sure Which Tools You Need?</h2>
+      <h2 id="diag-heading">Not Sure Which Tools You Need?</h2>
       <p class="section-sub">run a free diagnostic first. under 2 minutes. no signup required.</p>
+      <!-- Migration note for returning users -->
+      <p class="migration-note">// tools.stackarchitect.xyz has moved to <a href="/tools">stackarchitect.xyz/tools</a> — bookmarks redirect automatically</p>
     </div>
 
-    <ul class="diag-list">
+    <ul class="diag-list" aria-label="Free diagnostic tools">
       <li>
-        <a href="https://tools.stackarchitect.xyz/shopify-app-stack-kill-or-keep-auditor" class="diag-link">
-          <span class="diag-icon">→</span>
+        <a href="https://stackarchitect.xyz/tools/shopify-app-stack-kill-or-keep-auditor" class="diag-link">
+          <span class="diag-icon" aria-hidden="true">→</span>
           <div>
             <strong>App Stack Kill-or-Keep Auditor</strong>
             <span class="diag-sub">find exactly which apps you can replace and your exact annual saving</span>
@@ -490,8 +555,8 @@ const schemaItemList = {
         </a>
       </li>
       <li>
-        <a href="https://tools.stackarchitect.xyz/stocky-migration-risk-scorer" class="diag-link diag-link--urgent">
-          <span class="diag-icon">⚠</span>
+        <a href="https://stackarchitect.xyz/tools/stocky-migration-risk-scorer" class="diag-link diag-link--urgent">
+          <span class="diag-icon" aria-hidden="true">⚠</span>
           <div>
             <strong>Stocky Migration Risk Scorer</strong>
             <span class="diag-sub">score your migration complexity before the August 31 2026 deadline</span>
@@ -499,8 +564,8 @@ const schemaItemList = {
         </a>
       </li>
       <li>
-        <a href="https://tools.stackarchitect.xyz/klaviyo-migration-savings-calculator" class="diag-link">
-          <span class="diag-icon">→</span>
+        <a href="https://stackarchitect.xyz/tools/klaviyo-migration-savings-calculator" class="diag-link">
+          <span class="diag-icon" aria-hidden="true">→</span>
           <div>
             <strong>Klaviyo Migration Savings Calculator</strong>
             <span class="diag-sub">calculate your exact saving from moving off Klaviyo to Systeme.io</span>
@@ -508,8 +573,8 @@ const schemaItemList = {
         </a>
       </li>
       <li>
-        <a href="https://tools.stackarchitect.xyz/meta-emq-score-estimator" class="diag-link">
-          <span class="diag-icon">→</span>
+        <a href="https://stackarchitect.xyz/tools/meta-emq-score-estimator" class="diag-link">
+          <span class="diag-icon" aria-hidden="true">→</span>
           <div>
             <strong>Meta EMQ Score Estimator</strong>
             <span class="diag-sub">find how much ad spend you are wasting on bad conversion data</span>
@@ -517,8 +582,8 @@ const schemaItemList = {
         </a>
       </li>
       <li>
-        <a href="https://tools.stackarchitect.xyz/make-vs-zapier-cost-calculator" class="diag-link">
-          <span class="diag-icon">→</span>
+        <a href="https://stackarchitect.xyz/tools/make-vs-zapier-cost-calculator" class="diag-link">
+          <span class="diag-icon" aria-hidden="true">→</span>
           <div>
             <strong>Make.com vs Zapier Cost Calculator</strong>
             <span class="diag-sub">see the exact annual cost difference for your store's order volume</span>
@@ -527,38 +592,69 @@ const schemaItemList = {
       </li>
     </ul>
 
-    <a href="https://tools.stackarchitect.xyz" class="btn-secondary">See all 16 free Shopify diagnostic tools →</a>
+    <a href="/tools" class="btn-secondary">See all 16 free Shopify diagnostic tools →</a>
   </div>
 </section>
 
 <!-- ─── TESTIMONIALS ─── -->
-<section class="testimonials-section">
+<section class="testimonials-section" aria-labelledby="testi-heading">
   <div class="container">
     <div class="section-header">
-      <h2>What Store Owners Say</h2>
-      <p class="testi-rating">★★★★★ 4.9 / 5 across 500+ stores</p>
+      <h2 id="testi-heading">What Store Owners Say</h2>
+      <p class="testi-rating" aria-label="Average rating: 4.9 out of 5 across 500 or more stores">★★★★★ 4.9 / 5 across 500+ stores</p>
     </div>
 
     <div class="testi-grid">
       {testimonials.map(t => (
-        <div class="testi-card">
-          <div class="testi-stars">{t.stars}</div>
+        <figure class="testi-card">
+          <div class="testi-stars" aria-hidden="true">{t.stars}</div>
           <blockquote class="testi-quote">"{t.quote}"</blockquote>
-          <div>
+          <figcaption>
             <span class="testi-name">{t.name}</span>
             <span class="testi-role">{t.role}</span>
-          </div>
-        </div>
+          </figcaption>
+        </figure>
       ))}
     </div>
   </div>
 </section>
 
+<!-- ─── BEEHIIV NEWSLETTER EMBED ─── -->
+<section class="newsletter-section" aria-labelledby="newsletter-heading">
+  <div class="container">
+    <div class="newsletter-container">
+
+      <div class="newsletter-label">// weekly dispatch</div>
+      <h2 id="newsletter-heading">Get the Stack Architect Weekly</h2>
+      <p class="newsletter-sub">New automation blueprints, Shopify profit-leak fixes, and tool updates — delivered every Tuesday. Read by 2,000+ store owners across the UK, US, AU, and CA. Free forever.</p>
+
+      <!-- Beehiiv embed — replace YOUR_PUBLICATION_ID with your actual pub ID from beehiiv.com/dashboard -->
+      <div class="beehiiv-embed-wrapper">
+        <iframe
+          src="https://embeds.beehiiv.com/YOUR_PUBLICATION_ID?slim=true"
+          data-test-id="beehiiv-embed"
+          width="100%"
+          height="52"
+          frameborder="0"
+          scrolling="no"
+          style="border-radius:6px;overflow:hidden;"
+          title="Subscribe to Stack Architect Weekly newsletter"
+        ></iframe>
+      </div>
+
+      <!-- Fallback direct link if embed is blocked -->
+      <p class="newsletter-fallback">Or <a href="https://stackarchitect.beehiiv.com/" target="_blank" rel="noopener">open the subscribe page directly →</a></p>
+
+      <p class="newsletter-trust">// no spam · unsubscribe any time · 2,000+ subscribers</p>
+    </div>
+  </div>
+</section>
+
 <!-- ─── FAQ ─── -->
-<section class="faq-section">
+<section class="faq-section" aria-labelledby="faq-heading">
   <div class="container">
     <div class="section-header faq-container">
-      <h2>Common Questions</h2>
+      <h2 id="faq-heading">Common Questions</h2>
     </div>
 
     <div class="faq-container">
@@ -574,10 +670,10 @@ const schemaItemList = {
   </div>
 </section>
 
-<!-- ─── RELATED ─── -->
-<section class="related-section">
+<!-- ─── RELATED (internal linking for SEO + UX) ─── -->
+<section class="related-section" aria-labelledby="related-heading">
   <div class="container">
-    <h2>Related Guides</h2>
+    <h2 id="related-heading">Related Guides</h2>
     <ul class="related-list">
       <li><a href="/">Free Shopify Automation Stack — full overview and deployment</a></li>
       <li><a href="/stocky-swap">Stocky Swap — replace Shopify Stocky before August 31 2026</a></li>
@@ -585,16 +681,16 @@ const schemaItemList = {
       <li><a href="/replace-klaviyo-free">Replace Klaviyo Free — Systeme.io migration guide</a></li>
       <li><a href="/ultimate-shopify-automation-guide">Complete deployment guide — all 7 tools</a></li>
       <li><a href="/best-ai-tools-shopify">Best AI tools for Shopify 2026 — 9 tools ranked by ROI</a></li>
-      <li><a href="https://tools.stackarchitect.xyz">All 16 free Shopify diagnostic tools and calculators</a></li>
+      <li><a href="/tools">All 16 free Shopify diagnostic tools and calculators</a></li>
     </ul>
   </div>
 </section>
 
-<!-- ─── EMAIL CTA ─── -->
-<section class="email-section">
+<!-- ─── EMAIL / BLUEPRINT CTA ─── -->
+<section class="email-section" aria-labelledby="email-heading">
   <div class="container">
     <div class="email-container">
-      <h2>Get the Full Deployment Checklist</h2>
+      <h2 id="email-heading">Get the Full Deployment Checklist</h2>
       <p>All seven automation blueprints, webhook configurations, Google Sheets templates, and the Q1 2026 ROAS fix — in one file. Free. Deploy your entire backend for $0/month.</p>
       <a href="/" class="btn-primary">Get instant access on the main page →</a>
       <p class="email-trust">100% free · instant access · trusted by 500+ Shopify stores across UK, US, AU and CA</p>
@@ -603,13 +699,13 @@ const schemaItemList = {
 </section>
 
 <!-- ─── FOOTER ─── -->
-<footer class="footer">
+<footer class="footer" aria-label="Site footer">
   <div class="container footer-inner">
     <div class="footer-brand">
       <span class="footer-logo">THE $0 AUTOMATION STACK</span>
       <span class="footer-sys">SYSTEM_STABLE // 2026.04</span>
     </div>
-    <nav class="footer-nav">
+    <nav class="footer-nav" aria-label="Footer navigation">
       <a href="/">$0 Stack</a>
       <a href="/capi-shield">CAPI Shield</a>
       <a href="/stocky-swap">Stocky Swap</a>
@@ -620,6 +716,7 @@ const schemaItemList = {
       <a href="/shopify-automation-guides">Guides</a>
       <a href="/about">About</a>
       <a href="/privacy">Privacy</a>
+      <a href="https://stackarchitect.beehiiv.com/" target="_blank" rel="noopener">Newsletter</a>
     </nav>
     <p class="footer-disclosure">Stack Architect uses affiliate links. We may earn a commission if you sign up for tools via our links — at no extra cost to you. We only recommend tools this stack is actually built on. <a href="/privacy">Privacy policy</a>.</p>
     <a href="#top" class="footer-top">↑ RETURN_TO_ORIGIN</a>
@@ -653,6 +750,9 @@ const schemaItemList = {
     --radius:        6px;
     --radius-lg:     10px;
     --section-pad:   80px 0;
+    /* newsletter accent */
+    --newsletter-bg: #0d1a12;
+    --newsletter-border: rgba(74,222,128,0.12);
   }
 
   html { scroll-behavior: smooth; }
@@ -684,6 +784,32 @@ const schemaItemList = {
 
   .section-header { margin-bottom: 40px; }
   .section-sub { font-size: 13px; color: var(--text-dim); margin-top: 6px; font-family: var(--font-mono); }
+
+  /* ─── SKIP LINK (a11y) ─── */
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .skip-link:focus {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    padding: 8px 16px;
+    background: var(--accent);
+    color: #000;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    z-index: 9999;
+    overflow: visible;
+    border-radius: 0 0 var(--radius) 0;
+  }
 
   /* ─── NAV ─── */
   .nav {
@@ -722,7 +848,8 @@ const schemaItemList = {
     transition: color 0.15s;
     font-family: var(--font-mono);
   }
-  .nav-links a:hover, .nav-active { color: var(--text-primary) !important; }
+  .nav-links a:hover,
+  .nav-active { color: var(--text-primary) !important; }
   .nav-cta {
     font-family: var(--font-mono);
     font-size: 12px;
@@ -762,12 +889,21 @@ const schemaItemList = {
   }
   .hero-badge span { color: var(--text-dim); }
 
+  /* Intent-separation note — helps AI crawlers distinguish this page from homepage */
+  .hero-intent-note {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+    letter-spacing: 0.04em;
+  }
+
   h1 {
     font-size: clamp(2rem, 5vw, 3rem);
     font-weight: 700;
     line-height: 1.1;
     letter-spacing: -0.03em;
-    margin-bottom: 18px;
+    margin-bottom: 12px;
     max-width: 800px;
   }
   .hero-sub {
@@ -1081,6 +1217,15 @@ const schemaItemList = {
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
   }
+  .migration-note {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 8px;
+  }
+  .migration-note a { color: var(--accent); }
+  .migration-note a:hover { text-decoration: underline; }
+
   .diag-list {
     list-style: none;
     display: flex;
@@ -1131,6 +1276,67 @@ const schemaItemList = {
   .testi-quote { font-size: 13px; color: var(--text-secondary); line-height: 1.65; flex: 1; }
   .testi-name { display: block; font-size: 13px; font-weight: 600; color: var(--text-primary); }
   .testi-role { display: block; font-size: 11px; color: var(--text-dim); font-family: var(--font-mono); margin-top: 2px; }
+
+  /* ─── NEWSLETTER (Beehiiv) ─── */
+  .newsletter-section {
+    padding: var(--section-pad);
+    background: var(--newsletter-bg);
+    border-top: 1px solid var(--newsletter-border);
+    border-bottom: 1px solid var(--newsletter-border);
+  }
+  .newsletter-container {
+    max-width: 580px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .newsletter-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .newsletter-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+  }
+  .newsletter-sub {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 24px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .beehiiv-embed-wrapper {
+    background: var(--bg-card);
+    border: 1px solid var(--accent-dim);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 12px;
+    /* force Beehiiv iframe to inherit dark styles */
+    color-scheme: dark;
+  }
+  .beehiiv-embed-wrapper iframe {
+    display: block;
+    background: transparent;
+  }
+  .newsletter-fallback {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    margin-bottom: 8px;
+  }
+  .newsletter-fallback a { color: var(--accent); }
+  .newsletter-fallback a:hover { text-decoration: underline; }
+  .newsletter-trust {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    margin-top: 4px;
+  }
 
   /* ─── FAQ ─── */
   .faq-section {
@@ -1239,11 +1445,19 @@ const schemaItemList = {
     .nav-links { display: none; }
     .deploy-header { flex-direction: column; gap: 4px; }
     .hero-section { padding: 48px 0 40px; }
+    .newsletter-container { text-align: left; }
   }
   @media (max-width: 480px) {
     .container { padding: 0 16px; }
     .tool-card { padding: 20px; }
     .step-item { padding: 16px; }
     td, th { padding: 10px 12px; }
+  }
+
+  /* ─── PRINT ─── */
+  @media print {
+    .nav, .nav-cta, .hero-actions, .deploy-cta-block, .email-section, .newsletter-section { display: none; }
+    body { background: #fff; color: #000; }
+    .tool-card, .testi-card, .faq-item, .step-item { border: 1px solid #ddd; }
   }
 </style>
