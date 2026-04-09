@@ -26,11 +26,6 @@ export default defineConfig({
     quality: 80,
   },
 
-  experimental: {
-    responsiveImages: true,
-    clientPrerender: true,
-  },
-
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
