@@ -6,13 +6,47 @@ import mdx from '@astrojs/mdx';
 export default defineConfig({
   site: 'https://www.stackarchitect.xyz',
   output: 'static',
+  trailingSlash: 'never',
+
+  build: {
+    inlineStylesheets: 'auto',
+    assets: '_assets',
+  },
+
+  prefetch: {
+    prefetchAll: false,
+    defaultStrategy: 'hover',
+  },
+
+  image: {
+    service: {
+      entrypoint: 'astro/assets/services/sharp',
+    },
+    formats: ['avif', 'webp'],
+    quality: 80,
+  },
+
+  experimental: {
+    responsiveImages: true,
+    clientPrerender: true,
+  },
+
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
   },
+
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      cssMinify: true,
+      target: 'es2020',
+    },
+    css: {
+      devSourcemap: true,
+    },
   },
+
   integrations: [
     sitemap({
       lastmod: new Date(),
