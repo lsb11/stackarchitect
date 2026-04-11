@@ -8,149 +8,203 @@
 <meta name="robots" content="index, follow">
 <meta name="keywords" content="Shopify app cost audit, replace Shopify apps free, Shopify app stack review">
 <link rel="canonical" href="https://www.stackarchitect.xyz/tools/shopify-app-stack-kill-or-keep-auditor">
-<!-- Open Graph -->
 <meta property="og:title" content="Shopify App Stack Auditor — Which Apps Can You Replace for Free?">
 <meta property="og:description" content="Enter your Shopify app list and monthly costs. This tool scores each app's replaceability with free code or automation, calculates your annual saving, and prioritises what to cut first.">
 <meta property="og:url" content="https://www.stackarchitect.xyz/tools/shopify-app-stack-kill-or-keep-auditor">
 <meta property="og:type" content="website">
-<!-- JSON-LD: SoftwareApplication -->
+<meta property="og:site_name" content="Stack Architect">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Shopify App Stack Auditor — Which Apps Can You Replace for Free?">
+<meta name="twitter:description" content="Enter your Shopify app list and monthly costs. This tool scores each app's replaceability with free code or automation, calculates your annual saving, and prioritises what to cut first.">
 <script type="application/ld+json">{"@context":"https://schema.org","url":"https://www.stackarchitect.xyz/tools/shopify-app-stack-kill-or-keep-auditor","@type":"SoftwareApplication","applicationCategory":"BusinessApplication","operatingSystem":"Web","name":"Shopify App Stack Kill-or-Keep Auditor","description":"Audit your Shopify app stack and identify which apps you can replace with free code or automation tools to eliminate unnecessary monthly costs.","offers":{"@type":"Offer","price":"0","priceCurrency":"GBP"},"keywords":"Shopify app cost audit, replace Shopify apps free, Shopify app stack review"}</script>
-<!-- JSON-LD: FAQPage -->
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Which Shopify apps are easiest to replace for free?","acceptedAnswer":{"@type":"Answer","text":"Email marketing (Klaviyo → Systeme.io), inventory management (Stocky → Google Sheets), product reviews (Yotpo → native Shopify), and upsells (Rebuy → custom Liquid) are the most commonly replaceable with free alternatives."}},{"@type":"Question","name":"What is the average monthly app spend for a Shopify store?","acceptedAnswer":{"@type":"Answer","text":"Mid-sized Shopify stores typically spend £200–£600/month on apps. Stores doing £100k+/month often spend over £1,000/month before auditing their stack."}},{"@type":"Question","name":"Is Make.com actually free for Shopify automations?","acceptedAnswer":{"@type":"Answer","text":"Make.com's free plan includes 1,000 operations/month and 2 active scenarios. Most small to mid stores can run their core automations (abandoned cart, inventory alerts, order notifications) within the free tier."}}]}</script>
-<!-- JSON-LD: BreadcrumbList -->
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Stack Architect","item":"https://www.stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://www.stackarchitect.xyz/tools"},{"@type":"ListItem","position":3,"name":"Shopify App Stack — Kill or Keep Auditor","item":"https://www.stackarchitect.xyz/tools/shopify-app-stack-kill-or-keep-auditor"}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --green:#00C896;--dark:#1a1a2e;--red:#e53e3e;--amber:#d97706;
-  --bg:#fff;--surface:#f8f9fa;--border:#e2e8f0;
-  --text:#1a202c;--muted:#64748b;--radius:8px;
+  --green:#00C896;--dark:#0d0d1a;--dark2:#1a1a2e;--red:#e53e3e;--amber:#d97706;--blue:#3b82f6;
+  --bg:#0f0f1e;--surface:#1a1a2e;--surface2:#242438;--border:#2a2a42;--border2:#383858;
+  --text:#e8e8f0;--muted:#8888aa;--dim:#555570;--radius:8px;
   --font:'Inter',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono','Fira Code',monospace;
 }
 html{font-size:16px;scroll-behavior:smooth}
-body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.6}
-a{color:var(--green);text-decoration:none}
-a:hover{text-decoration:underline}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.65;min-height:100vh}
+a{color:var(--green);text-decoration:none}a:hover{text-decoration:underline}
 /* Header */
-.site-header{background:var(--dark);padding:14px 20px;display:flex;align-items:center}
-.brand{color:#fff;font-weight:700;font-size:1.05rem;letter-spacing:-.3px}
+.site-header{background:var(--dark);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
+.brand{color:#fff;font-weight:700;font-size:1.05rem;letter-spacing:-.3px;font-family:var(--mono)}
 .brand:hover{color:var(--green);text-decoration:none}
+.brand-tag{font-size:.75rem;color:var(--muted);font-family:var(--mono);margin-top:1px}
+.header-nav{display:flex;gap:20px;align-items:center}
+.header-nav a{font-size:.85rem;color:var(--muted);transition:color .15s}
+.header-nav a:hover{color:var(--green);text-decoration:none}
 /* Container */
-.container{max-width:680px;margin:0 auto;padding:0 20px}
+.container{max-width:720px;margin:0 auto;padding:0 24px}
 /* Breadcrumb */
-.breadcrumb{font-size:.8rem;color:var(--muted);padding:12px 0;border-bottom:1px solid var(--border);margin-bottom:28px}
-.breadcrumb a{color:var(--muted)}
-.breadcrumb span{margin:0 6px}
-/* Urgency tag */
-.urgency-tag{display:inline-block;background:#fef3cd;color:#92400e;font-size:.78rem;font-weight:600;padding:4px 10px;border-radius:20px;margin-bottom:16px;border:1px solid #fcd34d}
-/* Main layout */
-main{padding:32px 0 48px}
-article h1{font-size:1.75rem;font-weight:700;line-height:1.2;margin-bottom:12px;color:var(--dark)}
-.intro{color:var(--muted);font-size:.97rem;margin-bottom:28px;line-height:1.7}
+.breadcrumb{font-size:.78rem;color:var(--dim);padding:14px 0;border-bottom:1px solid var(--border);margin-bottom:32px;font-family:var(--mono)}
+.breadcrumb a{color:var(--dim)}
+.breadcrumb a:hover{color:var(--muted)}
+.breadcrumb span{margin:0 6px;color:var(--border2)}
+/* Status badge */
+.status-bar{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.status-pill{font-size:.72rem;font-weight:600;font-family:var(--mono);padding:3px 10px;border-radius:20px;border:1px solid}
+.pill-active{color:var(--green);border-color:var(--green);background:rgba(0,200,150,.08)}
+.pill-free{color:var(--blue);border-color:var(--blue);background:rgba(59,130,246,.08)}
+.pill-nosignup{color:var(--muted);border-color:var(--border2);background:transparent}
+/* Urgency */
+.urgency-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(217,119,6,.12);color:#fbbf24;font-size:.8rem;font-weight:600;padding:6px 14px;border-radius:20px;margin-bottom:18px;border:1px solid rgba(217,119,6,.3);font-family:var(--mono)}
+/* Main */
+main{padding:40px 0 64px}
+article h1{font-size:1.9rem;font-weight:700;line-height:1.2;margin-bottom:14px;color:#fff;letter-spacing:-.02em}
+.intro{color:var(--muted);font-size:.97rem;margin-bottom:8px;line-height:1.75}
+.meta-note{font-size:.8rem;color:var(--dim);font-family:var(--mono);margin-bottom:32px}
 /* Card */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px}
-.card-title{font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-bottom:20px}
+.card-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:18px;font-family:var(--mono)}
 /* Form */
-.field{margin-bottom:18px}
-.field label{display:block;font-size:.9rem;font-weight:500;margin-bottom:6px;color:var(--text)}
+.field{margin-bottom:20px}
+.field label{display:block;font-size:.88rem;font-weight:500;margin-bottom:8px;color:var(--text)}
 .field input,.field select,.field textarea{
-  width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius);
-  font-family:var(--font);font-size:.95rem;background:#fff;color:var(--text);
+  width:100%;padding:11px 14px;border:1.5px solid var(--border2);border-radius:var(--radius);
+  font-family:var(--font);font-size:.95rem;background:var(--surface2);color:var(--text);
   transition:border-color .15s;
 }
-.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--green)}
-.field textarea{min-height:110px;resize:vertical}
-.multiselect-group{display:flex;flex-direction:column;gap:8px}
-.multiselect-group label{font-weight:400;display:flex;align-items:center;gap:8px;cursor:pointer}
-.multiselect-group input[type=checkbox]{width:16px;height:16px;accent-color:var(--green)}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--green);background:var(--dark2)}
+.field select option{background:var(--dark2)}
+.field textarea{min-height:120px;resize:vertical}
+.check-group{display:flex;flex-direction:column;gap:10px}
+.check-label{font-weight:400;font-size:.9rem;display:flex;align-items:center;gap:10px;cursor:pointer;color:var(--muted)}
+.check-label:hover{color:var(--text)}
+.check-label input[type=checkbox]{width:16px;height:16px;accent-color:var(--green);flex-shrink:0}
 .btn-calc{
-  display:block;width:100%;padding:14px;background:var(--green);color:#fff;
-  border:none;border-radius:var(--radius);font-family:var(--font);font-size:1rem;
-  font-weight:600;cursor:pointer;transition:opacity .15s;margin-top:4px;
+  display:block;width:100%;padding:15px;background:var(--green);color:#0a1a14;
+  border:none;border-radius:var(--radius);font-family:var(--mono);font-size:.95rem;
+  font-weight:700;cursor:pointer;transition:opacity .15s;margin-top:8px;letter-spacing:.03em;
 }
-.btn-calc:hover{opacity:.9}
-/* Teaser / gate */
+.btn-calc:hover{opacity:.88}
+/* Teaser */
 #teaser{margin-bottom:20px}
-.teaser-card{background:var(--dark);color:#fff;border-radius:var(--radius);padding:24px;text-align:center}
-.teaser-number{font-size:2.5rem;font-weight:700;color:var(--green);margin-bottom:4px}
-.teaser-label{font-size:.9rem;opacity:.8;margin-bottom:20px}
-.gate-box{border-top:1px solid rgba(255,255,255,.15);padding-top:18px;margin-top:4px}
-.gate-box p{font-size:.88rem;opacity:.8;margin-bottom:12px}
+.teaser-card{background:var(--dark2);border:1px solid var(--border2);border-radius:var(--radius);padding:28px;text-align:center}
+.teaser-number{font-size:2.6rem;font-weight:700;color:var(--green);font-family:var(--mono);margin-bottom:6px}
+.teaser-lbl{font-size:.9rem;color:var(--muted);margin-bottom:22px}
+.gate-box{border-top:1px solid var(--border);padding-top:20px}
+.gate-box p{font-size:.88rem;color:var(--muted);margin-bottom:12px}
 .gate-row{display:flex;gap:8px;flex-wrap:wrap}
-.gate-row input[type=email]{flex:1;min-width:200px;padding:10px 12px;border-radius:var(--radius);border:none;font-family:var(--font);font-size:.9rem}
-.btn-gate{padding:10px 18px;background:var(--green);color:#fff;border:none;border-radius:var(--radius);font-family:var(--font);font-weight:600;cursor:pointer;white-space:nowrap}
-.btn-gate:hover{opacity:.9}
+.gate-row input[type=email]{flex:1;min-width:200px;padding:11px 14px;border-radius:var(--radius);border:1.5px solid var(--border2);font-family:var(--font);font-size:.9rem;background:var(--surface2);color:var(--text)}
+.gate-row input[type=email]:focus{outline:none;border-color:var(--green)}
+.btn-gate{padding:11px 20px;background:var(--green);color:#0a1a14;border:none;border-radius:var(--radius);font-family:var(--mono);font-weight:700;font-size:.88rem;cursor:pointer;white-space:nowrap}
+.btn-gate:hover{opacity:.88}
 /* Results */
-#results{margin-bottom:24px}
-.result-row{display:flex;justify-content:space-between;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border);gap:12px}
+.result-row{display:flex;justify-content:space-between;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--border);gap:12px}
 .result-row:last-child{border-bottom:none}
 .result-label{font-size:.88rem;color:var(--muted);flex:1}
-.result-label .sub{display:block;font-size:.78rem;margin-top:2px;color:var(--muted)}
-.result-value{font-size:.95rem;font-weight:600;text-align:right;flex-shrink:0;max-width:55%}
-.flag-good .result-value{color:#059669}
-.flag-warn .result-value{color:var(--amber)}
-.flag-bad .result-value{color:var(--red)}
+.result-label .sub{display:block;font-size:.78rem;margin-top:3px;font-family:var(--mono)}
+.result-value{font-size:.95rem;font-weight:600;text-align:right;flex-shrink:0;max-width:55%;font-family:var(--mono)}
+.flag-good .result-value,.flag-good .sub{color:#10b981}
+.flag-warn .result-value,.flag-warn .sub{color:#f59e0b}
+.flag-bad  .result-value,.flag-bad .sub{color:var(--red)}
 .flag-neutral .result-value{color:var(--text)}
 /* Upsell */
-.upsell{background:var(--green);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.upsell-text{color:#fff;font-weight:600;font-size:.95rem;flex:1}
-.upsell-btn{background:#fff;color:var(--green);padding:10px 18px;border-radius:var(--radius);font-weight:700;font-size:.88rem;white-space:nowrap;flex-shrink:0}
-.upsell-btn:hover{text-decoration:none;opacity:.9}
+.upsell{background:linear-gradient(135deg,rgba(0,200,150,.12),rgba(0,200,150,.06));border:1px solid rgba(0,200,150,.25);border-radius:var(--radius);padding:22px 26px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.upsell-text{color:var(--text);font-size:.92rem;font-weight:500;flex:1}
+.upsell-btn{background:var(--green);color:#0a1a14;padding:10px 20px;border-radius:var(--radius);font-weight:700;font-size:.85rem;white-space:nowrap;flex-shrink:0;font-family:var(--mono)}
+.upsell-btn:hover{text-decoration:none;opacity:.88}
+/* Affiliate block */
+.aff-block{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:var(--radius);padding:20px 24px;margin-bottom:28px}
+.aff-block-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--blue);margin-bottom:12px;font-family:var(--mono)}
+.aff-link{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.aff-link:last-child{border-bottom:none;padding-bottom:0}
+.aff-link a{color:var(--green);font-size:.88rem;font-weight:500;flex:1}
+.aff-link-reason{font-size:.78rem;color:var(--dim);margin-top:2px}
+.aff-disc{font-size:.72rem;color:var(--dim);margin-top:12px;font-style:italic}
+/* Rich content */
+.rich-section{margin-bottom:32px}
+.rich-section h2{font-size:1.15rem;font-weight:700;color:#fff;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.rich-section h3{font-size:.95rem;font-weight:600;color:var(--text);margin:18px 0 8px}
+.rich-section p{font-size:.9rem;color:var(--muted);line-height:1.75;margin-bottom:12px}
+.score-bands{display:flex;flex-direction:column;gap:6px;margin:14px 0}
+.band{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:6px;font-size:.85rem}
+.band.good{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2)}
+.band.ok{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2)}
+.band.warn{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2)}
+.band.bad{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2)}
+.band-range{font-weight:700;font-family:var(--mono);font-size:.82rem;min-width:180px;flex-shrink:0}
+.band.good .band-range{color:#10b981}
+.band.ok .band-range{color:var(--blue)}
+.band.warn .band-range{color:#f59e0b}
+.band.bad .band-range{color:var(--red)}
+.band-label{color:var(--muted)}
 /* FAQ */
-.faq-section{margin-bottom:32px}
-.faq-section h2{font-size:1.1rem;font-weight:700;margin-bottom:16px;color:var(--dark)}
-details{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;overflow:hidden}
-summary{padding:14px 16px;cursor:pointer;font-weight:500;font-size:.92rem;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.faq-section{margin-bottom:36px}
+.faq-section h2{font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+details{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;background:var(--surface)}
+summary{padding:14px 18px;cursor:pointer;font-weight:500;font-size:.9rem;list-style:none;display:flex;justify-content:space-between;align-items:center;color:var(--text)}
 summary::-webkit-details-marker{display:none}
-summary::after{content:'+';font-size:1.1rem;color:var(--muted)}
+summary::after{content:'+';font-size:1.1rem;color:var(--dim);font-family:var(--mono)}
 details[open] summary::after{content:'−'}
-details[open] summary{border-bottom:1px solid var(--border)}
-.faq-answer{padding:14px 16px;font-size:.9rem;color:var(--muted);line-height:1.7}
-/* Internal links */
-.related-tools{margin-bottom:32px;padding-top:24px;border-top:1px solid var(--border)}
-.related-tools h2{font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:12px}
-.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
-.related-link{display:block;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);font-size:.85rem;font-weight:500;color:var(--text);transition:border-color .15s}
-.related-link:hover{border-color:var(--green);text-decoration:none;color:var(--green)}
+details[open] summary{border-bottom:1px solid var(--border);color:#fff}
+.faq-answer{padding:14px 18px;font-size:.88rem;color:var(--muted);line-height:1.75}
+/* Related tools */
+.related-tools{margin-bottom:36px;padding-top:28px;border-top:1px solid var(--border)}
+.related-tools h2{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:14px;font-family:var(--mono)}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.related-link{display:block;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);font-size:.85rem;font-weight:500;color:var(--muted);transition:all .15s}
+.related-link:hover{border-color:var(--green);color:var(--green);text-decoration:none;background:rgba(0,200,150,.05)}
 /* Footer */
-footer{background:var(--surface);border-top:1px solid var(--border);padding:20px;text-align:center;font-size:.83rem;color:var(--muted)}
-footer a{color:var(--muted)}
+footer{background:var(--dark);border-top:1px solid var(--border);padding:24px;text-align:center;font-size:.8rem;color:var(--dim);font-family:var(--mono)}
+footer a{color:var(--dim)}footer a:hover{color:var(--muted)}
+.footer-links{display:flex;gap:20px;justify-content:center;margin-bottom:8px;flex-wrap:wrap}
 /* Utility */
 [hidden]{display:none!important}
-@media(max-width:480px){
-  article h1{font-size:1.4rem}
+@media(max-width:540px){
+  article h1{font-size:1.45rem}
   .teaser-number{font-size:2rem}
   .upsell{flex-direction:column;align-items:flex-start}
   .result-row{flex-direction:column;gap:4px}
   .result-value{text-align:left;max-width:100%}
+  .band-range{min-width:130px}
+  .header-nav{display:none}
 }
 </style>
 </head>
 <body>
 <header class="site-header">
-  <a class="brand" href="https://www.stackarchitect.xyz">Stack Architect</a>
+  <div>
+    <a class="brand" href="https://www.stackarchitect.xyz">Stack Architect</a>
+    <div class="brand-tag">// FREE_SHOPIFY_TOOLS</div>
+  </div>
+  <nav class="header-nav">
+    <a href="https://www.stackarchitect.xyz/tools">All tools</a>
+    <a href="https://www.stackarchitect.xyz/shopify-automation-guides">Guides</a>
+    <a href="https://www.stackarchitect.xyz" style="color:var(--green);font-weight:600">Free stack →</a>
+  </nav>
 </header>
 
 <div class="container">
   <nav class="breadcrumb" aria-label="breadcrumb">
-    <a href="https://www.stackarchitect.xyz">Stack Architect</a>
-    <span aria-hidden="true">›</span>
-    <a href="https://www.stackarchitect.xyz/tools">Tools</a>
-    <span aria-hidden="true">›</span>
-    <span>Shopify App Stack — Kill or Keep Auditor</span>
+    <a href="https://www.stackarchitect.xyz">stackarchitect.xyz</a><span>›</span>
+    <a href="https://www.stackarchitect.xyz/tools">tools</a><span>›</span>
+    <span>shopify-app-stack-kill-or-keep-auditor</span>
   </nav>
 
   <main>
     <article>
+      <div class="status-bar">
+        <span class="status-pill pill-active">TOOL_STATUS // ACTIVE</span>
+        <span class="status-pill pill-free">FREE_FOREVER</span>
+        <span class="status-pill pill-nosignup">NO_SIGNUP</span>
+      </div>
       
       <h1>Shopify App Stack Kill-or-Keep Auditor</h1>
       <p class="intro">Most Shopify stores are paying £200–£800/month for apps that can be replaced with free code or Make.com automations. Enter your apps and costs — see exactly what to cut and what to keep.</p>
+      <p class="meta-note">// TAKES_30_SECONDS · NO_ACCOUNT_REQUIRED · USED_BY_500+_SHOPIFY_STORES</p>
 
-      <section class="card">
-        <p class="card-title">Enter your details</p>
+      <div class="card">
+        <div class="card-label">// ENTER_YOUR_DETAILS</div>
         <form id="calcForm" novalidate>
           <div class="field"><label for="appList">Paste your apps and monthly costs (one per line: App Name, £cost)</label><textarea id="appList" name="appList" placeholder="Klaviyo, £150
 Gorgias, £60
@@ -161,15 +215,15 @@ Okendo, £25" required></textarea></div>
 <div class="field"><label for="techLevel">Tech comfort level</label><select id="techLevel" name="techLevel" required><option value="">Select…</option><option value="Non-technical">Non-technical</option><option value="Comfortable with Sheets/no-code">Comfortable with Sheets/no-code</option><option value="Can handle Make.com">Can handle Make.com</option><option value="Developer-level">Developer-level</option></select></div>
           <button type="submit" class="btn-calc">Calculate →</button>
         </form>
-      </section>
+      </div>
 
       
 <section id="teaser" hidden>
   <div class="teaser-card">
     <div class="teaser-number" id="teaserValue"></div>
-    <div class="teaser-label" id="teaserLabel"></div>
+    <div class="teaser-lbl" id="teaserLabel"></div>
     <div class="gate-box" id="emailGate">
-      <p>Enter your email to unlock the full breakdown</p>
+      <p>Enter your email to unlock the full breakdown — free, no spam</p>
       <div class="gate-row">
         <input type="email" id="emailInput" placeholder="you@example.com" autocomplete="email">
         <button class="btn-gate" id="gateBtn">Get your full app replacement plan</button>
@@ -180,7 +234,7 @@ Okendo, £25" required></textarea></div>
 
       <section id="results" hidden>
         <div class="card">
-          <p class="card-title">Your results</p>
+          <div class="card-label">// YOUR_RESULTS</div>
           <div id="resultsContent"></div>
         </div>
       </section>
@@ -189,10 +243,51 @@ Okendo, £25" required></textarea></div>
         <span class="upsell-text">Start with the free $0 Shopify stack guide →</span>
         <a class="upsell-btn" href="https://www.stackarchitect.xyz" target="_blank" rel="noopener">Get started →</a>
       </aside>
+
+      
+<aside class="aff-block" id="affBlock" hidden>
+  <div class="aff-block-label">// RELEVANT_TOOLS</div>
+  
+  <div class="aff-link">
+    <div>
+      <a href="https://www.make.com/en/register?pc=techie123" target="_blank" rel="noopener sponsored">Make.com — Replace most Shopify apps with automations</a>
+      <div class="aff-link-reason">Primary replacement tool</div>
+    </div>
+  </div>
+  <div class="aff-link">
+    <div>
+      <a href="https://systeme.io/?sa=sa0262937272be99703a8ea16153f5dd5ae2a3eea7" target="_blank" rel="noopener sponsored">Systeme.io — Replace Klaviyo for free</a>
+      <div class="aff-link-reason">Replaces email app</div>
+    </div>
+  </div>
+  <div class="aff-link">
+    <div>
+      <a href="https://partner.gorgias.com/xclmfdgeizdk" target="_blank" rel="noopener sponsored">Gorgias — Best helpdesk if you need to keep one</a>
+      <div class="aff-link-reason">Recommended keep if support volume warrants</div>
+    </div>
+  </div>
+  <div class="aff-link">
+    <div>
+      <a href="https://affiliate.tidio.com/5kfhrx3ot6tf" target="_blank" rel="noopener sponsored">Tidio — Free live chat alternative to Gorgias</a>
+      <div class="aff-link-reason">Free helpdesk alternative</div>
+    </div>
+  </div>
+  <div class="aff-disc">Affiliate links — Stack Architect earns a small commission at no extra cost to you. We only list tools we use or have vetted.</div>
+</aside>
     </article>
 
+    
+<section class="rich-section">
+  <h2>The average Shopify store wastes £200–£600/month on replaceable apps</h2>
+  <p>Most Shopify stores accumulate apps gradually — one for email, one for reviews, one for inventory, one for upsells — until monthly costs reach £300–£800. Many of these can be replaced with free alternatives or Make.com automations without any loss of core functionality.</p>
+  <h3>The apps most commonly replaced for free</h3>
+  <p>Email marketing (Klaviyo → Systeme.io), inventory management (Stocky → Google Sheets), product reviews (Yotpo → Shopify native), upsell apps (Rebuy → custom Liquid), and pop-up/email capture (Privy → Klaviyo forms or native) are the most commonly replaced with zero-cost alternatives. Together these often represent £200–£400/month of recoverable spend.</p>
+  <h3>Apps that are harder to replace</h3>
+  <p>Helpdesk software like Gorgias is difficult to replace because of its Shopify-native ticket integration and macro systems. Subscription billing apps like ReCharge have no free equivalent with equivalent reliability. These are typically worth keeping.</p>
+</section>
+
     <section class="faq-section">
-      <h2>Frequently asked questions</h2>
+      <h2>// FREQUENTLY_ASKED</h2>
       
 <details>
   <summary>Which Shopify apps are easiest to replace for free?</summary>
@@ -209,7 +304,7 @@ Okendo, £25" required></textarea></div>
     </section>
 
     <nav class="related-tools" aria-label="Related tools">
-      <h2>Other free Shopify tools</h2>
+      <h2>// RELATED_TOOLS</h2>
       <div class="related-grid">
         <a class="related-link" href="/tools/klaviyo-to-systeme-migration-savings-calculator">Klaviyo → Free Email Migration Savings Calculator</a><a class="related-link" href="/tools/shopify-plan-upgrade-break-even-calculator">Shopify Plan Upgrade Break-Even Calculator</a><a class="related-link" href="/tools/make-vs-zapier-cost-calculator">Make.com vs. Zapier Cost Calculator</a>
       </div>
@@ -218,43 +313,38 @@ Okendo, £25" required></textarea></div>
 </div>
 
 <footer>
-  <p>Free tool by <a href="https://www.stackarchitect.xyz">Stack Architect</a> &mdash; Free Shopify tools. No apps. No fluff.</p>
+  <div class="footer-links">
+    <a href="https://www.stackarchitect.xyz">Home</a>
+    <a href="https://www.stackarchitect.xyz/tools">All tools</a>
+    <a href="https://www.stackarchitect.xyz/shopify-automation-guides">Guides</a>
+    <a href="https://www.stackarchitect.xyz/privacy">Privacy</a>
+    <a href="https://www.stackarchitect.xyz/terms">Terms</a>
+  </div>
+  <p>© 2026 <a href="https://www.stackarchitect.xyz">Stack Architect</a> · Free Shopify tools. No apps. No fluff.</p>
 </footer>
 
 <script>
-function fmt(n){ return Math.round(n).toLocaleString('en-GB'); }
+function fmt(n){return Math.round(n).toLocaleString('en-GB');}
 
 function calculate(inp) {
   var total = parseFloat(inp.totalMonthlyApps) || 0;
   var techMap = { 'Non-technical': 0.3, 'Comfortable with Sheets/no-code': 0.6, 'Can handle Make.com': 0.8, 'Developer-level': 0.95 };
   var techMultiplier = techMap[inp.techLevel] || 0.5;
-  var replaceability = {
-    'klaviyo':0.95,'gorgias':0.4,'recharge':0.15,'yotpo':0.8,'okendo':0.8,
-    'triple whale':0.6,'postscript':0.7,'loyaltylion':0.65,'rebuy':0.75,
-    'frequently bought together':0.9,'judge.me':0.5,'bold upsell':0.8,
-    'stocky':1.0,'privy':0.85
-  };
+  var replaceability = {'klaviyo':0.95,'gorgias':0.4,'recharge':0.15,'yotpo':0.8,'okendo':0.8,'triple whale':0.6,'postscript':0.7,'loyaltylion':0.65,'rebuy':0.75,'frequently bought together':0.9,'judge.me':0.5,'bold upsell':0.8,'stocky':1.0,'privy':0.85};
   var killItems = [], keepItems = [], replaceableTotal = 0;
   if (inp.appList && inp.appList.trim()) {
     var lines = inp.appList.split('
 ').filter(function(l){ return l.trim(); });
     lines.forEach(function(line) {
-      var parts = line.split(',');
-      var appName = (parts[0] || '').trim();
-      var costStr = (parts[1] || '0').replace(/[^0-9.]/g,'');
-      var cost = parseFloat(costStr) || 0;
-      var key = appName.toLowerCase();
-      var score = 0.5;
+      var parts = line.split(','); var appName = (parts[0] || '').trim();
+      var costStr = (parts[1] || '0').replace(/[^0-9.]/g,''); var cost = parseFloat(costStr) || 0;
+      var key = appName.toLowerCase(); var score = 0.5;
       var keys = Object.keys(replaceability);
-      for (var i = 0; i < keys.length; i++) {
-        if (key.indexOf(keys[i]) !== -1) { score = replaceability[keys[i]]; break; }
-      }
+      for (var i = 0; i < keys.length; i++) { if (key.indexOf(keys[i]) !== -1) { score = replaceability[keys[i]]; break; } }
       if (score * techMultiplier >= 0.4) { killItems.push(appName + ' (£' + fmt(cost) + '/mo)'); replaceableTotal += cost; }
       else keepItems.push(appName);
     });
-  } else {
-    replaceableTotal = total * 0.6 * techMultiplier;
-  }
+  } else { replaceableTotal = total * 0.6 * techMultiplier; }
   var annual = replaceableTotal * 12;
   return {
     teaser: { label: 'Annual saving potential', value: '£' + fmt(annual), flag: annual > 1000 ? 'good' : annual > 200 ? 'warn' : 'neutral' },
@@ -269,6 +359,7 @@ function calculate(inp) {
 }
 
 var IS_GATED = true;
+var HAS_AFF = true;
 var form = document.getElementById('calcForm');
 var resultsSection = document.getElementById('results');
 var resultsContent = document.getElementById('resultsContent');
@@ -278,78 +369,58 @@ var teaserLabel = document.getElementById('teaserLabel');
 var emailGate = document.getElementById('emailGate');
 var gateBtn = document.getElementById('gateBtn');
 var upsellBlock = document.getElementById('upsellBlock');
+var affBlock = document.getElementById('affBlock');
 var lastResult = null;
 
 function getInputs() {
   var inp = {};
   var fd = new FormData(form);
-  fd.forEach(function(v, k) {
-    if (inp[k]) {
-      inp[k] = Array.isArray(inp[k]) ? inp[k].concat(v) : [inp[k], v];
-    } else {
-      inp[k] = v;
-    }
+  fd.forEach(function(v,k){
+    if(inp[k]){inp[k]=Array.isArray(inp[k])?inp[k].concat(v):[inp[k],v];}else{inp[k]=v;}
   });
-  // Also grab textareas by id since FormData may not pick up all
-  form.querySelectorAll('textarea').forEach(function(el){
-    if (!inp[el.id]) inp[el.id] = el.value;
-  });
+  form.querySelectorAll('textarea').forEach(function(el){if(!inp[el.id])inp[el.id]=el.value;});
   return inp;
 }
 
 function renderRows(rows) {
-  return rows.map(function(r) {
-    var sub = r.sub ? '<span class="sub">' + r.sub + '</span>' : '';
-    return '<div class="result-row flag-' + (r.flag||'neutral') + '">' +
-      '<span class="result-label">' + r.label + sub + '</span>' +
-      '<span class="result-value">' + r.value + '</span>' +
-    '</div>';
+  return rows.map(function(r){
+    var sub = r.sub ? '<span class="sub">'+r.sub+'</span>' : '';
+    return '<div class="result-row flag-'+(r.flag||'neutral')+'"><span class="result-label">'+r.label+sub+'</span><span class="result-value">'+r.value+'</span></div>';
   }).join('');
 }
 
-function showFullResults(rows) {
+function showFull(rows) {
   resultsContent.innerHTML = renderRows(rows);
   resultsSection.hidden = false;
   upsellBlock.hidden = false;
-  resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  if(HAS_AFF && affBlock) affBlock.hidden = false;
+  resultsSection.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
-form.addEventListener('submit', function(e) {
+form.addEventListener('submit', function(e){
   e.preventDefault();
   var inp = getInputs();
   var result;
-  try { result = calculate(inp); } catch(err) { alert('Calculation error: ' + err.message); return; }
+  try{result=calculate(inp);}catch(err){alert('Calculation error: '+err.message);return;}
   lastResult = result;
-
-  if (!IS_GATED) {
-    showFullResults(result.rows);
-    return;
-  }
-
-  // Show teaser
+  if(!IS_GATED){showFull(result.rows);return;}
   teaserValue.textContent = result.teaser.value;
   teaserLabel.textContent = result.teaser.label;
   teaserSection.hidden = false;
-
-  // Check if already gated
-  var storedEmail = localStorage.getItem('sa_email');
-  if (storedEmail) {
-    emailGate.hidden = true;
-    showFullResults(result.rows);
-  } else {
-    emailGate.hidden = false;
-  }
-  teaserSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  var stored = localStorage.getItem('sa_email');
+  if(stored){emailGate.hidden=true;showFull(result.rows);}
+  else{emailGate.hidden=false;}
+  teaserSection.scrollIntoView({behavior:'smooth',block:'nearest'});
 });
 
-if (gateBtn) {
-  gateBtn.addEventListener('click', function() {
+if(gateBtn){
+  gateBtn.addEventListener('click',function(){
     var emailInput = document.getElementById('emailInput');
-    var email = emailInput ? emailInput.value.trim() : '';
-    if (!email || !email.includes('@')) { emailInput.focus(); return; }
-    localStorage.setItem('sa_email', email);
-    emailGate.hidden = true;
-    if (lastResult) showFullResults(lastResult.rows);
+    var email = emailInput?emailInput.value.trim():'';
+    if(!email||!email.includes('@')){if(emailInput)emailInput.focus();return;}
+    localStorage.setItem('sa_email',email);
+    emailGate.hidden=true;
+    if(lastResult)showFull(lastResult.rows);
   });
 }
 </script>
