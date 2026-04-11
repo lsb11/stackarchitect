@@ -3,29 +3,71 @@ import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 
-// ── Schema markup (SEO + GEO + AI) ──
+// ─────────────────────────────────────────────────────────────────────────────
+// SCHEMA MARKUP — SEO + GEO + AI (maximum structured-data coverage)
+// All schemas injected server-side via Layout — no client-side JSON-LD needed.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const SITE = 'https://www.stackarchitect.xyz';
+const PAGE_URL = `${SITE}/ultimate-shopify-automation-guide`;
+const OG_IMAGE = `${SITE}/og-image.png`;
+const DATE_PUBLISHED = '2025-01-01';
+const DATE_MODIFIED  = '2026-04-11'; // keep current for freshness signals
+
 const articleSchema = {
   "@context": "https://schema.org",
-  "@type": "Article",
+  "@type": ["Article", "TechArticle"],       // dual type → broader AI index surface
   "headline": "Shopify Automation Guide 2026 — Free, No Code, Deploy in 35 Minutes",
-  "description": "The complete free Shopify automation guide for 2026. Fix Q1 ROAS crisis from iOS 26, replace paid apps, automate inventory before Stocky retires August 2026 — all free, no code, in 35 minutes.",
-  "datePublished": "2025-01-01",
-  "dateModified": "2026-03-30",
-  "author": { "@type": "Organization", "name": "Stack Architect", "url": "https://www.stackarchitect.xyz" },
-  "publisher": { "@type": "Organization", "name": "Stack Architect", "url": "https://www.stackarchitect.xyz", "logo": { "@type": "ImageObject", "url": "https://www.stackarchitect.xyz/og-image.png" } },
+  "alternativeHeadline": "The Complete $0 Shopify Automation Stack: Fix ROAS, Replace Apps, Automate Inventory",
+  "description": "The complete free Shopify automation guide for 2026. Save $700+/month: fix your Q1 ROAS crisis (iOS 26 + Shopify pixel change), replace paid apps, automate inventory before Stocky retires August 2026 — no code, 35 minutes.",
+  "datePublished": DATE_PUBLISHED,
+  "dateModified": DATE_MODIFIED,
+  "inLanguage": "en-GB",
+  "author": {
+    "@type": "Organization",
+    "name": "Stack Architect",
+    "url": SITE,
+    "sameAs": [`${SITE}/about`]
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Stack Architect",
+    "url": SITE,
+    "logo": { "@type": "ImageObject", "url": OG_IMAGE, "width": 1200, "height": 630 }
+  },
   "wordCount": 8000,
-  "url": "https://www.stackarchitect.xyz/ultimate-shopify-automation-guide",
-  "image": "https://www.stackarchitect.xyz/og-image.png",
-  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.stackarchitect.xyz/ultimate-shopify-automation-guide" },
+  "url": PAGE_URL,
+  "image": { "@type": "ImageObject", "url": OG_IMAGE, "width": 1200, "height": 630 },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": PAGE_URL },
+  "isPartOf": {
+    "@type": "CollectionPage",
+    "@id": `${SITE}/shopify-automation-guides`,
+    "name": "Free Shopify Automation Guides 2026",
+    "url": `${SITE}/shopify-automation-guides`
+  },
   "about": [
     { "@type": "Thing", "name": "Shopify Automation" },
     { "@type": "Thing", "name": "Server-side tracking" },
     { "@type": "Thing", "name": "Meta Conversions API" },
-    { "@type": "Thing", "name": "Shopify inventory management" }
+    { "@type": "Thing", "name": "Shopify inventory management" },
+    { "@type": "Thing", "name": "Generative Engine Optimisation" },
+    { "@type": "Thing", "name": "Shopify Agentic Storefronts" }
   ],
+  "mentions": [
+    { "@type": "SoftwareApplication", "name": "Make.com", "url": "https://www.make.com" },
+    { "@type": "SoftwareApplication", "name": "Systeme.io", "url": "https://systeme.io" },
+    { "@type": "SoftwareApplication", "name": "GetResponse", "url": "https://www.getresponse.com" },
+    { "@type": "SoftwareApplication", "name": "Beehiiv", "url": "https://www.beehiiv.com" },
+    { "@type": "SoftwareApplication", "name": "Tidio", "url": "https://www.tidio.com" },
+    { "@type": "SoftwareApplication", "name": "Gorgias", "url": "https://www.gorgias.com" },
+    { "@type": "SoftwareApplication", "name": "Google Workspace", "url": "https://workspace.google.com" },
+    { "@type": "SoftwareApplication", "name": "Google Sheets", "url": "https://sheets.google.com" }
+  ],
+  "accessMode": ["textual", "visual"],
+  "accessibilityFeature": ["structuredNavigation", "tableOfContents", "headings"],
   "speakable": {
     "@type": "SpeakableSpecification",
-    "cssSelector": [".guide-hero-desc", ".callout p", ".step-desc"]
+    "cssSelector": [".guide-hero-desc", ".callout p", ".step-desc", ".stat-callout .sc-body p"]
   }
 };
 
@@ -33,9 +75,9 @@ const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-    { "@type": "ListItem", "position": 1, "name": "Stack Architect", "item": "https://www.stackarchitect.xyz/" },
-    { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://www.stackarchitect.xyz/shopify-automation-guides" },
-    { "@type": "ListItem", "position": 3, "name": "Shopify Automation Guide 2026", "item": "https://www.stackarchitect.xyz/ultimate-shopify-automation-guide" }
+    { "@type": "ListItem", "position": 1, "name": "Stack Architect", "item": `${SITE}/` },
+    { "@type": "ListItem", "position": 2, "name": "Free Shopify Automation Guides", "item": `${SITE}/shopify-automation-guides` },
+    { "@type": "ListItem", "position": 3, "name": "Shopify Automation Guide 2026", "item": PAGE_URL }
   ]
 };
 
@@ -43,15 +85,21 @@ const howToTrackingSchema = {
   "@context": "https://schema.org",
   "@type": "HowTo",
   "name": "How to deploy CAPI Shield server-side tracking for Shopify",
-  "description": "Fix Q1 2026 ROAS loss by deploying server-side Conversions API tracking via Make.com. Bypasses iOS 26 and Shopify pixel throttle.",
+  "description": "Fix Q1 2026 ROAS loss by deploying server-side Conversions API tracking via Make.com — bypasses iOS 26 and the Shopify pixel throttle. Free, no code, 6 minutes.",
   "totalTime": "PT6M",
-  "supply": [{ "@type": "HowToSupply", "name": "Make.com free account" }, { "@type": "HowToSupply", "name": "Shopify admin access" }, { "@type": "HowToSupply", "name": "Meta Business Suite access" }],
+  "estimatedCost": { "@type": "MonetaryAmount", "currency": "USD", "value": "0" },
+  "supply": [
+    { "@type": "HowToSupply", "name": "Make.com free account" },
+    { "@type": "HowToSupply", "name": "Shopify admin access" },
+    { "@type": "HowToSupply", "name": "Meta Business Suite access" }
+  ],
+  "tool": [{ "@type": "HowToTool", "name": "Make.com visual automation builder" }],
   "step": [
     { "@type": "HowToStep", "position": 1, "name": "Activate Make.com", "text": "Sign up for the Make.com free tier — 1,000 operations per month, no credit card required." },
-    { "@type": "HowToStep", "position": 2, "name": "Create a Shopify webhook", "text": "In Shopify Admin, go to Settings → Notifications → Webhooks. Create webhook for Order payment event." },
-    { "@type": "HowToStep", "position": 3, "name": "Build the Make.com scenario", "text": "Create scenario with Webhooks trigger, connect to Meta Conversions API module, map order fields to Purchase event parameters." },
-    { "@type": "HowToStep", "position": 4, "name": "Test with Meta Events Manager", "text": "Place a test order and verify server-side Purchase event appears in Meta Events Manager." },
-    { "@type": "HowToStep", "position": 5, "name": "Monitor Event Match Quality", "text": "Track Event Match Quality score in Meta Events Manager for 30 days — expect improvement from Fair to Good within 2 weeks." }
+    { "@type": "HowToStep", "position": 2, "name": "Create a Shopify webhook", "text": "In Shopify Admin → Settings → Notifications → Webhooks, create a webhook for the Order payment event pointing to your Make.com webhook URL." },
+    { "@type": "HowToStep", "position": 3, "name": "Build the Make.com scenario", "text": "Create a scenario with a Webhooks trigger, connect to the Meta Conversions API module, and map Shopify order fields to Purchase event parameters." },
+    { "@type": "HowToStep", "position": 4, "name": "Test with Meta Events Manager", "text": "Place a test order and verify the server-side Purchase event appears in Meta Events Manager → Test Events." },
+    { "@type": "HowToStep", "position": 5, "name": "Monitor Event Match Quality", "text": "Track Event Match Quality in Meta Events Manager for 30 days — expect improvement from Fair to Good within 2 weeks." }
   ]
 };
 
@@ -59,14 +107,15 @@ const howToInventorySchema = {
   "@context": "https://schema.org",
   "@type": "HowTo",
   "name": "How to replace Shopify Stocky with a free Google Sheets inventory system",
-  "description": "Free Stocky replacement before August 31 2026 retirement. Uses Make.com webhook to log every order to Google Sheets in real time.",
+  "description": "Free Stocky replacement before the August 31 2026 retirement deadline. Uses a Make.com webhook to log every Shopify order to Google Sheets in real time. 4 minutes, no code.",
   "totalTime": "PT4M",
+  "estimatedCost": { "@type": "MonetaryAmount", "currency": "USD", "value": "0" },
   "step": [
-    { "@type": "HowToStep", "position": 1, "name": "Export Stocky data", "text": "Export all inventory data via Stocky → Settings → Export before August 31 2026 deadline." },
+    { "@type": "HowToStep", "position": 1, "name": "Export Stocky data", "text": "Export all inventory data via Stocky → Settings → Export before the August 31 2026 deadline." },
     { "@type": "HowToStep", "position": 2, "name": "Create inventory Google Sheet", "text": "Create a Google Sheet with columns: Order ID, Date, SKU, Product Name, Variant, Quantity, Location ID, Fulfilment Status, Order Value." },
     { "@type": "HowToStep", "position": 3, "name": "Create Make.com webhook scenario", "text": "New scenario → Webhooks trigger → Google Sheets Add a Row action. Map Shopify order payload fields to sheet columns." },
     { "@type": "HowToStep", "position": 4, "name": "Add Shopify webhooks", "text": "Add webhooks for Order paid, Order fulfilled, and Refund created events — all pointing to the Make.com webhook URL." },
-    { "@type": "HowToStep", "position": 5, "name": "Add stock calculation formulas", "text": "Use SUMIF formulas in a second tab to calculate live stock levels per SKU." }
+    { "@type": "HowToStep", "position": 5, "name": "Add stock calculation formulas", "text": "Use SUMIF formulas in a second sheet tab to calculate live stock levels per SKU: =Initial_Stock - SUMIF(Ledger!C:C, A2, Ledger!F:F)" }
   ]
 };
 
@@ -78,13 +127,13 @@ const faqSchema = {
     { "@type": "Question", "name": "How do I automate my Shopify store in 2026?", "acceptedAnswer": { "@type": "Answer", "text": "Use the $0 Automation Stack: Make.com free tier as the central webhook hub, CAPI Shield for server-side ad tracking, Stocky Swap for inventory management, Systeme.io for email automation, and Google Apps Script Quota Fix for document workflow stability. The complete setup takes 35 minutes and costs $0/month for stores processing under 200 orders per month." } },
     { "@type": "Question", "name": "Why did my Shopify ROAS drop in January 2026?", "acceptedAnswer": { "@type": "Answer", "text": "Two events hit simultaneously: iOS 26 stripped fbclid parameters from Private Browsing links and links shared via Mail and Messages. On January 13 2026, Shopify changed App Pixels to Optimised mode, silently throttling third-party pixel data. Together these create 30-45% conversion data loss. Server-side tracking via CAPI Shield fixes both." } },
     { "@type": "Question", "name": "When does Shopify Stocky retire?", "acceptedAnswer": { "@type": "Answer", "text": "Shopify Stocky retires on August 31 2026. Stores that have not migrated before this date will lose access to all inventory data. Stocky Swap is a free replacement taking 4 minutes to deploy — data lives in a Google Sheet you own." } },
-    { "@type": "Question", "name": "Make.com vs Zapier for Shopify?", "acceptedAnswer": { "@type": "Answer", "text": "Make.com offers 1,000 free operations per month versus Zapier's 100, supports multi-step workflows on the free tier, and handles Shopify webhooks in real time. Zapier's free tier polls every 15 minutes. Make.com is the stronger choice at every price point." } },
-    { "@type": "Question", "name": "What is server-side tracking for Shopify?", "acceptedAnswer": { "@type": "Answer", "text": "Server-side tracking sends Shopify purchase events directly from your server to Meta and Google, bypassing iOS restrictions, ad blockers, and the Shopify pixel throttle. Events are sent via the Meta Conversions API and Google Enhanced Conversions using Make.com as the automation hub." } },
-    { "@type": "Question", "name": "How do I replace Shopify Stocky for free?", "acceptedAnswer": { "@type": "Answer", "text": "Use Stocky Swap — a free Make.com workflow that logs every Shopify order to a Google Sheet in real time. Deploy before August 31 2026 to avoid losing access to your Stocky data." } },
+    { "@type": "Question", "name": "Make.com vs Zapier for Shopify?", "acceptedAnswer": { "@type": "Answer", "text": "Make.com offers 1,000 free operations per month versus Zapier's 100, supports multi-step workflows on the free tier, and handles Shopify webhooks in real time. Zapier's free tier polls every 15 minutes. Make.com is the stronger choice at every price point for Shopify automation." } },
+    { "@type": "Question", "name": "What is server-side tracking for Shopify?", "acceptedAnswer": { "@type": "Answer", "text": "Server-side tracking sends Shopify purchase events directly from your server to Meta and Google, bypassing iOS restrictions, ad blockers, and the Shopify pixel throttle. Events are sent via the Meta Conversions API and Google Enhanced Conversions using Make.com as the free automation hub." } },
+    { "@type": "Question", "name": "How do I replace Shopify Stocky for free?", "acceptedAnswer": { "@type": "Answer", "text": "Use Stocky Swap — a free Make.com workflow that logs every Shopify order to a Google Sheet in real time. It replicates Stocky's core inventory tracking functionality at $0/month. Deploy before August 31 2026 to avoid losing access to your Stocky data." } },
     { "@type": "Question", "name": "What is Shopify automation?", "acceptedAnswer": { "@type": "Answer", "text": "Shopify automation connects Shopify to external tools via webhooks and APIs so that repetitive tasks — order logging, ad tracking, inventory updates, email sequences — happen automatically without manual work or paid app subscriptions." } },
     { "@type": "Question", "name": "What are Shopify Agentic Storefronts?", "acceptedAnswer": { "@type": "Answer", "text": "Shopify Agentic Storefronts allow customers to complete purchases directly inside ChatGPT, Google AI Mode, and Microsoft Copilot. Currently US-only early access, enabled via the Knowledge Base App — free for Plus stores, $50/month for standard plans." } },
     { "@type": "Question", "name": "How do I get my Shopify store found by ChatGPT and Google AI Mode?", "acceptedAnswer": { "@type": "Answer", "text": "Optimise for Generative Engine Optimisation (GEO): add structured product schema markup, create FAQ content that matches conversational queries, and ensure your product data is programmatically accessible. AI-driven traffic to Shopify grew 8x year-on-year in 2025." } },
-    { "@type": "Question", "name": "What is Klaviyo's billing change and how does it affect my costs?", "acceptedAnswer": { "@type": "Answer", "text": "In February 2025, Klaviyo changed to billing on all active profiles — including unengaged contacts that were previously suppressable. Stores with large historical email lists saw their bill increase significantly. Systeme.io's free plan provides unlimited contacts and email sends with no profile billing surprises." } },
+    { "@type": "Question", "name": "What is Klaviyo's billing change and how does it affects my costs?", "acceptedAnswer": { "@type": "Answer", "text": "In February 2025, Klaviyo changed to billing on all active profiles — including unengaged contacts that were previously suppressable. Stores with large historical email lists saw their bill increase significantly. Systeme.io's free plan provides unlimited contacts and email sends with no profile billing surprises." } },
     { "@type": "Question", "name": "Can I automate Shopify without coding?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. The entire $0 Automation Stack requires zero coding. Make.com uses a visual drag-and-drop builder, Google Sheets requires no scripting for basic inventory tracking, and the Conversions API integration is configured via point-and-click webhook setup in Shopify Admin." } }
   ]
 };
@@ -94,23 +143,36 @@ const softwareAppSchema = {
   "@type": "SoftwareApplication",
   "name": "Stack Architect $0 Automation Stack",
   "applicationCategory": "BusinessApplication",
+  "applicationSubCategory": "Shopify Automation",
   "operatingSystem": "Web",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
   "description": "Free Shopify automation stack replacing $700/month of paid apps. Includes CAPI Shield server-side tracking, Stocky Swap inventory, Systeme.io email, and Make.com workflows.",
-  "url": "https://www.stackarchitect.xyz/ultimate-shopify-automation-guide"
+  "url": PAGE_URL,
+  "featureList": [
+    "Server-side ad tracking (Meta CAPI + Google Enhanced Conversions)",
+    "Free inventory management (Stocky replacement)",
+    "Email marketing and funnels (Systeme.io free tier)",
+    "Workflow automation (Make.com free tier)",
+    "Google Apps Script quota stability"
+  ]
 };
+
+// All schemas injected as array — Layout renders each as a separate JSON-LD block
+const allSchemas = [articleSchema, breadcrumbSchema, howToTrackingSchema, howToInventorySchema, faqSchema, softwareAppSchema];
 ---
 
 <Layout
   title="Shopify Automation Guide 2026 — Free, No Code, Deploy in 35 Minutes | Stack Architect"
   description="The complete free Shopify automation guide for 2026. Save $700+/month: fix your Q1 ROAS crisis (iOS 26 + Shopify pixel change), replace paid apps, automate inventory before Stocky retires August 2026 — no code, 35 minutes. 500+ stores deployed."
-  canonical="https://www.stackarchitect.xyz/ultimate-shopify-automation-guide"
-  schema={[articleSchema, breadcrumbSchema, howToTrackingSchema, howToInventorySchema, faqSchema, softwareAppSchema]}
+  canonical={PAGE_URL}
+  schema={allSchemas}
 >
   <Nav activePage="ultimate-guide" />
 
   <!-- ══════════════════════════════════════════
        MAIN CONTENT
+       Intentionally differentiated from /shopify-automation-guides (hub/library)
+       This page = comprehensive single guide | Hub = 40+ topic index
   ══════════════════════════════════════════ -->
   <main id="main-content">
     <div class="guide-layout">
@@ -119,7 +181,7 @@ const softwareAppSchema = {
       <aside class="toc-sidebar" aria-label="Table of contents">
         <div class="toc-card">
           <div class="toc-title">
-            <span class="dot" style="width:5px;height:5px;min-width:5px;"></span>
+            <span class="dot" style="width:5px;height:5px;min-width:5px;border-radius:50%;background:var(--g);display:inline-block;"></span>
             Guide Contents
           </div>
           <ul class="toc-list" id="toc-list">
@@ -145,7 +207,7 @@ const softwareAppSchema = {
           </ul>
           <div class="toc-meta">
             <div>Read time: <span>~22 min</span></div>
-            <div>Updated: <span>March 2026</span></div>
+            <div>Updated: <span>April 2026</span></div>
             <div>Word count: <span>~8,000</span></div>
             <div style="margin-top:12px;">
               <a
@@ -153,9 +215,9 @@ const softwareAppSchema = {
                 target="_blank"
                 rel="noopener sponsored"
                 style="display:block;background:var(--g);color:var(--text-inv);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:10px;border-radius:6px;text-align:center;text-decoration:none;transition:background .2s;"
-                aria-label="Start free on Make.com"
+                aria-label="Start free on Make.com — Shopify automation hub"
               >
-                Start Free →
+                Start Free on Make.com →
               </a>
             </div>
           </div>
@@ -166,26 +228,30 @@ const softwareAppSchema = {
       <article
         class="guide-body"
         itemscope
-        itemtype="https://schema.org/Article"
-        aria-label="Shopify Automation Guide 2026"
+        itemtype="https://schema.org/TechArticle"
+        aria-label="Shopify Automation Guide 2026 — Complete Free Guide"
       >
-        <meta itemprop="datePublished" content="2025-01-01" />
-        <meta itemprop="dateModified" content="2026-03-30" />
+        <meta itemprop="datePublished" content={DATE_PUBLISHED} />
+        <meta itemprop="dateModified" content={DATE_MODIFIED} />
         <meta itemprop="wordCount" content="8000" />
-        <meta itemprop="url" content="https://www.stackarchitect.xyz/ultimate-shopify-automation-guide" />
+        <meta itemprop="url" content={PAGE_URL} />
+        <meta itemprop="inLanguage" content="en-GB" />
 
         <!-- ══ HERO ══ -->
         <header class="guide-hero" id="guide-intro">
-          <!-- Breadcrumb — SEO + GEO signal -->
+
+          <!-- Breadcrumb — SEO hierarchy signal + GEO context anchor -->
+          <!-- Canonical parent: /shopify-automation-guides (guides hub) -->
+          <!-- This page: authoritative single comprehensive guide, NOT cannibilising hub -->
           <nav aria-label="Breadcrumb" class="breadcrumb-nav">
             <ol itemscope itemtype="https://schema.org/BreadcrumbList">
               <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-                <a itemprop="item" href="https://www.stackarchitect.xyz/"><span itemprop="name">Stack Architect</span></a>
+                <a itemprop="item" href={`${SITE}/`}><span itemprop="name">Stack Architect</span></a>
                 <meta itemprop="position" content="1" />
               </li>
               <span aria-hidden="true"> › </span>
               <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-                <a itemprop="item" href="https://www.stackarchitect.xyz/shopify-automation-guides"><span itemprop="name">Guides</span></a>
+                <a itemprop="item" href={`${SITE}/shopify-automation-guides`}><span itemprop="name">Free Shopify Automation Guides</span></a>
                 <meta itemprop="position" content="2" />
               </li>
               <span aria-hidden="true"> › </span>
@@ -198,7 +264,7 @@ const softwareAppSchema = {
 
           <div class="guide-hero-meta">
             <span class="tag">Complete Guide</span>
-            <span class="tag tag-dim">Updated March 2026</span>
+            <span class="tag tag-dim">Updated April 2026</span>
             <span class="tag tag-rose">Q1 ROAS Crisis Fix Inside</span>
             <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);">~22 min read</span>
           </div>
@@ -225,7 +291,7 @@ const softwareAppSchema = {
             <div class="gs-cell" role="listitem"><div class="gs-v">$0</div><div class="gs-l">Monthly cost</div></div>
           </div>
 
-          <!-- What this guide covers — internal link to guides hub -->
+          <!-- What this guide covers — internal link to guides hub with distinct anchor text -->
           <div class="callout">
             <div class="callout-label">What this guide covers</div>
             <p>
@@ -234,8 +300,8 @@ const softwareAppSchema = {
               (Make.com) · AI-driven traffic and Agentic Storefronts · Script stability (Quota Fix) · Email
               and funnel automation (Systeme.io) · 8 free app replacements · A complete 35-minute deployment
               action plan.{' '}
-              <a href="https://www.stackarchitect.xyz/shopify-automation-guides">
-                Browse all 40+ individual topic guides →
+              <a href={`${SITE}/shopify-automation-guides`}>
+                Browse all 40+ individual topic guides in the full automation library →
               </a>
             </p>
           </div>
@@ -297,7 +363,7 @@ const softwareAppSchema = {
 
           <div class="callout danger">
             <div class="callout-label">⚠ If your ROAS dropped in January 2026</div>
-            <p>Check your Meta Events Manager → Data Sources. If your Event Match Quality dropped from "Good" to "Fair" around January 13 2026, the Shopify pixel change is the likely cause. <strong>CAPI Shield restores full event quality within 24 hours of deployment.</strong> See the <a href="https://www.stackarchitect.xyz/blog/shopify-meta-roas-dropped-2026-fix">Q1 2026 ROAS fix guide</a> for the full diagnosis.</p>
+            <p>Check your Meta Events Manager → Data Sources. If your Event Match Quality dropped from "Good" to "Fair" around January 13 2026, the Shopify pixel change is the likely cause. <strong>CAPI Shield restores full event quality within 24 hours of deployment.</strong> See the <a href="{SITE}/blog/shopify-meta-roas-dropped-2026-fix">Q1 2026 ROAS fix guide</a> for the full diagnosis.</p>
           </div>
 
           <div class="stat-callout">
@@ -329,7 +395,7 @@ const softwareAppSchema = {
             <meta itemprop="name" content="How to deploy CAPI Shield server-side tracking for Shopify" />
             {[
               { n: 1, title: "Activate your Make.com account", desc: "Sign up for the Make.com free tier — 1,000 operations per month, no credit card required. This is your central automation hub. Most stores processing up to 200 orders per month stay on the free tier indefinitely.", tool: "make.com/en/register", link: "https://www.make.com/en/register?pc=techie123" },
-              { n: 2, title: "Create a Shopify webhook", desc: "In Shopify Admin, go to Settings → Notifications → Webhooks. Create a new webhook for the \"Order payment\" event and point it to the Make.com webhook URL you generate in step 3.", tool: "Shopify Admin → Settings → Notifications" },
+              { n: 2, title: "Create a Shopify webhook", desc: 'In Shopify Admin, go to Settings → Notifications → Webhooks. Create a new webhook for the "Order payment" event and point it to the Make.com webhook URL you generate in step 3.', tool: "Shopify Admin → Settings → Notifications" },
               { n: 3, title: "Build the Make.com scenario", desc: "Create a new scenario with a Webhooks trigger. Connect this to the Meta Conversions API module and map the Shopify order fields to the Meta Purchase event parameters — event_id, value, currency, and user_data.", tool: "Make.com → New Scenario → Webhooks" },
               { n: 4, title: "Test with Meta Events Manager", desc: "Place a test order on your store. Open Meta Events Manager → Test Events and verify the server-side Purchase event appears. You should see both a browser event and a server event — confirming deduplication is working.", tool: "Meta Business Suite → Events Manager" },
               { n: 5, title: "Monitor Event Match Quality for 30 days", desc: "Track your Event Match Quality score in Meta Events Manager. Most stores see it increase from Fair to Good within 2 weeks as the API receives complete customer data.", tool: "Meta Events Manager → Event Match Quality" },
@@ -397,9 +463,9 @@ const softwareAppSchema = {
           <div class="step-cards">
             {[
               { n: 1, title: "Export your Stocky data first (before August 31 2026)", desc: "If you currently use Stocky, export all inventory data via Stocky → Settings → Export before the retirement deadline. Do this now — do not wait until August.", tool: "Shopify Admin → Apps → Stocky → Export" },
-              { n: 2, title: "Create your inventory Google Sheet", desc: "Create a new Google Sheet with columns for: Order ID, Date, SKU, Product Name, Variant, Quantity, Location ID, Fulfilment Status, Order Value. Name the sheet \"Inventory Ledger\".", tool: "sheets.google.com → New Sheet" },
-              { n: 3, title: "Create the Make.com webhook scenario", desc: "New scenario → Webhooks trigger → Google Sheets \"Add a Row\" action. Map the Shopify order payload fields to your sheet columns. Key mapping: order.id → Order ID, line_items[].sku → SKU, line_items[].quantity → Quantity.", tool: "Make.com → New Scenario" },
-              { n: 4, title: "Add Shopify webhooks", desc: "In Shopify Admin → Settings → Notifications, create webhooks for three events: \"Order paid\", \"Order fulfilled\", and \"Refund created\". All three point to the same Make.com webhook URL.", tool: "Shopify Admin → Settings → Notifications" },
+              { n: 2, title: "Create your inventory Google Sheet", desc: 'Create a new Google Sheet with columns for: Order ID, Date, SKU, Product Name, Variant, Quantity, Location ID, Fulfilment Status, Order Value. Name the sheet "Inventory Ledger".', tool: "sheets.google.com → New Sheet" },
+              { n: 3, title: "Create the Make.com webhook scenario", desc: 'New scenario → Webhooks trigger → Google Sheets "Add a Row" action. Map the Shopify order payload fields to your sheet columns. Key mapping: order.id → Order ID, line_items[].sku → SKU, line_items[].quantity → Quantity.', tool: "Make.com → New Scenario" },
+              { n: 4, title: "Add Shopify webhooks", desc: 'In Shopify Admin → Settings → Notifications, create webhooks for three events: "Order paid", "Order fulfilled", and "Refund created". All three point to the same Make.com webhook URL.', tool: "Shopify Admin → Settings → Notifications" },
               { n: 5, title: "Add stock calculation formulas", desc: "In a second sheet tab, use COUNTIF and SUMIF formulas to calculate current stock levels per SKU. Formula: =Initial_Stock - SUMIF(Ledger!C:C, A2, Ledger!F:F)", tool: "Google Sheets formula editor" },
             ].map((s) => (
               <div class="step-card">
@@ -420,7 +486,7 @@ const softwareAppSchema = {
               <h4>Deploy Stocky Swap before August 31 2026</h4>
               <p>Free replacement for Stocky · 4 minutes to deploy · Data stays in your Google Sheet forever</p>
             </div>
-            <a href="https://www.stackarchitect.xyz/stocky-swap" class="btn btn-sm" aria-label="Deploy Stocky Swap free inventory management">
+            <a href={`${SITE}/stocky-swap`} class="btn btn-sm" aria-label="Deploy Stocky Swap free inventory management">
               Deploy Stocky Swap Free →
             </a>
           </div>
@@ -439,7 +505,7 @@ const softwareAppSchema = {
           <h3>Make.com vs Zapier — The Actual Comparison</h3>
 
           <div style="overflow-x:auto;margin:20px 0;">
-            <table class="compare-table" aria-label="Make.com vs Zapier comparison">
+            <table class="compare-table" aria-label="Make.com vs Zapier comparison for Shopify automation">
               <thead>
                 <tr>
                   <th>Feature</th>
@@ -475,7 +541,7 @@ const softwareAppSchema = {
 
           <div class="callout">
             <div class="callout-label">When to upgrade Make.com</div>
-            <p>If your store processes more than 200 orders per month, the Make.com Core plan at $10.59/month provides 10,000 operations — enough for 2,000 orders per month. This is still dramatically cheaper than the paid apps it replaces.</p>
+            <p>If your store processes more than 200 orders per month, the Make.com Core plan at $10.59/month provides 10,000 operations — enough for 2,000 orders per month. This is still dramatically cheaper than the paid apps it replaces. See the full <a href="{SITE}/blog/when-to-upgrade-free-make-google-workspace">upgrade guide</a> for the exact trigger points.</p>
           </div>
 
           <div class="section-cta">
@@ -483,7 +549,7 @@ const softwareAppSchema = {
               <h4>Activate Make.com — your free automation hub</h4>
               <p>Free up to 1,000 ops/month · Instant Shopify webhooks · Most stores never pay a penny</p>
             </div>
-            <a href="https://www.make.com/en/register?pc=techie123" target="_blank" rel="noopener sponsored" class="btn btn-sm pulse" aria-label="Activate Make.com free automation">
+            <a href="https://www.make.com/en/register?pc=techie123" target="_blank" rel="noopener sponsored" class="btn btn-sm pulse" aria-label="Activate Make.com free Shopify automation">
               Activate Make.com Free →
             </a>
           </div>
@@ -501,7 +567,7 @@ const softwareAppSchema = {
           <div class="stat-callout">
             <div class="sc-val">8x</div>
             <div class="sc-body">
-              <p><strong>Year-on-year growth in AI-driven traffic to Shopify stores in 2025</strong>, continuing to accelerate in 2026. Stores that optimise for AI discovery now are building a compounding organic acquisition channel with no ad spend required. See the full <a href="https://www.stackarchitect.xyz/blog/shopify-ai-playbook-2026">Shopify AI Playbook 2026</a> for the complete 7-stage framework.</p>
+              <p><strong>Year-on-year growth in AI-driven traffic to Shopify stores in 2025</strong>, continuing to accelerate in 2026. Stores that optimise for AI discovery now are building a compounding organic acquisition channel with no ad spend required. See the full <a href="{SITE}/blog/shopify-ai-playbook-2026">Shopify AI Playbook 2026</a> for the complete 7-stage framework.</p>
             </div>
           </div>
 
@@ -525,10 +591,10 @@ const softwareAppSchema = {
 
           <div class="callout info">
             <div class="callout-label">Availability — US Only, Early Access, Currently Free</div>
-            <p>Shopify Agentic Storefronts are currently <strong>US-only, early access</strong>. They are enabled via the <strong>Knowledge Base App</strong>, which is free for Shopify Plus stores and <strong>$50/month for standard plan stores</strong>. If you are a US-based store, enabling this now puts you ahead of the majority of merchants who are not yet aware of it. See the <a href="https://www.stackarchitect.xyz/blog/shopify-agentic-storefronts-setup-guide-2026">complete Agentic Storefronts setup guide</a> for the full configuration.</p>
+            <p>Shopify Agentic Storefronts are currently <strong>US-only, early access</strong>. They are enabled via the <strong>Knowledge Base App</strong>, which is free for Shopify Plus stores and <strong>$50/month for standard plan stores</strong>. If you are a US-based store, enabling this now puts you ahead of the majority of merchants who are not yet aware of it. See the <a href="{SITE}/blog/shopify-agentic-storefronts-setup-guide-2026">complete Agentic Storefronts setup guide</a> for the full configuration.</p>
           </div>
 
-          <!-- Tidio mention — AI customer support affiliate -->
+          <!-- Tidio — AI customer support, relevant to AI traffic section -->
           <div class="callout info">
             <div class="callout-label">AI Customer Support — Free Tier Available</div>
             <p>Pair your AI traffic strategy with AI-powered customer support. <strong>Tidio's Lyro AI</strong> resolves up to 70% of customer queries automatically — free plan available, no code required for Shopify integration. <a href="https://affiliate.tidio.com/5kfhrx3ot6tf" target="_blank" rel="noopener sponsored">Try Tidio free →</a></p>
@@ -539,7 +605,7 @@ const softwareAppSchema = {
               <h4>Read the full Shopify AI Playbook 2026</h4>
               <p>7 operational stages · GEO framework · Agentic Storefronts setup · Free</p>
             </div>
-            <a href="https://www.stackarchitect.xyz/blog/shopify-ai-playbook-2026" class="btn btn-sm" style="background:var(--amber);color:var(--text-inv);" aria-label="Read the Shopify AI Playbook 2026">
+            <a href="{SITE}/blog/shopify-ai-playbook-2026" class="btn btn-sm" style="background:var(--amber);color:var(--text-inv);" aria-label="Read the Shopify AI Playbook 2026">
               Read AI Playbook →
             </a>
           </div>
@@ -554,7 +620,7 @@ const softwareAppSchema = {
 
           <p>If you use Google Apps Script for any part of your Shopify automation — document generation, spreadsheet triggers, inventory calculations, email dispatch — you have probably encountered execution quota errors. Your workflow stops, data is not processed, and you may not know it happened until you discover a gap in your inventory ledger.</p>
 
-          <p>Google Apps Script enforces hard limits on free accounts: <a href="https://www.stackarchitect.xyz/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations">6 minutes per script execution, 90 minutes of total execution time per day</a>, and quotas on specific services like Gmail (100 emails per day), Sheets, and UrlFetch.</p>
+          <p>Google Apps Script enforces hard limits on free accounts: <a href="{SITE}/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations">6 minutes per script execution, 90 minutes of total execution time per day</a>, and quotas on specific services like Gmail (100 emails per day), Sheets, and UrlFetch.</p>
 
           <div class="stat-callout">
             <div class="sc-val">6 min</div>
@@ -563,10 +629,10 @@ const softwareAppSchema = {
             </div>
           </div>
 
-          <!-- Google Workspace affiliate -->
+          <!-- Google Workspace affiliate — genuinely applicable for quota/scaling context -->
           <div class="callout info">
             <div class="callout-label">High-volume stores · 500+ orders/month</div>
-            <p>Scaling past 500 orders/month? Gmail API limits will break your automations. <strong>Google Workspace removes every Gmail API limit</strong> and keeps your entire $0 stack running at full speed during traffic spikes and Black Friday volumes. <a href="https://referworkspace.app.goo.gl/sy2C" target="_blank" rel="noopener sponsored">Activate Workspace free trial →</a></p>
+            <p>Scaling past 500 orders/month? Gmail API limits will break your automations. <strong>Google Workspace removes every Gmail API limit</strong> and keeps your entire $0 stack running at full speed during traffic spikes and Black Friday volumes. <a href="https://referworkspace.app.goo.gl/sy2C" target="_blank" rel="noopener sponsored">Activate Google Workspace free trial →</a></p>
           </div>
 
           <h3>The Autocrat Quota Fix — What It Does</h3>
@@ -586,7 +652,7 @@ const softwareAppSchema = {
               <h4>Deploy Quota Fix — stop automation crashes permanently</h4>
               <p>Free implementation · Works with any Google Apps Script workflow</p>
             </div>
-            <a href="https://www.stackarchitect.xyz/autocrat-quota-fix" class="btn btn-sm" aria-label="Deploy Autocrat Quota Fix free">
+            <a href="{SITE}/autocrat-quota-fix" class="btn btn-sm" aria-label="Deploy Autocrat Quota Fix free">
               Deploy Quota Fix Free →
             </a>
           </div>
@@ -609,10 +675,10 @@ const softwareAppSchema = {
             <p>If your Klaviyo billing jumped in early 2025 without a change in your subscriber acquisition rate, the profile billing change is almost certainly the cause. Log in → Account → Billing → Profile count. You have three options: delete unengaged profiles, migrate to a platform with engagement-based billing, or switch to Systeme.io's permanently free plan.</p>
           </div>
 
-          <!-- GetResponse affiliate — alternative to Klaviyo -->
+          <!-- GetResponse affiliate — directly applicable as Klaviyo alternative in this section -->
           <div class="callout info">
             <div class="callout-label">Klaviyo Alternative — Engagement-Based Billing</div>
-            <p><strong>GetResponse</strong> uses engagement-based billing — you only pay for contacts who actually engage. Includes advanced ecommerce segmentation, automations, landing pages, and webinars. <a href="https://try.getresponsetoday.com/gejtf3pvvf1u" target="_blank" rel="noopener sponsored">Try GetResponse free for 30 days →</a> — see the <a href="https://www.stackarchitect.xyz/blog/klaviyo-vs-getresponse-shopify-2026">full Klaviyo vs GetResponse 2026 comparison →</a></p>
+            <p><strong>GetResponse</strong> uses engagement-based billing — you only pay for contacts who actually engage. Includes advanced ecommerce segmentation, automations, landing pages, and webinars. <a href="https://try.getresponsetoday.com/gejtf3pvvf1u" target="_blank" rel="noopener sponsored">Try GetResponse free for 30 days →</a> — see the <a href="{SITE}/blog/klaviyo-vs-getresponse-shopify-2026">full Klaviyo vs GetResponse 2026 comparison →</a></p>
           </div>
 
           <span id="section-systeme" style="display:block;height:80px;margin-top:-80px;visibility:hidden;"></span>
@@ -628,7 +694,7 @@ const softwareAppSchema = {
             <li><strong>Affiliate programme management</strong> — run your own affiliate programme for your Shopify products at $0/month.</li>
           </ul>
 
-          <!-- Beehiiv mention for email newsletters -->
+          <!-- Beehiiv — applicable for newsletter-first email strategies -->
           <div class="callout info">
             <div class="callout-label">Building a newsletter? Consider Beehiiv</div>
             <p>If your email strategy is newsletter-first (content-driven, subscriber growth, monetisation via ads or paid subscriptions), <strong>Beehiiv</strong> is the strongest free alternative — built for newsletter growth, with better deliverability and monetisation tools than Systeme.io for that specific use case. <a href="https://www.beehiiv.com?via=gym-extras" target="_blank" rel="noopener sponsored">Try Beehiiv free →</a></p>
@@ -660,7 +726,7 @@ const softwareAppSchema = {
           <p>Based on an audit of typical mid-stage Shopify stores, there are eight paid app categories where a free alternative now matches or exceeds the paid option's core functionality. The combined saving for a store running all eight paid versions is <strong>over $700/month</strong>.</p>
 
           <div style="overflow-x:auto;margin:20px 0;">
-            <table class="compare-table" aria-label="Paid apps vs free replacements">
+            <table class="compare-table" aria-label="Paid Shopify apps vs free replacements — full comparison">
               <thead>
                 <tr>
                   <th>Paid App Category</th>
@@ -691,20 +757,20 @@ const softwareAppSchema = {
             </table>
           </div>
 
-          <!-- Gorgias mention — enterprise customer support -->
+          <!-- Gorgias — applicable for enterprise customer support, correctly scoped -->
           <div class="callout info">
             <div class="callout-label">Enterprise customer support — Gorgias</div>
             <p>For high-volume stores (1,000+ tickets/month) needing deep Shopify integration, order editing from the helpdesk, and advanced macros, <strong>Gorgias</strong> is the leading paid option. For smaller stores, Tidio's free tier handles the majority of queries. <a href="https://partner.gorgias.com/xclmfdgeizdk" target="_blank" rel="noopener sponsored">See Gorgias for Shopify →</a></p>
           </div>
 
-          <p>The full breakdown — including which specific apps each free replacement covers, migration steps, and the order in which to switch — is in the <a href="https://www.stackarchitect.xyz/blog/free-shopify-apps-replace-paid-2026">free Shopify app replacements guide for 2026</a>. Use the <a href="https://www.stackarchitect.xyz/shopify-app-cost-calculator">App Cost Calculator</a> to audit your current bill.</p>
+          <p>The full breakdown — including which specific apps each free replacement covers, migration steps, and the order in which to switch — is in the <a href="{SITE}/blog/free-shopify-apps-replace-paid-2026">free Shopify app replacements guide for 2026</a>. Use the <a href="{SITE}/shopify-app-cost-calculator">App Cost Calculator</a> to audit your current bill.</p>
 
           <div class="section-cta">
             <div class="section-cta-left">
               <h4>Audit your app bill — find your $700/month</h4>
               <p>Free calculator · Shows which apps you can replace · Takes 2 minutes</p>
             </div>
-            <a href="https://www.stackarchitect.xyz/shopify-app-cost-calculator" class="btn btn-sm" aria-label="Open Shopify App Cost Calculator">
+            <a href="{SITE}/shopify-app-cost-calculator" class="btn btn-sm" aria-label="Open free Shopify App Cost Calculator">
               Open App Calculator →
             </a>
           </div>
@@ -712,11 +778,11 @@ const softwareAppSchema = {
 
         <div class="section-divider"></div>
 
-        <!-- ══ PDF GATE ══ -->
+        <!-- ══ PDF GATE — Free Deployment Checklist ══ -->
         <div class="pdf-gate">
           <span class="tag" style="margin-bottom:16px;display:inline-flex;position:relative;">Free Resource</span>
           <h3>Get the Complete Deployment Checklist</h3>
-          <p>The full $0 Automation Stack in one PDF — CAPI Shield, Stocky Swap, Quota Fix, and Systeme.io. Step-by-step, copy-paste ready. Updated March 2026 with Q1 ROAS crisis fix.</p>
+          <p>The full $0 Automation Stack in one PDF — CAPI Shield, Stocky Swap, Quota Fix, and Systeme.io. Step-by-step, copy-paste ready. Updated April 2026 with Q1 ROAS crisis fix.</p>
           <div class="pdf-gate-specs">
             <span class="pdf-spec"><span class="pdf-spec-dot"></span>35-minute deployment plan</span>
             <span class="pdf-spec"><span class="pdf-spec-dot"></span>All webhook configurations</span>
@@ -751,19 +817,24 @@ const softwareAppSchema = {
             <meta itemprop="totalTime" content="PT35M" />
             {[
               { n: 1, title: "Minutes 0–3: Activate Make.com", desc: "Sign up for Make.com free at make.com/en/register. Verify your email. You are now in the Make.com dashboard — your central automation hub is active.", tool: "make.com/en/register?pc=techie123", link: "https://www.make.com/en/register?pc=techie123" },
-              { n: 2, title: "Minutes 3–9: Deploy CAPI Shield", desc: "Create your first scenario using the CAPI Shield blueprint from the deployment manual. Connect Shopify webhook → Make.com → Meta Conversions API. Test with one order. Your Q1 2026 tracking recovery is now live.", tool: "CAPI Shield Setup Guide ↗", link: "https://www.stackarchitect.xyz/capi-shield" },
-              { n: 3, title: "Minutes 9–14: Deploy Stocky Swap", desc: "Create your Google Sheet inventory ledger using the template. If you currently use Stocky, export your data first. Add a second Make.com scenario using the Stocky Swap blueprint.", tool: "Stocky Swap Setup Guide ↗", link: "https://www.stackarchitect.xyz/stocky-swap" },
-              { n: 4, title: "Minutes 14–17: Add Quota Fix", desc: "If you use any Google Apps Script automation, apply the chunked processing pattern and exponential backoff template from the Quota Fix library. This takes 3 minutes and prevents mid-month crashes indefinitely.", tool: "Autocrat Quota Fix Guide ↗", link: "https://www.stackarchitect.xyz/autocrat-quota-fix" },
+              { n: 2, title: "Minutes 3–9: Deploy CAPI Shield", desc: "Create your first scenario using the CAPI Shield blueprint from the deployment manual. Connect Shopify webhook → Make.com → Meta Conversions API. Test with one order. Your Q1 2026 tracking recovery is now live.", tool: "CAPI Shield Setup Guide ↗", link: `${SITE}/capi-shield` },
+              { n: 3, title: "Minutes 9–14: Deploy Stocky Swap", desc: "Create your Google Sheet inventory ledger using the template. If you currently use Stocky, export your data first. Add a second Make.com scenario using the Stocky Swap blueprint.", tool: "Stocky Swap Setup Guide ↗", link: `${SITE}/stocky-swap` },
+              { n: 4, title: "Minutes 14–17: Add Quota Fix", desc: "If you use any Google Apps Script automation, apply the chunked processing pattern and exponential backoff template from the Quota Fix library. This takes 3 minutes and prevents mid-month crashes indefinitely.", tool: "Autocrat Quota Fix Guide ↗", link: `${SITE}/autocrat-quota-fix` },
               { n: 5, title: "Minutes 17–25: Activate Systeme.io", desc: "Sign up for Systeme.io free. Create your first email capture form. Embed it on your Shopify thank-you page or homepage. Build a 3-email welcome sequence. If you are currently on Klaviyo, check your profile count against the February 2025 billing change.", tool: "systeme.io free plan", link: "https://systeme.io/?sa=sa0262937272be99703a8ea16153f5dd5ae2a3eea7" },
-              { n: 6, title: "Minutes 25–30: Enable AI discoverability", desc: "Add FAQPage schema to your key product pages, verify your Google Merchant Centre product feed is complete and accurate, and if you are a US-based Shopify store, check the Knowledge Base App availability for Agentic Storefronts.", tool: "AI Playbook 2026 →", link: "https://www.stackarchitect.xyz/blog/shopify-ai-playbook-2026" },
-              { n: 7, title: "Minutes 30–35: Audit your app bill", desc: "Review every active Shopify app. Cancel any tracking, inventory, or automation connector apps the stack now replaces. Use the App Cost Calculator to confirm your monthly saving.", tool: "App Cost Calculator →", link: "https://www.stackarchitect.xyz/shopify-app-cost-calculator" },
+              { n: 6, title: "Minutes 25–30: Enable AI discoverability", desc: "Add FAQPage schema to your key product pages, verify your Google Merchant Centre product feed is complete and accurate, and if you are a US-based Shopify store, check the Knowledge Base App availability for Agentic Storefronts.", tool: "AI Playbook 2026 →", link: `${SITE}/blog/shopify-ai-playbook-2026` },
+              { n: 7, title: "Minutes 30–35: Audit your app bill", desc: "Review every active Shopify app. Cancel any tracking, inventory, or automation connector apps the stack now replaces. Use the App Cost Calculator to confirm your monthly saving.", tool: "App Cost Calculator →", link: `${SITE}/shopify-app-cost-calculator` },
             ].map((s) => (
               <div class="step-card" itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
                 <div class="step-num" itemprop="position">{s.n}</div>
                 <div>
                   <div class="step-title" itemprop="name">{s.title}</div>
                   <div class="step-desc" itemprop="text">{s.desc}</div>
-                  <a href={s.link} target={s.link.startsWith('https://www.stackarchitect') ? '_self' : '_blank'} rel={s.link.startsWith('https://www.stackarchitect') ? '' : 'noopener'} class="step-tool">
+                  <a
+                    href={s.link}
+                    target={s.link.startsWith(SITE) ? '_self' : '_blank'}
+                    rel={s.link.startsWith(SITE) ? undefined : 'noopener sponsored'}
+                    class="step-tool"
+                  >
                     {s.tool}
                   </a>
                 </div>
@@ -781,7 +852,7 @@ const softwareAppSchema = {
               <h4>Ready? Start with Make.com — your free automation hub.</h4>
               <p>Free forever up to 1,000 ops/month · Most stores never pay a penny</p>
             </div>
-            <a href="https://www.make.com/en/register?pc=techie123" target="_blank" rel="noopener sponsored" class="btn pulse" aria-label="Start with Make.com free">
+            <a href="https://www.make.com/en/register?pc=techie123" target="_blank" rel="noopener sponsored" class="btn pulse" aria-label="Start with Make.com free Shopify automation">
               Replace My Apps Free →
             </a>
           </div>
@@ -789,29 +860,29 @@ const softwareAppSchema = {
 
         <div class="section-divider"></div>
 
-        <!-- ══ FAQ ══ -->
+        <!-- ══ FAQ — FAQPage schema applied inline via itemscope ══ -->
         <section class="guide-section" id="section-faq" aria-labelledby="faq-h" itemscope itemtype="https://schema.org/FAQPage">
           <span class="tag tag-dim section-tag">FAQ</span>
           <h2 id="faq-h">Shopify Automation — Frequently Asked Questions</h2>
-          <p>Every question Shopify store owners ask before deploying the $0 Automation Stack — updated March 2026 with Q1 tracking crisis, Stocky retirement, and AI traffic questions.</p>
+          <p>Every question Shopify store owners ask before deploying the $0 Automation Stack — updated April 2026 with Q1 tracking crisis, Stocky retirement, and AI traffic questions.</p>
 
           <div class="static-faq">
             {[
-              { q: "What is the best Shopify automation guide in 2026?", a: <>This guide covers the complete $0 Automation Stack — the fastest way to automate your Shopify store in 2026 across tracking, inventory, workflow, email, and AI discoverability. For individual deep-dives on each topic, the <a href="https://www.stackarchitect.xyz/shopify-automation-guides">Shopify automation guides library</a> covers 40+ step-by-step guides across every operational area.</> },
+              { q: "What is the best Shopify automation guide in 2026?", a: <Fragment>This guide covers the complete $0 Automation Stack — the fastest way to automate your Shopify store in 2026 across tracking, inventory, workflow, email, and AI discoverability. For individual deep-dives on each topic, the <a href={`${SITE}/shopify-automation-guides`}>Shopify automation guides library</a> covers 40+ step-by-step guides across every operational area.</Fragment> },
               { q: "How do I automate my Shopify store in 2026?", a: "Use the $0 Automation Stack: Make.com free tier as the central webhook hub, CAPI Shield for server-side ad tracking, Stocky Swap for inventory management, Systeme.io for email automation, and Google Apps Script Quota Fix for document workflow stability. The complete setup takes 35 minutes and costs $0/month for stores processing under 200 orders per month." },
-              { q: "Why did my Shopify ROAS drop in January 2026?", a: <>Two events hit simultaneously: iOS 26 stripped fbclid parameters from Private Browsing links and links shared via Mail and Messages, breaking click-level attribution. On January 13 2026, Shopify changed App Pixels to "Optimised" mode — silently throttling third-party tracking pixel data. Together these create a 30–45% conversion data gap for stores relying on browser pixels alone. <a href="https://www.stackarchitect.xyz/blog/shopify-meta-roas-dropped-2026-fix">Server-side tracking via CAPI Shield</a> fixes both issues simultaneously.</> },
-              { q: "What happened to Shopify's pixel on January 13 2026?", a: "Shopify changed App Pixels to \"Optimised\" mode on January 13 2026. This change throttles the data that third-party pixel apps receive from Shopify's checkout events — without throwing an error or notifying merchants. Server-side tracking via CAPI Shield bypasses the App Pixel system entirely." },
-              { q: "When does Shopify Stocky retire?", a: <>Shopify Stocky retires on <strong>August 31 2026</strong>. After this date, all stores lose access to the app and all inventory data held within it. Export your data now via Stocky → Settings → Export, then deploy Stocky Swap as your replacement. The migration takes 4 minutes and your data lives in a Google Sheet you own permanently.</> },
+              { q: "Why did my Shopify ROAS drop in January 2026?", a: <Fragment>Two events hit simultaneously: iOS 26 stripped fbclid parameters from Private Browsing links and links shared via Mail and Messages, breaking click-level attribution. On January 13 2026, Shopify changed App Pixels to "Optimised" mode — silently throttling third-party tracking pixel data. Together these create a 30–45% conversion data gap for stores relying on browser pixels alone. <a href={`${SITE}/blog/shopify-meta-roas-dropped-2026-fix`}>Server-side tracking via CAPI Shield</a> fixes both issues simultaneously.</Fragment> },
+              { q: "What happened to Shopify's pixel on January 13 2026?", a: 'Shopify changed App Pixels to "Optimised" mode on January 13 2026. This change throttles the data that third-party pixel apps receive from Shopify\'s checkout events — without throwing an error or notifying merchants. Server-side tracking via CAPI Shield bypasses the App Pixel system entirely.' },
+              { q: "When does Shopify Stocky retire?", a: <Fragment>Shopify Stocky retires on <strong>August 31 2026</strong>. After this date, all stores lose access to the app and all inventory data held within it. Export your data now via Stocky → Settings → Export, then deploy Stocky Swap as your replacement. The migration takes 4 minutes and your data lives in a Google Sheet you own permanently.</Fragment> },
               { q: "How do I automate my Shopify store for free?", a: "Use the $0 Automation Stack: Make.com (free tier) as the central hub, Google Sheets for inventory, the Conversions API for tracking, and Systeme.io for email marketing. This replaces paid tracking, inventory, automation, and email apps at zero cost. Deploy in under 35 minutes with no code." },
               { q: "Make.com vs Zapier for Shopify?", a: "Make.com. It offers 1,000 free operations per month versus Zapier's 100, supports multi-step workflows on the free tier, and handles Shopify webhooks in real time (Zapier's free tier polls every 15 minutes). For Shopify automation specifically, Make.com is the stronger choice at every price point." },
               { q: "How do I replace Shopify Stocky for free?", a: "Use Stocky Swap — a free Make.com workflow that logs every Shopify order to a Google Sheet in real time. It replicates Stocky's core inventory tracking functionality at $0/month, supports multi-location inventory, and stores all data in a Google Sheet you own. Deploy before August 31 2026." },
               { q: "Can I automate Shopify without coding?", a: "Yes. The entire $0 Automation Stack requires zero coding. Make.com uses a visual drag-and-drop builder, Google Sheets requires no scripting for basic inventory tracking, and the Conversions API integration is configured via point-and-click webhook setup in Shopify Admin." },
-              { q: "What is Klaviyo's billing change and how does it affect my costs?", a: <>In February 2025, Klaviyo changed to billing on all active profiles — including unengaged contacts. Stores with large historical email lists saw their bill increase significantly. The <a href="https://www.stackarchitect.xyz/blog/klaviyo-vs-getresponse-shopify-2026">Klaviyo vs GetResponse 2026 guide</a> covers the full cost comparison and migration options.</> },
-              { q: "How do I get my Shopify store found by ChatGPT and Google AI Mode?", a: <>Optimise for Generative Engine Optimisation (GEO): add structured product schema markup, create FAQ content that matches conversational queries, and ensure your product data is programmatically accessible. AI-driven traffic to Shopify grew 8x year-on-year in 2025. The <a href="https://www.stackarchitect.xyz/blog/shopify-ai-playbook-2026">Shopify AI Playbook 2026</a> covers the complete 7-stage GEO framework.</> },
-              { q: "What are Shopify Agentic Storefronts?", a: <>Shopify Agentic Storefronts allow customers to complete purchases directly inside ChatGPT, Google AI Mode, and Microsoft Copilot. Currently US-only early access, enabled via the Knowledge Base App (free for Shopify Plus, $50/month for standard plans). See the <a href="https://www.stackarchitect.xyz/blog/shopify-agentic-storefronts-setup-guide-2026">complete Agentic Storefronts setup guide</a> for configuration steps.</> },
+              { q: "What is Klaviyo's billing change and how does it affect my costs?", a: <Fragment>In February 2025, Klaviyo changed to billing on all active profiles — including unengaged contacts. Stores with large historical email lists saw their bill increase significantly. The <a href={`${SITE}/blog/klaviyo-vs-getresponse-shopify-2026`}>Klaviyo vs GetResponse 2026 guide</a> covers the full cost comparison and migration options.</Fragment> },
+              { q: "How do I get my Shopify store found by ChatGPT and Google AI Mode?", a: <Fragment>Optimise for Generative Engine Optimisation (GEO): add structured product schema markup, create FAQ content that matches conversational queries, and ensure your product data is programmatically accessible. AI-driven traffic to Shopify grew 8x year-on-year in 2025. The <a href={`${SITE}/blog/shopify-ai-playbook-2026`}>Shopify AI Playbook 2026</a> covers the complete 7-stage GEO framework.</Fragment> },
+              { q: "What are Shopify Agentic Storefronts?", a: <Fragment>Shopify Agentic Storefronts allow customers to complete purchases directly inside ChatGPT, Google AI Mode, and Microsoft Copilot. Currently US-only early access, enabled via the Knowledge Base App (free for Shopify Plus, $50/month for standard plans). See the <a href={`${SITE}/blog/shopify-agentic-storefronts-setup-guide-2026`}>complete Agentic Storefronts setup guide</a> for configuration steps.</Fragment> },
               { q: "What is Shopify automation?", a: "Shopify automation connects Shopify to external tools via webhooks and APIs so that repetitive tasks — order logging, ad tracking, inventory updates, email sequences — happen automatically without manual work or paid app subscriptions." },
-              { q: "How much can I save by automating my Shopify store?", a: <>Most stores save $500–$900 per month by replacing paid tracking apps ($149–$299/mo), inventory apps ($29–$449/mo), automation connectors ($49–$99/mo), and email marketing tools ($45–$400/mo) with the free stack. Use the <a href="https://www.stackarchitect.xyz/shopify-app-cost-calculator">App Cost Calculator</a> for a personalised estimate.</> },
-              { q: "What causes Google Apps Script quota errors?", a: <>Google Apps Script limits executions to 6 minutes per run and 90 minutes per day on free accounts. Autocrat Quota Fix restructures scripts to use chunked processing and exponential backoff, staying within limits at any order volume. The full quota numbers are in the <a href="https://www.stackarchitect.xyz/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations">Google Apps Script quotas 2026 guide</a>.</> },
+              { q: "How much can I save by automating my Shopify store?", a: <Fragment>Most stores save $500–$900 per month by replacing paid tracking apps ($149–$299/mo), inventory apps ($29–$449/mo), automation connectors ($49–$99/mo), and email marketing tools ($45–$400/mo) with the free stack. Use the <a href={`${SITE}/shopify-app-cost-calculator`}>App Cost Calculator</a> for a personalised estimate.</Fragment> },
+              { q: "What causes Google Apps Script quota errors?", a: <Fragment>Google Apps Script limits executions to 6 minutes per run and 90 minutes per day on free accounts. Autocrat Quota Fix restructures scripts to use chunked processing and exponential backoff, staying within limits at any order volume. The full quota numbers are in the <a href={`${SITE}/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations`}>Google Apps Script quotas 2026 guide</a>.</Fragment> },
               { q: "Is the $0 Automation Stack safe?", a: "Completely safe. The stack runs in your own Google account and Make.com workspace. Nothing is installed on your Shopify store — data flows via secure webhooks. Remove it entirely by deleting the Make.com scenario and Google Sheet." },
               { q: "How long does full setup take?", a: "Each individual workflow deploys in 4–6 minutes. Full stack deployment — CAPI Shield, Stocky Swap, Quota Fix, Systeme.io, and basic AI discoverability setup — takes 35 minutes total. Zero ongoing maintenance required after deployment." },
               { q: "Do I need Google Workspace?", a: "Not initially. Free Gmail works for most stores. If you process more than 500 orders per month, Gmail API limits may throttle automations during peak periods. Google Workspace removes all limits and is recommended for high-volume stores." },
@@ -829,23 +900,23 @@ const softwareAppSchema = {
           </div>
         </section>
 
-        <!-- ══ RELATED GUIDES ══ -->
-        <section style="margin-top:56px;" aria-label="Related guides">
+        <!-- ══ RELATED GUIDES — Internal linking cluster (prevents cannibalization by differentiating topics) ══ -->
+        <section style="margin-top:56px;" aria-label="Related guides and topic deep-dives">
           <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--text-4);margin-bottom:16px;">Related Guides</div>
           <div style="display:flex;flex-direction:column;gap:8px;">
             {[
-              { href: "https://www.stackarchitect.xyz/shopify-automation-guides", label: "All 40+ Free Shopify Automation Guides — Browse by Topic", style: "background:var(--g-bg);border:1px solid var(--g-border);" },
-              { href: "https://www.stackarchitect.xyz/blog/shopify-meta-roas-dropped-2026-fix", label: "Q1 2026 ROAS Crisis — iOS 26 + Shopify Pixel Fix", badge: true, style: "background:var(--rose-bg);border:1px solid var(--rose-border);" },
-              { href: "https://www.stackarchitect.xyz/blog/shopify-ai-playbook-2026", label: "Complete Shopify AI Playbook 2026 — 7 Stages", badge: true, style: "background:var(--amber-bg);border:1px solid var(--amber-border);" },
-              { href: "https://www.stackarchitect.xyz/blog/shopify-agentic-storefronts-setup-guide-2026", label: "Shopify Agentic Storefronts Setup Guide", badge: true, style: "background:var(--sky-bg);border:1px solid var(--sky-border);" },
-              { href: "https://www.stackarchitect.xyz/blog/free-shopify-apps-replace-paid-2026", label: "8 Paid Shopify Apps You Can Replace Free in 2026", badge: true, style: "background:var(--g-bg);border:1px solid var(--g-border);" },
-              { href: "https://www.stackarchitect.xyz/blog/klaviyo-vs-getresponse-shopify-2026", label: "Klaviyo vs GetResponse for Shopify 2026 — Real Cost Comparison", badge: true, style: "background:var(--vio-bg);border:1px solid var(--vio-border);" },
-              { href: "https://www.stackarchitect.xyz/blog/make-com-shopify-automation-guide", label: "Make.com for Shopify: Complete Beginner's Guide 2026", badge: true, style: "background:var(--g-bg);border:1px solid var(--g-border);" },
-              { href: "https://www.stackarchitect.xyz/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations", label: "Google Apps Script Quotas & Limits 2026 — Every Number Explained", style: "background:var(--bg-3);border:1px solid var(--border);" },
-              { href: "https://www.stackarchitect.xyz/capi-shield", label: "CAPI Shield — Full Technical Documentation", style: "background:var(--bg-3);border:1px solid var(--border);" },
-              { href: "https://www.stackarchitect.xyz/stocky-swap", label: "Stocky Swap — Inventory Setup Guide", style: "background:var(--bg-3);border:1px solid var(--border);" },
-              { href: "https://www.stackarchitect.xyz/autocrat-quota-fix", label: "Autocrat Quota Fix — Script Stability Guide", style: "background:var(--bg-3);border:1px solid var(--border);" },
-              { href: "https://www.stackarchitect.xyz/shopify-app-cost-calculator", label: "Free Shopify App Cost Calculator", style: "background:var(--bg-3);border:1px solid var(--border);" },
+              { href: `${SITE}/shopify-automation-guides`, label: "All 40+ Free Shopify Automation Guides — Browse the Full Topic Library", style: "background:var(--g-bg);border:1px solid var(--g-border);" },
+              { href: `${SITE}/blog/shopify-meta-roas-dropped-2026-fix`, label: "Q1 2026 ROAS Crisis — iOS 26 + Shopify Pixel Fix", badge: true, style: "background:var(--rose-bg);border:1px solid var(--rose-border);" },
+              { href: `${SITE}/blog/shopify-ai-playbook-2026`, label: "Complete Shopify AI Playbook 2026 — 7 Stages", badge: true, style: "background:var(--amber-bg);border:1px solid var(--amber-border);" },
+              { href: `${SITE}/blog/shopify-agentic-storefronts-setup-guide-2026`, label: "Shopify Agentic Storefronts Setup Guide", badge: true, style: "background:var(--sky-bg);border:1px solid var(--sky-border);" },
+              { href: `${SITE}/blog/free-shopify-apps-replace-paid-2026`, label: "8 Paid Shopify Apps You Can Replace Free in 2026", badge: true, style: "background:var(--g-bg);border:1px solid var(--g-border);" },
+              { href: `${SITE}/blog/klaviyo-vs-getresponse-shopify-2026`, label: "Klaviyo vs GetResponse for Shopify 2026 — Real Cost Comparison", badge: true, style: "background:var(--vio-bg);border:1px solid var(--vio-border);" },
+              { href: `${SITE}/blog/make-com-shopify-automation-guide`, label: "Make.com for Shopify: Complete Beginner's Guide 2026", badge: true, style: "background:var(--g-bg);border:1px solid var(--g-border);" },
+              { href: `${SITE}/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations`, label: "Google Apps Script Quotas & Limits 2026 — Every Number Explained", style: "background:var(--bg-3);border:1px solid var(--border);" },
+              { href: `${SITE}/capi-shield`, label: "CAPI Shield — Full Technical Documentation", style: "background:var(--bg-3);border:1px solid var(--border);" },
+              { href: `${SITE}/stocky-swap`, label: "Stocky Swap — Inventory Setup Guide", style: "background:var(--bg-3);border:1px solid var(--border);" },
+              { href: `${SITE}/autocrat-quota-fix`, label: "Autocrat Quota Fix — Script Stability Guide", style: "background:var(--bg-3);border:1px solid var(--border);" },
+              { href: `${SITE}/shopify-app-cost-calculator`, label: "Free Shopify App Cost Calculator", style: "background:var(--bg-3);border:1px solid var(--border);" },
             ].map((link) => (
               <a href={link.href} style={`display:flex;align-items:center;justify-content:space-between;padding:14px 18px;${link.style}border-radius:8px;text-decoration:none;`}>
                 <span style="font-size:14px;font-weight:600;color:var(--text-2);">
@@ -862,8 +933,8 @@ const softwareAppSchema = {
     </div><!-- /guide-layout -->
   </main>
 
-  <!-- SCROLL DEPTH BAR -->
-  <div class="scroll-bar" id="scroll-bar" aria-live="polite">
+  <!-- ══ SCROLL DEPTH CTA BAR (40% scroll depth trigger) ══ -->
+  <div class="scroll-bar" id="scroll-bar" aria-live="polite" aria-atomic="true">
     <div class="scroll-bar-inner">
       <div class="scroll-bar-text">Ready to deploy? <span>Replace your apps free — takes 35 minutes.</span></div>
       <div class="scroll-bar-actions">
@@ -878,173 +949,210 @@ const softwareAppSchema = {
   <Footer />
 
   <style>
-    /* ── Page layout ── */
-    .guide-layout{display:grid;grid-template-columns:260px 1fr;gap:48px;max-width:1100px;margin:0 auto;padding:56px 24px 100px;align-items:start;}
-    @media(max-width:900px){.guide-layout{grid-template-columns:1fr;padding-top:40px;}.toc-sidebar{display:none;}}
+    /* ─────────────────────────────────────────────────────────────────────────
+       PAGE-SCOPED STYLES
+       CSS variables come from the global Layout stylesheet — these are page-only.
+    ───────────────────────────────────────────────────────────────────────── */
 
-    /* Force left-align on content */
-    .guide-body,.guide-body *,.guide-section,.guide-section h2,.guide-section h3,.guide-section p,.guide-section li,.guide-section ul,.guide-section ol,.guide-hero p,.callout,.step-card,.step-desc{text-align:left !important;}
-    .guide-hero h1,.guide-hero-meta,.guide-stats,.pdf-gate,.pdf-gate h3,.pdf-gate p,.pdf-gate-specs{text-align:center !important;}
+    /* ── Two-column layout ── */
+    .guide-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 48px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 56px 24px 100px;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .guide-layout { grid-template-columns: 1fr; padding-top: 40px; }
+      .toc-sidebar  { display: none; }
+    }
 
-    /* Breadcrumb */
-    .breadcrumb-nav{margin-bottom:16px;}
-    .breadcrumb-nav ol{display:flex;flex-wrap:wrap;align-items:center;gap:4px;list-style:none;padding:0;}
-    .breadcrumb-nav a{font-family:var(--mono);font-size:10px;color:var(--text-4);text-decoration:none;}
-    .breadcrumb-nav a:hover{color:var(--g);}
-    .breadcrumb-nav span[aria-hidden]{font-family:var(--mono);font-size:10px;color:var(--text-4);}
-    .breadcrumb-nav li:last-child span{font-family:var(--mono);font-size:10px;color:var(--text-3);}
+    /* Force left-align on all prose; centre hero stats/pdf blocks */
+    .guide-body,
+    .guide-body *,
+    .guide-section,
+    .guide-section h2,
+    .guide-section h3,
+    .guide-section p,
+    .guide-section li,
+    .guide-section ul,
+    .guide-section ol,
+    .guide-hero p,
+    .callout,
+    .step-card,
+    .step-desc { text-align: left !important; }
+
+    .guide-hero h1,
+    .guide-hero-meta,
+    .guide-stats,
+    .pdf-gate,
+    .pdf-gate h3,
+    .pdf-gate p,
+    .pdf-gate-specs { text-align: center !important; }
+
+    /* ── Breadcrumb ── */
+    .breadcrumb-nav { margin-bottom: 16px; }
+    .breadcrumb-nav ol { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; list-style: none; padding: 0; }
+    .breadcrumb-nav a { font-family: var(--mono); font-size: 10px; color: var(--text-4); text-decoration: none; }
+    .breadcrumb-nav a:hover { color: var(--g); }
+    .breadcrumb-nav span[aria-hidden] { font-family: var(--mono); font-size: 10px; color: var(--text-4); }
+    .breadcrumb-nav li:last-child span { font-family: var(--mono); font-size: 10px; color: var(--text-3); }
 
     /* ── Sticky TOC ── */
-    .toc-sidebar{position:sticky;top:64px;max-height:calc(100vh - 80px);overflow-y:auto;}
-    .toc-card{background:var(--bg-3);border:1.5px solid var(--border-2);border-radius:12px;padding:24px;}
-    .toc-title{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--text-4);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
-    .toc-list{display:flex;flex-direction:column;gap:4px;list-style:none;}
-    .toc-item a{display:block;font-size:13px;color:var(--text-4);text-decoration:none;padding:7px 10px;border-radius:6px;transition:all .2s;border-left:2px solid transparent;line-height:1.4;}
-    .toc-item a:hover{color:var(--text-2);background:rgba(255,255,255,.03);border-left-color:var(--border-2);}
-    .toc-item a.active{color:var(--g);background:var(--g-bg);border-left-color:var(--g);}
-    .toc-item.sub a{padding-left:20px;font-size:12px;}
-    .toc-meta{margin-top:16px;padding-top:16px;border-top:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--text-4);line-height:1.8;}
-    .toc-meta span{color:var(--g);}
-    .toc-meta a:hover{background:#00e070;}
+    .toc-sidebar { position: sticky; top: 64px; max-height: calc(100vh - 80px); overflow-y: auto; }
+    .toc-card { background: var(--bg-3); border: 1.5px solid var(--border-2); border-radius: 12px; padding: 24px; }
+    .toc-title { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--text-4); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .toc-list { display: flex; flex-direction: column; gap: 4px; list-style: none; }
+    .toc-item a { display: block; font-size: 13px; color: var(--text-4); text-decoration: none; padding: 7px 10px; border-radius: 6px; transition: all .2s; border-left: 2px solid transparent; line-height: 1.4; }
+    .toc-item a:hover { color: var(--text-2); background: rgba(255,255,255,.03); border-left-color: var(--border-2); }
+    .toc-item a.active { color: var(--g); background: var(--g-bg); border-left-color: var(--g); }
+    .toc-item.sub a { padding-left: 20px; font-size: 12px; }
+    .toc-new-badge { display: inline-block; font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--g); background: var(--g-bg); border: 1px solid var(--g-border); border-radius: 3px; padding: 1px 5px; margin-left: 4px; vertical-align: middle; }
+    .toc-meta { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 10px; color: var(--text-4); line-height: 1.8; }
+    .toc-meta span { color: var(--g); }
 
     /* ── Article body ── */
-    .guide-body{min-width:0;}
+    .guide-body { min-width: 0; }
 
-    /* Hero */
-    .guide-hero{margin-bottom:56px;}
-    .guide-hero-meta{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:20px;justify-content:flex-start;}
-    .guide-hero h1{font-weight:900;font-size:clamp(32px,5vw,56px);color:var(--text);letter-spacing:-.04em;line-height:.98;margin-bottom:20px;}
-    .guide-hero h1 .green{color:var(--g);}
-    .guide-hero-desc{font-size:17px;color:var(--text-3);line-height:1.75;max-width:640px;margin-bottom:28px;}
-    .guide-hero-desc strong{color:var(--text-2);font-weight:600;}
-    .guide-stats{display:grid;grid-template-columns:repeat(4,1fr);background:var(--border);gap:1px;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:28px;}
-    .gs-cell{background:var(--bg);padding:16px 12px;text-align:center;}
-    .gs-v{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--g);line-height:1;}
-    .gs-l{font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.1em;margin-top:5px;font-family:var(--mono);}
+    /* ── Hero ── */
+    .guide-hero { margin-bottom: 56px; }
+    .guide-hero-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 20px; justify-content: flex-start; }
+    .guide-hero h1 { font-weight: 900; font-size: clamp(32px, 5vw, 56px); color: var(--text); letter-spacing: -.04em; line-height: .98; margin-bottom: 20px; }
+    .guide-hero h1 .green { color: var(--g); }
+    .guide-hero-desc { font-size: 17px; color: var(--text-3); line-height: 1.75; max-width: 640px; margin-bottom: 28px; }
+    .guide-hero-desc strong { color: var(--text-2); font-weight: 600; }
+    .guide-stats { display: grid; grid-template-columns: repeat(4, 1fr); background: var(--border); gap: 1px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 28px; }
+    .gs-cell { background: var(--bg); padding: 16px 12px; text-align: center; }
+    .gs-v { font-family: var(--mono); font-size: 18px; font-weight: 700; color: var(--g); line-height: 1; }
+    .gs-l { font-size: 11px; color: var(--text-4); text-transform: uppercase; letter-spacing: .1em; margin-top: 5px; font-family: var(--mono); }
 
-    /* Mobile TOC */
-    .mobile-toc{display:none;background:var(--bg-3);border:1px solid var(--border-2);border-radius:10px;padding:16px 20px;margin-bottom:36px;}
-    @media(max-width:900px){.mobile-toc{display:block;}}
-    .mobile-toc-title{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--text-4);margin-bottom:12px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;}
-    .mobile-toc-list{display:flex !important;flex-direction:column;gap:6px;list-style:none;}
-    .mobile-toc-list a{font-size:13px;color:var(--text-3);text-decoration:none;padding:5px 0;}
-    .mobile-toc-list a:hover{color:var(--g);}
+    /* ── Mobile TOC ── */
+    .mobile-toc { display: none; background: var(--bg-3); border: 1px solid var(--border-2); border-radius: 10px; padding: 16px 20px; margin-bottom: 36px; }
+    @media (max-width: 900px) { .mobile-toc { display: block; } }
+    .mobile-toc-title { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--text-4); margin-bottom: 12px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
+    .mobile-toc-list { display: flex !important; flex-direction: column; gap: 6px; list-style: none; }
+    .mobile-toc-list a { font-size: 13px; color: var(--text-3); text-decoration: none; padding: 5px 0; }
+    .mobile-toc-list a:hover { color: var(--g); }
 
-    /* Section styles */
-    .guide-section{margin-bottom:72px;padding-top:8px;}
-    .section-tag{margin-bottom:14px;}
-    .guide-section h2{font-weight:900;font-size:clamp(24px,3.5vw,36px);color:var(--text);letter-spacing:-.03em;line-height:1.05;margin-bottom:16px;}
-    .guide-section h3{font-weight:700;font-size:clamp(18px,2.5vw,22px);color:var(--text-2);letter-spacing:-.02em;line-height:1.15;margin:32px 0 12px;}
-    .guide-section p{font-size:15px;color:var(--text-3);line-height:1.8;margin-bottom:18px;}
-    .guide-section p strong{color:var(--text-2);font-weight:600;}
-    .guide-section p a{color:var(--g);text-decoration:underline;}
-    .guide-section ul,.guide-section ol{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
-    .guide-section li{display:flex;align-items:flex-start;gap:10px;font-size:15px;color:var(--text-3);line-height:1.65;}
-    .guide-section li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--g);flex-shrink:0;margin-top:8px;}
-    .guide-section li strong{color:var(--text-2);font-weight:600;}
-    .guide-section li a{color:var(--g);text-decoration:underline;}
+    /* ── Section styles ── */
+    .guide-section { margin-bottom: 72px; padding-top: 8px; }
+    .section-tag { margin-bottom: 14px; }
+    .guide-section h2 { font-weight: 900; font-size: clamp(24px, 3.5vw, 36px); color: var(--text); letter-spacing: -.03em; line-height: 1.05; margin-bottom: 16px; }
+    .guide-section h3 { font-weight: 700; font-size: clamp(18px, 2.5vw, 22px); color: var(--text-2); letter-spacing: -.02em; line-height: 1.15; margin: 32px 0 12px; }
+    .guide-section p { font-size: 15px; color: var(--text-3); line-height: 1.8; margin-bottom: 18px; }
+    .guide-section p strong { color: var(--text-2); font-weight: 600; }
+    .guide-section p a { color: var(--g); text-decoration: underline; }
+    .guide-section ul, .guide-section ol { padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+    .guide-section li { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; color: var(--text-3); line-height: 1.65; }
+    .guide-section li::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--g); flex-shrink: 0; margin-top: 8px; }
+    .guide-section li strong { color: var(--text-2); font-weight: 600; }
+    .guide-section li a { color: var(--g); text-decoration: underline; }
 
-    /* Callout boxes */
-    .callout{background:var(--bg-3);border:1px solid var(--border-2);border-radius:10px;padding:24px 24px 24px 28px;margin:24px 0;border-left:3px solid var(--g);}
-    .callout.warn{border-left-color:var(--amber);background:rgba(252,211,77,.04);}
-    .callout.info{border-left-color:var(--sky);background:rgba(125,211,252,.04);}
-    .callout.danger{border-left-color:var(--rose);background:var(--rose-bg);}
-    .callout-label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--g);margin-bottom:8px;}
-    .callout.warn .callout-label{color:var(--amber);}
-    .callout.info .callout-label{color:var(--sky);}
-    .callout.danger .callout-label{color:var(--rose);}
-    .callout p{margin:0;font-size:14px;color:var(--text-2);line-height:1.7;}
-    .callout p strong{color:var(--text);}
-    .callout p a{color:var(--g);text-decoration:underline;}
+    /* ── Callout boxes ── */
+    .callout { background: var(--bg-3); border: 1px solid var(--border-2); border-radius: 10px; padding: 24px 24px 24px 28px; margin: 24px 0; border-left: 3px solid var(--g); }
+    .callout.warn    { border-left-color: var(--amber); background: rgba(252,211,77,.04); }
+    .callout.info    { border-left-color: var(--sky);   background: rgba(125,211,252,.04); }
+    .callout.danger  { border-left-color: var(--rose);  background: var(--rose-bg); }
+    .callout-label   { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--g); margin-bottom: 8px; }
+    .callout.warn  .callout-label { color: var(--amber); }
+    .callout.info  .callout-label { color: var(--sky);   }
+    .callout.danger .callout-label { color: var(--rose);  }
+    .callout p { margin: 0; font-size: 14px; color: var(--text-2); line-height: 1.7; }
+    .callout p strong { color: var(--text); }
+    .callout p a { color: var(--g); text-decoration: underline; }
 
-    /* Stat callout */
-    .stat-callout{background:rgba(0,200,100,.06);border:1.5px solid rgba(0,200,100,.2);border-radius:10px;padding:24px;margin:24px 0;display:flex;align-items:flex-start;gap:20px;}
-    .sc-val{font-family:var(--mono);font-size:36px;font-weight:700;color:var(--g);line-height:1;flex-shrink:0;}
-    .sc-body p{font-size:14px;color:var(--text-3);line-height:1.65;margin:0;}
-    .sc-body p strong{color:var(--text-2);}
-    .sc-body p a{color:var(--g);text-decoration:underline;}
+    /* ── Stat callout ── */
+    .stat-callout { background: rgba(0,200,100,.06); border: 1.5px solid rgba(0,200,100,.2); border-radius: 10px; padding: 24px; margin: 24px 0; display: flex; align-items: flex-start; gap: 20px; }
+    .sc-val { font-family: var(--mono); font-size: 36px; font-weight: 700; color: var(--g); line-height: 1; flex-shrink: 0; }
+    .sc-body p { font-size: 14px; color: var(--text-3); line-height: 1.65; margin: 0; }
+    .sc-body p strong { color: var(--text-2); }
+    .sc-body p a { color: var(--g); text-decoration: underline; }
 
-    /* Step cards */
-    .step-cards{display:flex;flex-direction:column;gap:12px;margin:20px 0;}
-    .step-card{background:var(--bg-3);border:1px solid var(--border);border-radius:10px;padding:20px 20px 20px 24px;display:flex;gap:16px;align-items:flex-start;}
-    .step-num{width:28px;height:28px;min-width:28px;border-radius:50%;background:rgba(0,200,100,.1);border:1px solid rgba(0,200,100,.25);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--g);flex-shrink:0;}
-    .step-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;line-height:1.3;}
-    .step-desc{font-size:13px;color:var(--text-3);line-height:1.65;}
-    .step-desc a{color:var(--g);text-decoration:underline;}
-    .step-tool{font-family:var(--mono);font-size:10px;color:var(--text-4);background:rgba(255,255,255,.03);border:1px solid var(--border);padding:3px 8px;border-radius:3px;display:inline-block;margin-top:7px;text-decoration:none;transition:color .2s;}
-    a.step-tool:hover{color:var(--g);}
+    /* ── Step cards ── */
+    .step-cards { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
+    .step-card  { background: var(--bg-3); border: 1px solid var(--border); border-radius: 10px; padding: 20px 20px 20px 24px; display: flex; gap: 16px; align-items: flex-start; }
+    .step-num   { width: 28px; height: 28px; min-width: 28px; border-radius: 50%; background: rgba(0,200,100,.1); border: 1px solid rgba(0,200,100,.25); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--g); flex-shrink: 0; }
+    .step-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+    .step-desc  { font-size: 13px; color: var(--text-3); line-height: 1.65; }
+    .step-desc a { color: var(--g); text-decoration: underline; }
+    .step-tool  { font-family: var(--mono); font-size: 10px; color: var(--text-4); background: rgba(255,255,255,.03); border: 1px solid var(--border); padding: 3px 8px; border-radius: 3px; display: inline-block; margin-top: 7px; text-decoration: none; transition: color .2s; }
+    a.step-tool:hover { color: var(--g); }
 
-    /* Impact grid */
-    .impact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0;}
-    .impact-cell{background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;}
-    .impact-cell .ic-val{font-family:var(--mono);font-size:22px;font-weight:700;line-height:1;margin-bottom:6px;}
-    .impact-cell .ic-label{font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);}
-    .impact-cell .ic-desc{font-size:12px;color:var(--text-3);margin-top:6px;line-height:1.5;}
-    @media(max-width:600px){.impact-grid{grid-template-columns:1fr;}}
+    /* ── Impact grid ── */
+    .impact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
+    .impact-cell { background: var(--bg-3); border: 1px solid var(--border); border-radius: 8px; padding: 16px; text-align: center; }
+    .impact-cell .ic-val   { font-family: var(--mono); font-size: 22px; font-weight: 700; line-height: 1; margin-bottom: 6px; }
+    .impact-cell .ic-label { font-size: 11px; color: var(--text-4); text-transform: uppercase; letter-spacing: .08em; font-family: var(--mono); }
+    .impact-cell .ic-desc  { font-size: 12px; color: var(--text-3); margin-top: 6px; line-height: 1.5; }
+    @media (max-width: 600px) { .impact-grid { grid-template-columns: 1fr; } }
 
-    /* Compare table */
-    .compare-table{width:100%;border-collapse:collapse;margin:20px 0;}
-    .compare-table th{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-4);padding:12px 16px;text-align:left;background:rgba(255,255,255,.025);border-bottom:1px solid var(--border);}
-    .compare-table td{font-size:13px;color:var(--text-3);padding:12px 16px;border-bottom:1px solid var(--border);}
-    .compare-table tr:last-child td{border-bottom:none;}
-    .compare-table .winner{color:var(--g);font-weight:600;}
-    .compare-table .loser{color:var(--text-4);}
-    .compare-table tr:hover td{background:rgba(255,255,255,.02);}
+    /* ── Compare table ── */
+    .compare-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    .compare-table th { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-4); padding: 12px 16px; text-align: left; background: rgba(255,255,255,.025); border-bottom: 1px solid var(--border); }
+    .compare-table td { font-size: 13px; color: var(--text-3); padding: 12px 16px; border-bottom: 1px solid var(--border); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table .winner { color: var(--g); font-weight: 600; }
+    .compare-table .loser  { color: var(--text-4); }
+    .compare-table tr:hover td { background: rgba(255,255,255,.02); }
 
-    /* Section CTA */
-    .section-cta{background:rgba(0,200,100,.06);border:1.5px solid rgba(0,200,100,.2);border-radius:10px;padding:24px 28px;margin:32px 0;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
-    .section-cta-left h4{font-weight:700;font-size:16px;color:var(--text);margin-bottom:4px;line-height:1.3;}
-    .section-cta-left p{font-size:13px;color:var(--text-3);margin:0;}
+    /* ── Section CTA ── */
+    .section-cta { background: rgba(0,200,100,.06); border: 1.5px solid rgba(0,200,100,.2); border-radius: 10px; padding: 24px 28px; margin: 32px 0; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .section-cta-left h4 { font-weight: 700; font-size: 16px; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+    .section-cta-left p  { font-size: 13px; color: var(--text-3); margin: 0; }
 
-    /* Divider */
-    .section-divider{height:1px;background:var(--border);margin:56px 0;}
+    /* ── Divider ── */
+    .section-divider { height: 1px; background: var(--border); margin: 56px 0; }
 
-    /* PDF Gate */
-    .pdf-gate{background:var(--bg-3);border:1.5px solid var(--border-2);border-radius:12px;padding:40px;text-align:center;margin:40px 0;position:relative;overflow:hidden;}
-    .pdf-gate::before{content:'';display:block;width:500px;height:120px;background:radial-gradient(ellipse,rgba(0,200,100,.07) 0%,transparent 65%);position:absolute;top:0;left:50%;transform:translateX(-50%);pointer-events:none;}
-    .pdf-gate h3{font-weight:900;font-size:clamp(18px,3vw,26px);color:var(--text);letter-spacing:-.03em;margin-bottom:8px;position:relative;}
-    .pdf-gate p{font-size:14px;color:var(--text-3);max-width:420px;margin:0 auto 20px;line-height:1.65;position:relative;}
-    .pdf-gate-specs{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-bottom:24px;position:relative;}
-    .pdf-spec{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-3);}
-    .pdf-spec-dot{width:4px;height:4px;border-radius:50%;background:var(--g);flex-shrink:0;}
-    .pdf-disc{font-size:11px;color:var(--text-4);margin-top:10px;position:relative;}
+    /* ── PDF Gate ── */
+    .pdf-gate { background: var(--bg-3); border: 1.5px solid var(--border-2); border-radius: 12px; padding: 40px; text-align: center; margin: 40px 0; position: relative; overflow: hidden; }
+    .pdf-gate::before { content: ''; display: block; width: 500px; height: 120px; background: radial-gradient(ellipse, rgba(0,200,100,.07) 0%, transparent 65%); position: absolute; top: 0; left: 50%; transform: translateX(-50%); pointer-events: none; }
+    .pdf-gate h3 { font-weight: 900; font-size: clamp(18px, 3vw, 26px); color: var(--text); letter-spacing: -.03em; margin-bottom: 8px; position: relative; }
+    .pdf-gate p  { font-size: 14px; color: var(--text-3); max-width: 420px; margin: 0 auto 20px; line-height: 1.65; position: relative; }
+    .pdf-gate-specs { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-bottom: 24px; position: relative; }
+    .pdf-spec { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-3); }
+    .pdf-spec-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--g); flex-shrink: 0; }
+    .pdf-disc { font-size: 11px; color: var(--text-4); margin-top: 10px; position: relative; }
 
-    /* FAQ */
-    .static-faq{display:flex;flex-direction:column;gap:8px;margin-top:40px;}
-    details.faq-item-g{border-radius:10px;border:1.5px solid var(--border);background:rgba(255,255,255,.02);transition:border-color .2s;list-style:none;}
-    details.faq-item-g[open]{border-color:rgba(0,200,100,.25);background:rgba(0,200,100,.025);}
-    details.faq-item-g summary.faq-btn-g{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;cursor:pointer;list-style:none;min-height:58px;}
-    details.faq-item-g summary::-webkit-details-marker{display:none;}
-    details.faq-item-g[open] summary .faq-q-g{color:var(--text);}
-    details.faq-item-g[open] summary .faq-ico-g{color:var(--g);}
-    details.faq-item-g[open] summary .faq-ico-g::before{transform:rotate(225deg);top:7px;}
-    .faq-q-g{font-size:15px;font-weight:600;color:var(--text-3);flex:1;line-height:1.45;}
-    .faq-ico-g{width:18px;height:18px;min-width:18px;display:inline-block;flex-shrink:0;position:relative;opacity:.4;}
-    .faq-ico-g::before{content:'';position:absolute;top:4px;left:3px;width:10px;height:10px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);transition:transform .25s;}
-    .faq-body-g{padding:0 22px 20px;font-size:15px;color:var(--text-3);line-height:1.75;border-top:1px solid var(--border);padding-top:14px;}
-    .faq-body-g p{margin:0;font-size:15px;color:var(--text-3);line-height:1.75;}
-    .faq-body-g a{color:var(--g);text-decoration:underline;}
+    /* ── FAQ accordion ── */
+    .static-faq { display: flex; flex-direction: column; gap: 8px; margin-top: 40px; }
+    details.faq-item-g { border-radius: 10px; border: 1.5px solid var(--border); background: rgba(255,255,255,.02); transition: border-color .2s; list-style: none; }
+    details.faq-item-g[open] { border-color: rgba(0,200,100,.25); background: rgba(0,200,100,.025); }
+    details.faq-item-g summary.faq-btn-g { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; cursor: pointer; list-style: none; min-height: 58px; }
+    details.faq-item-g summary::-webkit-details-marker { display: none; }
+    details.faq-item-g[open] summary .faq-q-g  { color: var(--text); }
+    details.faq-item-g[open] summary .faq-ico-g { color: var(--g); }
+    details.faq-item-g[open] summary .faq-ico-g::before { transform: rotate(225deg); top: 7px; }
+    .faq-q-g   { font-size: 15px; font-weight: 600; color: var(--text-3); flex: 1; line-height: 1.45; }
+    .faq-ico-g { width: 18px; height: 18px; min-width: 18px; display: inline-block; flex-shrink: 0; position: relative; opacity: .4; }
+    .faq-ico-g::before { content: ''; position: absolute; top: 4px; left: 3px; width: 10px; height: 10px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); transition: transform .25s; }
+    .faq-body-g { padding: 0 22px 20px; font-size: 15px; color: var(--text-3); line-height: 1.75; border-top: 1px solid var(--border); padding-top: 14px; }
+    .faq-body-g p { margin: 0; font-size: 15px; color: var(--text-3); line-height: 1.75; }
+    .faq-body-g a { color: var(--g); text-decoration: underline; }
 
-    /* Scroll bar */
-    .scroll-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:99999;background:var(--bg-3);border-top:1px solid var(--border-2);padding:14px 24px;}
-    .scroll-bar-inner{max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
-    .scroll-bar-text{font-size:15px;font-weight:600;color:var(--text);line-height:1.35;}
-    .scroll-bar-text span{color:var(--g);}
-    .scroll-bar-actions{display:flex;align-items:center;gap:10px;flex-shrink:0;}
-    .scroll-bar-dismiss{font-size:11px;color:var(--text-4);background:none;border:none;cursor:pointer;padding:6px 10px;font-family:var(--mono);text-transform:uppercase;}
+    /* ── Scroll-depth CTA bar ── */
+    .scroll-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 99999; background: var(--bg-3); border-top: 1px solid var(--border-2); padding: 14px 24px; }
+    .scroll-bar-inner { max-width: 860px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .scroll-bar-text { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.35; }
+    .scroll-bar-text span { color: var(--g); }
+    .scroll-bar-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .scroll-bar-dismiss { font-size: 11px; color: var(--text-4); background: none; border: none; cursor: pointer; padding: 6px 10px; font-family: var(--mono); text-transform: uppercase; }
 
-    @media(max-width:600px){
-      .section-cta{flex-direction:column;}
-      .section-cta .btn,.section-cta .btn-sm{width:100%;justify-content:center;}
-      .guide-stats{grid-template-columns:repeat(2,1fr);}
-      .stat-callout{flex-direction:column;gap:10px;}
+    /* ── Responsive overrides ── */
+    @media (max-width: 600px) {
+      .section-cta { flex-direction: column; }
+      .section-cta .btn, .section-cta .btn-sm { width: 100%; justify-content: center; }
+      .guide-stats { grid-template-columns: repeat(2, 1fr); }
+      .stat-callout { flex-direction: column; gap: 10px; }
     }
   </style>
 
   <script>
-    // TOC active state tracking
-    const tocLinks = document.querySelectorAll('.toc-list .toc-item a') as NodeListOf<HTMLAnchorElement>;
-    const sections = document.querySelectorAll('.guide-section[id], header[id]') as NodeListOf<HTMLElement>;
+    // ── TOC active-state tracking via IntersectionObserver ──
+    const tocLinks  = document.querySelectorAll<HTMLAnchorElement>('.toc-list .toc-item a');
+    const sections  = document.querySelectorAll<HTMLElement>('.guide-section[id], header[id]');
+
     if (tocLinks.length && sections.length) {
       const obs = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -1059,11 +1167,12 @@ const softwareAppSchema = {
       sections.forEach(s => obs.observe(s));
     }
 
-    // Scroll depth bar
-    const scrollBar = document.getElementById('scroll-bar') as HTMLElement | null;
+    // ── Scroll-depth bar (shows at 40% scroll) ──
+    const scrollBar     = document.getElementById('scroll-bar') as HTMLElement | null;
     const scrollDismiss = document.getElementById('scroll-dismiss') as HTMLButtonElement | null;
-    let barShown = false;
-    let barDismissed = false;
+    let barShown      = false;
+    let barDismissed  = false;
+
     if (scrollBar) {
       window.addEventListener('scroll', () => {
         const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
@@ -1072,12 +1181,11 @@ const softwareAppSchema = {
           barShown = true;
         }
       }, { passive: true });
-      if (scrollDismiss) {
-        scrollDismiss.addEventListener('click', () => {
-          scrollBar.style.display = 'none';
-          barDismissed = true;
-        });
-      }
+
+      scrollDismiss?.addEventListener('click', () => {
+        scrollBar.style.display = 'none';
+        barDismissed = true;
+      });
     }
   </script>
 </Layout>
