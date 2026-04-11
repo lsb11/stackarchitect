@@ -1,0 +1,348 @@
+---
+// stocky-migration-risk-scorer.astro — migrated from tools.stackarchitect.xyz
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free Stocky Migration Risk Scorer — Shopify Stocky Shutdown August 2026</title>
+<meta name="description" content="Stocky shuts down August 31 2026. Score your migration risk based on SKU count, supplier complexity, and reorder frequency. Get a personalised replacement plan.">
+<meta name="robots" content="index, follow">
+<meta name="keywords" content="Stocky replacement Shopify, Stocky shutdown 2026, Stocky migration tool">
+<link rel="canonical" href="https://www.stackarchitect.xyz/tools/stocky-migration-risk-scorer">
+<!-- Open Graph -->
+<meta property="og:title" content="Free Stocky Migration Risk Scorer — Shopify Stocky Shutdown August 2026">
+<meta property="og:description" content="Stocky shuts down August 31 2026. Score your migration risk based on SKU count, supplier complexity, and reorder frequency. Get a personalised replacement plan.">
+<meta property="og:url" content="https://www.stackarchitect.xyz/tools/stocky-migration-risk-scorer">
+<meta property="og:type" content="website">
+<!-- JSON-LD: SoftwareApplication -->
+<script is:inline type="application/ld+json">{"@context":"https://schema.org","url":"https://www.stackarchitect.xyz/tools/stocky-migration-risk-scorer","@type":"SoftwareApplication","applicationCategory":"BusinessApplication","operatingSystem":"Web","name":"Stocky Migration Risk Scorer","description":"Score your Shopify Stocky migration complexity and get a personalised replacement recommendation before the August 2026 shutdown.","offers":{"@type":"Offer","price":"0","priceCurrency":"GBP"},"keywords":"Stocky replacement Shopify, Stocky shutdown 2026, Stocky migration tool"}</script>
+<!-- JSON-LD: FAQPage -->
+<script is:inline type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"When is Stocky shutting down?","acceptedAnswer":{"@type":"Answer","text":"Stocky will no longer be available after August 31, 2026. Shopify has confirmed all merchants need to transition to alternative inventory management before this date."}},{"@type":"Question","name":"What is the free replacement for Stocky?","acceptedAnswer":{"@type":"Answer","text":"For stores with under 200 SKUs, a Google Sheets-based system using Make.com automations can replicate all core Stocky functions at $0/month. Stack Architect's Stocky Swap is a free pre-built version of this."}},{"@type":"Question","name":"Do I need to export my Stocky data before it closes?","acceptedAnswer":{"@type":"Answer","text":"Yes. Export all purchase orders, supplier data, and inventory counts before August 31. Shopify has warned that data may not be retrievable after the app closes."}}]}</script>
+<!-- JSON-LD: BreadcrumbList -->
+<script is:inline type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Stack Architect","item":"https://www.stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://www.stackarchitect.xyz/tools"},{"@type":"ListItem","position":3,"name":"Stocky Migration Risk Scorer","item":"https://www.stackarchitect.xyz/tools/stocky-migration-risk-scorer"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style is:inline>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#00C896;--dark:#1a1a2e;--red:#e53e3e;--amber:#d97706;
+  --bg:#fff;--surface:#f8f9fa;--border:#e2e8f0;
+  --text:#1a202c;--muted:#64748b;--radius:8px;
+  --font:'Inter',system-ui,-apple-system,sans-serif;
+}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.6}
+a{color:var(--green);text-decoration:none}
+a:hover{text-decoration:underline}
+/* Header */
+.site-header{background:var(--dark);padding:14px 20px;display:flex;align-items:center}
+.brand{color:#fff;font-weight:700;font-size:1.05rem;letter-spacing:-.3px}
+.brand:hover{color:var(--green);text-decoration:none}
+/* Container */
+.container{max-width:680px;margin:0 auto;padding:0 20px}
+/* Breadcrumb */
+.breadcrumb{font-size:.8rem;color:var(--muted);padding:12px 0;border-bottom:1px solid var(--border);margin-bottom:28px}
+.breadcrumb a{color:var(--muted)}
+.breadcrumb span{margin:0 6px}
+/* Urgency tag */
+.urgency-tag{display:inline-block;background:#fef3cd;color:#92400e;font-size:.78rem;font-weight:600;padding:4px 10px;border-radius:20px;margin-bottom:16px;border:1px solid #fcd34d}
+/* Main layout */
+main{padding:32px 0 48px}
+article h1{font-size:1.75rem;font-weight:700;line-height:1.2;margin-bottom:12px;color:var(--dark)}
+.intro{color:var(--muted);font-size:.97rem;margin-bottom:28px;line-height:1.7}
+/* Card */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px}
+.card-title{font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:16px}
+/* Form */
+.field{margin-bottom:18px}
+.field label{display:block;font-size:.9rem;font-weight:500;margin-bottom:6px;color:var(--text)}
+.field input,.field select,.field textarea{
+  width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius);
+  font-family:var(--font);font-size:.95rem;background:#fff;color:var(--text);
+  transition:border-color .15s;
+}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--green)}
+.field textarea{min-height:110px;resize:vertical}
+.multiselect-group{display:flex;flex-direction:column;gap:8px}
+.multiselect-group label{font-weight:400;display:flex;align-items:center;gap:8px;cursor:pointer}
+.multiselect-group input[type=checkbox]{width:16px;height:16px;accent-color:var(--green)}
+.btn-calc{
+  display:block;width:100%;padding:14px;background:var(--green);color:#fff;
+  border:none;border-radius:var(--radius);font-family:var(--font);font-size:1rem;
+  font-weight:600;cursor:pointer;transition:opacity .15s;margin-top:4px;
+}
+.btn-calc:hover{opacity:.9}
+/* Teaser / gate */
+#teaser{margin-bottom:20px}
+.teaser-card{background:var(--dark);color:#fff;border-radius:var(--radius);padding:24px;text-align:center}
+.teaser-number{font-size:2.5rem;font-weight:700;color:var(--green);margin-bottom:4px}
+.teaser-label{font-size:.9rem;opacity:.8;margin-bottom:20px}
+.gate-box{border-top:1px solid rgba(255,255,255,.15);padding-top:18px;margin-top:4px}
+.gate-box p{font-size:.88rem;opacity:.8;margin-bottom:12px}
+.gate-row{display:flex;gap:8px;flex-wrap:wrap}
+.gate-row input[type=email]{flex:1;min-width:200px;padding:10px 12px;border-radius:var(--radius);border:none;font-family:var(--font);font-size:.9rem}
+.btn-gate{padding:10px 18px;background:var(--green);color:#fff;border:none;border-radius:var(--radius);font-family:var(--font);font-weight:600;cursor:pointer;white-space:nowrap}
+.btn-gate:hover{opacity:.9}
+/* Results */
+#results{margin-bottom:24px}
+.result-row{display:flex;justify-content:space-between;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border);gap:12px}
+.result-row:last-child{border-bottom:none}
+.result-label{font-size:.88rem;color:var(--muted);flex:1}
+.result-label .sub{display:block;font-size:.78rem;margin-top:2px;color:var(--muted)}
+.result-value{font-size:.95rem;font-weight:600;text-align:right;flex-shrink:0;max-width:55%}
+.flag-good .result-value{color:#059669}
+.flag-warn .result-value{color:var(--amber)}
+.flag-bad .result-value{color:var(--red)}
+.flag-neutral .result-value{color:var(--text)}
+/* Upsell */
+.upsell{background:var(--green);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.upsell-text{color:#fff;font-weight:600;font-size:.95rem;flex:1}
+.upsell-btn{background:#fff;color:var(--green);padding:10px 18px;border-radius:var(--radius);font-weight:700;font-size:.88rem;white-space:nowrap;flex-shrink:0}
+.upsell-btn:hover{text-decoration:none;opacity:.9}
+/* FAQ */
+.faq-section{margin-bottom:32px}
+.faq-section h2{font-size:1.1rem;font-weight:700;margin-bottom:16px;color:var(--dark)}
+details{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;overflow:hidden}
+summary{padding:14px 16px;cursor:pointer;font-weight:500;font-size:.92rem;list-style:none;display:flex;justify-content:space-between;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';font-size:1.1rem;color:var(--muted)}
+details[open] summary::after{content:'−'}
+details[open] summary{border-bottom:1px solid var(--border)}
+.faq-answer{padding:14px 16px;font-size:.9rem;color:var(--muted);line-height:1.7}
+/* Internal links */
+.related-tools{margin-bottom:32px;padding-top:24px;border-top:1px solid var(--border)}
+.related-tools h2{font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:12px}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.related-link{display:block;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);font-size:.85rem;font-weight:500;color:var(--text);transition:border-color .15s}
+.related-link:hover{border-color:var(--green);text-decoration:none;color:var(--green)}
+/* Footer */
+footer{background:var(--surface);border-top:1px solid var(--border);padding:20px;text-align:center;font-size:.83rem;color:var(--muted)}
+footer a{color:var(--muted)}
+/* Utility */
+[hidden]{display:none!important}
+@media(max-width:480px){
+  article h1{font-size:1.4rem}
+  .teaser-number{font-size:2rem}
+  .upsell{flex-direction:column;align-items:flex-start}
+  .result-row{flex-direction:column;gap:4px}
+  .result-value{text-align:left;max-width:100%}
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="https://www.stackarchitect.xyz">Stack Architect</a>
+</header>
+
+<div class="container">
+  <nav class="breadcrumb" aria-label="breadcrumb">
+    <a href="https://www.stackarchitect.xyz">Stack Architect</a>
+    <span aria-hidden="true">›</span>
+    <a href="https://www.stackarchitect.xyz/tools">Tools</a>
+    <span aria-hidden="true">›</span>
+    <span>Stocky Migration Risk Scorer</span>
+  </nav>
+
+  <main>
+    <article>
+      <div class="urgency-tag">⚠ Stocky shuts down August 31, 2026</div>
+      <h1>Stocky Shutdown Migration Risk Scorer</h1>
+      <p class="intro">Shopify is killing Stocky on August 31, 2026. How complex is your migration? Enter your inventory setup and get a risk score plus a specific recommended replacement — free.</p>
+
+      <section class="card">
+        <p class="card-title">Enter your details</p>
+        <form id="calcForm" novalidate>
+          <div class="field"><label for="skuCount">Number of active SKUs</label><select id="skuCount" name="skuCount" required><option value="">Select…</option><option value="Under 50">Under 50</option><option value="50–200">50–200</option><option value="200–500">200–500</option><option value="500–2000">500–2000</option><option value="Over 2000">Over 2000</option></select></div>
+<div class="field"><label for="supplierCount">Number of active suppliers</label><select id="supplierCount" name="supplierCount" required><option value="">Select…</option><option value="1–3">1–3</option><option value="4–10">4–10</option><option value="11–30">11–30</option><option value="Over 30">Over 30</option></select></div>
+<div class="field"><label for="reorderFreq">How often do you raise purchase orders?</label><select id="reorderFreq" name="reorderFreq" required><option value="">Select…</option><option value="Rarely / manually">Rarely / manually</option><option value="Monthly">Monthly</option><option value="Weekly">Weekly</option><option value="Multiple times per week">Multiple times per week</option></select></div>
+<div class="field"><label for="stockyFeatures">Which Stocky features do you use most?</label><div class="multiselect-group"><label><input type="checkbox" name="stockyFeatures" value="Purchase orders"> Purchase orders</label>
+<label><input type="checkbox" name="stockyFeatures" value="Demand forecasting"> Demand forecasting</label>
+<label><input type="checkbox" name="stockyFeatures" value="Inventory counts"> Inventory counts</label>
+<label><input type="checkbox" name="stockyFeatures" value="Supplier management"> Supplier management</label>
+<label><input type="checkbox" name="stockyFeatures" value="Transfers between locations"> Transfers between locations</label></div></div>
+<div class="field"><label for="techComfort">Tech comfort level</label><select id="techComfort" name="techComfort" required><option value="">Select…</option><option value="Non-technical — I need a replacement app">Non-technical — I need a replacement app</option><option value="Comfortable with Google Sheets">Comfortable with Google Sheets</option><option value="Happy to use Make.com automations">Happy to use Make.com automations</option></select></div>
+          <button type="submit" class="btn-calc">Calculate →</button>
+        </form>
+      </section>
+
+      
+<section id="teaser" hidden>
+  <div class="teaser-card">
+    <div class="teaser-number" id="teaserValue"></div>
+    <div class="teaser-label" id="teaserLabel"></div>
+    <div class="gate-box" id="emailGate">
+      <p>Enter your email to unlock the full breakdown</p>
+      <div class="gate-row">
+        <input type="email" id="emailInput" placeholder="you@example.com" autocomplete="email">
+        <button class="btn-gate" id="gateBtn">Get your personalised migration plan</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+      <section id="results" hidden>
+        <div class="card">
+          <p class="card-title">Your results</p>
+          <div id="resultsContent"></div>
+        </div>
+      </section>
+
+      <aside class="upsell" id="upsellBlock" hidden>
+        <span class="upsell-text">Get the free $0 Stocky Swap — Google Sheets replacement →</span>
+        <a class="upsell-btn" href="https://www.stackarchitect.xyz/stocky-swap" target="_blank" rel="noopener">Get started →</a>
+      </aside>
+    </article>
+
+    <section class="faq-section">
+      <h2>Frequently asked questions</h2>
+      
+<details>
+  <summary>When is Stocky shutting down?</summary>
+  <div class="faq-answer">Stocky will no longer be available after August 31, 2026. Shopify has confirmed all merchants need to transition to alternative inventory management before this date.</div>
+</details>
+<details>
+  <summary>What is the free replacement for Stocky?</summary>
+  <div class="faq-answer">For stores with under 200 SKUs, a Google Sheets-based system using Make.com automations can replicate all core Stocky functions at $0/month. Stack Architect's Stocky Swap is a free pre-built version of this.</div>
+</details>
+<details>
+  <summary>Do I need to export my Stocky data before it closes?</summary>
+  <div class="faq-answer">Yes. Export all purchase orders, supplier data, and inventory counts before August 31. Shopify has warned that data may not be retrievable after the app closes.</div>
+</details>
+    </section>
+
+    <nav class="related-tools" aria-label="Related tools">
+      <h2>Other free Shopify tools</h2>
+      <div class="related-grid">
+        <a class="related-link" href="/tools/meta-emq-score-estimator">Meta EMQ Score Estimator</a><a class="related-link" href="/tools/shopify-vs-meta-attribution-gap-calculator">Shopify vs. Meta Attribution Gap Calculator</a><a class="related-link" href="/tools/klaviyo-to-systeme-migration-savings-calculator">Klaviyo → Free Email Migration Savings Calculator</a>
+      </div>
+    </nav>
+  </main>
+</div>
+
+<footer>
+  <p>Free tool by <a href="https://www.stackarchitect.xyz">Stack Architect</a> &mdash; Free Shopify tools. No apps. No fluff.</p>
+</footer>
+
+<script is:inline>
+function fmt(n){ return Math.round(n).toLocaleString('en-GB'); }
+
+function calculate(inp) {
+  var score = 0;
+  var skuMap = {'Under 50':10,'50–200':25,'200–500':45,'500–2000':65,'Over 2000':90};
+  score += skuMap[inp.skuCount] || 0;
+  var supMap = {'1–3':0,'4–10':10,'11–30':20,'Over 30':30};
+  score += supMap[inp.supplierCount] || 0;
+  var reorderMap = {'Rarely / manually':0,'Monthly':10,'Weekly':20,'Multiple times per week':30};
+  score += reorderMap[inp.reorderFreq] || 0;
+  score = Math.min(100, score);
+  var shutdown = new Date('2026-08-31');
+  var today = new Date();
+  var daysRemaining = Math.max(0, Math.round((shutdown - today) / 86400000));
+  var rec, recFlag;
+  if (score < 30) { rec = 'Low risk — free Stocky Swap Sheets is your best option'; recFlag = 'good'; }
+  else if (score < 60) { rec = 'Medium risk — Make.com automation recommended'; recFlag = 'warn'; }
+  else { rec = 'High risk — dedicated inventory app required'; recFlag = 'bad'; }
+  var riskLabel = score < 30 ? 'Low Risk' : score < 60 ? 'Medium Risk' : 'High Risk';
+  var riskFlag = score < 30 ? 'good' : score < 60 ? 'warn' : 'bad';
+  var migHours = score < 30 ? 2 : score < 60 ? 6 : score < 80 ? 12 : 24;
+  return {
+    teaser: { label: 'Migration risk score', value: score + ' / 100', flag: riskFlag },
+    rows: [
+      { label: 'Migration risk score', value: score + ' / 100', flag: riskFlag, sub: riskLabel },
+      { label: 'Days until Stocky shutdown', value: daysRemaining + ' days', flag: daysRemaining < 60 ? 'bad' : daysRemaining < 120 ? 'warn' : 'good' },
+      { label: 'Estimated migration hours', value: migHours + ' hours', flag: 'neutral' },
+      { label: 'Recommendation', value: rec, flag: recFlag }
+    ]
+  };
+}
+
+var IS_GATED = true;
+var form = document.getElementById('calcForm');
+var resultsSection = document.getElementById('results');
+var resultsContent = document.getElementById('resultsContent');
+var teaserSection = document.getElementById('teaser');
+var teaserValue = document.getElementById('teaserValue');
+var teaserLabel = document.getElementById('teaserLabel');
+var emailGate = document.getElementById('emailGate');
+var gateBtn = document.getElementById('gateBtn');
+var upsellBlock = document.getElementById('upsellBlock');
+var lastResult = null;
+
+function getInputs() {
+  var inp = {};
+  var fd = new FormData(form);
+  fd.forEach(function(v, k) {
+    if (inp[k]) {
+      inp[k] = Array.isArray(inp[k]) ? inp[k].concat(v) : [inp[k], v];
+    } else {
+      inp[k] = v;
+    }
+  });
+  // Also grab textareas by id since FormData may not pick up all
+  form.querySelectorAll('textarea').forEach(function(el){
+    if (!inp[el.id]) inp[el.id] = el.value;
+  });
+  return inp;
+}
+
+function renderRows(rows) {
+  return rows.map(function(r) {
+    var sub = r.sub ? '<span class="sub">' + r.sub + '</span>' : '';
+    return '<div class="result-row flag-' + (r.flag||'neutral') + '">' +
+      '<span class="result-label">' + r.label + sub + '</span>' +
+      '<span class="result-value">' + r.value + '</span>' +
+    '</div>';
+  }).join('');
+}
+
+function showFullResults(rows) {
+  resultsContent.innerHTML = renderRows(rows);
+  resultsSection.hidden = false;
+  upsellBlock.hidden = false;
+  resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+  var inp = getInputs();
+  var result;
+  try { result = calculate(inp); } catch(err) { alert('Calculation error: ' + err.message); return; }
+  lastResult = result;
+
+  if (!IS_GATED) {
+    showFullResults(result.rows);
+    return;
+  }
+
+  // Show teaser
+  teaserValue.textContent = result.teaser.value;
+  teaserLabel.textContent = result.teaser.label;
+  teaserSection.hidden = false;
+
+  // Check if already gated
+  var storedEmail = localStorage.getItem('sa_email');
+  if (storedEmail) {
+    emailGate.hidden = true;
+    showFullResults(result.rows);
+  } else {
+    emailGate.hidden = false;
+  }
+  teaserSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+});
+
+if (gateBtn) {
+  gateBtn.addEventListener('click', function() {
+    var emailInput = document.getElementById('emailInput');
+    var email = emailInput ? emailInput.value.trim() : '';
+    if (!email || !email.includes('@')) { emailInput.focus(); return; }
+    localStorage.setItem('sa_email', email);
+    emailGate.hidden = true;
+    if (lastResult) showFullResults(lastResult.rows);
+  });
+}
+</script>
+</body>
+</html>

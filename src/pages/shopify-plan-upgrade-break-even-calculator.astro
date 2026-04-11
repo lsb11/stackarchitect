@@ -1,0 +1,334 @@
+---
+// shopify-plan-upgrade-break-even-calculator.astro — migrated from tools.stackarchitect.xyz
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shopify Plan Upgrade Calculator — When Does Upgrading Actually Save You Money?</title>
+<meta name="description" content="Calculate the exact monthly revenue at which upgrading your Shopify plan pays for itself through lower transaction fees. Basic vs Shopify vs Advanced vs Plus.">
+<meta name="robots" content="index, follow">
+<meta name="keywords" content="Shopify plan upgrade calculator, when to upgrade Shopify plan, Shopify Basic vs Shopify fees">
+<link rel="canonical" href="https://www.stackarchitect.xyz/tools/shopify-plan-upgrade-break-even-calculator">
+<!-- Open Graph -->
+<meta property="og:title" content="Shopify Plan Upgrade Calculator — When Does Upgrading Actually Save You Money?">
+<meta property="og:description" content="Calculate the exact monthly revenue at which upgrading your Shopify plan pays for itself through lower transaction fees. Basic vs Shopify vs Advanced vs Plus.">
+<meta property="og:url" content="https://www.stackarchitect.xyz/tools/shopify-plan-upgrade-break-even-calculator">
+<meta property="og:type" content="website">
+<!-- JSON-LD: SoftwareApplication -->
+<script is:inline type="application/ld+json">{"@context":"https://schema.org","url":"https://www.stackarchitect.xyz/tools/shopify-plan-upgrade-break-even-calculator","@type":"SoftwareApplication","applicationCategory":"BusinessApplication","operatingSystem":"Web","name":"Shopify Plan Upgrade Break-Even Calculator","description":"Calculate the exact revenue threshold at which upgrading your Shopify plan saves you money through reduced transaction fees.","offers":{"@type":"Offer","price":"0","priceCurrency":"GBP"},"keywords":"Shopify plan upgrade calculator, when to upgrade Shopify plan, Shopify Basic vs Shopify fees"}</script>
+<!-- JSON-LD: FAQPage -->
+<script is:inline type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"When should I upgrade from Shopify Basic to Shopify?","acceptedAnswer":{"@type":"Answer","text":"In GBP, the break-even point with Shopify Payments is around £32,000/month revenue — at that level the fee saving from the lower transaction rate covers the plan cost increase. Without Shopify Payments it's around £8,000/month."}},{"@type":"Question","name":"Is Shopify Plus worth it?","acceptedAnswer":{"@type":"Answer","text":"Shopify Plus at £2,300/month makes financial sense for stores doing over £500,000/month in revenue where the 0.2% transaction rate and checkout extensibility provide enough value. Below that threshold, Advanced plan offers better economics."}},{"@type":"Question","name":"Does using Shopify Payments change the break-even calculation?","acceptedAnswer":{"@type":"Answer","text":"Significantly. With Shopify Payments, you're only saving on the additional transaction fee (0.5–2% depending on plan), not the payment processing rate. Without it, savings per upgrade are much larger."}}]}</script>
+<!-- JSON-LD: BreadcrumbList -->
+<script is:inline type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Stack Architect","item":"https://www.stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://www.stackarchitect.xyz/tools"},{"@type":"ListItem","position":3,"name":"Shopify Plan Upgrade Break-Even Calculator","item":"https://www.stackarchitect.xyz/tools/shopify-plan-upgrade-break-even-calculator"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style is:inline>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#00C896;--dark:#1a1a2e;--red:#e53e3e;--amber:#d97706;
+  --bg:#fff;--surface:#f8f9fa;--border:#e2e8f0;
+  --text:#1a202c;--muted:#64748b;--radius:8px;
+  --font:'Inter',system-ui,-apple-system,sans-serif;
+}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.6}
+a{color:var(--green);text-decoration:none}
+a:hover{text-decoration:underline}
+/* Header */
+.site-header{background:var(--dark);padding:14px 20px;display:flex;align-items:center}
+.brand{color:#fff;font-weight:700;font-size:1.05rem;letter-spacing:-.3px}
+.brand:hover{color:var(--green);text-decoration:none}
+/* Container */
+.container{max-width:680px;margin:0 auto;padding:0 20px}
+/* Breadcrumb */
+.breadcrumb{font-size:.8rem;color:var(--muted);padding:12px 0;border-bottom:1px solid var(--border);margin-bottom:28px}
+.breadcrumb a{color:var(--muted)}
+.breadcrumb span{margin:0 6px}
+/* Urgency tag */
+.urgency-tag{display:inline-block;background:#fef3cd;color:#92400e;font-size:.78rem;font-weight:600;padding:4px 10px;border-radius:20px;margin-bottom:16px;border:1px solid #fcd34d}
+/* Main layout */
+main{padding:32px 0 48px}
+article h1{font-size:1.75rem;font-weight:700;line-height:1.2;margin-bottom:12px;color:var(--dark)}
+.intro{color:var(--muted);font-size:.97rem;margin-bottom:28px;line-height:1.7}
+/* Card */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px}
+.card-title{font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:16px}
+/* Form */
+.field{margin-bottom:18px}
+.field label{display:block;font-size:.9rem;font-weight:500;margin-bottom:6px;color:var(--text)}
+.field input,.field select,.field textarea{
+  width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius);
+  font-family:var(--font);font-size:.95rem;background:#fff;color:var(--text);
+  transition:border-color .15s;
+}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--green)}
+.field textarea{min-height:110px;resize:vertical}
+.multiselect-group{display:flex;flex-direction:column;gap:8px}
+.multiselect-group label{font-weight:400;display:flex;align-items:center;gap:8px;cursor:pointer}
+.multiselect-group input[type=checkbox]{width:16px;height:16px;accent-color:var(--green)}
+.btn-calc{
+  display:block;width:100%;padding:14px;background:var(--green);color:#fff;
+  border:none;border-radius:var(--radius);font-family:var(--font);font-size:1rem;
+  font-weight:600;cursor:pointer;transition:opacity .15s;margin-top:4px;
+}
+.btn-calc:hover{opacity:.9}
+/* Teaser / gate */
+#teaser{margin-bottom:20px}
+.teaser-card{background:var(--dark);color:#fff;border-radius:var(--radius);padding:24px;text-align:center}
+.teaser-number{font-size:2.5rem;font-weight:700;color:var(--green);margin-bottom:4px}
+.teaser-label{font-size:.9rem;opacity:.8;margin-bottom:20px}
+.gate-box{border-top:1px solid rgba(255,255,255,.15);padding-top:18px;margin-top:4px}
+.gate-box p{font-size:.88rem;opacity:.8;margin-bottom:12px}
+.gate-row{display:flex;gap:8px;flex-wrap:wrap}
+.gate-row input[type=email]{flex:1;min-width:200px;padding:10px 12px;border-radius:var(--radius);border:none;font-family:var(--font);font-size:.9rem}
+.btn-gate{padding:10px 18px;background:var(--green);color:#fff;border:none;border-radius:var(--radius);font-family:var(--font);font-weight:600;cursor:pointer;white-space:nowrap}
+.btn-gate:hover{opacity:.9}
+/* Results */
+#results{margin-bottom:24px}
+.result-row{display:flex;justify-content:space-between;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border);gap:12px}
+.result-row:last-child{border-bottom:none}
+.result-label{font-size:.88rem;color:var(--muted);flex:1}
+.result-label .sub{display:block;font-size:.78rem;margin-top:2px;color:var(--muted)}
+.result-value{font-size:.95rem;font-weight:600;text-align:right;flex-shrink:0;max-width:55%}
+.flag-good .result-value{color:#059669}
+.flag-warn .result-value{color:var(--amber)}
+.flag-bad .result-value{color:var(--red)}
+.flag-neutral .result-value{color:var(--text)}
+/* Upsell */
+.upsell{background:var(--green);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.upsell-text{color:#fff;font-weight:600;font-size:.95rem;flex:1}
+.upsell-btn{background:#fff;color:var(--green);padding:10px 18px;border-radius:var(--radius);font-weight:700;font-size:.88rem;white-space:nowrap;flex-shrink:0}
+.upsell-btn:hover{text-decoration:none;opacity:.9}
+/* FAQ */
+.faq-section{margin-bottom:32px}
+.faq-section h2{font-size:1.1rem;font-weight:700;margin-bottom:16px;color:var(--dark)}
+details{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;overflow:hidden}
+summary{padding:14px 16px;cursor:pointer;font-weight:500;font-size:.92rem;list-style:none;display:flex;justify-content:space-between;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';font-size:1.1rem;color:var(--muted)}
+details[open] summary::after{content:'−'}
+details[open] summary{border-bottom:1px solid var(--border)}
+.faq-answer{padding:14px 16px;font-size:.9rem;color:var(--muted);line-height:1.7}
+/* Internal links */
+.related-tools{margin-bottom:32px;padding-top:24px;border-top:1px solid var(--border)}
+.related-tools h2{font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:12px}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.related-link{display:block;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);font-size:.85rem;font-weight:500;color:var(--text);transition:border-color .15s}
+.related-link:hover{border-color:var(--green);text-decoration:none;color:var(--green)}
+/* Footer */
+footer{background:var(--surface);border-top:1px solid var(--border);padding:20px;text-align:center;font-size:.83rem;color:var(--muted)}
+footer a{color:var(--muted)}
+/* Utility */
+[hidden]{display:none!important}
+@media(max-width:480px){
+  article h1{font-size:1.4rem}
+  .teaser-number{font-size:2rem}
+  .upsell{flex-direction:column;align-items:flex-start}
+  .result-row{flex-direction:column;gap:4px}
+  .result-value{text-align:left;max-width:100%}
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="https://www.stackarchitect.xyz">Stack Architect</a>
+</header>
+
+<div class="container">
+  <nav class="breadcrumb" aria-label="breadcrumb">
+    <a href="https://www.stackarchitect.xyz">Stack Architect</a>
+    <span aria-hidden="true">›</span>
+    <a href="https://www.stackarchitect.xyz/tools">Tools</a>
+    <span aria-hidden="true">›</span>
+    <span>Shopify Plan Upgrade Break-Even Calculator</span>
+  </nav>
+
+  <main>
+    <article>
+      
+      <h1>Shopify Plan Upgrade Break-Even Calculator</h1>
+      <p class="intro">Higher Shopify plans charge lower transaction fees. At some revenue level, the fee saving exceeds the plan cost increase. This calculator finds your exact break-even point.</p>
+
+      <section class="card">
+        <p class="card-title">Enter your details</p>
+        <form id="calcForm" novalidate>
+          <div class="field"><label for="currentPlan">Your current Shopify plan</label><select id="currentPlan" name="currentPlan" required><option value="">Select…</option><option value="Basic (£25/mo)">Basic (£25/mo)</option><option value="Shopify (£65/mo)">Shopify (£65/mo)</option><option value="Advanced (£344/mo)">Advanced (£344/mo)</option><option value="Shopify Plus">Shopify Plus</option></select></div>
+<div class="field"><label for="monthlyRevenue">Monthly store revenue (£/$/€)</label><input type="number" id="monthlyRevenue" name="monthlyRevenue" placeholder="e.g. 15000" min="0" required></div>
+<div class="field"><label for="useShopifyPayments">Do you use Shopify Payments?</label><select id="useShopifyPayments" name="useShopifyPayments" required><option value="">Select…</option><option value="Yes">Yes</option><option value="No — third-party gateway">No — third-party gateway</option></select></div>
+<div class="field"><label for="currency">Currency</label><select id="currency" name="currency"><option value="">Select…</option><option value="GBP (£)">GBP (£)</option><option value="USD ($)">USD ($)</option><option value="EUR (€)">EUR (€)</option><option value="AUD ($)">AUD ($)</option></select></div>
+          <button type="submit" class="btn-calc">Calculate →</button>
+        </form>
+      </section>
+
+      
+
+      <section id="results" hidden>
+        <div class="card">
+          <p class="card-title">Your results</p>
+          <div id="resultsContent"></div>
+        </div>
+      </section>
+
+      <aside class="upsell" id="upsellBlock" hidden>
+        <span class="upsell-text">Reduce app costs to zero while you're at it — see the free app stack →</span>
+        <a class="upsell-btn" href="https://www.stackarchitect.xyz" target="_blank" rel="noopener">Get started →</a>
+      </aside>
+    </article>
+
+    <section class="faq-section">
+      <h2>Frequently asked questions</h2>
+      
+<details>
+  <summary>When should I upgrade from Shopify Basic to Shopify?</summary>
+  <div class="faq-answer">In GBP, the break-even point with Shopify Payments is around £32,000/month revenue — at that level the fee saving from the lower transaction rate covers the plan cost increase. Without Shopify Payments it's around £8,000/month.</div>
+</details>
+<details>
+  <summary>Is Shopify Plus worth it?</summary>
+  <div class="faq-answer">Shopify Plus at £2,300/month makes financial sense for stores doing over £500,000/month in revenue where the 0.2% transaction rate and checkout extensibility provide enough value. Below that threshold, Advanced plan offers better economics.</div>
+</details>
+<details>
+  <summary>Does using Shopify Payments change the break-even calculation?</summary>
+  <div class="faq-answer">Significantly. With Shopify Payments, you're only saving on the additional transaction fee (0.5–2% depending on plan), not the payment processing rate. Without it, savings per upgrade are much larger.</div>
+</details>
+    </section>
+
+    <nav class="related-tools" aria-label="Related tools">
+      <h2>Other free Shopify tools</h2>
+      <div class="related-grid">
+        <a class="related-link" href="/tools/klaviyo-to-systeme-migration-savings-calculator">Klaviyo → Free Email Migration Savings Calculator</a><a class="related-link" href="/tools/shopify-app-stack-kill-or-keep-auditor">Shopify App Stack — Kill or Keep Auditor</a><a class="related-link" href="/tools/make-vs-zapier-cost-calculator">Make.com vs. Zapier Cost Calculator</a>
+      </div>
+    </nav>
+  </main>
+</div>
+
+<footer>
+  <p>Free tool by <a href="https://www.stackarchitect.xyz">Stack Architect</a> &mdash; Free Shopify tools. No apps. No fluff.</p>
+</footer>
+
+<script is:inline>
+function fmt(n){ return Math.round(n).toLocaleString('en-GB'); }
+
+function calculate(inp) {
+  var rev = parseFloat(inp.monthlyRevenue) || 0;
+  var sp = inp.useShopifyPayments === 'Yes';
+  var plans = [
+    { name: 'Basic', monthly: 25, txnSP: 0.005, txnNoSP: 0.02 },
+    { name: 'Shopify', monthly: 65, txnSP: 0.005, txnNoSP: 0.01 },
+    { name: 'Advanced', monthly: 344, txnSP: 0.002, txnNoSP: 0.005 },
+    { name: 'Plus', monthly: 2300, txnSP: 0.0015, txnNoSP: 0.002 }
+  ];
+  var planNames = ['Basic (£25/mo)', 'Shopify (£65/mo)', 'Advanced (£344/mo)', 'Shopify Plus'];
+  var idx = planNames.indexOf(inp.currentPlan);
+  if (idx < 0) idx = 0;
+  var current = plans[idx];
+  var next = plans[Math.min(idx + 1, plans.length - 1)];
+  var txn = sp ? current.txnSP : current.txnNoSP;
+  var nextTxn = sp ? next.txnSP : next.txnNoSP;
+  var currentCost = current.monthly + rev * txn;
+  var nextCost = next.monthly + rev * nextTxn;
+  var diff = txn - nextTxn;
+  var breakEven = diff > 0 ? (next.monthly - current.monthly) / diff : null;
+  var annualDiff = (currentCost - nextCost) * 12;
+  var rec = (breakEven && rev >= breakEven) ? 'Upgrading to ' + next.name + ' saves money at your revenue level' : 'Upgrading to ' + next.name + ' is not yet cost-effective' + (breakEven ? ' (break-even at £' + fmt(breakEven) + '/mo)' : '');
+  return {
+    teaser: { label: 'Current monthly Shopify cost', value: '£' + fmt(currentCost), flag: 'neutral' },
+    rows: [
+      { label: 'Current monthly cost (' + current.name + ')', value: '£' + fmt(currentCost), flag: 'neutral' },
+      { label: 'Next plan monthly cost (' + next.name + ')', value: '£' + fmt(nextCost), flag: 'neutral' },
+      { label: 'Break-even revenue threshold', value: breakEven ? '£' + fmt(breakEven) + '/mo' : 'N/A', flag: 'neutral' },
+      { label: 'Annual saving (at current revenue)', value: annualDiff > 0 ? '£' + fmt(annualDiff) : '-£' + fmt(Math.abs(annualDiff)) + ' (more expensive)', flag: annualDiff > 0 ? 'good' : 'warn' },
+      { label: 'Recommendation', value: rec, flag: (breakEven && rev >= breakEven) ? 'good' : 'neutral' }
+    ]
+  };
+}
+
+var IS_GATED = false;
+var form = document.getElementById('calcForm');
+var resultsSection = document.getElementById('results');
+var resultsContent = document.getElementById('resultsContent');
+var teaserSection = document.getElementById('teaser');
+var teaserValue = document.getElementById('teaserValue');
+var teaserLabel = document.getElementById('teaserLabel');
+var emailGate = document.getElementById('emailGate');
+var gateBtn = document.getElementById('gateBtn');
+var upsellBlock = document.getElementById('upsellBlock');
+var lastResult = null;
+
+function getInputs() {
+  var inp = {};
+  var fd = new FormData(form);
+  fd.forEach(function(v, k) {
+    if (inp[k]) {
+      inp[k] = Array.isArray(inp[k]) ? inp[k].concat(v) : [inp[k], v];
+    } else {
+      inp[k] = v;
+    }
+  });
+  // Also grab textareas by id since FormData may not pick up all
+  form.querySelectorAll('textarea').forEach(function(el){
+    if (!inp[el.id]) inp[el.id] = el.value;
+  });
+  return inp;
+}
+
+function renderRows(rows) {
+  return rows.map(function(r) {
+    var sub = r.sub ? '<span class="sub">' + r.sub + '</span>' : '';
+    return '<div class="result-row flag-' + (r.flag||'neutral') + '">' +
+      '<span class="result-label">' + r.label + sub + '</span>' +
+      '<span class="result-value">' + r.value + '</span>' +
+    '</div>';
+  }).join('');
+}
+
+function showFullResults(rows) {
+  resultsContent.innerHTML = renderRows(rows);
+  resultsSection.hidden = false;
+  upsellBlock.hidden = false;
+  resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+  var inp = getInputs();
+  var result;
+  try { result = calculate(inp); } catch(err) { alert('Calculation error: ' + err.message); return; }
+  lastResult = result;
+
+  if (!IS_GATED) {
+    showFullResults(result.rows);
+    return;
+  }
+
+  // Show teaser
+  teaserValue.textContent = result.teaser.value;
+  teaserLabel.textContent = result.teaser.label;
+  teaserSection.hidden = false;
+
+  // Check if already gated
+  var storedEmail = localStorage.getItem('sa_email');
+  if (storedEmail) {
+    emailGate.hidden = true;
+    showFullResults(result.rows);
+  } else {
+    emailGate.hidden = false;
+  }
+  teaserSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+});
+
+if (gateBtn) {
+  gateBtn.addEventListener('click', function() {
+    var emailInput = document.getElementById('emailInput');
+    var email = emailInput ? emailInput.value.trim() : '';
+    if (!email || !email.includes('@')) { emailInput.focus(); return; }
+    localStorage.setItem('sa_email', email);
+    emailGate.hidden = true;
+    if (lastResult) showFullResults(lastResult.rows);
+  });
+}
+</script>
+</body>
+</html>
