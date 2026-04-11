@@ -1,332 +1,223 @@
 ---
-// shopify-profit-loss-leak-finder.astro — migrated from tools.stackarchitect.xyz
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const schemas = [{"@context":"https://schema.org","@type":"WebApplication","name":"Shopify Profit & Loss Leak Finder — Free Margin Calculator","url":"https://www.stackarchitect.xyz/shopify-profit-loss-leak-finder","description":"Find exactly where your Shopify profit is leaking. Calculate your true net margin after COGS, ad spend, app costs, transaction fees, and refunds.","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"GBP"},"provider":{"@type":"Organization","name":"Stack Architect","url":"https://www.stackarchitect.xyz"}},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a good net margin for a Shopify store?","acceptedAnswer":{"@type":"Answer","text":"For DTC ecommerce, a net margin (after COGS, ad spend, fees, and overheads) of 15–25% is considered healthy. Margins below 10% indicate profit leaks that need addressing. Margins above 30% are excellent and often indicate strong brand positioning or low customer acquisition costs."}},{"@type":"Question","name":"How do I reduce Shopify payment processing fees?","acceptedAnswer":{"@type":"Answer","text":"Using Shopify Payments reduces total fees compared to third-party processors because Shopify waives its additional transaction fee. For high-volume stores, negotiating directly with payment processors or exploring B2B payment options can reduce fees further. The single biggest fee reduction for most stores is switching from a third-party processor to Shopify Payments if you're in a supported country."}},{"@type":"Question","name":"What is a healthy refund rate for Shopify?","acceptedAnswer":{"@type":"Answer","text":"Under 5% refund rate is typical for physical goods DTC. Fashion brands often run higher (8–12%) due to sizing issues. Electronics and tech brands should target under 3%. Above 10% for any physical product category suggests product quality, description accuracy, or expectation-setting issues that will compound over time."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://www.stackarchitect.xyz/tools"},{"@type":"ListItem","position":3,"name":"Shopify Profit & Loss Leak Finder — Free Margin Calculator","item":"https://www.stackarchitect.xyz/shopify-profit-loss-leak-finder"}]}];
+
+const breadcrumb = [
+  { label: 'Home', href: '/' },
+  { label: 'Tools', href: '/tools' },
+  { label: 'Shopify Profit & Loss Leak Finder — Free Margin Calculator' },
+];
 ---
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Shopify Profit &amp; Loss Leak Finder — Find Where Your Margin Is Going</title>
-<meta name="description" content="Enter your Shopify store revenue, COGS, ad spend, and app fees to get a colour-coded P&amp;L breakdown showing exactly where your profit is leaking — and what to fix first.">
-<meta name="robots" content="index, follow">
-<meta name="keywords" content="Shopify profit loss calculator, Shopify net margin calculator, Shopify P&amp;L tool free">
-<link rel="canonical" href="https://www.stackarchitect.xyz/tools/shopify-profit-loss-leak-finder">
-<!-- Open Graph -->
-<meta property="og:title" content="Shopify Profit &amp; Loss Leak Finder — Find Where Your Margin Is Going">
-<meta property="og:description" content="Enter your Shopify store revenue, COGS, ad spend, and app fees to get a colour-coded P&amp;L breakdown showing exactly where your profit is leaking — and what to fix first.">
-<meta property="og:url" content="https://www.stackarchitect.xyz/tools/shopify-profit-loss-leak-finder">
-<meta property="og:type" content="website">
-<!-- JSON-LD: SoftwareApplication -->
-<script is:inline type="application/ld+json">{"@context":"https://schema.org","url":"https://www.stackarchitect.xyz/tools/shopify-profit-loss-leak-finder","@type":"SoftwareApplication","applicationCategory":"BusinessApplication","operatingSystem":"Web","name":"Shopify P&L Leak Finder","description":"Identify where your Shopify store profit is leaking with a colour-coded P&L breakdown across COGS, ad spend, app fees, shipping, and Shopify fees.","offers":{"@type":"Offer","price":"0","priceCurrency":"GBP"},"keywords":"Shopify profit loss calculator, Shopify net margin calculator, Shopify P&L tool free"}</script>
-<!-- JSON-LD: FAQPage -->
-<script is:inline type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a good net profit margin for a Shopify store?","acceptedAnswer":{"@type":"Answer","text":"A net margin above 15% is considered healthy for most Shopify stores. Above 20% is excellent. Below 10% is a warning sign that one or more cost categories need immediate attention."}},{"@type":"Question","name":"Are Shopify app fees eating into my margins?","acceptedAnswer":{"@type":"Answer","text":"For the average mid-sized Shopify store, app fees represent 1–4% of revenue. At £300–£600/month in app costs on a £15,000/month revenue store, that is 2–4% of net margin going to software — often replaceable with free alternatives."}}]}</script>
-<!-- JSON-LD: BreadcrumbList -->
-<script is:inline type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Stack Architect","item":"https://www.stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://www.stackarchitect.xyz/tools"},{"@type":"ListItem","position":3,"name":"Shopify P&L Leak Finder","item":"https://www.stackarchitect.xyz/tools/shopify-profit-loss-leak-finder"}]}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style is:inline>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --green:#00C896;--dark:#1a1a2e;--red:#e53e3e;--amber:#d97706;
-  --bg:#fff;--surface:#f8f9fa;--border:#e2e8f0;
-  --text:#1a202c;--muted:#64748b;--radius:8px;
-  --font:'Inter',system-ui,-apple-system,sans-serif;
-}
-html{font-size:16px;scroll-behavior:smooth}
-body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.6}
-a{color:var(--green);text-decoration:none}
-a:hover{text-decoration:underline}
-/* Header */
-.site-header{background:var(--dark);padding:14px 20px;display:flex;align-items:center}
-.brand{color:#fff;font-weight:700;font-size:1.05rem;letter-spacing:-.3px}
-.brand:hover{color:var(--green);text-decoration:none}
-/* Container */
-.container{max-width:680px;margin:0 auto;padding:0 20px}
-/* Breadcrumb */
-.breadcrumb{font-size:.8rem;color:var(--muted);padding:12px 0;border-bottom:1px solid var(--border);margin-bottom:28px}
-.breadcrumb a{color:var(--muted)}
-.breadcrumb span{margin:0 6px}
-/* Urgency tag */
-.urgency-tag{display:inline-block;background:#fef3cd;color:#92400e;font-size:.78rem;font-weight:600;padding:4px 10px;border-radius:20px;margin-bottom:16px;border:1px solid #fcd34d}
-/* Main layout */
-main{padding:32px 0 48px}
-article h1{font-size:1.75rem;font-weight:700;line-height:1.2;margin-bottom:12px;color:var(--dark)}
-.intro{color:var(--muted);font-size:.97rem;margin-bottom:28px;line-height:1.7}
-/* Card */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px}
-.card-title{font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:16px}
-/* Form */
-.field{margin-bottom:18px}
-.field label{display:block;font-size:.9rem;font-weight:500;margin-bottom:6px;color:var(--text)}
-.field input,.field select,.field textarea{
-  width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius);
-  font-family:var(--font);font-size:.95rem;background:#fff;color:var(--text);
-  transition:border-color .15s;
-}
-.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--green)}
-.field textarea{min-height:110px;resize:vertical}
-.multiselect-group{display:flex;flex-direction:column;gap:8px}
-.multiselect-group label{font-weight:400;display:flex;align-items:center;gap:8px;cursor:pointer}
-.multiselect-group input[type=checkbox]{width:16px;height:16px;accent-color:var(--green)}
-.btn-calc{
-  display:block;width:100%;padding:14px;background:var(--green);color:#fff;
-  border:none;border-radius:var(--radius);font-family:var(--font);font-size:1rem;
-  font-weight:600;cursor:pointer;transition:opacity .15s;margin-top:4px;
-}
-.btn-calc:hover{opacity:.9}
-/* Teaser / gate */
-#teaser{margin-bottom:20px}
-.teaser-card{background:var(--dark);color:#fff;border-radius:var(--radius);padding:24px;text-align:center}
-.teaser-number{font-size:2.5rem;font-weight:700;color:var(--green);margin-bottom:4px}
-.teaser-label{font-size:.9rem;opacity:.8;margin-bottom:20px}
-.gate-box{border-top:1px solid rgba(255,255,255,.15);padding-top:18px;margin-top:4px}
-.gate-box p{font-size:.88rem;opacity:.8;margin-bottom:12px}
-.gate-row{display:flex;gap:8px;flex-wrap:wrap}
-.gate-row input[type=email]{flex:1;min-width:200px;padding:10px 12px;border-radius:var(--radius);border:none;font-family:var(--font);font-size:.9rem}
-.btn-gate{padding:10px 18px;background:var(--green);color:#fff;border:none;border-radius:var(--radius);font-family:var(--font);font-weight:600;cursor:pointer;white-space:nowrap}
-.btn-gate:hover{opacity:.9}
-/* Results */
-#results{margin-bottom:24px}
-.result-row{display:flex;justify-content:space-between;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border);gap:12px}
-.result-row:last-child{border-bottom:none}
-.result-label{font-size:.88rem;color:var(--muted);flex:1}
-.result-label .sub{display:block;font-size:.78rem;margin-top:2px;color:var(--muted)}
-.result-value{font-size:.95rem;font-weight:600;text-align:right;flex-shrink:0;max-width:55%}
-.flag-good .result-value{color:#059669}
-.flag-warn .result-value{color:var(--amber)}
-.flag-bad .result-value{color:var(--red)}
-.flag-neutral .result-value{color:var(--text)}
-/* Upsell */
-.upsell{background:var(--green);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.upsell-text{color:#fff;font-weight:600;font-size:.95rem;flex:1}
-.upsell-btn{background:#fff;color:var(--green);padding:10px 18px;border-radius:var(--radius);font-weight:700;font-size:.88rem;white-space:nowrap;flex-shrink:0}
-.upsell-btn:hover{text-decoration:none;opacity:.9}
-/* FAQ */
-.faq-section{margin-bottom:32px}
-.faq-section h2{font-size:1.1rem;font-weight:700;margin-bottom:16px;color:var(--dark)}
-details{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;overflow:hidden}
-summary{padding:14px 16px;cursor:pointer;font-weight:500;font-size:.92rem;list-style:none;display:flex;justify-content:space-between;align-items:center}
-summary::-webkit-details-marker{display:none}
-summary::after{content:'+';font-size:1.1rem;color:var(--muted)}
-details[open] summary::after{content:'−'}
-details[open] summary{border-bottom:1px solid var(--border)}
-.faq-answer{padding:14px 16px;font-size:.9rem;color:var(--muted);line-height:1.7}
-/* Internal links */
-.related-tools{margin-bottom:32px;padding-top:24px;border-top:1px solid var(--border)}
-.related-tools h2{font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:12px}
-.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
-.related-link{display:block;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);font-size:.85rem;font-weight:500;color:var(--text);transition:border-color .15s}
-.related-link:hover{border-color:var(--green);text-decoration:none;color:var(--green)}
-/* Footer */
-footer{background:var(--surface);border-top:1px solid var(--border);padding:20px;text-align:center;font-size:.83rem;color:var(--muted)}
-footer a{color:var(--muted)}
-/* Utility */
-[hidden]{display:none!important}
-@media(max-width:480px){
-  article h1{font-size:1.4rem}
-  .teaser-number{font-size:2rem}
-  .upsell{flex-direction:column;align-items:flex-start}
-  .result-row{flex-direction:column;gap:4px}
-  .result-value{text-align:left;max-width:100%}
-}
+
+<Base
+  title="Shopify Profit & Loss Leak Finder — Free Margin Calculator | Stack Architect"
+  description="Find exactly where your Shopify profit is leaking. Calculate your true net margin after COGS, ad spend, app costs, transaction fees, and refunds."
+  canonical="https://www.stackarchitect.xyz/shopify-profit-loss-leak-finder"
+  schema={schemas}
+  breadcrumb={breadcrumb}
+>
+  <Nav slot="header" />
+
+  <main class="flex-1">
+    <div id="reading-progress"></div>
+    
+<style>
+  .tool-hero{padding:48px 24px 32px;background:#000;border-bottom:1px solid #1f1f1f;}
+  .tool-hero-inner{max-width:860px;margin:0 auto;}
+  .tool-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;border:1px solid rgba(74,222,128,.3);color:#4ade80;background:rgba(74,222,128,.06);margin-bottom:18px;}
+  .tool-badge .dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:dp 2s infinite;}
+  @keyframes dp{0%,100%{opacity:1;}50%{opacity:.3;}}
+  .tool-hero h1{font-size:clamp(22px,4vw,38px);font-weight:900;color:#fff;letter-spacing:-.03em;line-height:1.05;margin-bottom:12px;}
+  .tool-hero h1 .green{color:#4ade80;}
+  .tool-hero-desc{font-size:14px;color:#a1a1aa;line-height:1.75;max-width:600px;margin-bottom:20px;}
+  .tool-trust{display:flex;flex-wrap:wrap;gap:16px;}
+  .tool-trust span{font-size:11px;color:#52525b;display:flex;align-items:center;gap:5px;}
+  .tool-trust span::before{content:'✓';color:#4ade80;font-weight:700;}
+
+  .calc-section{padding:40px 24px;background:#0a0a0a;border-bottom:1px solid #1f1f1f;}
+  .calc-inner{max-width:860px;margin:0 auto;}
+  .calc-card{border:1px solid #1f1f1f;background:#000;padding:32px;}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
+  @media(max-width:600px){.calc-grid{grid-template-columns:1fr;}}
+  .calc-field{display:flex;flex-direction:column;gap:6px;}
+  .calc-field label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#52525b;}
+  .calc-field input,.calc-field select{background:#0a0a0a;border:1px solid #1f1f1f;color:#fff;font-family:inherit;font-size:13px;padding:10px 14px;outline:none;transition:border-color .2s;width:100%;}
+  .calc-field input:focus,.calc-field select:focus{border-color:#4ade80;}
+  .calc-field input::placeholder{color:#3f3f46;}
+  .calc-btn{width:100%;background:#4ade80;color:#000;font-family:inherit;font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;padding:14px;border:none;cursor:pointer;transition:background .2s;margin-top:8px;}
+  .calc-btn:hover{background:#22c55e;}
+  .calc-result{display:none;margin-top:24px;border:1px solid #1f1f1f;background:#0a0a0a;padding:24px;}
+  .calc-result.show{display:block;}
+  .result-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#52525b;margin-bottom:6px;}
+  .result-value{font-size:36px;font-weight:900;color:#4ade80;line-height:1;letter-spacing:-.03em;}
+  .result-sub{font-size:12px;color:#52525b;margin-top:6px;line-height:1.6;}
+  .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin-bottom:20px;}
+  .result-cell{background:#000;border:1px solid #1f1f1f;padding:16px;}
+  .result-insight{font-size:12px;color:#a1a1aa;line-height:1.7;border-top:1px solid #1f1f1f;padding-top:16px;margin-top:16px;}
+  .result-insight strong{color:#fff;}
+  .result-cta{display:inline-block;margin-top:16px;font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#000;background:#4ade80;padding:10px 20px;text-decoration:none;transition:background .2s;}
+  .result-cta:hover{background:#22c55e;}
+  .result-warn{border-left:3px solid #4ade80;padding-left:16px;margin-top:16px;}
+
+  .aff-block{margin:24px 0;border:1px solid rgba(74,222,128,.2);background:rgba(74,222,128,.04);padding:20px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+  .aff-block-text{flex:1;}
+  .aff-block-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#52525b;margin-bottom:6px;}
+  .aff-block-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;}
+  .aff-block-desc{font-size:11px;color:#71717a;line-height:1.6;}
+  .aff-block-link{flex-shrink:0;display:inline-flex;align-items:center;font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#4ade80;border:1px solid rgba(74,222,128,.4);padding:8px 16px;text-decoration:none;transition:all .2s;white-space:nowrap;}
+  .aff-block-link:hover{background:#4ade80;color:#000;}
+  .aff-disclosure{font-size:9px;color:#3f3f46;margin-top:8px;}
+
+  .editorial{padding:48px 24px;background:#000;border-bottom:1px solid #1f1f1f;}
+  .editorial-inner{max-width:720px;margin:0 auto;}
+  .editorial h2{font-size:clamp(18px,3vw,26px);font-weight:900;color:#fff;letter-spacing:-.03em;margin:36px 0 12px;line-height:1.2;}
+  .editorial h2:first-child{margin-top:0;}
+  .editorial p{font-size:13px;color:#a1a1aa;line-height:1.85;margin-bottom:16px;}
+  .editorial strong{color:#e4e4e7;}
+  .editorial a{color:#4ade80;text-decoration:underline;}
+  .editorial ul{list-style:none;padding:0;margin:0 0 16px;}
+  .editorial ul li{font-size:13px;color:#a1a1aa;line-height:1.75;padding:6px 0 6px 20px;position:relative;border-bottom:1px solid #0a0a0a;}
+  .editorial ul li::before{content:'→';position:absolute;left:0;color:#4ade80;font-size:11px;}
+
+  .faq-section{padding:48px 24px;background:#0a0a0a;border-bottom:1px solid #1f1f1f;}
+  .faq-inner{max-width:720px;margin:0 auto;}
+  .faq-heading{font-size:clamp(18px,3vw,24px);font-weight:900;color:#fff;letter-spacing:-.03em;margin-bottom:28px;}
+  .faq-item{border:1px solid #1f1f1f;margin-bottom:8px;background:#000;}
+  .faq-item summary{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;cursor:pointer;list-style:none;font-size:12px;font-weight:700;color:#a1a1aa;letter-spacing:.02em;gap:16px;}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item[open] summary{color:#fff;border-bottom:1px solid #1f1f1f;}
+  .faq-item[open]{border-color:rgba(74,222,128,.3);}
+  .faq-arrow{flex-shrink:0;font-size:10px;color:#52525b;transition:transform .2s;}
+  .faq-item[open] .faq-arrow{transform:rotate(180deg);color:#4ade80;}
+  .faq-answer{padding:16px 20px;font-size:12px;color:#71717a;line-height:1.8;}
+  .faq-answer a{color:#4ade80;}
+
+  .cta-strip-tool{padding:40px 24px;background:#0a0a0a;border-top:1px solid #1f1f1f;text-align:center;}
+  .cta-strip-tool h2{font-size:clamp(16px,3vw,22px);font-weight:900;color:#fff;letter-spacing:-.03em;margin-bottom:8px;}
+  .cta-strip-tool p{font-size:12px;color:#52525b;margin-bottom:20px;}
+  .cta-strip-tool a{display:inline-block;background:#4ade80;color:#000;font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;padding:14px 28px;text-decoration:none;transition:background .2s;}
+  .cta-strip-tool a:hover{background:#22c55e;}
+  #reading-progress{position:fixed;top:0;left:0;width:0;height:2px;background:#4ade80;z-index:9999;transition:width .1s;}
 </style>
-</head>
-<body>
-<header class="site-header">
-  <a class="brand" href="https://www.stackarchitect.xyz">Stack Architect</a>
-</header>
 
-<div class="container">
-  <nav class="breadcrumb" aria-label="breadcrumb">
-    <a href="https://www.stackarchitect.xyz">Stack Architect</a>
-    <span aria-hidden="true">›</span>
-    <a href="https://www.stackarchitect.xyz/tools">Tools</a>
-    <span aria-hidden="true">›</span>
-    <span>Shopify P&amp;L Leak Finder</span>
-  </nav>
 
-  <main>
-    <article>
-      
-      <h1>Shopify P&amp;L Leak Finder</h1>
-      <p class="intro">Most Shopify stores track revenue but not true net profit. Enter your key numbers and get a visual breakdown of every cost category — with a ranked list of your biggest leaks.</p>
-
-      <section class="card">
-        <p class="card-title">Enter your details</p>
-        <form id="calcForm" novalidate>
-          <div class="field"><label for="monthlyRevenue">Monthly revenue (£/$/€)</label><input type="number" id="monthlyRevenue" name="monthlyRevenue" placeholder="e.g. 30000" min="0" required></div>
-<div class="field"><label for="cogs">Cost of goods sold (£)</label><input type="number" id="cogs" name="cogs" placeholder="e.g. 12000" min="0" required></div>
-<div class="field"><label for="adSpend">Total ad spend (all platforms)</label><input type="number" id="adSpend" name="adSpend" placeholder="e.g. 5000" min="0" required></div>
-<div class="field"><label for="appFees">Monthly app fees total</label><input type="number" id="appFees" name="appFees" placeholder="e.g. 350" min="0" required></div>
-<div class="field"><label for="shippingCosts">Monthly shipping costs</label><input type="number" id="shippingCosts" name="shippingCosts" placeholder="e.g. 1200" min="0"></div>
-<div class="field"><label for="returnsRate">Returns rate (%)</label><input type="number" id="returnsRate" name="returnsRate" placeholder="e.g. 8" min="0"></div>
-<div class="field"><label for="shopifyPlan">Shopify plan</label><select id="shopifyPlan" name="shopifyPlan"><option value="">Select…</option><option value="Basic">Basic</option><option value="Shopify">Shopify</option><option value="Advanced">Advanced</option><option value="Plus">Plus</option></select></div>
-          <button type="submit" class="btn-calc">Calculate →</button>
-        </form>
-      </section>
-
-      
-
-      <section id="results" hidden>
-        <div class="card">
-          <p class="card-title">Your results</p>
-          <div id="resultsContent"></div>
-        </div>
-      </section>
-
-      <aside class="upsell" id="upsellBlock" hidden>
-        <span class="upsell-text">Automate your live P&amp;L tracking for free — Shopify P&amp;L Auto →</span>
-        <a class="upsell-btn" href="https://www.stackarchitect.xyz/shopify-profit-loss-automation" target="_blank" rel="noopener">Get started →</a>
-      </aside>
-    </article>
-
-    <section class="faq-section">
-      <h2>Frequently asked questions</h2>
-      
-<details>
-  <summary>What is a good net profit margin for a Shopify store?</summary>
-  <div class="faq-answer">A net margin above 15% is considered healthy for most Shopify stores. Above 20% is excellent. Below 10% is a warning sign that one or more cost categories need immediate attention.</div>
-</details>
-<details>
-  <summary>Are Shopify app fees eating into my margins?</summary>
-  <div class="faq-answer">For the average mid-sized Shopify store, app fees represent 1–4% of revenue. At £300–£600/month in app costs on a £15,000/month revenue store, that is 2–4% of net margin going to software — often replaceable with free alternatives.</div>
-</details>
-    </section>
-
-    <nav class="related-tools" aria-label="Related tools">
-      <h2>Other free Shopify tools</h2>
-      <div class="related-grid">
-        <a class="related-link" href="/tools/meta-emq-score-estimator">Meta EMQ Score Estimator</a><a class="related-link" href="/tools/shopify-vs-meta-attribution-gap-calculator">Shopify vs. Meta Attribution Gap Calculator</a><a class="related-link" href="/tools/tiktok-vs-meta-roas-bridge-calculator">TikTok vs. Meta ROAS Bridge Calculator</a>
+  <section class="tool-hero">
+    <div class="tool-hero-inner">
+      <div class="tool-badge"><span class="dot"></span>FREE TOOL // P&L Analysis</div>
+      <h1>Shopify <span class="green">Profit Leak Finder</span></h1>
+      <p class="tool-hero-desc">Find exactly where your Shopify profit is leaking. Calculate your true net margin after COGS, ad spend, app costs, transaction fees, and refunds.</p>
+      <div class="tool-trust"><span>Free forever</span><span>No account required</span><span>Instant results</span></div>
+    </div>
+  </section>
+  <section class="calc-section"><div class="calc-inner"><div class="calc-card">
+    <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#52525b;margin-bottom:20px;">// P&L_LEAK_FINDER</div>
+    <div class="calc-grid">
+      <div class="calc-field"><label>Monthly Shopify revenue £/$</label><input type="number" id="pl-rev" placeholder="e.g. 40000" /></div>
+      <div class="calc-field"><label>COGS as % of revenue</label><input type="number" id="pl-cogs" placeholder="e.g. 35" /></div>
+      <div class="calc-field"><label>Monthly ad spend £/$</label><input type="number" id="pl-ads" placeholder="e.g. 8000" /></div>
+      <div class="calc-field"><label>Monthly app costs £/$</label><input type="number" id="pl-apps" placeholder="e.g. 400" /></div>
+      <div class="calc-field"><label>Shopify + payment fees % (approx 3%)</label><input type="number" id="pl-fees" placeholder="e.g. 3" /></div>
+      <div class="calc-field"><label>Refund rate %</label><input type="number" id="pl-refunds" placeholder="e.g. 5" /></div>
+    </div>
+    <button class="calc-btn" onclick="calcPL()">FIND MY PROFIT LEAKS →</button>
+    <div class="calc-result" id="pl-result">
+      <div class="result-grid">
+        <div class="result-cell"><div class="result-label">True Net Profit</div><div class="result-value" id="pl-profit">--</div><div class="result-sub" id="pl-margin">--</div></div>
+        <div class="result-cell"><div class="result-label">Biggest Leak</div><div class="result-value" id="pl-leak" style="font-size:18px;color:#f87171;">--</div><div class="result-sub">Largest cost category</div></div>
+        <div class="result-cell"><div class="result-label">App Cost % of Revenue</div><div class="result-value" id="pl-app-pct" style="font-size:22px;">--</div><div class="result-sub">Target: under 1%</div></div>
       </div>
-    </nav>
+      <div class="result-insight" id="pl-insight"></div>
+    </div>
+  </div>
+  
+  <div class="aff-block">
+    <div class="aff-block-text">
+      <div class="aff-block-label">Recommended tool</div>
+      <div class="aff-block-title">Make.com + Google Sheets — Free Live P&L</div>
+      <div class="aff-block-desc">Every Shopify order auto-calculates net profit in real time. No manual exports. Free on Make.com's free tier.</div>
+    </div>
+    <div>
+      <a href="https://www.make.com/en/register?pc=techie123" target="_blank" rel="noopener sponsored" class="aff-block-link">Set Up Free P&L Auto →</a>
+      <div class="aff-disclosure">Affiliate link — costs you nothing extra</div>
+    </div>
+  </div></div></section>
+  <section class="editorial"><div class="editorial-inner"><h2>Finding Your True Shopify Net Margin</h2>
+  <p>Most Shopify stores know their gross revenue. Far fewer know their true net margin after every cost is accounted for. The hidden profit leaks are typically apps (often 2–5% of revenue), refund processing costs (1–4%), and payment fees (2–3.5%). Together these can consume 6–12% of revenue before you factor in COGS or ad spend.</p>
+  <h2>The App Cost Benchmark</h2>
+  <p>A healthy Shopify app budget is under 1% of monthly revenue. A store doing £40,000/month should spend under £400/month on apps. Many stores spend £600–£1,000 — 1.5–2.5% of revenue — on apps that partially or fully overlap in functionality. The <a href="/shopify-app-stack-kill-or-keep-auditor">App Stack Auditor</a> identifies exactly which apps to cut or replace.</p>
+  <h2>Automating Real-Time P&L Visibility</h2>
+  <p>The <a href="/shopify-profit-loss-automation">Shopify P&L Automation tool</a> uses a Make.com webhook to populate a Google Sheets dashboard with every order's revenue, COGS, ad spend allocation, and net profit in real time. No BI tool, no paid app, no manual CSV exports. Free forever on Make.com's free tier.</p></div></section>
+  
+  <section class="faq-section" itemscope itemtype="https://schema.org/FAQPage">
+    <div class="faq-inner">
+      <h2 class="faq-heading">// COMMON_QUESTIONS</h2>
+      
+    <details class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <summary><span itemprop="name">What is a good net margin for a Shopify store?</span><span class="faq-arrow">▼</span></summary>
+      <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text">For DTC ecommerce, a net margin (after COGS, ad spend, fees, and overheads) of 15–25% is considered healthy. Margins below 10% indicate profit leaks that need addressing. Margins above 30% are excellent and often indicate strong brand positioning or low customer acquisition costs.</p>
+      </div>
+    </details>
+    <details class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <summary><span itemprop="name">How do I reduce Shopify payment processing fees?</span><span class="faq-arrow">▼</span></summary>
+      <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text">Using Shopify Payments reduces total fees compared to third-party processors because Shopify waives its additional transaction fee. For high-volume stores, negotiating directly with payment processors or exploring B2B payment options can reduce fees further. The single biggest fee reduction for most stores is switching from a third-party processor to Shopify Payments if you're in a supported country.</p>
+      </div>
+    </details>
+    <details class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <summary><span itemprop="name">What is a healthy refund rate for Shopify?</span><span class="faq-arrow">▼</span></summary>
+      <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text">Under 5% refund rate is typical for physical goods DTC. Fashion brands often run higher (8–12%) due to sizing issues. Electronics and tech brands should target under 3%. Above 10% for any physical product category suggests product quality, description accuracy, or expectation-setting issues that will compound over time.</p>
+      </div>
+    </details>
+    </div>
+  </section>
+  <section class="cta-strip-tool"><h2>Set Up Free P&L Automation</h2><p>Free tool. No account. Instant results.</p><a href="/shopify-profit-loss-automation">Set Up Free P&L Automation →</a></section>
   </main>
-</div>
 
-<footer>
-  <p>Free tool by <a href="https://www.stackarchitect.xyz">Stack Architect</a> &mdash; Free Shopify tools. No apps. No fluff.</p>
-</footer>
+  <Footer />
+</Base>
 
-<script is:inline>
-function fmt(n){ return Math.round(n).toLocaleString('en-GB'); }
-
-function calculate(inp) {
-  var rev = parseFloat(inp.monthlyRevenue) || 0;
-  var cogs = parseFloat(inp.cogs) || 0;
-  var ads = parseFloat(inp.adSpend) || 0;
-  var apps = parseFloat(inp.appFees) || 0;
-  var shipping = parseFloat(inp.shippingCosts) || 0;
-  var returns = parseFloat(inp.returnsRate) || 0;
-  var planFeeMap = {'Basic':25+rev*0.02,'Shopify':65+rev*0.01,'Advanced':344+rev*0.005,'Plus':2300+rev*0.002};
-  var shopifyFee = planFeeMap[inp.shopifyPlan] || (25 + rev * 0.02);
-  var returnsLoss = rev * (returns / 100) * 0.6;
-  var gross = rev - cogs;
-  var net = gross - ads - apps - shipping - shopifyFee - returnsLoss;
-  var grossMargin = rev > 0 ? gross / rev * 100 : 0;
-  var netMargin = rev > 0 ? net / rev * 100 : 0;
-  var healthFlag = netMargin >= 20 ? 'good' : netMargin >= 10 ? 'warn' : 'bad';
-  var healthLabel = netMargin >= 25 ? 'Excellent' : netMargin >= 15 ? 'Healthy' : netMargin >= 10 ? 'Warning' : 'Critical';
-  var costs = [
-    {label:'COGS', value:cogs},{label:'Ad spend', value:ads},{label:'App fees', value:apps},
-    {label:'Shipping', value:shipping},{label:'Returns loss', value:returnsLoss},{label:'Shopify fees', value:shopifyFee}
-  ].filter(function(c){ return c.value > 0; }).sort(function(a,b){ return b.value - a.value; });
-  var biggestLeak = costs[0] ? costs[0].label + ' (£' + fmt(costs[0].value) + '/mo, ' + (rev > 0 ? (costs[0].value/rev*100).toFixed(1) : '0') + '% of revenue)' : '—';
-  return {
-    teaser: { label: 'Net profit margin', value: netMargin.toFixed(1) + '%', flag: healthFlag },
-    rows: [
-      { label: 'Gross margin', value: grossMargin.toFixed(1) + '%', flag: grossMargin >= 40 ? 'good' : grossMargin >= 25 ? 'warn' : 'bad' },
-      { label: 'Net profit margin', value: netMargin.toFixed(1) + '%', flag: healthFlag, sub: healthLabel },
-      { label: 'Net profit (monthly)', value: net >= 0 ? '£' + fmt(net) : '-£' + fmt(Math.abs(net)), flag: healthFlag },
-      { label: 'Biggest cost leak', value: biggestLeak, flag: 'warn' },
-      { label: 'Full cost breakdown', value: costs.map(function(c){ return c.label + ': £' + fmt(c.value); }).join(' • '), flag: 'neutral' }
-    ]
-  };
-}
-
-var IS_GATED = false;
-var form = document.getElementById('calcForm');
-var resultsSection = document.getElementById('results');
-var resultsContent = document.getElementById('resultsContent');
-var teaserSection = document.getElementById('teaser');
-var teaserValue = document.getElementById('teaserValue');
-var teaserLabel = document.getElementById('teaserLabel');
-var emailGate = document.getElementById('emailGate');
-var gateBtn = document.getElementById('gateBtn');
-var upsellBlock = document.getElementById('upsellBlock');
-var lastResult = null;
-
-function getInputs() {
-  var inp = {};
-  var fd = new FormData(form);
-  fd.forEach(function(v, k) {
-    if (inp[k]) {
-      inp[k] = Array.isArray(inp[k]) ? inp[k].concat(v) : [inp[k], v];
-    } else {
-      inp[k] = v;
-    }
-  });
-  // Also grab textareas by id since FormData may not pick up all
-  form.querySelectorAll('textarea').forEach(function(el){
-    if (!inp[el.id]) inp[el.id] = el.value;
-  });
-  return inp;
-}
-
-function renderRows(rows) {
-  return rows.map(function(r) {
-    var sub = r.sub ? '<span class="sub">' + r.sub + '</span>' : '';
-    return '<div class="result-row flag-' + (r.flag||'neutral') + '">' +
-      '<span class="result-label">' + r.label + sub + '</span>' +
-      '<span class="result-value">' + r.value + '</span>' +
-    '</div>';
-  }).join('');
-}
-
-function showFullResults(rows) {
-  resultsContent.innerHTML = renderRows(rows);
-  resultsSection.hidden = false;
-  upsellBlock.hidden = false;
-  resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-form.addEventListener('submit', function(e) {
-  e.preventDefault();
-  var inp = getInputs();
-  var result;
-  try { result = calculate(inp); } catch(err) { alert('Calculation error: ' + err.message); return; }
-  lastResult = result;
-
-  if (!IS_GATED) {
-    showFullResults(result.rows);
-    return;
+<script>
+  // Reading progress bar
+  const bar = document.getElementById('reading-progress');
+  if (bar) {
+    window.addEventListener('scroll', () => {
+      const pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      bar.style.width = Math.min(pct, 100) + '%';
+    }, { passive: true });
   }
 
-  // Show teaser
-  teaserValue.textContent = result.teaser.value;
-  teaserLabel.textContent = result.teaser.label;
-  teaserSection.hidden = false;
-
-  // Check if already gated
-  var storedEmail = localStorage.getItem('sa_email');
-  if (storedEmail) {
-    emailGate.hidden = true;
-    showFullResults(result.rows);
-  } else {
-    emailGate.hidden = false;
+function calcPL() {
+    const rev = parseFloat(document.getElementById('pl-rev').value) || 0;
+    const cogs = (parseFloat(document.getElementById('pl-cogs').value) || 35) / 100;
+    const ads = parseFloat(document.getElementById('pl-ads').value) || 0;
+    const apps = parseFloat(document.getElementById('pl-apps').value) || 0;
+    const fees = (parseFloat(document.getElementById('pl-fees').value) || 3) / 100;
+    const refunds = (parseFloat(document.getElementById('pl-refunds').value) || 0) / 100;
+    if (!rev) return;
+    const netRev = rev * (1 - refunds);
+    const cogsCost = netRev * cogs;
+    const feesCost = rev * fees;
+    const profit = netRev - cogsCost - ads - apps - feesCost;
+    const margin = ((profit / rev) * 100).toFixed(1);
+    const costs = [{ name: 'COGS', val: cogsCost }, { name: 'Ad Spend', val: ads }, { name: 'Fees', val: feesCost }, { name: 'Apps', val: apps }];
+    const biggest = costs.sort((a,b) => b.val - a.val)[0];
+    const appPct = ((apps / rev) * 100).toFixed(1);
+    document.getElementById('pl-profit').textContent = '£' + Math.round(profit).toLocaleString();
+    document.getElementById('pl-profit').style.color = profit > 0 ? '#4ade80' : '#f87171';
+    document.getElementById('pl-margin').textContent = margin + '% net margin';
+    document.getElementById('pl-leak').textContent = biggest.name + ': £' + Math.round(biggest.val).toLocaleString();
+    document.getElementById('pl-app-pct').textContent = appPct + '%';
+    document.getElementById('pl-app-pct').style.color = parseFloat(appPct) > 2 ? '#f87171' : '#4ade80';
+    let insight = '';
+    if (parseFloat(appPct) > 1.5) insight += '<strong>App costs are high</strong> at ' + appPct + '% of revenue. Industry benchmark is under 1%. Replacing tracked apps with the free stack could save £' + Math.round(apps * 0.7) + '/month. ';
+    if (parseFloat(margin) < 10) insight += '<strong>Net margin below 10%</strong> — target 15–25% for sustainable DTC. ';
+    if (!insight) insight = 'Margins look healthy. Monitor app costs as a % of revenue as you scale — they tend to inflate faster than revenue grows. ';
+    document.getElementById('pl-insight').innerHTML = insight;
+    document.getElementById('pl-result').classList.add('show');
   }
-  teaserSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-});
-
-if (gateBtn) {
-  gateBtn.addEventListener('click', function() {
-    var emailInput = document.getElementById('emailInput');
-    var email = emailInput ? emailInput.value.trim() : '';
-    if (!email || !email.includes('@')) { emailInput.focus(); return; }
-    localStorage.setItem('sa_email', email);
-    emailGate.hidden = true;
-    if (lastResult) showFullResults(lastResult.rows);
-  });
-}
 </script>
-</body>
-</html>

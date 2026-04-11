@@ -1,360 +1,366 @@
 ---
-// shopify-app-stack-kill-or-keep-auditor.astro — migrated from tools.stackarchitect.xyz
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const schemas = [{"@context":"https://schema.org","@type":"WebApplication","name":"Shopify App Stack Kill or Keep Auditor","url":"https://www.stackarchitect.xyz/shopify-app-stack-kill-or-keep-auditor","description":"Audit every app in your Shopify stack. Identify which apps can be replaced for free, calculate your total monthly app bill, and get a personalised kill list.","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"GBP"},"provider":{"@type":"Organization","name":"Stack Architect","url":"https://www.stackarchitect.xyz"}},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the average Shopify app spend per store?","acceptedAnswer":{"@type":"Answer","text":"Research consistently shows that the average Shopify store above £10k/month GMV spends £300–£700/month on apps. Many store owners significantly underestimate this because apps are often billed separately and the cost is spread across multiple invoices. The most common expensive categories are tracking/attribution (£150–£299), email marketing (£100–£400), and inventory management (£29–£199)."}},{"@type":"Question","name":"Which Shopify apps can be replaced for free?","acceptedAnswer":{"@type":"Answer","text":"The most commonly replaceable paid apps are: tracking/attribution apps (replaced by CAPI Shield via Make.com), email marketing platforms like Klaviyo (replaced by Systeme.io free plan), inventory management (replaced by Stocky Swap), TikTok pixel apps (replaced by TikTok Events API free setup), P&L reporting tools (replaced by Make.com + Google Sheets), and automation connectors like Zapier (replaced by Make.com free tier)."}},{"@type":"Question","name":"How do I see all the apps I'm paying for on Shopify?","acceptedAnswer":{"@type":"Answer","text":"In Shopify Admin, go to Settings > Billing > Billing history. This shows all app charges. For a cleaner view, go to Apps > All apps in your admin — each installed app shows its billing status. Some apps bill through your Shopify invoice; others bill you directly. Check both your Shopify billing page and your credit card statement for the full picture."}},{"@type":"Question","name":"Is it safe to cancel apps I am not using?","acceptedAnswer":{"@type":"Answer","text":"Generally yes, but verify each app's function before cancelling. Some apps that appear inactive may be doing background work (like tracking or syncing). Before cancelling any app: check what it does, confirm nothing depends on it, and if it manages data (like a CRM or inventory app) export your data first. A safe practice is to uninstall rather than just cancel — this removes the app from your store and stops billing."}},{"@type":"Question","name":"What should I do before cancelling my Klaviyo account?","acceptedAnswer":{"@type":"Answer","text":"Export your complete subscriber list as a CSV including all custom properties and segments. Export your flow structures (screenshots or documentation). Save any email templates you want to reuse. Then set up your replacement platform (Systeme.io or GetResponse) and run both in parallel for 2–4 weeks before fully cancelling Klaviyo."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://www.stackarchitect.xyz/tools"},{"@type":"ListItem","position":3,"name":"Shopify App Stack Kill or Keep Auditor","item":"https://www.stackarchitect.xyz/shopify-app-stack-kill-or-keep-auditor"}]}];
+
+const breadcrumb = [
+  { label: 'Home', href: '/' },
+  { label: 'Tools', href: '/tools' },
+  { label: 'Shopify App Stack Kill or Keep Auditor — Free App Cost Audit Tool' },
+];
 ---
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Shopify App Stack Auditor — Which Apps Can You Replace for Free?</title>
-<meta name="description" content="Enter your Shopify app list and monthly costs. This tool scores each app's replaceability with free code or automation, calculates your annual saving, and prioritises what to cut first.">
-<meta name="robots" content="index, follow">
-<meta name="keywords" content="Shopify app cost audit, replace Shopify apps free, Shopify app stack review">
-<link rel="canonical" href="https://www.stackarchitect.xyz/tools/shopify-app-stack-kill-or-keep-auditor">
-<!-- Open Graph -->
-<meta property="og:title" content="Shopify App Stack Auditor — Which Apps Can You Replace for Free?">
-<meta property="og:description" content="Enter your Shopify app list and monthly costs. This tool scores each app's replaceability with free code or automation, calculates your annual saving, and prioritises what to cut first.">
-<meta property="og:url" content="https://www.stackarchitect.xyz/tools/shopify-app-stack-kill-or-keep-auditor">
-<meta property="og:type" content="website">
-<!-- JSON-LD: SoftwareApplication -->
-<script is:inline type="application/ld+json">{"@context":"https://schema.org","url":"https://www.stackarchitect.xyz/tools/shopify-app-stack-kill-or-keep-auditor","@type":"SoftwareApplication","applicationCategory":"BusinessApplication","operatingSystem":"Web","name":"Shopify App Stack Kill-or-Keep Auditor","description":"Audit your Shopify app stack and identify which apps you can replace with free code or automation tools to eliminate unnecessary monthly costs.","offers":{"@type":"Offer","price":"0","priceCurrency":"GBP"},"keywords":"Shopify app cost audit, replace Shopify apps free, Shopify app stack review"}</script>
-<!-- JSON-LD: FAQPage -->
-<script is:inline type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Which Shopify apps are easiest to replace for free?","acceptedAnswer":{"@type":"Answer","text":"Email marketing (Klaviyo → Systeme.io), inventory management (Stocky → Google Sheets), product reviews (Yotpo → native Shopify), and upsells (Rebuy → custom Liquid) are the most commonly replaceable with free alternatives."}},{"@type":"Question","name":"What is the average monthly app spend for a Shopify store?","acceptedAnswer":{"@type":"Answer","text":"Mid-sized Shopify stores typically spend £200–£600/month on apps. Stores doing £100k+/month often spend over £1,000/month before auditing their stack."}},{"@type":"Question","name":"Is Make.com actually free for Shopify automations?","acceptedAnswer":{"@type":"Answer","text":"Make.com's free plan includes 1,000 operations/month and 2 active scenarios. Most small to mid stores can run their core automations (abandoned cart, inventory alerts, order notifications) within the free tier."}}]}</script>
-<!-- JSON-LD: BreadcrumbList -->
-<script is:inline type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Stack Architect","item":"https://www.stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://www.stackarchitect.xyz/tools"},{"@type":"ListItem","position":3,"name":"Shopify App Stack — Kill or Keep Auditor","item":"https://www.stackarchitect.xyz/tools/shopify-app-stack-kill-or-keep-auditor"}]}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style is:inline>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --green:#00C896;--dark:#1a1a2e;--red:#e53e3e;--amber:#d97706;
-  --bg:#fff;--surface:#f8f9fa;--border:#e2e8f0;
-  --text:#1a202c;--muted:#64748b;--radius:8px;
-  --font:'Inter',system-ui,-apple-system,sans-serif;
-}
-html{font-size:16px;scroll-behavior:smooth}
-body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.6}
-a{color:var(--green);text-decoration:none}
-a:hover{text-decoration:underline}
-/* Header */
-.site-header{background:var(--dark);padding:14px 20px;display:flex;align-items:center}
-.brand{color:#fff;font-weight:700;font-size:1.05rem;letter-spacing:-.3px}
-.brand:hover{color:var(--green);text-decoration:none}
-/* Container */
-.container{max-width:680px;margin:0 auto;padding:0 20px}
-/* Breadcrumb */
-.breadcrumb{font-size:.8rem;color:var(--muted);padding:12px 0;border-bottom:1px solid var(--border);margin-bottom:28px}
-.breadcrumb a{color:var(--muted)}
-.breadcrumb span{margin:0 6px}
-/* Urgency tag */
-.urgency-tag{display:inline-block;background:#fef3cd;color:#92400e;font-size:.78rem;font-weight:600;padding:4px 10px;border-radius:20px;margin-bottom:16px;border:1px solid #fcd34d}
-/* Main layout */
-main{padding:32px 0 48px}
-article h1{font-size:1.75rem;font-weight:700;line-height:1.2;margin-bottom:12px;color:var(--dark)}
-.intro{color:var(--muted);font-size:.97rem;margin-bottom:28px;line-height:1.7}
-/* Card */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px}
-.card-title{font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:16px}
-/* Form */
-.field{margin-bottom:18px}
-.field label{display:block;font-size:.9rem;font-weight:500;margin-bottom:6px;color:var(--text)}
-.field input,.field select,.field textarea{
-  width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius);
-  font-family:var(--font);font-size:.95rem;background:#fff;color:var(--text);
-  transition:border-color .15s;
-}
-.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--green)}
-.field textarea{min-height:110px;resize:vertical}
-.multiselect-group{display:flex;flex-direction:column;gap:8px}
-.multiselect-group label{font-weight:400;display:flex;align-items:center;gap:8px;cursor:pointer}
-.multiselect-group input[type=checkbox]{width:16px;height:16px;accent-color:var(--green)}
-.btn-calc{
-  display:block;width:100%;padding:14px;background:var(--green);color:#fff;
-  border:none;border-radius:var(--radius);font-family:var(--font);font-size:1rem;
-  font-weight:600;cursor:pointer;transition:opacity .15s;margin-top:4px;
-}
-.btn-calc:hover{opacity:.9}
-/* Teaser / gate */
-#teaser{margin-bottom:20px}
-.teaser-card{background:var(--dark);color:#fff;border-radius:var(--radius);padding:24px;text-align:center}
-.teaser-number{font-size:2.5rem;font-weight:700;color:var(--green);margin-bottom:4px}
-.teaser-label{font-size:.9rem;opacity:.8;margin-bottom:20px}
-.gate-box{border-top:1px solid rgba(255,255,255,.15);padding-top:18px;margin-top:4px}
-.gate-box p{font-size:.88rem;opacity:.8;margin-bottom:12px}
-.gate-row{display:flex;gap:8px;flex-wrap:wrap}
-.gate-row input[type=email]{flex:1;min-width:200px;padding:10px 12px;border-radius:var(--radius);border:none;font-family:var(--font);font-size:.9rem}
-.btn-gate{padding:10px 18px;background:var(--green);color:#fff;border:none;border-radius:var(--radius);font-family:var(--font);font-weight:600;cursor:pointer;white-space:nowrap}
-.btn-gate:hover{opacity:.9}
-/* Results */
-#results{margin-bottom:24px}
-.result-row{display:flex;justify-content:space-between;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border);gap:12px}
-.result-row:last-child{border-bottom:none}
-.result-label{font-size:.88rem;color:var(--muted);flex:1}
-.result-label .sub{display:block;font-size:.78rem;margin-top:2px;color:var(--muted)}
-.result-value{font-size:.95rem;font-weight:600;text-align:right;flex-shrink:0;max-width:55%}
-.flag-good .result-value{color:#059669}
-.flag-warn .result-value{color:var(--amber)}
-.flag-bad .result-value{color:var(--red)}
-.flag-neutral .result-value{color:var(--text)}
-/* Upsell */
-.upsell{background:var(--green);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.upsell-text{color:#fff;font-weight:600;font-size:.95rem;flex:1}
-.upsell-btn{background:#fff;color:var(--green);padding:10px 18px;border-radius:var(--radius);font-weight:700;font-size:.88rem;white-space:nowrap;flex-shrink:0}
-.upsell-btn:hover{text-decoration:none;opacity:.9}
-/* FAQ */
-.faq-section{margin-bottom:32px}
-.faq-section h2{font-size:1.1rem;font-weight:700;margin-bottom:16px;color:var(--dark)}
-details{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;overflow:hidden}
-summary{padding:14px 16px;cursor:pointer;font-weight:500;font-size:.92rem;list-style:none;display:flex;justify-content:space-between;align-items:center}
-summary::-webkit-details-marker{display:none}
-summary::after{content:'+';font-size:1.1rem;color:var(--muted)}
-details[open] summary::after{content:'−'}
-details[open] summary{border-bottom:1px solid var(--border)}
-.faq-answer{padding:14px 16px;font-size:.9rem;color:var(--muted);line-height:1.7}
-/* Internal links */
-.related-tools{margin-bottom:32px;padding-top:24px;border-top:1px solid var(--border)}
-.related-tools h2{font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:12px}
-.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
-.related-link{display:block;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);font-size:.85rem;font-weight:500;color:var(--text);transition:border-color .15s}
-.related-link:hover{border-color:var(--green);text-decoration:none;color:var(--green)}
-/* Footer */
-footer{background:var(--surface);border-top:1px solid var(--border);padding:20px;text-align:center;font-size:.83rem;color:var(--muted)}
-footer a{color:var(--muted)}
-/* Utility */
-[hidden]{display:none!important}
-@media(max-width:480px){
-  article h1{font-size:1.4rem}
-  .teaser-number{font-size:2rem}
-  .upsell{flex-direction:column;align-items:flex-start}
-  .result-row{flex-direction:column;gap:4px}
-  .result-value{text-align:left;max-width:100%}
-}
+
+<Base
+  title="Shopify App Stack Kill or Keep Auditor — Free App Cost Audit Tool | Stack Architect"
+  description="Audit every app in your Shopify stack. Identify which apps can be replaced for free, calculate your total monthly app bill, and get a personalised kill list."
+  canonical="https://www.stackarchitect.xyz/shopify-app-stack-kill-or-keep-auditor"
+  schema={schemas}
+  breadcrumb={breadcrumb}
+>
+  <Nav slot="header" />
+
+  <main class="flex-1">
+    <div id="reading-progress"></div>
+    
+<style>
+  .tool-hero{padding:48px 24px 32px;background:#000;border-bottom:1px solid #1f1f1f;}
+  .tool-hero-inner{max-width:860px;margin:0 auto;}
+  .tool-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;border:1px solid rgba(74,222,128,.3);color:#4ade80;background:rgba(74,222,128,.06);margin-bottom:18px;}
+  .tool-badge .dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:dp 2s infinite;}
+  @keyframes dp{0%,100%{opacity:1;}50%{opacity:.3;}}
+  .tool-hero h1{font-size:clamp(22px,4vw,38px);font-weight:900;color:#fff;letter-spacing:-.03em;line-height:1.05;margin-bottom:12px;}
+  .tool-hero h1 .green{color:#4ade80;}
+  .tool-hero-desc{font-size:14px;color:#a1a1aa;line-height:1.75;max-width:600px;margin-bottom:20px;}
+  .tool-trust{display:flex;flex-wrap:wrap;gap:16px;}
+  .tool-trust span{font-size:11px;color:#52525b;display:flex;align-items:center;gap:5px;}
+  .tool-trust span::before{content:'✓';color:#4ade80;font-weight:700;}
+
+  .calc-section{padding:40px 24px;background:#0a0a0a;border-bottom:1px solid #1f1f1f;}
+  .calc-inner{max-width:860px;margin:0 auto;}
+  .calc-card{border:1px solid #1f1f1f;background:#000;padding:32px;}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
+  @media(max-width:600px){.calc-grid{grid-template-columns:1fr;}}
+  .calc-field{display:flex;flex-direction:column;gap:6px;}
+  .calc-field label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#52525b;}
+  .calc-field input,.calc-field select{background:#0a0a0a;border:1px solid #1f1f1f;color:#fff;font-family:inherit;font-size:13px;padding:10px 14px;outline:none;transition:border-color .2s;width:100%;}
+  .calc-field input:focus,.calc-field select:focus{border-color:#4ade80;}
+  .calc-field input::placeholder{color:#3f3f46;}
+  .calc-btn{width:100%;background:#4ade80;color:#000;font-family:inherit;font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;padding:14px;border:none;cursor:pointer;transition:background .2s;margin-top:8px;}
+  .calc-btn:hover{background:#22c55e;}
+  .calc-result{display:none;margin-top:24px;border:1px solid #1f1f1f;background:#0a0a0a;padding:24px;}
+  .calc-result.show{display:block;}
+  .result-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#52525b;margin-bottom:6px;}
+  .result-value{font-size:36px;font-weight:900;color:#4ade80;line-height:1;letter-spacing:-.03em;}
+  .result-sub{font-size:12px;color:#52525b;margin-top:6px;line-height:1.6;}
+  .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin-bottom:20px;}
+  .result-cell{background:#000;border:1px solid #1f1f1f;padding:16px;}
+  .result-insight{font-size:12px;color:#a1a1aa;line-height:1.7;border-top:1px solid #1f1f1f;padding-top:16px;margin-top:16px;}
+  .result-insight strong{color:#fff;}
+  .result-cta{display:inline-block;margin-top:16px;font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#000;background:#4ade80;padding:10px 20px;text-decoration:none;transition:background .2s;}
+  .result-cta:hover{background:#22c55e;}
+  .result-warn{border-left:3px solid #4ade80;padding-left:16px;margin-top:16px;}
+
+  .aff-block{margin:24px 0;border:1px solid rgba(74,222,128,.2);background:rgba(74,222,128,.04);padding:20px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+  .aff-block-text{flex:1;}
+  .aff-block-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#52525b;margin-bottom:6px;}
+  .aff-block-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;}
+  .aff-block-desc{font-size:11px;color:#71717a;line-height:1.6;}
+  .aff-block-link{flex-shrink:0;display:inline-flex;align-items:center;font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#4ade80;border:1px solid rgba(74,222,128,.4);padding:8px 16px;text-decoration:none;transition:all .2s;white-space:nowrap;}
+  .aff-block-link:hover{background:#4ade80;color:#000;}
+  .aff-disclosure{font-size:9px;color:#3f3f46;margin-top:8px;}
+
+  .editorial{padding:48px 24px;background:#000;border-bottom:1px solid #1f1f1f;}
+  .editorial-inner{max-width:720px;margin:0 auto;}
+  .editorial h2{font-size:clamp(18px,3vw,26px);font-weight:900;color:#fff;letter-spacing:-.03em;margin:36px 0 12px;line-height:1.2;}
+  .editorial h2:first-child{margin-top:0;}
+  .editorial p{font-size:13px;color:#a1a1aa;line-height:1.85;margin-bottom:16px;}
+  .editorial strong{color:#e4e4e7;}
+  .editorial a{color:#4ade80;text-decoration:underline;}
+  .editorial ul{list-style:none;padding:0;margin:0 0 16px;}
+  .editorial ul li{font-size:13px;color:#a1a1aa;line-height:1.75;padding:6px 0 6px 20px;position:relative;border-bottom:1px solid #0a0a0a;}
+  .editorial ul li::before{content:'→';position:absolute;left:0;color:#4ade80;font-size:11px;}
+
+  .faq-section{padding:48px 24px;background:#0a0a0a;border-bottom:1px solid #1f1f1f;}
+  .faq-inner{max-width:720px;margin:0 auto;}
+  .faq-heading{font-size:clamp(18px,3vw,24px);font-weight:900;color:#fff;letter-spacing:-.03em;margin-bottom:28px;}
+  .faq-item{border:1px solid #1f1f1f;margin-bottom:8px;background:#000;}
+  .faq-item summary{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;cursor:pointer;list-style:none;font-size:12px;font-weight:700;color:#a1a1aa;letter-spacing:.02em;gap:16px;}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item[open] summary{color:#fff;border-bottom:1px solid #1f1f1f;}
+  .faq-item[open]{border-color:rgba(74,222,128,.3);}
+  .faq-arrow{flex-shrink:0;font-size:10px;color:#52525b;transition:transform .2s;}
+  .faq-item[open] .faq-arrow{transform:rotate(180deg);color:#4ade80;}
+  .faq-answer{padding:16px 20px;font-size:12px;color:#71717a;line-height:1.8;}
+  .faq-answer a{color:#4ade80;}
+
+  .cta-strip-tool{padding:40px 24px;background:#0a0a0a;border-top:1px solid #1f1f1f;text-align:center;}
+  .cta-strip-tool h2{font-size:clamp(16px,3vw,22px);font-weight:900;color:#fff;letter-spacing:-.03em;margin-bottom:8px;}
+  .cta-strip-tool p{font-size:12px;color:#52525b;margin-bottom:20px;}
+  .cta-strip-tool a{display:inline-block;background:#4ade80;color:#000;font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;padding:14px 28px;text-decoration:none;transition:background .2s;}
+  .cta-strip-tool a:hover{background:#22c55e;}
+  #reading-progress{position:fixed;top:0;left:0;width:0;height:2px;background:#4ade80;z-index:9999;transition:width .1s;}
 </style>
-</head>
-<body>
-<header class="site-header">
-  <a class="brand" href="https://www.stackarchitect.xyz">Stack Architect</a>
-</header>
 
-<div class="container">
-  <nav class="breadcrumb" aria-label="breadcrumb">
-    <a href="https://www.stackarchitect.xyz">Stack Architect</a>
-    <span aria-hidden="true">›</span>
-    <a href="https://www.stackarchitect.xyz/tools">Tools</a>
-    <span aria-hidden="true">›</span>
-    <span>Shopify App Stack — Kill or Keep Auditor</span>
-  </nav>
 
-  <main>
-    <article>
-      
-      <h1>Shopify App Stack Kill-or-Keep Auditor</h1>
-      <p class="intro">Most Shopify stores are paying £200–£800/month for apps that can be replaced with free code or Make.com automations. Enter your apps and costs — see exactly what to cut and what to keep.</p>
-
-      <section class="card">
-        <p class="card-title">Enter your details</p>
-        <form id="calcForm" novalidate>
-          <div class="field"><label for="appList">Paste your apps and monthly costs (one per line: App Name, £cost)</label><textarea id="appList" name="appList" placeholder="Klaviyo, £150
-Gorgias, £60
-ReCharge, £40
-Yotpo, £30
-Okendo, £25" required></textarea></div>
-<div class="field"><label for="totalMonthlyApps">Total monthly app spend (£/$/€) — double check</label><input type="number" id="totalMonthlyApps" name="totalMonthlyApps" placeholder="e.g. 340" min="0" required></div>
-<div class="field"><label for="techLevel">Tech comfort level</label><select id="techLevel" name="techLevel" required><option value="">Select…</option><option value="Non-technical">Non-technical</option><option value="Comfortable with Sheets/no-code">Comfortable with Sheets/no-code</option><option value="Can handle Make.com">Can handle Make.com</option><option value="Developer-level">Developer-level</option></select></div>
-          <button type="submit" class="btn-calc">Calculate →</button>
-        </form>
-      </section>
-
-      
-<section id="teaser" hidden>
-  <div class="teaser-card">
-    <div class="teaser-number" id="teaserValue"></div>
-    <div class="teaser-label" id="teaserLabel"></div>
-    <div class="gate-box" id="emailGate">
-      <p>Enter your email to unlock the full breakdown</p>
-      <div class="gate-row">
-        <input type="email" id="emailInput" placeholder="you@example.com" autocomplete="email">
-        <button class="btn-gate" id="gateBtn">Get your full app replacement plan</button>
+  <section class="tool-hero">
+    <div class="tool-hero-inner">
+      <div class="tool-badge"><span class="dot"></span>FREE TOOL // App Stack Audit</div>
+      <h1>Shopify App Stack <span class="green">Kill or Keep</span> Auditor</h1>
+      <p class="tool-hero-desc">Select every app category you currently pay for. See your total monthly spend, which apps can be replaced for free, and your personalised kill list.</p>
+      <div class="tool-trust">
+        <span>10 app categories covered</span>
+        <span>Free replacement for each</span>
+        <span>Instant savings calculation</span>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-      <section id="results" hidden>
-        <div class="card">
-          <p class="card-title">Your results</p>
-          <div id="resultsContent"></div>
+  <section class="calc-section">
+    <div class="calc-inner">
+      <div class="calc-card">
+        <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#52525b;margin-bottom:16px;">// APP_STACK_AUDIT — Select apps you currently pay for</div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px;" id="app-checks">
+          
+          <label style="display:flex;align-items:center;gap:12px;cursor:pointer;border:1px solid #1f1f1f;padding:12px 14px;background:#0a0a0a;transition:border-color .2s;" for="a1">
+            <input type="checkbox" id="a1" data-cost="199" data-replace="CAPI Shield (free)" data-link="/capi-shield" style="accent-color:#4ade80;flex-shrink:0;" />
+            <div style="flex:1;">
+              <div style="font-size:11px;color:#e4e4e7;">Ad tracking / attribution (Triple Whale, Northbeam, Elevar, etc.)</div>
+              <div style="font-size:10px;color:#52525b;margin-top:2px;">Typical cost: ~£199/mo · Replace with: CAPI Shield (free)</div>
+            </div>
+            <div class="calc-field" style="width:90px;margin:0;">
+              <input type="number" id="cost-a1" placeholder="£/mo" style="background:#000;border:1px solid #1f1f1f;color:#fff;font-family:inherit;font-size:11px;padding:6px 10px;outline:none;width:100%;" />
+            </div>
+          </label>
+          <label style="display:flex;align-items:center;gap:12px;cursor:pointer;border:1px solid #1f1f1f;padding:12px 14px;background:#0a0a0a;transition:border-color .2s;" for="a2">
+            <input type="checkbox" id="a2" data-cost="200" data-replace="Systeme.io free plan" data-link="/replace-klaviyo-free" style="accent-color:#4ade80;flex-shrink:0;" />
+            <div style="flex:1;">
+              <div style="font-size:11px;color:#e4e4e7;">Email marketing (Klaviyo, Mailchimp, Drip, etc.)</div>
+              <div style="font-size:10px;color:#52525b;margin-top:2px;">Typical cost: ~£200/mo · Replace with: Systeme.io free plan</div>
+            </div>
+            <div class="calc-field" style="width:90px;margin:0;">
+              <input type="number" id="cost-a2" placeholder="£/mo" style="background:#000;border:1px solid #1f1f1f;color:#fff;font-family:inherit;font-size:11px;padding:6px 10px;outline:none;width:100%;" />
+            </div>
+          </label>
+          <label style="display:flex;align-items:center;gap:12px;cursor:pointer;border:1px solid #1f1f1f;padding:12px 14px;background:#0a0a0a;transition:border-color .2s;" for="a3">
+            <input type="checkbox" id="a3" data-cost="99" data-replace="Stocky Swap (free)" data-link="/stocky-swap" style="accent-color:#4ade80;flex-shrink:0;" />
+            <div style="flex:1;">
+              <div style="font-size:11px;color:#e4e4e7;">Inventory management (Stocky, Linnworks, etc.)</div>
+              <div style="font-size:10px;color:#52525b;margin-top:2px;">Typical cost: ~£99/mo · Replace with: Stocky Swap (free)</div>
+            </div>
+            <div class="calc-field" style="width:90px;margin:0;">
+              <input type="number" id="cost-a3" placeholder="£/mo" style="background:#000;border:1px solid #1f1f1f;color:#fff;font-family:inherit;font-size:11px;padding:6px 10px;outline:none;width:100%;" />
+            </div>
+          </label>
+          <label style="display:flex;align-items:center;gap:12px;cursor:pointer;border:1px solid #1f1f1f;padding:12px 14px;background:#0a0a0a;transition:border-color .2s;" for="a4">
+            <input type="checkbox" id="a4" data-cost="79" data-replace="TikTok Events API free" data-link="/tiktok-events-api-shopify" style="accent-color:#4ade80;flex-shrink:0;" />
+            <div style="flex:1;">
+              <div style="font-size:11px;color:#e4e4e7;">TikTok pixel / tracking app</div>
+              <div style="font-size:10px;color:#52525b;margin-top:2px;">Typical cost: ~£79/mo · Replace with: TikTok Events API free</div>
+            </div>
+            <div class="calc-field" style="width:90px;margin:0;">
+              <input type="number" id="cost-a4" placeholder="£/mo" style="background:#000;border:1px solid #1f1f1f;color:#fff;font-family:inherit;font-size:11px;padding:6px 10px;outline:none;width:100%;" />
+            </div>
+          </label>
+          <label style="display:flex;align-items:center;gap:12px;cursor:pointer;border:1px solid #1f1f1f;padding:12px 14px;background:#0a0a0a;transition:border-color .2s;" for="a5">
+            <input type="checkbox" id="a5" data-cost="79" data-replace="Make.com + Sheets (free)" data-link="/shopify-profit-loss-automation" style="accent-color:#4ade80;flex-shrink:0;" />
+            <div style="flex:1;">
+              <div style="font-size:11px;color:#e4e4e7;">P&L / reporting dashboard (TrueProfit, BeProfit, etc.)</div>
+              <div style="font-size:10px;color:#52525b;margin-top:2px;">Typical cost: ~£79/mo · Replace with: Make.com + Sheets (free)</div>
+            </div>
+            <div class="calc-field" style="width:90px;margin:0;">
+              <input type="number" id="cost-a5" placeholder="£/mo" style="background:#000;border:1px solid #1f1f1f;color:#fff;font-family:inherit;font-size:11px;padding:6px 10px;outline:none;width:100%;" />
+            </div>
+          </label>
+          <label style="display:flex;align-items:center;gap:12px;cursor:pointer;border:1px solid #1f1f1f;padding:12px 14px;background:#0a0a0a;transition:border-color .2s;" for="a6">
+            <input type="checkbox" id="a6" data-cost="49" data-replace="Make.com free tier" data-link="https://www.make.com/en/register?pc=techie123" style="accent-color:#4ade80;flex-shrink:0;" />
+            <div style="flex:1;">
+              <div style="font-size:11px;color:#e4e4e7;">Automation connector (Zapier, etc.)</div>
+              <div style="font-size:10px;color:#52525b;margin-top:2px;">Typical cost: ~£49/mo · Replace with: Make.com free tier</div>
+            </div>
+            <div class="calc-field" style="width:90px;margin:0;">
+              <input type="number" id="cost-a6" placeholder="£/mo" style="background:#000;border:1px solid #1f1f1f;color:#fff;font-family:inherit;font-size:11px;padding:6px 10px;outline:none;width:100%;" />
+            </div>
+          </label>
+          <label style="display:flex;align-items:center;gap:12px;cursor:pointer;border:1px solid #1f1f1f;padding:12px 14px;background:#0a0a0a;transition:border-color .2s;" for="a7">
+            <input type="checkbox" id="a7" data-cost="79" data-replace="Keep — no direct free alternative" data-link="" style="accent-color:#4ade80;flex-shrink:0;" />
+            <div style="flex:1;">
+              <div style="font-size:11px;color:#e4e4e7;">Loyalty / rewards app</div>
+              <div style="font-size:10px;color:#52525b;margin-top:2px;">Typical cost: ~£79/mo · Replace with: Keep — no direct free alternative</div>
+            </div>
+            <div class="calc-field" style="width:90px;margin:0;">
+              <input type="number" id="cost-a7" placeholder="£/mo" style="background:#000;border:1px solid #1f1f1f;color:#fff;font-family:inherit;font-size:11px;padding:6px 10px;outline:none;width:100%;" />
+            </div>
+          </label>
+          <label style="display:flex;align-items:center;gap:12px;cursor:pointer;border:1px solid #1f1f1f;padding:12px 14px;background:#0a0a0a;transition:border-color .2s;" for="a8">
+            <input type="checkbox" id="a8" data-cost="49" data-replace="Judge.me free plan" data-link="" style="accent-color:#4ade80;flex-shrink:0;" />
+            <div style="flex:1;">
+              <div style="font-size:11px;color:#e4e4e7;">Review app (Okendo, Yotpo, etc.)</div>
+              <div style="font-size:10px;color:#52525b;margin-top:2px;">Typical cost: ~£49/mo · Replace with: Judge.me free plan</div>
+            </div>
+            <div class="calc-field" style="width:90px;margin:0;">
+              <input type="number" id="cost-a8" placeholder="£/mo" style="background:#000;border:1px solid #1f1f1f;color:#fff;font-family:inherit;font-size:11px;padding:6px 10px;outline:none;width:100%;" />
+            </div>
+          </label>
+          <label style="display:flex;align-items:center;gap:12px;cursor:pointer;border:1px solid #1f1f1f;padding:12px 14px;background:#0a0a0a;transition:border-color .2s;" for="a9">
+            <input type="checkbox" id="a9" data-cost="29" data-replace="Tidio free plan (50 conversations/mo)" data-link="https://affiliate.tidio.com/5kfhrx3ot6tf" style="accent-color:#4ade80;flex-shrink:0;" />
+            <div style="flex:1;">
+              <div style="font-size:11px;color:#e4e4e7;">Live chat / customer support</div>
+              <div style="font-size:10px;color:#52525b;margin-top:2px;">Typical cost: ~£29/mo · Replace with: Tidio free plan (50 conversations/mo)</div>
+            </div>
+            <div class="calc-field" style="width:90px;margin:0;">
+              <input type="number" id="cost-a9" placeholder="£/mo" style="background:#000;border:1px solid #1f1f1f;color:#fff;font-family:inherit;font-size:11px;padding:6px 10px;outline:none;width:100%;" />
+            </div>
+          </label>
+          <label style="display:flex;align-items:center;gap:12px;cursor:pointer;border:1px solid #1f1f1f;padding:12px 14px;background:#0a0a0a;transition:border-color .2s;" for="a10">
+            <input type="checkbox" id="a10" data-cost="29" data-replace="Shopify native (bundles/discounts)" data-link="" style="accent-color:#4ade80;flex-shrink:0;" />
+            <div style="flex:1;">
+              <div style="font-size:11px;color:#e4e4e7;">Upsell / cross-sell app</div>
+              <div style="font-size:10px;color:#52525b;margin-top:2px;">Typical cost: ~£29/mo · Replace with: Shopify native (bundles/discounts)</div>
+            </div>
+            <div class="calc-field" style="width:90px;margin:0;">
+              <input type="number" id="cost-a10" placeholder="£/mo" style="background:#000;border:1px solid #1f1f1f;color:#fff;font-family:inherit;font-size:11px;padding:6px 10px;outline:none;width:100%;" />
+            </div>
+          </label>
         </div>
-      </section>
-
-      <aside class="upsell" id="upsellBlock" hidden>
-        <span class="upsell-text">Start with the free $0 Shopify stack guide →</span>
-        <a class="upsell-btn" href="https://www.stackarchitect.xyz" target="_blank" rel="noopener">Get started →</a>
-      </aside>
-    </article>
-
-    <section class="faq-section">
-      <h2>Frequently asked questions</h2>
-      
-<details>
-  <summary>Which Shopify apps are easiest to replace for free?</summary>
-  <div class="faq-answer">Email marketing (Klaviyo → Systeme.io), inventory management (Stocky → Google Sheets), product reviews (Yotpo → native Shopify), and upsells (Rebuy → custom Liquid) are the most commonly replaceable with free alternatives.</div>
-</details>
-<details>
-  <summary>What is the average monthly app spend for a Shopify store?</summary>
-  <div class="faq-answer">Mid-sized Shopify stores typically spend £200–£600/month on apps. Stores doing £100k+/month often spend over £1,000/month before auditing their stack.</div>
-</details>
-<details>
-  <summary>Is Make.com actually free for Shopify automations?</summary>
-  <div class="faq-answer">Make.com's free plan includes 1,000 operations/month and 2 active scenarios. Most small to mid stores can run their core automations (abandoned cart, inventory alerts, order notifications) within the free tier.</div>
-</details>
-    </section>
-
-    <nav class="related-tools" aria-label="Related tools">
-      <h2>Other free Shopify tools</h2>
-      <div class="related-grid">
-        <a class="related-link" href="/tools/klaviyo-to-systeme-migration-savings-calculator">Klaviyo → Free Email Migration Savings Calculator</a><a class="related-link" href="/tools/shopify-plan-upgrade-break-even-calculator">Shopify Plan Upgrade Break-Even Calculator</a><a class="related-link" href="/tools/make-vs-zapier-cost-calculator">Make.com vs. Zapier Cost Calculator</a>
+        <button class="calc-btn" onclick="calcApps()">AUDIT MY APP STACK →</button>
+        <div class="calc-result" id="app-result">
+          <div class="result-grid">
+            <div class="result-cell">
+              <div class="result-label">Total Monthly App Spend</div>
+              <div class="result-value" id="app-total" style="color:#f87171;">--</div>
+              <div class="result-sub">Based on your inputs</div>
+            </div>
+            <div class="result-cell">
+              <div class="result-label">Replaceable for Free</div>
+              <div class="result-value" id="app-free" style="font-size:28px;">--</div>
+              <div class="result-sub">Estimated monthly saving</div>
+            </div>
+            <div class="result-cell">
+              <div class="result-label">Annual Waste</div>
+              <div class="result-value" id="app-annual" style="font-size:22px;color:#f87171;">--</div>
+              <div class="result-sub">On replaceable apps alone</div>
+            </div>
+          </div>
+          <div id="app-kill-list" style="margin-top:20px;"></div>
+        </div>
       </div>
-    </nav>
+
+      
+  <div class="aff-block">
+    <div class="aff-block-text">
+      <div class="aff-block-label">Recommended tool</div>
+      <div class="aff-block-title">Make.com + Systeme.io — The Free Stack</div>
+      <div class="aff-block-desc">The two tools that power most app replacements. Make.com free tier handles all automation routing. Systeme.io free plan replaces Klaviyo up to 2,000 contacts.</div>
+    </div>
+    <div>
+      <a href="https://www.make.com/en/register?pc=techie123" target="_blank" rel="noopener sponsored" class="aff-block-link">Start Free on Make.com →</a>
+      <div class="aff-disclosure">Affiliate link — costs you nothing extra</div>
+    </div>
+  </div>
+    </div>
+  </section>
+
+  <section class="editorial">
+    <div class="editorial-inner">
+      <h2>Why Your Shopify App Bill Keeps Growing</h2>
+      <p>The Shopify app store is built around a subscription model. Each app charges a small monthly fee that seems reasonable in isolation — £29 here, £79 there. But the compound effect is that most growing Shopify stores end up with 8–15 apps installed, many of which overlap in functionality or are simply never used to their full capability. The cumulative bill of £400–£800/month is often discovered only when a store owner actually adds everything up.</p>
+      <p>The good news is that the most expensive app categories — tracking, email, inventory, automation — have genuinely capable free alternatives. The switch does not require accepting inferior tools. <strong>Make.com's free tier, Google Sheets, and Systeme.io together replace six paid app categories at zero monthly cost.</strong></p>
+
+      <h2>The Six Replaceable App Categories</h2>
+      <p>After auditing hundreds of Shopify stacks, six categories consistently emerge as replaceable with free tools: ad tracking (CAPI Shield), email marketing (Systeme.io), inventory management (Stocky Swap), TikTok tracking (Events API), P&L reporting (Google Sheets), and automation connectors (Make.com). The <a href="/">full $0 stack guide</a> covers each in detail with step-by-step setup instructions.</p>
+    </div>
+  </section>
+
+  
+  <section class="faq-section" itemscope itemtype="https://schema.org/FAQPage">
+    <div class="faq-inner">
+      <h2 class="faq-heading">// COMMON_QUESTIONS</h2>
+      
+    <details class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <summary><span itemprop="name">What is the average Shopify app spend per store?</span><span class="faq-arrow">▼</span></summary>
+      <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text">Research consistently shows that the average Shopify store above £10k/month GMV spends £300–£700/month on apps. Many store owners significantly underestimate this because apps are often billed separately and the cost is spread across multiple invoices. The most common expensive categories are tracking/attribution (£150–£299), email marketing (£100–£400), and inventory management (£29–£199).</p>
+      </div>
+    </details>
+    <details class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <summary><span itemprop="name">Which Shopify apps can be replaced for free?</span><span class="faq-arrow">▼</span></summary>
+      <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text">The most commonly replaceable paid apps are: tracking/attribution apps (replaced by CAPI Shield via Make.com), email marketing platforms like Klaviyo (replaced by Systeme.io free plan), inventory management (replaced by Stocky Swap), TikTok pixel apps (replaced by TikTok Events API free setup), P&L reporting tools (replaced by Make.com + Google Sheets), and automation connectors like Zapier (replaced by Make.com free tier).</p>
+      </div>
+    </details>
+    <details class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <summary><span itemprop="name">How do I see all the apps I'm paying for on Shopify?</span><span class="faq-arrow">▼</span></summary>
+      <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text">In Shopify Admin, go to Settings > Billing > Billing history. This shows all app charges. For a cleaner view, go to Apps > All apps in your admin — each installed app shows its billing status. Some apps bill through your Shopify invoice; others bill you directly. Check both your Shopify billing page and your credit card statement for the full picture.</p>
+      </div>
+    </details>
+    <details class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <summary><span itemprop="name">Is it safe to cancel apps I am not using?</span><span class="faq-arrow">▼</span></summary>
+      <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text">Generally yes, but verify each app's function before cancelling. Some apps that appear inactive may be doing background work (like tracking or syncing). Before cancelling any app: check what it does, confirm nothing depends on it, and if it manages data (like a CRM or inventory app) export your data first. A safe practice is to uninstall rather than just cancel — this removes the app from your store and stops billing.</p>
+      </div>
+    </details>
+    <details class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <summary><span itemprop="name">What should I do before cancelling my Klaviyo account?</span><span class="faq-arrow">▼</span></summary>
+      <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text">Export your complete subscriber list as a CSV including all custom properties and segments. Export your flow structures (screenshots or documentation). Save any email templates you want to reuse. Then set up your replacement platform (Systeme.io or GetResponse) and run both in parallel for 2–4 weeks before fully cancelling Klaviyo.</p>
+      </div>
+    </details>
+    </div>
+  </section>
   </main>
-</div>
 
-<footer>
-  <p>Free tool by <a href="https://www.stackarchitect.xyz">Stack Architect</a> &mdash; Free Shopify tools. No apps. No fluff.</p>
-</footer>
+  <Footer />
+</Base>
 
-<script is:inline>
-function fmt(n){ return Math.round(n).toLocaleString('en-GB'); }
+<script>
+  // Reading progress bar
+  const bar = document.getElementById('reading-progress');
+  if (bar) {
+    window.addEventListener('scroll', () => {
+      const pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      bar.style.width = Math.min(pct, 100) + '%';
+    }, { passive: true });
+  }
 
-function calculate(inp) {
-  var total = parseFloat(inp.totalMonthlyApps) || 0;
-  var techMap = { 'Non-technical': 0.3, 'Comfortable with Sheets/no-code': 0.6, 'Can handle Make.com': 0.8, 'Developer-level': 0.95 };
-  var techMultiplier = techMap[inp.techLevel] || 0.5;
-  var replaceability = {
-    'klaviyo':0.95,'gorgias':0.4,'recharge':0.15,'yotpo':0.8,'okendo':0.8,
-    'triple whale':0.6,'postscript':0.7,'loyaltylion':0.65,'rebuy':0.75,
-    'frequently bought together':0.9,'judge.me':0.5,'bold upsell':0.8,
-    'stocky':1.0,'privy':0.85
-  };
-  var killItems = [], keepItems = [], replaceableTotal = 0;
-  if (inp.appList && inp.appList.trim()) {
-    var lines = inp.appList.split('
-').filter(function(l){ return l.trim(); });
-    lines.forEach(function(line) {
-      var parts = line.split(',');
-      var appName = (parts[0] || '').trim();
-      var costStr = (parts[1] || '0').replace(/[^0-9.]/g,'');
-      var cost = parseFloat(costStr) || 0;
-      var key = appName.toLowerCase();
-      var score = 0.5;
-      var keys = Object.keys(replaceability);
-      for (var i = 0; i < keys.length; i++) {
-        if (key.indexOf(keys[i]) !== -1) { score = replaceability[keys[i]]; break; }
+
+  function calcApps() {
+    const checks = [...document.querySelectorAll('#app-checks input[type=checkbox]:checked')];
+    let total = 0, freeTotal = 0, killItems = [];
+
+    const replaceableIds = ['a1','a2','a3','a4','a5','a6','a9'];
+
+    checks.forEach(el => {
+      const costInput = document.getElementById('cost-' + el.id);
+      const cost = parseFloat(costInput?.value) || parseInt(el.dataset.cost) || 0;
+      total += cost;
+      if (replaceableIds.includes(el.id)) {
+        freeTotal += cost;
+        const replace = el.dataset.replace;
+        const link = el.dataset.link;
+        killItems.push({ name: el.parentElement.querySelector('div > div').textContent, replace, link, cost });
       }
-      if (score * techMultiplier >= 0.4) { killItems.push(appName + ' (£' + fmt(cost) + '/mo)'); replaceableTotal += cost; }
-      else keepItems.push(appName);
     });
-  } else {
-    replaceableTotal = total * 0.6 * techMultiplier;
-  }
-  var annual = replaceableTotal * 12;
-  return {
-    teaser: { label: 'Annual saving potential', value: '£' + fmt(annual), flag: annual > 1000 ? 'good' : annual > 200 ? 'warn' : 'neutral' },
-    rows: [
-      { label: 'Total monthly app spend', value: '£' + fmt(total), flag: 'neutral' },
-      { label: 'Replaceable monthly spend', value: '£' + fmt(replaceableTotal), flag: 'good' },
-      { label: 'Annual saving potential', value: '£' + fmt(annual), flag: 'good' },
-      { label: 'Apps to eliminate', value: killItems.length ? killItems.join(', ') : 'Paste app list above for detailed analysis', flag: killItems.length ? 'warn' : 'neutral' },
-      { label: 'Apps to keep', value: keepItems.length ? keepItems.join(', ') : '—', flag: 'neutral' }
-    ]
-  };
-}
 
-var IS_GATED = true;
-var form = document.getElementById('calcForm');
-var resultsSection = document.getElementById('results');
-var resultsContent = document.getElementById('resultsContent');
-var teaserSection = document.getElementById('teaser');
-var teaserValue = document.getElementById('teaserValue');
-var teaserLabel = document.getElementById('teaserLabel');
-var emailGate = document.getElementById('emailGate');
-var gateBtn = document.getElementById('gateBtn');
-var upsellBlock = document.getElementById('upsellBlock');
-var lastResult = null;
+    document.getElementById('app-total').textContent = '£' + total.toLocaleString() + '/mo';
+    document.getElementById('app-free').textContent = '£' + freeTotal.toLocaleString() + '/mo';
+    document.getElementById('app-annual').textContent = '£' + (freeTotal * 12).toLocaleString() + '/yr';
 
-function getInputs() {
-  var inp = {};
-  var fd = new FormData(form);
-  fd.forEach(function(v, k) {
-    if (inp[k]) {
-      inp[k] = Array.isArray(inp[k]) ? inp[k].concat(v) : [inp[k], v];
-    } else {
-      inp[k] = v;
+    let killHTML = '';
+    if (killItems.length) {
+      killHTML = '<div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#52525b;margin-bottom:12px;">// YOUR_KILL_LIST</div>';
+      killItems.forEach(item => {
+        killHTML += '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border:1px solid rgba(74,222,128,.2);background:rgba(74,222,128,.04);margin-bottom:6px;gap:12px;">';
+        killHTML += '<div><div style="font-size:11px;font-weight:700;color:#fff;">' + item.name.split('(')[0].trim() + '</div>';
+        killHTML += '<div style="font-size:10px;color:#52525b;">Replace with: ' + item.replace + '</div></div>';
+        if (item.link) killHTML += '<a href="' + item.link + '" style="font-size:10px;font-weight:700;letter-spacing:.08em;color:#4ade80;text-decoration:none;white-space:nowrap;border:1px solid rgba(74,222,128,.3);padding:6px 12px;">SET UP FREE →</a>';
+        killHTML += '</div>';
+      });
     }
-  });
-  // Also grab textareas by id since FormData may not pick up all
-  form.querySelectorAll('textarea').forEach(function(el){
-    if (!inp[el.id]) inp[el.id] = el.value;
-  });
-  return inp;
-}
-
-function renderRows(rows) {
-  return rows.map(function(r) {
-    var sub = r.sub ? '<span class="sub">' + r.sub + '</span>' : '';
-    return '<div class="result-row flag-' + (r.flag||'neutral') + '">' +
-      '<span class="result-label">' + r.label + sub + '</span>' +
-      '<span class="result-value">' + r.value + '</span>' +
-    '</div>';
-  }).join('');
-}
-
-function showFullResults(rows) {
-  resultsContent.innerHTML = renderRows(rows);
-  resultsSection.hidden = false;
-  upsellBlock.hidden = false;
-  resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-form.addEventListener('submit', function(e) {
-  e.preventDefault();
-  var inp = getInputs();
-  var result;
-  try { result = calculate(inp); } catch(err) { alert('Calculation error: ' + err.message); return; }
-  lastResult = result;
-
-  if (!IS_GATED) {
-    showFullResults(result.rows);
-    return;
+    document.getElementById('app-kill-list').innerHTML = killHTML;
+    document.getElementById('app-result').classList.add('show');
   }
-
-  // Show teaser
-  teaserValue.textContent = result.teaser.value;
-  teaserLabel.textContent = result.teaser.label;
-  teaserSection.hidden = false;
-
-  // Check if already gated
-  var storedEmail = localStorage.getItem('sa_email');
-  if (storedEmail) {
-    emailGate.hidden = true;
-    showFullResults(result.rows);
-  } else {
-    emailGate.hidden = false;
-  }
-  teaserSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-});
-
-if (gateBtn) {
-  gateBtn.addEventListener('click', function() {
-    var emailInput = document.getElementById('emailInput');
-    var email = emailInput ? emailInput.value.trim() : '';
-    if (!email || !email.includes('@')) { emailInput.focus(); return; }
-    localStorage.setItem('sa_email', email);
-    emailGate.hidden = true;
-    if (lastResult) showFullResults(lastResult.rows);
-  });
-}
+  
 </script>
-</body>
-</html>

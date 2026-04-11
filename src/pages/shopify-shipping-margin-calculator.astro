@@ -1,323 +1,203 @@
 ---
-// shopify-shipping-margin-calculator.astro — migrated from tools.stackarchitect.xyz
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const schemas = [{"@context":"https://schema.org","@type":"WebApplication","name":"Shopify Shipping Margin Calculator — Free Shipping Profitability Tool","url":"https://www.stackarchitect.xyz/shopify-shipping-margin-calculator","description":"Calculate your true shipping margin per order. Understand the real cost of free shipping offers, flat-rate thresholds, and carrier rate changes on your overall store profitability.","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"GBP"},"provider":{"@type":"Organization","name":"Stack Architect","url":"https://www.stackarchitect.xyz"}},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I reduce Shopify shipping costs?","acceptedAnswer":{"@type":"Answer","text":"The most effective tactics are: (1) negotiate volume discounts directly with carriers (DHL, UPS, Royal Mail) once you reach consistent monthly volumes; (2) use Shopify Shipping discounts available on all paid plans — typically 15–35% off carrier rates; (3) optimise package dimensions and weight to avoid dimensional weight charges; (4) consolidate multi-item orders into single shipments when possible."}},{"@type":"Question","name":"What is a good free shipping threshold for Shopify UK stores?","acceptedAnswer":{"@type":"Answer","text":"For UK DTC brands, a free shipping threshold of 1.8–2.5x your AOV is a common starting point. If your AOV is £45, a £75–£85 threshold encourages order value uplift while keeping qualifying orders at a level where the shipping cost is meaningfully absorbed by margin. A/B test different thresholds using Shopify's discount system to find the optimal balance between conversion rate and margin impact."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://www.stackarchitect.xyz/tools"},{"@type":"ListItem","position":3,"name":"Shopify Shipping Margin Calculator — Free Shipping Profitability Tool","item":"https://www.stackarchitect.xyz/shopify-shipping-margin-calculator"}]}];
+
+const breadcrumb = [
+  { label: 'Home', href: '/' },
+  { label: 'Tools', href: '/tools' },
+  { label: 'Shopify Shipping Margin Calculator — Free Shipping Profitability Tool' },
+];
 ---
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Shopify Shipping Cost Margin Calculator — Is Free Shipping Killing Your Profit?</title>
-<meta name="description" content="Calculate whether your free shipping threshold is set correctly. See the minimum order value at which offering free shipping remains profitable after Shopify fees, COGS, and shipping costs.">
-<meta name="robots" content="index, follow">
-<meta name="keywords" content="Shopify free shipping threshold calculator, Shopify shipping profit margin, free shipping break-even Shopify">
-<link rel="canonical" href="https://www.stackarchitect.xyz/tools/shopify-shipping-margin-calculator">
-<!-- Open Graph -->
-<meta property="og:title" content="Shopify Shipping Cost Margin Calculator — Is Free Shipping Killing Your Profit?">
-<meta property="og:description" content="Calculate whether your free shipping threshold is set correctly. See the minimum order value at which offering free shipping remains profitable after Shopify fees, COGS, and shipping costs.">
-<meta property="og:url" content="https://www.stackarchitect.xyz/tools/shopify-shipping-margin-calculator">
-<meta property="og:type" content="website">
-<!-- JSON-LD: SoftwareApplication -->
-<script is:inline type="application/ld+json">{"@context":"https://schema.org","url":"https://www.stackarchitect.xyz/tools/shopify-shipping-margin-calculator","@type":"SoftwareApplication","applicationCategory":"BusinessApplication","operatingSystem":"Web","name":"Shopify Shipping Margin Calculator","description":"Calculate your true free shipping break-even threshold and prevent shipping costs from eroding your Shopify store margins.","offers":{"@type":"Offer","price":"0","priceCurrency":"GBP"},"keywords":"Shopify free shipping threshold calculator, Shopify shipping profit margin, free shipping break-even Shopify"}</script>
-<!-- JSON-LD: FAQPage -->
-<script is:inline type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I calculate the right free shipping threshold for Shopify?","acceptedAnswer":{"@type":"Answer","text":"Divide your average shipping cost + COGS by your target gross margin percentage. For most stores, the free shipping threshold should be set at 2–2.5x the average product cost to remain profitable after all fees."}},{"@type":"Question","name":"Does offering free shipping increase Shopify conversion rates?","acceptedAnswer":{"@type":"Answer","text":"Yes — studies consistently show free shipping increases conversion rates by 15–30%. The goal is not to remove free shipping but to set the threshold high enough that the margin gain from higher AOV offsets the shipping cost."}}]}</script>
-<!-- JSON-LD: BreadcrumbList -->
-<script is:inline type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Stack Architect","item":"https://www.stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://www.stackarchitect.xyz/tools"},{"@type":"ListItem","position":3,"name":"Shopify Shipping Margin Calculator","item":"https://www.stackarchitect.xyz/tools/shopify-shipping-margin-calculator"}]}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style is:inline>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --green:#00C896;--dark:#1a1a2e;--red:#e53e3e;--amber:#d97706;
-  --bg:#fff;--surface:#f8f9fa;--border:#e2e8f0;
-  --text:#1a202c;--muted:#64748b;--radius:8px;
-  --font:'Inter',system-ui,-apple-system,sans-serif;
-}
-html{font-size:16px;scroll-behavior:smooth}
-body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.6}
-a{color:var(--green);text-decoration:none}
-a:hover{text-decoration:underline}
-/* Header */
-.site-header{background:var(--dark);padding:14px 20px;display:flex;align-items:center}
-.brand{color:#fff;font-weight:700;font-size:1.05rem;letter-spacing:-.3px}
-.brand:hover{color:var(--green);text-decoration:none}
-/* Container */
-.container{max-width:680px;margin:0 auto;padding:0 20px}
-/* Breadcrumb */
-.breadcrumb{font-size:.8rem;color:var(--muted);padding:12px 0;border-bottom:1px solid var(--border);margin-bottom:28px}
-.breadcrumb a{color:var(--muted)}
-.breadcrumb span{margin:0 6px}
-/* Urgency tag */
-.urgency-tag{display:inline-block;background:#fef3cd;color:#92400e;font-size:.78rem;font-weight:600;padding:4px 10px;border-radius:20px;margin-bottom:16px;border:1px solid #fcd34d}
-/* Main layout */
-main{padding:32px 0 48px}
-article h1{font-size:1.75rem;font-weight:700;line-height:1.2;margin-bottom:12px;color:var(--dark)}
-.intro{color:var(--muted);font-size:.97rem;margin-bottom:28px;line-height:1.7}
-/* Card */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px}
-.card-title{font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:16px}
-/* Form */
-.field{margin-bottom:18px}
-.field label{display:block;font-size:.9rem;font-weight:500;margin-bottom:6px;color:var(--text)}
-.field input,.field select,.field textarea{
-  width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius);
-  font-family:var(--font);font-size:.95rem;background:#fff;color:var(--text);
-  transition:border-color .15s;
-}
-.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--green)}
-.field textarea{min-height:110px;resize:vertical}
-.multiselect-group{display:flex;flex-direction:column;gap:8px}
-.multiselect-group label{font-weight:400;display:flex;align-items:center;gap:8px;cursor:pointer}
-.multiselect-group input[type=checkbox]{width:16px;height:16px;accent-color:var(--green)}
-.btn-calc{
-  display:block;width:100%;padding:14px;background:var(--green);color:#fff;
-  border:none;border-radius:var(--radius);font-family:var(--font);font-size:1rem;
-  font-weight:600;cursor:pointer;transition:opacity .15s;margin-top:4px;
-}
-.btn-calc:hover{opacity:.9}
-/* Teaser / gate */
-#teaser{margin-bottom:20px}
-.teaser-card{background:var(--dark);color:#fff;border-radius:var(--radius);padding:24px;text-align:center}
-.teaser-number{font-size:2.5rem;font-weight:700;color:var(--green);margin-bottom:4px}
-.teaser-label{font-size:.9rem;opacity:.8;margin-bottom:20px}
-.gate-box{border-top:1px solid rgba(255,255,255,.15);padding-top:18px;margin-top:4px}
-.gate-box p{font-size:.88rem;opacity:.8;margin-bottom:12px}
-.gate-row{display:flex;gap:8px;flex-wrap:wrap}
-.gate-row input[type=email]{flex:1;min-width:200px;padding:10px 12px;border-radius:var(--radius);border:none;font-family:var(--font);font-size:.9rem}
-.btn-gate{padding:10px 18px;background:var(--green);color:#fff;border:none;border-radius:var(--radius);font-family:var(--font);font-weight:600;cursor:pointer;white-space:nowrap}
-.btn-gate:hover{opacity:.9}
-/* Results */
-#results{margin-bottom:24px}
-.result-row{display:flex;justify-content:space-between;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border);gap:12px}
-.result-row:last-child{border-bottom:none}
-.result-label{font-size:.88rem;color:var(--muted);flex:1}
-.result-label .sub{display:block;font-size:.78rem;margin-top:2px;color:var(--muted)}
-.result-value{font-size:.95rem;font-weight:600;text-align:right;flex-shrink:0;max-width:55%}
-.flag-good .result-value{color:#059669}
-.flag-warn .result-value{color:var(--amber)}
-.flag-bad .result-value{color:var(--red)}
-.flag-neutral .result-value{color:var(--text)}
-/* Upsell */
-.upsell{background:var(--green);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.upsell-text{color:#fff;font-weight:600;font-size:.95rem;flex:1}
-.upsell-btn{background:#fff;color:var(--green);padding:10px 18px;border-radius:var(--radius);font-weight:700;font-size:.88rem;white-space:nowrap;flex-shrink:0}
-.upsell-btn:hover{text-decoration:none;opacity:.9}
-/* FAQ */
-.faq-section{margin-bottom:32px}
-.faq-section h2{font-size:1.1rem;font-weight:700;margin-bottom:16px;color:var(--dark)}
-details{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;overflow:hidden}
-summary{padding:14px 16px;cursor:pointer;font-weight:500;font-size:.92rem;list-style:none;display:flex;justify-content:space-between;align-items:center}
-summary::-webkit-details-marker{display:none}
-summary::after{content:'+';font-size:1.1rem;color:var(--muted)}
-details[open] summary::after{content:'−'}
-details[open] summary{border-bottom:1px solid var(--border)}
-.faq-answer{padding:14px 16px;font-size:.9rem;color:var(--muted);line-height:1.7}
-/* Internal links */
-.related-tools{margin-bottom:32px;padding-top:24px;border-top:1px solid var(--border)}
-.related-tools h2{font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:12px}
-.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
-.related-link{display:block;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);font-size:.85rem;font-weight:500;color:var(--text);transition:border-color .15s}
-.related-link:hover{border-color:var(--green);text-decoration:none;color:var(--green)}
-/* Footer */
-footer{background:var(--surface);border-top:1px solid var(--border);padding:20px;text-align:center;font-size:.83rem;color:var(--muted)}
-footer a{color:var(--muted)}
-/* Utility */
-[hidden]{display:none!important}
-@media(max-width:480px){
-  article h1{font-size:1.4rem}
-  .teaser-number{font-size:2rem}
-  .upsell{flex-direction:column;align-items:flex-start}
-  .result-row{flex-direction:column;gap:4px}
-  .result-value{text-align:left;max-width:100%}
-}
+
+<Base
+  title="Shopify Shipping Margin Calculator — Free Shipping Profitability Tool | Stack Architect"
+  description="Calculate your true shipping margin per order. Understand the real cost of free shipping offers, flat-rate thresholds, and carrier rate changes on your overall store profitability."
+  canonical="https://www.stackarchitect.xyz/shopify-shipping-margin-calculator"
+  schema={schemas}
+  breadcrumb={breadcrumb}
+>
+  <Nav slot="header" />
+
+  <main class="flex-1">
+    <div id="reading-progress"></div>
+    
+<style>
+  .tool-hero{padding:48px 24px 32px;background:#000;border-bottom:1px solid #1f1f1f;}
+  .tool-hero-inner{max-width:860px;margin:0 auto;}
+  .tool-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;border:1px solid rgba(74,222,128,.3);color:#4ade80;background:rgba(74,222,128,.06);margin-bottom:18px;}
+  .tool-badge .dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:dp 2s infinite;}
+  @keyframes dp{0%,100%{opacity:1;}50%{opacity:.3;}}
+  .tool-hero h1{font-size:clamp(22px,4vw,38px);font-weight:900;color:#fff;letter-spacing:-.03em;line-height:1.05;margin-bottom:12px;}
+  .tool-hero h1 .green{color:#4ade80;}
+  .tool-hero-desc{font-size:14px;color:#a1a1aa;line-height:1.75;max-width:600px;margin-bottom:20px;}
+  .tool-trust{display:flex;flex-wrap:wrap;gap:16px;}
+  .tool-trust span{font-size:11px;color:#52525b;display:flex;align-items:center;gap:5px;}
+  .tool-trust span::before{content:'✓';color:#4ade80;font-weight:700;}
+
+  .calc-section{padding:40px 24px;background:#0a0a0a;border-bottom:1px solid #1f1f1f;}
+  .calc-inner{max-width:860px;margin:0 auto;}
+  .calc-card{border:1px solid #1f1f1f;background:#000;padding:32px;}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
+  @media(max-width:600px){.calc-grid{grid-template-columns:1fr;}}
+  .calc-field{display:flex;flex-direction:column;gap:6px;}
+  .calc-field label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#52525b;}
+  .calc-field input,.calc-field select{background:#0a0a0a;border:1px solid #1f1f1f;color:#fff;font-family:inherit;font-size:13px;padding:10px 14px;outline:none;transition:border-color .2s;width:100%;}
+  .calc-field input:focus,.calc-field select:focus{border-color:#4ade80;}
+  .calc-field input::placeholder{color:#3f3f46;}
+  .calc-btn{width:100%;background:#4ade80;color:#000;font-family:inherit;font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;padding:14px;border:none;cursor:pointer;transition:background .2s;margin-top:8px;}
+  .calc-btn:hover{background:#22c55e;}
+  .calc-result{display:none;margin-top:24px;border:1px solid #1f1f1f;background:#0a0a0a;padding:24px;}
+  .calc-result.show{display:block;}
+  .result-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#52525b;margin-bottom:6px;}
+  .result-value{font-size:36px;font-weight:900;color:#4ade80;line-height:1;letter-spacing:-.03em;}
+  .result-sub{font-size:12px;color:#52525b;margin-top:6px;line-height:1.6;}
+  .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin-bottom:20px;}
+  .result-cell{background:#000;border:1px solid #1f1f1f;padding:16px;}
+  .result-insight{font-size:12px;color:#a1a1aa;line-height:1.7;border-top:1px solid #1f1f1f;padding-top:16px;margin-top:16px;}
+  .result-insight strong{color:#fff;}
+  .result-cta{display:inline-block;margin-top:16px;font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#000;background:#4ade80;padding:10px 20px;text-decoration:none;transition:background .2s;}
+  .result-cta:hover{background:#22c55e;}
+  .result-warn{border-left:3px solid #4ade80;padding-left:16px;margin-top:16px;}
+
+  .aff-block{margin:24px 0;border:1px solid rgba(74,222,128,.2);background:rgba(74,222,128,.04);padding:20px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+  .aff-block-text{flex:1;}
+  .aff-block-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#52525b;margin-bottom:6px;}
+  .aff-block-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;}
+  .aff-block-desc{font-size:11px;color:#71717a;line-height:1.6;}
+  .aff-block-link{flex-shrink:0;display:inline-flex;align-items:center;font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#4ade80;border:1px solid rgba(74,222,128,.4);padding:8px 16px;text-decoration:none;transition:all .2s;white-space:nowrap;}
+  .aff-block-link:hover{background:#4ade80;color:#000;}
+  .aff-disclosure{font-size:9px;color:#3f3f46;margin-top:8px;}
+
+  .editorial{padding:48px 24px;background:#000;border-bottom:1px solid #1f1f1f;}
+  .editorial-inner{max-width:720px;margin:0 auto;}
+  .editorial h2{font-size:clamp(18px,3vw,26px);font-weight:900;color:#fff;letter-spacing:-.03em;margin:36px 0 12px;line-height:1.2;}
+  .editorial h2:first-child{margin-top:0;}
+  .editorial p{font-size:13px;color:#a1a1aa;line-height:1.85;margin-bottom:16px;}
+  .editorial strong{color:#e4e4e7;}
+  .editorial a{color:#4ade80;text-decoration:underline;}
+  .editorial ul{list-style:none;padding:0;margin:0 0 16px;}
+  .editorial ul li{font-size:13px;color:#a1a1aa;line-height:1.75;padding:6px 0 6px 20px;position:relative;border-bottom:1px solid #0a0a0a;}
+  .editorial ul li::before{content:'→';position:absolute;left:0;color:#4ade80;font-size:11px;}
+
+  .faq-section{padding:48px 24px;background:#0a0a0a;border-bottom:1px solid #1f1f1f;}
+  .faq-inner{max-width:720px;margin:0 auto;}
+  .faq-heading{font-size:clamp(18px,3vw,24px);font-weight:900;color:#fff;letter-spacing:-.03em;margin-bottom:28px;}
+  .faq-item{border:1px solid #1f1f1f;margin-bottom:8px;background:#000;}
+  .faq-item summary{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;cursor:pointer;list-style:none;font-size:12px;font-weight:700;color:#a1a1aa;letter-spacing:.02em;gap:16px;}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item[open] summary{color:#fff;border-bottom:1px solid #1f1f1f;}
+  .faq-item[open]{border-color:rgba(74,222,128,.3);}
+  .faq-arrow{flex-shrink:0;font-size:10px;color:#52525b;transition:transform .2s;}
+  .faq-item[open] .faq-arrow{transform:rotate(180deg);color:#4ade80;}
+  .faq-answer{padding:16px 20px;font-size:12px;color:#71717a;line-height:1.8;}
+  .faq-answer a{color:#4ade80;}
+
+  .cta-strip-tool{padding:40px 24px;background:#0a0a0a;border-top:1px solid #1f1f1f;text-align:center;}
+  .cta-strip-tool h2{font-size:clamp(16px,3vw,22px);font-weight:900;color:#fff;letter-spacing:-.03em;margin-bottom:8px;}
+  .cta-strip-tool p{font-size:12px;color:#52525b;margin-bottom:20px;}
+  .cta-strip-tool a{display:inline-block;background:#4ade80;color:#000;font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;padding:14px 28px;text-decoration:none;transition:background .2s;}
+  .cta-strip-tool a:hover{background:#22c55e;}
+  #reading-progress{position:fixed;top:0;left:0;width:0;height:2px;background:#4ade80;z-index:9999;transition:width .1s;}
 </style>
-</head>
-<body>
-<header class="site-header">
-  <a class="brand" href="https://www.stackarchitect.xyz">Stack Architect</a>
-</header>
 
-<div class="container">
-  <nav class="breadcrumb" aria-label="breadcrumb">
-    <a href="https://www.stackarchitect.xyz">Stack Architect</a>
-    <span aria-hidden="true">›</span>
-    <a href="https://www.stackarchitect.xyz/tools">Tools</a>
-    <span aria-hidden="true">›</span>
-    <span>Shopify Shipping Margin Calculator</span>
-  </nav>
 
-  <main>
-    <article>
-      
-      <h1>Shopify Shipping Margin Calculator</h1>
-      <p class="intro">Free shipping is the single biggest cause of invisible margin erosion for Shopify stores. This calculator finds your true break-even shipping threshold — so you're not giving profit away.</p>
-
-      <section class="card">
-        <p class="card-title">Enter your details</p>
-        <form id="calcForm" novalidate>
-          <div class="field"><label for="averageOrderValue">Average order value (£/$/€)</label><input type="number" id="averageOrderValue" name="averageOrderValue" placeholder="e.g. 45" min="0" required></div>
-<div class="field"><label for="averageShippingCost">Your average shipping cost per order (£)</label><input type="number" id="averageShippingCost" name="averageShippingCost" placeholder="e.g. 4.50" min="0" required></div>
-<div class="field"><label for="averageProductCost">Average product cost (COGS) per order (£)</label><input type="number" id="averageProductCost" name="averageProductCost" placeholder="e.g. 15" min="0" required></div>
-<div class="field"><label for="currentFreeShippingThreshold">Your current free shipping threshold (£)</label><input type="number" id="currentFreeShippingThreshold" name="currentFreeShippingThreshold" placeholder="e.g. 40" min="0"></div>
-<div class="field"><label for="shopifyPlan">Shopify plan (for fee calculation)</label><select id="shopifyPlan" name="shopifyPlan"><option value="">Select…</option><option value="Basic">Basic</option><option value="Shopify">Shopify</option><option value="Advanced">Advanced</option></select></div>
-          <button type="submit" class="btn-calc">Calculate →</button>
-        </form>
-      </section>
-
-      
-
-      <section id="results" hidden>
-        <div class="card">
-          <p class="card-title">Your results</p>
-          <div id="resultsContent"></div>
-        </div>
-      </section>
-
-      <aside class="upsell" id="upsellBlock" hidden>
-        <span class="upsell-text">Track your true shipping margins automatically — Shopify P&amp;L Auto →</span>
-        <a class="upsell-btn" href="https://www.stackarchitect.xyz/shopify-profit-loss-automation" target="_blank" rel="noopener">Get started →</a>
-      </aside>
-    </article>
-
-    <section class="faq-section">
-      <h2>Frequently asked questions</h2>
-      
-<details>
-  <summary>How do I calculate the right free shipping threshold for Shopify?</summary>
-  <div class="faq-answer">Divide your average shipping cost + COGS by your target gross margin percentage. For most stores, the free shipping threshold should be set at 2–2.5x the average product cost to remain profitable after all fees.</div>
-</details>
-<details>
-  <summary>Does offering free shipping increase Shopify conversion rates?</summary>
-  <div class="faq-answer">Yes — studies consistently show free shipping increases conversion rates by 15–30%. The goal is not to remove free shipping but to set the threshold high enough that the margin gain from higher AOV offsets the shipping cost.</div>
-</details>
-    </section>
-
-    <nav class="related-tools" aria-label="Related tools">
-      <h2>Other free Shopify tools</h2>
-      <div class="related-grid">
-        <a class="related-link" href="/tools/klaviyo-to-systeme-migration-savings-calculator">Klaviyo → Free Email Migration Savings Calculator</a><a class="related-link" href="/tools/shopify-plan-upgrade-break-even-calculator">Shopify Plan Upgrade Break-Even Calculator</a><a class="related-link" href="/tools/shopify-app-stack-kill-or-keep-auditor">Shopify App Stack — Kill or Keep Auditor</a>
+  <section class="tool-hero">
+    <div class="tool-hero-inner">
+      <div class="tool-badge"><span class="dot"></span>FREE TOOL // Shipping Profitability</div>
+      <h1>Shopify <span class="green">Shipping Margin Calculator</span></h1>
+      <p class="tool-hero-desc">Calculate your true shipping margin per order. Understand the real cost of free shipping offers, flat-rate thresholds, and carrier rate changes on your overall store profitability.</p>
+      <div class="tool-trust"><span>Free forever</span><span>No account required</span><span>Instant results</span></div>
+    </div>
+  </section>
+  <section class="calc-section"><div class="calc-inner"><div class="calc-card">
+    <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#52525b;margin-bottom:20px;">// SHIPPING_MARGIN_CALCULATOR</div>
+    <div class="calc-grid">
+      <div class="calc-field"><label>Average order value (AOV) £/$</label><input type="number" id="sh-aov" placeholder="e.g. 65" /></div>
+      <div class="calc-field"><label>Shipping charged to customer £/$</label><input type="number" id="sh-charged" placeholder="e.g. 4.99" /></div>
+      <div class="calc-field"><label>Actual carrier cost per order £/$</label><input type="number" id="sh-carrier" placeholder="e.g. 3.80" /></div>
+      <div class="calc-field"><label>Packaging cost per order £/$</label><input type="number" id="sh-packaging" placeholder="e.g. 1.20" /></div>
+      <div class="calc-field"><label>% of orders with free shipping</label><input type="number" id="sh-free-pct" placeholder="e.g. 40" /></div>
+      <div class="calc-field"><label>Free shipping threshold £/$</label><input type="number" id="sh-threshold" placeholder="e.g. 50" /></div>
+    </div>
+    <button class="calc-btn" onclick="calcShipping()">CALCULATE SHIPPING MARGIN →</button>
+    <div class="calc-result" id="sh-result">
+      <div class="result-grid">
+        <div class="result-cell"><div class="result-label">Blended Shipping P&L per Order</div><div class="result-value" id="sh-net">--</div><div class="result-sub">Avg across paid + free orders</div></div>
+        <div class="result-cell"><div class="result-label">Annual Shipping Cost (100 orders/mo)</div><div class="result-value" id="sh-annual" style="font-size:20px;">--</div><div class="result-sub">Scaled to 100 orders/month</div></div>
+        <div class="result-cell"><div class="result-label">Free Shipping Breakeven AOV</div><div class="result-value" id="sh-breakeven" style="font-size:22px;">--</div><div class="result-sub">AOV needed to absorb cost</div></div>
       </div>
-    </nav>
+      <div class="result-insight" id="sh-insight"></div>
+    </div>
+  </div></div></section>
+  <section class="editorial"><div class="editorial-inner"><h2>The True Cost of Free Shipping on Shopify</h2>
+  <p>Free shipping is one of the most powerful conversion tactics in ecommerce — studies consistently show it reduces cart abandonment by 15–30%. But it is also one of the most commonly miscalculated costs. When you offer free shipping on orders over £50 and your average carrier + packaging cost is £5.50, you are absorbing that cost entirely against order margin for every qualifying order.</p>
+  <p>At 40% of orders qualifying for free shipping and 60 orders per month, you are spending £132/month absorbing shipping costs. Over a year that is £1,584 in hidden shipping subsidy that many stores never explicitly calculate. The question is whether that conversion lift justifies the cost — and this calculator gives you the number to make that decision.</p>
+  <h2>Optimising Your Free Shipping Threshold</h2>
+  <p>The break-even threshold — the order value at which free shipping is absorbed by the gross margin on that order — is the most useful number for setting your free shipping cutoff. If your product gross margin is 35% and your shipping cost is £5, you need a minimum order value of approximately £14.30 just to cover shipping from margin. For the threshold to actually improve profitability, it needs to be set high enough that the incremental order value uplift more than covers the shipping cost.</p></div></section>
+  
+  <section class="faq-section" itemscope itemtype="https://schema.org/FAQPage">
+    <div class="faq-inner">
+      <h2 class="faq-heading">// COMMON_QUESTIONS</h2>
+      
+    <details class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <summary><span itemprop="name">How do I reduce Shopify shipping costs?</span><span class="faq-arrow">▼</span></summary>
+      <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text">The most effective tactics are: (1) negotiate volume discounts directly with carriers (DHL, UPS, Royal Mail) once you reach consistent monthly volumes; (2) use Shopify Shipping discounts available on all paid plans — typically 15–35% off carrier rates; (3) optimise package dimensions and weight to avoid dimensional weight charges; (4) consolidate multi-item orders into single shipments when possible.</p>
+      </div>
+    </details>
+    <details class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <summary><span itemprop="name">What is a good free shipping threshold for Shopify UK stores?</span><span class="faq-arrow">▼</span></summary>
+      <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text">For UK DTC brands, a free shipping threshold of 1.8–2.5x your AOV is a common starting point. If your AOV is £45, a £75–£85 threshold encourages order value uplift while keeping qualifying orders at a level where the shipping cost is meaningfully absorbed by margin. A/B test different thresholds using Shopify's discount system to find the optimal balance between conversion rate and margin impact.</p>
+      </div>
+    </details>
+    </div>
+  </section>
+  <section class="cta-strip-tool"><h2>Calculate Your Shipping Margin</h2><p>Free tool. No account. Instant results.</p><a href="/shopify-shipping-margin-calculator">Calculate Your Shipping Margin →</a></section>
   </main>
-</div>
 
-<footer>
-  <p>Free tool by <a href="https://www.stackarchitect.xyz">Stack Architect</a> &mdash; Free Shopify tools. No apps. No fluff.</p>
-</footer>
+  <Footer />
+</Base>
 
-<script is:inline>
-function fmt(n){ return Math.round(n).toLocaleString('en-GB'); }
-
-function calculate(inp) {
-  var aov = parseFloat(inp.averageOrderValue) || 0;
-  var shipCost = parseFloat(inp.averageShippingCost) || 0;
-  var cogs = parseFloat(inp.averageProductCost) || 0;
-  var threshold = parseFloat(inp.currentFreeShippingThreshold) || 0;
-  var txnRate = 0.005;
-  var grossProfit = aov - cogs - shipCost - aov * txnRate;
-  var currentMargin = aov > 0 ? grossProfit / aov * 100 : 0;
-  var breakEven = (cogs + shipCost) / (1 - txnRate);
-  var recommended = cogs + shipCost * 2.5;
-  var rows = [
-    { label: 'Current gross margin per order', value: currentMargin.toFixed(1) + '%', flag: currentMargin >= 30 ? 'good' : currentMargin >= 15 ? 'warn' : 'bad' },
-    { label: 'Break-even free shipping threshold', value: '£' + fmt(breakEven), flag: 'neutral' },
-    { label: 'Recommended free shipping threshold', value: '£' + fmt(recommended), flag: 'good' }
-  ];
-  if (threshold > 0) {
-    var profitAtThreshold = threshold - cogs - shipCost - threshold * txnRate;
-    rows.push({ label: 'Profit per order at your threshold', value: profitAtThreshold >= 0 ? '£' + fmt(profitAtThreshold) : '-£' + fmt(Math.abs(profitAtThreshold)), flag: profitAtThreshold > 0 ? 'good' : 'bad' });
-    if (profitAtThreshold < 0) rows.push({ label: 'Annual loss from current threshold', value: '-£' + fmt(Math.abs(profitAtThreshold * 12 * 30)), flag: 'bad', sub: 'Estimated at 30 orders/month' });
-  }
-  return {
-    teaser: { label: 'Recommended free shipping threshold', value: '£' + fmt(recommended), flag: 'good' },
-    rows: rows
-  };
-}
-
-var IS_GATED = false;
-var form = document.getElementById('calcForm');
-var resultsSection = document.getElementById('results');
-var resultsContent = document.getElementById('resultsContent');
-var teaserSection = document.getElementById('teaser');
-var teaserValue = document.getElementById('teaserValue');
-var teaserLabel = document.getElementById('teaserLabel');
-var emailGate = document.getElementById('emailGate');
-var gateBtn = document.getElementById('gateBtn');
-var upsellBlock = document.getElementById('upsellBlock');
-var lastResult = null;
-
-function getInputs() {
-  var inp = {};
-  var fd = new FormData(form);
-  fd.forEach(function(v, k) {
-    if (inp[k]) {
-      inp[k] = Array.isArray(inp[k]) ? inp[k].concat(v) : [inp[k], v];
-    } else {
-      inp[k] = v;
-    }
-  });
-  // Also grab textareas by id since FormData may not pick up all
-  form.querySelectorAll('textarea').forEach(function(el){
-    if (!inp[el.id]) inp[el.id] = el.value;
-  });
-  return inp;
-}
-
-function renderRows(rows) {
-  return rows.map(function(r) {
-    var sub = r.sub ? '<span class="sub">' + r.sub + '</span>' : '';
-    return '<div class="result-row flag-' + (r.flag||'neutral') + '">' +
-      '<span class="result-label">' + r.label + sub + '</span>' +
-      '<span class="result-value">' + r.value + '</span>' +
-    '</div>';
-  }).join('');
-}
-
-function showFullResults(rows) {
-  resultsContent.innerHTML = renderRows(rows);
-  resultsSection.hidden = false;
-  upsellBlock.hidden = false;
-  resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-form.addEventListener('submit', function(e) {
-  e.preventDefault();
-  var inp = getInputs();
-  var result;
-  try { result = calculate(inp); } catch(err) { alert('Calculation error: ' + err.message); return; }
-  lastResult = result;
-
-  if (!IS_GATED) {
-    showFullResults(result.rows);
-    return;
+<script>
+  // Reading progress bar
+  const bar = document.getElementById('reading-progress');
+  if (bar) {
+    window.addEventListener('scroll', () => {
+      const pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      bar.style.width = Math.min(pct, 100) + '%';
+    }, { passive: true });
   }
 
-  // Show teaser
-  teaserValue.textContent = result.teaser.value;
-  teaserLabel.textContent = result.teaser.label;
-  teaserSection.hidden = false;
-
-  // Check if already gated
-  var storedEmail = localStorage.getItem('sa_email');
-  if (storedEmail) {
-    emailGate.hidden = true;
-    showFullResults(result.rows);
-  } else {
-    emailGate.hidden = false;
+function calcShipping() {
+    const aov = parseFloat(document.getElementById('sh-aov').value) || 0;
+    const charged = parseFloat(document.getElementById('sh-charged').value) || 0;
+    const carrier = parseFloat(document.getElementById('sh-carrier').value) || 0;
+    const packaging = parseFloat(document.getElementById('sh-packaging').value) || 0;
+    const freePct = (parseFloat(document.getElementById('sh-free-pct').value) || 0) / 100;
+    const threshold = parseFloat(document.getElementById('sh-threshold').value) || 0;
+    if (!aov || !carrier) return;
+    const totalCost = carrier + packaging;
+    const paidNet = charged - totalCost;
+    const freeNet = 0 - totalCost;
+    const blended = (paidNet * (1 - freePct)) + (freeNet * freePct);
+    const annualAt100 = blended * 100 * 12;
+    const cogsPct = aov > 0 ? 0.35 : 0.35;
+    const grossMargin = aov * (1 - cogsPct);
+    const breakeven = totalCost > 0 ? (totalCost / (1 - cogsPct)).toFixed(0) : '--';
+    document.getElementById('sh-net').textContent = (blended >= 0 ? '+' : '') + '£' + blended.toFixed(2) + '/order';
+    document.getElementById('sh-net').style.color = blended >= 0 ? '#4ade80' : '#f87171';
+    document.getElementById('sh-annual').textContent = (annualAt100 >= 0 ? '+' : '-') + '£' + Math.abs(Math.round(annualAt100)).toLocaleString();
+    document.getElementById('sh-annual').style.color = annualAt100 >= 0 ? '#4ade80' : '#f87171';
+    document.getElementById('sh-breakeven').textContent = '£' + breakeven;
+    let insight = '';
+    if (blended < -2) insight = '<strong>Shipping is a significant profit drain.</strong> At £' + Math.abs(blended.toFixed(2)) + ' net cost per order, consider: raising free shipping threshold to £' + Math.round(threshold * 1.2) + ', negotiating carrier rates, or absorbing packaging into product COGS calculation. ';
+    else if (blended < 0) insight = 'Small net cost on shipping — typical for stores with high free shipping rates. ';
+    else insight = 'Shipping is profitable or neutral. Monitor carrier rate changes quarterly. ';
+    document.getElementById('sh-insight').innerHTML = insight;
+    document.getElementById('sh-result').classList.add('show');
   }
-  teaserSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-});
-
-if (gateBtn) {
-  gateBtn.addEventListener('click', function() {
-    var emailInput = document.getElementById('emailInput');
-    var email = emailInput ? emailInput.value.trim() : '';
-    if (!email || !email.includes('@')) { emailInput.focus(); return; }
-    localStorage.setItem('sa_email', email);
-    emailGate.hidden = true;
-    if (lastResult) showFullResults(lastResult.rows);
-  });
-}
 </script>
-</body>
-</html>

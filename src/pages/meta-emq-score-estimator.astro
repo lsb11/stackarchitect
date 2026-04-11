@@ -1,342 +1,362 @@
 ---
-// meta-emq-score-estimator.astro — migrated from tools.stackarchitect.xyz
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const schemas = [{"@context":"https://schema.org","@type":"WebApplication","name":"Meta EMQ Score Estimator","url":"https://www.stackarchitect.xyz/meta-emq-score-estimator","description":"Estimate your TikTok Event Match Quality (EMQ) score instantly. Understand which customer data signals are raising or lowering your EMQ and how to fix low scores with server-side tracking.","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"GBP"},"provider":{"@type":"Organization","name":"Stack Architect","url":"https://www.stackarchitect.xyz"}},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a good TikTok EMQ score?","acceptedAnswer":{"@type":"Answer","text":"TikTok rates EMQ from 0–10. A score of 7.0 or above is considered strong. Scores of 4–6 indicate moderate match quality with room for improvement. Below 4 means you are likely losing significant attribution and your TikTok ad performance data is unreliable."}},{"@type":"Question","name":"What fields improve EMQ score the most?","acceptedAnswer":{"@type":"Answer","text":"Email address and phone number are the highest-impact fields, each contributing significantly to match quality. External ID (your Shopify customer ID) and Click ID (ttclid) also add material lift. Hashing these server-side via the TikTok Events API gives you the highest possible EMQ."}},{"@type":"Question","name":"How do I fix a low TikTok EMQ score for Shopify?","acceptedAnswer":{"@type":"Answer","text":"The fastest fix is implementing server-side tracking via the TikTok Events API using Make.com. This sends CompletePayment events with hashed customer data (email, phone, external_id) directly from your server, bypassing iOS restrictions and ad blockers. Full setup guide at stackarchitect.xyz/tiktok-events-api-shopify."}},{"@type":"Question","name":"Does a higher EMQ score improve my TikTok ROAS?","acceptedAnswer":{"@type":"Answer","text":"Yes. Higher EMQ means more of your conversions are matched back to TikTok ad clicks. This improves your reported ROAS, gives TikTok's algorithm better signals to optimise bidding, and allows Smart Performance Campaigns to work more effectively. Stores that move from EMQ 4 to 7+ typically see 20–40% more attributed conversions."}},{"@type":"Question","name":"Is the TikTok Events API free to use?","acceptedAnswer":{"@type":"Answer","text":"Yes. TikTok's Events API has no direct cost. You need a way to send server-side events — Make.com's free tier (1,000 operations/month) is sufficient for most Shopify stores under 500 orders/month. There is no TikTok charge for using the API."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://www.stackarchitect.xyz/tools"},{"@type":"ListItem","position":3,"name":"Meta EMQ Score Estimator","item":"https://www.stackarchitect.xyz/meta-emq-score-estimator"}]}];
+
+const breadcrumb = [
+  { label: 'Home', href: '/' },
+  { label: 'Tools', href: '/tools' },
+  { label: 'Meta EMQ Score Estimator — Free TikTok Event Match Quality Calculator' },
+];
 ---
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Free Meta EMQ Score Estimator for Shopify — Check Your Event Match Quality</title>
-<meta name="description" content="Estimate your Meta Conversions API Event Match Quality (EMQ) score before you build. See how much ad spend you're wasting with a low EMQ and what fixing it recovers.">
-<meta name="robots" content="index, follow">
-<meta name="keywords" content="Meta EMQ score, Event Match Quality Shopify, Meta CAPI score estimator">
-<link rel="canonical" href="https://www.stackarchitect.xyz/tools/meta-emq-score-estimator">
-<!-- Open Graph -->
-<meta property="og:title" content="Free Meta EMQ Score Estimator for Shopify — Check Your Event Match Quality">
-<meta property="og:description" content="Estimate your Meta Conversions API Event Match Quality (EMQ) score before you build. See how much ad spend you're wasting with a low EMQ and what fixing it recovers.">
-<meta property="og:url" content="https://www.stackarchitect.xyz/tools/meta-emq-score-estimator">
-<meta property="og:type" content="website">
-<!-- JSON-LD: SoftwareApplication -->
-<script is:inline type="application/ld+json">{"@context":"https://schema.org","url":"https://www.stackarchitect.xyz/tools/meta-emq-score-estimator","@type":"SoftwareApplication","applicationCategory":"BusinessApplication","operatingSystem":"Web","name":"Meta EMQ Score Estimator","description":"Estimate your Meta Conversions API Event Match Quality score and calculate wasted ad spend from poor tracking.","offers":{"@type":"Offer","price":"0","priceCurrency":"GBP"},"featureList":["EMQ score estimation","Wasted ad spend calculator","Recovery revenue forecast"],"keywords":"Meta EMQ score, Event Match Quality Shopify, Meta CAPI score estimator"}</script>
-<!-- JSON-LD: FAQPage -->
-<script is:inline type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a good EMQ score for Meta?","acceptedAnswer":{"@type":"Answer","text":"A score of 6.0 is the bare minimum for Advantage+ Shopping Campaigns to function effectively. 7.0–8.0 is considered good. 8.0+ is excellent and required for maximum algorithmic performance."}},{"@type":"Question","name":"Why does Shopify's native CAPI give a low EMQ?","acceptedAnswer":{"@type":"Answer","text":"Shopify's built-in CAPI is still browser-triggered — the thank-you page pixel must fire before the server event sends. If iOS or an ad blocker blocks that page, the server event never fires at all."}},{"@type":"Question","name":"How much ad spend is wasted with a low EMQ?","acceptedAnswer":{"@type":"Answer","text":"Studies suggest 25–40% of Meta ad spend is wasted through poor signal quality, as Meta's algorithm optimises against incomplete conversion data."}}]}</script>
-<!-- JSON-LD: BreadcrumbList -->
-<script is:inline type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Stack Architect","item":"https://www.stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://www.stackarchitect.xyz/tools"},{"@type":"ListItem","position":3,"name":"Meta EMQ Score Estimator","item":"https://www.stackarchitect.xyz/tools/meta-emq-score-estimator"}]}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style is:inline>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --green:#00C896;--dark:#1a1a2e;--red:#e53e3e;--amber:#d97706;
-  --bg:#fff;--surface:#f8f9fa;--border:#e2e8f0;
-  --text:#1a202c;--muted:#64748b;--radius:8px;
-  --font:'Inter',system-ui,-apple-system,sans-serif;
-}
-html{font-size:16px;scroll-behavior:smooth}
-body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.6}
-a{color:var(--green);text-decoration:none}
-a:hover{text-decoration:underline}
-/* Header */
-.site-header{background:var(--dark);padding:14px 20px;display:flex;align-items:center}
-.brand{color:#fff;font-weight:700;font-size:1.05rem;letter-spacing:-.3px}
-.brand:hover{color:var(--green);text-decoration:none}
-/* Container */
-.container{max-width:680px;margin:0 auto;padding:0 20px}
-/* Breadcrumb */
-.breadcrumb{font-size:.8rem;color:var(--muted);padding:12px 0;border-bottom:1px solid var(--border);margin-bottom:28px}
-.breadcrumb a{color:var(--muted)}
-.breadcrumb span{margin:0 6px}
-/* Urgency tag */
-.urgency-tag{display:inline-block;background:#fef3cd;color:#92400e;font-size:.78rem;font-weight:600;padding:4px 10px;border-radius:20px;margin-bottom:16px;border:1px solid #fcd34d}
-/* Main layout */
-main{padding:32px 0 48px}
-article h1{font-size:1.75rem;font-weight:700;line-height:1.2;margin-bottom:12px;color:var(--dark)}
-.intro{color:var(--muted);font-size:.97rem;margin-bottom:28px;line-height:1.7}
-/* Card */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px}
-.card-title{font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:16px}
-/* Form */
-.field{margin-bottom:18px}
-.field label{display:block;font-size:.9rem;font-weight:500;margin-bottom:6px;color:var(--text)}
-.field input,.field select,.field textarea{
-  width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius);
-  font-family:var(--font);font-size:.95rem;background:#fff;color:var(--text);
-  transition:border-color .15s;
-}
-.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--green)}
-.field textarea{min-height:110px;resize:vertical}
-.multiselect-group{display:flex;flex-direction:column;gap:8px}
-.multiselect-group label{font-weight:400;display:flex;align-items:center;gap:8px;cursor:pointer}
-.multiselect-group input[type=checkbox]{width:16px;height:16px;accent-color:var(--green)}
-.btn-calc{
-  display:block;width:100%;padding:14px;background:var(--green);color:#fff;
-  border:none;border-radius:var(--radius);font-family:var(--font);font-size:1rem;
-  font-weight:600;cursor:pointer;transition:opacity .15s;margin-top:4px;
-}
-.btn-calc:hover{opacity:.9}
-/* Teaser / gate */
-#teaser{margin-bottom:20px}
-.teaser-card{background:var(--dark);color:#fff;border-radius:var(--radius);padding:24px;text-align:center}
-.teaser-number{font-size:2.5rem;font-weight:700;color:var(--green);margin-bottom:4px}
-.teaser-label{font-size:.9rem;opacity:.8;margin-bottom:20px}
-.gate-box{border-top:1px solid rgba(255,255,255,.15);padding-top:18px;margin-top:4px}
-.gate-box p{font-size:.88rem;opacity:.8;margin-bottom:12px}
-.gate-row{display:flex;gap:8px;flex-wrap:wrap}
-.gate-row input[type=email]{flex:1;min-width:200px;padding:10px 12px;border-radius:var(--radius);border:none;font-family:var(--font);font-size:.9rem}
-.btn-gate{padding:10px 18px;background:var(--green);color:#fff;border:none;border-radius:var(--radius);font-family:var(--font);font-weight:600;cursor:pointer;white-space:nowrap}
-.btn-gate:hover{opacity:.9}
-/* Results */
-#results{margin-bottom:24px}
-.result-row{display:flex;justify-content:space-between;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border);gap:12px}
-.result-row:last-child{border-bottom:none}
-.result-label{font-size:.88rem;color:var(--muted);flex:1}
-.result-label .sub{display:block;font-size:.78rem;margin-top:2px;color:var(--muted)}
-.result-value{font-size:.95rem;font-weight:600;text-align:right;flex-shrink:0;max-width:55%}
-.flag-good .result-value{color:#059669}
-.flag-warn .result-value{color:var(--amber)}
-.flag-bad .result-value{color:var(--red)}
-.flag-neutral .result-value{color:var(--text)}
-/* Upsell */
-.upsell{background:var(--green);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.upsell-text{color:#fff;font-weight:600;font-size:.95rem;flex:1}
-.upsell-btn{background:#fff;color:var(--green);padding:10px 18px;border-radius:var(--radius);font-weight:700;font-size:.88rem;white-space:nowrap;flex-shrink:0}
-.upsell-btn:hover{text-decoration:none;opacity:.9}
-/* FAQ */
-.faq-section{margin-bottom:32px}
-.faq-section h2{font-size:1.1rem;font-weight:700;margin-bottom:16px;color:var(--dark)}
-details{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;overflow:hidden}
-summary{padding:14px 16px;cursor:pointer;font-weight:500;font-size:.92rem;list-style:none;display:flex;justify-content:space-between;align-items:center}
-summary::-webkit-details-marker{display:none}
-summary::after{content:'+';font-size:1.1rem;color:var(--muted)}
-details[open] summary::after{content:'−'}
-details[open] summary{border-bottom:1px solid var(--border)}
-.faq-answer{padding:14px 16px;font-size:.9rem;color:var(--muted);line-height:1.7}
-/* Internal links */
-.related-tools{margin-bottom:32px;padding-top:24px;border-top:1px solid var(--border)}
-.related-tools h2{font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:12px}
-.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
-.related-link{display:block;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);font-size:.85rem;font-weight:500;color:var(--text);transition:border-color .15s}
-.related-link:hover{border-color:var(--green);text-decoration:none;color:var(--green)}
-/* Footer */
-footer{background:var(--surface);border-top:1px solid var(--border);padding:20px;text-align:center;font-size:.83rem;color:var(--muted)}
-footer a{color:var(--muted)}
-/* Utility */
-[hidden]{display:none!important}
-@media(max-width:480px){
-  article h1{font-size:1.4rem}
-  .teaser-number{font-size:2rem}
-  .upsell{flex-direction:column;align-items:flex-start}
-  .result-row{flex-direction:column;gap:4px}
-  .result-value{text-align:left;max-width:100%}
-}
+
+<Base
+  title="Meta EMQ Score Estimator — Free TikTok Event Match Quality Calculator | Stack Architect"
+  description="Estimate your TikTok Event Match Quality (EMQ) score instantly. Understand which customer data signals are raising or lowering your EMQ and how to fix low scores with server-side tracking."
+  canonical="https://www.stackarchitect.xyz/meta-emq-score-estimator"
+  schema={schemas}
+  breadcrumb={breadcrumb}
+>
+  <Nav slot="header" />
+
+  <main class="flex-1">
+    <div id="reading-progress"></div>
+    
+<style>
+  .tool-hero{padding:48px 24px 32px;background:#000;border-bottom:1px solid #1f1f1f;}
+  .tool-hero-inner{max-width:860px;margin:0 auto;}
+  .tool-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;border:1px solid rgba(74,222,128,.3);color:#4ade80;background:rgba(74,222,128,.06);margin-bottom:18px;}
+  .tool-badge .dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:dp 2s infinite;}
+  @keyframes dp{0%,100%{opacity:1;}50%{opacity:.3;}}
+  .tool-hero h1{font-size:clamp(22px,4vw,38px);font-weight:900;color:#fff;letter-spacing:-.03em;line-height:1.05;margin-bottom:12px;}
+  .tool-hero h1 .green{color:#4ade80;}
+  .tool-hero-desc{font-size:14px;color:#a1a1aa;line-height:1.75;max-width:600px;margin-bottom:20px;}
+  .tool-trust{display:flex;flex-wrap:wrap;gap:16px;}
+  .tool-trust span{font-size:11px;color:#52525b;display:flex;align-items:center;gap:5px;}
+  .tool-trust span::before{content:'✓';color:#4ade80;font-weight:700;}
+
+  .calc-section{padding:40px 24px;background:#0a0a0a;border-bottom:1px solid #1f1f1f;}
+  .calc-inner{max-width:860px;margin:0 auto;}
+  .calc-card{border:1px solid #1f1f1f;background:#000;padding:32px;}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
+  @media(max-width:600px){.calc-grid{grid-template-columns:1fr;}}
+  .calc-field{display:flex;flex-direction:column;gap:6px;}
+  .calc-field label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#52525b;}
+  .calc-field input,.calc-field select{background:#0a0a0a;border:1px solid #1f1f1f;color:#fff;font-family:inherit;font-size:13px;padding:10px 14px;outline:none;transition:border-color .2s;width:100%;}
+  .calc-field input:focus,.calc-field select:focus{border-color:#4ade80;}
+  .calc-field input::placeholder{color:#3f3f46;}
+  .calc-btn{width:100%;background:#4ade80;color:#000;font-family:inherit;font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;padding:14px;border:none;cursor:pointer;transition:background .2s;margin-top:8px;}
+  .calc-btn:hover{background:#22c55e;}
+  .calc-result{display:none;margin-top:24px;border:1px solid #1f1f1f;background:#0a0a0a;padding:24px;}
+  .calc-result.show{display:block;}
+  .result-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#52525b;margin-bottom:6px;}
+  .result-value{font-size:36px;font-weight:900;color:#4ade80;line-height:1;letter-spacing:-.03em;}
+  .result-sub{font-size:12px;color:#52525b;margin-top:6px;line-height:1.6;}
+  .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin-bottom:20px;}
+  .result-cell{background:#000;border:1px solid #1f1f1f;padding:16px;}
+  .result-insight{font-size:12px;color:#a1a1aa;line-height:1.7;border-top:1px solid #1f1f1f;padding-top:16px;margin-top:16px;}
+  .result-insight strong{color:#fff;}
+  .result-cta{display:inline-block;margin-top:16px;font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#000;background:#4ade80;padding:10px 20px;text-decoration:none;transition:background .2s;}
+  .result-cta:hover{background:#22c55e;}
+  .result-warn{border-left:3px solid #4ade80;padding-left:16px;margin-top:16px;}
+
+  .aff-block{margin:24px 0;border:1px solid rgba(74,222,128,.2);background:rgba(74,222,128,.04);padding:20px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+  .aff-block-text{flex:1;}
+  .aff-block-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#52525b;margin-bottom:6px;}
+  .aff-block-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;}
+  .aff-block-desc{font-size:11px;color:#71717a;line-height:1.6;}
+  .aff-block-link{flex-shrink:0;display:inline-flex;align-items:center;font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#4ade80;border:1px solid rgba(74,222,128,.4);padding:8px 16px;text-decoration:none;transition:all .2s;white-space:nowrap;}
+  .aff-block-link:hover{background:#4ade80;color:#000;}
+  .aff-disclosure{font-size:9px;color:#3f3f46;margin-top:8px;}
+
+  .editorial{padding:48px 24px;background:#000;border-bottom:1px solid #1f1f1f;}
+  .editorial-inner{max-width:720px;margin:0 auto;}
+  .editorial h2{font-size:clamp(18px,3vw,26px);font-weight:900;color:#fff;letter-spacing:-.03em;margin:36px 0 12px;line-height:1.2;}
+  .editorial h2:first-child{margin-top:0;}
+  .editorial p{font-size:13px;color:#a1a1aa;line-height:1.85;margin-bottom:16px;}
+  .editorial strong{color:#e4e4e7;}
+  .editorial a{color:#4ade80;text-decoration:underline;}
+  .editorial ul{list-style:none;padding:0;margin:0 0 16px;}
+  .editorial ul li{font-size:13px;color:#a1a1aa;line-height:1.75;padding:6px 0 6px 20px;position:relative;border-bottom:1px solid #0a0a0a;}
+  .editorial ul li::before{content:'→';position:absolute;left:0;color:#4ade80;font-size:11px;}
+
+  .faq-section{padding:48px 24px;background:#0a0a0a;border-bottom:1px solid #1f1f1f;}
+  .faq-inner{max-width:720px;margin:0 auto;}
+  .faq-heading{font-size:clamp(18px,3vw,24px);font-weight:900;color:#fff;letter-spacing:-.03em;margin-bottom:28px;}
+  .faq-item{border:1px solid #1f1f1f;margin-bottom:8px;background:#000;}
+  .faq-item summary{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;cursor:pointer;list-style:none;font-size:12px;font-weight:700;color:#a1a1aa;letter-spacing:.02em;gap:16px;}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item[open] summary{color:#fff;border-bottom:1px solid #1f1f1f;}
+  .faq-item[open]{border-color:rgba(74,222,128,.3);}
+  .faq-arrow{flex-shrink:0;font-size:10px;color:#52525b;transition:transform .2s;}
+  .faq-item[open] .faq-arrow{transform:rotate(180deg);color:#4ade80;}
+  .faq-answer{padding:16px 20px;font-size:12px;color:#71717a;line-height:1.8;}
+  .faq-answer a{color:#4ade80;}
+
+  .cta-strip-tool{padding:40px 24px;background:#0a0a0a;border-top:1px solid #1f1f1f;text-align:center;}
+  .cta-strip-tool h2{font-size:clamp(16px,3vw,22px);font-weight:900;color:#fff;letter-spacing:-.03em;margin-bottom:8px;}
+  .cta-strip-tool p{font-size:12px;color:#52525b;margin-bottom:20px;}
+  .cta-strip-tool a{display:inline-block;background:#4ade80;color:#000;font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;padding:14px 28px;text-decoration:none;transition:background .2s;}
+  .cta-strip-tool a:hover{background:#22c55e;}
+  #reading-progress{position:fixed;top:0;left:0;width:0;height:2px;background:#4ade80;z-index:9999;transition:width .1s;}
 </style>
-</head>
-<body>
-<header class="site-header">
-  <a class="brand" href="https://www.stackarchitect.xyz">Stack Architect</a>
-</header>
 
-<div class="container">
-  <nav class="breadcrumb" aria-label="breadcrumb">
-    <a href="https://www.stackarchitect.xyz">Stack Architect</a>
-    <span aria-hidden="true">›</span>
-    <a href="https://www.stackarchitect.xyz/tools">Tools</a>
-    <span aria-hidden="true">›</span>
-    <span>Meta EMQ Score Estimator</span>
-  </nav>
 
-  <main>
-    <article>
-      
-      <h1>Meta EMQ Score Estimator</h1>
-      <p class="intro">A low EMQ score means Meta is optimising your campaigns on bad data. Enter your current setup and see your estimated score — and exactly how much recoverable revenue you're leaving on the table.</p>
-
-      <section class="card">
-        <p class="card-title">Enter your details</p>
-        <form id="calcForm" novalidate>
-          <div class="field"><label for="adSpend">Monthly Meta ad spend (£/$/€)</label><input type="number" id="adSpend" name="adSpend" placeholder="e.g. 3000" min="0" required></div>
-<div class="field"><label for="capiStatus">Current CAPI setup</label><select id="capiStatus" name="capiStatus" required><option value="">Select…</option><option value="No CAPI — pixel only">No CAPI — pixel only</option><option value="Shopify native CAPI (browser-triggered)">Shopify native CAPI (browser-triggered)</option><option value="True server-side CAPI (e.g. CAPI Shield)">True server-side CAPI (e.g. CAPI Shield)</option><option value="Not sure">Not sure</option></select></div>
-<div class="field"><label for="pixelEvents">How many purchase events fire per 100 actual orders?</label><select id="pixelEvents" name="pixelEvents" required><option value="">Select…</option><option value="Fewer than 50">Fewer than 50</option><option value="50–70">50–70</option><option value="70–85">70–85</option><option value="85–95">85–95</option><option value="95–100">95–100</option></select></div>
-<div class="field"><label for="iosTraffic">Estimated iOS traffic share</label><select id="iosTraffic" name="iosTraffic"><option value="">Select…</option><option value="Under 30%">Under 30%</option><option value="30–50%">30–50%</option><option value="Over 50%">Over 50%</option></select></div>
-          <button type="submit" class="btn-calc">Calculate →</button>
-        </form>
-      </section>
-
-      
-<section id="teaser" hidden>
-  <div class="teaser-card">
-    <div class="teaser-number" id="teaserValue"></div>
-    <div class="teaser-label" id="teaserLabel"></div>
-    <div class="gate-box" id="emailGate">
-      <p>Enter your email to unlock the full breakdown</p>
-      <div class="gate-row">
-        <input type="email" id="emailInput" placeholder="you@example.com" autocomplete="email">
-        <button class="btn-gate" id="gateBtn">Get your full EMQ breakdown</button>
+  <section class="tool-hero">
+    <div class="tool-hero-inner">
+      <div class="tool-badge"><span class="dot"></span>FREE TOOL // TikTok Attribution</div>
+      <h1>Meta <span class="green">EMQ Score</span> Estimator</h1>
+      <p class="tool-hero-desc">Estimate your TikTok Event Match Quality score and discover exactly which data signals are costing you attributed conversions. Fix low EMQ with server-side tracking — free, no code required.</p>
+      <div class="tool-trust">
+        <span>Free forever</span>
+        <span>No account required</span>
+        <span>Results in 10 seconds</span>
+        <span>Based on TikTok EMQ methodology</span>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-      <section id="results" hidden>
-        <div class="card">
-          <p class="card-title">Your results</p>
-          <div id="resultsContent"></div>
+  <section class="calc-section">
+    <div class="calc-inner">
+      <div class="calc-card">
+        <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#52525b;margin-bottom:20px;">// EMQ_SCORE_CALCULATOR</div>
+
+        <div style="margin-bottom:20px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#52525b;margin-bottom:12px;">Which customer data signals are you currently sending?</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;" id="emq-signals">
+            
+            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border:1px solid #1f1f1f;padding:12px;background:#0a0a0a;transition:border-color .2s;" class="signal-label" for="sig-email">
+              <input type="checkbox" id="sig-email" data-signal="email" style="margin-top:2px;accent-color:#4ade80;cursor:pointer;" />
+              <div>
+                <div style="font-size:11px;font-weight:700;color:#e4e4e7;">Email address (hashed)</div>
+                <div style="font-size:10px;color:#52525b;margin-top:2px;">High impact</div>
+              </div>
+            </label>
+            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border:1px solid #1f1f1f;padding:12px;background:#0a0a0a;transition:border-color .2s;" class="signal-label" for="sig-phone">
+              <input type="checkbox" id="sig-phone" data-signal="phone" style="margin-top:2px;accent-color:#4ade80;cursor:pointer;" />
+              <div>
+                <div style="font-size:11px;font-weight:700;color:#e4e4e7;">Phone number (hashed)</div>
+                <div style="font-size:10px;color:#52525b;margin-top:2px;">High impact</div>
+              </div>
+            </label>
+            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border:1px solid #1f1f1f;padding:12px;background:#0a0a0a;transition:border-color .2s;" class="signal-label" for="sig-external_id">
+              <input type="checkbox" id="sig-external_id" data-signal="external_id" style="margin-top:2px;accent-color:#4ade80;cursor:pointer;" />
+              <div>
+                <div style="font-size:11px;font-weight:700;color:#e4e4e7;">External ID / Customer ID</div>
+                <div style="font-size:10px;color:#52525b;margin-top:2px;">Medium impact</div>
+              </div>
+            </label>
+            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border:1px solid #1f1f1f;padding:12px;background:#0a0a0a;transition:border-color .2s;" class="signal-label" for="sig-click_id">
+              <input type="checkbox" id="sig-click_id" data-signal="click_id" style="margin-top:2px;accent-color:#4ade80;cursor:pointer;" />
+              <div>
+                <div style="font-size:11px;font-weight:700;color:#e4e4e7;">TikTok Click ID (ttclid)</div>
+                <div style="font-size:10px;color:#52525b;margin-top:2px;">Medium impact</div>
+              </div>
+            </label>
+            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border:1px solid #1f1f1f;padding:12px;background:#0a0a0a;transition:border-color .2s;" class="signal-label" for="sig-ip">
+              <input type="checkbox" id="sig-ip" data-signal="ip" style="margin-top:2px;accent-color:#4ade80;cursor:pointer;" />
+              <div>
+                <div style="font-size:11px;font-weight:700;color:#e4e4e7;">IP address</div>
+                <div style="font-size:10px;color:#52525b;margin-top:2px;">Low impact</div>
+              </div>
+            </label>
+            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border:1px solid #1f1f1f;padding:12px;background:#0a0a0a;transition:border-color .2s;" class="signal-label" for="sig-ua">
+              <input type="checkbox" id="sig-ua" data-signal="ua" style="margin-top:2px;accent-color:#4ade80;cursor:pointer;" />
+              <div>
+                <div style="font-size:11px;font-weight:700;color:#e4e4e7;">User agent string</div>
+                <div style="font-size:10px;color:#52525b;margin-top:2px;">Low impact</div>
+              </div>
+            </label>
+            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border:1px solid #1f1f1f;padding:12px;background:#0a0a0a;transition:border-color .2s;" class="signal-label" for="sig-ttp">
+              <input type="checkbox" id="sig-ttp" data-signal="ttp" style="margin-top:2px;accent-color:#4ade80;cursor:pointer;" />
+              <div>
+                <div style="font-size:11px;font-weight:700;color:#e4e4e7;">TikTok pixel (browser)</div>
+                <div style="font-size:10px;color:#52525b;margin-top:2px;">Baseline</div>
+              </div>
+            </label>
+          </div>
         </div>
-      </section>
 
-      <aside class="upsell" id="upsellBlock" hidden>
-        <span class="upsell-text">Fix your EMQ to 8.0+ for free with CAPI Shield →</span>
-        <a class="upsell-btn" href="https://www.stackarchitect.xyz/capi-shield" target="_blank" rel="noopener">Get started →</a>
-      </aside>
-    </article>
+        <div class="calc-grid" style="grid-template-columns:1fr 1fr;">
+          <div class="calc-field">
+            <label>Tracking method</label>
+            <select id="emq-method">
+              <option value="pixel">Browser pixel only</option>
+              <option value="hybrid">Browser pixel + server-side API</option>
+              <option value="serveronly">Server-side API only</option>
+            </select>
+          </div>
+          <div class="calc-field">
+            <label>Monthly TikTok ad spend (£/$/€)</label>
+            <input type="number" id="emq-spend" placeholder="e.g. 3000" min="0" />
+          </div>
+        </div>
 
-    <section class="faq-section">
-      <h2>Frequently asked questions</h2>
-      
-<details>
-  <summary>What is a good EMQ score for Meta?</summary>
-  <div class="faq-answer">A score of 6.0 is the bare minimum for Advantage+ Shopping Campaigns to function effectively. 7.0–8.0 is considered good. 8.0+ is excellent and required for maximum algorithmic performance.</div>
-</details>
-<details>
-  <summary>Why does Shopify's native CAPI give a low EMQ?</summary>
-  <div class="faq-answer">Shopify's built-in CAPI is still browser-triggered — the thank-you page pixel must fire before the server event sends. If iOS or an ad blocker blocks that page, the server event never fires at all.</div>
-</details>
-<details>
-  <summary>How much ad spend is wasted with a low EMQ?</summary>
-  <div class="faq-answer">Studies suggest 25–40% of Meta ad spend is wasted through poor signal quality, as Meta's algorithm optimises against incomplete conversion data.</div>
-</details>
-    </section>
+        <button class="calc-btn" onclick="calcEMQ()">ESTIMATE MY EMQ SCORE →</button>
 
-    <nav class="related-tools" aria-label="Related tools">
-      <h2>Other free Shopify tools</h2>
-      <div class="related-grid">
-        <a class="related-link" href="/tools/shopify-vs-meta-attribution-gap-calculator">Shopify vs. Meta Attribution Gap Calculator</a><a class="related-link" href="/tools/tiktok-vs-meta-roas-bridge-calculator">TikTok vs. Meta ROAS Bridge Calculator</a><a class="related-link" href="/tools/shopify-profit-loss-leak-finder">Shopify P&amp;L Leak Finder</a>
+        <div class="calc-result" id="emq-result">
+          <div class="result-grid">
+            <div class="result-cell">
+              <div class="result-label">Estimated EMQ Score</div>
+              <div class="result-value" id="emq-score">0.0</div>
+              <div class="result-sub" id="emq-grade">Calculating...</div>
+            </div>
+            <div class="result-cell">
+              <div class="result-label">Match Rate</div>
+              <div class="result-value" style="font-size:28px;" id="emq-match">0%</div>
+              <div class="result-sub">Estimated signal coverage</div>
+            </div>
+            <div class="result-cell">
+              <div class="result-label">Missing Attribution</div>
+              <div class="result-value" style="font-size:28px;color:#f87171;" id="emq-missing">--</div>
+              <div class="result-sub">Conversions invisible to TikTok</div>
+            </div>
+          </div>
+          <div class="result-insight" id="emq-insight"></div>
+        </div>
       </div>
-    </nav>
+
+      
+  <div class="aff-block">
+    <div class="aff-block-text">
+      <div class="aff-block-label">Recommended tool</div>
+      <div class="aff-block-title">TikTok Events API via Make.com — Free</div>
+      <div class="aff-block-desc">Send server-side CompletePayment events with all required data signals. EMQ scores of 6–8 typical after setup. Free on Make.com's free tier.</div>
+    </div>
+    <div>
+      <a href="https://www.make.com/en/register?pc=techie123" target="_blank" rel="noopener sponsored" class="aff-block-link">Set Up Free →</a>
+      <div class="aff-disclosure">Affiliate link — costs you nothing extra</div>
+    </div>
+  </div>
+    </div>
+  </section>
+
+  <section class="editorial">
+    <div class="editorial-inner">
+      <h2>What Is TikTok Event Match Quality (EMQ)?</h2>
+      <p>TikTok Event Match Quality is a score from 0–10 that measures how accurately your conversion events are being matched back to TikTok user profiles. A high EMQ score means TikTok can reliably attribute purchases, add-to-carts, and other events to specific ad clicks — which directly determines how accurately your ROAS is reported and how well TikTok's algorithm can optimise your campaigns.</p>
+      <p><strong>The core problem: browser-only tracking is broken.</strong> Apple's iOS App Tracking Transparency, Safari's ITP, and widespread use of ad blockers all interfere with the TikTok pixel's ability to fire accurately. When a customer uses iOS Safari, your pixel may miss 20–40% of conversions entirely. Those conversions still happen — they just become invisible to TikTok.</p>
+
+      <h2>How EMQ Score Is Calculated</h2>
+      <p>TikTok calculates EMQ based on which customer data signals are present in your event payload and how accurately they can be matched to a TikTok user profile. The most valuable signals are:</p>
+      <ul>
+        <li><strong>Email address</strong> — highest individual impact. Must be SHA256 hashed before sending.</li>
+        <li><strong>Phone number</strong> — second highest impact. Hashed in E.164 format.</li>
+        <li><strong>External ID</strong> — your Shopify customer ID or order ID. Medium impact but easy to include.</li>
+        <li><strong>TikTok Click ID (ttclid)</strong> — captured from URL when a user clicks your TikTok ad. High deduplication value.</li>
+        <li><strong>IP address + User Agent</strong> — lower individual impact, but contribute to overall match rate.</li>
+      </ul>
+      <p>Sending events server-side (via the Events API) is the single biggest improvement available because it ensures events fire regardless of browser restrictions, ad blockers, or iOS settings. Server-side signals are more reliable, arrive faster, and can carry more data than browser pixel events.</p>
+
+      <h2>Why Low EMQ Scores Directly Cost You Money</h2>
+      <p><strong>Reporting accuracy:</strong> If TikTok can only match 60% of your conversions back to ad clicks, your reported ROAS is based on 60% of actual revenue. You may be cutting campaigns that are actually profitable, or scaling campaigns that look strong but have inflated numbers.</p>
+      <p><strong>Algorithm optimisation:</strong> TikTok's Smart Performance Campaigns and automated bidding use conversion signals to find buyers. Low-quality signals mean the algorithm is learning from incomplete data — it optimises toward the 60% of conversions it can see, not the 100% that are happening.</p>
+      <p><strong>Attribution windows:</strong> TikTok's default attribution window is 7-day click, 1-day view. With low EMQ, conversions that happen 2–3 days after a TikTok ad click may never be matched, artificially compressing your measured attribution window.</p>
+
+      <h2>How to Fix Low TikTok EMQ on Shopify — Free Method</h2>
+      <p>The fastest way to improve EMQ on Shopify is to implement server-side tracking via the <a href="/tiktok-events-api-shopify">TikTok Events API using Make.com</a>. When a Shopify order is placed, a Make.com webhook fires immediately and sends a CompletePayment event directly to TikTok's server — with hashed email, phone, external_id, and IP address all included in the payload. This bypasses every browser-level restriction and typically moves EMQ scores from 4–5 range to 6–8+ range.</p>
+      <p>The full setup takes approximately 6 minutes on Make.com's free tier (1,000 operations/month). No code, no developer, no ongoing subscription. The guide at <a href="/tiktok-events-api-shopify">stackarchitect.xyz/tiktok-events-api-shopify</a> covers every step.</p>
+    </div>
+  </section>
+
+  
+  <section class="faq-section" itemscope itemtype="https://schema.org/FAQPage">
+    <div class="faq-inner">
+      <h2 class="faq-heading">// COMMON_QUESTIONS</h2>
+      
+    <details class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <summary><span itemprop="name">What is a good TikTok EMQ score?</span><span class="faq-arrow">▼</span></summary>
+      <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text">TikTok rates EMQ from 0–10. A score of 7.0 or above is considered strong. Scores of 4–6 indicate moderate match quality with room for improvement. Below 4 means you are likely losing significant attribution and your TikTok ad performance data is unreliable.</p>
+      </div>
+    </details>
+    <details class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <summary><span itemprop="name">What fields improve EMQ score the most?</span><span class="faq-arrow">▼</span></summary>
+      <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text">Email address and phone number are the highest-impact fields, each contributing significantly to match quality. External ID (your Shopify customer ID) and Click ID (ttclid) also add material lift. Hashing these server-side via the TikTok Events API gives you the highest possible EMQ.</p>
+      </div>
+    </details>
+    <details class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <summary><span itemprop="name">How do I fix a low TikTok EMQ score for Shopify?</span><span class="faq-arrow">▼</span></summary>
+      <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text">The fastest fix is implementing server-side tracking via the TikTok Events API using Make.com. This sends CompletePayment events with hashed customer data (email, phone, external_id) directly from your server, bypassing iOS restrictions and ad blockers. Full setup guide at stackarchitect.xyz/tiktok-events-api-shopify.</p>
+      </div>
+    </details>
+    <details class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <summary><span itemprop="name">Does a higher EMQ score improve my TikTok ROAS?</span><span class="faq-arrow">▼</span></summary>
+      <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text">Yes. Higher EMQ means more of your conversions are matched back to TikTok ad clicks. This improves your reported ROAS, gives TikTok's algorithm better signals to optimise bidding, and allows Smart Performance Campaigns to work more effectively. Stores that move from EMQ 4 to 7+ typically see 20–40% more attributed conversions.</p>
+      </div>
+    </details>
+    <details class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <summary><span itemprop="name">Is the TikTok Events API free to use?</span><span class="faq-arrow">▼</span></summary>
+      <div class="faq-answer" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text">Yes. TikTok's Events API has no direct cost. You need a way to send server-side events — Make.com's free tier (1,000 operations/month) is sufficient for most Shopify stores under 500 orders/month. There is no TikTok charge for using the API.</p>
+      </div>
+    </details>
+    </div>
+  </section>
+
+  <section class="cta-strip-tool">
+    <h2>Fix Your EMQ Score — Free Setup Guide</h2>
+    <p>Server-side TikTok Events API setup. 6 minutes. $0 forever.</p>
+    <a href="/tiktok-events-api-shopify">View Free Setup Guide →</a>
+  </section>
   </main>
-</div>
 
-<footer>
-  <p>Free tool by <a href="https://www.stackarchitect.xyz">Stack Architect</a> &mdash; Free Shopify tools. No apps. No fluff.</p>
-</footer>
+  <Footer />
+</Base>
 
-<script is:inline>
-function fmt(n){ return Math.round(n).toLocaleString('en-GB'); }
-
-function calculate(inp) {
-  var spend = parseFloat(inp.adSpend) || 0;
-  var emq = 4.0;
-  if (inp.capiStatus === 'No CAPI — pixel only') emq = 3.5;
-  else if (inp.capiStatus === 'Shopify native CAPI (browser-triggered)') emq = 5.5;
-  else if (inp.capiStatus === 'True server-side CAPI (e.g. CAPI Shield)') emq = 8.0;
-  if (inp.pixelEvents === 'Fewer than 50') emq -= 1.5;
-  else if (inp.pixelEvents === '50–70') emq -= 0.5;
-  else if (inp.pixelEvents === '85–95') emq += 0.5;
-  else if (inp.pixelEvents === '95–100') emq += 1.0;
-  if (inp.iosTraffic === 'Over 50%') emq -= 0.5;
-  emq = Math.max(0, Math.min(10, emq));
-  var wasted = spend * (1 - emq / 10) * 0.25;
-  var recovered = spend * (Math.max(0, 8.0 - emq)) / 10 * 0.3;
-  var emqFlag = emq >= 8 ? 'good' : emq >= 6 ? 'warn' : 'bad';
-  var emqLabel = emq >= 8 ? 'Excellent' : emq >= 7 ? 'Good' : emq >= 6 ? 'Acceptable' : emq >= 4 ? 'Poor' : 'Critical';
-  return {
-    teaser: { label: 'Your estimated EMQ score', value: emq.toFixed(1) + ' / 10', flag: emqFlag },
-    rows: [
-      { label: 'Estimated EMQ score', value: emq.toFixed(1) + ' / 10', flag: emqFlag, sub: emqLabel },
-      { label: 'Wasted ad spend (monthly)', value: '£' + fmt(wasted), flag: wasted > spend * 0.2 ? 'bad' : 'warn' },
-      { label: 'Wasted ad spend (annual)', value: '£' + fmt(wasted * 12), flag: 'bad' },
-      { label: 'Recoverable revenue (monthly)', value: '£' + fmt(recovered), flag: 'good' },
-      { label: 'Recoverable revenue (annual)', value: '£' + fmt(recovered * 12), flag: 'good' },
-      { label: 'Target EMQ', value: '8.0 / 10', flag: 'good' }
-    ]
-  };
-}
-
-var IS_GATED = true;
-var form = document.getElementById('calcForm');
-var resultsSection = document.getElementById('results');
-var resultsContent = document.getElementById('resultsContent');
-var teaserSection = document.getElementById('teaser');
-var teaserValue = document.getElementById('teaserValue');
-var teaserLabel = document.getElementById('teaserLabel');
-var emailGate = document.getElementById('emailGate');
-var gateBtn = document.getElementById('gateBtn');
-var upsellBlock = document.getElementById('upsellBlock');
-var lastResult = null;
-
-function getInputs() {
-  var inp = {};
-  var fd = new FormData(form);
-  fd.forEach(function(v, k) {
-    if (inp[k]) {
-      inp[k] = Array.isArray(inp[k]) ? inp[k].concat(v) : [inp[k], v];
-    } else {
-      inp[k] = v;
-    }
-  });
-  // Also grab textareas by id since FormData may not pick up all
-  form.querySelectorAll('textarea').forEach(function(el){
-    if (!inp[el.id]) inp[el.id] = el.value;
-  });
-  return inp;
-}
-
-function renderRows(rows) {
-  return rows.map(function(r) {
-    var sub = r.sub ? '<span class="sub">' + r.sub + '</span>' : '';
-    return '<div class="result-row flag-' + (r.flag||'neutral') + '">' +
-      '<span class="result-label">' + r.label + sub + '</span>' +
-      '<span class="result-value">' + r.value + '</span>' +
-    '</div>';
-  }).join('');
-}
-
-function showFullResults(rows) {
-  resultsContent.innerHTML = renderRows(rows);
-  resultsSection.hidden = false;
-  upsellBlock.hidden = false;
-  resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-form.addEventListener('submit', function(e) {
-  e.preventDefault();
-  var inp = getInputs();
-  var result;
-  try { result = calculate(inp); } catch(err) { alert('Calculation error: ' + err.message); return; }
-  lastResult = result;
-
-  if (!IS_GATED) {
-    showFullResults(result.rows);
-    return;
+<script>
+  // Reading progress bar
+  const bar = document.getElementById('reading-progress');
+  if (bar) {
+    window.addEventListener('scroll', () => {
+      const pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      bar.style.width = Math.min(pct, 100) + '%';
+    }, { passive: true });
   }
 
-  // Show teaser
-  teaserValue.textContent = result.teaser.value;
-  teaserLabel.textContent = result.teaser.label;
-  teaserSection.hidden = false;
 
-  // Check if already gated
-  var storedEmail = localStorage.getItem('sa_email');
-  if (storedEmail) {
-    emailGate.hidden = true;
-    showFullResults(result.rows);
-  } else {
-    emailGate.hidden = false;
+  function calcEMQ() {
+    const signals = [...document.querySelectorAll('[data-signal]:checked')].map(el => el.dataset.signal);
+    const method = document.getElementById('emq-method').value;
+    const spend = parseFloat(document.getElementById('emq-spend').value) || 0;
+
+    // EMQ score calculation based on signal weights
+    const weights = { email: 2.8, phone: 2.2, external_id: 1.2, click_id: 1.0, ip: 0.5, ua: 0.3, ttp: 0.5 };
+    const multipliers = { pixel: 0.65, hybrid: 1.0, serveronly: 1.05 };
+
+    let raw = signals.reduce((sum, s) => sum + (weights[s] || 0), 0);
+    let score = Math.min(10, raw * (multipliers[method] || 1));
+    score = Math.round(score * 10) / 10;
+
+    const matchRate = Math.min(98, Math.round(score * 10 + (method === 'serveronly' ? 5 : method === 'hybrid' ? 3 : 0)));
+    const missing = spend > 0 ? Math.round(spend * (1 - matchRate / 100) * 0.15) : null;
+
+    let grade, gradeColor;
+    if (score >= 8) { grade = 'Excellent — top attribution quality'; gradeColor = '#4ade80'; }
+    else if (score >= 6) { grade = 'Good — minor improvements possible'; gradeColor = '#a3e635'; }
+    else if (score >= 4) { grade = 'Moderate — significant lift available'; gradeColor = '#fbbf24'; }
+    else { grade = 'Low — attribution data unreliable'; gradeColor = '#f87171'; }
+
+    document.getElementById('emq-score').textContent = score.toFixed(1);
+    document.getElementById('emq-score').style.color = gradeColor;
+    document.getElementById('emq-grade').textContent = grade;
+    document.getElementById('emq-match').textContent = matchRate + '%';
+    document.getElementById('emq-missing').textContent = missing ? '~£' + missing.toLocaleString() + '/mo' : 'Enter spend';
+
+    let insight = '';
+    if (!signals.includes('email')) insight += '<strong>Add email address</strong> — the highest-impact single signal. Hashed SHA256, sent server-side. ';
+    if (!signals.includes('phone')) insight += '<strong>Add phone number</strong> — second highest EMQ impact. Hashed E.164 format. ';
+    if (method === 'pixel') insight += '<strong>Switch to server-side Events API</strong> — browser pixel loses 20–40% of iOS conversions. ';
+    if (!signals.includes('click_id')) insight += '<strong>Capture ttclid from URL</strong> — enables precise click-level deduplication. ';
+    if (!insight) insight = 'Strong signal setup. Maintain server-side tracking and ensure all customer data fields are consistently populated at checkout.';
+
+    document.getElementById('emq-insight').innerHTML = insight;
+    document.getElementById('emq-result').classList.add('show');
   }
-  teaserSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-});
-
-if (gateBtn) {
-  gateBtn.addEventListener('click', function() {
-    var emailInput = document.getElementById('emailInput');
-    var email = emailInput ? emailInput.value.trim() : '';
-    if (!email || !email.includes('@')) { emailInput.focus(); return; }
-    localStorage.setItem('sa_email', email);
-    emailGate.hidden = true;
-    if (lastResult) showFullResults(lastResult.rows);
-  });
-}
+  
 </script>
-</body>
-</html>
