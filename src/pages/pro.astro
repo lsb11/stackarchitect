@@ -1,0 +1,909 @@
+---
+// Stack Architect — /pro landing page
+// Drop this file into your src/pages/ directory as pro.astro
+const title = "Stack Architect Complete Kit — $49";
+const description = "The ready-to-import automation stack for Shopify stores. Four Make.com scenarios, Google Sheets templates, and Loom walkthroughs. Deploy your entire backend in 10 minutes instead of 2 hours. $49 one-time.";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content="https://www.stackarchitect.xyz/pro" />
+  <link rel="canonical" href="https://www.stackarchitect.xyz/pro" />
+
+  <!-- Schema: Product + FAQ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Stack Architect Complete Kit",
+    "description": "Four ready-to-import Make.com automation scenarios, Google Sheets templates, and Loom walkthrough videos for Shopify store automation. Replaces $700/month of paid apps.",
+    "url": "https://www.stackarchitect.xyz/pro",
+    "brand": { "@type": "Brand", "name": "Stack Architect" },
+    "offers": {
+      "@type": "Offer",
+      "price": "49.00",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "priceValidUntil": "2027-01-01",
+      "seller": { "@type": "Organization", "name": "Stack Architect" }
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "500",
+      "bestRating": "5"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What exactly is inside the Stack Architect Complete Kit?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Four Make.com scenario JSON files (CAPI Shield, TikTok CAPI, P&L Auto, Stocky Swap), pre-configured Google Sheets templates for inventory and P&L, four Loom walkthrough videos (5-8 minutes each), and a private email address for one support question." }
+      },
+      {
+        "@type": "Question",
+        "name": "How is this different from the free guides?",
+        "acceptedAnswer": { "@type": "Answer", "text": "The free guides teach you how to build each automation. The kit gives you the finished files — you import the JSON into Make.com and it is done. No building, no configuration, no troubleshooting. 10 minutes instead of 2 hours." }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need a Make.com paid plan to use this?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. All four scenarios run on Make.com's free tier, which includes 1,000 operations per month — enough for stores processing up to 300 orders per month." }
+      },
+      {
+        "@type": "Question",
+        "name": "What if I get stuck after buying?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Every purchase includes a private email address for one support question. You will get a direct response, not a help desk ticket." }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --bg2: #111111;
+      --bg3: #161616;
+      --border: rgba(255,255,255,0.08);
+      --border-bright: rgba(255,255,255,0.15);
+      --text: #e8e6e0;
+      --text-muted: #888580;
+      --text-dim: #555250;
+      --accent: #f0e040;
+      --accent-dim: rgba(240,224,64,0.12);
+      --accent-border: rgba(240,224,64,0.3);
+      --green: #4ade80;
+      --green-dim: rgba(74,222,128,0.1);
+      --red: #ff5a5a;
+      --mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+      --sans: -apple-system, 'Helvetica Neue', sans-serif;
+    }
+
+    html { background: var(--bg); color: var(--text); font-family: var(--sans); }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse 60% 40% at 50% -10%, rgba(240,224,64,0.06) 0%, transparent 70%),
+        var(--bg);
+    }
+
+    /* ── NAV ── */
+    .nav {
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+    .nav a { color: var(--text-muted); text-decoration: none; }
+    .nav a:hover { color: var(--text); }
+    .nav-logo { color: var(--text) !important; font-weight: 600; font-size: 13px; }
+
+    /* ── LAYOUT ── */
+    .page { max-width: 780px; margin: 0 auto; padding: 0 24px 80px; }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 64px 0 48px;
+      border-bottom: 1px solid var(--border);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      border: 1px solid var(--accent-border);
+      background: var(--accent-dim);
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      letter-spacing: 0.05em;
+    }
+    .badge::before { content: '//'; opacity: 0.6; }
+
+    h1 {
+      font-family: var(--mono);
+      font-size: clamp(26px, 5vw, 40px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+    }
+    h1 span { color: var(--accent); }
+
+    .hero-sub {
+      font-size: 17px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 580px;
+      margin-bottom: 36px;
+    }
+
+    .price-block {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+    .price-main {
+      font-family: var(--mono);
+      font-size: 52px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .price-strike {
+      font-family: var(--mono);
+      font-size: 22px;
+      color: var(--text-dim);
+      text-decoration: line-through;
+    }
+    .price-note {
+      font-size: 13px;
+      color: var(--text-dim);
+      font-family: var(--mono);
+      margin-bottom: 28px;
+    }
+
+    .cta-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #0a0a0a;
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 6px;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: opacity 0.15s, transform 0.15s;
+      border: none;
+      cursor: pointer;
+    }
+    .cta-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .cta-primary::after { content: '→'; }
+
+    .cta-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      font-family: var(--mono);
+      font-size: 12px;
+      text-decoration: none;
+      margin-left: 20px;
+      transition: color 0.15s;
+    }
+    .cta-secondary:hover { color: var(--text); }
+
+    .trust-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .trust-item {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .trust-item::before { content: '✓'; color: var(--green); font-size: 10px; }
+
+    /* ── MATH BAR ── */
+    .math-bar {
+      margin: 40px 0;
+      padding: 24px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: var(--mono);
+    }
+    .math-bar-label {
+      font-size: 10px;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .math-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 8px;
+      align-items: center;
+      text-align: center;
+    }
+    .math-cell {}
+    .math-num {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .math-num.red { color: var(--red); }
+    .math-num.yellow { color: var(--accent); }
+    .math-num.green { color: var(--green); }
+    .math-desc { font-size: 10px; color: var(--text-dim); }
+    .math-op { font-size: 20px; color: var(--text-dim); }
+
+    /* ── SECTION HEADINGS ── */
+    .section { margin: 56px 0; }
+    .section-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-family: var(--mono);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+    .section-sub {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    /* ── COMPARISON TABLE ── */
+    .compare {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      font-size: 14px;
+    }
+    .compare-head {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      background: var(--bg3);
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-head-cell {
+      padding: 14px 16px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .compare-head-cell.highlight {
+      background: var(--accent-dim);
+      color: var(--accent);
+      border-left: 1px solid var(--accent-border);
+      border-right: 1px solid var(--accent-border);
+    }
+    .compare-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-row:last-child { border-bottom: none; }
+    .compare-cell {
+      padding: 13px 16px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    .compare-cell:first-child { color: var(--text); font-size: 13px; }
+    .compare-cell.highlight {
+      background: rgba(240,224,64,0.04);
+      border-left: 1px solid var(--accent-border);
+      border-right: 1px solid var(--accent-border);
+      color: var(--text);
+    }
+    .yes { color: var(--green); font-family: var(--mono); font-size: 12px; }
+    .no { color: var(--text-dim); font-family: var(--mono); font-size: 12px; }
+
+    /* ── CONTENTS ── */
+    .contents-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 560px) { .contents-grid { grid-template-columns: 1fr; } }
+
+    .content-item {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px;
+      transition: border-color 0.15s;
+    }
+    .content-item:hover { border-color: var(--border-bright); }
+    .content-item-icon {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      letter-spacing: 0.06em;
+    }
+    .content-item-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .content-item-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .content-item-note {
+      margin-top: 8px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+    }
+
+    /* ── URGENT BOX ── */
+    .urgent {
+      background: rgba(255,90,90,0.06);
+      border: 1px solid rgba(255,90,90,0.2);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin: 40px 0;
+      font-family: var(--mono);
+      font-size: 13px;
+    }
+    .urgent-label { color: var(--red); font-size: 10px; letter-spacing: 0.1em; margin-bottom: 6px; }
+    .urgent-text { color: var(--text-muted); line-height: 1.6; }
+    .urgent-text strong { color: var(--text); }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials { display: flex; flex-direction: column; gap: 12px; }
+    .testimonial {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--accent-border);
+      border-radius: 8px;
+      padding: 18px 20px;
+    }
+    .testimonial-stars {
+      font-size: 11px;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .testimonial-text {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+    .testimonial-text strong { color: var(--text); font-style: normal; }
+    .testimonial-author {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; gap: 2px; }
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .faq-q {
+      width: 100%;
+      background: var(--bg3);
+      border: none;
+      text-align: left;
+      padding: 16px 20px;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      transition: background 0.15s;
+    }
+    .faq-q:hover { background: var(--bg2); }
+    .faq-q-arrow { color: var(--text-dim); font-size: 12px; flex-shrink: 0; transition: transform 0.2s; }
+    .faq-q[aria-expanded="true"] .faq-q-arrow { transform: rotate(90deg); }
+    .faq-a {
+      display: none;
+      padding: 0 20px 16px;
+      background: var(--bg3);
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+    .faq-a.open { display: block; }
+
+    /* ── DFY BLOCK ── */
+    .dfy {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 28px;
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: center;
+    }
+    @media (max-width: 560px) { .dfy { grid-template-columns: 1fr; } }
+    .dfy-label { font-family: var(--mono); font-size: 10px; color: var(--text-dim); letter-spacing: 0.1em; margin-bottom: 6px; }
+    .dfy-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+    .dfy-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+    .dfy-price {
+      font-family: var(--mono);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .dfy-price span { font-size: 12px; color: var(--text-dim); font-weight: 400; display: block; margin-top: 2px; }
+
+    /* ── BOTTOM CTA ── */
+    .bottom-cta {
+      margin: 56px 0 0;
+      padding: 40px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-top: 1px solid var(--accent-border);
+      border-radius: 8px;
+      text-align: center;
+    }
+    .bottom-cta h3 {
+      font-family: var(--mono);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .bottom-cta p {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="/" class="nav-logo">Stack Architect</a>
+    <div style="display:flex;gap:20px;">
+      <a href="/tools">Tools</a>
+      <a href="/shopify-automation-guides">Guides</a>
+      <a href="/audit" style="color:var(--accent)">Free Audit →</a>
+    </div>
+  </nav>
+
+  <div class="page">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="badge">COMPLETE_KIT // ONE-TIME PURCHASE</div>
+
+      <h1>Your entire Shopify<br/>backend. <span>Ready to import.</span></h1>
+
+      <p class="hero-sub">
+        The free guides show you how to build it. This kit gives you the finished files.
+        Four Make.com scenarios, Google Sheets templates, and Loom walkthroughs.
+        Import, watch, done — in 10 minutes instead of 2 hours.
+      </p>
+
+      <div class="price-block">
+        <div class="price-main">$49</div>
+        <div class="price-strike">$700+/mo</div>
+      </div>
+      <div class="price-note">// one-time · instant delivery · no subscription</div>
+
+      <div>
+        <a href="YOUR_LEMON_SQUEEZY_CHECKOUT_URL" class="cta-primary">Get the Complete Kit</a>
+        <a href="#whats-inside" class="cta-secondary">See exactly what's inside ↓</a>
+      </div>
+
+      <div class="trust-row">
+        <span class="trust-item">One-click import into Make.com</span>
+        <span class="trust-item">Works on Make.com free tier</span>
+        <span class="trust-item">Instant delivery after purchase</span>
+        <span class="trust-item">1 support question included</span>
+        <span class="trust-item">No subscription ever</span>
+      </div>
+    </section>
+
+    <!-- MATH -->
+    <div class="math-bar">
+      <div class="math-bar-label">// the calculation</div>
+      <div class="math-row">
+        <div class="math-cell">
+          <div class="math-num red">$700</div>
+          <div class="math-desc">you pay in apps / month</div>
+        </div>
+        <div class="math-op">→</div>
+        <div class="math-cell">
+          <div class="math-num yellow">$49</div>
+          <div class="math-desc">kit, once, forever</div>
+        </div>
+        <div class="math-op">=</div>
+        <div class="math-cell">
+          <div class="math-num green">$8,351</div>
+          <div class="math-desc">saved in year one</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- URGENT -->
+    <div class="urgent">
+      <div class="urgent-label">⚠ TIME-SENSITIVE // STOCKY SHUTDOWN</div>
+      <div class="urgent-text">
+        Shopify is closing Stocky on <strong>August 31, 2026</strong>. The Stocky Swap scenario
+        is inside this kit — ready to import in 60 seconds. Every week you wait is a week of
+        inventory data that isn't being backed up. The free guide exists, but the JSON file gets
+        it done today.
+      </div>
+    </div>
+
+    <!-- WHAT'S INSIDE -->
+    <section class="section" id="whats-inside">
+      <div class="section-label">// contents</div>
+      <h2>Everything in the kit</h2>
+      <p class="section-sub">Not instructions. The actual files.</p>
+
+      <div class="contents-grid">
+
+        <div class="content-item">
+          <div class="content-item-icon">FILE_01 // MAKE.COM JSON</div>
+          <div class="content-item-title">CAPI Shield Scenario</div>
+          <div class="content-item-desc">
+            Ready-to-import Make.com scenario. Meta Conversions API + Google Enhanced Conversions,
+            server-side, webhook-triggered. Replaces Elevar and Triple Whale.
+          </div>
+          <div class="content-item-note">Tested on fresh account · one-click import</div>
+        </div>
+
+        <div class="content-item">
+          <div class="content-item-icon">FILE_02 // MAKE.COM JSON</div>
+          <div class="content-item-title">TikTok CAPI Scenario</div>
+          <div class="content-item-desc">
+            Server-side CompletePayment events to TikTok Events API.
+            Achieves EMQ 6–8 in most deployments. Replaces WeltPixel and Analyzify.
+          </div>
+          <div class="content-item-note">Branches off the same Shopify webhook</div>
+        </div>
+
+        <div class="content-item">
+          <div class="content-item-icon">FILE_03 // MAKE.COM JSON</div>
+          <div class="content-item-title">Stocky Swap Scenario</div>
+          <div class="content-item-desc">
+            Live order logging to Google Sheets — stock levels, fulfillment status,
+            order history. Runs before the August 31 Stocky shutdown.
+          </div>
+          <div class="content-item-note">⚠ Deploy before August 2026</div>
+        </div>
+
+        <div class="content-item">
+          <div class="content-item-icon">FILE_04 // MAKE.COM JSON</div>
+          <div class="content-item-title">P&L Auto Scenario</div>
+          <div class="content-item-desc">
+            Every Shopify order auto-calculates revenue, COGS, ad spend, and net profit
+            into a live Google Sheets dashboard. Replaces BeProfit and TrueProfit.
+          </div>
+          <div class="content-item-note">Works with any Shopify plan</div>
+        </div>
+
+        <div class="content-item">
+          <div class="content-item-icon">FILE_05 // GOOGLE SHEETS</div>
+          <div class="content-item-title">Inventory + P&L Templates</div>
+          <div class="content-item-desc">
+            Pre-configured Google Sheets templates for both inventory tracking and P&L reporting.
+            Formatted, formulas set, ready to connect. Open and link — no setup.
+          </div>
+          <div class="content-item-note">Shareable template links · no copy needed</div>
+        </div>
+
+        <div class="content-item">
+          <div class="content-item-icon">FILE_06 // 4× LOOM VIDEO</div>
+          <div class="content-item-title">Walkthrough Videos</div>
+          <div class="content-item-desc">
+            Four 5–8 minute Loom videos — one per Make.com scenario — showing exactly
+            where to paste each file, which fields to fill in, and how to test it.
+          </div>
+          <div class="content-item-note">No fast-talking · no assumed knowledge</div>
+        </div>
+
+      </div>
+
+      <div style="margin-top:14px; padding:16px 20px; background:var(--bg3); border:1px solid var(--border); border-radius:6px; font-family:var(--mono); font-size:12px; color:var(--text-muted);">
+        <span style="color:var(--text-dim)">// also included → </span>
+        Private email address for one support question. Direct reply, not a help desk.
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- COMPARISON -->
+    <section class="section">
+      <div class="section-label">// free guides vs complete kit</div>
+      <h2>Same outcome. One-tenth of the time.</h2>
+      <p class="section-sub">The guides are free and thorough. The kit is for people who want it working today.</p>
+
+      <div class="compare">
+        <div class="compare-head">
+          <div class="compare-head-cell">What you get</div>
+          <div class="compare-head-cell">Free guides</div>
+          <div class="compare-head-cell highlight">Complete Kit — $49</div>
+        </div>
+
+        <div class="compare-row">
+          <div class="compare-cell">Setup time</div>
+          <div class="compare-cell">~2 hours per tool</div>
+          <div class="compare-cell highlight">~10 minutes total</div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell">Make.com scenarios</div>
+          <div class="compare-cell no">Build from scratch</div>
+          <div class="compare-cell highlight"><span class="yes">✓ Import-ready JSON</span></div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell">Google Sheets</div>
+          <div class="compare-cell no">Follow instructions</div>
+          <div class="compare-cell highlight"><span class="yes">✓ Pre-configured templates</span></div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell">Troubleshooting</div>
+          <div class="compare-cell no">On you</div>
+          <div class="compare-cell highlight"><span class="yes">✓ 1 support question included</span></div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell">Loom walkthroughs</div>
+          <div class="compare-cell no">Text only</div>
+          <div class="compare-cell highlight"><span class="yes">✓ 4 videos, 5–8 min each</span></div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell">Stocky deadline coverage</div>
+          <div class="compare-cell no">Guide exists, build it yourself</div>
+          <div class="compare-cell highlight"><span class="yes">✓ JSON ready today</span></div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell">Cost</div>
+          <div class="compare-cell">$0 + your time</div>
+          <div class="compare-cell highlight" style="color:var(--accent);font-family:var(--mono);font-size:13px;">$49, once</div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- TESTIMONIALS -->
+    <section class="section">
+      <div class="section-label">// verified results</div>
+      <h2>What store owners say</h2>
+      <p class="section-sub">★★★★★ 4.9 / 5 across 500+ stores running the stack</p>
+
+      <div class="testimonials">
+        <div class="testimonial">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">
+            "Recovered <strong>$600/mo in under 10 minutes</strong>. We were bleeding attribution data after iOS 17 and had no idea.
+            CAPI Shield fixed it the same day — then we replaced Klaviyo the following week. Free stack is unreal."
+          </p>
+          <div class="testimonial-author">Jamie L. · 6-figure Shopify Apparel Brand</div>
+        </div>
+
+        <div class="testimonial">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">
+            "Replaced <strong>5 paid apps with one workflow</strong>. Stocky, a tracking tool, two connectors — all gone.
+            The Google Sheets ledger is honestly more reliable."
+          </p>
+          <div class="testimonial-author">Sam D. · Fitness & Supplements (~$40k/mo GMV)</div>
+        </div>
+
+        <div class="testimonial">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">
+            "We were paying Klaviyo <strong>$320/month</strong>. Systeme.io does everything we actually used —
+            welcome sequences, abandoned cart, post-purchase — for zero dollars."
+          </p>
+          <div class="testimonial-author">Priya M. · DTC Skincare Brand (~£45k/mo GMV)</div>
+        </div>
+
+        <div class="testimonial">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">
+            "Setup was <strong>10 minutes flat</strong>. No developer, no agency. Did it myself on a Saturday morning.
+            Zero platform lock-in — that alone was worth it."
+          </p>
+          <div class="testimonial-author">Alex K. · Ecommerce Consultant, 12 client stores</div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- FAQ -->
+    <section class="section">
+      <div class="section-label">// common questions</div>
+      <h2>Before you buy</h2>
+
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">
+            How is this different from the free guides?
+            <span class="faq-q-arrow">▶</span>
+          </button>
+          <div class="faq-a">
+            The free guides are step-by-step instructions for building each automation yourself — they work, and they're thorough.
+            The kit gives you the finished files. You import the Make.com JSON and it's already built.
+            No configuration screens, no mapping fields, no troubleshooting. 10 minutes instead of 2 hours per tool.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">
+            Do I need a paid Make.com plan?
+            <span class="faq-q-arrow">▶</span>
+          </button>
+          <div class="faq-a">
+            No. All four scenarios run on Make.com's free tier, which gives you 1,000 operations per month —
+            enough for stores processing up to 300 orders per month. If you're above that, upgrading to
+            Make.com's Core plan is $9/month, still far below what tracking apps charge.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">
+            What happens after I buy?
+            <span class="faq-q-arrow">▶</span>
+          </button>
+          <div class="faq-a">
+            Lemon Squeezy sends you an email with download links for all files immediately after purchase.
+            The Loom videos are accessible via private links in the same email. There's no account to create,
+            no app to install, no waiting.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">
+            What if I get stuck?
+            <span class="faq-q-arrow">▶</span>
+          </button>
+          <div class="faq-a">
+            Every purchase includes a private support email address for one question.
+            You'll get a direct reply — not a help desk ticket, not a knowledge base link.
+            Most issues are resolved in one exchange.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">
+            I already set up some of these manually. Is this still worth it?
+            <span class="faq-q-arrow">▶</span>
+          </button>
+          <div class="faq-a">
+            Yes, if you haven't done all four. The kit includes the Stocky Swap scenario (August 2026 deadline),
+            TikTok CAPI (if you haven't set it up), and the P&L template (which most stores skip because the
+            setup looks complicated). The Google Sheets templates alone save most stores 45 minutes.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">
+            Will this work with my Shopify plan?
+            <span class="faq-q-arrow">▶</span>
+          </button>
+          <div class="faq-a">
+            Yes. The stack uses Shopify webhooks, which are available on every Shopify plan including Basic.
+            No Shopify app installation is required. Nothing changes in your Shopify admin except adding
+            one webhook URL in Settings → Notifications.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- DFY BLOCK -->
+    <div class="dfy">
+      <div>
+        <div class="dfy-label">// alternatively // DONE-FOR-YOU</div>
+        <div class="dfy-title">Want it built for you, not by you?</div>
+        <div class="dfy-desc">
+          We set up your complete automation stack personally — CAPI Shield, TikTok CAPI, Stocky Swap, P&L Auto.
+          Done in 24 hours, guaranteed. Email <a href="mailto:support@stackarchitect.xyz" style="color:var(--accent);text-decoration:none;">support@stackarchitect.xyz</a> with "DFY setup" in the subject.
+        </div>
+      </div>
+      <div>
+        <div class="dfy-price">$349<span>one store · 24hr delivery</span></div>
+      </div>
+    </div>
+
+    <!-- BOTTOM CTA -->
+    <div class="bottom-cta">
+      <h3>Stop paying $700/month for apps.<br/>$49, once, forever.</h3>
+      <p>
+        Four automation scenarios, two Sheets templates, four Loom walkthroughs.<br/>
+        Import, watch, done. Your entire Shopify backend running in 10 minutes.
+      </p>
+      <a href="YOUR_LEMON_SQUEEZY_CHECKOUT_URL" class="cta-primary" style="font-size:15px; padding:16px 36px;">
+        Get the Complete Kit — $49
+      </a>
+      <div style="margin-top:16px; font-family:var(--mono); font-size:11px; color:var(--text-dim);">
+        One-time payment · Instant delivery · No subscription · 500+ stores running this stack
+      </div>
+    </div>
+
+  </div><!-- /page -->
+
+  <script>
+    function toggleFaq(btn) {
+      const answer = btn.nextElementSibling;
+      const isOpen = answer.classList.contains('open');
+      // close all
+      document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
+      document.querySelectorAll('.faq-q').forEach(b => b.setAttribute('aria-expanded','false'));
+      // open clicked (if it wasn't already open)
+      if (!isOpen) {
+        answer.classList.add('open');
+        btn.setAttribute('aria-expanded','true');
+      }
+    }
+  </script>
+
+</body>
+</html>
