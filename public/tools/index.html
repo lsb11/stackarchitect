@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free Shopify Tools — Stack Architect</title>
+<meta name="description" content="15 free Shopify calculator tools: EMQ score, attribution gap, P&L leak finder, plan upgrade break-even, and more. No apps. No signup. Just results.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.stackarchitect.xyz/tools">
+<meta property="og:title" content="Free Shopify Tools — Stack Architect">
+<meta property="og:description" content="15 free Shopify calculator tools. No apps. No fluff.">
+<meta property="og:url" content="https://www.stackarchitect.xyz/tools">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#00C896;--dark:#1a1a2e;--red:#e53e3e;--amber:#d97706;
+  --bg:#fff;--surface:#f8f9fa;--border:#e2e8f0;
+  --text:#1a202c;--muted:#64748b;--radius:8px;
+  --font:'Inter',system-ui,-apple-system,sans-serif;
+}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.6}
+a{color:var(--green);text-decoration:none}
+a:hover{text-decoration:underline}
+/* Header */
+.site-header{background:var(--dark);padding:14px 20px;display:flex;align-items:center}
+.brand{color:#fff;font-weight:700;font-size:1.05rem;letter-spacing:-.3px}
+.brand:hover{color:var(--green);text-decoration:none}
+/* Container */
+.container{max-width:680px;margin:0 auto;padding:0 20px}
+/* Breadcrumb */
+.breadcrumb{font-size:.8rem;color:var(--muted);padding:12px 0;border-bottom:1px solid var(--border);margin-bottom:28px}
+.breadcrumb a{color:var(--muted)}
+.breadcrumb span{margin:0 6px}
+/* Urgency tag */
+.urgency-tag{display:inline-block;background:#fef3cd;color:#92400e;font-size:.78rem;font-weight:600;padding:4px 10px;border-radius:20px;margin-bottom:16px;border:1px solid #fcd34d}
+/* Main layout */
+main{padding:32px 0 48px}
+article h1{font-size:1.75rem;font-weight:700;line-height:1.2;margin-bottom:12px;color:var(--dark)}
+.intro{color:var(--muted);font-size:.97rem;margin-bottom:28px;line-height:1.7}
+/* Card */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px}
+.card-title{font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:16px}
+/* Form */
+.field{margin-bottom:18px}
+.field label{display:block;font-size:.9rem;font-weight:500;margin-bottom:6px;color:var(--text)}
+.field input,.field select,.field textarea{
+  width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius);
+  font-family:var(--font);font-size:.95rem;background:#fff;color:var(--text);
+  transition:border-color .15s;
+}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--green)}
+.field textarea{min-height:110px;resize:vertical}
+.multiselect-group{display:flex;flex-direction:column;gap:8px}
+.multiselect-group label{font-weight:400;display:flex;align-items:center;gap:8px;cursor:pointer}
+.multiselect-group input[type=checkbox]{width:16px;height:16px;accent-color:var(--green)}
+.btn-calc{
+  display:block;width:100%;padding:14px;background:var(--green);color:#fff;
+  border:none;border-radius:var(--radius);font-family:var(--font);font-size:1rem;
+  font-weight:600;cursor:pointer;transition:opacity .15s;margin-top:4px;
+}
+.btn-calc:hover{opacity:.9}
+/* Teaser / gate */
+#teaser{margin-bottom:20px}
+.teaser-card{background:var(--dark);color:#fff;border-radius:var(--radius);padding:24px;text-align:center}
+.teaser-number{font-size:2.5rem;font-weight:700;color:var(--green);margin-bottom:4px}
+.teaser-label{font-size:.9rem;opacity:.8;margin-bottom:20px}
+.gate-box{border-top:1px solid rgba(255,255,255,.15);padding-top:18px;margin-top:4px}
+.gate-box p{font-size:.88rem;opacity:.8;margin-bottom:12px}
+.gate-row{display:flex;gap:8px;flex-wrap:wrap}
+.gate-row input[type=email]{flex:1;min-width:200px;padding:10px 12px;border-radius:var(--radius);border:none;font-family:var(--font);font-size:.9rem}
+.btn-gate{padding:10px 18px;background:var(--green);color:#fff;border:none;border-radius:var(--radius);font-family:var(--font);font-weight:600;cursor:pointer;white-space:nowrap}
+.btn-gate:hover{opacity:.9}
+/* Results */
+#results{margin-bottom:24px}
+.result-row{display:flex;justify-content:space-between;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border);gap:12px}
+.result-row:last-child{border-bottom:none}
+.result-label{font-size:.88rem;color:var(--muted);flex:1}
+.result-label .sub{display:block;font-size:.78rem;margin-top:2px;color:var(--muted)}
+.result-value{font-size:.95rem;font-weight:600;text-align:right;flex-shrink:0;max-width:55%}
+.flag-good .result-value{color:#059669}
+.flag-warn .result-value{color:var(--amber)}
+.flag-bad .result-value{color:var(--red)}
+.flag-neutral .result-value{color:var(--text)}
+/* Upsell */
+.upsell{background:var(--green);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.upsell-text{color:#fff;font-weight:600;font-size:.95rem;flex:1}
+.upsell-btn{background:#fff;color:var(--green);padding:10px 18px;border-radius:var(--radius);font-weight:700;font-size:.88rem;white-space:nowrap;flex-shrink:0}
+.upsell-btn:hover{text-decoration:none;opacity:.9}
+/* FAQ */
+.faq-section{margin-bottom:32px}
+.faq-section h2{font-size:1.1rem;font-weight:700;margin-bottom:16px;color:var(--dark)}
+details{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;overflow:hidden}
+summary{padding:14px 16px;cursor:pointer;font-weight:500;font-size:.92rem;list-style:none;display:flex;justify-content:space-between;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';font-size:1.1rem;color:var(--muted)}
+details[open] summary::after{content:'−'}
+details[open] summary{border-bottom:1px solid var(--border)}
+.faq-answer{padding:14px 16px;font-size:.9rem;color:var(--muted);line-height:1.7}
+/* Internal links */
+.related-tools{margin-bottom:32px;padding-top:24px;border-top:1px solid var(--border)}
+.related-tools h2{font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:12px}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.related-link{display:block;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);font-size:.85rem;font-weight:500;color:var(--text);transition:border-color .15s}
+.related-link:hover{border-color:var(--green);text-decoration:none;color:var(--green)}
+/* Footer */
+footer{background:var(--surface);border-top:1px solid var(--border);padding:20px;text-align:center;font-size:.83rem;color:var(--muted)}
+footer a{color:var(--muted)}
+/* Utility */
+[hidden]{display:none!important}
+@media(max-width:480px){
+  article h1{font-size:1.4rem}
+  .teaser-number{font-size:2rem}
+  .upsell{flex-direction:column;align-items:flex-start}
+  .result-row{flex-direction:column;gap:4px}
+  .result-value{text-align:left;max-width:100%}
+}
+
+.hero{background:var(--dark);color:#fff;padding:48px 20px;text-align:center}
+.hero h1{font-size:2rem;font-weight:700;margin-bottom:12px}
+.hero h1 span{color:var(--green)}
+.hero p{opacity:.8;max-width:520px;margin:0 auto;font-size:1rem}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;padding:36px 0}
+.tool-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;gap:8px}
+.tool-card h2{font-size:1rem;font-weight:600}
+.tool-card h2 a{color:var(--text)}
+.tool-card h2 a:hover{color:var(--green);text-decoration:none}
+.tool-card p{font-size:.85rem;color:var(--muted);flex:1;line-height:1.55}
+.tool-link{font-size:.85rem;font-weight:600;color:var(--green)}
+.intent-badge{display:inline-block;color:#fff;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:20px;margin-bottom:4px}
+@media(max-width:480px){.hero h1{font-size:1.5rem}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="https://www.stackarchitect.xyz">Stack Architect</a>
+</header>
+<div class="hero">
+  <div class="container">
+    <h1>Free <span>Shopify tools.</span><br>No apps. No fluff.</h1>
+    <p>15 free calculators and diagnostic tools for Shopify store owners and operators. No signup required.</p>
+  </div>
+</div>
+<div class="container">
+  <div class="tools-grid">
+    
+<article class="tool-card">
+  <span class="intent-badge" style="background:#3b82f6">Diagnostic</span>
+  <h2><a href="/tools/meta-emq-score-estimator">Meta EMQ Score Estimator</a></h2>
+  <p>Estimate your Meta Conversions API Event Match Quality (EMQ) score before you build. See how much ad spend you're wasting with a low EMQ and what fixing it recovers.</p>
+  <a class="tool-link" href="/tools/meta-emq-score-estimator">Use free tool →</a>
+</article>
+<article class="tool-card">
+  <span class="intent-badge" style="background:#f59e0b">Migration</span>
+  <h2><a href="/tools/stocky-migration-risk-scorer">Stocky Migration Risk Scorer</a></h2>
+  <p>Stocky shuts down August 31 2026. Score your migration risk based on SKU count, supplier complexity, and reorder frequency. Get a personalised replacement plan.</p>
+  <a class="tool-link" href="/tools/stocky-migration-risk-scorer">Use free tool →</a>
+</article>
+<article class="tool-card">
+  <span class="intent-badge" style="background:#3b82f6">Diagnostic</span>
+  <h2><a href="/tools/shopify-vs-meta-attribution-gap-calculator">Shopify vs. Meta Attribution Gap Calculator</a></h2>
+  <p>Shopify shows one number. Meta shows another. GA4 shows a third. This free calculator tells you which platform to trust, why they differ, and what to fix first.</p>
+  <a class="tool-link" href="/tools/shopify-vs-meta-attribution-gap-calculator">Use free tool →</a>
+</article>
+<article class="tool-card">
+  <span class="intent-badge" style="background:#8b5cf6">Cost</span>
+  <h2><a href="/tools/klaviyo-to-systeme-migration-savings-calculator">Klaviyo → Free Email Migration Savings Calculator</a></h2>
+  <p>Calculate exactly how much you'd save replacing Klaviyo with a free alternative. Enter your list size and sending frequency to see your annual saving and migration time estimate.</p>
+  <a class="tool-link" href="/tools/klaviyo-to-systeme-migration-savings-calculator">Use free tool →</a>
+</article>
+<article class="tool-card">
+  <span class="intent-badge" style="background:#10b981">Readiness</span>
+  <h2><a href="/tools/shopify-agentic-storefront-readiness-checker">Agentic Storefront Readiness Checker</a></h2>
+  <p>Check if your Shopify store is ready for Agentic Storefronts — the feature that lets customers buy on ChatGPT, Google AI Mode, and Copilot. Get a personalised readiness score and action list.</p>
+  <a class="tool-link" href="/tools/shopify-agentic-storefront-readiness-checker">Use free tool →</a>
+</article>
+<article class="tool-card">
+  <span class="intent-badge" style="background:#8b5cf6">Cost</span>
+  <h2><a href="/tools/shopify-plan-upgrade-break-even-calculator">Shopify Plan Upgrade Break-Even Calculator</a></h2>
+  <p>Calculate the exact monthly revenue at which upgrading your Shopify plan pays for itself through lower transaction fees. Basic vs Shopify vs Advanced vs Plus.</p>
+  <a class="tool-link" href="/tools/shopify-plan-upgrade-break-even-calculator">Use free tool →</a>
+</article>
+<article class="tool-card">
+  <span class="intent-badge" style="background:#8b5cf6">Cost</span>
+  <h2><a href="/tools/shopify-app-stack-kill-or-keep-auditor">Shopify App Stack — Kill or Keep Auditor</a></h2>
+  <p>Enter your Shopify app list and monthly costs. This tool scores each app's replaceability with free code or automation, calculates your annual saving, and prioritises what to cut first.</p>
+  <a class="tool-link" href="/tools/shopify-app-stack-kill-or-keep-auditor">Use free tool →</a>
+</article>
+<article class="tool-card">
+  <span class="intent-badge" style="background:#3b82f6">Diagnostic</span>
+  <h2><a href="/tools/tiktok-vs-meta-roas-bridge-calculator">TikTok vs. Meta ROAS Bridge Calculator</a></h2>
+  <p>TikTok and Meta use different attribution windows, making direct ROAS comparison misleading. This calculator normalises both platforms to a true comparison and shows you where to shift budget.</p>
+  <a class="tool-link" href="/tools/tiktok-vs-meta-roas-bridge-calculator">Use free tool →</a>
+</article>
+<article class="tool-card">
+  <span class="intent-badge" style="background:#8b5cf6">Cost</span>
+  <h2><a href="/tools/make-vs-zapier-cost-calculator">Make.com vs. Zapier Cost Calculator</a></h2>
+  <p>Calculate the exact annual cost difference between Make.com and Zapier for your Shopify automations. Enter your task volume and see which platform saves you more money.</p>
+  <a class="tool-link" href="/tools/make-vs-zapier-cost-calculator">Use free tool →</a>
+</article>
+<article class="tool-card">
+  <span class="intent-badge" style="background:#3b82f6">Diagnostic</span>
+  <h2><a href="/tools/shopify-profit-loss-leak-finder">Shopify P&amp;L Leak Finder</a></h2>
+  <p>Enter your Shopify store revenue, COGS, ad spend, and app fees to get a colour-coded P&amp;L breakdown showing exactly where your profit is leaking — and what to fix first.</p>
+  <a class="tool-link" href="/tools/shopify-profit-loss-leak-finder">Use free tool →</a>
+</article>
+<article class="tool-card">
+  <span class="intent-badge" style="background:#8b5cf6">Cost</span>
+  <h2><a href="/tools/shopify-shipping-margin-calculator">Shopify Shipping Margin Calculator</a></h2>
+  <p>Calculate whether your free shipping threshold is set correctly. See the minimum order value at which offering free shipping remains profitable after Shopify fees, COGS, and shipping costs.</p>
+  <a class="tool-link" href="/tools/shopify-shipping-margin-calculator">Use free tool →</a>
+</article>
+<article class="tool-card">
+  <span class="intent-badge" style="background:#3b82f6">Diagnostic</span>
+  <h2><a href="/tools/ga4-vs-shopify-revenue-reconciler">GA4 vs. Shopify Revenue Reconciler</a></h2>
+  <p>GA4 almost always shows lower revenue than Shopify. This reconciler calculates your exact data loss rate, identifies whether it's ad blockers, iOS, or checkout abandonment, and gives a fix.</p>
+  <a class="tool-link" href="/tools/ga4-vs-shopify-revenue-reconciler">Use free tool →</a>
+</article>
+<article class="tool-card">
+  <span class="intent-badge" style="background:#8b5cf6">Cost</span>
+  <h2><a href="/tools/shopify-influencer-gifting-roi-calculator">Shopify Influencer Gifting ROI Calculator</a></h2>
+  <p>Calculate the true ROI of your Shopify influencer gifting programme. Enter product costs, follower counts, and conversion estimates to see whether gifting actually pays off.</p>
+  <a class="tool-link" href="/tools/shopify-influencer-gifting-roi-calculator">Use free tool →</a>
+</article>
+<article class="tool-card">
+  <span class="intent-badge" style="background:#8b5cf6">Cost</span>
+  <h2><a href="/tools/shopify-plus-break-even-revenue-calculator">Shopify Plus Break-Even Revenue Calculator</a></h2>
+  <p>Calculate the exact revenue threshold at which Shopify Plus pays for itself vs Advanced plan. Includes fee savings, checkout extensibility value, and staff account benefits.</p>
+  <a class="tool-link" href="/tools/shopify-plus-break-even-revenue-calculator">Use free tool →</a>
+</article>
+<article class="tool-card">
+  <span class="intent-badge" style="background:#3b82f6">Diagnostic</span>
+  <h2><a href="/tools/autocrat-vs-native-google-sheets-speed-calculator">Autocrat vs. Native Sheets Speed Calculator</a></h2>
+  <p>Hitting Autocrat quota limits? Calculate whether switching to native Google Apps Script will solve your quota issues and how much faster your Shopify automation will run.</p>
+  <a class="tool-link" href="/tools/autocrat-vs-native-google-sheets-speed-calculator">Use free tool →</a>
+</article>
+  </div>
+</div>
+<footer>
+  <p>Free tools by <a href="https://www.stackarchitect.xyz">Stack Architect</a> &mdash; Free Shopify tools. No apps. No fluff.</p>
+</footer>
+</body>
+</html>
