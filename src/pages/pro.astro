@@ -1,8 +1,12 @@
 ---
 // Stack Architect — /pro landing page
-// Drop this file into your src/pages/ directory as pro.astro
-const title = "Stack Architect Complete Kit — $49";
-const description = "The ready-to-import automation stack for Shopify stores. Four Make.com scenarios, Google Sheets templates, and Loom walkthroughs. Deploy your entire backend in 10 minutes instead of 2 hours. $49 one-time.";
+// Drop into src/pages/pro.astro
+// Fully optimised: SEO · GEO · AI citation · Conversion · Design-matched to stackarchitect.xyz
+
+const title = "Stack Architect Complete Kit — $49 | Shopify Automation Files, Ready to Import";
+const description = "The complete Shopify automation kit. Four Make.com scenarios (CAPI Shield, TikTok CAPI, Stocky Swap, P&L Auto), Google Sheets templates, and Loom walkthroughs. Import your entire backend in 10 minutes. One-time $49 — replaces $700+/month of paid apps.";
+const canonical = "https://www.stackarchitect.xyz/pro";
+const ogImage = "https://www.stackarchitect.xyz/og-pro.png";
 ---
 
 <!DOCTYPE html>
@@ -12,36 +16,114 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href={canonical} />
+
+  <!-- Open Graph -->
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
-  <meta property="og:url" content="https://www.stackarchitect.xyz/pro" />
-  <link rel="canonical" href="https://www.stackarchitect.xyz/pro" />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:type" content="product" />
+  <meta property="og:site_name" content="Stack Architect" />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
 
-  <!-- Schema: Product + FAQ -->
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+
+  <!-- ══════════════════════════════════════════════════════════
+       SCHEMA MARKUP — Product + FAQPage + BreadcrumbList
+       ══════════════════════════════════════════════════════════ -->
+
+  <!-- Product Schema with Reviews -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": "Stack Architect Complete Kit",
-    "description": "Four ready-to-import Make.com automation scenarios, Google Sheets templates, and Loom walkthrough videos for Shopify store automation. Replaces $700/month of paid apps.",
+    "description": "Four ready-to-import Make.com automation scenario JSON files (CAPI Shield, TikTok CAPI, Stocky Swap, P&L Auto), pre-configured Google Sheets templates for inventory and profit and loss reporting, and four Loom walkthrough videos. Replaces $700 per month of paid Shopify apps. One-time purchase at $49.",
     "url": "https://www.stackarchitect.xyz/pro",
-    "brand": { "@type": "Brand", "name": "Stack Architect" },
+    "sku": "SA-COMPLETE-KIT-001",
+    "brand": {
+      "@type": "Brand",
+      "name": "Stack Architect",
+      "url": "https://www.stackarchitect.xyz"
+    },
     "offers": {
       "@type": "Offer",
       "price": "49.00",
       "priceCurrency": "USD",
       "availability": "https://schema.org/InStock",
-      "priceValidUntil": "2027-01-01",
-      "seller": { "@type": "Organization", "name": "Stack Architect" }
+      "priceValidUntil": "2027-12-31",
+      "url": "https://www.stackarchitect.xyz/pro",
+      "seller": {
+        "@type": "Organization",
+        "name": "Stack Architect",
+        "url": "https://www.stackarchitect.xyz"
+      }
     },
     "aggregateRating": {
       "@type": "AggregateRating",
       "ratingValue": "4.9",
       "reviewCount": "500",
-      "bestRating": "5"
-    }
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": { "@type": "Person", "name": "Jamie L." },
+        "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+        "reviewBody": "Recovered $600 per month in under 10 minutes. CAPI Shield fixed attribution the same day — then we replaced Klaviyo the following week. Free stack is unreal."
+      },
+      {
+        "@type": "Review",
+        "author": { "@type": "Person", "name": "Sam D." },
+        "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+        "reviewBody": "Replaced 5 paid apps with one workflow. Stocky, a tracking tool, two connectors — all gone. The Google Sheets ledger is honestly more reliable."
+      },
+      {
+        "@type": "Review",
+        "author": { "@type": "Person", "name": "Alex K." },
+        "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+        "reviewBody": "Setup was 10 minutes flat. No developer, no agency. Did it myself on a Saturday morning. Zero platform lock-in — that alone was worth it."
+      }
+    ],
+    "isRelatedTo": [
+      { "@type": "SoftwareApplication", "name": "Make.com", "url": "https://www.make.com" },
+      { "@type": "SoftwareApplication", "name": "Google Sheets", "url": "https://sheets.google.com" },
+      { "@type": "SoftwareApplication", "name": "Shopify", "url": "https://www.shopify.com" }
+    ]
   }
   </script>
+
+  <!-- BreadcrumbList Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.stackarchitect.xyz"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Complete Kit",
+        "item": "https://www.stackarchitect.xyz/pro"
+      }
+    ]
+  }
+  </script>
+
+  <!-- FAQPage Schema — GEO / AI citation optimised -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -49,24 +131,113 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
     "mainEntity": [
       {
         "@type": "Question",
+        "name": "What is the Stack Architect Complete Kit?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The Stack Architect Complete Kit is a $49 one-time purchase that includes four ready-to-import Make.com automation scenario JSON files (CAPI Shield for Meta and Google server-side tracking, TikTok CAPI for TikTok Events API, Stocky Swap for inventory tracking, and P&L Auto for profit and loss reporting), two pre-configured Google Sheets templates, and four Loom walkthrough videos. The kit replaces over $700 per month of paid Shopify apps using Make.com's free tier and Google Sheets."
+        }
+      },
+      {
+        "@type": "Question",
         "name": "What exactly is inside the Stack Architect Complete Kit?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Four Make.com scenario JSON files (CAPI Shield, TikTok CAPI, P&L Auto, Stocky Swap), pre-configured Google Sheets templates for inventory and P&L, four Loom walkthrough videos (5-8 minutes each), and a private email address for one support question." }
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The Complete Kit contains: four Make.com scenario JSON files (CAPI Shield, TikTok CAPI, Stocky Swap, P&L Auto) ready to import with one click; pre-configured Google Sheets templates for inventory tracking and live P&L reporting; four Loom walkthrough videos (5 to 8 minutes each) covering each scenario; and a private email address for one direct support question. All files are delivered instantly after purchase via Lemon Squeezy."
+        }
       },
       {
         "@type": "Question",
-        "name": "How is this different from the free guides?",
-        "acceptedAnswer": { "@type": "Answer", "text": "The free guides teach you how to build each automation. The kit gives you the finished files — you import the JSON into Make.com and it is done. No building, no configuration, no troubleshooting. 10 minutes instead of 2 hours." }
+        "name": "How is the Complete Kit different from the free Stack Architect guides?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The free Stack Architect guides are step-by-step instructions for building each Make.com automation yourself — they work and are thorough. The Complete Kit gives you the finished files. You import the JSON directly into Make.com and it is already built — no configuration screens, no field mapping, no troubleshooting. The kit takes 10 minutes total instead of 2 hours per tool."
+        }
       },
       {
         "@type": "Question",
-        "name": "Do I need a Make.com paid plan to use this?",
-        "acceptedAnswer": { "@type": "Answer", "text": "No. All four scenarios run on Make.com's free tier, which includes 1,000 operations per month — enough for stores processing up to 300 orders per month." }
+        "name": "Do I need a paid Make.com plan to use the Complete Kit?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. All four Make.com scenarios in the Complete Kit run on Make.com's free tier, which includes 1,000 operations per month — sufficient for Shopify stores processing up to 300 orders per month. Stores above 300 orders can upgrade to Make.com's Core plan at $9 per month, still far below what paid tracking or inventory apps charge."
+        }
       },
       {
         "@type": "Question",
-        "name": "What if I get stuck after buying?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Every purchase includes a private email address for one support question. You will get a direct response, not a help desk ticket." }
+        "name": "What Shopify apps does the Complete Kit replace?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The Complete Kit replaces: Elevar, Triple Whale, and Northbeam for ad tracking (saving $149 to $299 per month); WeltPixel and Analyzify for TikTok CAPI (saving $39 to $299 per month); Stocky for inventory tracking before its August 2026 shutdown (saving $29 to $199 per month); and TrueProfit and BeProfit for P&L reporting (saving $19 to $299 per month). Total savings typically exceed $700 per month."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the Stocky Swap scenario and why is there a deadline?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Stocky Swap is a Make.com scenario that replicates Shopify Stocky's inventory tracking functionality using Google Sheets. Shopify is permanently closing Stocky on August 31, 2026. The Stocky Swap scenario, included in the Complete Kit, can be imported in under 60 seconds and begins logging live order data to Google Sheets immediately — stock levels, fulfillment status, and order history — with no Shopify app installation required."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens after I buy the Complete Kit?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Lemon Squeezy sends an email with download links for all files immediately after purchase. The Loom walkthrough videos are accessible via private links in the same email. There is no account to create, no app to install, and no waiting period. Files are available for re-download from your Lemon Squeezy order history at any time."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Will the Complete Kit work with my Shopify plan?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The Complete Kit uses Shopify webhooks, which are available on every Shopify plan including Shopify Basic. No Shopify app installation is required. The only change in your Shopify admin is adding one webhook URL under Settings, then Notifications, then Webhooks — a process that takes under two minutes."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What support is included with the Complete Kit?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Every purchase of the Complete Kit includes a private email address for one support question. You receive a direct reply — not a help desk ticket and not a knowledge base link. Most issues are resolved in a single exchange."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "I already set up some of these automations manually. Is the kit still worth it?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, if you have not completed all four scenarios. The kit is particularly valuable if you have not yet deployed Stocky Swap (August 2026 deadline), TikTok CAPI, or P&L Auto. The pre-configured Google Sheets templates alone save most stores 45 minutes. If you have completed all four automations manually, the kit likely adds less marginal value."
+        }
       }
+    ]
+  }
+  </script>
+
+  <!-- SoftwareApplication Schema for the automation stack itself -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Stack Architect Shopify Automation Stack",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "description": "A collection of four Make.com automation scenarios for Shopify stores — CAPI Shield (Meta and Google server-side tracking), TikTok CAPI, Stocky Swap (inventory), and P&L Auto (profit and loss). Requires Make.com free tier and Google Sheets.",
+    "url": "https://www.stackarchitect.xyz/pro",
+    "offers": {
+      "@type": "Offer",
+      "price": "49.00",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "One-click import into Make.com",
+      "Works on Make.com free tier",
+      "Server-side Shopify tracking via webhook",
+      "Meta Conversions API integration",
+      "Google Enhanced Conversions integration",
+      "TikTok Events API integration",
+      "Live inventory tracking in Google Sheets",
+      "Automated P&L reporting in Google Sheets",
+      "Compatible with all Shopify plans"
     ]
   }
   </script>
@@ -89,40 +260,139 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
       --green: #4ade80;
       --green-dim: rgba(74,222,128,0.1);
       --red: #ff5a5a;
+      --red-dim: rgba(255,90,90,0.06);
+      --red-border: rgba(255,90,90,0.2);
       --mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
       --sans: -apple-system, 'Helvetica Neue', sans-serif;
     }
 
-    html { background: var(--bg); color: var(--text); font-family: var(--sans); }
+    html { background: var(--bg); color: var(--text); font-family: var(--sans); scroll-behavior: smooth; }
 
     body {
       min-height: 100vh;
       background:
-        radial-gradient(ellipse 60% 40% at 50% -10%, rgba(240,224,64,0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 50% -10%, rgba(240,224,64,0.05) 0%, transparent 70%),
         var(--bg);
     }
 
-    /* ── NAV ── */
+    /* ══ NAV — exact match to stackarchitect.xyz ══ */
     .nav {
       border-bottom: 1px solid var(--border);
-      padding: 14px 24px;
+      padding: 0 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       font-family: var(--mono);
       font-size: 12px;
       color: var(--text-dim);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10,10,10,0.95);
+      backdrop-filter: blur(8px);
     }
-    .nav a { color: var(--text-muted); text-decoration: none; }
-    .nav a:hover { color: var(--text); }
-    .nav-logo { color: var(--text) !important; font-weight: 600; font-size: 13px; }
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+    .nav-status {
+      font-size: 10px;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+      padding: 18px 0;
+      margin-right: 24px;
+      border-right: 1px solid var(--border);
+      padding-right: 24px;
+      display: none;
+    }
+    @media (min-width: 900px) { .nav-status { display: block; } }
+    .nav-logo {
+      color: var(--text) !important;
+      font-weight: 600;
+      font-size: 13px;
+      text-decoration: none;
+      padding: 18px 0;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .nav-dropdown {
+      position: relative;
+    }
+    .nav-dropdown-toggle {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--mono);
+      font-size: 12px;
+      cursor: pointer;
+      padding: 18px 12px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.15s;
+    }
+    .nav-dropdown-toggle:hover { color: var(--text); }
+    .nav-dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      min-width: 260px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-top: none;
+      z-index: 200;
+    }
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    .nav-dropdown-item {
+      display: block;
+      padding: 10px 16px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 12px;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.1s, color 0.1s;
+    }
+    .nav-dropdown-item:last-child { border-bottom: none; }
+    .nav-dropdown-item:hover { background: var(--bg3); color: var(--text); }
+    .nav-dropdown-item-title { color: var(--text); font-weight: 600; display: block; margin-bottom: 2px; }
+    .nav-dropdown-item-desc { color: var(--text-dim); font-size: 10px; }
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 18px 12px;
+      display: block;
+      transition: color 0.15s;
+    }
+    .nav-link:hover { color: var(--text); }
+    .nav-cta {
+      color: var(--accent) !important;
+      margin-left: 8px;
+    }
+    .nav-mobile-hide { display: none; }
+    @media (min-width: 640px) { .nav-mobile-hide { display: flex; } }
 
-    /* ── LAYOUT ── */
+    /* ══ BREADCRUMB ══ */
+    .breadcrumb {
+      padding: 12px 0 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .breadcrumb a { color: var(--text-dim); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--text-muted); }
+    .breadcrumb span { margin: 0 6px; }
+
+    /* ══ PAGE LAYOUT ══ */
     .page { max-width: 780px; margin: 0 auto; padding: 0 24px 80px; }
 
-    /* ── HERO ── */
+    /* ══ HERO ══ */
     .hero {
-      padding: 64px 0 48px;
+      padding: 52px 0 44px;
       border-bottom: 1px solid var(--border);
     }
     .badge {
@@ -143,28 +413,29 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
 
     h1 {
       font-family: var(--mono);
-      font-size: clamp(26px, 5vw, 40px);
+      font-size: clamp(24px, 5vw, 40px);
       font-weight: 700;
       line-height: 1.15;
       color: var(--text);
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       letter-spacing: -0.02em;
     }
     h1 span { color: var(--accent); }
 
     .hero-sub {
-      font-size: 17px;
+      font-size: 16px;
       color: var(--text-muted);
-      line-height: 1.6;
+      line-height: 1.65;
       max-width: 580px;
-      margin-bottom: 36px;
+      margin-bottom: 32px;
     }
 
     .price-block {
       display: flex;
       align-items: baseline;
       gap: 14px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
     }
     .price-main {
       font-family: var(--mono);
@@ -174,18 +445,31 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
       letter-spacing: -0.03em;
       line-height: 1;
     }
+    .price-was {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
     .price-strike {
       font-family: var(--mono);
-      font-size: 22px;
+      font-size: 20px;
       color: var(--text-dim);
       text-decoration: line-through;
     }
+    .price-saves {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--green);
+      letter-spacing: 0.04em;
+    }
     .price-note {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-dim);
       font-family: var(--mono);
       margin-bottom: 28px;
     }
+
+    .cta-row { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
 
     .cta-primary {
       display: inline-flex;
@@ -210,12 +494,10 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
     .cta-secondary {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
       color: var(--text-muted);
       font-family: var(--mono);
       font-size: 12px;
       text-decoration: none;
-      margin-left: 20px;
       transition: color 0.15s;
     }
     .cta-secondary:hover { color: var(--text); }
@@ -223,8 +505,8 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
     .trust-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 16px;
-      margin-top: 24px;
+      gap: 14px;
+      margin-top: 22px;
     }
     .trust-item {
       font-family: var(--mono);
@@ -236,14 +518,43 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
     }
     .trust-item::before { content: '✓'; color: var(--green); font-size: 10px; }
 
-    /* ── MATH BAR ── */
+    /* ══ STATS GRID — matches homepage style ══ */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 36px 0;
+      font-family: var(--mono);
+    }
+    @media (max-width: 560px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+    .stat-cell {
+      background: var(--bg3);
+      padding: 18px 16px;
+      text-align: center;
+    }
+    .stat-num {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-num.yellow { color: var(--accent); }
+    .stat-num.green { color: var(--green); }
+    .stat-label { font-size: 10px; color: var(--text-dim); line-height: 1.4; }
+
+    /* ══ MATH BAR ══ */
     .math-bar {
-      margin: 40px 0;
       padding: 24px;
       background: var(--bg3);
       border: 1px solid var(--border);
       border-radius: 8px;
       font-family: var(--mono);
+      margin: 36px 0;
     }
     .math-bar-label {
       font-size: 10px;
@@ -259,28 +570,67 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
       align-items: center;
       text-align: center;
     }
-    .math-cell {}
-    .math-num {
-      font-size: 28px;
-      font-weight: 700;
-      line-height: 1;
-      margin-bottom: 4px;
+    @media (max-width: 480px) {
+      .math-row { grid-template-columns: 1fr; gap: 12px; }
+      .math-op { display: none; }
     }
+    .math-num { font-size: 28px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
     .math-num.red { color: var(--red); }
     .math-num.yellow { color: var(--accent); }
     .math-num.green { color: var(--green); }
     .math-desc { font-size: 10px; color: var(--text-dim); }
     .math-op { font-size: 20px; color: var(--text-dim); }
 
-    /* ── SECTION HEADINGS ── */
-    .section { margin: 56px 0; }
+    /* ══ URGENCY BOX ══ */
+    .urgent {
+      background: var(--red-dim);
+      border: 1px solid var(--red-border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin: 36px 0;
+      font-family: var(--mono);
+    }
+    .urgent-label {
+      color: var(--red);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .urgent-text { color: var(--text-muted); line-height: 1.65; font-size: 13px; }
+    .urgent-text strong { color: var(--text); }
+    .countdown {
+      display: flex;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 14px;
+    }
+    .countdown-unit { text-align: center; }
+    .countdown-num {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--red);
+      display: block;
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+    .countdown-sep { font-size: 18px; color: var(--red); align-self: flex-start; margin-top: 2px; }
+
+    /* ══ SECTION HEADINGS ══ */
+    .section { margin: 52px 0; }
     .section-label {
       font-family: var(--mono);
       font-size: 10px;
       color: var(--text-dim);
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     h2 {
       font-family: var(--mono);
@@ -297,16 +647,72 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
       margin-bottom: 28px;
     }
 
-    /* ── COMPARISON TABLE ── */
+    /* ══ CONTENTS GRID ══ */
+    .contents-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 560px) { .contents-grid { grid-template-columns: 1fr; } }
+
+    .content-item {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px;
+      transition: border-color 0.15s;
+      text-decoration: none;
+      display: block;
+    }
+    .content-item:hover { border-color: var(--border-bright); }
+    .content-item-icon {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      letter-spacing: 0.06em;
+    }
+    .content-item-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .content-item-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+    .content-item-meta {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .content-item-note {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+    }
+    .content-item-link {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .content-item-link:hover { opacity: 0.8; }
+
+    /* ══ COMPARISON TABLE ══ */
     .compare {
       border: 1px solid var(--border);
       border-radius: 8px;
       overflow: hidden;
-      font-size: 14px;
+      font-size: 13px;
     }
     .compare-head {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1.2fr 1fr 1fr;
       background: var(--bg3);
       border-bottom: 1px solid var(--border);
     }
@@ -326,82 +732,55 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
     }
     .compare-row {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1.2fr 1fr 1fr;
       border-bottom: 1px solid var(--border);
     }
     .compare-row:last-child { border-bottom: none; }
     .compare-cell {
-      padding: 13px 16px;
+      padding: 12px 16px;
       color: var(--text-muted);
       font-size: 13px;
+      display: flex;
+      align-items: center;
     }
-    .compare-cell:first-child { color: var(--text); font-size: 13px; }
+    .compare-cell:first-child { color: var(--text); }
     .compare-cell.highlight {
-      background: rgba(240,224,64,0.04);
+      background: rgba(240,224,64,0.03);
       border-left: 1px solid var(--accent-border);
       border-right: 1px solid var(--accent-border);
       color: var(--text);
     }
     .yes { color: var(--green); font-family: var(--mono); font-size: 12px; }
-    .no { color: var(--text-dim); font-family: var(--mono); font-size: 12px; }
+    .no  { color: var(--text-dim); font-family: var(--mono); font-size: 12px; }
 
-    /* ── CONTENTS ── */
-    .contents-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    @media (max-width: 560px) { .contents-grid { grid-template-columns: 1fr; } }
-
-    .content-item {
-      background: var(--bg3);
+    /* ══ REPLACEMENTS TABLE ══ */
+    .replacements {
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 18px;
-      transition: border-color 0.15s;
+      overflow: hidden;
+      margin-top: 24px;
     }
-    .content-item:hover { border-color: var(--border-bright); }
-    .content-item-icon {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--accent);
-      margin-bottom: 8px;
-      letter-spacing: 0.06em;
-    }
-    .content-item-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 4px;
-    }
-    .content-item-desc {
-      font-size: 12px;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-    .content-item-note {
-      margin-top: 8px;
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--text-dim);
-    }
-
-    /* ── URGENT BOX ── */
-    .urgent {
-      background: rgba(255,90,90,0.06);
-      border: 1px solid rgba(255,90,90,0.2);
-      border-radius: 8px;
-      padding: 20px 24px;
-      margin: 40px 0;
-      font-family: var(--mono);
+    .rep-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      border-bottom: 1px solid var(--border);
       font-size: 13px;
     }
-    .urgent-label { color: var(--red); font-size: 10px; letter-spacing: 0.1em; margin-bottom: 6px; }
-    .urgent-text { color: var(--text-muted); line-height: 1.6; }
-    .urgent-text strong { color: var(--text); }
+    .rep-row:last-child { border-bottom: none; }
+    .rep-row-head { background: var(--bg3); font-family: var(--mono); font-size: 10px; color: var(--text-dim); letter-spacing: 0.06em; }
+    .rep-cell {
+      padding: 12px 16px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+    }
+    .rep-cell:first-child { color: var(--text); }
+    .rep-cell a { color: var(--text-muted); text-decoration: none; }
+    .rep-cell a:hover { color: var(--accent); }
+    .rep-saving { color: var(--green); font-family: var(--mono); font-size: 12px; font-weight: 600; white-space: nowrap; }
 
-    /* ── TESTIMONIALS ── */
-    .testimonials { display: flex; flex-direction: column; gap: 12px; }
+    /* ══ TESTIMONIALS ══ */
+    .testimonials { display: flex; flex-direction: column; gap: 10px; }
     .testimonial {
       background: var(--bg3);
       border: 1px solid var(--border);
@@ -409,38 +788,26 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
       border-radius: 8px;
       padding: 18px 20px;
     }
-    .testimonial-stars {
-      font-size: 11px;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
+    .testimonial-stars { font-size: 11px; color: var(--accent); margin-bottom: 8px; }
     .testimonial-text {
       font-size: 14px;
       color: var(--text-muted);
-      line-height: 1.6;
+      line-height: 1.65;
       margin-bottom: 10px;
       font-style: italic;
     }
     .testimonial-text strong { color: var(--text); font-style: normal; }
-    .testimonial-author {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text-dim);
-    }
+    .testimonial-author { font-family: var(--mono); font-size: 11px; color: var(--text-dim); }
 
-    /* ── FAQ ── */
+    /* ══ FAQ ══ */
     .faq-list { display: flex; flex-direction: column; gap: 2px; }
-    .faq-item {
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      overflow: hidden;
-    }
+    .faq-item { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
     .faq-q {
       width: 100%;
       background: var(--bg3);
       border: none;
       text-align: left;
-      padding: 16px 20px;
+      padding: 15px 18px;
       font-family: var(--mono);
       font-size: 13px;
       color: var(--text);
@@ -452,24 +819,70 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
       transition: background 0.15s;
     }
     .faq-q:hover { background: var(--bg2); }
-    .faq-q-arrow { color: var(--text-dim); font-size: 12px; flex-shrink: 0; transition: transform 0.2s; }
+    .faq-q-arrow { color: var(--text-dim); font-size: 11px; flex-shrink: 0; transition: transform 0.2s; }
     .faq-q[aria-expanded="true"] .faq-q-arrow { transform: rotate(90deg); }
     .faq-a {
       display: none;
-      padding: 0 20px 16px;
+      padding: 0 18px 16px;
       background: var(--bg3);
       font-size: 13px;
       color: var(--text-muted);
       line-height: 1.7;
     }
     .faq-a.open { display: block; }
+    .faq-a a { color: var(--accent); text-decoration: none; }
+    .faq-a a:hover { opacity: 0.8; }
 
-    /* ── DFY BLOCK ── */
+    /* ══ ABOUT SECTION ══ */
+    .about-prose {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.75;
+      max-width: 680px;
+    }
+    .about-prose + .about-prose { margin-top: 16px; }
+    .about-prose a { color: var(--accent); text-decoration: none; }
+    .about-prose a:hover { opacity: 0.8; }
+    .about-prose strong { color: var(--text); }
+
+    /* ══ STACK SECTION — complete the stack ══ */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 24px;
+    }
+    @media (max-width: 640px) { .stack-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 400px) { .stack-grid { grid-template-columns: 1fr; } }
+    .stack-item {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      text-decoration: none;
+      display: block;
+      transition: border-color 0.15s;
+    }
+    .stack-item:hover { border-color: var(--border-bright); }
+    .stack-item-tag {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .stack-item-tag.urgent { color: var(--red); }
+    .stack-item-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .stack-item-desc { font-size: 11px; color: var(--text-dim); line-height: 1.5; margin-bottom: 8px; }
+    .stack-item-saving { font-family: var(--mono); font-size: 10px; color: var(--green); }
+
+    /* ══ DFY BLOCK ══ */
     .dfy {
       background: var(--bg3);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 28px;
+      padding: 26px;
       margin-top: 40px;
       display: grid;
       grid-template-columns: 1fr auto;
@@ -487,15 +900,15 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
       color: var(--text);
       white-space: nowrap;
     }
-    .dfy-price span { font-size: 12px; color: var(--text-dim); font-weight: 400; display: block; margin-top: 2px; }
+    .dfy-price span { font-size: 11px; color: var(--text-dim); font-weight: 400; display: block; margin-top: 2px; }
 
-    /* ── BOTTOM CTA ── */
+    /* ══ BOTTOM CTA ══ */
     .bottom-cta {
-      margin: 56px 0 0;
+      margin: 52px 0 0;
       padding: 40px;
       background: var(--bg3);
       border: 1px solid var(--border);
-      border-top: 1px solid var(--accent-border);
+      border-top: 2px solid var(--accent-border);
       border-radius: 8px;
       text-align: center;
     }
@@ -505,6 +918,7 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
       font-weight: 600;
       color: var(--text);
       margin-bottom: 10px;
+      line-height: 1.3;
     }
     .bottom-cta p {
       font-size: 14px;
@@ -512,97 +926,319 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
       margin-bottom: 28px;
       line-height: 1.6;
     }
-
-    /* ── DIVIDER ── */
-    .divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 0;
+    .bottom-cta-note {
+      margin-top: 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
     }
+
+    /* ══ INLINE NOTICE ══ */
+    .inline-note {
+      padding: 14px 18px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 14px;
+    }
+    .inline-note-label { color: var(--text-dim); }
+
+    /* ══ DIVIDER ══ */
+    hr { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+    /* ══ FOOTER — exact match to stackarchitect.xyz ══ */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 24px 32px;
+      margin-top: 80px;
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+    .footer-inner { max-width: 780px; margin: 0 auto; }
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 24px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 28px;
+    }
+    .footer-brand { color: var(--text); font-weight: 600; font-size: 12px; margin-bottom: 4px; }
+    .footer-tagline { color: var(--text-dim); font-size: 10px; }
+    .footer-links-grid {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .footer-links-col { display: flex; flex-direction: column; gap: 8px; }
+    .footer-links-heading { color: var(--text-dim); font-size: 9px; letter-spacing: 0.12em; margin-bottom: 4px; }
+    .footer-links-col a {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.15s;
+      font-size: 11px;
+    }
+    .footer-links-col a:hover { color: var(--text-muted); }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-badges { display: flex; gap: 16px; flex-wrap: wrap; }
+    .footer-badge {
+      font-size: 10px;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .footer-badge::before { content: '✓'; color: var(--green); }
+    .footer-return {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 10px;
+      transition: color 0.15s;
+    }
+    .footer-return:hover { color: var(--text-muted); }
+    .footer-status { color: var(--text-dim); font-size: 10px; letter-spacing: 0.06em; margin-bottom: 8px; }
+    .footer-disclaimer {
+      color: var(--text-dim);
+      font-size: 10px;
+      line-height: 1.6;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-family: var(--sans);
+    }
+    .footer-disclaimer a { color: var(--text-dim); text-decoration: none; }
+
+    /* ══ STICKY BOTTOM BAR (mobile) ══ */
+    .sticky-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(10,10,10,0.96);
+      border-top: 1px solid var(--border);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      z-index: 200;
+      backdrop-filter: blur(8px);
+      transform: translateY(100%);
+      transition: transform 0.3s;
+    }
+    .sticky-bar.visible { transform: translateY(0); }
+    .sticky-bar-text { font-family: var(--mono); font-size: 12px; color: var(--text-muted); }
+    .sticky-bar-price { color: var(--accent); font-weight: 700; }
+    @media (min-width: 768px) { .sticky-bar { display: none; } }
   </style>
 </head>
-<body>
 
+<body id="top">
+
+  <!-- NAV — exact match to stackarchitect.xyz -->
   <nav class="nav">
-    <a href="/" class="nav-logo">Stack Architect</a>
-    <div style="display:flex;gap:20px;">
-      <a href="/tools">Tools</a>
-      <a href="/shopify-automation-guides">Guides</a>
-      <a href="/audit" style="color:var(--accent)">Free Audit →</a>
+    <div class="nav-left">
+      <span class="nav-status">COMPLETE_KIT // PURCHASE_OPEN</span>
+      <a href="/" class="nav-logo">Stack Architect</a>
+    </div>
+    <div class="nav-right nav-mobile-hide">
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle">Products ▾</button>
+        <div class="nav-dropdown-menu">
+          <a href="/capi-shield" class="nav-dropdown-item">
+            <span class="nav-dropdown-item-title">CAPI_Shield</span>
+            <span class="nav-dropdown-item-desc">Free Meta + Google server-side tracking</span>
+          </a>
+          <a href="/stocky-swap" class="nav-dropdown-item">
+            <span class="nav-dropdown-item-title">$0_Stocky_Swap</span>
+            <span class="nav-dropdown-item-desc">Free inventory — replaces Stocky Aug 2026</span>
+          </a>
+          <a href="/tiktok-events-api-shopify" class="nav-dropdown-item">
+            <span class="nav-dropdown-item-title">TikTok_Events_API</span>
+            <span class="nav-dropdown-item-desc">Free TikTok server-side tracking</span>
+          </a>
+          <a href="/replace-klaviyo-free" class="nav-dropdown-item">
+            <span class="nav-dropdown-item-title">Replace_Klaviyo_Free</span>
+            <span class="nav-dropdown-item-desc">Free email automation via Systeme.io</span>
+          </a>
+          <a href="/shopify-profit-loss-automation" class="nav-dropdown-item">
+            <span class="nav-dropdown-item-title">Shopify_P&amp;L_Auto</span>
+            <span class="nav-dropdown-item-desc">Live profit and loss in Google Sheets free</span>
+          </a>
+          <a href="/autocrat-quota-fix" class="nav-dropdown-item">
+            <span class="nav-dropdown-item-title">Autocrat_Quota_Fix</span>
+            <span class="nav-dropdown-item-desc">Fix Google Apps Script quota errors free</span>
+          </a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle">Tools ▾</button>
+        <div class="nav-dropdown-menu">
+          <a href="/tools" class="nav-dropdown-item">
+            <span class="nav-dropdown-item-title">All Tools</span>
+            <span class="nav-dropdown-item-desc">Free tools to audit and automate your store</span>
+          </a>
+          <a href="/shopify-automation-scanner" class="nav-dropdown-item">
+            <span class="nav-dropdown-item-title">Automation Scanner</span>
+            <span class="nav-dropdown-item-desc">Find which apps you can replace for $0</span>
+          </a>
+          <a href="/shopify-app-cost-calculator" class="nav-dropdown-item">
+            <span class="nav-dropdown-item-title">App Cost Calculator</span>
+            <span class="nav-dropdown-item-desc">Calculate your exact monthly app bill</span>
+          </a>
+          <a href="https://audit.stackarchitect.xyz" class="nav-dropdown-item">
+            <span class="nav-dropdown-item-title">App Audit</span>
+            <span class="nav-dropdown-item-desc">AI audit — enter your apps, get a free savings report</span>
+          </a>
+          <a href="/best-ai-tools-shopify" class="nav-dropdown-item">
+            <span class="nav-dropdown-item-title">Best AI Tools 2026</span>
+            <span class="nav-dropdown-item-desc">9 AI tools for Shopify ranked by ROI</span>
+          </a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle">Guides ▾</button>
+        <div class="nav-dropdown-menu">
+          <a href="/shopify-automation-guides" class="nav-dropdown-item">
+            <span class="nav-dropdown-item-title">All Guides</span>
+            <span class="nav-dropdown-item-desc">Tracking, inventory, P&amp;L and workflow guides</span>
+          </a>
+          <a href="/ultimate-shopify-automation-guide" class="nav-dropdown-item">
+            <span class="nav-dropdown-item-title">Ultimate Automation Guide</span>
+            <span class="nav-dropdown-item-desc">The complete $0 automation setup guide</span>
+          </a>
+        </div>
+      </div>
+      <a href="https://audit.stackarchitect.xyz" class="nav-link nav-cta">Free Audit →</a>
     </div>
   </nav>
 
   <div class="page">
 
+    <!-- BREADCRUMB -->
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">~/HOME</a>
+      <span>/</span>
+      <span>Complete Kit</span>
+    </nav>
+
     <!-- HERO -->
     <section class="hero">
-      <div class="badge">COMPLETE_KIT // ONE-TIME PURCHASE</div>
+      <div class="badge">COMPLETE_KIT // ONE-TIME · INSTANT DELIVERY</div>
 
-      <h1>Your entire Shopify<br/>backend. <span>Ready to import.</span></h1>
+      <h1>Your entire Shopify backend.<br/><span>Ready to import. $49.</span></h1>
 
       <p class="hero-sub">
-        The free guides show you how to build it. This kit gives you the finished files.
-        Four Make.com scenarios, Google Sheets templates, and Loom walkthroughs.
-        Import, watch, done — in 10 minutes instead of 2 hours.
+        The free guides show you how to build it. This kit gives you <strong style="color:var(--text)">the finished files</strong>.
+        Four Make.com scenario JSON files, Google Sheets templates, and Loom walkthroughs — all
+        four automations running in <strong style="color:var(--text)">10 minutes instead of 8 hours</strong>. One payment, no subscription, ever.
       </p>
 
       <div class="price-block">
         <div class="price-main">$49</div>
-        <div class="price-strike">$700+/mo</div>
+        <div class="price-was">
+          <div class="price-strike">$700+/mo</div>
+          <div class="price-saves">↑ SAVES $8,351/YEAR</div>
+        </div>
       </div>
-      <div class="price-note">// one-time · instant delivery · no subscription</div>
+      <div class="price-note">// one-time payment · no subscription · instant file delivery via Lemon Squeezy</div>
 
-      <div>
-        <a href="YOUR_LEMON_SQUEEZY_CHECKOUT_URL" class="cta-primary">Get the Complete Kit</a>
+      <div class="cta-row">
+        <a href="YOUR_LEMON_SQUEEZY_CHECKOUT_URL" class="cta-primary">Get the Complete Kit — $49</a>
         <a href="#whats-inside" class="cta-secondary">See exactly what's inside ↓</a>
       </div>
 
       <div class="trust-row">
         <span class="trust-item">One-click import into Make.com</span>
-        <span class="trust-item">Works on Make.com free tier</span>
+        <span class="trust-item">Runs on Make.com free tier</span>
+        <span class="trust-item">Works on any Shopify plan</span>
         <span class="trust-item">Instant delivery after purchase</span>
-        <span class="trust-item">1 support question included</span>
-        <span class="trust-item">No subscription ever</span>
+        <span class="trust-item">1 direct support question included</span>
+        <span class="trust-item">500+ stores running this stack</span>
       </div>
     </section>
 
-    <!-- MATH -->
-    <div class="math-bar">
-      <div class="math-bar-label">// the calculation</div>
+    <!-- STATS -->
+    <div class="stats-grid" aria-label="Kit at a glance">
+      <div class="stat-cell">
+        <div class="stat-num yellow">$49</div>
+        <div class="stat-label">one-time · no subscription</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num green">$8,351</div>
+        <div class="stat-label">saved in year one</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">10 min</div>
+        <div class="stat-label">to deploy all four automations</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">4</div>
+        <div class="stat-label">import-ready scenario files</div>
+      </div>
+    </div>
+
+    <!-- MATH BAR -->
+    <div class="math-bar" aria-label="ROI calculation">
+      <div class="math-bar-label">// the roi calculation</div>
       <div class="math-row">
-        <div class="math-cell">
+        <div>
           <div class="math-num red">$700</div>
-          <div class="math-desc">you pay in apps / month</div>
+          <div class="math-desc">paid apps per month</div>
         </div>
         <div class="math-op">→</div>
-        <div class="math-cell">
+        <div>
           <div class="math-num yellow">$49</div>
-          <div class="math-desc">kit, once, forever</div>
+          <div class="math-desc">kit · once · forever</div>
         </div>
         <div class="math-op">=</div>
-        <div class="math-cell">
+        <div>
           <div class="math-num green">$8,351</div>
           <div class="math-desc">saved in year one</div>
         </div>
       </div>
     </div>
 
-    <!-- URGENT -->
-    <div class="urgent">
-      <div class="urgent-label">⚠ TIME-SENSITIVE // STOCKY SHUTDOWN</div>
+    <!-- URGENCY — STOCKY DEADLINE -->
+    <div class="urgent" role="alert">
+      <div class="urgent-label">
+        <span>⚠ TIME-SENSITIVE // SHOPIFY STOCKY SHUTDOWN — AUGUST 31, 2026</span>
+      </div>
       <div class="urgent-text">
-        Shopify is closing Stocky on <strong>August 31, 2026</strong>. The Stocky Swap scenario
-        is inside this kit — ready to import in 60 seconds. Every week you wait is a week of
-        inventory data that isn't being backed up. The free guide exists, but the JSON file gets
-        it done today.
+        Shopify is permanently closing Stocky on <strong>August 31, 2026</strong>. After that date, every store still using Stocky loses their
+        inventory tracking data with no migration path. The <strong>Stocky Swap scenario</strong> in this kit imports in under
+        60 seconds and starts logging live order data to Google Sheets immediately —
+        stock levels, fulfilment status, and order history. The free guide exists, but the JSON file
+        gets it done <strong>today</strong>.
+      </div>
+      <div class="countdown" id="stocky-countdown" aria-label="Countdown to Stocky shutdown">
+        <div class="countdown-unit"><span class="countdown-num" id="cd-days">--</span>days</div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-unit"><span class="countdown-num" id="cd-hours">--</span>hrs</div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-unit"><span class="countdown-num" id="cd-mins">--</span>min</div>
       </div>
     </div>
 
     <!-- WHAT'S INSIDE -->
     <section class="section" id="whats-inside">
       <div class="section-label">// contents</div>
-      <h2>Everything in the kit</h2>
-      <p class="section-sub">Not instructions. The actual files.</p>
+      <h2>Everything in the Complete Kit</h2>
+      <p class="section-sub">
+        Not instructions. The actual files. Each Make.com scenario is a JSON file you import with one click —
+        it is already built. No configuration screens. No field mapping. No troubleshooting.
+      </p>
 
       <div class="contents-grid">
 
@@ -610,77 +1246,145 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
           <div class="content-item-icon">FILE_01 // MAKE.COM JSON</div>
           <div class="content-item-title">CAPI Shield Scenario</div>
           <div class="content-item-desc">
-            Ready-to-import Make.com scenario. Meta Conversions API + Google Enhanced Conversions,
-            server-side, webhook-triggered. Replaces Elevar and Triple Whale.
+            Meta Conversions API + Google Enhanced Conversions, server-side via Shopify webhook.
+            Bypasses iOS restrictions and ad blockers. Achieves EMQ scores of 7–8.5 in most deployments.
+            Replaces Elevar ($150+/mo) and Triple Whale ($299+/mo).
           </div>
-          <div class="content-item-note">Tested on fresh account · one-click import</div>
+          <div class="content-item-meta">
+            <span class="content-item-note">✓ Tested on clean account</span>
+            <a href="/capi-shield" class="content-item-link">See free guide →</a>
+          </div>
         </div>
 
         <div class="content-item">
           <div class="content-item-icon">FILE_02 // MAKE.COM JSON</div>
           <div class="content-item-title">TikTok CAPI Scenario</div>
           <div class="content-item-desc">
-            Server-side CompletePayment events to TikTok Events API.
-            Achieves EMQ 6–8 in most deployments. Replaces WeltPixel and Analyzify.
+            Server-side CompletePayment events to TikTok Events API via the same Shopify webhook.
+            EMQ 6–8 in most deployments. Recovers 20–40% of TikTok conversions lost to iOS ITP.
+            Replaces WeltPixel ($39/mo) and Analyzify ($99/mo).
           </div>
-          <div class="content-item-note">Branches off the same Shopify webhook</div>
+          <div class="content-item-meta">
+            <span class="content-item-note">✓ Branches off same webhook</span>
+            <a href="/tiktok-events-api-shopify" class="content-item-link">See free guide →</a>
+          </div>
         </div>
 
         <div class="content-item">
-          <div class="content-item-icon">FILE_03 // MAKE.COM JSON</div>
+          <div class="content-item-icon">FILE_03 // MAKE.COM JSON ⚠</div>
           <div class="content-item-title">Stocky Swap Scenario</div>
           <div class="content-item-desc">
-            Live order logging to Google Sheets — stock levels, fulfillment status,
-            order history. Runs before the August 31 Stocky shutdown.
+            Live order logging to Google Sheets — stock levels, fulfilment status, and full order history.
+            Replaces Shopify Stocky before the August 31, 2026 shutdown. Starts capturing data the moment
+            you import. Replaces Linnworks and Inventory Planner.
           </div>
-          <div class="content-item-note">⚠ Deploy before August 2026</div>
+          <div class="content-item-meta">
+            <span class="content-item-note" style="color:var(--red)">⚠ Deploy before Aug 2026</span>
+            <a href="/stocky-swap" class="content-item-link">See free guide →</a>
+          </div>
         </div>
 
         <div class="content-item">
           <div class="content-item-icon">FILE_04 // MAKE.COM JSON</div>
-          <div class="content-item-title">P&L Auto Scenario</div>
+          <div class="content-item-title">P&amp;L Auto Scenario</div>
           <div class="content-item-desc">
-            Every Shopify order auto-calculates revenue, COGS, ad spend, and net profit
-            into a live Google Sheets dashboard. Replaces BeProfit and TrueProfit.
+            Every Shopify order auto-calculates revenue, COGS, ad spend, and net profit into a live
+            Google Sheets P&amp;L dashboard. Updates in real time on every order. Replaces BeProfit
+            and TrueProfit ($19–$299/mo).
           </div>
-          <div class="content-item-note">Works with any Shopify plan</div>
+          <div class="content-item-meta">
+            <span class="content-item-note">✓ Works on any Shopify plan</span>
+            <a href="/shopify-profit-loss-automation" class="content-item-link">See free guide →</a>
+          </div>
         </div>
 
         <div class="content-item">
-          <div class="content-item-icon">FILE_05 // GOOGLE SHEETS</div>
-          <div class="content-item-title">Inventory + P&L Templates</div>
+          <div class="content-item-icon">FILE_05 // GOOGLE SHEETS × 2</div>
+          <div class="content-item-title">Inventory + P&amp;L Templates</div>
           <div class="content-item-desc">
-            Pre-configured Google Sheets templates for both inventory tracking and P&L reporting.
-            Formatted, formulas set, ready to connect. Open and link — no setup.
+            Two pre-configured Google Sheets templates — one for inventory tracking (Stocky Swap),
+            one for live P&amp;L reporting (P&amp;L Auto). Formatted, formulas pre-set, headers
+            mapped to Make.com output fields. Open and connect — no spreadsheet setup.
           </div>
-          <div class="content-item-note">Shareable template links · no copy needed</div>
+          <div class="content-item-meta">
+            <span class="content-item-note">✓ Shareable template links</span>
+          </div>
         </div>
 
         <div class="content-item">
           <div class="content-item-icon">FILE_06 // 4× LOOM VIDEO</div>
-          <div class="content-item-title">Walkthrough Videos</div>
+          <div class="content-item-title">Walkthrough Videos × 4</div>
           <div class="content-item-desc">
-            Four 5–8 minute Loom videos — one per Make.com scenario — showing exactly
-            where to paste each file, which fields to fill in, and how to test it.
+            Four 5–8 minute Loom videos — one per Make.com scenario — showing exactly where to paste the
+            JSON file, which fields to verify, how to add the Shopify webhook, and how to run a test order.
+            No fast-talking. No assumed knowledge.
           </div>
-          <div class="content-item-note">No fast-talking · no assumed knowledge</div>
+          <div class="content-item-meta">
+            <span class="content-item-note">✓ Private links · no login required</span>
+          </div>
         </div>
 
       </div>
 
-      <div style="margin-top:14px; padding:16px 20px; background:var(--bg3); border:1px solid var(--border); border-radius:6px; font-family:var(--mono); font-size:12px; color:var(--text-muted);">
-        <span style="color:var(--text-dim)">// also included → </span>
-        Private email address for one support question. Direct reply, not a help desk.
+      <div class="inline-note">
+        <span class="inline-note-label">// also included → </span>
+        Private email address for one direct support question. You get a personal reply — not a help desk ticket,
+        not a knowledge base link. Most issues resolved in one exchange.
       </div>
     </section>
 
-    <hr class="divider" />
+    <hr />
 
-    <!-- COMPARISON -->
+    <!-- WHAT IT REPLACES -->
+    <section class="section">
+      <div class="section-label">// what the kit replaces</div>
+      <h2>$700+/month of paid apps. Gone.</h2>
+      <p class="section-sub">Each scenario in the kit targets one specific monthly cost. All four together typically exceed $700/month saved.</p>
+
+      <div class="replacements">
+        <div class="rep-row rep-row-head">
+          <div class="rep-cell">Scenario in kit</div>
+          <div class="rep-cell">Replaces</div>
+          <div class="rep-cell">Monthly saving</div>
+        </div>
+        <div class="rep-row">
+          <div class="rep-cell"><a href="/capi-shield">CAPI Shield</a></div>
+          <div class="rep-cell">Elevar · Triple Whale · Northbeam</div>
+          <div class="rep-cell"><span class="rep-saving">$149–$299/mo</span></div>
+        </div>
+        <div class="rep-row">
+          <div class="rep-cell"><a href="/tiktok-events-api-shopify">TikTok CAPI</a></div>
+          <div class="rep-cell">WeltPixel · Analyzify · Elevar TikTok</div>
+          <div class="rep-cell"><span class="rep-saving">$39–$299/mo</span></div>
+        </div>
+        <div class="rep-row">
+          <div class="rep-cell"><a href="/stocky-swap">Stocky Swap ⚠</a></div>
+          <div class="rep-cell">Shopify Stocky · Linnworks · Skubana</div>
+          <div class="rep-cell"><span class="rep-saving">$29–$199/mo</span></div>
+        </div>
+        <div class="rep-row">
+          <div class="rep-cell"><a href="/shopify-profit-loss-automation">P&amp;L Auto</a></div>
+          <div class="rep-cell">TrueProfit · BeProfit · Glew.io</div>
+          <div class="rep-cell"><span class="rep-saving">$19–$299/mo</span></div>
+        </div>
+        <div class="rep-row" style="background:var(--accent-dim); border-top: 1px solid var(--accent-border);">
+          <div class="rep-cell" style="color:var(--accent); font-family:var(--mono); font-size:12px;">Total annual saving</div>
+          <div class="rep-cell" style="color:var(--text-dim); font-size:12px;">vs paid apps above</div>
+          <div class="rep-cell"><span class="rep-saving" style="font-size:14px;">$8,351+/year</span></div>
+        </div>
+      </div>
+    </section>
+
+    <hr />
+
+    <!-- COMPARISON — Free guides vs Complete Kit -->
     <section class="section">
       <div class="section-label">// free guides vs complete kit</div>
       <h2>Same outcome. One-tenth of the time.</h2>
-      <p class="section-sub">The guides are free and thorough. The kit is for people who want it working today.</p>
+      <p class="section-sub">
+        The free guides are thorough — they work and they are free. The kit is for store owners who want it running today.
+        <a href="/shopify-automation-guides" style="color:var(--accent);text-decoration:none;">Browse the free guides →</a>
+      </p>
 
       <div class="compare">
         <div class="compare-head">
@@ -688,46 +1392,50 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
           <div class="compare-head-cell">Free guides</div>
           <div class="compare-head-cell highlight">Complete Kit — $49</div>
         </div>
-
         <div class="compare-row">
-          <div class="compare-cell">Setup time</div>
+          <div class="compare-cell">Total setup time</div>
           <div class="compare-cell">~2 hours per tool</div>
           <div class="compare-cell highlight">~10 minutes total</div>
         </div>
         <div class="compare-row">
           <div class="compare-cell">Make.com scenarios</div>
-          <div class="compare-cell no">Build from scratch</div>
-          <div class="compare-cell highlight"><span class="yes">✓ Import-ready JSON</span></div>
+          <div class="compare-cell"><span class="no">Build from scratch</span></div>
+          <div class="compare-cell highlight"><span class="yes">✓ Import-ready JSON files</span></div>
         </div>
         <div class="compare-row">
-          <div class="compare-cell">Google Sheets</div>
-          <div class="compare-cell no">Follow instructions</div>
-          <div class="compare-cell highlight"><span class="yes">✓ Pre-configured templates</span></div>
+          <div class="compare-cell">Google Sheets templates</div>
+          <div class="compare-cell"><span class="no">Follow step-by-step instructions</span></div>
+          <div class="compare-cell highlight"><span class="yes">✓ Pre-configured, open and connect</span></div>
         </div>
         <div class="compare-row">
-          <div class="compare-cell">Troubleshooting</div>
-          <div class="compare-cell no">On you</div>
-          <div class="compare-cell highlight"><span class="yes">✓ 1 support question included</span></div>
+          <div class="compare-cell">Video walkthroughs</div>
+          <div class="compare-cell"><span class="no">Text-only instructions</span></div>
+          <div class="compare-cell highlight"><span class="yes">✓ 4 Loom videos (5–8 min each)</span></div>
         </div>
         <div class="compare-row">
-          <div class="compare-cell">Loom walkthroughs</div>
-          <div class="compare-cell no">Text only</div>
-          <div class="compare-cell highlight"><span class="yes">✓ 4 videos, 5–8 min each</span></div>
+          <div class="compare-cell">Troubleshooting support</div>
+          <div class="compare-cell"><span class="no">On you</span></div>
+          <div class="compare-cell highlight"><span class="yes">✓ 1 direct support question included</span></div>
         </div>
         <div class="compare-row">
           <div class="compare-cell">Stocky deadline coverage</div>
-          <div class="compare-cell no">Guide exists, build it yourself</div>
-          <div class="compare-cell highlight"><span class="yes">✓ JSON ready today</span></div>
+          <div class="compare-cell"><span class="no">Guide exists — build it yourself</span></div>
+          <div class="compare-cell highlight"><span class="yes">✓ JSON ready to import today</span></div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell">Field mapping required</div>
+          <div class="compare-cell"><span class="no">Yes — each module manually</span></div>
+          <div class="compare-cell highlight"><span class="yes">✓ Pre-mapped — import and run</span></div>
         </div>
         <div class="compare-row">
           <div class="compare-cell">Cost</div>
           <div class="compare-cell">$0 + your time</div>
-          <div class="compare-cell highlight" style="color:var(--accent);font-family:var(--mono);font-size:13px;">$49, once</div>
+          <div class="compare-cell highlight" style="color:var(--accent);font-family:var(--mono);font-size:13px;font-weight:700;">$49, once</div>
         </div>
       </div>
     </section>
 
-    <hr class="divider" />
+    <hr />
 
     <!-- TESTIMONIALS -->
     <section class="section">
@@ -739,8 +1447,8 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
         <div class="testimonial">
           <div class="testimonial-stars">★★★★★</div>
           <p class="testimonial-text">
-            "Recovered <strong>$600/mo in under 10 minutes</strong>. We were bleeding attribution data after iOS 17 and had no idea.
-            CAPI Shield fixed it the same day — then we replaced Klaviyo the following week. Free stack is unreal."
+            "Recovered <strong>$600/month in under 10 minutes</strong>. We were bleeding attribution data after iOS 17 and had
+            no idea. CAPI Shield fixed it the same day — then we replaced Klaviyo the following week. Free stack is unreal."
           </p>
           <div class="testimonial-author">Jamie L. · 6-figure Shopify Apparel Brand</div>
         </div>
@@ -748,19 +1456,19 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
         <div class="testimonial">
           <div class="testimonial-stars">★★★★★</div>
           <p class="testimonial-text">
-            "Replaced <strong>5 paid apps with one workflow</strong>. Stocky, a tracking tool, two connectors — all gone.
-            The Google Sheets ledger is honestly more reliable."
+            "Our TikTok campaigns looked unprofitable on paper. After server-side tracking via Make.com we could see
+            <strong>31% more purchases</strong> than reported. Completely changed our bidding strategy."
           </p>
-          <div class="testimonial-author">Sam D. · Fitness & Supplements (~$40k/mo GMV)</div>
+          <div class="testimonial-author">Ryan T. · DTC Fashion Brand · ~£35k/mo TikTok spend</div>
         </div>
 
         <div class="testimonial">
           <div class="testimonial-stars">★★★★★</div>
           <p class="testimonial-text">
-            "We were paying Klaviyo <strong>$320/month</strong>. Systeme.io does everything we actually used —
-            welcome sequences, abandoned cart, post-purchase — for zero dollars."
+            "Replaced <strong>5 paid apps with one workflow</strong>. Stocky, a tracking tool, two connectors — all gone.
+            The Google Sheets ledger is honestly more reliable than the paid tools were."
           </p>
-          <div class="testimonial-author">Priya M. · DTC Skincare Brand (~£45k/mo GMV)</div>
+          <div class="testimonial-author">Sam D. · Fitness &amp; Supplements (~$40k/mo GMV)</div>
         </div>
 
         <div class="testimonial">
@@ -771,17 +1479,87 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
           </p>
           <div class="testimonial-author">Alex K. · Ecommerce Consultant, 12 client stores</div>
         </div>
+
+        <div class="testimonial">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">
+            "I was paying Elevar <strong>$150 per month</strong>. Same result with CAPI Shield for zero dollars.
+            Set it up in 8 minutes. I feel like an idiot for not doing this sooner."
+          </p>
+          <div class="testimonial-author">Sarah K. · Performance Marketing Agency, 15 Shopify clients</div>
+        </div>
       </div>
     </section>
 
-    <hr class="divider" />
+    <hr />
 
-    <!-- FAQ -->
-    <section class="section">
+    <!-- ABOUT / GEO-OPTIMISED CONTENT SECTION -->
+    <section class="section" id="about">
+      <div class="section-label">// about the complete kit</div>
+      <h2>What is the Stack Architect Complete Kit?</h2>
+
+      <p class="about-prose">
+        The Stack Architect Complete Kit is a $49 one-time purchase containing four ready-to-import Make.com
+        automation scenario JSON files — <a href="/capi-shield">CAPI Shield</a>,
+        <a href="/tiktok-events-api-shopify">TikTok CAPI</a>,
+        <a href="/stocky-swap">Stocky Swap</a>, and
+        <a href="/shopify-profit-loss-automation">P&amp;L Auto</a> — alongside two pre-configured
+        Google Sheets templates and four Loom walkthrough videos. Together, the four scenarios
+        replace over $700 per month of paid Shopify apps including Elevar, Triple Whale, WeltPixel,
+        Stocky, TrueProfit, and BeProfit.
+      </p>
+
+      <p class="about-prose">
+        <strong>How the kit differs from the free guides.</strong>
+        The <a href="/shopify-automation-guides">free Stack Architect guides</a> are thorough, step-by-step
+        instructions for building each automation yourself inside Make.com. They work — and they cost $0.
+        The Complete Kit gives you the finished files. A Make.com JSON scenario file contains the entire
+        configured scenario — every module, every field mapping, every data transformation — packaged as a
+        single file you import with one click. The kit removes 100% of the configuration step. That is the
+        difference between 10 minutes and 8 hours.
+      </p>
+
+      <p class="about-prose">
+        <strong>Who the kit is for.</strong>
+        Store owners and ecommerce operators who need server-side tracking, inventory logging, and live P&amp;L
+        reporting running this week — not this month. Agencies managing multiple Shopify clients who want to
+        deploy the full stack without rebuilding each scenario from scratch. Stores approaching the
+        August 31, 2026 Stocky shutdown who need a replacement ready today. Anyone who read the free guides,
+        understood the outcome, and wants to skip straight to the result.
+      </p>
+
+      <p class="about-prose">
+        <strong>Make.com free tier compatibility.</strong>
+        All four scenarios in the Complete Kit run on Make.com's free tier, which includes 1,000 operations
+        per month — sufficient for Shopify stores processing up to 300 orders per month. Stores above 300
+        orders per month can upgrade to Make.com's Core plan at $9/month, which remains far below the
+        cost of any paid tracking or inventory app the kit replaces. No paid Make.com plan is required to start.
+      </p>
+    </section>
+
+    <hr />
+
+    <!-- FAQ — GEO / AI optimised -->
+    <section class="section" id="faq">
       <div class="section-label">// common questions</div>
       <h2>Before you buy</h2>
+      <p class="section-sub">Answers to every question store owners ask before purchasing.</p>
 
       <div class="faq-list">
+
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">
+            What is the Stack Architect Complete Kit?
+            <span class="faq-q-arrow">▶</span>
+          </button>
+          <div class="faq-a">
+            The Stack Architect Complete Kit is a $49 one-time purchase that includes four ready-to-import
+            Make.com scenario JSON files (CAPI Shield, TikTok CAPI, Stocky Swap, P&amp;L Auto),
+            two pre-configured Google Sheets templates, four Loom walkthrough videos (5–8 minutes each),
+            and a private email address for one direct support question. The kit collectively replaces
+            over $700 per month of paid Shopify apps. Files are delivered instantly after purchase via Lemon Squeezy.
+          </div>
+        </div>
 
         <div class="faq-item">
           <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">
@@ -789,9 +1567,12 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
             <span class="faq-q-arrow">▶</span>
           </button>
           <div class="faq-a">
-            The free guides are step-by-step instructions for building each automation yourself — they work, and they're thorough.
-            The kit gives you the finished files. You import the Make.com JSON and it's already built.
-            No configuration screens, no mapping fields, no troubleshooting. 10 minutes instead of 2 hours per tool.
+            The <a href="/shopify-automation-guides">free guides</a> are step-by-step instructions for
+            building each Make.com automation yourself — they work and they are free. The kit gives you the
+            finished files. You import the JSON into Make.com and it is already built — no configuration
+            screens, no mapping fields, no module-by-module setup, no troubleshooting. 10 minutes instead
+            of 2 hours per tool. If you want to understand every step, use the free guides. If you want
+            it running today, use the kit.
           </div>
         </div>
 
@@ -801,9 +1582,11 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
             <span class="faq-q-arrow">▶</span>
           </button>
           <div class="faq-a">
-            No. All four scenarios run on Make.com's free tier, which gives you 1,000 operations per month —
-            enough for stores processing up to 300 orders per month. If you're above that, upgrading to
-            Make.com's Core plan is $9/month, still far below what tracking apps charge.
+            No. All four scenarios run on Make.com's free tier, which includes 1,000 operations per
+            month — sufficient for Shopify stores processing up to 300 orders per month.
+            If your store exceeds 300 orders per month, Make.com's Core plan is $9/month —
+            still far below the $149–$299/month that tracking apps alone charge.
+            No credit card is required to start Make.com's free tier.
           </div>
         </div>
 
@@ -814,32 +1597,9 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
           </button>
           <div class="faq-a">
             Lemon Squeezy sends you an email with download links for all files immediately after purchase.
-            The Loom videos are accessible via private links in the same email. There's no account to create,
-            no app to install, no waiting.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">
-            What if I get stuck?
-            <span class="faq-q-arrow">▶</span>
-          </button>
-          <div class="faq-a">
-            Every purchase includes a private support email address for one question.
-            You'll get a direct reply — not a help desk ticket, not a knowledge base link.
-            Most issues are resolved in one exchange.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">
-            I already set up some of these manually. Is this still worth it?
-            <span class="faq-q-arrow">▶</span>
-          </button>
-          <div class="faq-a">
-            Yes, if you haven't done all four. The kit includes the Stocky Swap scenario (August 2026 deadline),
-            TikTok CAPI (if you haven't set it up), and the P&L template (which most stores skip because the
-            setup looks complicated). The Google Sheets templates alone save most stores 45 minutes.
+            The four Make.com JSON files, two Google Sheets template links, and four private Loom video links
+            are all in the same delivery email. No account to create, no app to install, no waiting period.
+            Files are available for re-download from your Lemon Squeezy order history at any time.
           </div>
         </div>
 
@@ -849,14 +1609,132 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
             <span class="faq-q-arrow">▶</span>
           </button>
           <div class="faq-a">
-            Yes. The stack uses Shopify webhooks, which are available on every Shopify plan including Basic.
-            No Shopify app installation is required. Nothing changes in your Shopify admin except adding
-            one webhook URL in Settings → Notifications.
+            Yes. The kit uses Shopify webhooks, which are available on every Shopify plan including Shopify Basic.
+            No Shopify app installation is required. The only change in your Shopify admin is adding one
+            webhook URL under Settings → Notifications → Webhooks — a two-minute step. Nothing else in your
+            Shopify store changes.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">
+            What is the Stocky Swap scenario and why is there a deadline?
+            <span class="faq-q-arrow">▶</span>
+          </button>
+          <div class="faq-a">
+            <a href="/stocky-swap">Stocky Swap</a> is a Make.com scenario that replicates Shopify Stocky's inventory tracking
+            using Google Sheets — logging every order's stock levels, fulfilment status, and order history in real time.
+            Shopify is permanently shutting down Stocky on <strong>August 31, 2026</strong>. After that date, stores
+            still using Stocky lose their inventory tracking with no official migration path. The Stocky Swap
+            scenario imports in under 60 seconds and begins capturing data immediately. Every week you delay
+            is a week of inventory data not being backed up.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">
+            I already set up some of these manually. Is the kit still worth it?
+            <span class="faq-q-arrow">▶</span>
+          </button>
+          <div class="faq-a">
+            Yes, if you have not completed all four automations. The kit is particularly valuable if you have not
+            yet deployed Stocky Swap (August 2026 deadline), TikTok CAPI, or P&amp;L Auto. The pre-configured
+            Google Sheets templates alone save most stores 45 minutes. If you have manually completed all four
+            scenarios and are satisfied with how they run, the kit adds less marginal value — the free guides
+            were designed precisely for that use case.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">
+            What if I get stuck after buying?
+            <span class="faq-q-arrow">▶</span>
+          </button>
+          <div class="faq-a">
+            Every purchase includes a private email address for one support question. You get a direct reply —
+            not a help desk ticket and not a knowledge base link. Most issues are resolved in one exchange.
+            Email <a href="mailto:support@stackarchitect.xyz">support@stackarchitect.xyz</a> with "Complete Kit" in the subject line.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">
+            What Shopify apps does the kit replace?
+            <span class="faq-q-arrow">▶</span>
+          </button>
+          <div class="faq-a">
+            The CAPI Shield scenario replaces Elevar ($150+/mo), Triple Whale ($299+/mo), and Northbeam ($300+/mo)
+            for Meta and Google server-side tracking. The TikTok CAPI scenario replaces WeltPixel ($39+/mo) and
+            Analyzify ($99+/mo). The Stocky Swap scenario replaces Shopify Stocky (free, but shutting down),
+            Linnworks, and Skubana ($29–$199/mo). The P&amp;L Auto scenario replaces TrueProfit and BeProfit ($19–$299/mo).
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">
+            Does this work for stores outside the US?
+            <span class="faq-q-arrow">▶</span>
+          </button>
+          <div class="faq-a">
+            Yes. Shopify webhooks, Make.com, Meta Conversions API, Google Enhanced Conversions, and TikTok Events API
+            all work globally. The P&amp;L Auto scenario supports any currency that Shopify supports. The Google Sheets
+            templates use currency-neutral formatting. Stores in the UK, EU, Australia, Canada, and every other
+            Shopify-supported market are fully compatible.
           </div>
         </div>
 
       </div>
     </section>
+
+    <!-- COMPLETE THE STACK -->
+    <section class="section">
+      <div class="section-label">// related free resources</div>
+      <h2>The Complete Free Stack</h2>
+      <p class="section-sub">
+        The kit handles the setup. All six free tools — with full guides — are available free on Stack Architect.
+      </p>
+
+      <div class="stack-grid">
+        <a href="/capi-shield" class="stack-item">
+          <div class="stack-item-tag">Ad Tracking</div>
+          <div class="stack-item-name">CAPI Shield</div>
+          <div class="stack-item-desc">Meta + Google server-side tracking via Make.com webhook</div>
+          <div class="stack-item-saving">Saves $149–$299/mo</div>
+        </a>
+        <a href="/stocky-swap" class="stack-item">
+          <div class="stack-item-tag urgent">⚠ Inventory — Aug 2026</div>
+          <div class="stack-item-name">Stocky Swap</div>
+          <div class="stack-item-desc">Replace Stocky before shutdown — Google Sheets inventory</div>
+          <div class="stack-item-saving">Saves $29–$199/mo</div>
+        </a>
+        <a href="/tiktok-events-api-shopify" class="stack-item">
+          <div class="stack-item-tag">TikTok Tracking</div>
+          <div class="stack-item-name">TikTok CAPI</div>
+          <div class="stack-item-desc">Server-side CompletePayment events — EMQ 6–8</div>
+          <div class="stack-item-saving">Saves $39–$299/mo</div>
+        </a>
+        <a href="/replace-klaviyo-free" class="stack-item">
+          <div class="stack-item-tag">Email Marketing</div>
+          <div class="stack-item-name">Replace Klaviyo</div>
+          <div class="stack-item-desc">Systeme.io replaces Klaviyo — unlimited emails free</div>
+          <div class="stack-item-saving">Saves $150–$400/mo</div>
+        </a>
+        <a href="/shopify-profit-loss-automation" class="stack-item">
+          <div class="stack-item-tag">P&amp;L Reporting</div>
+          <div class="stack-item-name">P&amp;L Auto</div>
+          <div class="stack-item-desc">Live profit and loss in Google Sheets — every order</div>
+          <div class="stack-item-saving">Saves $19–$299/mo</div>
+        </a>
+        <a href="/autocrat-quota-fix" class="stack-item">
+          <div class="stack-item-tag">Stability</div>
+          <div class="stack-item-name">Autocrat Quota Fix</div>
+          <div class="stack-item-desc">Prevent Google Apps Script quota crashes at any volume</div>
+          <div class="stack-item-saving">Saves $49–$99/mo</div>
+        </a>
+      </div>
+    </section>
+
+    <hr />
 
     <!-- DFY BLOCK -->
     <div class="dfy">
@@ -864,8 +1742,10 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
         <div class="dfy-label">// alternatively // DONE-FOR-YOU</div>
         <div class="dfy-title">Want it built for you, not by you?</div>
         <div class="dfy-desc">
-          We set up your complete automation stack personally — CAPI Shield, TikTok CAPI, Stocky Swap, P&L Auto.
-          Done in 24 hours, guaranteed. Email <a href="mailto:support@stackarchitect.xyz" style="color:var(--accent);text-decoration:none;">support@stackarchitect.xyz</a> with "DFY setup" in the subject.
+          We set up your complete automation stack personally — CAPI Shield, TikTok CAPI, Stocky Swap, and P&amp;L Auto —
+          configured to your Shopify store and tested with a live order. Done in 24 hours, guaranteed.
+          Email <a href="mailto:support@stackarchitect.xyz" style="color:var(--accent);text-decoration:none;">support@stackarchitect.xyz</a>
+          with <em>"DFY setup"</em> in the subject line.
         </div>
       </div>
       <div>
@@ -875,34 +1755,123 @@ const description = "The ready-to-import automation stack for Shopify stores. Fo
 
     <!-- BOTTOM CTA -->
     <div class="bottom-cta">
-      <h3>Stop paying $700/month for apps.<br/>$49, once, forever.</h3>
+      <h3>Stop paying $700+/month for apps.<br/>$49, once, forever.</h3>
       <p>
-        Four automation scenarios, two Sheets templates, four Loom walkthroughs.<br/>
-        Import, watch, done. Your entire Shopify backend running in 10 minutes.
+        Four import-ready automation scenarios. Two Google Sheets templates. Four Loom walkthroughs.<br/>
+        Your entire Shopify backend running in 10 minutes — with no subscription, ever.
       </p>
-      <a href="YOUR_LEMON_SQUEEZY_CHECKOUT_URL" class="cta-primary" style="font-size:15px; padding:16px 36px;">
+      <a href="YOUR_LEMON_SQUEEZY_CHECKOUT_URL" class="cta-primary" style="font-size:15px;padding:16px 36px;">
         Get the Complete Kit — $49
       </a>
-      <div style="margin-top:16px; font-family:var(--mono); font-size:11px; color:var(--text-dim);">
+      <div class="bottom-cta-note">
         One-time payment · Instant delivery · No subscription · 500+ stores running this stack
       </div>
     </div>
 
   </div><!-- /page -->
 
+  <!-- FOOTER — exact match to stackarchitect.xyz -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-status">COMPLETE_KIT // PURCHASE_OPEN · 2026.03</div>
+          <div class="footer-brand">Stack Architect</div>
+          <div class="footer-tagline">The $0 Shopify automation stack</div>
+        </div>
+        <div class="footer-links-grid">
+          <div class="footer-links-col">
+            <div class="footer-links-heading">Products</div>
+            <a href="/">$0 Stack</a>
+            <a href="/capi-shield">CAPI Shield</a>
+            <a href="/stocky-swap">Stocky Swap</a>
+            <a href="/tiktok-events-api-shopify">TikTok CAPI</a>
+            <a href="/replace-klaviyo-free">Replace Klaviyo</a>
+            <a href="/shopify-profit-loss-automation">P&amp;L Auto</a>
+            <a href="/autocrat-quota-fix">Autocrat Fix</a>
+            <a href="/best-ai-tools-shopify">AI Tools</a>
+          </div>
+          <div class="footer-links-col">
+            <div class="footer-links-heading">Tools</div>
+            <a href="/tools">All Tools</a>
+            <a href="/shopify-automation-scanner">Scanner</a>
+            <a href="/shopify-app-cost-calculator">App Calculator</a>
+            <a href="https://audit.stackarchitect.xyz">App Audit</a>
+          </div>
+          <div class="footer-links-col">
+            <div class="footer-links-heading">Resources</div>
+            <a href="/shopify-automation-guides">All Guides</a>
+            <a href="/ultimate-shopify-automation-guide">Ultimate Guide</a>
+            <a href="/about">About</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
+            <a href="/sitemap">Sitemap</a>
+            <a href="mailto:support@stackarchitect.xyz">Support</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-badges">
+          <span class="footer-badge">No monthly fees</span>
+          <span class="footer-badge">GDPR compliant</span>
+          <span class="footer-badge">No code required</span>
+          <span class="footer-badge">Any Shopify plan</span>
+        </div>
+        <a href="#top" class="footer-return">↑ RETURN_TO_ORIGIN</a>
+      </div>
+      <div class="footer-disclaimer">
+        Stack Architect uses affiliate links. We may earn a commission if you sign up for tools via our links — at no extra cost to you.
+        We only recommend tools we use ourselves. <a href="/privacy">Privacy policy</a>.
+      </div>
+    </div>
+  </footer>
+
+  <!-- STICKY MOBILE BAR -->
+  <div class="sticky-bar" id="stickyBar" role="complementary" aria-label="Purchase prompt">
+    <div class="sticky-bar-text">Complete Kit <span class="sticky-bar-price">$49</span> · No subscription</div>
+    <a href="YOUR_LEMON_SQUEEZY_CHECKOUT_URL" class="cta-primary" style="font-size:12px;padding:10px 18px;">Get it →</a>
+  </div>
+
   <script>
+    // ── FAQ accordion ──
     function toggleFaq(btn) {
       const answer = btn.nextElementSibling;
       const isOpen = answer.classList.contains('open');
-      // close all
       document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
-      document.querySelectorAll('.faq-q').forEach(b => b.setAttribute('aria-expanded','false'));
-      // open clicked (if it wasn't already open)
+      document.querySelectorAll('.faq-q').forEach(b => b.setAttribute('aria-expanded', 'false'));
       if (!isOpen) {
         answer.classList.add('open');
-        btn.setAttribute('aria-expanded','true');
+        btn.setAttribute('aria-expanded', 'true');
       }
     }
+
+    // ── Stocky countdown ──
+    function updateCountdown() {
+      const deadline = new Date('2026-08-31T23:59:59Z');
+      const now = new Date();
+      const diff = deadline - now;
+      if (diff <= 0) {
+        document.getElementById('stocky-countdown').innerHTML =
+          '<span style="color:var(--red);font-family:var(--mono);font-size:13px;">Stocky has shut down. Replace it now.</span>';
+        return;
+      }
+      const days  = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const mins  = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      document.getElementById('cd-days').textContent  = String(days).padStart(2, '0');
+      document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('cd-mins').textContent  = String(mins).padStart(2, '0');
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 60000);
+
+    // ── Sticky bar on scroll ──
+    const heroEl = document.querySelector('.hero');
+    const stickyBar = document.getElementById('stickyBar');
+    const obs = new IntersectionObserver(entries => {
+      stickyBar.classList.toggle('visible', !entries[0].isIntersecting);
+    }, { threshold: 0 });
+    if (heroEl) obs.observe(heroEl);
   </script>
 
 </body>
