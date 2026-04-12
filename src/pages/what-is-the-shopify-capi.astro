@@ -1,0 +1,322 @@
+---
+// FAQ: What is the Shopify CAPI?
+// Anti-cannibalization: /capi-shield is the product page for the free tool.
+// This page is definitional — answers WHAT the CAPI is and routes to /capi-shield for HOW to set it up.
+// No affiliate links applicable.
+const title = "What is the Shopify CAPI?";
+const description = "The Shopify CAPI (Conversions API) is Shopify's server-side tracking system that sends purchase and conversion events from Shopify's servers to Meta, Google, TikTok, and other ad platforms — bypassing browser privacy restrictions and recovering missing conversion data.";
+const canonical = "https://www.stackarchitect.xyz/faq/what-is-the-shopify-capi";
+const datePublished = "2026-04-01";
+const dateModified = "2026-04-01";
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the Shopify CAPI?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Shopify CAPI refers to Shopify's server-side Conversions API integration — a system that sends purchase and conversion event data directly from Shopify's servers to ad platforms like Meta (Facebook), Google, and TikTok, bypassing browser privacy restrictions. It ensures ad platforms receive accurate conversion data even when browser pixels are blocked by iOS, Safari ITP, or ad blockers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does CAPI stand for in Shopify?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "CAPI stands for Conversions API — originally Meta's (Facebook's) term for their server-side event tracking endpoint. In the Shopify context, 'Shopify CAPI' is commonly used to describe both Meta's Conversions API as implemented on Shopify, and more broadly any server-side conversion tracking system used to send Shopify order events to ad platforms."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does Shopify need a CAPI setup?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Shopify's default browser-based pixel tracking misses 30–50% of conversions on stores with significant iOS and mobile traffic, due to Apple's App Tracking Transparency framework and Safari's Intelligent Tracking Prevention. The CAPI sends purchase events server-side, recovering these missing conversions and restoring accurate ROAS reporting in Meta Ads and Google Ads."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the Shopify CAPI free to set up?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Meta's Conversions API itself is free — it is an API endpoint that any developer or tool can connect to. Setting it up manually requires developer knowledge. CAPI Shield by Stack Architect provides a free, no-code implementation of Meta CAPI and Google Enhanced Conversions for Shopify stores, with setup under one hour and no monthly subscription."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Shopify have a native CAPI integration?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Shopify has a partial native CAPI integration via the Meta Sales Channel app, but it requires the Meta Business Suite integration and does not give merchants control over event configuration, deduplication settings, or custom event parameters. For complete CAPI implementation with full control, a dedicated tool like CAPI Shield or a manual developer setup is required."
+      }
+    }
+  ]
+};
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title} | Stack Architect</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:type" content="article" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.stackarchitect.xyz/" },
+      { "@type": "ListItem", "position": 2, "name": "FAQ", "item": "https://www.stackarchitect.xyz/faq" },
+      { "@type": "ListItem", "position": 3, "name": title, "item": canonical }
+    ]
+  })} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #080c0a; --surface: #0d1410; --border: #162018;
+      --accent: #22c55e; --accent-dim: #16a34a;
+      --text: #d1fae5; --muted: #4b7a5a; --warn: #f59e0b;
+      --font: 'JetBrains Mono', 'Courier New', monospace;
+    }
+    html { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 14px; line-height: 1.7; }
+    body { min-height: 100vh; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .nav { border-bottom: 1px solid var(--border); padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 52px; background: var(--bg); position: sticky; top: 0; z-index: 100; }
+    .nav-logo { font-weight: 700; font-size: 13px; color: var(--accent); letter-spacing: 0.05em; }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a { color: var(--muted); font-size: 12px; }
+    .nav-links a:hover { color: var(--accent); text-decoration: none; }
+    .nav-cta { background: var(--accent); color: #080c0a; font-size: 11px; font-weight: 700; padding: 6px 14px; letter-spacing: 0.08em; }
+    .nav-cta:hover { background: var(--accent-dim); text-decoration: none; color: #080c0a; }
+    .breadcrumb { padding: 1rem 1.5rem 0; font-size: 11px; color: var(--muted); }
+    .breadcrumb a { color: var(--muted); }
+    .breadcrumb span { margin: 0 0.4rem; }
+    .container { max-width: 760px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+    .page-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 1rem; }
+    .page-tag span { color: var(--accent); }
+    h1 { font-size: clamp(1.25rem, 4vw, 1.75rem); font-weight: 700; color: var(--text); line-height: 1.3; margin-bottom: 1.25rem; }
+    .lead { font-size: 15px; color: var(--text); border-left: 3px solid var(--accent); padding-left: 1rem; margin-bottom: 2.5rem; line-height: 1.8; }
+    .meta-row { display: flex; gap: 1.5rem; margin-bottom: 2rem; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 0.6rem 0; }
+    h2 { font-size: 1rem; font-weight: 700; color: var(--accent); margin: 2rem 0 0.75rem; letter-spacing: 0.03em; }
+    p { margin-bottom: 1rem; color: var(--text); font-size: 14px; }
+
+    .flow-diagram { background: var(--surface); border: 1px solid var(--border); padding: 1.5rem; margin: 1.5rem 0; display: flex; flex-direction: column; gap: 0.5rem; }
+    .flow-row { display: flex; align-items: center; gap: 0.75rem; font-size: 12px; }
+    .flow-node { background: var(--bg); border: 1px solid var(--border); padding: 0.4rem 0.75rem; font-size: 11px; font-weight: 700; color: var(--text); white-space: nowrap; }
+    .flow-node.active { border-color: var(--accent); color: var(--accent); }
+    .flow-arrow { color: var(--muted); font-size: 14px; flex-shrink: 0; }
+    .flow-label { font-size: 10px; color: var(--muted); }
+
+    .events-list { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; margin: 1rem 0; }
+    @media (max-width: 540px) { .events-list { grid-template-columns: 1fr 1fr; } }
+    .event-tag { background: var(--surface); border: 1px solid var(--border); padding: 0.4rem 0.6rem; font-size: 11px; color: var(--accent); text-align: center; }
+
+    .highlight-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
+    .highlight-box .label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.5rem; }
+
+    .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.5rem 0; }
+    @media (max-width: 500px) { .stat-row { grid-template-columns: 1fr 1fr; } }
+    .stat { background: var(--surface); border: 1px solid var(--border); padding: 1rem; text-align: center; }
+    .stat-number { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+    .stat-label { font-size: 10px; color: var(--muted); margin-top: 0.2rem; }
+
+    .faq-section { margin-top: 3rem; border-top: 1px solid var(--border); padding-top: 2rem; }
+    .faq-section h2 { margin-top: 0; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-question { width: 100%; background: none; border: none; color: var(--text); font-family: var(--font); font-size: 13px; font-weight: 700; text-align: left; padding: 1rem 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+    .faq-question:hover { color: var(--accent); }
+    .faq-question .chevron { color: var(--muted); font-size: 16px; flex-shrink: 0; transition: transform 0.2s; }
+    .faq-answer { display: none; padding: 0 0 1.25rem; font-size: 13px; color: var(--text); line-height: 1.75; }
+    .faq-item.open .faq-answer { display: block; }
+    .faq-item.open .chevron { transform: rotate(180deg); color: var(--accent); }
+
+    .cta-block { margin-top: 3rem; background: var(--surface); border: 1px solid var(--border); border-top: 2px solid var(--accent); padding: 2rem; }
+    .cta-block .cta-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.75rem; }
+    .cta-block p { font-size: 13px; margin-bottom: 1.25rem; }
+    .btn-primary { display: inline-block; background: var(--accent); color: #080c0a; font-family: var(--font); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; padding: 10px 20px; margin-right: 0.75rem; margin-bottom: 0.5rem; }
+    .btn-primary:hover { background: var(--accent-dim); text-decoration: none; color: #080c0a; }
+    .btn-ghost { display: inline-block; border: 1px solid var(--border); color: var(--muted); font-family: var(--font); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; padding: 10px 20px; margin-bottom: 0.5rem; }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+    footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="/">STACK_ARCHITECT</a>
+  <ul class="nav-links">
+    <li><a href="/capi-shield">CAPI_Shield</a></li>
+    <li><a href="/tiktok-events-api-shopify">TikTok_API</a></li>
+    <li><a href="/tools">Tools</a></li>
+    <li><a href="/shopify-automation-guides">Guides</a></li>
+  </ul>
+  <a class="nav-cta" href="/pro">GO PRO →</a>
+</nav>
+
+<div class="breadcrumb">
+  <a href="/">~/HOME</a><span>//</span>
+  <a href="/faq">FAQ</a><span>//</span>
+  What is the Shopify CAPI?
+</div>
+
+<main class="container">
+
+  <div class="page-tag">FAQ // <span>DIRECT ANSWER</span> // TRACKING_ATTRIBUTION</div>
+
+  <h1>What is the Shopify CAPI?</h1>
+
+  <p class="lead">
+    <strong>The Shopify CAPI is a server-side tracking system</strong> that sends purchase and conversion event data directly from Shopify's servers to Meta, Google, and TikTok — bypassing browser-based privacy restrictions that cause 30–50% of Shopify conversions to go untracked.
+  </p>
+
+  <div class="meta-row">
+    <span>UPDATED: April 2026</span>
+    <span>READ TIME: 4 min</span>
+    <span>CATEGORY: Tracking</span>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat-number">30–50%</div>
+      <div class="stat-label">conversions missed by browser pixels on iOS</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">+25%</div>
+      <div class="stat-label">average ROAS recovery after CAPI setup</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">$0</div>
+      <div class="stat-label">cost to implement with CAPI Shield</div>
+    </div>
+  </div>
+
+  <h2>// What CAPI Stands For</h2>
+  <p>
+    CAPI stands for <strong>Conversions API</strong> — originally coined by Meta (Facebook) to describe their server-side event tracking endpoint, launched in 2020 as a response to Apple's iOS 14 privacy changes. The term has since expanded colloquially: "Shopify CAPI" now commonly refers to any server-side conversion tracking setup on a Shopify store, including Meta's Conversions API, Google's Enhanced Conversions, and TikTok's Events API.
+  </p>
+
+  <h2>// How Shopify CAPI Works — The Data Flow</h2>
+
+  <div class="flow-diagram">
+    <div style="font-size:10px; font-weight:700; color: var(--muted); margin-bottom:0.5rem; letter-spacing:0.1em;">// SERVER-SIDE EVENT FLOW</div>
+    <div class="flow-row">
+      <div class="flow-node active">CUSTOMER PURCHASES</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node active">SHOPIFY ORDER CREATED</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node active">CAPI SENDS SERVER EVENT</div>
+    </div>
+    <div class="flow-row" style="margin-top:0.5rem;">
+      <div class="flow-label">No browser involved in this path ↓</div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-node active">META CAPI</div>
+      <div class="flow-arrow">&nbsp;</div>
+      <div class="flow-node active">GOOGLE ENHANCED</div>
+      <div class="flow-arrow">&nbsp;</div>
+      <div class="flow-node active">TIKTOK EVENTS API</div>
+    </div>
+  </div>
+
+  <h2>// Which Events the Shopify CAPI Sends</h2>
+  <p>
+    A complete CAPI implementation sends the following events server-side to ad platforms. Each event includes hashed customer identifiers (email, phone, name) to enable user matching and accurate attribution:
+  </p>
+  <div class="events-list">
+    <div class="event-tag">Purchase</div>
+    <div class="event-tag">InitiateCheckout</div>
+    <div class="event-tag">AddToCart</div>
+    <div class="event-tag">ViewContent</div>
+    <div class="event-tag">PageView</div>
+    <div class="event-tag">CompleteRegistration</div>
+  </div>
+  <p style="font-size:12px; color:var(--muted); margin-top:0.5rem;">Purchase and InitiateCheckout are the highest-priority events for ad optimisation — these are where browser pixel loss has the most impact on campaign performance.</p>
+
+  <h2>// Deduplication — The Critical Detail</h2>
+  <p>
+    Running CAPI alongside browser pixels (recommended) requires deduplication. Without it, both the browser pixel and the CAPI will send a Purchase event for the same order — resulting in double-counted conversions in your ad platform reporting. Deduplication works by assigning a shared <code>event_id</code> to both the browser pixel event and the server-side CAPI event. When ad platforms receive two events with the same <code>event_id</code>, they count it as one conversion. CAPI Shield handles deduplication automatically.
+  </p>
+
+  <div class="highlight-box">
+    <div class="label">IMPLEMENTATION NOTE</div>
+    <p style="margin:0; font-size:13px;">Meta's Conversions API requires a valid <strong>Access Token</strong> from Meta Business Manager and a <strong>Dataset ID</strong> (formerly Pixel ID). Google Enhanced Conversions requires a Google Tag Manager server-side container or direct integration via Google Ads API. Both are configured once — CAPI Shield handles the technical setup for both platforms.</p>
+  </div>
+
+  <!-- FAQ ACCORDION -->
+  <div class="faq-section">
+    <h2>// Frequently Asked Questions</h2>
+
+    <div class="faq-item">
+      <button class="faq-question">Is CAPI the same as the Meta Pixel?<span class="chevron">▾</span></button>
+      <div class="faq-answer">
+        No. The Meta Pixel is a browser-based JavaScript tag that fires from the customer's device. The Conversions API (CAPI) sends the same events from your server, bypassing the customer's browser entirely. They serve complementary roles — running both together with deduplication provides the most complete event coverage.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">Does Shopify have a built-in CAPI for Meta?<span class="chevron">▾</span></button>
+      <div class="faq-answer">
+        Shopify's Meta Sales Channel includes a basic CAPI connection, but it requires active use of the Meta Business Suite integration and provides limited configuration control. Merchants who use a separate Meta Pixel (not via Shopify's Meta channel) need to implement CAPI independently. CAPI Shield provides full CAPI coverage independent of which Meta integration you use.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">Does CAPI work with Google as well as Meta?<span class="chevron">▾</span></button>
+      <div class="faq-answer">
+        Yes. Google's equivalent of Meta CAPI is called Enhanced Conversions — it sends hashed customer data server-side to improve conversion matching in Google Ads. A complete server-side tracking setup covers both Meta CAPI and Google Enhanced Conversions. CAPI Shield by Stack Architect implements both at zero cost.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">How do I know if my CAPI is working correctly?<span class="chevron">▾</span></button>
+      <div class="faq-answer">
+        In Meta Business Manager, check Events Manager → your Dataset → Test Events. Place a test order on your Shopify store and verify that a server-side Purchase event appears in the test results. The event source should show "Server" (not "Browser") for CAPI events. For Google, verify Enhanced Conversions in Google Ads → Goals → Conversions → the relevant conversion action should show "Enhanced" matching status.
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-block">
+    <div class="cta-label">FREE META + GOOGLE CAPI // NO SUBSCRIPTION</div>
+    <p>CAPI Shield implements Meta Conversions API and Google Enhanced Conversions server-side for your Shopify store. Free, no-code, setup in under 1 hour.</p>
+    <a class="btn-primary" href="/capi-shield">GET CAPI SHIELD FREE →</a>
+    <a class="btn-ghost" href="/pro">Explore Stack Architect Pro</a>
+  </div>
+
+</main>
+
+<footer>
+  <div>© 2026 STACK ARCHITECT // ALL SYSTEMS FREE</div>
+  <div>
+    <a href="/capi-shield">CAPI_Shield</a> &nbsp;·&nbsp;
+    <a href="/tiktok-events-api-shopify">TikTok_API</a> &nbsp;·&nbsp;
+    <a href="/tools">Tools</a> &nbsp;·&nbsp;
+    <a href="/about">About</a>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.closest('.faq-item').classList.toggle('open');
+    });
+  });
+</script>
+
+</body>
+</html>

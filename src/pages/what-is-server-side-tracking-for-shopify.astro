@@ -1,0 +1,323 @@
+---
+// FAQ: What is server-side tracking for Shopify?
+// Anti-cannibalization: /blog/shopify-server-side-tracking-complete-setup-guide is the HOW-TO guide.
+// This page answers the definitional WHAT question and routes to the full setup guide.
+// No affiliate links applicable.
+const title = "What is server-side tracking for Shopify?";
+const description = "Server-side tracking for Shopify sends conversion events from your server directly to Meta, Google, and TikTok — bypassing ad blockers and iOS privacy restrictions. It fixes the tracking gap that causes understated ROAS in Shopify stores.";
+const canonical = "https://www.stackarchitect.xyz/faq/what-is-server-side-tracking-for-shopify";
+const datePublished = "2026-04-01";
+const dateModified = "2026-04-01";
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is server-side tracking for Shopify?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Server-side tracking for Shopify sends purchase and conversion events directly from Shopify's servers to ad platforms like Meta and Google, bypassing the customer's browser entirely. Unlike browser-based pixels that can be blocked by iOS privacy restrictions, Safari's ITP, or ad blockers, server-side events travel directly server-to-server and are not subject to browser interception."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why do Shopify stores need server-side tracking?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Since Apple's iOS 14 update in 2021, browser-based pixels miss 30–50% of conversions on Shopify stores with significant mobile traffic. Server-side tracking recovers these missing events by sending purchase data directly from Shopify's servers to ad platforms, restoring accurate ROAS reporting and improving ad optimisation signals."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between the Meta Pixel and the Meta Conversions API?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Meta Pixel is a browser-based JavaScript snippet that fires when a customer's browser loads your page — it can be blocked by iOS, Safari ITP, and ad blockers. The Meta Conversions API (CAPI) is a server-side integration that sends the same events directly from your server to Meta, bypassing browser limitations entirely. Running both together (deduplication required) gives the most complete event coverage."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I set up server-side tracking on Shopify for free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "CAPI Shield by Stack Architect implements Meta Conversions API and Google Enhanced Conversions server-side for Shopify stores at zero cost. It handles deduplication, event matching, and hashed customer data automatically. Setup takes under one hour and requires no coding. The full setup guide is at stackarchitect.xyz/capi-shield."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does server-side tracking affect page speed?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Server-side tracking events fire after the purchase is completed and run on your server — they have zero impact on your storefront's page load speed, Core Web Vitals, or customer-facing performance. Browser pixels, by contrast, add JavaScript weight to every page load."
+      }
+    }
+  ]
+};
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title} | Stack Architect</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:type" content="article" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.stackarchitect.xyz/" },
+      { "@type": "ListItem", "position": 2, "name": "FAQ", "item": "https://www.stackarchitect.xyz/faq" },
+      { "@type": "ListItem", "position": 3, "name": title, "item": canonical }
+    ]
+  })} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #080c0a; --surface: #0d1410; --border: #162018;
+      --accent: #22c55e; --accent-dim: #16a34a;
+      --text: #d1fae5; --muted: #4b7a5a; --warn: #f59e0b; --red: #ef4444;
+      --font: 'JetBrains Mono', 'Courier New', monospace;
+    }
+    html { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 14px; line-height: 1.7; }
+    body { min-height: 100vh; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .nav { border-bottom: 1px solid var(--border); padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 52px; background: var(--bg); position: sticky; top: 0; z-index: 100; }
+    .nav-logo { font-weight: 700; font-size: 13px; color: var(--accent); letter-spacing: 0.05em; }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a { color: var(--muted); font-size: 12px; }
+    .nav-links a:hover { color: var(--accent); text-decoration: none; }
+    .nav-cta { background: var(--accent); color: #080c0a; font-size: 11px; font-weight: 700; padding: 6px 14px; letter-spacing: 0.08em; }
+    .nav-cta:hover { background: var(--accent-dim); text-decoration: none; color: #080c0a; }
+    .breadcrumb { padding: 1rem 1.5rem 0; font-size: 11px; color: var(--muted); }
+    .breadcrumb a { color: var(--muted); }
+    .breadcrumb span { margin: 0 0.4rem; }
+    .container { max-width: 760px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+    .page-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 1rem; }
+    .page-tag span { color: var(--accent); }
+    h1 { font-size: clamp(1.25rem, 4vw, 1.75rem); font-weight: 700; color: var(--text); line-height: 1.3; margin-bottom: 1.25rem; }
+    .lead { font-size: 15px; color: var(--text); border-left: 3px solid var(--accent); padding-left: 1rem; margin-bottom: 2.5rem; line-height: 1.8; }
+    .meta-row { display: flex; gap: 1.5rem; margin-bottom: 2rem; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 0.6rem 0; }
+    h2 { font-size: 1rem; font-weight: 700; color: var(--accent); margin: 2rem 0 0.75rem; letter-spacing: 0.03em; }
+    p { margin-bottom: 1rem; color: var(--text); font-size: 14px; }
+
+    /* COMPARISON */
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+    @media (max-width: 500px) { .compare { grid-template-columns: 1fr; } }
+    .compare-card { background: var(--surface); border: 1px solid var(--border); padding: 1.25rem; }
+    .compare-card.bad { border-top: 2px solid var(--red); }
+    .compare-card.good { border-top: 2px solid var(--accent); }
+    .compare-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; margin-bottom: 0.5rem; }
+    .compare-card.bad .compare-label { color: var(--red); }
+    .compare-card.good .compare-label { color: var(--accent); }
+    .compare-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 0.75rem; }
+    .compare-list { list-style: none; font-size: 12px; line-height: 1.9; }
+    .compare-card.bad .compare-list li::before { content: '✕ '; color: var(--red); }
+    .compare-card.good .compare-list li::before { content: '✓ '; color: var(--accent); }
+
+    .tool-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin: 1.5rem 0; }
+    @media (max-width: 600px) { .tool-row { grid-template-columns: 1fr; } }
+    .tool-card { background: var(--surface); border: 1px solid var(--border); padding: 1rem; }
+    .tool-name { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 0.25rem; }
+    .tool-channel { font-size: 11px; color: var(--accent); margin-bottom: 0.25rem; }
+    .tool-note { font-size: 11px; color: var(--muted); }
+
+    .highlight-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
+    .highlight-box .label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.5rem; }
+
+    .faq-section { margin-top: 3rem; border-top: 1px solid var(--border); padding-top: 2rem; }
+    .faq-section h2 { margin-top: 0; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-question { width: 100%; background: none; border: none; color: var(--text); font-family: var(--font); font-size: 13px; font-weight: 700; text-align: left; padding: 1rem 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+    .faq-question:hover { color: var(--accent); }
+    .faq-question .chevron { color: var(--muted); font-size: 16px; flex-shrink: 0; transition: transform 0.2s; }
+    .faq-answer { display: none; padding: 0 0 1.25rem; font-size: 13px; color: var(--text); line-height: 1.75; }
+    .faq-item.open .faq-answer { display: block; }
+    .faq-item.open .chevron { transform: rotate(180deg); color: var(--accent); }
+
+    .cta-block { margin-top: 3rem; background: var(--surface); border: 1px solid var(--border); border-top: 2px solid var(--accent); padding: 2rem; }
+    .cta-block .cta-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.75rem; }
+    .cta-block p { font-size: 13px; margin-bottom: 1.25rem; }
+    .btn-primary { display: inline-block; background: var(--accent); color: #080c0a; font-family: var(--font); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; padding: 10px 20px; margin-right: 0.75rem; margin-bottom: 0.5rem; }
+    .btn-primary:hover { background: var(--accent-dim); text-decoration: none; color: #080c0a; }
+    .btn-ghost { display: inline-block; border: 1px solid var(--border); color: var(--muted); font-family: var(--font); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; padding: 10px 20px; margin-bottom: 0.5rem; }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+    footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="/">STACK_ARCHITECT</a>
+  <ul class="nav-links">
+    <li><a href="/capi-shield">CAPI_Shield</a></li>
+    <li><a href="/tiktok-events-api-shopify">TikTok_API</a></li>
+    <li><a href="/tools">Tools</a></li>
+    <li><a href="/shopify-automation-guides">Guides</a></li>
+  </ul>
+  <a class="nav-cta" href="/pro">GO PRO →</a>
+</nav>
+
+<div class="breadcrumb">
+  <a href="/">~/HOME</a><span>//</span>
+  <a href="/faq">FAQ</a><span>//</span>
+  What is server-side tracking for Shopify?
+</div>
+
+<main class="container">
+
+  <div class="page-tag">FAQ // <span>DIRECT ANSWER</span> // TRACKING_ATTRIBUTION</div>
+
+  <h1>What is server-side tracking for Shopify?</h1>
+
+  <p class="lead">
+    <strong>Server-side tracking sends conversion events from your server directly to ad platforms</strong> — bypassing the customer's browser, iOS privacy restrictions, and ad blockers. For Shopify stores, it's the fix for the 30–50% of conversions that browser pixels miss since Apple's iOS 14 update in 2021.
+  </p>
+
+  <div class="meta-row">
+    <span>UPDATED: April 2026</span>
+    <span>READ TIME: 4 min</span>
+    <span>CATEGORY: Tracking</span>
+  </div>
+
+  <h2>// Browser Pixels vs Server-Side Tracking</h2>
+  <p>
+    Traditional Shopify tracking uses browser-based pixels — JavaScript snippets that fire when a customer's browser loads your thank-you page. When a customer's iOS device blocks the pixel, or their browser has privacy restrictions that prevent it from firing, that conversion is invisible to your ad platforms. Server-side tracking bypasses the browser entirely.
+  </p>
+
+  <div class="compare">
+    <div class="compare-card bad">
+      <div class="compare-label">✕ BROWSER PIXEL</div>
+      <div class="compare-title">Meta Pixel, GA4 tag</div>
+      <ul class="compare-list">
+        <li>Blocked by iOS 14+ privacy</li>
+        <li>Blocked by Safari ITP</li>
+        <li>Blocked by ad blockers (~25% of users)</li>
+        <li>Cookie consent can prevent firing</li>
+        <li>Adds JavaScript to every page</li>
+        <li>30–50% event loss on mobile</li>
+      </ul>
+    </div>
+    <div class="compare-card good">
+      <div class="compare-label">✓ SERVER-SIDE</div>
+      <div class="compare-title">Conversions API, Enhanced Conversions</div>
+      <ul class="compare-list">
+        <li>Fires from server — not browser</li>
+        <li>Not affected by iOS privacy</li>
+        <li>Cannot be blocked by ad blockers</li>
+        <li>Does not depend on cookies</li>
+        <li>Zero page speed impact</li>
+        <li>Near-complete event coverage</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>// How Server-Side Tracking Works on Shopify</h2>
+  <p>
+    When a customer completes a purchase on your Shopify store, Shopify's servers generate the order data. Server-side tracking sends a purchase event — including the order value, items purchased, and hashed customer identifiers — directly from Shopify's servers to Meta's Conversions API, Google's Enhanced Conversions endpoint, or TikTok's Events API. The customer's browser is never involved in this data transfer.
+  </p>
+  <p>
+    Hashed customer identifiers (email address, phone number, first name, last name) are sent as SHA-256 hashes — they allow ad platforms to match the conversion to a specific user for attribution without transmitting raw personal data.
+  </p>
+
+  <h2>// What Server-Side Tools Cover Which Channels</h2>
+  <div class="tool-row">
+    <div class="tool-card">
+      <div class="tool-name">CAPI Shield</div>
+      <div class="tool-channel">Meta + Google · Free</div>
+      <div class="tool-note">Implements Meta CAPI and Google Enhanced Conversions server-side. Zero cost. Setup under 1 hour.</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">TikTok Events API</div>
+      <div class="tool-channel">TikTok · Free</div>
+      <div class="tool-note">Server-side TikTok event tracking. No code required. Stack Architect free tool.</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">Shopify Pixels</div>
+      <div class="tool-channel">Native · Free</div>
+      <div class="tool-note">Shopify's built-in Customer Events run server-side by default. Activate in Settings → Customer events.</div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <div class="label">FULL SETUP GUIDE</div>
+    <p style="margin:0; font-size:13px;">For step-by-step instructions for implementing Meta CAPI, Google Enhanced Conversions, and TikTok Events API on Shopify, see the <a href="/blog/shopify-server-side-tracking-complete-setup-guide">complete server-side tracking setup guide</a>. Covers deduplication, event testing, and verification for all three platforms.</p>
+  </div>
+
+  <!-- FAQ ACCORDION -->
+  <div class="faq-section">
+    <h2>// Frequently Asked Questions</h2>
+
+    <div class="faq-item">
+      <button class="faq-question">Do I still need browser pixels if I have server-side tracking?<span class="chevron">▾</span></button>
+      <div class="faq-answer">
+        Yes — running both browser pixels and server-side events together (with deduplication) gives the most complete coverage. Browser pixels capture events that occur before purchase (page views, add-to-cart, checkout steps) while server-side focuses on the purchase event where accuracy matters most. Both signals together give ad platforms the strongest optimization data.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">What is deduplication and why does it matter?<span class="chevron">▾</span></button>
+      <div class="faq-answer">
+        Deduplication prevents the same conversion event from being counted twice when both browser pixel and server-side API send the same purchase event to Meta or Google. Without deduplication, a single purchase fires two Purchase events — one from the browser pixel and one from CAPI — inflating your reported conversions. Deduplication uses a shared event ID to tell the ad platform these are the same event and to count it only once. CAPI Shield handles deduplication automatically.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">How much does server-side tracking improve ROAS reporting?<span class="chevron">▾</span></button>
+      <div class="faq-answer">
+        Most Shopify stores see 20–40% more reported conversions in Meta and Google after implementing server-side tracking, depending on their audience's device mix and privacy settings. Stores with primarily iOS mobile audiences tend to see the largest improvement. This does not mean ad spend becomes more efficient automatically — it means your existing ad spend was already generating those conversions, but they were invisible to your reporting. Better data leads to better optimisation over time.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">Is server-side tracking GDPR and privacy compliant?<span class="chevron">▾</span></button>
+      <div class="faq-answer">
+        Server-side tracking using hashed customer identifiers is generally considered more privacy-preserving than browser pixels because raw personal data is never transmitted. However, GDPR compliance still requires a lawful basis for processing and appropriate disclosures in your privacy policy. Server-side tracking does not eliminate GDPR obligations — it changes the technical implementation, not the legal requirements. Consult a privacy lawyer for advice specific to your store.
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-block">
+    <div class="cta-label">FREE SERVER-SIDE TRACKING // META + GOOGLE</div>
+    <p>CAPI Shield implements Meta Conversions API and Google Enhanced Conversions server-side for your Shopify store — free, no subscription, setup under 1 hour.</p>
+    <a class="btn-primary" href="/capi-shield">GET CAPI SHIELD FREE →</a>
+    <a class="btn-ghost" href="/blog/shopify-server-side-tracking-complete-setup-guide">Read Full Setup Guide</a>
+  </div>
+
+</main>
+
+<footer>
+  <div>© 2026 STACK ARCHITECT // ALL SYSTEMS FREE</div>
+  <div>
+    <a href="/capi-shield">CAPI_Shield</a> &nbsp;·&nbsp;
+    <a href="/tiktok-events-api-shopify">TikTok_API</a> &nbsp;·&nbsp;
+    <a href="/tools">Tools</a> &nbsp;·&nbsp;
+    <a href="/about">About</a>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.closest('.faq-item').classList.toggle('open');
+    });
+  });
+</script>
+
+</body>
+</html>
