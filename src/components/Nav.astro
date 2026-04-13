@@ -2,222 +2,403 @@
 interface Props {
   topBarLabel?: string;
 }
-
 const { topBarLabel = 'PRODUCT_NODES // ACCESS_OPEN' } = Astro.props;
 ---
 
 <a id="top" class="sr-only" aria-hidden="true"></a>
 
-<!-- Top status bar -->
-<div class="bg-[#0a0a0a] border-b border-[#1f1f1f] px-4 py-1.5 text-xs text-[#52525b] flex items-center justify-between overflow-hidden">
-  <span class="flex items-center gap-2">
-    <span class="w-1.5 h-1.5 rounded-full bg-[#4ade80] animate-pulse inline-block"></span>
-    <span class="font-mono">{topBarLabel}</span>
+<div class="sa-topbar">
+  <span class="sa-topbar-left">
+    <span class="sa-pulse"></span>
+    <span class="sa-mono">{topBarLabel}</span>
   </span>
-  <span class="hidden sm:block text-[#4ade80] font-mono text-xs">SAVE $700+/MO →</span>
+  <span class="sa-topbar-right sa-mono">SAVE $700+/MO →</span>
 </div>
 
-<!-- Mobile nav toggle (CSS checkbox hack) -->
-<input type="checkbox" id="mobile-nav-toggle" class="hidden peer/nav" aria-hidden="true" />
+<nav class="sa-nav" id="sa-nav-main">
+  <div class="sa-nav-inner">
 
-<!-- Main nav -->
-<nav class="bg-black border-b border-[#1f1f1f] relative z-50">
-  <div class="max-w-7xl mx-auto px-4">
-    <div class="flex items-center justify-between h-12">
+    <a href="/" class="sa-logo">~/HOME</a>
 
-      <!-- Logo / home -->
-      <a
-        href="/"
-        class="text-xs font-bold font-mono text-white hover:text-[#4ade80] transition-colors tracking-wider"
-      >
-        ~/HOME
-      </a>
+    <div class="sa-nav-links" id="sa-nav-links">
 
-      <!-- Desktop nav items -->
-      <div class="hidden md:flex items-center gap-1">
-
-        <!-- Products dropdown -->
-        <div class="relative group/products pb-2 -mb-2">
-          <button
-            type="button"
-            class="flex items-center gap-1 text-xs text-gray-400 hover:text-white px-3 py-3 transition-colors font-mono"
-            aria-haspopup="true"
-          >
-            Products <span class="text-[#52525b]">▾</span>
-          </button>
-          <div
-            class="absolute top-[calc(100%-1px)] left-0 min-w-[280px] bg-black border border-[#1f1f1f] invisible opacity-0 translate-y-1
-                   group-hover/products:visible group-hover/products:opacity-100 group-hover/products:translate-y-0
-                   group-focus-within/products:visible group-focus-within/products:opacity-100 group-focus-within/products:translate-y-0
-                   transition-all duration-150 z-50"
-          >
-            <a href="/capi-shield" class="flex flex-col px-4 py-3 hover:bg-[#0a0a0a] border-b border-[#1f1f1f] group/item">
-              <span class="text-xs font-bold text-white group-hover/item:text-[#4ade80] transition-colors font-mono">CAPI_Shield</span>
-              <span class="text-xs text-[#52525b] mt-0.5">Free Meta + Google server-side tracking</span>
-            </a>
-            <a href="/stocky-swap" class="flex flex-col px-4 py-3 hover:bg-[#0a0a0a] border-b border-[#1f1f1f] group/item">
-              <span class="text-xs font-bold text-white group-hover/item:text-[#4ade80] transition-colors font-mono">$0_Stocky_Swap</span>
-              <span class="text-xs text-[#52525b] mt-0.5">Free inventory — replaces Stocky Aug 2026</span>
-            </a>
-            <a href="/tiktok-events-api-shopify" class="flex flex-col px-4 py-3 hover:bg-[#0a0a0a] border-b border-[#1f1f1f] group/item">
-              <span class="text-xs font-bold text-white group-hover/item:text-[#4ade80] transition-colors font-mono">TikTok_Events_API</span>
-              <span class="text-xs text-[#52525b] mt-0.5">Free TikTok server-side tracking</span>
-            </a>
-            <a href="/replace-klaviyo-free" class="flex flex-col px-4 py-3 hover:bg-[#0a0a0a] border-b border-[#1f1f1f] group/item">
-              <span class="text-xs font-bold text-white group-hover/item:text-[#4ade80] transition-colors font-mono">Replace_Klaviyo_Free</span>
-              <span class="text-xs text-[#52525b] mt-0.5">Free email automation via Systeme.io</span>
-            </a>
-            <a href="/shopify-profit-loss-automation" class="flex flex-col px-4 py-3 hover:bg-[#0a0a0a] border-b border-[#1f1f1f] group/item">
-              <span class="text-xs font-bold text-white group-hover/item:text-[#4ade80] transition-colors font-mono">Shopify_P&amp;L_Auto</span>
-              <span class="text-xs text-[#52525b] mt-0.5">Live profit and loss in Google Sheets free</span>
-            </a>
-            <a href="/autocrat-quota-fix" class="flex flex-col px-4 py-3 hover:bg-[#0a0a0a] group/item">
-              <span class="text-xs font-bold text-white group-hover/item:text-[#4ade80] transition-colors font-mono">Autocrat_Quota_Fix</span>
-              <span class="text-xs text-[#52525b] mt-0.5">Fix Google Apps Script quota errors free</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- Tools dropdown -->
-        <div class="relative group/tools pb-2 -mb-2">
-          <button
-            type="button"
-            class="flex items-center gap-1 text-xs text-gray-400 hover:text-white px-3 py-3 transition-colors font-mono"
-            aria-haspopup="true"
-          >
-            Tools <span class="text-[#52525b]">▾</span>
-          </button>
-          <div
-            class="absolute top-[calc(100%-1px)] left-0 min-w-[300px] bg-black border border-[#1f1f1f] invisible opacity-0 translate-y-1
-                   group-hover/tools:visible group-hover/tools:opacity-100 group-hover/tools:translate-y-0
-                   group-focus-within/tools:visible group-focus-within/tools:opacity-100 group-focus-within/tools:translate-y-0
-                   transition-all duration-150 z-50"
-          >
-            <a href="/tools" class="flex flex-col px-4 py-3 hover:bg-[#0a0a0a] border-b border-[#1f1f1f] group/item">
-              <span class="text-xs font-bold text-white group-hover/item:text-[#4ade80] transition-colors font-mono">All Tools</span>
-              <span class="text-xs text-[#52525b] mt-0.5">Free tools to audit and automate your store</span>
-            </a>
-            <a href="/shopify-automation-scanner" class="flex flex-col px-4 py-3 hover:bg-[#0a0a0a] border-b border-[#1f1f1f] group/item">
-              <span class="text-xs font-bold text-white group-hover/item:text-[#4ade80] transition-colors font-mono">Automation Scanner</span>
-              <span class="text-xs text-[#52525b] mt-0.5">Find which apps you can replace for $0</span>
-            </a>
-            <a href="/shopify-app-cost-calculator" class="flex flex-col px-4 py-3 hover:bg-[#0a0a0a] border-b border-[#1f1f1f] group/item">
-              <span class="text-xs font-bold text-white group-hover/item:text-[#4ade80] transition-colors font-mono">App Cost Calculator</span>
-              <span class="text-xs text-[#52525b] mt-0.5">Calculate your exact monthly app bill</span>
-            </a>
-            <a href="https://audit.stackarchitect.xyz" target="_blank" rel="noopener noreferrer" class="flex flex-col px-4 py-3 hover:bg-[#0a0a0a] border-b border-[#1f1f1f] group/item">
-              <span class="text-xs font-bold text-white group-hover/item:text-[#4ade80] transition-colors font-mono">
-                App Audit <span class="text-[#52525b] font-normal">↗</span>
-              </span>
-              <span class="text-xs text-[#52525b] mt-0.5">AI audit — enter your apps, get a free savings report</span>
-            </a>
-            <a href="/shopify-app-stack-kill-or-keep-auditor" class="flex flex-col px-4 py-3 hover:bg-[#0a0a0a] border-b border-[#1f1f1f] group/item">
-              <span class="text-xs font-bold text-white group-hover/item:text-[#4ade80] transition-colors font-mono">App Stack Auditor</span>
-              <span class="text-xs text-[#52525b] mt-0.5">Kill or keep — find what to replace for free</span>
-            </a>
-            <a href="/make-vs-zapier-cost-calculator" class="flex flex-col px-4 py-3 hover:bg-[#0a0a0a] border-b border-[#1f1f1f] group/item">
-              <span class="text-xs font-bold text-white group-hover/item:text-[#4ade80] transition-colors font-mono">Make vs Zapier Calculator</span>
-              <span class="text-xs text-[#52525b] mt-0.5">Compare automation platform costs</span>
-            </a>
-            <a href="/klaviyo-to-systeme-migration-savings-calculator" class="flex flex-col px-4 py-3 hover:bg-[#0a0a0a] border-b border-[#1f1f1f] group/item">
-              <span class="text-xs font-bold text-white group-hover/item:text-[#4ade80] transition-colors font-mono">Klaviyo Savings Calculator</span>
-              <span class="text-xs text-[#52525b] mt-0.5">See how much switching saves you</span>
-            </a>
-            <a href="/best-ai-tools-shopify" class="flex flex-col px-4 py-3 hover:bg-[#0a0a0a] group/item">
-              <span class="text-xs font-bold text-white group-hover/item:text-[#4ade80] transition-colors font-mono">Best AI Tools 2026</span>
-              <span class="text-xs text-[#52525b] mt-0.5">9 AI tools for Shopify ranked by ROI — free options noted</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- Guides dropdown -->
-        <div class="relative group/guides pb-2 -mb-2">
-          <button
-            type="button"
-            class="flex items-center gap-1 text-xs text-gray-400 hover:text-white px-3 py-3 transition-colors font-mono"
-            aria-haspopup="true"
-          >
-            Guides <span class="text-[#52525b]">▾</span>
-          </button>
-          <div
-            class="absolute top-[calc(100%-1px)] left-0 min-w-[280px] bg-black border border-[#1f1f1f] invisible opacity-0 translate-y-1
-                   group-hover/guides:visible group-hover/guides:opacity-100 group-hover/guides:translate-y-0
-                   group-focus-within/guides:visible group-focus-within/guides:opacity-100 group-focus-within/guides:translate-y-0
-                   transition-all duration-150 z-50"
-          >
-            <a href="/shopify-automation-guides" class="flex flex-col px-4 py-3 hover:bg-[#0a0a0a] border-b border-[#1f1f1f] group/item">
-              <span class="text-xs font-bold text-white group-hover/item:text-[#4ade80] transition-colors font-mono">All Guides</span>
-              <span class="text-xs text-[#52525b] mt-0.5">Tracking, inventory, P&amp;L and workflow guides</span>
-            </a>
-            <a href="/ultimate-shopify-automation-guide" class="flex flex-col px-4 py-3 hover:bg-[#0a0a0a] group/item">
-              <span class="text-xs font-bold text-white group-hover/item:text-[#4ade80] transition-colors font-mono">Ultimate Automation Guide</span>
-              <span class="text-xs text-[#52525b] mt-0.5">The complete $0 automation setup guide</span>
-            </a>
-          </div>
+      <!-- Products -->
+      <div class="sa-drop" id="drop-products">
+        <button class="sa-drop-btn" type="button" aria-haspopup="true" aria-expanded="false" data-drop="products">
+          Products <span class="sa-caret">▾</span>
+        </button>
+        <div class="sa-drop-panel" id="panel-products" role="menu">
+          <a href="/capi-shield" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">CAPI_Shield</span>
+            <span class="sa-drop-desc">Free Meta + Google server-side tracking</span>
+          </a>
+          <a href="/stocky-swap" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">$0_Stocky_Swap</span>
+            <span class="sa-drop-desc">Free inventory — replaces Stocky Aug 2026</span>
+          </a>
+          <a href="/tiktok-events-api-shopify" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">TikTok_Events_API</span>
+            <span class="sa-drop-desc">Free TikTok server-side tracking</span>
+          </a>
+          <a href="/replace-klaviyo-free" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">Replace_Klaviyo_Free</span>
+            <span class="sa-drop-desc">Free email automation via Systeme.io</span>
+          </a>
+          <a href="/shopify-profit-loss-automation" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">Shopify_P&amp;L_Auto</span>
+            <span class="sa-drop-desc">Live profit and loss in Google Sheets free</span>
+          </a>
+          <a href="/autocrat-quota-fix" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">Autocrat_Quota_Fix</span>
+            <span class="sa-drop-desc">Fix Google Apps Script quota errors free</span>
+          </a>
+          <div class="sa-drop-divider"></div>
+          <a href="/pro" class="sa-drop-item sa-drop-item--pro" role="menuitem">
+            <span class="sa-drop-title">Complete_Kit — $49 <span class="sa-pro-badge">PRO</span></span>
+            <span class="sa-drop-desc">All 4 scenarios ready to import — live in 10 min</span>
+          </a>
         </div>
       </div>
 
-      <!-- Desktop CTA -->
-      <div class="hidden md:flex items-center gap-3">
-        <span class="text-xs text-[#52525b] font-mono">SAVE $700+/MO →</span>
-        <a
-          href="https://www.make.com/en/register?pc=techie123"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-xs font-bold text-black bg-[#4ade80] px-3 py-1.5 hover:bg-[#22c55e] transition-colors whitespace-nowrap font-mono"
-        >
-          REPLACE MY APPS FREE →
-        </a>
+      <!-- Tools -->
+      <div class="sa-drop" id="drop-tools">
+        <button class="sa-drop-btn" type="button" aria-haspopup="true" aria-expanded="false" data-drop="tools">
+          Tools <span class="sa-caret">▾</span>
+        </button>
+        <div class="sa-drop-panel" id="panel-tools" role="menu">
+          <a href="/tools" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">All Tools</span>
+            <span class="sa-drop-desc">21 free tools — calculators and diagnostics</span>
+          </a>
+          <div class="sa-drop-divider"></div>
+          <div class="sa-drop-group-label">CALCULATORS</div>
+          <a href="/shopify-automation-scanner" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">Automation Scanner</span>
+            <span class="sa-drop-desc">Find which apps you can replace for $0</span>
+          </a>
+          <a href="/shopify-app-cost-calculator" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">App Cost Calculator</span>
+            <span class="sa-drop-desc">Calculate your exact monthly app bill</span>
+          </a>
+          <a href="/shopify-app-stack-kill-or-keep-auditor" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">App Stack Auditor</span>
+            <span class="sa-drop-desc">Kill or keep — find what to replace for free</span>
+          </a>
+          <a href="/make-vs-zapier-cost-calculator" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">Make vs Zapier Calculator</span>
+            <span class="sa-drop-desc">Compare automation platform costs</span>
+          </a>
+          <a href="/klaviyo-to-systeme-migration-savings-calculator" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">Klaviyo Savings Calculator</span>
+            <span class="sa-drop-desc">See how much switching saves you</span>
+          </a>
+          <a href="/stocky-migration-risk-scorer" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">Stocky Migration Scorer</span>
+            <span class="sa-drop-desc">Score your Stocky replacement risk</span>
+          </a>
+          <div class="sa-drop-divider"></div>
+          <div class="sa-drop-group-label">AI AUDIT</div>
+          <a href="https://audit.stackarchitect.xyz" class="sa-drop-item" role="menuitem" target="_blank" rel="noopener">
+            <span class="sa-drop-title">App Audit ↗</span>
+            <span class="sa-drop-desc">AI audit — get a free savings report</span>
+          </a>
+          <a href="/best-ai-tools-shopify" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">Best AI Tools 2026</span>
+            <span class="sa-drop-desc">9 AI tools ranked by ROI</span>
+          </a>
+        </div>
       </div>
 
-      <!-- Mobile hamburger label -->
-      <label
-        for="mobile-nav-toggle"
-        class="md:hidden flex flex-col gap-1.5 cursor-pointer p-2"
-        aria-label="Toggle navigation"
-      >
-        <span class="w-5 h-px bg-white peer-checked/nav:rotate-45 transition-transform block"></span>
-        <span class="w-5 h-px bg-white peer-checked/nav:opacity-0 transition-opacity block"></span>
-        <span class="w-5 h-px bg-white peer-checked/nav:-rotate-45 transition-transform block"></span>
-      </label>
+      <!-- Comparisons -->
+      <div class="sa-drop" id="drop-compare">
+        <button class="sa-drop-btn" type="button" aria-haspopup="true" aria-expanded="false" data-drop="compare">
+          Compare <span class="sa-caret">▾</span>
+        </button>
+        <div class="sa-drop-panel" id="panel-compare" role="menu">
+          <div class="sa-drop-group-label">ALTERNATIVES</div>
+          <a href="/analyzify-alternative" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">Analyzify Alternative</span>
+            <span class="sa-drop-desc">Free Analyzify replacement</span>
+          </a>
+          <a href="/elevar-alternative" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">Elevar Alternative</span>
+            <span class="sa-drop-desc">Free Elevar replacement</span>
+          </a>
+          <a href="/northbeam-alternative" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">Northbeam Alternative</span>
+            <span class="sa-drop-desc">Free Northbeam replacement</span>
+          </a>
+          <a href="/triple-whale-alternative" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">Triple Whale Alternative</span>
+            <span class="sa-drop-desc">Free Triple Whale replacement</span>
+          </a>
+          <a href="/stocky-alternative" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">Stocky Alternative</span>
+            <span class="sa-drop-desc">Free Stocky replacement before shutdown</span>
+          </a>
+          <a href="/klaviyo-vs-systeme-io" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">Klaviyo vs Systeme.io</span>
+            <span class="sa-drop-desc">Full comparison — free vs $400/mo</span>
+          </a>
+          <div class="sa-drop-divider"></div>
+          <div class="sa-drop-group-label">FAQ</div>
+          <a href="/what-replaces-stocky-after-august-2026" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">What replaces Stocky?</span>
+            <span class="sa-drop-desc">Free options after Aug 2026 shutdown</span>
+          </a>
+          <a href="/is-klaviyo-free" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">Is Klaviyo free?</span>
+            <span class="sa-drop-desc">Pricing and free alternatives</span>
+          </a>
+          <a href="/how-much-does-triple-whale-cost" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">Triple Whale pricing</span>
+            <span class="sa-drop-desc">Full plan breakdown</span>
+          </a>
+          <a href="/what-is-server-side-tracking-for-shopify" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">What is server-side tracking?</span>
+            <span class="sa-drop-desc">Explained simply</span>
+          </a>
+          <a href="/what-is-the-shopify-capi" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">What is the Shopify CAPI?</span>
+            <span class="sa-drop-desc">Meta Conversions API explained</span>
+          </a>
+          <a href="/does-make-com-work-with-shopify" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">Does Make.com work with Shopify?</span>
+            <span class="sa-drop-desc">Full answer and setup guide</span>
+          </a>
+          <a href="/how-do-i-set-up-tiktok-events-api-on-shopify-without-code" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">TikTok Events API — no code?</span>
+            <span class="sa-drop-desc">Free setup in 10 minutes</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Guides -->
+      <div class="sa-drop" id="drop-guides">
+        <button class="sa-drop-btn" type="button" aria-haspopup="true" aria-expanded="false" data-drop="guides">
+          Guides <span class="sa-caret">▾</span>
+        </button>
+        <div class="sa-drop-panel" id="panel-guides" role="menu">
+          <a href="/shopify-automation-guides" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">All Guides</span>
+            <span class="sa-drop-desc">Tracking, inventory, P&amp;L and workflow guides</span>
+          </a>
+          <a href="/ultimate-shopify-automation-guide" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">Ultimate Automation Guide</span>
+            <span class="sa-drop-desc">The complete $0 automation setup guide</span>
+          </a>
+        </div>
+      </div>
+
     </div>
+
+    <div class="sa-nav-right">
+      <a href="/pro" class="sa-pro-cta">GET THE KIT — $49 →</a>
+      <a href="https://www.make.com/en/register?pc=techie123" target="_blank" rel="noopener sponsored" class="sa-free-cta" id="nav-free-cta">REPLACE FREE →</a>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button class="sa-hamburger" id="sa-hamburger" aria-label="Toggle navigation" aria-expanded="false" type="button">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 
   <!-- Mobile menu -->
-  <div class="md:hidden hidden peer-checked/nav:block border-t border-[#1f1f1f] bg-black">
-    <div class="px-4 py-4 space-y-1">
-      <div class="text-xs text-[#52525b] uppercase tracking-widest pb-2 mb-2 border-b border-[#1f1f1f]">PRODUCTS</div>
-      <a href="/capi-shield" class="block text-xs text-gray-400 hover:text-white py-2 font-mono">CAPI_Shield</a>
-      <a href="/stocky-swap" class="block text-xs text-gray-400 hover:text-white py-2 font-mono">$0_Stocky_Swap</a>
-      <a href="/tiktok-events-api-shopify" class="block text-xs text-gray-400 hover:text-white py-2 font-mono">TikTok_Events_API</a>
-      <a href="/replace-klaviyo-free" class="block text-xs text-gray-400 hover:text-white py-2 font-mono">Replace_Klaviyo_Free</a>
-      <a href="/shopify-profit-loss-automation" class="block text-xs text-gray-400 hover:text-white py-2 font-mono">Shopify_P&amp;L_Auto</a>
-      <a href="/autocrat-quota-fix" class="block text-xs text-gray-400 hover:text-white py-2 font-mono">Autocrat_Quota_Fix</a>
+  <div class="sa-mobile-menu" id="sa-mobile-menu" aria-hidden="true">
+    <div class="sa-mobile-section-label">PRODUCTS</div>
+    <a href="/capi-shield" class="sa-mobile-link">CAPI_Shield</a>
+    <a href="/stocky-swap" class="sa-mobile-link">$0_Stocky_Swap</a>
+    <a href="/tiktok-events-api-shopify" class="sa-mobile-link">TikTok_Events_API</a>
+    <a href="/replace-klaviyo-free" class="sa-mobile-link">Replace_Klaviyo_Free</a>
+    <a href="/shopify-profit-loss-automation" class="sa-mobile-link">Shopify_P&amp;L_Auto</a>
+    <a href="/autocrat-quota-fix" class="sa-mobile-link">Autocrat_Quota_Fix</a>
+    <a href="/pro" class="sa-mobile-link sa-mobile-link--pro">Complete Kit — $49 ★</a>
 
-      <div class="text-xs text-[#52525b] uppercase tracking-widest pt-4 pb-2 mb-2 border-b border-[#1f1f1f]">TOOLS</div>
-      <a href="/tools" class="block text-xs text-gray-400 hover:text-white py-2 font-mono">All Tools</a>
-      <a href="/shopify-automation-scanner" class="block text-xs text-gray-400 hover:text-white py-2 font-mono">Automation Scanner</a>
-      <a href="/shopify-app-cost-calculator" class="block text-xs text-gray-400 hover:text-white py-2 font-mono">App Cost Calculator</a>
-      <a href="https://audit.stackarchitect.xyz" target="_blank" rel="noopener noreferrer" class="block text-xs text-gray-400 hover:text-white py-2 font-mono">App Audit ↗</a>
-      <a href="/shopify-app-stack-kill-or-keep-auditor" class="block text-xs text-gray-400 hover:text-white py-2 font-mono">App Stack Auditor</a>
-      <a href="/make-vs-zapier-cost-calculator" class="block text-xs text-gray-400 hover:text-white py-2 font-mono">Make vs Zapier Calculator</a>
-      <a href="/klaviyo-to-systeme-migration-savings-calculator" class="block text-xs text-gray-400 hover:text-white py-2 font-mono">Klaviyo Savings Calculator</a>
-      <a href="/best-ai-tools-shopify" class="block text-xs text-gray-400 hover:text-white py-2 font-mono">Best AI Tools 2026</a>
+    <div class="sa-mobile-section-label">TOOLS</div>
+    <a href="/tools" class="sa-mobile-link">All Tools (21)</a>
+    <a href="/shopify-automation-scanner" class="sa-mobile-link">Automation Scanner</a>
+    <a href="/shopify-app-cost-calculator" class="sa-mobile-link">App Cost Calculator</a>
+    <a href="/shopify-app-stack-kill-or-keep-auditor" class="sa-mobile-link">App Stack Auditor</a>
+    <a href="/make-vs-zapier-cost-calculator" class="sa-mobile-link">Make vs Zapier</a>
+    <a href="https://audit.stackarchitect.xyz" class="sa-mobile-link" target="_blank" rel="noopener">App Audit ↗</a>
+    <a href="/best-ai-tools-shopify" class="sa-mobile-link">Best AI Tools 2026</a>
 
-      <div class="text-xs text-[#52525b] uppercase tracking-widest pt-4 pb-2 mb-2 border-b border-[#1f1f1f]">GUIDES</div>
-      <a href="/shopify-automation-guides" class="block text-xs text-gray-400 hover:text-white py-2 font-mono">All Guides</a>
-      <a href="/ultimate-shopify-automation-guide" class="block text-xs text-gray-400 hover:text-white py-2 font-mono">Ultimate Automation Guide</a>
+    <div class="sa-mobile-section-label">COMPARE</div>
+    <a href="/analyzify-alternative" class="sa-mobile-link">Analyzify Alternative</a>
+    <a href="/elevar-alternative" class="sa-mobile-link">Elevar Alternative</a>
+    <a href="/northbeam-alternative" class="sa-mobile-link">Northbeam Alternative</a>
+    <a href="/triple-whale-alternative" class="sa-mobile-link">Triple Whale Alternative</a>
+    <a href="/stocky-alternative" class="sa-mobile-link">Stocky Alternative</a>
+    <a href="/klaviyo-vs-systeme-io" class="sa-mobile-link">Klaviyo vs Systeme.io</a>
 
-      <div class="pt-4">
-        <a
-          href="https://www.make.com/en/register?pc=techie123"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="block w-full text-center text-xs font-bold text-black bg-[#4ade80] px-3 py-3 hover:bg-[#22c55e] transition-colors font-mono"
-        >
-          REPLACE MY APPS FREE →
-        </a>
-      </div>
+    <div class="sa-mobile-section-label">FAQ</div>
+    <a href="/what-replaces-stocky-after-august-2026" class="sa-mobile-link">What replaces Stocky?</a>
+    <a href="/is-klaviyo-free" class="sa-mobile-link">Is Klaviyo free?</a>
+    <a href="/how-much-does-triple-whale-cost" class="sa-mobile-link">Triple Whale pricing</a>
+    <a href="/what-is-server-side-tracking-for-shopify" class="sa-mobile-link">What is server-side tracking?</a>
+    <a href="/does-make-com-work-with-shopify" class="sa-mobile-link">Does Make.com work with Shopify?</a>
+
+    <div class="sa-mobile-section-label">GUIDES</div>
+    <a href="/shopify-automation-guides" class="sa-mobile-link">All Guides</a>
+    <a href="/ultimate-shopify-automation-guide" class="sa-mobile-link">Ultimate Automation Guide</a>
+
+    <div class="sa-mobile-ctas">
+      <a href="/pro" class="sa-mobile-cta-pro">Get the Complete Kit — $49 →</a>
+      <a href="https://www.make.com/en/register?pc=techie123" target="_blank" rel="noopener sponsored" class="sa-mobile-cta-free">Replace My Apps Free →</a>
     </div>
   </div>
 </nav>
+
+<style>
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+
+/* Top bar */
+.sa-topbar{display:flex;align-items:center;justify-content:space-between;background:#0a0a0a;border-bottom:1px solid #1f1f1f;padding:6px 24px;font-size:10px;color:#52525b;}
+.sa-topbar-right{color:#4ade80;}
+.sa-pulse{display:inline-block;width:6px;height:6px;border-radius:50%;background:#4ade80;animation:tpulse 2s infinite;margin-right:6px;vertical-align:middle;}
+@keyframes tpulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.sa-mono{font-family:'JetBrains Mono',monospace;}
+
+/* Nav shell */
+.sa-nav{background:#000;border-bottom:1px solid #1f1f1f;position:sticky;top:0;z-index:10000;transition:box-shadow .3s;}
+.sa-nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,.5);}
+.sa-nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:0;height:48px;}
+
+/* Logo */
+.sa-logo{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#fff;text-decoration:none;letter-spacing:.08em;margin-right:24px;white-space:nowrap;transition:color .2s;flex-shrink:0;}
+.sa-logo:hover{color:#4ade80;}
+
+/* Desktop links */
+.sa-nav-links{display:flex;align-items:center;gap:2px;flex:1;}
+
+/* Dropdown */
+.sa-drop{position:relative;}
+.sa-drop-btn{display:flex;align-items:center;gap:4px;background:none;border:none;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:#71717a;letter-spacing:.08em;text-transform:uppercase;padding:14px 12px;white-space:nowrap;transition:color .2s;line-height:1;}
+.sa-drop-btn:hover,.sa-drop.open .sa-drop-btn{color:#fff;}
+.sa-caret{font-size:8px;transition:transform .2s;margin-top:1px;}
+.sa-drop.open .sa-caret{transform:rotate(180deg);}
+
+/* Dropdown panel */
+.sa-drop-panel{display:none;position:absolute;top:calc(100% + 4px);left:0;background:#050505;border:1px solid #1f1f1f;border-radius:6px;padding:6px 0;min-width:260px;max-width:320px;z-index:10001;box-shadow:0 16px 48px rgba(0,0,0,.6);max-height:80vh;overflow-y:auto;}
+.sa-drop.open .sa-drop-panel{display:block;}
+
+/* Panel scrollbar */
+.sa-drop-panel::-webkit-scrollbar{width:3px;}
+.sa-drop-panel::-webkit-scrollbar-track{background:transparent;}
+.sa-drop-panel::-webkit-scrollbar-thumb{background:#1f1f1f;border-radius:2px;}
+
+.sa-drop-item{display:flex;flex-direction:column;padding:10px 16px;text-decoration:none;transition:background .15s;gap:2px;}
+.sa-drop-item:hover{background:rgba(74,222,128,.06);}
+.sa-drop-item--pro{background:rgba(74,222,128,.04);}
+.sa-drop-item--pro:hover{background:rgba(74,222,128,.1);}
+.sa-drop-title{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:#e4e4e7;letter-spacing:.06em;transition:color .15s;line-height:1.3;}
+.sa-drop-item:hover .sa-drop-title{color:#4ade80;}
+.sa-drop-item--pro .sa-drop-title{color:#4ade80;}
+.sa-drop-desc{font-size:10px;color:#52525b;line-height:1.4;margin-top:1px;}
+.sa-drop-divider{height:1px;background:#1f1f1f;margin:4px 0;}
+.sa-drop-group-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:#3f3f46;letter-spacing:.18em;text-transform:uppercase;padding:8px 16px 4px;line-height:1;}
+.sa-pro-badge{display:inline-block;background:#4ade80;color:#000;font-size:8px;font-weight:900;padding:2px 5px;border-radius:2px;margin-left:6px;letter-spacing:.08em;vertical-align:middle;}
+
+/* Right CTAs */
+.sa-nav-right{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0;}
+.sa-pro-cta{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:900;color:#000;background:#4ade80;text-decoration:none;padding:7px 12px;border-radius:3px;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;transition:background .2s;line-height:1;}
+.sa-pro-cta:hover{background:#22c55e;}
+.sa-free-cta{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:900;color:#4ade80;border:1px solid rgba(74,222,128,.4);text-decoration:none;padding:6px 12px;border-radius:3px;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;transition:all .2s;line-height:1;}
+.sa-free-cta:hover{background:#4ade80;color:#000;}
+
+/* Hamburger */
+.sa-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;margin-left:12px;}
+.sa-hamburger span{display:block;width:20px;height:1.5px;background:#fff;transition:all .25s;}
+.sa-hamburger.open span:nth-child(1){transform:rotate(45deg) translate(4px,4px);}
+.sa-hamburger.open span:nth-child(2){opacity:0;}
+.sa-hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px);}
+
+/* Mobile menu */
+.sa-mobile-menu{display:none;background:#050505;border-top:1px solid #1f1f1f;padding:16px 24px 24px;max-height:80vh;overflow-y:auto;}
+.sa-mobile-menu.open{display:block;}
+.sa-mobile-section-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:#3f3f46;letter-spacing:.18em;text-transform:uppercase;padding:16px 0 8px;border-top:1px solid #1f1f1f;margin-top:8px;}
+.sa-mobile-section-label:first-child{margin-top:0;border-top:none;padding-top:4px;}
+.sa-mobile-link{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;color:#71717a;text-decoration:none;padding:7px 0;transition:color .2s;letter-spacing:.06em;}
+.sa-mobile-link:hover{color:#fff;}
+.sa-mobile-link--pro{color:#4ade80 !important;}
+.sa-mobile-ctas{display:flex;flex-direction:column;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid #1f1f1f;}
+.sa-mobile-cta-pro{display:block;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:900;color:#000;background:#4ade80;text-decoration:none;padding:12px;border-radius:4px;letter-spacing:.1em;text-transform:uppercase;}
+.sa-mobile-cta-free{display:block;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:900;color:#4ade80;border:1px solid rgba(74,222,128,.4);text-decoration:none;padding:12px;border-radius:4px;letter-spacing:.1em;text-transform:uppercase;}
+
+/* Responsive */
+@media(max-width:900px){
+  .sa-nav-links,.sa-nav-right{display:none;}
+  .sa-hamburger{display:flex;}
+  .sa-topbar-right{display:none;}
+}
+@media(max-width:480px){
+  .sa-topbar{padding:6px 16px;}
+  .sa-nav-inner{padding:0 16px;}
+  .sa-mobile-menu{padding:16px 16px 24px;}
+}
+</style>
+
+<script is:inline>
+(function() {
+  // Scroll effect
+  var nav = document.getElementById('sa-nav-main');
+  window.addEventListener('scroll', function() {
+    if (nav) nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  // Desktop dropdowns — click to open, click elsewhere to close
+  var drops = document.querySelectorAll('.sa-drop');
+  drops.forEach(function(drop) {
+    var btn = drop.querySelector('.sa-drop-btn');
+    if (!btn) return;
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var isOpen = drop.classList.contains('open');
+      // Close all others
+      drops.forEach(function(d) {
+        d.classList.remove('open');
+        var b = d.querySelector('.sa-drop-btn');
+        if (b) b.setAttribute('aria-expanded', 'false');
+      });
+      if (!isOpen) {
+        drop.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  // Close dropdowns on outside click
+  document.addEventListener('click', function() {
+    drops.forEach(function(d) {
+      d.classList.remove('open');
+      var b = d.querySelector('.sa-drop-btn');
+      if (b) b.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      drops.forEach(function(d) {
+        d.classList.remove('open');
+        var b = d.querySelector('.sa-drop-btn');
+        if (b) b.setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
+
+  // Mobile hamburger
+  var hamburger = document.getElementById('sa-hamburger');
+  var mobileMenu = document.getElementById('sa-mobile-menu');
+  if (hamburger && mobileMenu) {
+    hamburger.addEventListener('click', function() {
+      var open = hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open', open);
+      mobileMenu.setAttribute('aria-hidden', String(!open));
+      hamburger.setAttribute('aria-expanded', String(open));
+      // Close all dropdowns
+      drops.forEach(function(d) { d.classList.remove('open'); });
+    });
+  }
+})();
+</script>
