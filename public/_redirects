@@ -1,15 +1,48 @@
-/tools/stocky-migration-risk-scorer /stocky-migration-risk-scorer 301
-/tools/meta-emq-score-estimator /meta-emq-score-estimator 301
-/tools/shopify-vs-meta-attribution-gap-calculator /shopify-vs-meta-attribution-gap-calculator 301
-/tools/klaviyo-to-systeme-migration-savings-calculator /klaviyo-to-systeme-migration-savings-calculator 301
-/tools/shopify-profit-loss-leak-finder /shopify-profit-loss-leak-finder 301
-/tools/tiktok-vs-meta-roas-bridge-calculator /tiktok-vs-meta-roas-bridge-calculator 301
-/tools/make-vs-zapier-cost-calculator /make-vs-zapier-cost-calculator 301
-/tools/shopify-app-stack-kill-or-keep-auditor /shopify-app-stack-kill-or-keep-auditor 301
-/tools/shopify-plan-upgrade-break-even-calculator /shopify-plan-upgrade-break-even-calculator 301
-/tools/shopify-plus-break-even-revenue-calculator /shopify-plus-break-even-revenue-calculator 301
-/tools/shopify-shipping-margin-calculator /shopify-shipping-margin-calculator 301
-/tools/ga4-vs-shopify-revenue-reconciler /ga4-vs-shopify-revenue-reconciler 301
-/tools/shopify-influencer-gifting-roi-calculator /shopify-influencer-gifting-roi-calculator 301
-/tools/shopify-agentic-storefront-readiness-checker /shopify-agentic-storefront-readiness-checker 301
-/tools/autocrat-vs-native-google-sheets-speed-calculator /autocrat-vs-native-google-sheets-speed-calculator 301
+─────────────────────────────────────────────────────────────────────────────
+# Stack Architect — Cloudflare Pages _redirects
+# Rules are processed top-to-bottom. More specific rules must come first.
+# 301 = permanent (search engines transfer link equity, browsers cache)
+# 302 = temporary (browsers do NOT cache — use for all affiliate routes so
+#       you can swap URLs without users being stuck on cached old destinations)
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+# ─── AFFILIATE / GO ROUTES ────────────────────────────────────────────────────
+# All affiliate links route through /go/ so:
+#   1. Brave and privacy browsers never see the tracking parameter on first hop
+#   2. Affiliate URLs can be updated in one place without touching every page
+#   3. 302 ensures no browser caches a stale affiliate destination
+
+/go/systeme      https://systeme.io/?sa=sa0262937272be99703a8ea16153f5dd5ae2a3eea7   302
+/go/make         https://www.make.com/en/register?pc=techie123                       302
+/go/beehiiv      https://www.beehiiv.com?via=gym-extras                              302
+/go/getresponse  https://try.getresponsetoday.com/gejtf3pvvf1u                       302
+/go/gorgias      https://partner.gorgias.com/xclmfdgeizdk                            302
+/go/tidio        https://affiliate.tidio.com/5kfhrx3ot6tf                            302
+/go/workspace    https://referworkspace.app.goo.gl/sy2C                              302
+
+
+# ─── TOOL SUBDOMAIN MIGRATIONS ───────────────────────────────────────────────
+# tools.stackarchitect.xyz/* → stackarchitect.xyz/*
+# These are permanent moves — 301 passes link equity to the main domain.
+# Note: the cross-subdomain redirect (tools.* → main domain) must ALSO be
+# configured as a Cloudflare Redirect Rule in the dashboard for the
+# tools.stackarchitect.xyz hostname. These rules handle /tools/* path aliases
+# on the main domain for any internal or external links using that path format.
+
+/tools/stocky-migration-risk-scorer                       /stocky-migration-risk-scorer                       301
+/tools/meta-emq-score-estimator                           /meta-emq-score-estimator                           301
+/tools/shopify-vs-meta-attribution-gap-calculator         /shopify-vs-meta-attribution-gap-calculator         301
+/tools/klaviyo-to-systeme-migration-savings-calculator    /klaviyo-to-systeme-migration-savings-calculator    301
+/tools/shopify-profit-loss-leak-finder                    /shopify-profit-loss-leak-finder                    301
+/tools/tiktok-vs-meta-roas-bridge-calculator              /tiktok-vs-meta-roas-bridge-calculator              301
+/tools/make-vs-zapier-cost-calculator                     /make-vs-zapier-cost-calculator                     301
+/tools/shopify-app-stack-kill-or-keep-auditor             /shopify-app-stack-kill-or-keep-auditor             301
+/tools/shopify-plan-upgrade-break-even-calculator         /shopify-plan-upgrade-break-even-calculator         301
+/tools/shopify-plus-break-even-revenue-calculator         /shopify-plus-break-even-revenue-calculator         301
+/tools/shopify-shipping-margin-calculator                 /shopify-shipping-margin-calculator                 301
+/tools/ga4-vs-shopify-revenue-reconciler                  /ga4-vs-shopify-revenue-reconciler                  301
+/tools/shopify-influencer-gifting-roi-calculator          /shopify-influencer-gifting-roi-calculator          301
+/tools/shopify-agentic-storefront-readiness-checker       /shopify-agentic-storefront-readiness-checker       301
+/tools/autocrat-vs-native-google-sheets-speed-calculator  /autocrat-vs-native-google-sheets-speed-calculator  301
+
