@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 
 export default defineConfig({
-  site: 'https://www.stackarchitect.xyz',
+  site: 'https://stackarchitect.xyz',
   output: 'static',
   trailingSlash: 'never',
 
