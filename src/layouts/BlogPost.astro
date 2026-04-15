@@ -23,6 +23,7 @@ const {
   faqs,
   relatedGuides,
 } = entry.data;
+const canonicalUrl = canonical ?? `https://stackarchitect.xyz/blog/${entry.slug}`;
 
 // Article JSON-LD
 const articleSchema = {
@@ -42,7 +43,7 @@ const articleSchema = {
     name: 'Stack Architect',
     url: 'https://stackarchitect.xyz',
   },
-  mainEntityOfPage: canonical,
+  mainEntityOfPage: canonicalUrl,
 };
 
 // BreadcrumbList JSON-LD
@@ -73,7 +74,7 @@ const breadcrumbSchema = {
       name: categoryLabels[category] ?? category,
       item: 'https://stackarchitect.xyz/shopify-automation-guides',
     },
-    { '@type': 'ListItem', position: 3, name: title, item: canonical },
+    { '@type': 'ListItem', position: 3, name: title, item: canonicalUrl },
   ],
 };
 
@@ -129,7 +130,7 @@ const displayDate = (d: string) =>
 <Base
   title={`${title} | Stack Architect`}
   description={description}
-  canonical={canonical}
+  canonical={canonicalUrl}
   schema={schemas}
   pageType="article"
   publishDate={publishDate}
