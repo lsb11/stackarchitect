@@ -116,4 +116,4 @@ At this size, support complexity increases. Multiple agents, multi-channel queri
 
 **For most Shopify stores, Tidio is the right starting point.** The free plan is genuinely functional. Lyro AI reduces human support time by 70% when properly configured. The £29–£59/month paid plans extend this for growing stores at a fraction of Gorgias's cost.
 
-Start with [Tidio free](https://affiliate.tidio.com/5kfhrx3ot6tf). The [setup guide](/blog/tidio-for-shopify-complete-setup-guide) covers the full configuration including the Lyro knowledge base structure that achieves 70% resolution rates.
+Start with [Tidio free](/go/tidio). The [setup guide](/blog/tidio-for-shopify-complete-setup-guide) covers the full configuration including the Lyro knowledge base structure that achieves 70% resolution rates.

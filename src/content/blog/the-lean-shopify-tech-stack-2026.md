@@ -102,7 +102,7 @@ The only ongoing cost is Make.com's free plan (sufficient for most stores) or Co
 
 **What these do:** manage customer support tickets, integrate with Shopify order data
 
-**Free replacement:** [Tidio](https://affiliate.tidio.com/5kfhrx3ot6tf) — free tier includes live chat and 50 Lyro AI conversations per month. Lyro AI resolves approximately 70% of queries automatically (order status, shipping, FAQs) without human intervention. For stores under £30,000/month GMV, the free tier handles full support volume.
+**Free replacement:** [Tidio](/go/tidio) — free tier includes live chat and 50 Lyro AI conversations per month. Lyro AI resolves approximately 70% of queries automatically (order status, shipping, FAQs) without human intervention. For stores under £30,000/month GMV, the free tier handles full support volume.
 
 ## What to Keep Paying For
 

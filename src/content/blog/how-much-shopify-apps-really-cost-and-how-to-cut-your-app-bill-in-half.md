@@ -97,7 +97,7 @@ The number you see on your credit card statement understates the true cost of Sh
 | Gorgias Pro | $360/month | 2,000 tickets |
 | Zendesk | $55–$115/agent/month | Unlimited |
 
-**Free replacement:** [Tidio](https://affiliate.tidio.com/5kfhrx3ot6tf) free tier — 50 Lyro AI conversations/month. Lyro AI resolves approximately 70% of queries automatically. Free for stores under £30,000/month GMV.
+**Free replacement:** [Tidio](/go/tidio) free tier — 50 Lyro AI conversations/month. Lyro AI resolves approximately 70% of queries automatically. Free for stores under £30,000/month GMV.
 
 ## The Real Monthly Cost of a Common Shopify Stack
 
