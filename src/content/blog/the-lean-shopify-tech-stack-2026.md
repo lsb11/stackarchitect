@@ -1,5 +1,5 @@
 ---
-title: "The Lean Shopify Tech Stack 2026 — Replace $700/Month of Apps for Free"
+title: "The Lean Shopify Tech Stack 2026 — Replace $700/Mo Free"
 description: "The exact free tool stack replacing tracking apps, inventory software, email platforms, and automation connectors for Shopify stores in 2026. What to keep, what to cut, what replaces it."
 publishDate: "2026-03-05"
 updatedDate: "2026-04-16"

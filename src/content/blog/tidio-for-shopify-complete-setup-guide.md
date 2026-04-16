@@ -1,5 +1,5 @@
 ---
-title: "Tidio for Shopify: Complete Setup Guide 2026 — Free AI Live Chat That Resolves 70% of Queries"
+title: "Tidio for Shopify: Free AI Live Chat Setup Guide 2026"
 description: "How to install Tidio on Shopify, configure Lyro AI to resolve 70% of support queries automatically, set up order status flows, and replace Gorgias for free. Step-by-step in 30 minutes."
 publishDate: "2026-03-20"
 updatedDate: "2026-04-14"

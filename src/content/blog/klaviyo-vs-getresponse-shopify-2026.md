@@ -1,5 +1,5 @@
 ---
-title: "Klaviyo vs GetResponse for Shopify 2026 — The Real Cost Comparison"
+title: "Klaviyo vs GetResponse for Shopify 2026 — Cost Comparison"
 description: "After Klaviyo's February 2025 billing change, GetResponse saves 60-70% at equivalent list sizes with comparable automation for most Shopify stores. Full feature comparison, pricing, and when each wins."
 publishDate: "2026-03-18"
 updatedDate: "2026-04-14"

@@ -1,5 +1,5 @@
 ---
-title: "Scalable Google Sheets Automation for High-Volume Shopify Workflows 2026"
+title: "Scalable Google Sheets Automation for Shopify 2026"
 description: "Architecture patterns for Google Sheets automation that handle thousands of Shopify orders without hitting Apps Script quota limits. Batching, checkpointing, hybrid Make.com approaches."
 publishDate: "2026-03-20"
 updatedDate: "2026-04-16"
