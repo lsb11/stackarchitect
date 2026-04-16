@@ -1,9 +1,7 @@
 @import "tailwindcss";
-
 @theme {
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", "Courier New", monospace;
-
   --color-accent: #4ade80;
   --color-accent-dim: #16a34a;
   --color-surface: #0a0a0a;
@@ -12,16 +10,16 @@
   --color-subtle: #27272a;
 }
 
-/* Semantic marker for AI-speakable content */
+/* ── SEMANTIC / AI ─────────────────────────────────────────── */
 .speakable {}
 
-/* Content visibility for long pages — improves LCP */
+/* ── CONTENT VISIBILITY ────────────────────────────────────── */
 .content-section {
   content-visibility: auto;
   contain-intrinsic-size: 0 500px;
 }
 
-/* Reading progress bar */
+/* ── READING PROGRESS BAR ──────────────────────────────────── */
 #reading-progress {
   position: fixed;
   top: 0;
@@ -33,7 +31,7 @@
   transition: width 0.1s linear;
 }
 
-/* Breadcrumb */
+/* ── BREADCRUMB ────────────────────────────────────────────── */
 .breadcrumb {
   display: flex;
   gap: 0.5rem;
@@ -43,21 +41,390 @@
   color: #52525b;
   padding: 0.5rem 1rem;
 }
-
 .breadcrumb a {
   color: #52525b;
   text-decoration: none;
 }
-
 .breadcrumb a:hover {
   color: #4ade80;
 }
-
 .breadcrumb-separator {
   color: #27272a;
 }
 
-/* Print styles for blog posts — E-E-A-T signal */
+/* ══════════════════════════════════════════════════════════════
+   PROSE-STACK — Blog post content styles
+   Matches the dark terminal aesthetic of the site
+══════════════════════════════════════════════════════════════ */
+.prose-stack {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #94a3b8;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* ── HEADINGS ──────────────────────────────────────────────── */
+.prose-stack h1 {
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 900;
+  letter-spacing: -2px;
+  line-height: 1.08;
+  color: #f8fafc;
+  margin: 0 0 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #1f1f1f;
+}
+
+.prose-stack h2 {
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 900;
+  letter-spacing: -1px;
+  line-height: 1.15;
+  color: #f1f5f9;
+  margin: 52px 0 16px;
+  padding-top: 36px;
+  border-top: 1px solid #1f1f1f;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.prose-stack h2::before {
+  content: '//';
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #4ade80;
+  font-weight: 700;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
+
+.prose-stack h3 {
+  font-size: clamp(16px, 2.2vw, 20px);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #e2e8f0;
+  margin: 32px 0 12px;
+  line-height: 1.3;
+}
+
+.prose-stack h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #cbd5e1;
+  margin: 24px 0 8px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 11px;
+  color: #4ade80;
+}
+
+/* ── PARAGRAPHS ────────────────────────────────────────────── */
+.prose-stack p {
+  margin: 0 0 20px;
+  color: #94a3b8;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.prose-stack p:last-child {
+  margin-bottom: 0;
+}
+
+.prose-stack p strong {
+  color: #f1f5f9;
+  font-weight: 700;
+}
+
+.prose-stack p em {
+  color: #cbd5e1;
+  font-style: italic;
+}
+
+/* ── LINKS ─────────────────────────────────────────────────── */
+.prose-stack a {
+  color: #4ade80;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(74, 222, 128, 0.3);
+  transition: border-color 0.2s, color 0.2s;
+  font-weight: 500;
+}
+
+.prose-stack a:hover {
+  color: #86efac;
+  border-bottom-color: #4ade80;
+}
+
+/* ── LISTS ─────────────────────────────────────────────────── */
+.prose-stack ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 28px;
+}
+
+.prose-stack ul li {
+  position: relative;
+  padding: 10px 0 10px 28px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  font-size: 15px;
+  color: #94a3b8;
+  line-height: 1.7;
+}
+
+.prose-stack ul li:last-child {
+  border-bottom: none;
+}
+
+.prose-stack ul li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  color: #4ade80;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.prose-stack ul li strong {
+  color: #e2e8f0;
+  font-weight: 700;
+}
+
+.prose-stack ol {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 28px;
+  counter-reset: prose-counter;
+}
+
+.prose-stack ol li {
+  position: relative;
+  padding: 10px 0 10px 36px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  font-size: 15px;
+  color: #94a3b8;
+  line-height: 1.7;
+  counter-increment: prose-counter;
+}
+
+.prose-stack ol li:last-child {
+  border-bottom: none;
+}
+
+.prose-stack ol li::before {
+  content: counter(prose-counter, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 10px;
+  color: #4ade80;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+
+.prose-stack ol li strong {
+  color: #e2e8f0;
+  font-weight: 700;
+}
+
+/* Nested lists */
+.prose-stack ul ul,
+.prose-stack ol ol,
+.prose-stack ul ol,
+.prose-stack ol ul {
+  margin: 8px 0 0 16px;
+}
+
+/* ── TABLES ────────────────────────────────────────────────── */
+.prose-stack table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 28px 0;
+  font-size: 14px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #1f1f1f;
+}
+
+.prose-stack thead {
+  background: #0a0a0a;
+}
+
+.prose-stack th {
+  padding: 12px 16px;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: #52525b;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-bottom: 1px solid #1f1f1f;
+  white-space: nowrap;
+}
+
+.prose-stack td {
+  padding: 12px 16px;
+  color: #94a3b8;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  vertical-align: top;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.prose-stack tr:last-child td {
+  border-bottom: none;
+}
+
+.prose-stack tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.prose-stack tr:hover td {
+  background: rgba(74, 222, 128, 0.025);
+}
+
+.prose-stack td strong {
+  color: #e2e8f0;
+  font-weight: 700;
+}
+
+/* Scrollable tables on mobile */
+.prose-stack table {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 640px) {
+  .prose-stack table {
+    display: table;
+  }
+}
+
+/* ── CODE ──────────────────────────────────────────────────── */
+.prose-stack code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.08);
+  border: 1px solid rgba(74, 222, 128, 0.15);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.prose-stack pre {
+  background: #050505;
+  border: 1px solid #1f1f1f;
+  border-left: 3px solid #4ade80;
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin: 24px 0;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: #94a3b8;
+}
+
+.prose-stack pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+/* ── BLOCKQUOTE ────────────────────────────────────────────── */
+.prose-stack blockquote {
+  margin: 28px 0;
+  padding: 18px 22px;
+  background: rgba(74, 222, 128, 0.04);
+  border: 1px solid rgba(74, 222, 128, 0.15);
+  border-left: 3px solid #4ade80;
+  border-radius: 0 8px 8px 0;
+  font-size: 15px;
+  color: #cbd5e1;
+  line-height: 1.75;
+  font-style: italic;
+}
+
+.prose-stack blockquote p {
+  margin: 0;
+  color: inherit;
+}
+
+.prose-stack blockquote strong {
+  color: #f1f5f9;
+  font-style: normal;
+}
+
+/* ── HORIZONTAL RULE ───────────────────────────────────────── */
+.prose-stack hr {
+  border: none;
+  border-top: 1px solid #1f1f1f;
+  margin: 40px 0;
+}
+
+/* ── IMAGES ────────────────────────────────────────────────── */
+.prose-stack img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #1f1f1f;
+  margin: 24px 0;
+}
+
+/* ── INTRO PARAGRAPH (first p after h1) ────────────────────── */
+.prose-stack > p:first-of-type {
+  font-size: 17px;
+  color: #cbd5e1;
+  line-height: 1.8;
+  border-left: 3px solid #4ade80;
+  padding-left: 20px;
+  margin-bottom: 32px;
+}
+
+/* ── STEP BLOCKS (Bold text starting with Step N) ─────────── */
+.prose-stack h3 + p > strong:first-child {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #4ade80;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+/* ── CALLOUT PATTERN (bold intro sentences) ────────────────── */
+.prose-stack p > strong:first-child:last-child {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  color: #4ade80;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+/* ── STAT STRIP (bold numbers pattern) ────────────────────── */
+.prose-stack p > strong + strong {
+  color: #f1f5f9;
+}
+
+/* ── SELECTION ─────────────────────────────────────────────── */
+.prose-stack ::selection {
+  background: rgba(74, 222, 128, 0.2);
+  color: #f1f5f9;
+}
+
+/* ── PRINT ─────────────────────────────────────────────────── */
 @media print {
   nav, footer, #reading-progress,
   .breadcrumb { display: none; }
@@ -70,5 +437,75 @@
   a[href]::after {
     content: " (" attr(href) ")";
     font-size: 0.8em;
+  }
+}
+
+/* ── BLOG POST PAGE WRAPPER ────────────────────────────────── */
+/* Adds padding and max-width centering for the article container */
+.blog-post-outer {
+  background: #020617;
+  min-height: 100vh;
+  padding: 0 24px 80px;
+}
+
+/* ── FAQ SECTION (from FAQSection.astro) ───────────────────── */
+/* Overrides for when rendered inside prose-stack */
+.prose-stack + .faq-section h2,
+.faq-section h2 {
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 900;
+  letter-spacing: -1px;
+  color: #f1f5f9;
+  margin: 0 0 24px;
+  padding-top: 36px;
+  border-top: 1px solid #1f1f1f;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.prose-stack + .faq-section h2::before,
+.faq-section h2::before {
+  content: '//';
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #4ade80;
+  font-weight: 700;
+}
+
+/* ── MOBILE ────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .prose-stack {
+    font-size: 15px;
+  }
+
+  .prose-stack h1 {
+    font-size: 26px;
+    letter-spacing: -1.5px;
+  }
+
+  .prose-stack h2 {
+    font-size: 20px;
+    letter-spacing: -0.8px;
+    padding-top: 28px;
+    margin-top: 40px;
+  }
+
+  .prose-stack h3 {
+    font-size: 17px;
+  }
+
+  .prose-stack pre {
+    padding: 14px 16px;
+    font-size: 12px;
+  }
+
+  .prose-stack blockquote {
+    padding: 14px 16px;
+  }
+
+  .prose-stack > p:first-of-type {
+    font-size: 16px;
+    padding-left: 14px;
   }
 }
