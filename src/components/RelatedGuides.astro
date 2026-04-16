@@ -12,26 +12,91 @@ interface Props {
 const { guides } = Astro.props;
 ---
 
-<section class="border-t border-[#1f1f1f] mt-10 pt-8 px-4 max-w-3xl mx-auto pb-10">
-  <h2 class="text-xs text-[#52525b] uppercase tracking-widest mb-5">RELATED_GUIDES</h2>
-  <div class="space-y-2">
-    {
-      guides.map(({ title, href, badge }) => (
-        <a
-          href={href}
-          class="flex items-center justify-between border border-[#1f1f1f] px-4 py-3 hover:border-[#4ade80]/40 hover:bg-[#0a0a0a] transition-colors group"
-        >
-          <div class="flex items-center gap-3 min-w-0">
-            {badge && (
-              <span class="flex-shrink-0 text-xs px-1.5 py-0.5 bg-[#4ade80]/10 text-[#4ade80] border border-[#4ade80]/20 uppercase tracking-wide">
-                {badge}
-              </span>
-            )}
-            <span class="text-sm text-gray-300 group-hover:text-white truncate">{title}</span>
-          </div>
-          <span class="text-[#52525b] group-hover:text-[#4ade80] ml-4 flex-shrink-0">→</span>
-        </a>
-      ))
-    }
+<section class="related-section" aria-labelledby="related-heading">
+  <span class="related-label" id="related-heading">// Related guides</span>
+  <div class="related-list">
+    {guides.map(({ title, href, badge }) => (
+      <a href={href} class="related-item">
+        <span class="related-title">{title}</span>
+        {badge && <span class="related-badge">{badge}</span>}
+        <span class="related-arrow">→</span>
+      </a>
+    ))}
   </div>
 </section>
+
+<style>
+  .related-section {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin: 48px 0 0;
+  }
+
+  .related-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 800;
+    color: #00a854;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .related-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .related-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #e2e8f0;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 12px 0;
+    font-size: 14px;
+    font-weight: 600;
+    transition: color 0.2s;
+  }
+
+  .related-item:last-child {
+    border-bottom: none;
+  }
+
+  .related-item:hover {
+    color: #00a854;
+  }
+
+  .related-title {
+    flex: 1;
+  }
+
+  .related-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: #00a854;
+    background: rgba(0, 168, 84, 0.1);
+    border: 1px solid rgba(0, 168, 84, 0.2);
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .related-arrow {
+    color: #334155;
+    font-size: 13px;
+    flex-shrink: 0;
+    transition: color 0.2s;
+  }
+
+  .related-item:hover .related-arrow {
+    color: #00a854;
+  }
+</style>

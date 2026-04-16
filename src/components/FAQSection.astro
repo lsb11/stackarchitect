@@ -11,23 +11,61 @@ interface Props {
 const { faqs } = Astro.props;
 ---
 
-<section class="border-t border-[#1f1f1f] mt-12 pt-10 px-4 max-w-3xl mx-auto pb-10">
-  <h2 class="text-xs text-[#52525b] uppercase tracking-widest mb-6">FREQUENTLY_ASKED</h2>
-  <div class="space-y-2">
-    {
-      faqs.map(({ question, answer }) => (
-        <details class="border border-[#1f1f1f] group">
-          <summary class="flex items-center justify-between px-4 py-3 cursor-pointer list-none text-sm text-white hover:text-[#4ade80] transition-colors">
-            <span>{question}</span>
-            <span class="ml-4 text-[#52525b] group-open:rotate-45 transition-transform flex-shrink-0">
-              +
-            </span>
-          </summary>
-          <div class="px-4 pb-4 pt-1 text-sm text-gray-400 border-t border-[#1f1f1f]">
-            {answer}
-          </div>
-        </details>
-      ))
-    }
+<section class="faq-section" aria-labelledby="faq-heading">
+  <h2 id="faq-heading">Frequently Asked Questions</h2>
+  <div class="faq-list">
+    {faqs.map(({ question, answer }) => (
+      <div class="faq-item" itemscope itemtype="https://schema.org/Question" itemprop="mainEntity">
+        <p class="faq-q" itemprop="name">{question}</p>
+        <div itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <p class="faq-a" itemprop="text">{answer}</p>
+        </div>
+      </div>
+    ))}
   </div>
 </section>
+
+<style>
+  .faq-section {
+    margin: 52px 0 0;
+  }
+
+  .faq-section h2 {
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 900;
+    letter-spacing: -1px;
+    color: #fff;
+    margin: 0 0 24px;
+    padding-top: 36px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 20px 0;
+  }
+
+  .faq-item:first-child {
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .faq-q {
+    font-size: 16px;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin: 0 0 10px;
+    line-height: 1.4;
+  }
+
+  .faq-a {
+    font-size: 14px;
+    color: #64748b;
+    line-height: 1.75;
+    margin: 0;
+  }
+</style>
