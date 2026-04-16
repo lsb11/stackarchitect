@@ -1,6 +1,6 @@
 ---
 title: "Shopify Stocky Data Export — Save Before Aug 2026 Shutdown"
-description: "Shopify Stocky permanently deletes all your data on August 31, 2026. This guide covers exactly what data Stocky holds, how to export everything before the deadline, and what to do with it after."
+description: "Shopify Stocky deletes all data on August 31, 2026. Covers what Stocky holds, how to export everything before the deadline, and what to do after."
 publishDate: "2026-04-16"
 updatedDate: "2026-04-16"
 category: "inventory"

@@ -1,6 +1,6 @@
 ---
 title: "The Only Truly Free Klaviyo Alternative for Shopify 2026"
-description: "Systeme.io replaces Klaviyo with 2,000 contacts and unlimited email sends permanently free. Full migration guide, feature comparison, and exactly when Klaviyo is still worth keeping."
+description: "Systeme.io replaces Klaviyo — 2,000 contacts, unlimited emails, permanently free. Migration guide, comparison, and when Klaviyo is still worth keeping."
 publishDate: "2026-03-12"
 updatedDate: "2026-04-14"
 category: "email"

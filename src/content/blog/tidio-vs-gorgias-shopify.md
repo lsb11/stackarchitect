@@ -1,6 +1,6 @@
 ---
 title: "Tidio vs Gorgias for Shopify 2026 — Which Is Worth It?"
-description: "Full comparison of Tidio and Gorgias for Shopify stores. Pricing, AI resolution rates, Shopify integration depth, and the decision framework by store size and support volume."
+description: "Tidio vs Gorgias for Shopify — pricing, AI resolution rates, integration depth, and the decision framework by store size and support volume."
 publishDate: "2026-03-22"
 updatedDate: "2026-04-14"
 category: "support"

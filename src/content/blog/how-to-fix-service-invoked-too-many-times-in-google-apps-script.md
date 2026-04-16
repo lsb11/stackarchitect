@@ -1,6 +1,6 @@
 ---
 title: "Fix 'Service Invoked Too Many Times' in Google Apps Script"
-description: "The exact causes of the 'Service invoked too many times' error in Google Apps Script and the specific code fixes for each cause. Covers Sheets, Docs, Drive, Gmail, and Autocrat workflows."
+description: "Exact causes of 'Service invoked too many times' in Google Apps Script and the code fix for each. Covers Sheets, Docs, Drive, Gmail, and Autocrat."
 publishDate: "2026-03-18"
 updatedDate: "2026-04-16"
 category: "workflow"

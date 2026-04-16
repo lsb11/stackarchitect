@@ -1,6 +1,6 @@
 ---
 title: "Fix Shopify Conversion Tracking After iOS Updates 2026"
-description: "iOS updates have broken Shopify conversion tracking for millions of stores. This guide diagnoses exactly which iOS change broke your tracking and provides the free fix for each cause."
+description: "iOS updates have broken Shopify conversion tracking for millions of stores. Diagnoses which iOS change broke yours and gives the free fix for each cause."
 publishDate: "2026-03-15"
 updatedDate: "2026-04-16"
 category: "tracking"

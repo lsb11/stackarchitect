@@ -1,6 +1,6 @@
 ---
 title: "Fix Shopify Google Ads Conversion Tracking 2026 — Free"
-description: "Google Enhanced Conversions for Shopify via Make.com webhook — no Google Tag Manager, no paid app, no code. Recovers 20-40% of missing Google Ads purchase events. Free setup in 6 minutes."
+description: "Google Enhanced Conversions for Shopify via Make.com — no GTM, no paid app, no code. Recovers 20–40% of missing purchase events. Free setup in 6 minutes."
 publishDate: "2026-04-16"
 updatedDate: "2026-04-16"
 category: "tracking"

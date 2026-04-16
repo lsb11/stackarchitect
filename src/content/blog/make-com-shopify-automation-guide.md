@@ -1,6 +1,6 @@
 ---
 title: "Make.com for Shopify: Free Automation Guide 2026"
-description: "How to connect Make.com to Shopify in 3 minutes, set up your first webhook, and run the 4 scenarios every store needs — server-side tracking, inventory, P&L, and email. Free plan covers most stores indefinitely."
+description: "Connect Make.com to Shopify in 3 minutes. Run 4 scenarios every store needs — server-side tracking, inventory, P&L, and email. Free plan covers most."
 publishDate: "2026-03-10"
 updatedDate: "2026-04-14"
 category: "automation"

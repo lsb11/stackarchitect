@@ -1,6 +1,6 @@
 ---
 title: "The Complete Shopify AI Playbook 2026"
-description: "How to use AI across 7 operational stages of a Shopify store: product research, ad creative, email, server-side tracking, customer support, GEO, and agentic storefronts. Free tools first throughout."
+description: "AI across 7 Shopify stages: product research, ad creative, email, server-side tracking, customer support, GEO, and agentic storefronts. Free tools first."
 publishDate: "2026-03-01"
 updatedDate: "2026-04-14"
 category: "ai"

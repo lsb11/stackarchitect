@@ -1,6 +1,6 @@
 ---
 title: "Shopify Automation Stack for Small Stores 2026 — $0"
-description: "The minimum viable free automation stack for Shopify stores under 1,000 orders per month. What to deploy first, what to skip, and how to scale up as volume grows."
+description: "The minimum viable free automation stack for Shopify stores under 1,000 orders/month. What to deploy first, what to skip, and how to scale as volume grows."
 publishDate: "2026-03-22"
 updatedDate: "2026-04-16"
 category: "automation"

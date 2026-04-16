@@ -1,6 +1,6 @@
 ---
 title: "Recover Lost Shopify Conversions with CAPI Shield 2026 — Free"
-description: "How CAPI Shield recovers 20–40% of lost Shopify conversion events that iOS restrictions and browser limitations prevent reaching Meta and Google. Free implementation, no app required."
+description: "CAPI Shield recovers 20–40% of Shopify conversions lost to iOS and ad blockers — sending events server-side to Meta and Google. Free, no app required."
 publishDate: "2026-03-10"
 updatedDate: "2026-04-16"
 category: "tracking"

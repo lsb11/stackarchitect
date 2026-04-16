@@ -1,6 +1,6 @@
 ---
 title: "Reliable Shopify Automations 2026 — Architecture Guide"
-description: "How to build Shopify automation workflows that run reliably at scale — error handling, monitoring, deduplication, fallback logic, and the architectural decisions that separate stable automations from fragile ones."
+description: "Build Shopify automations that run reliably at scale — error handling, monitoring, deduplication, fallback logic, and what separates stable from fragile."
 publishDate: "2026-03-25"
 updatedDate: "2026-04-16"
 category: "workflow"

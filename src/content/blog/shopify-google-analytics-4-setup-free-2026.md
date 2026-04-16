@@ -1,6 +1,6 @@
 ---
 title: "Set Up Google Analytics 4 on Shopify Free 2026 — No Code"
-description: "Complete free GA4 setup for Shopify in 2026. Native Google & YouTube channel for basic tracking, Make.com server-side purchase events for complete data. No apps, no GTM, no monthly fees."
+description: "Free GA4 setup for Shopify in 2026. Google & YouTube channel for basic tracking, Make.com server-side events for complete data. No apps, no GTM, no fees."
 publishDate: "2026-04-16"
 updatedDate: "2026-04-16"
 category: "tracking"
