@@ -39,7 +39,7 @@ export default defineConfig({
 
   integrations: [
     sitemap({
-      filter: (page) => !page.includes('/Nav') && !page.includes('/index') && !page.includes('/stack'),
+      filter: (page) => !page.includes('/sitemap-page'),
       lastmod: new Date(),
       serialize(item) {
         if (item.url === 'https://stackarchitect.xyz/') {
