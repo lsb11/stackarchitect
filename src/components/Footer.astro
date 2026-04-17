@@ -4,26 +4,30 @@
 // Max conversion + SEO/GEO link coverage
 interface Props {
   variant?: 'default' | 'minimal';
+  ctaText?: string;
+  ctaHref?: string;
+  ctaBtnText?: string;
 }
-const { variant = 'default' } = Astro.props;
+const {
+  variant = 'default',
+  ctaText = "Still paying for Shopify apps? Replace all six in under 10 minutes — <strong>free forever</strong>. Or get the pre-built kit for <strong>$29</strong>.",
+  ctaHref = '/pro',
+  ctaBtnText = 'Get the Kit — $29 →',
+} = Astro.props;
 const year = new Date().getFullYear();
 ---
 
 <footer class="sa-footer" role="contentinfo">
 
   {variant === 'default' && (
-    <!-- Conversion strip -->
     <div class="sa-footer-cta-strip">
       <div class="sa-footer-cta-inner">
         <div class="sa-footer-cta-left">
-          <div class="sa-footer-cta-label">// Still paying for Shopify apps?</div>
-          <div class="sa-footer-cta-text">
-            Replace all six in under 10 minutes — <strong>free forever</strong>.
-            Or get the pre-built kit for <strong>$29</strong>.
-          </div>
+          <div class="sa-footer-cta-label">// the $0 automation stack</div>
+          <div class="sa-footer-cta-text" set:html={ctaText} />
         </div>
         <div class="sa-footer-cta-actions">
-          <a href="/pro" class="sa-footer-btn-kit">Get the Kit — $29 →</a>
+          <a href={ctaHref} class="sa-footer-btn-kit">{ctaBtnText}</a>
           <a href="/go/make" target="_blank" rel="noopener sponsored" class="sa-footer-btn-free">Replace Free →</a>
         </div>
       </div>
