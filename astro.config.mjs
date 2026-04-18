@@ -6,7 +6,7 @@ import mdx from '@astrojs/mdx';
 export default defineConfig({
   site: 'https://stackarchitect.xyz',
   output: 'static',
-  trailingSlash: 'never',
+  trailingSlash: 'always',
 
   prefetch: {
     prefetchAll: false,
