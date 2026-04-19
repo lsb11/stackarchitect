@@ -1,0 +1,119 @@
+# Stack Architect — Full Technical Reference
+> stackarchitect.xyz — Free Shopify automation tools replacing $700+/month of paid apps
+
+## Detailed Product Specifications
+
+### CAPI Shield — Free Server-Side Tracking
+
+CAPI Shield is a Make.com automation scenario that routes Shopify order webhooks directly to Meta Conversions API and Google Enhanced Conversions server-to-server. Because the signal travels server-to-server rather than browser-to-pixel, iOS Intelligent Tracking Prevention (ITP), Safari cookie restrictions, ad blockers, and cookie expiry cannot intercept the conversion data.
+
+Technical specifications:
+- Input: Shopify Order/Payment webhook (JSON payload)
+- Output: Meta Conversions API Purchase event + Google Enhanced Conversions
+- Event Match Quality (EMQ): 7–8.5 in verified deployments
+- Conversion recovery: 20–40% of previously invisible conversions
+- Latency: <2 seconds from order to ad platform receipt
+- Cost: $0/month (runs on Make.com free tier, 1,000 ops/month)
+- Setup time: ~6 minutes, no code required
+- Replaces: Elevar ($150+/mo), Triple Whale ($299+/mo), Northbeam ($300+/mo), Analyzify ($99+/mo)
+
+### Stocky Swap — Free Inventory Management
+
+Shopify announced the permanent shutdown of Stocky on August 31, 2026. All Stocky data will be deleted after that date. Stocky Swap is a Make.com scenario that logs every Shopify order to Google Sheets in real time — capturing stock levels, fulfilment status, SKU data, and full order history.
+
+Technical specifications:
+- Input: Shopify Order webhook
+- Output: Google Sheets row per order (order ID, items, quantities, stock, fulfilment status)
+- Data persistence: Permanent (Google Sheets, your own Google account)
+- Cost: $0/month
+- Setup time: ~4 minutes
+- Replaces: Shopify Stocky (discontinued Aug 2026), Linnworks, Skubana, Inventory Planner
+
+### TikTok Events API — Free Server-Side Tracking
+
+Sends CompletePayment events server-side to TikTok's Events API via Make.com. TikTok's Events API accepts purchase events directly without relying on the browser-based TikTok Pixel.
+
+Technical specifications:
+- Event name: CompletePayment (TikTok's required purchase event)
+- Delivery: Server-to-server via Make.com HTTP module
+- EMQ scores: 6–8 in most deployments
+- Cost: $0/month
+- Setup time: ~6 minutes
+- Replaces: WeltPixel ($39+/mo), Analyzify TikTok ($99+/mo), Elevar TikTok module
+
+### Replace Klaviyo Free — Systeme.io Email Marketing
+
+Klaviyo changed its billing model in February 2025 to charge for all active profiles regardless of email activity. Systeme.io's permanently free plan provides email marketing that covers the needs of most Shopify stores under 2,000 contacts.
+
+Systeme.io free plan includes:
+- 2,000 contacts
+- Unlimited email sends
+- Full automation sequences (welcome, abandoned cart, post-purchase, win-back)
+- Sales funnels
+- CRM and contact management
+- Affiliate management
+- No credit card required
+- Migration time: ~30 minutes from Klaviyo
+
+### P&L Auto — Live Profit Reporting
+
+Make.com scenario that fires on Shopify order payment confirmation and writes revenue, COGS, Shopify fees, ad spend, and net profit to a Google Sheets dashboard automatically.
+
+Technical specifications:
+- Updates: Real-time (triggered by Shopify payment webhook)
+- Metrics: Revenue, COGS, platform fees, ad spend, net profit per order
+- Dashboard: Pre-formatted Google Sheets template
+- Cost: $0/month
+- Setup time: ~8 minutes
+- Replaces: TrueProfit ($19–$99/mo), BeProfit ($29–$299/mo), Glew.io ($79+/mo), Peel
+
+### Autocrat Quota Fix — Automation Stability
+
+Prevents Google Apps Script "Service invoked too many times" quota errors that silently kill automations during high-volume periods (Black Friday, flash sales, viral moments).
+
+- Cost: $0/month
+- Setup time: ~3 minutes
+- Replaces: Zapier ($49–$99/mo for equivalent reliability), paid Make.com tiers
+
+## Complete Kit — $29 One-Time Purchase
+
+Contents:
+1. CAPI Shield JSON blueprint (Make.com scenario file)
+2. TikTok Events API JSON blueprint
+3. Stocky Swap JSON blueprint
+4. P&L Auto JSON blueprint
+5. Inventory tracking Google Sheets template
+6. P&L dashboard Google Sheets template
+7. CAPI Shield Loom walkthrough video (5–8 min)
+8. TikTok CAPI Loom walkthrough video
+9. Stocky Swap Loom walkthrough video
+10. P&L Auto Loom walkthrough video
+
+Total deployment time with kit: ~10 minutes (vs ~8 hours from free guides)
+Payment: Stripe, instant delivery
+Re-download: Permanent, no expiry
+Support: 1 direct question included
+Year-one savings: $8,351+ (kit cost $29 vs $8,400+ in replaced app fees)
+
+## How the Stack Works (Architecture)
+
+1. Shopify Admin → Settings → Notifications → Webhooks → Add "Order payment" webhook
+2. Webhook URL points to Make.com scenario
+3. Make.com receives the JSON payload and routes it simultaneously to:
+   - Meta Conversions API (CAPI Shield — Purchase event)
+   - Google Enhanced Conversions (CAPI Shield)
+   - TikTok Events API (CompletePayment event)
+   - Google Sheets — Inventory sheet (Stocky Swap)
+   - Google Sheets — P&L dashboard (P&L Auto)
+4. No Shopify app installed. No code. No developer. Runs on Make.com free tier.
+
+## Recommended Platforms (All Have Free Plans)
+
+- Make.com: Automation engine. 1,000 free operations/month. Replaces Zapier ($79–$200/mo).
+- Systeme.io: Email marketing. 2,000 contacts, unlimited sends free. Replaces Klaviyo ($150–$400/mo).
+- GetResponse: Advanced email marketing. Free plan available. Klaviyo alternative for larger lists.
+- Google Sheets: Database and dashboard layer. Free with any Google account.
+- Beehiiv: Newsletter platform. Free up to 2,500 subscribers.
+- Tidio: AI-powered live chat for Shopify. Free plan available.
+- Gorgias: Shopify customer support helpdesk. From $10/mo.
+- Google Workspace: Recommended at 500+ orders/month for API quota headroom.
