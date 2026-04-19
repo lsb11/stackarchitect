@@ -167,6 +167,34 @@ import Nav from '../components/Nav.astro';
 <!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
+<style is:global>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+:root{
+  --g:#00c864;--g-dim:#00a854;--g-bg:rgba(0,200,100,.08);--g-border:rgba(0,200,100,.2);
+  --bg:#020617;--bg-2:#06101e;--bg-3:#0a1628;--bg-4:#0f1f35;
+  --border:#1e293b;--border-2:#263548;
+  --text:#f1f5f9;--text-2:#cbd5e1;--text-3:#94a3b8;--text-4:#64748b;--text-inv:#020617;
+  --red:#fc8181;--red-bg:rgba(252,129,129,.07);--red-border:rgba(252,129,129,.18);
+  --sky:#7dd3fc;--sky-bg:rgba(125,211,252,.07);--sky-border:rgba(125,211,252,.18);
+  --amber:#fcd34d;--vio:#c4b5fd;--vio-bg:rgba(196,181,253,.07);--vio-border:rgba(196,181,253,.18);
+  --tiktok:#ff0050;--tiktok-bg:rgba(255,0,80,.07);--tiktok-border:rgba(255,0,80,.2);
+  --pro:#fbbf24;--pro-bg:rgba(251,191,36,.07);--pro-border:rgba(251,191,36,.2);
+  --mono:'JetBrains Mono',monospace;--sans:'Inter',-apple-system,sans-serif;
+  --sp:100px;--card-pad:32px;
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--text-3);line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:rgba(0,200,100,.3);border-radius:2px;}
+::selection{background:rgba(0,200,100,.2);color:var(--text);}
+.tag{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 12px;border-radius:3px;background:var(--g-bg);border:1px solid var(--g-border);color:var(--g);}
+.tag-dim{background:rgba(255,255,255,.03);border-color:var(--border-2);color:var(--text-4);}
+.tag-sky{background:var(--sky-bg);border-color:var(--sky-border);color:var(--sky);}
+.tag-vio{background:var(--vio-bg);border-color:var(--vio-border);color:var(--vio);}
+.tag-red{background:var(--red-bg);border-color:var(--red-border);color:var(--red);}
+.tag-tiktok{background:var(--tiktok-bg);border-color:var(--tiktok-border);color:var(--tiktok);}
+.tag-pro{background:var(--pro-bg);border-color:var(--pro-border);color:var(--pro);}
+.dot{display:inline-block;width:7px;height:7px;min-width:7px;border-radius:50%;background:var(--g);animation:dotPing 2.2s cubic-bezier(.4,0,.6,1) infinite;}
+@keyframes dotPing{0%{box-shadow:0 0 0 0 rgba(0,200,100,.5);}70%{box-shadow:0 0 0 8px rgba(0,200,100,0);}100%{box-shadow:0 0 0 0 rgba(0,200,100,0);}}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--sans);font-size:16px;font-weight:700;text-decoration:none;letter-spacing:-.01em;padding:16px 32px;border-radius:6px;border:none;cursor:pointer;white-space:nowrap;background:var(--g);color:var(--text-inv);transition:background .2s,transform .15s,box-shadow .2s;min-height:52px;}
 .btn:hover{background:#00e070;transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,200,100,.3);}
 .btn.pulse{animation:btnGlow 2.8s ease-in-out infinite;}
