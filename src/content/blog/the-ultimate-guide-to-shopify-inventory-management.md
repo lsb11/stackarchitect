@@ -7,7 +7,7 @@ category: "inventory"
 badge: "Complete Guide"
 badgeType: "new"
 readTime: 18
-canonical: "https://stackarchitect.xyz/blog/the-ultimate-guide-to-shopify-inventory-management"
+canonical: "https://stackarchitect.xyz/blog/the-ultimate-guide-to-shopify-inventory-management/"
 faqs:
   - question: "What is the best free Shopify inventory management system in 2026?"
     answer: "The best free Shopify inventory management system in 2026 is a Make.com webhook connected to Google Sheets. Every order automatically logs to a sheet you own — product, quantity, variant, customer, and fulfilment status — in real time. This replaces Stocky (shutting down August 31, 2026) and every paid inventory app at zero cost."

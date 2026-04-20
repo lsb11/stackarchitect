@@ -7,7 +7,7 @@ category: "workflow"
 badge: "Error Fix"
 badgeType: "new"
 readTime: 8
-canonical: "https://stackarchitect.xyz/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script"
+canonical: "https://stackarchitect.xyz/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script/"
 faqs:
   - question: "What causes the 'Service invoked too many times' error in Google Apps Script?"
     answer: "This error occurs when your script makes too many calls to a Google service (Sheets, Docs, Drive, Gmail, or UrlFetch) within a rolling time window. Google enforces rate limits on service calls — typically 30 Docs/Drive operations per minute for consumer accounts. High-frequency loops that call getValues(), setValues(), openById(), or similar methods on every iteration hit this limit quickly."

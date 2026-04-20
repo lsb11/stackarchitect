@@ -7,7 +7,7 @@ category: "workflow"
 badge: "Architecture Guide"
 badgeType: "new"
 readTime: 12
-canonical: "https://stackarchitect.xyz/blog/scalable-google-sheets-automation-for-high-volume-workflows"
+canonical: "https://stackarchitect.xyz/blog/scalable-google-sheets-automation-for-high-volume-workflows/"
 faqs:
   - question: "How many rows can Google Sheets handle for Shopify order automation?"
     answer: "Google Sheets itself can handle up to 10 million cells per spreadsheet, which is sufficient for several years of order data for most stores. The limiting factor is not Sheets capacity but Google Apps Script quota limits — specifically the 6-minute execution time ceiling and 90-minute daily runtime on consumer accounts. Proper batching and architecture can scale Apps Script workflows to several hundred rows per day; above that, Make.com handles the data writing and Apps Script handles only lightweight analysis."

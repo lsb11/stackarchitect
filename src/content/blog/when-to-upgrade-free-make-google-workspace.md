@@ -7,7 +7,7 @@ category: "automation"
 badge: "Decision Guide"
 badgeType: "new"
 readTime: 14
-canonical: "https://stackarchitect.xyz/blog/when-to-upgrade-free-make-google-workspace"
+canonical: "https://stackarchitect.xyz/blog/when-to-upgrade-free-make-google-workspace/"
 faqs:
   - question: "How many operations does Make.com give you for free?"
     answer: "Make.com's free plan gives 1,000 operations per month. A 4-5 branch Shopify automation scenario uses approximately 5-6 operations per order. This covers roughly 160-200 orders per month on the full automation stack before needing to upgrade to Make.com Core at $9/month."

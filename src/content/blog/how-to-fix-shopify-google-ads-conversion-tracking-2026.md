@@ -7,7 +7,7 @@ category: "tracking"
 badge: "Free Fix"
 badgeType: "urgent"
 readTime: 14
-canonical: "https://stackarchitect.xyz/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026"
+canonical: "https://stackarchitect.xyz/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026/"
 faqs:
   - question: "How do I set up Google Ads conversion tracking on Shopify for free?"
     answer: "The free approach is two-layer: install the Google & YouTube sales channel from the Shopify App Store for basic GA4 and Google Ads purchase event tracking (2 minutes, no cost), then add Google Enhanced Conversions via Make.com webhook for server-side coverage (6 minutes, no cost). The Make.com approach sends purchase events directly from Shopify's server to Google's Conversions API, bypassing browser restrictions, iOS tracking limitations, and ad blockers. No Google Tag Manager required."

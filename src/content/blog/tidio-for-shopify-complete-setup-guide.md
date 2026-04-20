@@ -7,7 +7,7 @@ category: "support"
 badge: "Free Setup"
 badgeType: "new"
 readTime: 12
-canonical: "https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide"
+canonical: "https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide/"
 faqs:
   - question: "Is Tidio free for Shopify?"
     answer: "Yes. Tidio's free plan includes live chat, basic chatbot flows, and 50 Lyro AI conversations per month. This covers the full support volume of most Shopify stores under £30,000 per month GMV. Paid plans extend the Lyro AI conversation limit and add advanced features."

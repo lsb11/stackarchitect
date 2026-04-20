@@ -7,7 +7,7 @@ category: "inventory"
 badge: "Urgent — Aug 31"
 badgeType: "urgent"
 readTime: 10
-canonical: "https://stackarchitect.xyz/blog/shopify-stocky-data-export-before-shutdown"
+canonical: "https://stackarchitect.xyz/blog/shopify-stocky-data-export-before-shutdown/"
 faqs:
   - question: "What data will I lose when Shopify Stocky shuts down?"
     answer: "When Shopify Stocky shuts down on August 31, 2026, all data stored in Stocky will be permanently and irreversibly deleted. This includes: all purchase orders (supplier names, quantities ordered, costs, delivery dates), stocktake history (historical stock count records), transfer records (inventory movements between locations), demand forecasting data, and supplier contact information stored in Stocky. Shopify's own inventory levels in the Shopify Admin are not affected — only the data held specifically within the Stocky app."

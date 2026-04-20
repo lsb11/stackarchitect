@@ -7,7 +7,7 @@ category: "support"
 badge: "Comparison"
 badgeType: "comparison"
 readTime: 12
-canonical: "https://stackarchitect.xyz/blog/tidio-vs-gorgias-shopify"
+canonical: "https://stackarchitect.xyz/blog/tidio-vs-gorgias-shopify/"
 faqs:
   - question: "Is Tidio or Gorgias better for Shopify?"
     answer: "Tidio is better for most Shopify stores. Tidio's Lyro AI resolves approximately 70% of queries automatically on a free plan, making it cost-effective for stores under £40,000/month GMV. Gorgias is better for high-volume stores with 500+ monthly support tickets who need deep Shopify data integration, macro automation, and a dedicated helpdesk workflow for human agents."

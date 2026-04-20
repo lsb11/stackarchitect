@@ -7,7 +7,7 @@ category: "tracking"
 badge: "Urgent Fix"
 badgeType: "urgent"
 readTime: 12
-canonical: "https://stackarchitect.xyz/blog/shopify-meta-roas-dropped-2026-fix"
+canonical: "https://stackarchitect.xyz/blog/shopify-meta-roas-dropped-2026-fix/"
 faqs:
   - question: "Why does Shopify show more sales than Meta Ads Manager in 2026?"
     answer: "Three changes converged: iOS 26's Link Tracking Protection strips Meta's fbclid click identifier in Private Browsing, Mail, and Messages; Shopify changed its App Pixel default to Optimized mode on January 13, 2026, which throttles data sent to Meta when no attribution signals are detected; and Meta's shift toward Advantage+ campaigns reduced targeting control. Meta's pixel receives incomplete conversion data, so Ads Manager underreports purchases while Shopify records every order regardless of source."

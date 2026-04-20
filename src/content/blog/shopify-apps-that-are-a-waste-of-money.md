@@ -7,7 +7,7 @@ category: "automation"
 badge: "Cut List"
 badgeType: "comparison"
 readTime: 10
-canonical: "https://stackarchitect.xyz/blog/shopify-apps-that-are-a-waste-of-money"
+canonical: "https://stackarchitect.xyz/blog/shopify-apps-that-are-a-waste-of-money/"
 faqs:
   - question: "Which Shopify apps are not worth paying for in 2026?"
     answer: "In 2026, the most commonly overpaid-for Shopify apps are: paid server-side tracking apps (Elevar, Triple Whale) which are replaceable free with CAPI Shield; Shopify Stocky (shutting down August 2026 anyway); email apps above the Systeme.io free tier for stores under 2,000 contacts; P&L reporting apps replaced free by Make.com and Google Sheets; and simple automation connectors where Make.com's free plan covers the same functionality."

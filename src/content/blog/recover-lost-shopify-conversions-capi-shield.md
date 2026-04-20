@@ -7,7 +7,7 @@ category: "tracking"
 badge: "Free Fix"
 badgeType: "new"
 readTime: 10
-canonical: "https://stackarchitect.xyz/blog/recover-lost-shopify-conversions-capi-shield"
+canonical: "https://stackarchitect.xyz/blog/recover-lost-shopify-conversions-capi-shield/"
 faqs:
   - question: "How many Shopify conversions am I losing to iOS tracking restrictions?"
     answer: "Most Shopify stores are losing 30–60% of their conversion events to iOS restrictions, ad blockers, and browser privacy settings. The exact number depends on your traffic mix — stores with high iOS traffic from Instagram and email campaigns are most affected. You can calculate your specific gap by comparing Shopify order count against Meta Ads Manager reported purchases for the same 30-day period."

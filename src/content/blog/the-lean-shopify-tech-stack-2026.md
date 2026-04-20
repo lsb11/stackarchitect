@@ -7,7 +7,7 @@ category: "automation"
 badge: "Stack Guide"
 badgeType: "new"
 readTime: 12
-canonical: "https://stackarchitect.xyz/blog/the-lean-shopify-tech-stack-2026"
+canonical: "https://stackarchitect.xyz/blog/the-lean-shopify-tech-stack-2026/"
 faqs:
   - question: "What apps can I replace for free on Shopify in 2026?"
     answer: "In 2026, Shopify stores can replace: Elevar or Triple Whale (server-side tracking, $150-299/month) with CAPI Shield free; Shopify Stocky (inventory, shutting down August 2026) with Stocky Swap free; Klaviyo (email, $150-400/month) with Systeme.io free; TikTok tracking apps like WeltPixel ($39-99/month) with TikTok Events API via Make.com free; P&L reporting apps ($25-299/month) with Shopify P&L Auto free; and Autocrat document automation with a Make.com-based replacement free."

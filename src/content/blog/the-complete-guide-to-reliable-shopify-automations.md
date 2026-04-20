@@ -7,7 +7,7 @@ category: "workflow"
 badge: "Architecture Guide"
 badgeType: "new"
 readTime: 14
-canonical: "https://stackarchitect.xyz/blog/the-complete-guide-to-reliable-shopify-automations"
+canonical: "https://stackarchitect.xyz/blog/the-complete-guide-to-reliable-shopify-automations/"
 faqs:
   - question: "Why do Shopify automation workflows break?"
     answer: "Shopify automation workflows break for five main reasons: missing error handling means a single failed request stops the entire scenario; Shopify webhook delivery is not guaranteed so some events are missed without a fallback polling system; API rate limits cause transient failures that are treated as permanent; data mapping errors when Shopify changes payload structure cause silent failures; and concurrent execution of multiple triggers can cause race conditions in shared data stores like Google Sheets."

@@ -7,7 +7,7 @@ category: "automation"
 badge: "Beginner Guide"
 badgeType: "new"
 readTime: 10
-canonical: "https://stackarchitect.xyz/blog/shopify-automation-stack-for-small-stores"
+canonical: "https://stackarchitect.xyz/blog/shopify-automation-stack-for-small-stores/"
 faqs:
   - question: "What automation does a small Shopify store actually need?"
     answer: "A small Shopify store (under 1,000 orders per month) needs four things: server-side conversion tracking so ad algorithms have complete data, order logging to a spreadsheet for inventory visibility, email automation for welcome and abandoned cart sequences, and a basic P&L calculation. All four are available free. Everything else — advanced attribution, multi-location inventory, sophisticated segmentation — can wait until revenue justifies the cost."

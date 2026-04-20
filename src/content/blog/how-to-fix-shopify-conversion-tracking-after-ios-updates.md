@@ -7,7 +7,7 @@ category: "tracking"
 badge: "Fix Guide"
 badgeType: "urgent"
 readTime: 14
-canonical: "https://stackarchitect.xyz/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates"
+canonical: "https://stackarchitect.xyz/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/"
 faqs:
   - question: "Why did iOS updates break Shopify conversion tracking?"
     answer: "iOS updates introduced App Tracking Transparency (ATT) in iOS 14.5, Intelligent Tracking Prevention (ITP) in Safari, and Link Tracking Protection in iOS 17 onwards which strips click identifiers including Meta's fbclid from URLs. Each update progressively reduced the ability of browser-based pixels to track conversions. The cumulative effect is that browser pixels now miss 30-60% of purchase events for stores with significant iOS traffic."

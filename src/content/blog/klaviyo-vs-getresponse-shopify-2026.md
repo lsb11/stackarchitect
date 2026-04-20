@@ -7,7 +7,7 @@ category: "email"
 badge: "Comparison"
 badgeType: "comparison"
 readTime: 14
-canonical: "https://stackarchitect.xyz/blog/klaviyo-vs-getresponse-shopify-2026"
+canonical: "https://stackarchitect.xyz/blog/klaviyo-vs-getresponse-shopify-2026/"
 faqs:
   - question: "Is GetResponse cheaper than Klaviyo for Shopify?"
     answer: "Yes, significantly. GetResponse starts at $19/month for 1,000 contacts vs Klaviyo's $30/month. At 10,000 contacts, GetResponse costs $79/month vs Klaviyo's $175/month — a saving of $96/month or $1,152/year. The gap widens at higher contact counts."

@@ -23,7 +23,8 @@ const {
   faqs,
   relatedGuides,
 } = entry.data;
-const canonicalUrl = canonical ?? `https://stackarchitect.xyz/blog/${entry.slug}/`;
+const rawCanonical = canonical ?? `https://stackarchitect.xyz/blog/${entry.slug}/`;
+const canonicalUrl = rawCanonical.endsWith('/') ? rawCanonical : rawCanonical + '/';
 
 // Article JSON-LD
 const articleSchema = {

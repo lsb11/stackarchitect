@@ -7,7 +7,7 @@ category: "tracking"
 badge: "Free Setup"
 badgeType: "new"
 readTime: 16
-canonical: "https://stackarchitect.xyz/blog/shopify-google-analytics-4-setup-free-2026"
+canonical: "https://stackarchitect.xyz/blog/shopify-google-analytics-4-setup-free-2026/"
 faqs:
   - question: "How do I set up Google Analytics 4 on Shopify for free?"
     answer: "Install the Google & YouTube sales channel from the Shopify App Store (free) and connect your GA4 property during setup. Shopify automatically sends key ecommerce events — page_view, view_item, add_to_cart, begin_checkout, and purchase — to GA4 without any additional configuration. For more complete purchase data recovery, add a Make.com webhook that sends server-side purchase events to GA4's Measurement Protocol. The entire setup is free and requires no code or Google Tag Manager."

@@ -7,7 +7,7 @@ category: "automation"
 badge: "Start Here"
 badgeType: "new"
 readTime: 16
-canonical: "https://stackarchitect.xyz/blog/make-com-shopify-automation-guide"
+canonical: "https://stackarchitect.xyz/blog/make-com-shopify-automation-guide/"
 faqs:
   - question: "Is Make.com free for Shopify automation?"
     answer: "Make.com's free plan gives 1,000 operations per month — 10× more than Zapier's 100 free tasks — and includes webhook triggers and HTTP modules. Most Shopify stores under 250 orders per month run the complete automation stack free indefinitely."
