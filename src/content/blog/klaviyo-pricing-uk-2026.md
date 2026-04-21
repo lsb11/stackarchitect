@@ -124,3 +124,12 @@ Klaviyo is not worth the cost if you are primarily using it for: welcome sequenc
 6. Send a test email, confirm deliverability, then cancel Klaviyo before your next billing date
 
 Full migration typically takes 30–60 minutes for a standard Shopify email setup. The [Replace Klaviyo Free guide](/replace-klaviyo-free) covers every step in detail.
+
+
+---
+
+## Replace Klaviyo and your entire paid stack at once
+
+The Complete Kit gives you four Make.com JSON blueprints — CAPI Shield (server-side tracking), TikTok CAPI, Stocky Swap (Stocky replacement before August shutdown), and P&L Auto — plus two Google Sheets templates. Deploy your entire free Shopify backend in 10 minutes. $29 one-time, no subscription.
+
+**[Get the Complete Kit — $29 →](/pro)**

@@ -1,6 +1,6 @@
 ---
-title: "The Only Truly Free Klaviyo Alternative for Shopify 2026"
-description: "Systeme.io replaces Klaviyo — 2,000 contacts, unlimited emails, permanently free. Migration guide, comparison, and when Klaviyo is still worth keeping."
+title: "Switching from Klaviyo to Systeme.io — Complete Migration Guide 2026"
+description: "Step-by-step guide to migrating from Klaviyo to Systeme.io for Shopify: contact export, sequence rebuild, deliverability warm-up, and when to stay on Klaviyo. Free, 30 minutes."
 publishDate: "2026-03-12"
 updatedDate: "2026-04-14"
 category: "email"
@@ -151,3 +151,12 @@ For Shopify stores paying $150–$400/month for Klaviyo to run welcome sequences
 The one area where Klaviyo genuinely outperforms is deep ecommerce event segmentation — predictive analytics, purchase frequency models, customer lifetime value scoring. If you are actively using those features, the cost may be justified. If you are not, you are paying for a system you are not using.
 
 [Start replacing Klaviyo free →](/go/systeme)
+
+
+---
+
+## Get the pre-built email migration files
+
+If you're switching from Klaviyo, the Complete Kit includes the pre-configured Make.com scenarios for your entire Shopify backend — CAPI Shield (tracking), Stocky Swap (inventory), and P&L Auto (profit reporting) — so you can replace the rest of your paid stack at the same time. $29 one-time, no subscription.
+
+**[Get the Complete Kit — $29 →](/pro)**

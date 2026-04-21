@@ -149,3 +149,12 @@ The upgrade trigger and decision framework is covered in the [upgrade guide](/bl
 5. Add [P&L Auto](/shopify-profit-loss-automation) as a branch on the same scenario
 
 The entire stack runs free for most Shopify stores. The [Zapier vs Make comparison](/blog/zapier-vs-shopify-flow-vs-make) has the full cost breakdown.
+
+
+---
+
+## Skip the build — get the pre-configured Make.com files
+
+The Complete Kit gives you four production-ready Make.com JSON blueprints for Shopify: CAPI Shield (server-side tracking), TikTok CAPI, Stocky Swap (inventory), and P&L Auto. Import each in 60 seconds instead of building from scratch. $29 one-time.
+
+**[Get the Complete Kit — $29 →](/pro)**

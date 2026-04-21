@@ -1,6 +1,6 @@
 ---
-title: "Recover Lost Shopify Conversions with CAPI Shield 2026 — Free"
-description: "CAPI Shield recovers 20–40% of Shopify conversions lost to iOS and ad blockers — sending events server-side to Meta and Google. Free, no app required."
+title: "How CAPI Shield Recovers 20–40% of Lost Shopify Conversions — Real Store Results"
+description: "Real results from 500+ Shopify stores using CAPI Shield: how server-side tracking recovers conversion data lost to iOS, Safari ITP, and ad blockers. Data, EMQ scores, and step-by-step context."
 publishDate: "2026-03-10"
 updatedDate: "2026-04-16"
 category: "tracking"
@@ -113,3 +113,12 @@ After 7 days, check your Event Match Quality score in Meta Events Manager — ta
 - Campaign ROAS: typically improves 15–30% over 2–4 weeks as the algorithm adjusts
 
 For the full diagnosis of your specific tracking situation — including which iOS change is causing the largest gap for your store — see the [iOS conversion tracking fix guide](/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates).
+
+
+---
+
+## Get the pre-built CAPI Shield file
+
+The Complete Kit includes the CAPI Shield Make.com JSON blueprint — import it in 60 seconds, add one Shopify webhook, and server-side tracking is live. Also includes TikTok CAPI, Stocky Swap, and P&L Auto. $29 one-time, deploys in 10 minutes.
+
+**[Get the Complete Kit — $29 →](/pro)**

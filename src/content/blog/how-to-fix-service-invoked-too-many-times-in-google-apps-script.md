@@ -190,3 +190,12 @@ The [Autocrat Quota Fix](/autocrat-quota-fix) guide covers the full Make.com imp
 | Error occurs despite batching, high document volume | Structural service overuse | Fix 5 — Move to Make.com |
 
 For errors that are not "Service invoked too many times" — specifically "Exceeded maximum execution time" or "Quota exceeded" — see the [complete Google Apps Script quotas guide](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations) which covers every error type with its specific fix.
+
+
+---
+
+## Replace Google Apps Script with Make.com
+
+If quota errors are blocking your Shopify workflows, Make.com is the permanent fix — it replaces GAS entirely for order-triggered automations with no quota limits on the free tier. The Complete Kit includes four ready-to-import Make.com scenarios: server-side tracking, inventory, TikTok CAPI, and P&L reporting. $29 one-time.
+
+**[Get the Complete Kit — $29 →](/pro)**

@@ -149,3 +149,12 @@ The full migration takes 2–4 hours of active work and causes zero downtime if 
 ## The Bottom Line
 
 Stay on the free stack until one of the 7 signals appears. When it does, the $15/month upgrade (Make.com Core + Google Workspace) is straightforward to justify. The [Make.com beginner's guide](/blog/make-com-shopify-automation-guide) covers the initial setup, and the [Google Apps Script quota guide](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations) covers the specific limits you'll hit as volume grows.
+
+
+---
+
+## Get the pre-built Make.com files while you're on the free tier
+
+The Complete Kit is designed for Make.com's free tier — four JSON blueprints (CAPI Shield, TikTok CAPI, Stocky Swap, P&L Auto) that run within 1,000 operations/month for most Shopify stores. Import in 60 seconds each. $29 one-time.
+
+**[Get the Complete Kit — $29 →](/pro)**

@@ -279,3 +279,12 @@ After your GA4 setup has been running for a week, verify these metrics to confir
 If your purchase count in GA4 is significantly lower than Shopify order count after deploying the server-side layer, check: GA4 API Secret is correct, Measurement ID matches your live data stream (not a test property), and the Make.com scenario is actually running (check execution history for errors).
 
 GA4 is now your analytics foundation. Every traffic decision, every product decision, every funnel optimisation decision has data behind it — and it costs nothing.
+
+
+---
+
+## Complete your free tracking stack
+
+GA4 handles analytics. For ad attribution and conversion recovery, add CAPI Shield (server-side Meta + Google) and Google Enhanced Conversions — both included in the Complete Kit as ready-to-import Make.com JSON blueprints. $29 one-time, deploys in 10 minutes.
+
+**[Get the Complete Kit — $29 →](/pro)**

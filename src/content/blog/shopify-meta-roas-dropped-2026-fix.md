@@ -159,3 +159,12 @@ This uses ground-truth revenue data from Shopify — which counts every order re
 **Timeline:** Steps 1–3 show impact in 24–72 hours. Full CAPI shows full impact 7–14 days after implementation. Expected ROAS improvement: 20–40%.
 
 The [CAPI Shield setup guide](/capi-shield) covers every step of the full CAPI implementation including deduplication, event matching, and verification in Meta Events Manager.
+
+
+---
+
+## Get the pre-built CAPI Shield file
+
+The Complete Kit includes the CAPI Shield Make.com JSON blueprint — the fastest path to recovering your Meta ROAS. Import in 60 seconds, add one webhook, and server-side purchase events start flowing immediately. Also includes TikTok CAPI, Stocky Swap, and P&L Auto. $29 one-time.
+
+**[Get the Complete Kit — $29 →](/pro)**

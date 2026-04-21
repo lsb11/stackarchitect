@@ -147,3 +147,12 @@ If you are paying $175/month (10,000 contacts) for those four use cases, GetResp
 [Try GetResponse for Shopify →](/go/getresponse)
 
 For stores under 2,000 contacts: [Systeme.io is free and covers the same use cases →](/go/systeme)
+
+
+---
+
+## While you're cutting costs — replace your entire paid stack
+
+The Complete Kit handles tracking (CAPI Shield replaces Elevar), inventory (Stocky Swap replaces Stocky before August shutdown), and P&L reporting (replaces TrueProfit/BeProfit) — four pre-built Make.com scenarios. $29 one-time, saves $700+/month ongoing.
+
+**[Get the Complete Kit — $29 →](/pro)**

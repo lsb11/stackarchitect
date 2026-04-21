@@ -121,3 +121,12 @@ In the interest of completeness — these app categories generally have no free 
 **Upsell and cross-sell (Rebuy, CartHook):** post-purchase upsell flows have documented AOV impact. These are worth testing if your margins support the cost.
 
 The [full cost analysis](/blog/how-much-shopify-apps-really-cost-and-how-to-cut-your-app-bill-in-half) covers what these apps actually cost and how to calculate whether each one earns its monthly fee.
+
+
+---
+
+## Replace the wasteful apps in 10 minutes
+
+The Complete Kit gives you four pre-built Make.com JSON blueprints — server-side tracking (replaces Elevar/Triple Whale), TikTok CAPI (replaces WeltPixel), Stocky Swap (replaces Stocky before August shutdown), and P&L Auto (replaces TrueProfit/BeProfit). $29 one-time, saves $700+/month.
+
+**[Get the Complete Kit — $29 →](/pro)**

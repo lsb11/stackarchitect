@@ -148,3 +148,12 @@ If you are implementing AI for your Shopify store from scratch, this is the orde
 Start at the top. Each stage builds on the previous one — better tracking data makes ad AI more effective, better email automation retains the customers those ads acquire, better support AI retains them further.
 
 The [best AI tools for Shopify 2026](/best-ai-tools-shopify) page ranks 9 specific tools by ROI for more detailed evaluation.
+
+
+---
+
+## Build the free operational stack your AI strategy runs on
+
+Before AI can optimise your store, your tracking, inventory, and P&L data need to be accurate. The Complete Kit deploys server-side tracking (CAPI Shield), Stocky Swap (Stocky replacement), and P&L Auto via four pre-built Make.com JSON blueprints. $29 one-time.
+
+**[Get the Complete Kit — $29 →](/pro)**

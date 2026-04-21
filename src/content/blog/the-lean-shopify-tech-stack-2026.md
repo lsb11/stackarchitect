@@ -144,3 +144,12 @@ The recommended deployment order:
 6. **Autocrat Quota Fix** — only if currently experiencing Apps Script quota errors
 
 The [Shopify automation stack for small stores](/blog/shopify-automation-stack-for-small-stores) covers the minimum viable version of this for stores just getting started.
+
+
+---
+
+## Get the entire lean stack pre-built
+
+The Complete Kit is the lean stack in file form — four Make.com JSON blueprints covering tracking (CAPI Shield + Google Ads), inventory (Stocky Swap), and P&L (P&L Auto), plus two pre-configured Google Sheets templates. $29 one-time, 10 minutes to deploy.
+
+**[Get the Complete Kit — $29 →](/pro)**

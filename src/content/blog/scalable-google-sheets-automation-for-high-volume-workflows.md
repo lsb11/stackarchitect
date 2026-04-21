@@ -180,3 +180,12 @@ The Sheets + Make.com hybrid handles most Shopify stores reliably. The genuine l
 - **Real-time dashboards** — Sheets with formulas recalculate on every edit. At high volume, this creates a constant performance drag. Looker Studio connected to Sheets is a better dashboard layer for data you don't need to edit.
 
 For most Shopify stores — including those doing $1–2 million per year in revenue — the Sheets + Make.com architecture described here is more than sufficient. The [Google Apps Script quotas guide](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations) covers the specific limits in detail and the [upgrade guide](/blog/when-to-upgrade-free-make-google-workspace) covers when Google Workspace's higher quota ceilings become worth the $6/month cost.
+
+
+---
+
+## Get the pre-built Google Sheets automation files
+
+The Complete Kit includes two pre-configured Google Sheets templates (Stocky Swap inventory dashboard + P&L reporting dashboard) plus four Make.com JSON blueprints. All formulas, headers, and connections pre-set. $29 one-time.
+
+**[Get the Complete Kit — $29 →](/pro)**

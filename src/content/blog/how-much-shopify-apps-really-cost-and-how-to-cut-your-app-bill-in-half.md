@@ -152,3 +152,12 @@ The saving at this store size: **$7,932–$8,160 per year**.
 5. For tracking apps: is your Make.com scenario running alongside a paid tracking app? You're probably double-paying.
 
 The [Shopify apps that are a waste of money](/blog/shopify-apps-that-are-a-waste-of-money) guide covers specific apps category by category with honest assessments of which are genuinely useful and which are replaceable.
+
+
+---
+
+## Replace your entire paid stack in 10 minutes
+
+If you're cutting your app bill, the fastest route is the Complete Kit — four pre-configured Make.com JSON blueprints for server-side tracking (Meta + Google), TikTok CAPI, inventory management (Stocky replacement), and live P&L reporting. Replace $700+/month of paid apps. $29 one-time, files yours to keep.
+
+**[Get the Complete Kit — $29 →](/pro)**

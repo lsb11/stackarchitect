@@ -208,3 +208,12 @@ The fastest path from zero to a working inventory system:
 5. **Add P&L tracking** — a third branch on the same scenario, no additional setup cost.
 
 Every step above is free. The only ongoing cost is Make.com's Core plan at $9/month if your order volume exceeds 160 orders per month on the free plan — still 90–97% cheaper than any dedicated inventory app.
+
+
+---
+
+## Get the Stocky Swap files before August 31
+
+The Complete Kit includes the Stocky Swap Make.com JSON blueprint — deploys in 60 seconds and starts capturing live inventory data immediately. Also includes CAPI Shield (tracking), TikTok CAPI, and P&L Auto. $29 one-time. Deploy before the Stocky shutdown deadline.
+
+**[Get the Complete Kit — $29 →](/pro)**

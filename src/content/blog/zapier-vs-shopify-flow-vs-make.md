@@ -123,3 +123,12 @@ Most Shopify stores under 200 orders/month run the complete automation stack on 
 For Shopify automation in 2026, the decision is straightforward. Make.com's free plan gives 10× more operations than Zapier's free plan, includes webhook triggers and HTTP modules that Zapier restricts to paid tiers, and supports multi-branch scenarios that make the entire server-side tracking stack possible at zero cost. Shopify Flow is a separate tool for Shopify-internal logic and does not replace either.
 
 Start with Make.com free. Upgrade to Core at $9/month when you exceed 200 orders/month. The [complete Make.com for Shopify guide](/blog/make-com-shopify-automation-guide) covers the full setup from scratch.
+
+
+---
+
+## Get the pre-built Make.com scenarios
+
+If Make.com is the right platform for your Shopify store, the Complete Kit eliminates the setup time — four production-ready JSON blueprints for tracking, inventory, and P&L reporting. Import in 60 seconds each, live in 10 minutes total. $29 one-time.
+
+**[Get the Complete Kit — $29 →](/pro)**

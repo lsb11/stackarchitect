@@ -142,3 +142,12 @@ As your store grows, add complexity in this order:
 **At $100,000+/month GMV:** the [lean stack guide](/blog/the-lean-shopify-tech-stack-2026) covers the full optimised setup for larger stores including TikTok Events API, more sophisticated inventory management, and the decision points for paid tools.
 
 The [Make.com beginner's guide](/blog/make-com-shopify-automation-guide) covers the full scenario setup with screenshots if you are new to Make.com.
+
+
+---
+
+## Get the pre-built stack files
+
+The Complete Kit collapses 8+ hours of setup into 10 minutes — four Make.com JSON blueprints (CAPI Shield, TikTok CAPI, Stocky Swap, P&L Auto) plus two Google Sheets templates, all pre-configured. $29 one-time. Perfect for small stores that want the stack without the build time.
+
+**[Get the Complete Kit — $29 →](/pro)**
