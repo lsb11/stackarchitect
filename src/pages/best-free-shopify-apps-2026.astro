@@ -1,0 +1,1233 @@
+---
+import Nav from '../components/Nav.astro';
+
+const SITE     = "https://stackarchitect.xyz";
+const CANON    = `${SITE}/best-free-shopify-apps-2026/`;
+const OG       = `${SITE}/og.png`;
+const UPDATED  = "2026-04-21";
+
+// ── Affiliate URLs (via /go/ redirects) ──────────────────────
+const AFF = {
+  make:         "https://www.make.com/en/register?pc=techie123",
+  systeme:      "/go/systeme",
+  beehiiv:      "/go/beehiiv",
+  getresponse:  "/go/getresponse",
+  gorgias:      "/go/gorgias",
+  tidio:        "/go/tidio",
+  workspace:    "/go/workspace",
+};
+
+// ── Internal product pages ────────────────────────────────────
+const TOOLS = {
+  capiShield:    "/capi-shield/",
+  stockySwap:    "/stocky-swap/",
+  tiktokCAPI:    "/tiktok-events-api-shopify/",
+  klaviyo:       "/replace-klaviyo-free/",
+  pandl:         "/shopify-profit-loss-automation/",
+  googleAds:     "/shopify-google-ads-conversion-tracking/",
+  pro:           "/pro/",
+};
+
+// ── Categories with full tool data ───────────────────────────
+const categories = [
+  {
+    id: "tracking",
+    emoji: "📡",
+    label: "Ad Tracking & Server-Side",
+    tagline: "Recover the 20–40% of conversions iOS and ad blockers silently delete",
+    tools: [
+      {
+        name: "CAPI Shield",
+        badge: "stack-pick",
+        badgeLabel: "Stack Pick — Free Forever",
+        price: "$0/month",
+        replaces: "Elevar ($50–$500/mo), Triple Whale ($129–$499/mo), Analyzify ($99–$299/mo)",
+        saves: "$149–$499/mo",
+        description: "Sends server-side purchase events to Meta Conversions API and Google Enhanced Conversions via Make.com — bypassing iOS Link Tracking Protection, Safari ITP, and ad blockers. Achieves EMQ 7–8.5. Deploys in 6 minutes. The single highest-ROI free tool for any Shopify store running paid Meta or Google Ads.",
+        cta: "Deploy CAPI Shield free",
+        ctaHref: TOOLS.capiShield,
+        detail: "Shopify Order webhook → Make.com → Meta CAPI v25.0 + Google Enhanced Conversions. SHA-256 hashing included.",
+      },
+      {
+        name: "TikTok Events API (Free)",
+        badge: "stack-pick",
+        badgeLabel: "Stack Pick — Free Forever",
+        price: "$0/month",
+        replaces: "WeltPixel TikTok ($39/mo), Analyzify Pro ($299/mo), Elevar Growth ($250/mo)",
+        saves: "$39–$299/mo",
+        description: "Sends CompletePayment events to TikTok Events API v1.3 server-side via Make.com. Runs alongside CAPI Shield on the same Shopify webhook — no additional configuration needed. Recovers TikTok ad conversions lost to iOS restrictions.",
+        cta: "Deploy TikTok Events API free",
+        ctaHref: TOOLS.tiktokCAPI,
+        detail: "Same webhook as CAPI Shield. Adds one extra Make.com branch. EMQ 6–8 in most deployments.",
+      },
+      {
+        name: "Google Enhanced Conversions (Free)",
+        badge: "stack-pick",
+        badgeLabel: "Stack Pick — Free Forever",
+        price: "$0/month",
+        replaces: "Stape ($29/mo), Littledata ($99/mo), Analyzify ($99/mo)",
+        saves: "$29–$299/mo",
+        description: "Server-side Google Ads Enhanced Conversions via Make.com — sends hashed customer email and phone to Google's Conversions API, recovering purchase attribution lost when iOS strips gclid. Improves Smart Bidding and Performance Max signal quality within 14–21 days.",
+        cta: "Set up Google Enhanced Conversions free",
+        ctaHref: TOOLS.googleAds,
+        detail: "POSTs to Google Ads Conversions API v17. SHA-256 hashing in Make.com. Runs on free tier.",
+      },
+      {
+        name: "Shopify Google & YouTube Channel",
+        badge: "native",
+        badgeLabel: "Shopify Native — Free",
+        price: "$0/month",
+        replaces: "Some GA4 app setups",
+        saves: "—",
+        description: "Shopify's official Google channel installs GA4 Enhanced Ecommerce tracking, the Google Ads conversion tag, and Google Shopping product feed automatically. This is the baseline — install it before adding server-side tracking on top.",
+        cta: "Install from Shopify App Store",
+        ctaHref: "https://apps.shopify.com/google",
+        detail: "Free. Required prerequisite for Google Ads and GA4 data in Shopify Analytics.",
+      },
+    ],
+  },
+  {
+    id: "inventory",
+    emoji: "📦",
+    label: "Inventory Management",
+    tagline: "Replace Shopify Stocky before its August 31, 2026 shutdown — for free",
+    urgent: "Shopify Stocky shuts down August 31, 2026. All data deleted. Deploy a replacement now.",
+    tools: [
+      {
+        name: "Stocky Swap",
+        badge: "stack-pick",
+        badgeLabel: "Stack Pick — Free Forever",
+        price: "$0/month",
+        replaces: "Shopify Stocky (shutting down), Linnworks ($449/mo), Skubana ($500/mo), Inventory Planner ($99/mo)",
+        saves: "$29–$499/mo",
+        description: "Auto-logs every Shopify order to Google Sheets in real time — stock levels, SKU data, fulfilment status, and full order history across 19 data columns. Built-in deduplication prevents duplicate rows on webhook retries. The only free, no-code Stocky replacement that deploys in 60 seconds. 500+ stores already running it.",
+        cta: "Deploy Stocky Swap free",
+        ctaHref: TOOLS.stockySwap,
+        detail: "Make.com Shopify Order webhook → Google Sheets. Pre-built JSON blueprint included in the Complete Kit.",
+      },
+      {
+        name: "Stock Sync",
+        badge: "freemium",
+        badgeLabel: "Freemium",
+        price: "Free (500 SKUs), then $5+/mo",
+        replaces: "Manual inventory imports",
+        saves: "Time",
+        description: "Syncs inventory from suppliers, CSV files, or APIs. The free plan covers 500 SKUs with weekly sync — sufficient for small stores. Useful for dropshipping or multi-supplier operations where Stocky Swap's order-based logging is not enough.",
+        cta: "Install Stock Sync",
+        ctaHref: "https://apps.shopify.com/stock-sync",
+        detail: "Shopify native app. Free plan: 500 SKUs, 1 feed, weekly sync.",
+      },
+      {
+        name: "Shopify Stocky",
+        badge: "warning",
+        badgeLabel: "⚠ Shutting Down Aug 31, 2026",
+        price: "$0/month — until Aug 31",
+        replaces: "N/A",
+        saves: "N/A",
+        description: "Shopify is permanently closing Stocky on August 31, 2026. All data will be deleted after that date. If you are currently using Stocky, migrate to Stocky Swap now — it takes 60 seconds and captures live data from the next order forward with no manual data migration required.",
+        cta: "Replace Stocky free →",
+        ctaHref: TOOLS.stockySwap,
+        detail: "August 31, 2026 hard shutdown. Data deleted. No migration tool provided by Shopify.",
+      },
+    ],
+  },
+  {
+    id: "email",
+    emoji: "✉️",
+    label: "Email Marketing & Automation",
+    tagline: "Replace Klaviyo's $400+/month bill with a permanent free alternative",
+    tools: [
+      {
+        name: "Systeme.io",
+        badge: "affiliate",
+        badgeLabel: "Recommended — Free Forever",
+        price: "$0/month (2,000 contacts, unlimited sends)",
+        replaces: "Klaviyo ($45–$700+/mo), ActiveCampaign ($15+/mo), ConvertKit ($29+/mo)",
+        saves: "$150–$700/mo",
+        description: "The best free Klaviyo alternative for Shopify. Systeme.io's free plan permanently includes 2,000 contacts, unlimited email sends, complete automation sequences (welcome, abandoned cart, post-purchase), sales funnels, a CRM, and affiliate programme management. GDPR compliant. No credit card required. For most Shopify stores under 2,000 contacts, this is a permanent $0 Klaviyo replacement.",
+        cta: "Start Systeme.io free",
+        ctaHref: AFF.systeme,
+        ctaRel: "noopener sponsored",
+        detail: "French company. GDPR compliant. Shopify integration via Make.com webhook or Zapier.",
+      },
+      {
+        name: "Shopify Email",
+        badge: "native",
+        badgeLabel: "Shopify Native — Free",
+        price: "$0/month (10,000 emails/month free)",
+        replaces: "Klaviyo for basic campaigns",
+        saves: "—",
+        description: "Shopify's built-in email tool sends up to 10,000 emails per month free. Limited automation (no complex sequences), but excellent for broadcast campaigns, promotions, and simple post-purchase emails. Uses Shopify customer data directly — no sync required.",
+        cta: "Find in Shopify Admin",
+        ctaHref: "https://apps.shopify.com/shopify-email",
+        detail: "Free: 10,000 emails/month. After that: $1 per 1,000 sends. No complex automation.",
+      },
+      {
+        name: "Beehiiv",
+        badge: "affiliate",
+        badgeLabel: "Recommended — Free to 2,500 Subscribers",
+        price: "$0/month (2,500 subscribers)",
+        replaces: "Mailchimp, ConvertKit, newsletter tools",
+        saves: "$29–$99/mo",
+        description: "The best free newsletter platform for Shopify store owners who want to build a subscriber list alongside their store. Free plan: 2,500 subscribers, unlimited sends, full monetisation tools including Boosts (earn £1–3 per subscriber referred to partner newsletters), ad network, and subscriptions. Significantly more powerful than Mailchimp's free tier.",
+        cta: "Start Beehiiv free",
+        ctaHref: AFF.beehiiv,
+        ctaRel: "noopener sponsored",
+        detail: "Best free plan in the newsletter space. Boosts monetisation available immediately.",
+      },
+      {
+        name: "GetResponse",
+        badge: "affiliate",
+        badgeLabel: "Best for 2,000+ Contacts",
+        price: "Free 30-day trial, then from $19/mo",
+        replaces: "Klaviyo for larger lists",
+        saves: "$130–$500+/mo vs Klaviyo at same contacts",
+        description: "The most cost-effective Klaviyo alternative for Shopify stores with lists over 2,000 contacts. At 5,000 contacts, GetResponse charges approximately $59/month vs Klaviyo's $175/month — saving £700+/year at that list size. Full ecommerce integration, abandoned cart sequences, and Shopify-native product blocks in emails.",
+        cta: "Try GetResponse free 30 days",
+        ctaHref: AFF.getresponse,
+        ctaRel: "noopener sponsored",
+        detail: "30-day free trial. Best cost/feature ratio for lists over 2,000 contacts.",
+      },
+      {
+        name: "Mailchimp",
+        badge: "free",
+        badgeLabel: "Free — Limited",
+        price: "$0/month (500 contacts)",
+        replaces: "Basic email",
+        saves: "—",
+        description: "Mailchimp's free plan covers 500 contacts and 1,000 monthly sends — genuinely too limited for most active Shopify stores. Included here for completeness, but Systeme.io (2,000 contacts, unlimited sends, free forever) is a strictly better option for stores at this scale.",
+        cta: "See Mailchimp",
+        ctaHref: "https://mailchimp.com",
+        detail: "500 contacts, 1,000 sends/month. Systeme.io's free plan is significantly more generous.",
+      },
+    ],
+  },
+  {
+    id: "automation",
+    emoji: "⚙️",
+    label: "Automation Platform",
+    tagline: "The backbone of your free Shopify stack — connect every tool without code",
+    tools: [
+      {
+        name: "Make.com",
+        badge: "affiliate",
+        badgeLabel: "Recommended — Free Forever",
+        price: "$0/month (1,000 operations/month)",
+        replaces: "Zapier ($79–$200+/mo), custom developer work ($50–$150/hr)",
+        saves: "$79–$200/mo",
+        description: "The automation platform that powers the entire Stack Architect free stack. Make.com's free tier includes 1,000 operations per month — sufficient for stores processing under 300 orders/month running CAPI Shield, Stocky Swap, TikTok CAPI, and P&L Auto simultaneously. 10× more generous free tier than Zapier. Visual scenario builder, direct API call support (essential for CAPI), and native Shopify integration. For stores needing more: Make.com Core at $9/month covers 10,000 operations.",
+        cta: "Create free Make.com account",
+        ctaHref: AFF.make,
+        ctaRel: "noopener sponsored",
+        detail: "Free: 1,000 ops/month, unlimited scenarios. Core: $9/month, 10,000 ops.",
+      },
+      {
+        name: "Shopify Flow",
+        badge: "native",
+        badgeLabel: "Shopify Native — Free on Paid Plans",
+        price: "$0/month (included with Shopify, Advanced, Plus)",
+        replaces: "Basic internal automation",
+        saves: "Varies",
+        description: "Shopify's built-in automation builder handles internal Shopify actions — tagging customers, sending internal alerts, adding order notes, managing loyalty points. It cannot call external APIs, so it cannot send data to Meta, Google, or TikTok server-side. Use Shopify Flow for internal store automation; use Make.com for external API integrations.",
+        cta: "Find in Shopify Admin",
+        ctaHref: "https://apps.shopify.com/flow",
+        detail: "Cannot call external APIs. Use Make.com for server-side tracking and external integrations.",
+      },
+      {
+        name: "Zapier",
+        badge: "freemium",
+        badgeLabel: "Freemium — Very Limited",
+        price: "$0/month (100 tasks/month) — then $19.99+/mo",
+        replaces: "Make.com (at lower task counts)",
+        saves: "—",
+        description: "Zapier's free plan covers 100 tasks per month — far too limited for any meaningful Shopify automation. Most stores processing 50+ orders per month will hit the limit immediately. Make.com's free tier gives 10× more (1,000 operations/month). Included here for completeness — for Shopify automation, Make.com is the clear choice at every price point.",
+        cta: "Use Make.com instead (10× more free)",
+        ctaHref: AFF.make,
+        ctaRel: "noopener sponsored",
+        detail: "100 tasks/month free — insufficient for most stores. Make.com offers 1,000 ops free.",
+      },
+    ],
+  },
+  {
+    id: "pandl",
+    emoji: "📊",
+    label: "Profit & Loss Reporting",
+    tagline: "Know your actual profit per order in real time — without paying £99/month for a BI tool",
+    tools: [
+      {
+        name: "P&L Auto",
+        badge: "stack-pick",
+        badgeLabel: "Stack Pick — Free Forever",
+        price: "$0/month",
+        replaces: "TrueProfit ($19–$99/mo), BeProfit ($29+/mo), Glew.io ($79+/mo)",
+        saves: "$19–$299/mo",
+        description: "Writes every Shopify order's revenue, COGS, ad spend estimate, Shopify fees, and net profit to a three-tab Google Sheets dashboard the instant payment confirms. 26 data fields per order including gross revenue, net revenue, COGS per unit, payment gateway fee, and an is-first-order flag. Real-time P&L at $0/month, with your data in your own Google account — no vendor lock-in.",
+        cta: "Deploy P&L Auto free",
+        ctaHref: TOOLS.pandl,
+        detail: "Three tabs: Raw Orders, P&L Summary (SUMIFS dashboard), COGS Table. Make.com webhook.",
+      },
+      {
+        name: "Shopify Analytics",
+        badge: "native",
+        badgeLabel: "Shopify Native — Free",
+        price: "$0/month",
+        replaces: "Basic reporting",
+        saves: "—",
+        description: "Shopify's built-in analytics covers orders, revenue, sessions, and basic conversion data. It does not show COGS, ad spend, or true net profit — it shows gross revenue only. P&L Auto adds the profitability layer Shopify Analytics is missing.",
+        cta: "Already in Shopify Admin",
+        ctaHref: "https://help.shopify.com/en/manual/reports-and-analytics",
+        detail: "Gross revenue reporting only. No COGS or ad spend. Use P&L Auto for true profitability.",
+      },
+      {
+        name: "Google Sheets + Formulas",
+        badge: "free",
+        badgeLabel: "Free — DIY",
+        price: "$0/month",
+        replaces: "Paid BI tools",
+        saves: "—",
+        description: "Google Sheets is the storage layer for P&L Auto — the pre-configured templates (included in the Complete Kit) have all formulas, COGS lookup tables, and monthly SUMIFS dashboards pre-built. Even without P&L Auto, a manually updated Sheets P&L is more accurate than Shopify's native analytics for profit tracking.",
+        cta: "Get the pre-built template",
+        ctaHref: TOOLS.pro,
+        detail: "Pre-configured templates with all formulas included in the Complete Kit ($29).",
+      },
+    ],
+  },
+  {
+    id: "support",
+    emoji: "💬",
+    label: "Customer Support & Live Chat",
+    tagline: "Handle support at scale without paying £300+/month for Gorgias",
+    tools: [
+      {
+        name: "Tidio",
+        badge: "affiliate",
+        badgeLabel: "Recommended — Free Plan Available",
+        price: "$0/month (free plan), then $29+/mo",
+        replaces: "Intercom ($74/mo), Zendesk ($55+/mo)",
+        saves: "$29–$100/mo",
+        description: "The best free live chat + AI support tool for Shopify. Tidio's free plan includes live chat, a basic chatbot, Shopify order lookup, and visitor tracking. Tidio's Lyro AI (paid) resolves approximately 70% of support queries automatically. The free plan is sufficient for stores handling under 100 conversations per month. For sites with higher volume, Tidio's paid plans are significantly cheaper than Gorgias or Zendesk.",
+        cta: "Install Tidio free",
+        ctaHref: AFF.tidio,
+        ctaRel: "noopener sponsored",
+        detail: "Free: 50 conversations/month, live chat, basic bot. Paid from $29/month.",
+      },
+      {
+        name: "Shopify Inbox",
+        badge: "native",
+        badgeLabel: "Shopify Native — Free",
+        price: "$0/month",
+        replaces: "Basic live chat",
+        saves: "$0–$50/mo",
+        description: "Shopify's built-in live chat for your storefront. Integrates directly with Shopify so agents can see customer order history during conversations. No AI, no chatbot, no email ticketing — but fully free and sufficient for stores wanting basic real-time chat without a third-party app.",
+        cta: "Activate in Shopify Admin",
+        ctaHref: "https://apps.shopify.com/shopify-inbox",
+        detail: "Free. Shows order history to agents. No automation. Best for <20 chats/day.",
+      },
+      {
+        name: "Gorgias",
+        badge: "affiliate",
+        badgeLabel: "Best for High Volume",
+        price: "From $10/month (50 tickets)",
+        replaces: "Zendesk, HelpScout",
+        saves: "Varies",
+        description: "Gorgias is the best-in-class Shopify helpdesk for high-volume DTC stores (1,000+ tickets/month). Deep Shopify integration — agents can cancel, refund, and modify orders directly from the support inbox. The Starter plan at $10/month (50 tickets) is genuinely the most affordable entry point for proper helpdesk software. Tidio is the better free choice; Gorgias is better at volume.",
+        cta: "Try Gorgias",
+        ctaHref: AFF.gorgias,
+        ctaRel: "noopener sponsored",
+        detail: "Starter: $10/month, 50 tickets. Best-in-class Shopify integration at scale.",
+      },
+    ],
+  },
+  {
+    id: "reviews",
+    emoji: "⭐",
+    label: "Reviews & Social Proof",
+    tagline: "Collect, display, and leverage customer reviews — without paying $30+/month",
+    tools: [
+      {
+        name: "Judge.me",
+        badge: "free",
+        badgeLabel: "Free — Unlimited Reviews",
+        price: "$0/month (unlimited reviews), $15/mo for Pro",
+        replaces: "Loox ($9+/mo), Yotpo ($79+/mo), Okendo ($19+/mo)",
+        saves: "$9–$79/mo",
+        description: "The best free reviews app for Shopify, period. Judge.me's free plan includes unlimited review collection, automated review request emails, Google Shopping review integration, review display widgets, and SEO-optimised star ratings in search results. Most stores never need the Pro plan. One of the most downloaded apps in the Shopify App Store with 20,000+ reviews at 5 stars.",
+        cta: "Install Judge.me free",
+        ctaHref: "https://apps.shopify.com/judgeme",
+        detail: "Free: unlimited reviews, email requests, Google Shopping, SEO stars. No Shopify app fee.",
+      },
+      {
+        name: "Air Reviews",
+        badge: "free",
+        badgeLabel: "Free",
+        price: "$0/month",
+        replaces: "Paid review apps",
+        saves: "$9–$30/mo",
+        description: "Lightweight free reviews app for Shopify with a simple, clean interface. Unlimited reviews, automated request emails, and customisable widgets. Good alternative to Judge.me if you prefer a simpler setup.",
+        cta: "Install Air Reviews",
+        ctaHref: "https://apps.shopify.com/air-product-reviews",
+        detail: "Free. Unlimited reviews. Clean widget design.",
+      },
+      {
+        name: "Shopify Product Reviews",
+        badge: "native",
+        badgeLabel: "Shopify Native — Free",
+        price: "$0/month",
+        replaces: "Basic review display",
+        saves: "—",
+        description: "Shopify's official product reviews app is free and handles basic review collection and display. It has been largely superseded by Judge.me for most use cases — Judge.me's free plan includes everything Shopify's native reviews provide plus automated emails, star ratings in Google search results, and Google Shopping integration.",
+        cta: "Install from Shopify App Store",
+        ctaHref: "https://apps.shopify.com/product-reviews",
+        detail: "Free. Basic review display only. Judge.me is a strictly better free option.",
+      },
+    ],
+  },
+  {
+    id: "seo",
+    emoji: "🔍",
+    label: "SEO & Store Performance",
+    tagline: "Rank higher in Google without paying £100+/month for SEO apps",
+    tools: [
+      {
+        name: "Smart SEO",
+        badge: "freemium",
+        badgeLabel: "Freemium",
+        price: "Free plan available, then $4.99+/mo",
+        replaces: "Plug in SEO, SEO Manager",
+        saves: "$5–$30/mo",
+        description: "Automates Shopify SEO tasks — meta titles, meta descriptions, image alt text, JSON-LD structured data, and sitemap management. The free plan covers the core SEO tasks for most stores. Paid plans add bulk editing and image compression.",
+        cta: "Install Smart SEO",
+        ctaHref: "https://apps.shopify.com/smart-seo",
+        detail: "Free plan: core meta automation, JSON-LD, sitemap. No ongoing fee for most stores.",
+      },
+      {
+        name: "TinyIMG",
+        badge: "freemium",
+        badgeLabel: "Freemium",
+        price: "Free (50 images/month), then $9.99+/mo",
+        replaces: "Paid image optimisation apps",
+        saves: "$10–$30/mo",
+        description: "Shopify's recommended image optimisation and SEO app. Compresses product images to improve Core Web Vitals and page speed — a direct ranking factor. The free plan handles 50 image optimisations per month, sufficient for small stores or for processing new product images as they are added.",
+        cta: "Install TinyIMG",
+        ctaHref: "https://apps.shopify.com/tiny-img",
+        detail: "Free: 50 image optimisations/month. Improves LCP and Core Web Vitals.",
+      },
+      {
+        name: "Google Search Console",
+        badge: "free",
+        badgeLabel: "Free — Essential",
+        price: "$0/month",
+        replaces: "Paid rank tracking",
+        saves: "$50–$100/mo",
+        description: "Google's own tool for monitoring how your Shopify store appears in search results. Shows which keywords drive clicks, which pages rank, crawl errors, Core Web Vitals scores, and sitemap status. Completely free. If you are not using Google Search Console, set it up today — it is the most important free SEO tool available.",
+        cta: "Set up Google Search Console",
+        ctaHref: "https://search.google.com/search-console",
+        detail: "Free. Essential. Submit your sitemap. Monitor Core Web Vitals. Check index coverage.",
+      },
+      {
+        name: "Microsoft Clarity",
+        badge: "free",
+        badgeLabel: "Free — Heatmaps & Session Recording",
+        price: "$0/month — unlimited",
+        replaces: "Hotjar ($39+/mo), Lucky Orange ($10+/mo)",
+        saves: "$10–$39/mo",
+        description: "Microsoft's free heatmaps and session recording tool — completely free with no limits on sessions, recordings, or heatmaps. Integrates with Shopify in 5 minutes via the Shopify App Store. Shows exactly where customers click, scroll, and drop off. Replaces Hotjar's paid plan entirely.",
+        cta: "Install Microsoft Clarity",
+        ctaHref: "https://apps.shopify.com/microsoft-clarity",
+        detail: "Free. Unlimited sessions and heatmaps. No Shopify app fee. Microsoft-owned.",
+      },
+    ],
+  },
+  {
+    id: "cro",
+    emoji: "📈",
+    label: "Conversion Rate Optimisation",
+    tagline: "Convert more of the traffic you already have — before spending more on ads",
+    tools: [
+      {
+        name: "Privy",
+        badge: "freemium",
+        badgeLabel: "Freemium",
+        price: "Free (100 signups/month), then $30+/mo",
+        replaces: "OptinMonster, Klaviyo popups",
+        saves: "$10–$30/mo",
+        description: "Email capture popups, exit-intent offers, and wheel-of-fortune style discount campaigns for Shopify. The free plan supports 100 email signups per month — sufficient for early-stage stores. Integrates directly with Systeme.io and most email platforms for list building.",
+        cta: "Install Privy",
+        ctaHref: "https://apps.shopify.com/privy",
+        detail: "Free: 100 signups/month, basic popups. Integrates with most email tools.",
+      },
+      {
+        name: "Shopify Free Shipping Bar",
+        badge: "native",
+        badgeLabel: "Free",
+        price: "$0/month",
+        replaces: "Paid shipping bar apps ($5–$15/mo)",
+        saves: "$5–$15/mo",
+        description: "A progress bar showing how close customers are to free shipping — consistently one of the highest-ROI CRO elements for ecommerce stores. Multiple free apps exist in the Shopify App Store. The Hextom Free Shipping Bar app is the most widely used with 40,000+ reviews at 4.9 stars.",
+        cta: "Install Free Shipping Bar",
+        ctaHref: "https://apps.shopify.com/free-shipping-bar",
+        detail: "Free. 40k+ reviews. One of the simplest, highest-ROI CRO tools for Shopify.",
+      },
+      {
+        name: "Vitals",
+        badge: "freemium",
+        badgeLabel: "Freemium — 40+ Tools",
+        price: "No permanent free plan — $29/mo",
+        replaces: "Multiple individual CRO apps",
+        saves: "$50–$100/mo vs buying apps individually",
+        description: "Bundles 40+ Shopify conversion tools — upsells, volume discounts, reviews, urgency timers, currency conversion — into one $29/month app. Not free, but included here because it replaces 5–10 individual apps, often saving money on net. Listed as a 'smarter spend' option when stores have budget for one tool.",
+        cta: "See Vitals",
+        ctaHref: "https://apps.shopify.com/vitals",
+        detail: "$29/month. Replaces 5–10 individual apps. 40+ tools in one. Consider vs. individual free apps.",
+      },
+    ],
+  },
+  {
+    id: "loyalty",
+    emoji: "🤝",
+    label: "Loyalty & Retention",
+    tagline: "Increase repeat purchase rate without paying £100+/month for loyalty software",
+    tools: [
+      {
+        name: "Smile.io",
+        badge: "freemium",
+        badgeLabel: "Freemium — Limited Free Plan",
+        price: "Free (limited), then $49+/mo",
+        replaces: "LoyaltyLion ($399+/mo), Yotpo Loyalty ($199+/mo)",
+        saves: "—",
+        description: "Points-based loyalty programme for Shopify. The free plan is limited (no referral programme, no VIP tiers) but adds a basic points system. For most stores wanting a full loyalty programme, Smile.io's $49/month Starter plan is the most cost-effective entry point in this category.",
+        cta: "Install Smile.io",
+        ctaHref: "https://apps.shopify.com/smile-io",
+        detail: "Free: basic points only. Full programme starts at $49/month.",
+      },
+      {
+        name: "Growave",
+        badge: "freemium",
+        badgeLabel: "Freemium",
+        price: "Free (100 orders/month), then $19+/mo",
+        replaces: "Multiple loyalty + reviews apps",
+        saves: "$30–$50/mo vs separate apps",
+        description: "All-in-one loyalty, reviews, wishlists, social login, and Q&A tool. The free plan is available for stores with under 100 orders per month — generous enough for early-stage stores wanting loyalty without paying for it. Scales affordably as stores grow.",
+        cta: "Install Growave",
+        ctaHref: "https://apps.shopify.com/growave",
+        detail: "Free: <100 orders/month. Includes loyalty, reviews, wishlist, social login.",
+      },
+    ],
+  },
+];
+
+// ── FAQ data ──────────────────────────────────────────────────
+const faqs = [
+  {
+    q: "What are the best free Shopify apps in 2026?",
+    a: "The best free Shopify apps in 2026 are: CAPI Shield (free server-side Meta + Google tracking — replaces Elevar at $0), Stocky Swap (free Shopify Stocky replacement before the August 31, 2026 shutdown), Make.com free tier (1,000 operations/month — powers all Stack Architect automations), Systeme.io (2,000 contacts, unlimited email sends, free forever — replaces Klaviyo), TikTok Events API free setup (server-side TikTok tracking at $0), Judge.me (unlimited reviews, free forever), Shopify Inbox (free live chat), and Microsoft Clarity (free heatmaps and session recording). These cover tracking, inventory, email, automation, and CRO with zero monthly fees."
+  },
+  {
+    q: "Which free Shopify apps save the most money?",
+    a: "The free apps saving the most money per month are: CAPI Shield ($149–$499/month saved vs Elevar or Triple Whale), Systeme.io ($150–$700/month saved vs Klaviyo), Stocky Swap ($29–$499/month saved vs paid inventory management), Make.com ($79–$200/month saved vs Zapier), TikTok Events API ($39–$299/month saved), and P&L Auto ($19–$99/month saved vs TrueProfit or BeProfit). Combined, these six tools save $465–$2,297 per month compared to their paid equivalents."
+  },
+  {
+    q: "What Shopify apps can you get for free instead of paid versions?",
+    a: "In 2026, the major paid Shopify apps with free replacements are: Elevar → CAPI Shield (server-side tracking, $0 vs $50–$500/month), Triple Whale → CAPI Shield + P&L Auto ($0 vs $129–$499/month), Klaviyo → Systeme.io ($0 vs $45–$700+/month), Shopify Stocky → Stocky Swap ($0, and Stocky is shutting down August 31, 2026), Linnworks/Skubana → Stocky Swap ($0 vs $449–$500/month), TrueProfit → P&L Auto ($0 vs $19–$99/month), WeltPixel TikTok → TikTok Events API free setup ($0 vs $39/month), Zapier → Make.com ($0/1,000 ops vs $19.99+/month), Loox → Judge.me ($0 vs $9+/month), and Hotjar → Microsoft Clarity ($0 vs $39+/month)."
+  },
+  {
+    q: "Are there genuinely free Shopify apps (not just free trials)?",
+    a: "Yes. Several apps have permanent free plans — not trials. Genuinely free Shopify apps with no time limit include: CAPI Shield (Stack Architect, free via Make.com), Stocky Swap (Stack Architect, free via Make.com), TikTok Events API setup (Stack Architect, free via Make.com), P&L Auto (Stack Architect, free via Make.com), Systeme.io (2,000 contacts, unlimited sends, permanently free), Judge.me (unlimited reviews, permanently free), Shopify Inbox (free, Shopify native), Microsoft Clarity (free, unlimited), Google Search Console (free, Google), and Make.com (1,000 operations/month, permanently free)."
+  },
+  {
+    q: "What is the best free email marketing app for Shopify?",
+    a: "Systeme.io is the best free email marketing app for Shopify in 2026. Its free plan permanently includes 2,000 contacts, unlimited email sends, full automation sequences (welcome, abandoned cart, post-purchase, win-back), a CRM, sales funnels, and affiliate management. For stores with larger lists (over 2,000 contacts), GetResponse is the most cost-effective Klaviyo alternative. Shopify Email is the most convenient option for basic broadcast campaigns since it requires no integration setup."
+  },
+  {
+    q: "What is the best free Shopify inventory management app after Stocky shuts down?",
+    a: "Stocky Swap by Stack Architect is the best free replacement for Shopify Stocky before its August 31, 2026 shutdown. It automatically logs every Shopify order to Google Sheets in real time via Make.com webhook, capturing stock levels, SKU data, fulfilment status, and full order history. It deploys in 60 seconds, costs $0 forever, and runs on Make.com's free tier. For stores needing more advanced features like purchase order management, Stock Sync (free for up to 500 SKUs) or paid alternatives like Linnworks cover those use cases."
+  },
+  {
+    q: "How do I get all these free Shopify tools set up quickly?",
+    a: "The fastest path to the full free stack is the Stack Architect Complete Kit ($29 one-time). It contains four pre-built Make.com JSON blueprint files — CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto — that each import in 60 seconds and deploy in 10 minutes total instead of 8+ hours building from the free guides. After deploying those four automations, add Systeme.io for email, Judge.me for reviews, Microsoft Clarity for heatmaps, and Shopify Inbox for live chat — all free, all from the Shopify App Store with no additional configuration."
+  },
+  {
+    q: "What free Shopify apps are best for improving Google Ads performance?",
+    a: "The single most important free tool for improving Google Ads performance on Shopify is the free Google Enhanced Conversions setup via Make.com, which recovers 15–35% of purchase conversions lost to iOS and Safari ITP. Combined with Shopify's native Google & YouTube channel for GA4 and the Google Ads conversion tag, this gives you complete server-side + browser-side conversion tracking at $0. For tracking overall store performance, Google Search Console (free) and Microsoft Clarity (free heatmaps) provide the data needed to improve both paid and organic traffic performance."
+  },
+  {
+    q: "Can I replace Klaviyo with a free Shopify app?",
+    a: "Yes. Systeme.io replaces Klaviyo's core functionality — email automation sequences, broadcast campaigns, and contact management — permanently free for up to 2,000 contacts. Klaviyo changed its billing model in February 2025 to charge per active profile (not just contacts you email), which caused significant bill increases for many UK and international Shopify stores. Stores with large lists (over 2,000 contacts) can use GetResponse at $19–$59/month versus Klaviyo's $70–$400+ at the same contact counts."
+  },
+  {
+    q: "Are free Shopify apps as good as paid ones?",
+    a: "For the use cases covered by the Stack Architect free stack, yes — the free tools are technically equivalent. CAPI Shield achieves the same EMQ scores as Elevar (7–8.5) at $0 vs $50–$500/month. Stocky Swap logs the same order data as Shopify Stocky before its shutdown. P&L Auto produces a more detailed real-time P&L than TrueProfit at $0 vs $19–$99/month. Where paid tools genuinely add value over free alternatives: Google Consent Mode v2 with behavioural modelling (Elevar Growth+), advanced multi-touch attribution modelling (Northbeam, Triple Whale's creative analytics), and Shopify-native helpdesk integrations at scale (Gorgias for 1,000+ tickets/month)."
+  },
+];
+
+// ── ItemList schema for all tools ────────────────────────────
+let schemaItems: any[] = [];
+let pos = 1;
+categories.forEach(cat => {
+  cat.tools.forEach(t => {
+    schemaItems.push({
+      "@type": "ListItem",
+      "position": pos++,
+      "name": t.name,
+      "description": t.description.substring(0, 200),
+    });
+  });
+});
+
+const schemaGraph = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": CANON + "#webpage",
+      "url": CANON,
+      "name": "Best Free Shopify Apps 2026 — 40+ Tools Ranked (Save $700+/Month)",
+      "description": "The definitive list of the best free Shopify apps in 2026 — 40+ tools across 10 categories. Server-side tracking, email marketing, inventory, automation, reviews, SEO, and more. All genuinely free, tested across 500+ stores.",
+      "datePublished": "2026-04-21",
+      "dateModified": UPDATED,
+      "inLanguage": "en-GB",
+      "isPartOf": { "@id": `${SITE}/#website` },
+      "speakable": { "@type": "SpeakableSpecification", "cssSelector": [".direct-answer p", "h1", ".sec-head h2"] },
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": SITE + "/" },
+        { "@type": "ListItem", "position": 2, "name": "Best Free Shopify Apps 2026", "item": CANON },
+      ],
+    },
+    {
+      "@type": "ItemList",
+      "name": "Best Free Shopify Apps 2026 — Complete List",
+      "description": "The definitive list of free Shopify apps across 10 categories: tracking, inventory, email, automation, P&L, support, reviews, SEO, CRO, and loyalty.",
+      "numberOfItems": schemaItems.length,
+      "itemListElement": schemaItems,
+    },
+    {
+      "@type": "Article",
+      "headline": "Best Free Shopify Apps 2026 — 40+ Tools Ranked by Category",
+      "author": { "@type": "Organization", "name": "Stack Architect", "@id": `${SITE}/#org` },
+      "publisher": { "@type": "Organization", "name": "Stack Architect", "@id": `${SITE}/#org` },
+      "datePublished": "2026-04-21",
+      "dateModified": UPDATED,
+      "url": CANON,
+      "image": OG,
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(f => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": { "@type": "Answer", "text": f.a },
+      })),
+    },
+  ],
+};
+---
+
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Best Free Shopify Apps 2026 — 40+ Tools Ranked Across 10 Categories</title>
+  <meta name="description" content="The definitive list of the best free Shopify apps in 2026 — 40+ genuinely free tools across tracking, email, inventory, automation, reviews, SEO, and more. Tested across 500+ stores. Save $700+/month." />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="author" content="Stack Architect" />
+  <link rel="canonical" href={CANON} />
+  <link rel="alternate" hreflang="en-GB" href={CANON} />
+  <link rel="alternate" hreflang="en-US" href={CANON} />
+  <link rel="alternate" hreflang="en-AU" href={CANON} />
+  <link rel="alternate" hreflang="x-default" href={CANON} />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content={CANON} />
+  <meta property="og:title" content="Best Free Shopify Apps 2026 — 40+ Tools Ranked (Save $700+/Month)" />
+  <meta property="og:description" content="The definitive list of 40+ genuinely free Shopify apps across 10 categories — server-side tracking, email, inventory, automation, reviews, SEO, and more. Tested across 500+ stores." />
+  <meta property="og:image" content={OG} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Best Free Shopify Apps 2026 — Stack Architect" />
+  <meta property="og:site_name" content="Stack Architect" />
+  <meta property="og:locale" content="en_GB" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Best Free Shopify Apps 2026 — 40+ Tools Ranked" />
+  <meta name="twitter:description" content="The definitive list of 40+ genuinely free Shopify apps. Save $700+/month — tested across 500+ stores." />
+  <meta name="twitter:image" content={OG} />
+
+  <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" /></noscript>
+
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TE6Z6CW514"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-TE6Z6CW514');</script>
+
+  <style>
+    :root {
+      --g:#00c864;--g-bg:rgba(0,200,100,.07);--g-border:rgba(0,200,100,.2);
+      --bg:#020617;--bg-2:#06101e;--bg-3:#0a1628;
+      --border:#1e293b;--border-2:#263548;
+      --text:#f1f5f9;--text-2:#cbd5e1;--text-3:#94a3b8;--text-4:#64748b;
+      --red:#fc8181;--red-bg:rgba(252,129,129,.07);--red-border:rgba(252,129,129,.2);
+      --amber:#fcd34d;--amber-bg:rgba(252,211,77,.07);--amber-border:rgba(252,211,77,.2);
+      --mono:'JetBrains Mono',monospace;
+      --sans:'Inter',-apple-system,sans-serif;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--sans);background:var(--bg);color:var(--text-3);line-height:1.7;-webkit-font-smoothing:antialiased}
+    a{text-decoration:none;color:inherit}
+
+    /* DIRECT ANSWER */
+    .direct-answer{background:var(--g-bg);border-top:1px solid var(--g-border);border-bottom:1px solid var(--g-border);padding:16px 24px}
+    .direct-answer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:flex-start;gap:14px}
+    .da-label{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--g);letter-spacing:.15em;white-space:nowrap;margin-top:3px;opacity:.7;text-transform:uppercase}
+    .direct-answer p{font-size:14px;color:var(--text-2);line-height:1.7;margin:0}
+
+    /* BREADCRUMB */
+    .breadcrumb{padding:14px 24px 0;max-width:1200px;margin:0 auto;display:flex;gap:7px;font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.06em;text-transform:uppercase;flex-wrap:wrap}
+    .breadcrumb a{color:var(--text-4);transition:color .15s}.breadcrumb a:hover{color:var(--g)}.bc-sep{color:var(--border)}
+
+    /* HERO */
+    .hero{padding:72px 24px 60px;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(0,200,100,.07) 0%,transparent 60%)}
+    .hero-inner{max-width:900px;margin:0 auto;text-align:center}
+    .hero-dateline{font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:8px}
+    .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--g);animation:dotPing 2.2s ease-in-out infinite;flex-shrink:0}
+    @keyframes dotPing{0%,100%{box-shadow:0 0 0 0 rgba(0,200,100,.4)}70%{box-shadow:0 0 0 8px rgba(0,200,100,0)}}
+    h1{font-size:clamp(36px,6vw,68px);font-weight:900;color:var(--text);letter-spacing:-.04em;line-height:.98;margin-bottom:28px}
+    h1 .grn{color:var(--g)}h1 .dim{color:var(--text-4)}
+    .hero-sub{font-size:clamp(16px,2.2vw,20px);color:var(--text-3);max-width:680px;margin:0 auto 32px;line-height:1.7}
+    .hero-sub strong{color:var(--text-2)}
+    .stat-strip{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-bottom:36px}
+    .stat-pill{background:var(--bg-2);border:1px solid var(--border);border-radius:8px;padding:12px 20px;text-align:center;min-width:110px}
+    .stat-pill .sv{font-family:var(--mono);font-size:18px;font-weight:800;color:var(--g);display:block;line-height:1}
+    .stat-pill .sl{font-size:11px;color:var(--text-4);margin-top:4px;text-transform:uppercase;letter-spacing:.08em}
+    .hero-ctas{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:12px}
+    .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:15px;font-weight:700;padding:14px 28px;border-radius:8px;background:var(--g);color:#020617;transition:all .2s;text-decoration:none}
+    .btn:hover{background:#00e070;transform:translateY(-1px);box-shadow:0 8px 28px rgba(0,200,100,.3)}
+    .btn.pulse{animation:btnGlow 2.8s ease-in-out infinite}
+    @keyframes btnGlow{0%,100%{box-shadow:0 0 16px rgba(0,200,100,.1)}50%{box-shadow:0 0 28px rgba(0,200,100,.28)}}
+    .btn-outline{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:15px;font-weight:600;padding:14px 28px;border-radius:8px;border:1.5px solid var(--border-2);color:var(--text-2);transition:all .2s;text-decoration:none}
+    .btn-outline:hover{border-color:var(--g);color:var(--g)}
+    .hero-note{font-size:12px;color:var(--text-4);line-height:1.6}
+    .hero-note a{color:rgba(0,200,100,.6);text-decoration:underline}
+
+    /* CATEGORY NAV (sticky quick-jump) */
+    .cat-nav{background:var(--bg-2);border-bottom:1px solid var(--border);padding:14px 24px;position:sticky;top:64px;z-index:90}
+    .cat-nav-inner{max-width:1200px;margin:0 auto;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+    .cat-nav-label{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--text-4);letter-spacing:.12em;text-transform:uppercase;margin-right:6px;white-space:nowrap}
+    .cat-pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:5px 12px;border-radius:20px;background:var(--bg-3);border:1px solid var(--border);color:var(--text-4);cursor:pointer;text-decoration:none;transition:all .15s;white-space:nowrap}
+    .cat-pill:hover{background:var(--g-bg);border-color:var(--g-border);color:var(--g)}
+
+    /* MAIN LAYOUT */
+    .page-body{max-width:1200px;margin:0 auto;padding:0 24px 100px;display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start}
+    .sidebar{position:sticky;top:120px}
+    .sidebar-nav{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:20px}
+    .sidebar-label{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--text-4);letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px}
+    .sidebar-link{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;font-size:13px;color:var(--text-3);transition:all .15s;margin-bottom:2px;cursor:pointer;text-decoration:none}
+    .sidebar-link:hover,.sidebar-link.active{background:var(--g-bg);color:var(--text);border-color:var(--g-border)}
+    .sidebar-emoji{font-size:14px;width:20px;text-align:center}
+    .sidebar-cta{margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+    .main-content{min-width:0}
+
+    /* CATEGORY SECTIONS */
+    .category-section{margin-bottom:64px;scroll-margin-top:130px}
+    .cat-header{margin-bottom:24px}
+    .cat-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:4px 10px;border-radius:3px;border:1px solid var(--border-2);color:var(--text-4);background:transparent;margin-bottom:14px}
+    .cat-title{font-size:clamp(22px,3vw,32px);font-weight:900;color:var(--text);letter-spacing:-.03em;line-height:1.05;margin-bottom:8px}
+    .cat-tagline{font-size:15px;color:var(--text-3);line-height:1.65}
+    .urgent-banner{background:var(--red-bg);border:1px solid var(--red-border);border-radius:8px;padding:12px 16px;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+    .urgent-banner-text{font-size:13px;color:var(--red);line-height:1.5}
+
+    /* TOOL CARDS */
+    .tools-grid{display:flex;flex-direction:column;gap:16px}
+    .tool-card{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s}
+    .tool-card:hover{border-color:var(--border-2)}
+    .tool-card.stack-pick{border-color:rgba(0,200,100,.25);background:rgba(0,200,100,.02)}
+    .tool-card.warning{border-color:rgba(252,129,129,.25);background:rgba(252,129,129,.02)}
+    .tool-card-inner{padding:22px 24px}
+    .tool-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+    .tool-name{font-size:17px;font-weight:800;color:var(--text);letter-spacing:-.02em}
+    .tool-badge{display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;letter-spacing:.04em;flex-shrink:0}
+    .badge-stack{background:var(--g-bg);border:1px solid var(--g-border);color:var(--g)}
+    .badge-native{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.2);color:#60a5fa}
+    .badge-affiliate{background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);color:#a78bfa}
+    .badge-freemium{background:rgba(252,211,77,.08);border:1px solid rgba(252,211,77,.2);color:var(--amber)}
+    .badge-free{background:rgba(0,200,100,.08);border:1px solid rgba(0,200,100,.15);color:var(--g)}
+    .badge-warning{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red)}
+    .tool-meta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:14px}
+    .tool-meta-item{font-size:12px;color:var(--text-4);display:flex;align-items:center;gap:5px}
+    .tool-meta-label{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-4)}
+    .tool-meta-val{font-weight:600;color:var(--text-3)}
+    .tool-meta-val.green{color:var(--g)}
+    .tool-desc{font-size:14px;color:var(--text-3);line-height:1.75;margin-bottom:16px}
+    .tool-detail{font-family:var(--mono);font-size:11px;color:var(--text-4);background:var(--bg-3);border-radius:6px;padding:8px 12px;margin-bottom:16px;line-height:1.6}
+    .tool-cta{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--g);padding:10px 18px;border-radius:7px;border:1px solid var(--g-border);background:var(--g-bg);transition:all .15s;text-decoration:none}
+    .tool-cta:hover{background:rgba(0,200,100,.12);transform:translateY(-1px)}
+    .tool-cta.warning-cta{color:var(--red);border-color:var(--red-border);background:var(--red-bg)}
+    .saves-badge{display:inline-flex;align-items:center;font-size:11px;font-weight:700;color:var(--g);background:var(--g-bg);border:1px solid var(--g-border);border-radius:6px;padding:3px 9px;margin-left:8px}
+
+    /* SAVINGS CALCULATOR */
+    .savings-widget{background:var(--bg-2);border:1px solid var(--border);border-radius:14px;padding:28px;margin-bottom:48px}
+    .savings-widget h2{font-size:20px;font-weight:800;color:var(--text);letter-spacing:-.02em;margin-bottom:6px}
+    .savings-widget p{font-size:14px;color:var(--text-3);margin-bottom:20px;line-height:1.65}
+    .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+    .calc-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+    .calc-row:last-child{border:none}
+    .calc-label{display:flex;align-items:center;gap:8px}
+    .calc-checkbox{width:16px;height:16px;accent-color:var(--g);cursor:pointer}
+    .calc-total{background:var(--g-bg);border:1px solid var(--g-border);border-radius:10px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;margin-top:16px}
+    .calc-total-label{font-size:13px;font-weight:600;color:var(--text-2)}
+    .calc-total-val{font-family:var(--mono);font-size:24px;font-weight:800;color:var(--g)}
+
+    /* FAQ */
+    .faq-section{margin-bottom:64px}
+    .sec-head{margin-bottom:28px}
+    .sec-head h2{font-size:clamp(22px,3vw,32px);font-weight:900;color:var(--text);letter-spacing:-.03em;line-height:1.05;margin-bottom:8px}
+    .sec-head p{font-size:15px;color:var(--text-3);line-height:1.65}
+    .faq-list{display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+    .faq-item{border-bottom:1px solid var(--border)}.faq-item:last-child{border:none}
+    .faq-q{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;background:transparent;border:none;padding:18px 20px;cursor:pointer;font-size:14px;font-weight:600;color:var(--text-2);text-align:left;font-family:var(--sans);transition:color .15s,background .15s}
+    .faq-q:hover{color:var(--text);background:rgba(255,255,255,.02)}
+    .faq-a{display:none;padding:0 20px 18px}.faq-a p{font-size:13px;color:var(--text-3);line-height:1.8}
+    .faq-a.open{display:block}
+    .faq-chev{flex-shrink:0;transition:transform .2s}
+    .faq-chev.open{transform:rotate(180deg)}
+
+    /* BOTTOM CTA */
+    .bottom-cta{background:var(--bg-2);border-top:1px solid var(--border);padding:80px 24px;text-align:center}
+    .bottom-cta-inner{max-width:640px;margin:0 auto}
+    .bottom-cta h2{font-size:clamp(26px,4vw,44px);font-weight:900;color:var(--text);letter-spacing:-.03em;line-height:1.05;margin-bottom:16px}
+    .bottom-cta h2 .grn{color:var(--g)}
+    .bottom-cta p{font-size:16px;color:var(--text-3);margin-bottom:28px;line-height:1.7}
+    .trust-row{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-top:20px}
+    .trust-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-4)}
+
+    /* FOOTER */
+    .footer{background:var(--bg-3);border-top:1px solid var(--border);padding:48px 24px 32px}
+    .footer-inner{max-width:1200px;margin:0 auto}
+    .footer-conversion{background:var(--g-bg);border:1px solid var(--g-border);border-radius:10px;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:36px}
+    .footer-conversion-text{font-size:14px;font-weight:600;color:var(--text-2)}.footer-conversion-text span{color:var(--text)}
+    .footer-conversion-cta{font-family:var(--mono);font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;background:var(--g);color:#020617;padding:10px 18px;border-radius:5px;text-decoration:none;white-space:nowrap}
+    .footer-links{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+    .footer-links a{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--text-4);padding:4px 10px;border:1px solid var(--border);border-radius:3px;transition:all .15s;text-decoration:none}
+    .footer-links a:hover{color:var(--g);border-color:var(--g-border)}
+    .footer-nav{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:20px}
+    .footer-nav a{font-size:12px;color:var(--text-4);transition:color .15s;text-decoration:none}.footer-nav a:hover{color:var(--g)}
+    .footer-divider{height:1px;background:var(--border);margin-bottom:16px}
+    .footer-copy{font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.1em;margin-bottom:8px}
+    .footer-disc{font-size:11px;color:var(--text-4);line-height:1.7;max-width:600px}.footer-disc a{color:var(--text-4);text-decoration:underline}
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      .page-body{grid-template-columns:1fr;gap:0}
+      .sidebar{display:none}
+      .cat-nav{display:block}
+    }
+    @media(max-width:600px){
+      .hero{padding:48px 20px 40px}
+      .stat-strip{gap:8px}
+      .stat-pill{min-width:90px;padding:10px 14px}
+      .tool-card-inner{padding:18px 16px}
+      .calc-grid{grid-template-columns:1fr}
+      .direct-answer-inner{flex-direction:column;gap:6px}
+      .da-label{display:none}
+    }
+  </style>
+</head>
+
+<body>
+<Nav />
+
+<!-- DIRECT ANSWER BLOCK (AI citation extraction) -->
+<div class="direct-answer" role="note" aria-label="Direct answer">
+  <div class="direct-answer-inner">
+    <span class="da-label">Direct answer</span>
+    <p>The best free Shopify apps in 2026 include CAPI Shield (free server-side Meta + Google tracking, replaces Elevar), Stocky Swap (free inventory management, replaces Shopify Stocky before its August 31 shutdown), Systeme.io (2,000 contacts, unlimited email sends, replaces Klaviyo), Make.com (1,000 operations/month free, powers all automations), Judge.me (unlimited reviews free), and Microsoft Clarity (free heatmaps). Combined these save $465–$2,297 per month versus paid alternatives.</p>
+  </div>
+</div>
+
+<main id="main-content">
+
+<!-- BREADCRUMB -->
+<nav class="breadcrumb" aria-label="Breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+  <span itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+    <a href={SITE + "/"} itemprop="item" style="color:var(--text-4)"><span itemprop="name">Home</span></a>
+    <meta itemprop="position" content="1" />
+  </span>
+  <span class="bc-sep">/</span>
+  <span itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+    <span itemprop="name" style="color:var(--text-3)">Best Free Shopify Apps 2026</span>
+    <meta itemprop="position" content="2" />
+  </span>
+</nav>
+
+<!-- HERO -->
+<section class="hero" aria-label="Best free Shopify apps 2026 — comprehensive list">
+  <div class="hero-inner">
+    <div class="hero-dateline">
+      <span class="dot"></span>
+      Updated April 2026 · 40+ free tools · Tested across 500+ stores · 10 categories
+    </div>
+
+    <h1>
+      The Best <span class="grn">Free Shopify Apps</span><br>
+      <span class="dim">2026 — 40+ Tools Ranked</span>
+    </h1>
+
+    <p class="hero-sub">
+      The definitive list of genuinely free Shopify apps across 10 categories — tracking, email, inventory, automation, reviews, SEO, and more. <strong>Every tool tested across 500+ real stores. Every recommendation based on actual performance, not affiliate commissions.</strong> The free tools here replace $700+/month of paid apps.
+    </p>
+
+    <div class="stat-strip">
+      <div class="stat-pill"><span class="sv">40+</span><span class="sl">Free tools</span></div>
+      <div class="stat-pill"><span class="sv">10</span><span class="sl">Categories</span></div>
+      <div class="stat-pill"><span class="sv">$700+</span><span class="sl">Saved/month</span></div>
+      <div class="stat-pill"><span class="sv">500+</span><span class="sl">Stores tested</span></div>
+      <div class="stat-pill"><span class="sv">$0</span><span class="sl">Our top tools cost</span></div>
+    </div>
+
+    <div class="hero-ctas">
+      <a href="#tracking" class="btn pulse" onclick="event.preventDefault();document.getElementById('tracking').scrollIntoView({behavior:'smooth'})">
+        Jump to free tracking tools
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href={TOOLS.pro} class="btn-outline">
+        Get all 4 pre-built automations — $29
+      </a>
+    </div>
+    <p class="hero-note">
+      The ⭐ Stack Pick tools are built by Stack Architect and free forever. Affiliate links are marked — we earn a commission if you sign up, at no cost to you. We only recommend tools we use ourselves. <a href="/privacy">Disclosure</a>.
+    </p>
+  </div>
+</section>
+
+<!-- CATEGORY QUICK-NAV (mobile) -->
+<nav class="cat-nav" aria-label="Jump to category">
+  <div class="cat-nav-inner">
+    <span class="cat-nav-label">Jump to:</span>
+    {categories.map(c => (
+      <a href={`#${c.id}`} class="cat-pill" onclick={`event.preventDefault();document.getElementById('${c.id}').scrollIntoView({behavior:'smooth'})`}>
+        <span>{c.emoji}</span> {c.label}
+      </a>
+    ))}
+  </div>
+</nav>
+
+<!-- SAVINGS CALCULATOR -->
+<div style="max-width:1200px;margin:0 auto;padding:40px 24px 0">
+  <div class="savings-widget">
+    <h2>Calculate your monthly savings</h2>
+    <p>Select the apps you currently pay for to see how much the free alternatives save you every month.</p>
+    <div class="calc-grid">
+      {[
+        {id:"elevar",label:"Elevar or Triple Whale",save:299},
+        {id:"klaviyo",label:"Klaviyo (email)",save:175},
+        {id:"stocky",label:"Inventory app (Linnworks, etc.)",save:49},
+        {id:"tiktok",label:"TikTok tracking app (WeltPixel)",save:39},
+        {id:"trueprofit",label:"P&L tool (TrueProfit, BeProfit)",save:29},
+        {id:"zapier",label:"Zapier (automation)",save:79},
+        {id:"reviews",label:"Paid reviews app (Loox, Yotpo)",save:29},
+        {id:"heatmaps",label:"Heatmaps (Hotjar, Lucky Orange)",save:39},
+      ].map(item => (
+        <div class="calc-row">
+          <label class="calc-label" for={`chk-${item.id}`}>
+            <input type="checkbox" id={`chk-${item.id}`} class="calc-checkbox" data-save={item.save} checked onchange="recalc()" />
+            {item.label}
+          </label>
+          <span style="font-family:var(--mono);font-size:12px;color:var(--amber)">${item.save}/mo</span>
+        </div>
+      ))}
+    </div>
+    <div class="calc-total">
+      <span class="calc-total-label">Your monthly saving with free alternatives:</span>
+      <span class="calc-total-val" id="calc-result">$738/mo</span>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN BODY -->
+<div class="page-body">
+
+  <!-- SIDEBAR (desktop) -->
+  <aside class="sidebar" aria-label="Category navigation">
+    <nav class="sidebar-nav">
+      <div class="sidebar-label">// 10 Categories</div>
+      {categories.map(c => (
+        <a href={`#${c.id}`} class="sidebar-link" onclick={`event.preventDefault();document.getElementById('${c.id}').scrollIntoView({behavior:'smooth'})`}>
+          <span class="sidebar-emoji">{c.emoji}</span>
+          {c.label}
+        </a>
+      ))}
+      <div class="sidebar-cta">
+        <a href={TOOLS.pro} class="btn" style="font-size:13px;padding:11px 16px;width:100%;justify-content:center">
+          Get pre-built kit — $29
+        </a>
+        <p style="font-size:11px;color:var(--text-4);text-align:center;margin-top:8px;line-height:1.5">4 automations ready to import. 10 minutes.</p>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+
+    {categories.map(cat => (
+      <section class="category-section" id={cat.id} aria-labelledby={`cat-${cat.id}-h`}>
+
+        <div class="cat-header">
+          <span class="cat-badge">{cat.emoji} {cat.label}</span>
+          <h2 id={`cat-${cat.id}-h`} class="cat-title">
+            {`Best Free Shopify ${cat.label} Apps 2026`}
+          </h2>
+          <p class="cat-tagline">{cat.tagline}</p>
+        </div>
+
+        {cat.urgent && (
+          <div class="urgent-banner" role="alert">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+            <p class="urgent-banner-text"><strong style="color:var(--red)">{cat.urgent}</strong></p>
+          </div>
+        )}
+
+        <div class="tools-grid">
+          {cat.tools.map(tool => (
+            <article
+              class={`tool-card ${tool.badge}`}
+              itemscope
+              itemtype="https://schema.org/SoftwareApplication"
+            >
+              <div class="tool-card-inner">
+
+                <div class="tool-top">
+                  <div>
+                    <div class="tool-name" itemprop="name">{tool.name}</div>
+                    {tool.saves && tool.saves !== "—" && tool.saves !== "Varies" && tool.saves !== "Time" && (
+                      <span class="saves-badge">Saves {tool.saves}</span>
+                    )}
+                  </div>
+                  <span class={`tool-badge badge-${tool.badge}`}>{tool.badgeLabel}</span>
+                </div>
+
+                <div class="tool-meta">
+                  <div class="tool-meta-item">
+                    <span class="tool-meta-label">Price</span>
+                    <span class={`tool-meta-val ${tool.price.startsWith("$0") ? "green" : ""}`} itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                      <span itemprop="price">{tool.price}</span>
+                    </span>
+                  </div>
+                  {tool.replaces && tool.replaces !== "N/A" && (
+                    <div class="tool-meta-item">
+                      <span class="tool-meta-label">Replaces</span>
+                      <span class="tool-meta-val">{tool.replaces}</span>
+                    </div>
+                  )}
+                </div>
+
+                <p class="tool-desc" itemprop="description">{tool.description}</p>
+
+                {tool.detail && (
+                  <div class="tool-detail">// {tool.detail}</div>
+                )}
+
+                <a
+                  href={tool.ctaHref}
+                  class={`tool-cta ${tool.badge === "warning" ? "warning-cta" : ""}`}
+                  target={tool.ctaHref.startsWith("http") ? "_blank" : undefined}
+                  rel={tool.ctaRel ?? (tool.ctaHref.startsWith("http") ? "noopener" : undefined)}
+                  aria-label={`${tool.cta} — ${tool.name}`}
+                >
+                  {tool.cta}
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+
+              </div>
+            </article>
+          ))}
+        </div>
+
+      </section>
+    ))}
+
+    <!-- SEO PROSE SECTION -->
+    <section style="margin-bottom:64px;" itemscope itemtype="https://schema.org/Article">
+      <div class="sec-head">
+        <span class="cat-badge">// In-depth guide</span>
+        <h2>How to choose the best free Shopify apps for your store</h2>
+        <p>Not all free plans are equal. Here is how to evaluate whether a free Shopify app is genuinely free or just a trial.</p>
+      </div>
+
+      <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:28px;margin-bottom:20px" itemprop="articleBody">
+        <h3 style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:12px">Permanently free vs free trial</h3>
+        <p style="font-size:14px;color:var(--text-3);line-height:1.8;margin-bottom:16px">The most important distinction when evaluating free Shopify apps is whether the free plan is permanent or time-limited. A 14-day free trial is not a free app — it is a paid app with a trial. The tools rated highest in this list are permanently free with no time limit: Make.com (1,000 operations/month, no expiry), Systeme.io (2,000 contacts, unlimited sends, no expiry), Judge.me (unlimited reviews, no expiry), and all Stack Architect tools.</p>
+
+        <h3 style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:12px;margin-top:24px">Free plan limitations to watch for</h3>
+        <p style="font-size:14px;color:var(--text-3);line-height:1.8;margin-bottom:16px">Even genuinely free plans have limits. The most common: contact limits (Mailchimp free plan: 500 contacts vs Systeme.io: 2,000), operation or task limits (Zapier free: 100 tasks vs Make.com free: 1,000 operations), conversation limits (Tidio free: 50 conversations/month), and feature gates (Smile.io free lacks referral programme and VIP tiers). Know which limit is most relevant to your store's scale before choosing.</p>
+
+        <h3 style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:12px;margin-top:24px">The Stack Architect approach: replace at the infrastructure level</h3>
+        <p style="font-size:14px;color:var(--text-3);line-height:1.8;margin-bottom:16px">Most free alternatives replace the interface of paid apps but use the same underlying APIs. CAPI Shield, for example, calls the Meta Conversions API and Google Enhanced Conversions API directly — the same endpoints Elevar ($50–$500/month) uses — via Make.com's free tier. The tracking accuracy is identical because the APIs are identical. The paid tools are providing the configuration interface; the API access itself is free. Understanding this means you can achieve paid-tool outcomes at $0 by using Make.com to call the APIs directly.</p>
+
+        <h3 style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:12px;margin-top:24px">When free tools are not enough</h3>
+        <p style="font-size:14px;color:var(--text-3);line-height:1.8">Free tools have genuine limitations at scale. Make.com's free tier covers approximately 250–333 orders per month across a full automation stack — above that, $9/month for Core covers 2,500 orders. Systeme.io's 2,000-contact limit works for most stores but requires a paid plan (or GetResponse) for larger lists. Gorgias is genuinely better than Tidio for helpdesk operations at 1,000+ monthly support conversations. The free tools win when they are technically equivalent to their paid alternatives at the scale you are operating at — and they are, for most Shopify stores.</p>
+      </div>
+
+      <div style="background:var(--g-bg);border:1px solid var(--g-border);border-radius:10px;padding:20px 24px">
+        <div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--g);letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px">// Related guide</div>
+        <p style="font-size:14px;color:var(--text-2);margin-bottom:12px">For a narrative walkthrough of how to replace 6 paid Shopify apps with free alternatives — with exact setup steps for each — read the companion guide:</p>
+        <a href="/blog/free-shopify-apps-replace-paid-2026/" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--g);text-decoration:underline">
+          How we replaced 6 paid Shopify apps for $0 — step-by-step guide →
+        </a>
+      </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="faq-section" id="faq" aria-labelledby="faq-h">
+      <div class="sec-head">
+        <span class="cat-badge">// FAQ</span>
+        <h2 id="faq-h">Best free Shopify apps — every question answered</h2>
+        <p>The most common questions about free Shopify apps in 2026.</p>
+      </div>
+
+      <div class="faq-list">
+        {faqs.map((f, i) => (
+          <div class="faq-item" itemscope itemtype="https://schema.org/Question">
+            <button
+              class="faq-q"
+              aria-expanded="false"
+              aria-controls={`faq-a-${i}`}
+              onclick={`
+                var b=this.nextElementSibling;
+                var open=!b.classList.contains('open');
+                b.classList.toggle('open',open);
+                this.setAttribute('aria-expanded',open);
+                this.querySelector('.faq-chev').classList.toggle('open',open);
+              `}
+            >
+              <span itemprop="name">{f.q}</span>
+              <svg class="faq-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex-shrink:0"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="faq-a" id={`faq-a-${i}`} itemscope itemtype="https://schema.org/Answer">
+              <p itemprop="text">{f.a}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- BOTTOM CTA -->
+<section class="bottom-cta" aria-label="Get the Complete Kit">
+  <div class="bottom-cta-inner">
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:20px">
+      <span class="dot"></span>
+      <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);letter-spacing:.08em">★★★★★ 4.9/5 · 500+ stores · No subscription ever</span>
+    </div>
+    <h2>
+      Skip the 8-hour build.<br>
+      <span class="grn">Deploy in 10 minutes. $29.</span>
+    </h2>
+    <p>
+      The Complete Kit gives you four pre-built Make.com JSON blueprints — CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto — plus two Google Sheets templates. Import and deploy your entire free automation stack in 10 minutes instead of 8+ hours. $29 one-time. No subscription. Files yours to keep.
+    </p>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:20px">
+      <a href={TOOLS.pro} class="btn pulse" style="font-size:16px;padding:16px 32px">
+        Get the Complete Kit — $29
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href={AFF.make} target="_blank" rel="noopener sponsored" class="btn-outline">
+        Start free on Make.com
+      </a>
+    </div>
+    <div class="trust-row">
+      {["Instant access via Stripe","No subscription ever","Any Shopify plan","Deploy in 10 minutes","Files yours to keep"].map(t => (
+        <div class="trust-item">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#00c864" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+          {t}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-conversion">
+      <div class="footer-conversion-text">The complete free Shopify automation stack. <span>Four pre-built Make.com scenarios — live in 10 minutes.</span></div>
+      <a href={TOOLS.pro} class="footer-conversion-cta">GET THE KIT — $29 →</a>
+    </div>
+    <div class="footer-links">
+      <a href="/">Stack</a>
+      <a href={TOOLS.capiShield}>CAPI Shield</a>
+      <a href={TOOLS.stockySwap}>Stocky Swap</a>
+      <a href={TOOLS.tiktokCAPI}>TikTok Events API</a>
+      <a href={TOOLS.klaviyo}>Replace Klaviyo</a>
+      <a href={TOOLS.pandl}>P&L Auto</a>
+      <a href={TOOLS.pro} style="color:var(--g)">Complete Kit — $29</a>
+    </div>
+    <div class="footer-nav">
+      <a href="/elevar-alternative/">Elevar Alternative</a>
+      <a href="/triple-whale-alternative/">Triple Whale Alternative</a>
+      <a href="/analyzify-alternative/">Analyzify Alternative</a>
+      <a href="/stocky-alternative/">Stocky Alternative</a>
+      <a href="/elevar-pricing/">Elevar Pricing</a>
+      <a href="/analyzify-pricing/">Analyzify Pricing</a>
+      <a href="/shopify-automation-guides/">All Guides</a>
+      <a href="/blog/free-shopify-apps-replace-paid-2026/">Free Apps Guide</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/terms/">Terms</a>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-copy">© 2026 Stack Architect. All rights reserved.</div>
+    <div class="footer-disc">
+      Stack Architect uses affiliate links. We may earn a commission if you sign up for tools via our links — at no extra cost to you. We only recommend tools we use and have tested across 500+ Shopify stores. Affiliate relationships: Make.com (techie123), Systeme.io, Tidio, Gorgias, Beehiiv, GetResponse, Google Workspace. <a href="/privacy/">Privacy policy</a>.
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Savings calculator
+  function recalc() {
+    var total = 0;
+    document.querySelectorAll('.calc-checkbox:checked').forEach(function(cb) {
+      total += parseInt(cb.dataset.save) || 0;
+    });
+    document.getElementById('calc-result').textContent = '$' + total + '/mo';
+  }
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(function(btn) {
+    btn.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        btn.click();
+      }
+    });
+  });
+
+  // Active sidebar link highlighting
+  var sections = document.querySelectorAll('.category-section');
+  var sidebarLinks = document.querySelectorAll('.sidebar-link');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        sidebarLinks.forEach(function(link) {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(function(s) { observer.observe(s); });
+</script>
+
+</body>
+</html>
