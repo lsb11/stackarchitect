@@ -48,7 +48,7 @@ export default defineConfig({
         if (item.url.includes('/blog/')) {
           return { ...item, priority: 0.8, changefreq: 'monthly' };
         }
-        if (['/capi-shield/','/stocky-swap/','/tiktok-events-api-shopify/','/replace-klaviyo-free/','/shopify-profit-loss-automation/','/autocrat-quota-fix/','/pro/'].some(p => item.url.endsWith(p))) {
+        if (['/capi-shield/','/stocky-swap/','/tiktok-events-api-shopify/','/replace-klaviyo-free/','/shopify-profit-loss-automation/','/autocrat-quota-fix/','/pro/','/shopify-google-ads-conversion-tracking/'].some(p => item.url.endsWith(p))) {
           return { ...item, priority: 0.9, changefreq: 'monthly' };
         }
         return { ...item, priority: 0.7, changefreq: 'monthly' };
