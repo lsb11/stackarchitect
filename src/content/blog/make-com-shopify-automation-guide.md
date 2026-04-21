@@ -43,11 +43,11 @@ Make.com (formerly Integromat) is a visual automation platform. You connect serv
 
 The key difference from Zapier: **one trigger can branch to multiple destinations simultaneously.** One Shopify Order Payment webhook fans out to Meta CAPI, Google Enhanced Conversions, TikTok Events API, Google Sheets inventory, and P&L reporting — five destinations, one trigger, $0/month on the free plan.
 
-Make.com's free plan gives **1,000 operations per month** — 10× more than Zapier's 100 free tasks — and includes webhook triggers and HTTP modules at no cost. Most stores under 250 orders/month run the complete stack free indefinitely.
+Make.com's free plan gives **1,000 operations per month** — 10× more than Zapier's 100 free tasks — and includes [webhook triggers and HTTP modules](https://www.make.com/en/help/tools/webhooks) at no cost. Most stores under 250 orders/month run the complete stack free indefinitely.
 
 ## How to Connect Make.com to Shopify in 3 Minutes
 
-You do not need to install a Shopify app. The connection uses native Shopify webhooks — available on every plan including Basic.
+You do not need to install a Shopify app. The connection uses [native Shopify webhooks](https://shopify.dev/docs/api/admin-rest/2024-01/resources/webhook) — available on every plan including Basic.
 
 **Step 1 — Create your Make.com account**
 

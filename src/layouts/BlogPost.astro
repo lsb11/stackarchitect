@@ -36,8 +36,12 @@ const articleSchema = {
   dateModified: updatedDate ?? publishDate,
   author: {
     '@type': 'Person',
-    name: 'Stack Architect',
+    '@id': 'https://stackarchitect.xyz/#luke',
+    name: 'Luke',
+    jobTitle: 'Shopify Automation Specialist',
     url: 'https://stackarchitect.xyz/about',
+    sameAs: ['https://www.linkedin.com/in/stack-architect-6766733b0'],
+    worksFor: { '@type': 'Organization', name: 'Stack Architect', url: 'https://stackarchitect.xyz' },
   },
   publisher: {
     '@type': 'Organization',
@@ -160,11 +164,19 @@ const displayDate = (d: string) =>
     </article>
 
     <!-- Author block -->
-    <div class="border-t border-[#1f1f1f] pt-6 mt-8 text-xs text-[#52525b] font-mono">
-      Written by Stack Architect · Updated {displayDate(updatedDate ?? publishDate)} ·
-      <a href="/about" class="hover:text-[#4ade80] transition-colors underline">
-        About this resource
+    <div class="border-t border-[#1f1f1f] pt-6 mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-[#52525b] font-mono">
+      <span>Written by <a href="/about" class="text-[#4ade80] hover:underline">Luke</a></span>
+      <span class="text-[#27272a]">·</span>
+      <span>Shopify automation specialist</span>
+      <span class="text-[#27272a]">·</span>
+      <span>Updated {displayDate(updatedDate ?? publishDate)}</span>
+      <span class="text-[#27272a]">·</span>
+      <a href="https://www.linkedin.com/in/stack-architect-6766733b0" target="_blank" rel="noopener" class="hover:text-[#4ade80] transition-colors flex items-center gap-1">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
       </a>
+      <span class="text-[#27272a]">·</span>
+      <a href="/about" class="hover:text-[#4ade80] transition-colors underline">About</a>
     </div>
 
     {faqs && faqs.length > 0 && <FAQSection faqs={faqs} />}

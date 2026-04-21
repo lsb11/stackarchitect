@@ -45,7 +45,7 @@ Google Ads conversion tracking on Shopify works by firing a browser-based pixel 
 
 **The three causes of broken Google Ads tracking in 2026:**
 
-**iOS Link Tracking Protection (iOS 17 and later)** strips Google's `gclid` click identifier from URLs when links are opened from Private Browsing mode, Mail, and Messages. Without `gclid`, Google's pixel cannot match the purchase to the original ad click. The purchase fires as an unattributed conversion — or doesn't fire at all if the pixel fails to load.
+**iOS Link Tracking Protection (iOS 17 and later)** strips Google's `gclid` click identifier from URLs when links are opened from Private Browsing mode, Mail, and Messages. Without `gclid`, Google's pixel cannot match the purchase to the original ad click. The purchase fires as an unattributed conversion — or doesn't fire at all if the pixel fails to load. Apple's [WebKit Tracking Prevention Policy](https://webkit.org/tracking-prevention/) documents the full scope of tracking parameters that Safari strips.
 
 **Safari Intelligent Tracking Prevention (ITP)** limits the lifespan of first-party cookies. A customer who clicks a Google ad on Monday and purchases on Wednesday or Thursday may fall outside the cookie attribution window. The pixel fires on purchase but cannot trace it back to the ad click.
 
@@ -55,7 +55,7 @@ The cumulative effect: on a typical Shopify store in 2026, 20–40% of purchases
 
 ## What Google Enhanced Conversions Actually Does
 
-Google Enhanced Conversions is a supplementary tracking layer that sends hashed customer data (SHA-256 hashed email address, and optionally phone number and address) alongside purchase events directly to Google's Conversions API. This is a server-to-server connection — your server calls Google's API, no browser is involved.
+Google Enhanced Conversions is a supplementary tracking layer that sends hashed customer data (SHA-256 hashed email address, and optionally phone number and address) alongside purchase events directly to Google's Conversions API. This is a server-to-server connection — your server calls Google's API, no browser is involved. The [official Google Enhanced Conversions documentation](https://support.google.com/google-ads/answer/9888656) covers all required fields and the SHA-256 hashing specification Google requires for customer data.
 
 Google uses the hashed data to match purchases to signed-in Google accounts via their own first-party data. A customer who clicked a Google ad while logged into Gmail, then purchased on a different device or after cookies were cleared, can still be matched and attributed — because Google recognises the hashed email against their own account records.
 

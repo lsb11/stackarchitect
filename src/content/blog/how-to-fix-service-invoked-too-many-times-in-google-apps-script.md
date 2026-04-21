@@ -38,7 +38,7 @@ This guide covers the exact cause for each service type and the specific code pa
 
 ## What the Error Actually Means
 
-Google Apps Script enforces rate limits on calls to each of its services. These limits exist to protect shared infrastructure — your scripts run on Google's servers alongside millions of others. When you exceed the rate for a service within a rolling time window, Google stops accepting calls and throws this error.
+Google Apps Script enforces rate limits on calls to each of its services. These limits exist to protect shared infrastructure — your scripts run on Google's servers alongside millions of others. When you exceed the rate for a service within a rolling time window, Google stops accepting calls and throws this error. [Google's official Apps Script quotas documentation](https://developers.google.com/apps-script/guides/services/quotas) lists the specific limits for each service type by account tier.
 
 The key distinction: this is a **rate** error, not a **quota** error. You haven't necessarily hit your daily limit — you've made too many calls too quickly. This means slowing down your script or batching calls resolves the error without waiting for a quota reset.
 

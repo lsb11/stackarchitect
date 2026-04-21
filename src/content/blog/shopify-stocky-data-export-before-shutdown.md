@@ -35,7 +35,7 @@ relatedGuides:
 
 # Shopify Stocky Data Export — What to Save Before the August 31, 2026 Shutdown
 
-Shopify Stocky stops functioning permanently on August 31, 2026. Every purchase order, stocktake record, transfer history, and supplier detail stored in Stocky will be permanently and irreversibly deleted on that date.
+Shopify Stocky stops functioning permanently on August 31, 2026. Every purchase order, stocktake record, transfer history, and supplier detail stored in Stocky will be permanently and irreversibly deleted on that date. [Shopify removed Stocky from the App Store on February 2, 2026](https://apps.shopify.com/stocky) — the August 31 shutdown date is confirmed and official.
 
 Your Shopify inventory levels are safe — they live in Shopify Admin, not in Stocky. But years of purchase order history, stocktake records, supplier contacts, and demand data exist only inside Stocky. Once the shutdown happens, there is no recovery.
 

@@ -40,7 +40,7 @@ Systeme.io provides **2,000 contacts and unlimited email sends permanently free*
 
 ## Why Klaviyo Bills Are Rising in 2026
 
-Klaviyo changed its billing model in February 2025. Previously you paid based on contacts you actively emailed each month. Now you pay for **all active profiles** — every contact in your account whether you email them or not.
+Klaviyo changed its billing model in February 2025. Previously you paid based on contacts you actively emailed each month. Now you pay for **all active profiles** — every contact in your account whether you email them or not. [Klaviyo's own pricing documentation](https://www.klaviyo.com/pricing) confirms that active profiles include any contact not manually suppressed, regardless of engagement history.
 
 Unengaged subscribers who signed up for a discount code two years ago and never bought. People who opened one email and never returned. All of them count toward your billing tier.
 

@@ -45,11 +45,11 @@ Understanding the sequence of changes explains why tracking has degraded gradual
 
 **iOS 14.5 — April 2021: App Tracking Transparency (ATT)**
 
-Required all apps to ask users for permission to track across apps and websites. Meta's iOS app users who declined ATT became largely invisible to the Meta Pixel for attribution purposes. Stores with high iOS app traffic from Meta ads saw the first significant attribution gap at this point.
+Required all apps to ask users for permission to track across apps and websites. [Apple's ATT framework](https://developer.apple.com/documentation/apptrackingtransparency) required explicit opt-in for cross-app tracking. Meta's iOS app users who declined ATT became largely invisible to the Meta Pixel for attribution purposes. Stores with high iOS app traffic from Meta ads saw the first significant attribution gap at this point.
 
 **iOS 14+ — Safari Intelligent Tracking Prevention (ITP)**
 
-Safari's ITP reduces the lifespan of first-party cookies used for attribution. A customer who clicks a Meta ad on Monday and purchases on Wednesday may not be attributed if ITP has cleared the click cookie. ITP affects all Safari users regardless of ATT consent.
+Safari's [Intelligent Tracking Prevention](https://webkit.org/tracking-prevention/) reduces the lifespan of first-party cookies used for attribution. A customer who clicks a Meta ad on Monday and purchases on Wednesday may not be attributed if ITP has cleared the click cookie. ITP affects all Safari users regardless of ATT consent.
 
 **iOS 17 — September 2023: Link Tracking Protection**
 

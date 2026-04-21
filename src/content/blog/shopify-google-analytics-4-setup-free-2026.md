@@ -43,7 +43,7 @@ In 2026, setting up GA4 on Shopify is free and takes under 20 minutes. No apps t
 
 ## What GA4 Tracks on Shopify
 
-Before setting anything up, understand what GA4 gives you and what it doesn't.
+Before setting anything up, understand what GA4 gives you and what it doesn't. [Google Analytics 4](https://support.google.com/analytics/answer/10089681) is Google's current analytics platform, replacing Universal Analytics which was sunset in July 2023. Shopify's native integration with GA4 is delivered through the [Google & YouTube sales channel](https://apps.shopify.com/google), which handles event tracking without requiring Google Tag Manager.
 
 **What GA4 tracks automatically on Shopify (via native integration):**
 

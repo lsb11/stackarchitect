@@ -44,7 +44,7 @@ Shopify counts every order. Meta counts only conversions traceable to ads within
 
 ## Cause 1 — iOS 26 Link Tracking Protection
 
-Rolled out in September 2025, Apple expanded Link Tracking Protection to strip click identifiers — including Meta's `fbclid` — from URLs when links are opened in Private Browsing mode, from Mail, and from Messages.
+Rolled out in September 2025, Apple expanded [Link Tracking Protection](https://webkit.org/tracking-prevention/) to strip click identifiers — including Meta's `fbclid` — from URLs when links are opened in Private Browsing mode, from Mail, and from Messages.
 
 This is not all Safari browsing. Standard Safari browsing sessions are unaffected. But for stores with significant iOS traffic from Instagram ads or email campaigns, Private Browsing and Mail-originated traffic represents a meaningful and growing attribution gap.
 
@@ -119,7 +119,7 @@ Ensure the Purchase event is listed and prioritised as **#1.** Set attribution w
 
 ### Step 5 — Implement Full Server-Side CAPI (2–3 hours)
 
-Meta Conversions API (CAPI) sends conversion events directly from your server to Meta — bypassing the browser, iOS tracking restrictions, ad blockers, and Shopify's pixel throttling entirely.
+Meta Conversions API (CAPI) sends conversion events directly from your server to Meta — bypassing the browser, iOS tracking restrictions, ad blockers, and Shopify's pixel throttling entirely. The [Meta Conversions API documentation](https://developers.facebook.com/docs/marketing-api/conversions-api) covers all required parameters — the key fields for Shopify are `event_name`, `event_time`, `event_id` (for deduplication), `user_data.em` (SHA-256 hashed email), and `custom_data.value`.
 
 **Implementation:** Google Tag Manager server-side container + Shopify webhooks. GTM is free. Server container hosting is approximately $10–30/month — the only non-free component in this guide.
 

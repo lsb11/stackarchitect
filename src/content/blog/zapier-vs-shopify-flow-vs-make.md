@@ -41,7 +41,7 @@ If you are choosing an automation platform for a Shopify store in 2026:
 
 - **Make.com** — best option for most stores. 10× more free operations than Zapier. Webhook triggers included on the free plan. Supports multi-branch scenarios where one Shopify order fans out to Meta CAPI, Google Sheets, TikTok Events API, and Systeme.io simultaneously. Free plan covers most stores under 200 orders/month indefinitely.
 - **Zapier** — more expensive at every tier, fewer free operations, multi-step automation restricted to paid plans. The better choice only if you specifically need a connector that exists on Zapier but not Make.com (uncommon for Shopify use cases).
-- **Shopify Flow** — not an alternative to either. It is a Shopify-internal automation tool available only on Shopify, Advanced, and Plus plans. Cannot send data to external services without paid connectors. Useful for internal store logic; not useful as a replacement for Make.com or Zapier.
+- **Shopify Flow** — not an alternative to either. It is a Shopify-internal automation tool available only on Shopify, Advanced, and Plus plans. [Shopify Flow documentation](https://help.shopify.com/en/manual/shopify-flow) confirms it cannot send data to external services without paid connectors. Useful for internal store logic; not useful as a replacement for Make.com or Zapier.
 
 ## Free Plan Comparison
 

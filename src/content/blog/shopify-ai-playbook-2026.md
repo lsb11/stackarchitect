@@ -85,7 +85,7 @@ Most AI tools for Shopify are about creating content or generating ideas. Server
 
 Meta's Advantage+ AI, Google's Performance Max, and TikTok's Smart Campaigns all rely on purchase event data to optimise. iOS restrictions, ad blockers, and Shopify's January 2026 pixel update mean browser pixels miss 30–60% of purchase events. When your ad platform's AI trains on incomplete data, it makes poor decisions — poor targeting, poor bidding, poor delivery.
 
-**The fix is server-side tracking:** sending purchase events directly from Shopify's server to Meta, Google, and TikTok via their Conversions APIs. This bypasses browsers entirely.
+**The fix is server-side tracking:** sending purchase events directly from Shopify's server to Meta, Google, and TikTok via their Conversions APIs. This bypasses browsers entirely. Meta's [Conversions API](https://developers.facebook.com/docs/marketing-api/conversions-api) and Google's [Enhanced Conversions](https://support.google.com/google-ads/answer/9888656) both support server-side event submission with hashed first-party data — the mechanism that makes tracking reliable regardless of browser privacy settings.
 
 **Free approach:** [CAPI Shield](/capi-shield) — Make.com scenario that handles Meta CAPI, Google Enhanced Conversions, and TikTok Events API in one setup. Recovers 20–40% of missing purchase events. Deploys in under an hour. $0/month.
 
