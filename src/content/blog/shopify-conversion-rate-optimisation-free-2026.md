@@ -152,3 +152,5 @@ The total cost of implementing all six: $0/month. Most paid CRO apps target the 
 Before optimising your conversion rate, ensure your tracking is accurate. If your Google Ads and Meta Ads are optimising on 60–70% of real conversion data (due to iOS blocking), your CRO efforts are working with a corrupted signal. The Complete Kit deploys server-side tracking (CAPI Shield + Google Enhanced Conversions + TikTok CAPI), inventory management (Stocky Swap), and P&L reporting — four pre-built Make.com JSON blueprints, $29 one-time.
 
 **[Get the Complete Kit — $29 →](/pro)**
+
+

@@ -182,3 +182,8 @@ Full stack: [CAPI Shield](/capi-shield) + [Stocky Swap](/stocky-swap) + [P&L Aut
 While Make.com + Systeme.io handles abandoned cart recovery, the Complete Kit adds the rest of your automation layer — server-side tracking (CAPI Shield replaces Elevar), inventory management (Stocky Swap replaces Stocky before the August 31 shutdown), and live P&L reporting. Four pre-built Make.com JSON blueprints, $29 one-time, deploy in 10 minutes.
 
 **[Get the Complete Kit — $29 →](/pro)**
+## Skip the manual build — get the pre-built stack for $29
+
+The Make.com scenarios for abandoned cart recovery, CAPI Shield, Stocky Swap, and P&L Auto are all available pre-built in the [Complete Kit](/pro). Every field pre-mapped, every API connected. Import in 10 minutes instead of building from scratch. One payment, no subscription, 30-day money-back guarantee.
+
+[Get the Complete Kit — $29 →](/pro)
