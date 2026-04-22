@@ -91,9 +91,28 @@ const orgSchema = {
     'email': 'support@stackarchitect.xyz',
     'contactType': 'customer support',
   },
+  'sameAs': ['https://www.linkedin.com/in/stack-architect-6766733b0'],
 };
 
-const allSchemas = [...schemaArray, siteNavSchema, orgSchema];
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': 'https://stackarchitect.xyz/#luke',
+  'name': 'Luke',
+  'jobTitle': 'Shopify Automation Specialist',
+  'url': 'https://stackarchitect.xyz/about',
+  'sameAs': ['https://www.linkedin.com/in/stack-architect-6766733b0'],
+  'worksFor': { '@type': 'Organization', '@id': 'https://stackarchitect.xyz/#org' },
+  'knowsAbout': [
+    'Shopify automation', 'server-side tracking', 'Meta Conversions API',
+    'Google Enhanced Conversions', 'TikTok Events API', 'Make.com',
+    'Google Sheets automation', 'Shopify app cost reduction',
+    'email marketing automation', 'Shopify inventory management',
+    'Shopify CAPI', 'Elevar alternative', 'Triple Whale alternative',
+  ],
+};
+const allSchemas = [...schemaArray, siteNavSchema, orgSchema, personSchema];
 
 const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
 ---
