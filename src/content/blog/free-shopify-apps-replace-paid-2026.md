@@ -74,7 +74,7 @@ Shopify is permanently closing Stocky on August 31, 2026 and deleting all data. 
 
 Klaviyo changed its billing model in February 2025 — stores now pay for every active profile whether they email them or not. Systeme.io's free plan includes 2,000 contacts, unlimited email sends, full automation sequences, sales funnels, a CRM, and affiliate management. For stores not using Klaviyo's advanced ecommerce segmentation, migration takes 30 minutes.
 
-Stores needing more advanced segmentation than Systeme.io can handle should consider [GetResponse](https://try.getresponsetoday.com/gejtf3pvvf1u) — from $19/month, significantly cheaper than Klaviyo at equivalent contact counts.
+Stores needing more advanced segmentation than Systeme.io can handle should consider [GetResponse](/go/getresponse) — from $19/month, significantly cheaper than Klaviyo at equivalent contact counts.
 
 **What you get free:** Welcome sequences, abandoned cart emails, post-purchase flows, broadcast campaigns, sales funnels, CRM. 2,000 contacts unlimited.
 
@@ -98,37 +98,37 @@ TrueProfit and BeProfit charge monthly fees to show you what your Shopify orders
 ## Automation Platform — Replace Zapier
 
 **Paid cost:** $79–$200/month  
-**Free replacement:** [Make.com](https://www.make.com/en/register?pc=techie123) — $0 (1,000 operations/month)
+**Free replacement:** [Make.com](/go/make) — $0 (1,000 operations/month)
 
 Make.com's free tier gives you 1,000 operations per month — 10 times more than Zapier's 100 free tasks. For Shopify automation, Make.com includes native Shopify modules, full webhook support, HTTP request modules, Google Sheets integration, and conditional logic. Every tool on this page runs on Make.com's free tier.
 
 **What you get free:** 1,000 operations/month, unlimited scenarios, all core integrations, webhook triggers, visual scenario builder.
 
-[Create free Make.com account →](https://www.make.com/en/register?pc=techie123)
+[Create free Make.com account →](/go/make)
 
 ---
 
 ## Customer Support — Replace Gorgias (at small scale)
 
 **Paid cost:** $10–$349/month  
-**Free replacement:** [Tidio](https://affiliate.tidio.com/5kfhrx3ot6tf) — $0 (free plan available)
+**Free replacement:** [Tidio](/go/tidio) — $0 (free plan available)
 
 Gorgias is the best-in-class Shopify helpdesk, but it starts at $10/month and scales steeply. For stores handling under 100 support conversations per month, Tidio's free plan includes live chat, a basic AI chatbot, and Shopify order lookup. Tidio's Lyro AI (paid) handles approximately 70% of support queries automatically.
 
 For stores needing a full helpdesk, Gorgias remains the best Shopify-native option.
 
-[Try Tidio free →](https://affiliate.tidio.com/5kfhrx3ot6tf)
+[Try Tidio free →](/go/tidio)
 
 ---
 
 ## Newsletter & Email List — Replace ConvertKit, Mailchimp
 
 **Paid cost:** $29–$99/month  
-**Free replacement:** [Beehiiv](https://www.beehiiv.com?via=gym-extras) — $0 (up to 2,500 subscribers)
+**Free replacement:** [Beehiiv](/go/beehiiv) — $0 (up to 2,500 subscribers)
 
 For Shopify store owners publishing a newsletter alongside their store, Beehiiv's free plan supports up to 2,500 subscribers with full send capability, monetisation tools, and audience growth features. Significantly more powerful than Mailchimp's free tier.
 
-[Start on Beehiiv free →](https://www.beehiiv.com?via=gym-extras)
+[Start on Beehiiv free →](/go/beehiiv)
 
 ---
 

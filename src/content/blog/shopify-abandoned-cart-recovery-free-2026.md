@@ -53,7 +53,7 @@ Recovery rate for this sequence: 5–15% of abandoned checkouts depending on you
 ## What You Need
 
 - A [Systeme.io free account](https://stackarchitect.xyz/go/systeme) — 2,000 contacts, unlimited sends, free
-- A [Make.com free account](https://www.make.com/en/register?pc=techie123) — 1,000 ops/month, free
+- A [Make.com free account](/go/make) — 1,000 ops/month, free
 - Your Shopify Admin access (Settings → Notifications → Webhooks)
 
 ## Step 1 — Create the Systeme.io Automation
@@ -94,7 +94,7 @@ Copy the key. You'll paste it into Make.com in the next step.
 
 ## Step 3 — Build the Make.com Scenario
 
-**In Make.com** — [create your free account here](https://www.make.com/en/register?pc=techie123) if you haven't already:
+**In Make.com** — [create your free account here](/go/make) if you haven't already:
 
 1. Create a new scenario
 2. Add **Webhooks → Custom webhook** as the trigger

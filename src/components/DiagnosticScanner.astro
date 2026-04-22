@@ -28,33 +28,32 @@
 
     <div id="recommendations" class="space-y-2 mb-6"></div>
 
+    <a href="/pro" class="block w-full text-center bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm py-4 px-4 mb-4 transition-colors">
+      ⚡ Skip the build — get all 4 automations pre-built for $29 →
+    </a>
+    <p class="text-xs text-center text-gray-500 mb-5">One-time · instant access · no subscription · or use the free guides below</p>
     <div class="border border-[#4ade80]/20 bg-[#4ade80]/5 p-4">
       <div class="text-xs text-[#4ade80] uppercase tracking-wide font-bold mb-2">
-        GET YOUR FREE REPLACEMENT PLAN
+        GET YOUR FREE DEPLOYMENT GUIDE
       </div>
-      <p class="text-xs text-gray-400 mb-4">
-        Enter your email to receive a personalised zero-cost stack guide.
+      <p class="text-xs text-gray-400 mb-3">
+        Free weekly Shopify automation tips. Unsubscribe anytime.
       </p>
-      <!-- Systeme.io embed form — replace action URL with your actual Systeme.io form action -->
-      <form
-        action="https://systeme.io/api/forms/YOUR_FORM_ID/submit"
-        method="POST"
-        class="flex flex-col sm:flex-row gap-2"
-      >
+      <div class="flex flex-col sm:flex-row gap-2">
         <input
           type="email"
-          name="email"
+          id="scanner-email"
           placeholder="your@email.com"
-          required
           class="flex-1 bg-black border border-[#1f1f1f] text-white text-sm px-3 py-2 font-mono focus:border-[#4ade80] focus:outline-none"
         />
         <button
-          type="submit"
+          id="scanner-subscribe-btn"
           class="bg-[#4ade80] text-black font-bold text-xs px-4 py-2 uppercase tracking-wide hover:bg-[#22c55e] transition-colors whitespace-nowrap"
         >
-          SEND MY PLAN →
+          GET FREE GUIDE →
         </button>
-      </form>
+      </div>
+      <p class="text-xs text-gray-600 mt-2">Powered by Beehiiv · No spam</p>
     </div>
 
     <button
@@ -133,6 +132,21 @@
 
     document.getElementById('diagnostic-form')!.classList.add('hidden');
     document.getElementById('diagnostic-results')!.classList.remove('hidden');
+  });
+
+  document.getElementById('scanner-subscribe-btn')?.addEventListener('click', () => {
+    const emailInput = document.getElementById('scanner-email') as HTMLInputElement;
+    const email = emailInput?.value?.trim();
+    if (!email || !email.includes('@')) {
+      emailInput.style.borderColor = '#ef4444';
+      emailInput.placeholder = 'Enter a valid email';
+      return;
+    }
+    emailInput.style.borderColor = '#4ade80';
+    window.open('https://stackarchitect.beehiiv.com/subscribe?email=' + encodeURIComponent(email), '_blank');
+    emailInput.value = '';
+    const btn = document.getElementById('scanner-subscribe-btn');
+    if (btn) { btn.textContent = 'CHECK YOUR INBOX ✓'; btn.style.background = '#22c55e'; }
   });
 
   document.getElementById('reset-btn')?.addEventListener('click', () => {

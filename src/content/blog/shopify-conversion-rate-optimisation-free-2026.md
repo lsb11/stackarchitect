@@ -42,7 +42,7 @@ Before analysing your conversion rate, verify you're measuring it accurately.
 
 **The tracking gap problem:** iOS restrictions, Safari ITP, and ad blockers mean browser-based tracking misses 20–40% of real purchases on most Shopify stores. If your GA4 shows 80 purchases and Shopify shows 100, your GA4 conversion rate is 20% artificially low. Every CRO decision based on this data is wrong.
 
-**Free fix:** Server-side tracking via [Make.com](https://www.make.com/en/register?pc=techie123) recovers the missing purchase events. [CAPI Shield](/capi-shield) covers Meta and Google simultaneously. [Google Enhanced Conversions](/shopify-google-ads-conversion-tracking) fixes Google Ads attribution specifically. Both deploy in under 10 minutes at $0.
+**Free fix:** Server-side tracking via [Make.com](/go/make) recovers the missing purchase events. [CAPI Shield](/capi-shield) covers Meta and Google simultaneously. [Google Enhanced Conversions](/shopify-google-ads-conversion-tracking) fixes Google Ads attribution specifically. Both deploy in under 10 minutes at $0.
 
 Only after fixing tracking does your conversion rate become a reliable number to optimise against.
 

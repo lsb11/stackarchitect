@@ -78,7 +78,7 @@ Enter your Shopify store URL. Systeme.io connects via OAuth. Once connected, Sys
 
 **Method 2 — Make.com Webhook (more control, 15 minutes)**
 
-For stores that want to trigger Systeme.io sequences from specific Shopify events (abandoned checkout, specific product purchases, subscription renewals), use a [Make.com](https://www.make.com/en/register?pc=techie123) scenario with a Shopify webhook as the trigger and a Systeme.io HTTP module to create/tag contacts.
+For stores that want to trigger Systeme.io sequences from specific Shopify events (abandoned checkout, specific product purchases, subscription renewals), use a [Make.com](/go/make) scenario with a Shopify webhook as the trigger and a Systeme.io HTTP module to create/tag contacts.
 
 This is the method that powers the abandoned cart recovery sequence — see the [abandoned cart guide](/blog/shopify-abandoned-cart-recovery-free-2026) for the full setup.
 
