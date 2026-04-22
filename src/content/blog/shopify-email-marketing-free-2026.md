@@ -177,3 +177,11 @@ Systeme.io's free plan is a genuine replacement for Klaviyo for stores that prim
 | Monthly cost at 2,000 contacts | $0 | ~$60–70/month |
 
 For the typical Shopify store under £500k/year revenue running welcome, abandoned cart, and post-purchase flows: the free stack delivers equivalent outcomes at $0 vs £720–840/year.
+
+---
+
+## Get the free automation stack that runs alongside your email
+
+While you're setting up email marketing, the same Make.com free account powers your server-side tracking, inventory, and P&L reporting. The [Complete Kit](/pro) has all four automations pre-built — import in 10 minutes. $29 one-time, 30-day guarantee.
+
+[Get the Complete Kit — $29 →](/pro)
