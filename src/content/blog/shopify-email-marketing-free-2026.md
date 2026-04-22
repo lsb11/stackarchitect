@@ -59,7 +59,7 @@ Three genuine free options exist for Shopify stores in 2026:
 - Paid from $19/month for 1,000 contacts
 - Advanced AI copywriting, webinars, landing pages
 - 60–70% cheaper than Klaviyo at equivalent list sizes
-- [GetResponse free trial →](https://try.getresponsetoday.com/gejtf3pvvf1u)
+- [GetResponse free trial →](https://stackarchitect.xyz/go/getresponse)
 
 For stores under 2,000 contacts that want full automation capability at $0, Systeme.io is the correct choice. The rest of this guide covers Systeme.io setup.
 
