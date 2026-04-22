@@ -60,7 +60,7 @@ Recovery rate for this sequence: 5–15% of abandoned checkouts depending on you
 
 Set up the email sequence in Systeme.io before configuring the webhook, so you have a destination ready.
 
-**In Systeme.io:**
+**In Systeme.io** — [create your free account here](https://stackarchitect.xyz/go/systeme) if you haven't already:
 
 1. Go to **Automations → Create automation**
 2. Set trigger: **Contact subscribes to a tag** — create a tag called `abandoned-cart`
@@ -94,7 +94,7 @@ Copy the key. You'll paste it into Make.com in the next step.
 
 ## Step 3 — Build the Make.com Scenario
 
-**In Make.com:**
+**In Make.com** — [create your free account here](https://www.make.com/en/register?pc=techie123) if you haven't already:
 
 1. Create a new scenario
 2. Add **Webhooks → Custom webhook** as the trigger

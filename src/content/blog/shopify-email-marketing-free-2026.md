@@ -40,7 +40,7 @@ This guide covers the complete free Shopify email setup: platform choice, Shopif
 
 Three genuine free options exist for Shopify stores in 2026:
 
-**Systeme.io (recommended for most stores)**
+**[Systeme.io](https://stackarchitect.xyz/go/systeme) (recommended for most stores)**
 - 2,000 contacts, unlimited sends — permanently free
 - Full automation sequences with conditional logic
 - Sales funnels, CRM, affiliate management included
@@ -69,7 +69,7 @@ Two methods — use whichever fits your setup:
 
 **Method 1 — Native Integration (5 minutes)**
 
-In Systeme.io: **Settings → Integrations → Shopify → Connect**
+In [Systeme.io](https://stackarchitect.xyz/go/systeme): **Settings → Integrations → Shopify → Connect**
 
 Enter your Shopify store URL. Systeme.io connects via OAuth. Once connected, Systeme.io can:
 - Automatically add customers to your list on purchase
@@ -78,7 +78,7 @@ Enter your Shopify store URL. Systeme.io connects via OAuth. Once connected, Sys
 
 **Method 2 — Make.com Webhook (more control, 15 minutes)**
 
-For stores that want to trigger Systeme.io sequences from specific Shopify events (abandoned checkout, specific product purchases, subscription renewals), use a [Make.com](/go/make) scenario with a Shopify webhook as the trigger and a Systeme.io HTTP module to create/tag contacts.
+For stores that want to trigger Systeme.io sequences from specific Shopify events (abandoned checkout, specific product purchases, subscription renewals), use a [Make.com](https://www.make.com/en/register?pc=techie123) scenario with a Shopify webhook as the trigger and a Systeme.io HTTP module to create/tag contacts.
 
 This is the method that powers the abandoned cart recovery sequence — see the [abandoned cart guide](/blog/shopify-abandoned-cart-recovery-free-2026) for the full setup.
 
@@ -158,7 +158,7 @@ Free tools only work if your emails reach the inbox. Four things matter most:
 
 3. **Clean your list before migrating.** If migrating from Klaviyo, export only contacts who have opened at least one email in the last 180 days. Re-importing disengaged contacts immediately damages your sender reputation on the new platform.
 
-4. **Set up [Google Postmaster Tools](https://postmaster.google.com/)** to monitor your sender reputation with Gmail. Free, takes 5 minutes to set up, tells you if your domain is being marked as spam before it becomes a significant problem.
+4. **Set up [Google Postmaster Tools](https://postmaster.google.com/) (free)** to monitor your sender reputation with Gmail. Free, takes 5 minutes to set up, tells you if your domain is being marked as spam before it becomes a significant problem.
 
 ## Free Stack vs Klaviyo: Honest Assessment
 
