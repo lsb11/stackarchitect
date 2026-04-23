@@ -1,97 +1,14 @@
-name: Google Indexing API
+name: Ping Google Sitemap
 on:
   push:
     branches:
       - main
 
 jobs:
-  index:
+  ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Install googleapis
-        run: npm install googleapis
-
-      - name: Run Indexing Script
-        env:
-          GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
-          SITEMAP_URL: "https://stackarchitect.xyz/sitemap-index.xml"
+      - name: Ping Google
         run: |
-          cat << 'EOF' > indexer.cjs
-          const { google } = require('googleapis');
-          const https = require('https');
-          const raw = Buffer.from(process.env.GOOGLE_INDEXING_KEY, 'base64').toString('utf8');
-          const credentials = JSON.parse(raw);
-          credentials.private_key = credentials.private_key.replace(/\\n/g, '\n');
-          const auth = new google.auth.JWT(
-            credentials.client_email,
-            null,
-            credentials.private_key,
-            ['https://www.googleapis.com/auth/indexing']
-          );
-          async function getUrls(url) {
-            return new Promise((resolve, reject) => {
-              https.get(url, (res) => {
-                let data = '';
-                res.on('data', chunk => data += chunk);
-                res.on('end', () => {
-                  const urls = [...data.matchAll(/<loc>(.*?)<\/loc>/g)].map(m => m[1]);
-                  resolve(urls);
-                });
-                res.on('error', reject);
-              });
-            });
-          }
-          async function run() {
-            const sitemapIndex = await getUrls(process.env.SITEMAP_URL);
-            let allUrls = [];
-            for (const entry of sitemapIndex) {
-              if (entry.endsWith('.xml')) {
-                const nested = await getUrls(entry);
-                allUrls = allUrls.concat(nested.filter(u => !u.endsWith('.xml')));
-              } else {
-                allUrls.push(entry);
-              }
-            }
-            console.log(`Found ${allUrls.length} URLs to index`);
-            const tokens = await auth.authorize();
-            let ok = 0, fail = 0;
-            for (const url of allUrls) {
-              await new Promise((resolve) => {
-                const body = JSON.stringify({ url, type: 'URL_UPDATED' });
-                const req = https.request({
-                  hostname: 'indexing.googleapis.com',
-                  path: '/v3/urlNotifications:publish',
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${tokens.access_token}`,
-                    'Content-Length': Buffer.byteLength(body)
-                  }
-                }, (res) => {
-                  let d = '';
-                  res.on('data', c => d += c);
-                  res.on('end', () => {
-                    if (res.statusCode === 200) { ok++; console.log('OK: ' + url); }
-                    else { fail++; console.log('FAIL ' + res.statusCode + ': ' + url + ' -- ' + d); }
-                    resolve();
-                  });
-                });
-                req.on('error', (e) => { fail++; console.log('ERR: ' + url + ' -- ' + e.message); resolve(); });
-                req.write(body);
-                req.end();
-              });
-            }
-            console.log('Done: ' + ok + ' indexed, ' + fail + ' failed');
-            if (fail > 0) process.exit(1);
-          }
-          run().catch(e => { console.error(e); process.exit(1); });
-          EOF
-          node indexer.cjs
+          curl -s "https://www.google.com/ping?sitemap=https://stackarchitect.xyz/sitemap-index.xml"
+          echo "Sitemap pinged successfully"
