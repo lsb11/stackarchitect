@@ -27,9 +27,9 @@ jobs:
           cat << 'EOF' > indexer.cjs
           const { google } = require('googleapis');
           const https = require('https');
-          const credentials = JSON.parse(
-            Buffer.from(process.env.GOOGLE_INDEXING_KEY, 'base64').toString('utf8')
-          );
+          const raw = Buffer.from(process.env.GOOGLE_INDEXING_KEY, 'base64').toString('utf8');
+          const credentials = JSON.parse(raw);
+          credentials.private_key = credentials.private_key.replace(/\\n/g, '\n');
           const auth = new google.auth.JWT(
             credentials.client_email,
             null,
