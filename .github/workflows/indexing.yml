@@ -14,9 +14,9 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
-      - name: Install Google Auth
+      - name: Install googleapis
         run: npm install googleapis
 
       - name: Run Indexing Script
@@ -27,51 +27,71 @@ jobs:
           cat << 'EOF' > indexer.js
           const { google } = require('googleapis');
           const https = require('https');
-          const credentials = JSON.parse(process.env.GOOGLE_INDEXING_KEY);
-          const sitemapUrl = process.env.SITEMAP_URL;
-
+          const credentials = JSON.parse(
+            Buffer.from(process.env.GOOGLE_INDEXING_KEY, 'base64').toString('utf8')
+          );
           const auth = new google.auth.JWT(
             credentials.client_email,
             null,
             credentials.private_key,
             ['https://www.googleapis.com/auth/indexing']
           );
-
-          async function getUrls() {
-            return new Promise((resolve) => {
-              https.get(sitemapUrl, (res) => {
+          async function getUrls(url) {
+            return new Promise((resolve, reject) => {
+              https.get(url, (res) => {
                 let data = '';
-                res.on('data', (chunk) => data += chunk);
+                res.on('data', chunk => data += chunk);
                 res.on('end', () => {
                   const urls = [...data.matchAll(/<loc>(.*?)<\/loc>/g)].map(m => m[1]);
                   resolve(urls);
                 });
+                res.on('error', reject);
               });
             });
           }
-
           async function run() {
-            const urls = await getUrls();
-            const tokens = await auth.authorize();
-            for (const url of urls) {
-              if (url.includes('.xml')) continue; // Skip nested sitemaps
-              console.log(`Indexing: ${url}`);
-              const options = {
-                hostname: 'indexing.googleapis.com',
-                path: '/v3/urlNotifications:publish',
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${tokens.access_token}`
-                }
-              };
-              const req = https.request(options, (res) => {
-                res.on('data', () => {});
-              });
-              req.write(JSON.stringify({ url: url, type: 'URL_UPDATED' }));
-              req.end();
+            const sitemapIndex = await getUrls(process.env.SITEMAP_URL);
+            let allUrls = [];
+            for (const entry of sitemapIndex) {
+              if (entry.endsWith('.xml')) {
+                const nested = await getUrls(entry);
+                allUrls = allUrls.concat(nested.filter(u => !u.endsWith('.xml')));
+              } else {
+                allUrls.push(entry);
+              }
             }
+            console.log(`Found ${allUrls.length} URLs to index`);
+            const tokens = await auth.authorize();
+            let ok = 0, fail = 0;
+            for (const url of allUrls) {
+              await new Promise((resolve) => {
+                const body = JSON.stringify({ url, type: 'URL_UPDATED' });
+                const req = https.request({
+                  hostname: 'indexing.googleapis.com',
+                  path: '/v3/urlNotifications:publish',
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${tokens.access_token}`,
+                    'Content-Length': Buffer.byteLength(body)
+                  }
+                }, (res) => {
+                  let d = '';
+                  res.on('data', c => d += c);
+                  res.on('end', () => {
+                    if (res.statusCode === 200) { ok++; console.log('OK: ' + url); }
+                    else { fail++; console.log('FAIL ' + res.statusCode + ': ' + url + ' -- ' + d); }
+                    resolve();
+                  });
+                });
+                req.on('error', (e) => { fail++; console.log('ERR: ' + url + ' -- ' + e.message); resolve(); });
+                req.write(body);
+                req.end();
+              });
+            }
+            console.log('Done: ' + ok + ' indexed, ' + fail + ' failed');
+            if (fail > 0) process.exit(1);
           }
-          run().catch(console.error);
+          run().catch(e => { console.error(e); process.exit(1); });
           EOF
           node indexer.js
