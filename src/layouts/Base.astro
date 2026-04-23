@@ -24,7 +24,7 @@ interface Props {
 const {
   title,
   description,
-  canonical,
+  canonical: _rawCanonical,
   ogTitle,
   ogDescription,
   ogImage,
@@ -35,6 +35,18 @@ const {
   publishDate,
   breadcrumb,
 } = Astro.props;
+
+// Always force canonical to the primary non-www domain.
+// Corrects www., bare paths, and trailing-slash mismatches from any page.
+const canonical = (() => {
+  const raw = _rawCanonical ?? Astro.url.pathname;
+  try {
+    const path = raw.startsWith('http') ? new URL(raw).pathname : raw;
+    return 'https://stackarchitect.xyz' + path;
+  } catch {
+    return 'https://stackarchitect.xyz' + Astro.url.pathname;
+  }
+})();
 
 const schemaArray = schema
   ? Array.isArray(schema)
