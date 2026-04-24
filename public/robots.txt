@@ -1,17 +1,19 @@
 # Stack Architect — robots.txt
-# Policy: allow all reputable crawlers including AI citation crawlers.
-# Affiliate redirect paths and internal utility paths are blocked.
+# Last reviewed: April 2026 (matches Anthropic's Feb 2026 three-bot framework + OpenAI's three-bot structure)
+# Policy: allow all reputable crawlers including AI citation bots. Block /go/ (affiliate cloaks should not be indexed).
 
 User-agent: *
 Allow: /
 Disallow: /go/
 Disallow: /cdn-cgi/
-Disallow: /*.pdf$
 
-# ── AI citation crawlers — explicitly allowed ──
-# These bots power ChatGPT, Claude, Perplexity, and Google AI Overviews citations.
-# Blocking them reduces AI-search visibility.
+# ══════════════════════════════════════════════════════════════════════
+# AI CITATION CRAWLERS — explicitly allowed for AI search visibility
+# ══════════════════════════════════════════════════════════════════════
+# These power ChatGPT, Claude, Perplexity, Gemini, and Apple Intelligence
+# citations back to stackarchitect.xyz. Blocking them reduces AI traffic.
 
+# ─── OpenAI (3-bot system) ───────────────────────────────────────────
 User-agent: GPTBot
 Allow: /
 Disallow: /go/
@@ -24,18 +26,20 @@ User-agent: ChatGPT-User
 Allow: /
 Disallow: /go/
 
+# ─── Anthropic (3-bot system, Feb 2026 update) ──────────────────────
 User-agent: ClaudeBot
 Allow: /
 Disallow: /go/
 
-User-agent: Claude-Web
+User-agent: Claude-SearchBot
 Allow: /
 Disallow: /go/
 
-User-agent: anthropic-ai
+User-agent: Claude-User
 Allow: /
 Disallow: /go/
 
+# ─── Perplexity (2-bot system) ──────────────────────────────────────
 User-agent: PerplexityBot
 Allow: /
 Disallow: /go/
@@ -44,14 +48,12 @@ User-agent: Perplexity-User
 Allow: /
 Disallow: /go/
 
+# ─── Google (AI training, separate from Googlebot search) ───────────
 User-agent: Google-Extended
 Allow: /
 Disallow: /go/
 
-User-agent: Bingbot
-Allow: /
-Disallow: /go/
-
+# ─── Apple Intelligence ─────────────────────────────────────────────
 User-agent: Applebot
 Allow: /
 Disallow: /go/
@@ -60,10 +62,12 @@ User-agent: Applebot-Extended
 Allow: /
 Disallow: /go/
 
-User-agent: Amazonbot
+# ─── Microsoft / Bing ───────────────────────────────────────────────
+User-agent: Bingbot
 Allow: /
 Disallow: /go/
 
+# ─── Meta AI ────────────────────────────────────────────────────────
 User-agent: Meta-ExternalAgent
 Allow: /
 Disallow: /go/
@@ -72,9 +76,27 @@ User-agent: FacebookBot
 Allow: /
 Disallow: /go/
 
+# ─── Amazon / Alexa AI ──────────────────────────────────────────────
+User-agent: Amazonbot
+Allow: /
+Disallow: /go/
+
+# ─── Common Crawl (feeds many LLM training sets) ────────────────────
+User-agent: CCBot
+Allow: /
+Disallow: /go/
+
+# ─── DuckDuckGo ─────────────────────────────────────────────────────
 User-agent: DuckDuckBot
 Allow: /
 Disallow: /go/
 
-# ── Sitemap ──
+# ─── You.com ────────────────────────────────────────────────────────
+User-agent: YouBot
+Allow: /
+Disallow: /go/
+
+# ══════════════════════════════════════════════════════════════════════
+# Sitemap
+# ══════════════════════════════════════════════════════════════════════
 Sitemap: https://stackarchitect.xyz/sitemap-index.xml
