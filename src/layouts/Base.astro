@@ -37,15 +37,24 @@ const {
 } = Astro.props;
 
 // Always force canonical to the primary non-www domain.
+// Matches astro.config.mjs `trailingSlash: 'always'` — every canonical
+// ends with `/` to prevent duplicate-URL splits in GSC indexing.
 // Corrects www., bare paths, and trailing-slash mismatches from any page.
 const canonical = (() => {
   const raw = _rawCanonical ?? Astro.url.pathname;
+  let path;
   try {
-    const path = raw.startsWith('http') ? new URL(raw).pathname : raw;
-    return 'https://stackarchitect.xyz' + path;
+    path = raw.startsWith('http') ? new URL(raw).pathname : raw;
   } catch {
-    return 'https://stackarchitect.xyz' + Astro.url.pathname;
+    path = Astro.url.pathname;
   }
+  // Enforce trailing slash (unless it's a file path ending in an extension)
+  if (!path.endsWith('/') && !/\.[a-z0-9]{2,5}$/i.test(path)) {
+    path = path + '/';
+  }
+  // Collapse any accidental double slashes
+  path = path.replace(/\/+/g, '/');
+  return 'https://stackarchitect.xyz' + path;
 })();
 
 const schemaArray = schema
