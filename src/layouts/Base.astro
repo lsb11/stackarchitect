@@ -148,6 +148,17 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    
+    <!-- Speakable schema — voice assistants + AI voice summaries read these selectors aloud -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "SpeakableSpecification",
+      "cssSelector": ["h1", ".hero-sub", ".sec-head h2", ".sec-head p", ".faq-ans-c p", ".seo-prose p:first-of-type"]
+    })} />
+    
+    <!-- Performance: DNS prefetch for third-party scripts loaded later -->
+    <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="//www.google-analytics.com" />
     <meta
       name="robots"
       content={noindex
