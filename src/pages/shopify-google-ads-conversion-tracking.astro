@@ -34,21 +34,21 @@ const heroStats = [
   { value: "15–40%",      label: "Purchases Google misses" },
   { value: "$99–$299/mo", label: "Paid tools charge" },
   { value: "Broken bids", label: "Smart Bidding blind" },
-  { value: "$0",          label: "This fix costs" },
+  { value: "$0",          label: "This fix costs" }
 ];
 
 const stripStats = [
   { value: "25%",   label: "Avg conversions recovered" },
   { value: "6 min", label: "Full deployment" },
   { value: "Free",  label: "No paid app needed" },
-  { value: "$0",    label: "Monthly cost" },
+  { value: "$0",    label: "Monthly cost" }
 ];
 
 const flowSteps = [
   { num: "Step 01", color: "var(--g)",     title: "Order paid in Shopify",       tool: "Shopify backend",        desc: "Customer completes checkout. Shopify confirms payment in its backend — independent of what the customer's browser does." },
   { num: "Step 02", color: "var(--sky)",   title: "Webhook fires server-to-server", tool: "Shopify → Make.com",   desc: "Shopify sends an Order payment webhook to Make.com instantly. iOS restrictions, Safari ITP, and ad blockers cannot intercept a server-to-server signal." },
   { num: "Step 03", color: "var(--vio)",   title: "GCLID extracted and hashed",  tool: "Make.com processing",    desc: "Make.com extracts the Google Click ID (gclid) from the order, hashes customer email and phone with SHA-256, and prepares the Enhanced Conversion payload." },
-  { num: "Step 04", color: "var(--amber)", title: "Sent to Google Ads API",       tool: "Google Ads Conversions", desc: "Purchase event delivered server-side to the Google Ads Conversions API. Smart Bidding, Performance Max, and ROAS targets receive complete, accurate conversion data." },
+  { num: "Step 04", color: "var(--amber)", title: "Sent to Google Ads API",       tool: "Google Ads Conversions", desc: "Purchase event delivered server-side to the Google Ads Conversions API. Smart Bidding, Performance Max, and ROAS targets receive complete, accurate conversion data." }
 ];
 
 const setupSteps = [
@@ -57,7 +57,7 @@ const setupSteps = [
   { pos: 3, title: "Add the Shopify Order payment webhook",       tool: "Shopify Admin → Settings → Notifications → Webhooks",     desc: "In Shopify Admin → Settings → Notifications → Webhooks, create a new webhook. Event: Order payment. Format: JSON. Paste the Make.com webhook URL. Save. This is the server-to-server trigger — no browser required." },
   { pos: 4, title: "Add an HTTP module targeting Google's API",   tool: "Make.com → HTTP → Make a request",                        desc: "Add an HTTP module. URL: https://googleads.googleapis.com/v17/customers/{customer-id}/conversionUploads:uploadClickConversions. Method: POST. Set your Google Ads conversion action ID, map gclid from the Shopify order, set conversion_date_time, and add conversion_value. Add an OAuth 2.0 connection using your Google Ads account." },
   { pos: 5, title: "Hash customer email and phone",               tool: "Make.com → Tools → SHA-256",                              desc: "Before submitting, add SHA-256 hashing for customer email and phone number. These are the Enhanced Conversions fields Google uses to match purchases to signed-in Google accounts — dramatically improving attribution even when gclid is lost to iOS or Safari ITP." },
-  { pos: 6, title: "Verify in Google Ads → Conversions",         tool: "Google Ads → Tools → Conversions → Diagnostics",          desc: "Place a test order. In Google Ads → Tools → Conversions, check your conversion action shows Enhanced Conversions data. The diagnostics tab will confirm whether enhanced data is being received correctly within 24–48 hours." },
+  { pos: 6, title: "Verify in Google Ads → Conversions",         tool: "Google Ads → Tools → Conversions → Diagnostics",          desc: "Place a test order. In Google Ads → Tools → Conversions, check your conversion action shows Enhanced Conversions data. The diagnostics tab will confirm whether enhanced data is being received correctly within 24–48 hours." }
 ];
 
 const compRows = [
@@ -68,13 +68,13 @@ const compRows = [
   { feature: "Data in your own account",              ga: "Yes — Make.com", stape: "Their infra", little: "Their infra", anal: "Their infra", gaWin: true },
   { feature: "Smart Bidding signal improvement",      ga: "Yes",            stape: "Yes",        little: "Yes",      anal: "Yes",       gaWin: true },
   { feature: "Vendor lock-in",                        ga: "None",           stape: "Medium",     little: "High",     anal: "High",      gaWin: true },
-  { feature: "Annual cost",                           ga: "$0",             stape: "$348+",      little: "$1,188+",  anal: "$1,188+",   gaWin: true, highlight: true },
+  { feature: "Annual cost",                           ga: "$0",             stape: "$348+",      little: "$1,188+",  anal: "$1,188+",   gaWin: true, highlight: true }
 ];
 
 const testimonials = [
   { featured: true,  body: "Our Google Ads were optimising on half our real purchase volume. After server-side Enhanced Conversions via Make.com, Smart Bidding had full data within 48 hours. CPA dropped 19% in three weeks.", author: "Tom R.", role: "DTC Supplements Brand (~$60k/mo GMV)" },
   { featured: false, body: "I was about to pay $99/month for Littledata. Did it myself with Make.com in under 10 minutes. Same Enhanced Conversions outcome. Genuinely could not believe it was free.", author: "Claire M.", role: "Performance Marketing Consultant, 8 Shopify clients" },
-  { featured: false, body: "Google Ads showed 40% fewer conversions than Shopify. Turns out Safari ITP was clearing gclid before customers checked out. Server-side tracking fixed it immediately.", author: "Dan H.", role: "Shopify Plus Fashion Store" },
+  { featured: false, body: "Google Ads showed 40% fewer conversions than Shopify. Turns out Safari ITP was clearing gclid before customers checked out. Server-side tracking fixed it immediately.", author: "Dan H.", role: "Shopify Plus Fashion Store" }
 ];
 
 const faqs = [
@@ -88,7 +88,7 @@ const faqs = [
   { q: "Will server-side Google Ads tracking improve my Smart Bidding performance?",      a: "Yes. Smart Bidding, Target ROAS, and Performance Max all optimise based on the conversion signals Google receives. When 25–40% of real conversions are invisible due to browser-based tracking failures, the algorithm is bidding on incomplete data — underbidding on high-intent traffic and over-bidding on low-converting segments. Completing conversion data with server-side Enhanced Conversions typically improves Smart Bidding performance within 14–21 days as the model relearns with full data." },
   { q: "Does this work alongside my existing Google Ads conversion tag?",                 a: "Yes. Google Enhanced Conversions is designed to supplement — not replace — your existing conversion tags. The browser-side gTag continues to fire as normal. The server-side Enhanced Conversions layer adds hashed customer data on top. Google automatically deduplicates events using the order ID, so the same purchase is not counted twice. Running both layers together gives maximum conversion accuracy." },
   { q: "How much does it cost to fix Google Ads conversion tracking on Shopify?",        a: "The complete free setup costs $0/month. The Make.com free plan (1,000 operations per month) covers Enhanced Conversions for stores processing under 500 orders per month. Above that, Make.com Core at $9/month covers 10,000 operations. Every paid alternative — Stape ($29+/month), Littledata ($99+/month), Analyzify ($99+/month) — charges a monthly subscription for the same server-side outcome Make.com delivers free." },
-  { q: "Is this GDPR compliant?",                                                        a: "All customer PII — email, phone, name — is hashed with SHA-256 inside Make.com before transmission to Google, as required by Google's Enhanced Conversions specification. The hashed data flows through your own Make.com workspace. Ensure your privacy policy discloses that hashed customer data is shared with Google for conversion matching purposes." },
+  { q: "Is this GDPR compliant?",                                                        a: "All customer PII — email, phone, name — is hashed with SHA-256 inside Make.com before transmission to Google, as required by Google's Enhanced Conversions specification. The hashed data flows through your own Make.com workspace. Ensure your privacy policy discloses that hashed customer data is shared with Google for conversion matching purposes." }
 ];
 
 const crosslinks = [
@@ -97,14 +97,14 @@ const crosslinks = [
   { href: "/stocky-swap",                    tag: "Inventory ⚠ Aug 2026",    tagClass: "tag-sky",    name: "Stocky Swap",           desc: "Shopify closes Stocky on August 31, 2026. Stocky Swap logs every order to Google Sheets in real time via the same webhook infrastructure — free inventory management before the shutdown.", save: "Saves $29–$199/mo",  saveColor: "var(--sky)"    },
   { href: "/shopify-profit-loss-automation", tag: "P&L reporting",           tagClass: "tag-sky",    name: "P&L Auto",              desc: "The same Shopify webhook branches to a live P&L Google Sheets dashboard. Revenue, COGS, ad spend, and net profit updated on every order at $0/month.", save: "Saves $19–$299/mo",  saveColor: "var(--sky)"    },
   { href: "/replace-klaviyo-free",           tag: "Email marketing",         tagClass: "",           name: "Replace Klaviyo Free",  desc: "Systeme.io replaces Klaviyo entirely — 2,000 contacts, unlimited emails, automations, and CRM on the free plan. $0 vs $150–$400/month.", save: "Saves $150–$400/mo", saveColor: "var(--g)"      },
-  { href: "/pro",                            tag: "Complete Kit",            tagClass: "tag-amber",  name: "Get all 4 automations — $29", desc: "Get the pre-built Make.com JSON blueprints for Google Ads tracking, Meta CAPI, Stocky Swap, and P&L Auto. Import and deploy all four in 10 minutes instead of building from scratch.", save: "$29 one-time",       saveColor: "var(--amber)"  },
+  { href: "/pro",                            tag: "Complete Kit",            tagClass: "tag-amber",  name: "Get all 4 automations — $29", desc: "Get the pre-built Make.com JSON blueprints for Google Ads tracking, Meta CAPI, Stocky Swap, and P&L Auto. Import and deploy all four in 10 minutes instead of building from scratch.", save: "$29 one-time",       saveColor: "var(--amber)"  }
 ];
 
 const relatedGuides = [
   { href: "/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026",      label: "Fix Shopify Google Ads conversion tracking 2026 — free server-side setup" },
   { href: "/blog/shopify-server-side-tracking-complete-setup-guide",           label: "Shopify server-side tracking — complete setup guide 2026" },
   { href: "/blog/shopify-meta-roas-dropped-2026-fix",                          label: "Shopify Meta ROAS dropped in 2026 — free fix" },
-  { href: "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates",    label: "How to fix Shopify conversion tracking after iOS updates" },
+  { href: "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates",    label: "How to fix Shopify conversion tracking after iOS updates" }
 ];
 
 const schemaGraph = {
@@ -121,9 +121,9 @@ const schemaGraph = {
         "@type": "BreadcrumbList",
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home",                                      "item": SITE },
-          { "@type": "ListItem", "position": 2, "name": "Free Shopify Google Ads Conversion Tracking", "item": CANONICAL },
-        ],
-      },
+          { "@type": "ListItem", "position": 2, "name": "Free Shopify Google Ads Conversion Tracking", "item": CANONICAL }
+        ]
+      }
     },
     {
       "@type": "SoftwareApplication",
@@ -141,15 +141,9 @@ const schemaGraph = {
         "Performance Max optimisation data",
         "No code required",
         "Deploys in 6 minutes",
-        "Free via Make.com",
+        "Free via Make.com"
       ],
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "reviewCount": "500",
-        "bestRating": "5",
-      },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
     },
     {
       "@type": "HowTo",
@@ -162,16 +156,16 @@ const schemaGraph = {
         "@type": "HowToStep",
         "position": s.pos,
         "name": s.title,
-        "text": s.desc,
-      })),
+        "text": s.desc
+      }))
     },
     {
       "@type": "FAQPage",
       "mainEntity": faqs.map(f => ({
         "@type": "Question",
         "name": f.q,
-        "acceptedAnswer": { "@type": "Answer", "text": f.a },
-      })),
+        "acceptedAnswer": { "@type": "Answer", "text": f.a }
+      }))
     },
     {
       "@type": "Article",
@@ -184,9 +178,9 @@ const schemaGraph = {
       "dateModified":  "2026-04-21",
       "inLanguage": "en-GB",
       "url": CANONICAL,
-      "image": OG_IMAGE,
-    },
-  ],
+      "image": OG_IMAGE
+    }
+  ]
 };
 ---
 
