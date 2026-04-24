@@ -1,0 +1,119 @@
+---
+/**
+ * AttributionTracker — end-to-end revenue attribution for Stack Architect
+ *
+ * What it does:
+ *   1. On page load, captures landing page + UTM parameters into sessionStorage.
+ *   2. On /go/* click, stamps source page + landing into a 30-day `sa_attr` cookie
+ *      and fires a GA4 `affiliate_click` event (landing, source, destination).
+ *   3. On /pro or buy.stripe.com click, attaches a `client_reference_id` query
+ *      parameter to the Stripe URL so the attribution data travels into every
+ *      completed Checkout Session. Read it in your Stripe webhook at
+ *      `session.client_reference_id` — it's a URL-safe base64 JSON payload.
+ *
+ * Privacy: no PII captured. Referrer, landing path, and UTM tags only.
+ * No external requests. No third-party cookies. GA4 events only fire if gtag exists.
+ *
+ * Stripe webhook decoding (Node example):
+ *   const attr = JSON.parse(Buffer.from(session.client_reference_id, 'base64').toString('utf8'));
+ *   // attr = { s: '/capi-shield/', l: '/blog/...', ref: 'google', ts: 1713... }
+ */
+---
+<script is:inline>
+(function() {
+  'use strict';
+  try {
+    var LANDING_KEY = 'sa_landing';
+    var ATTR_COOKIE = 'sa_attr';
+    var NOW = Date.now();
+
+    // 1. Capture first-touch landing (once per session)
+    if (!sessionStorage.getItem(LANDING_KEY)) {
+      var url = new URL(window.location.href);
+      var refHost = 'direct';
+      try {
+        if (document.referrer) refHost = new URL(document.referrer).hostname;
+      } catch (e) {}
+      sessionStorage.setItem(LANDING_KEY, JSON.stringify({
+        path:       url.pathname,
+        ref:        refHost,
+        utm_source: url.searchParams.get('utm_source')   || '',
+        utm_medium: url.searchParams.get('utm_medium')   || '',
+        utm_camp:   url.searchParams.get('utm_campaign') || '',
+        gclid:      url.searchParams.get('gclid')        || '',
+        fbclid:     url.searchParams.get('fbclid')       || '',
+        ts:         NOW
+      }));
+    }
+
+    // 2. Helpers
+    function getLanding() {
+      try { return JSON.parse(sessionStorage.getItem(LANDING_KEY) || '{}'); }
+      catch (e) { return {}; }
+    }
+    function setAttrCookie(payload) {
+      var expires = new Date(NOW + 30 * 24 * 60 * 60 * 1000).toUTCString();
+      document.cookie = ATTR_COOKIE + '=' + encodeURIComponent(JSON.stringify(payload)) +
+        '; path=/; expires=' + expires + '; SameSite=Lax; Secure';
+    }
+    // URL-safe base64 for Stripe client_reference_id (max 200 chars)
+    function b64url(str) {
+      return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }
+
+    // 3. Click interception
+    document.addEventListener('click', function(e) {
+      var a = e.target.closest('a');
+      if (!a || !a.href) return;
+      var href = a.getAttribute('href') || '';
+      var absHref = a.href;
+
+      var isAffiliate = href.indexOf('/go/') === 0;
+      var isKitPage   = (href === '/pro' || href === '/pro/' || href.indexOf('/pro#') === 0);
+      var isStripe    = absHref.indexOf('buy.stripe.com') > -1;
+
+      if (!isAffiliate && !isKitPage && !isStripe) return;
+
+      var landing = getLanding();
+      var sourcePage = window.location.pathname;
+
+      setAttrCookie({
+        s:   sourcePage,
+        d:   isAffiliate ? href : (isStripe ? 'kit-stripe' : 'kit-page'),
+        l:   landing.path || '',
+        ref: landing.ref  || 'direct',
+        src: landing.utm_source || '',
+        cmp: landing.utm_camp   || '',
+        ts:  NOW
+      });
+
+      if (typeof gtag === 'function') {
+        gtag('event', isAffiliate ? 'affiliate_click' : 'kit_click', {
+          source_page:  sourcePage,
+          destination:  href,
+          landing_path: landing.path || '',
+          referrer:     landing.ref || 'direct',
+          utm_source:   landing.utm_source || '',
+          utm_campaign: landing.utm_camp || ''
+        });
+      }
+
+      if (isStripe) {
+        try {
+          var stripeUrl = new URL(absHref);
+          var payload = b64url(JSON.stringify({
+            s:   sourcePage.slice(0, 40),
+            l:   (landing.path || '').slice(0, 40),
+            ref: (landing.ref  || '').slice(0, 30),
+            src: (landing.utm_source || '').slice(0, 20),
+            cmp: (landing.utm_camp   || '').slice(0, 20),
+            ts:  NOW
+          }));
+          stripeUrl.searchParams.set('client_reference_id', payload);
+          a.href = stripeUrl.toString();
+        } catch (err) {}
+      }
+    }, true);
+  } catch (err) {}
+})();
+</script>
