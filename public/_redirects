@@ -1,6 +1,9 @@
+# ── Canonical host redirects ──
 https://www.stackarchitect.xyz/* https://stackarchitect.xyz/:splat 301!
 https://tools.stackarchitect.xyz/* https://stackarchitect.xyz/:splat 301!
 https://audit.stackarchitect.xyz/* https://stackarchitect.xyz/app-audit/ 301!
+
+# ── URL cleanups (keep existing 301s) ──
 /shopify-optimization-guides/ /shopify-automation-guides/ 301
 /shopify-optimization-guides /shopify-automation-guides/ 301
 /how-do-i-set-up-tiktok-events-api-on-shopify-without-code/ /faq/how-do-i-set-up-tiktok-events-api-on-shopify-without-code/ 301
@@ -10,5 +13,16 @@ https://audit.stackarchitect.xyz/* https://stackarchitect.xyz/app-audit/ 301!
 /how-much-does-triple-whale-cost/ /faq/how-much-does-triple-whale-cost/ 301
 /is-klaviyo-free/ /faq/is-klaviyo-free/ 301
 /does-make-com-work-with-shopify/ /faq/does-make-com-work-with-shopify/ 301
+
+# ── Affiliate cloaks (302 — intentional, so we can change affiliate IDs without a 301 chain) ──
+# 302 is correct here: /go/* pages should NOT be indexed and redirect targets change
 /go/make https://www.make.com/en/register?pc=techie123 302
 /go/systeme https://systeme.io/?sa=sa0262937272be99703a8ea16153f5dd5ae2a3eea7 302
+/go/getresponse https://try.getresponsetoday.com/gejtf3pvvf1u 302
+/go/beehiiv https://www.beehiiv.com?via=gym-extras 302
+/go/tidio https://affiliate.tidio.com/5kfhrx3ot6tf 302
+/go/gorgias https://partner.gorgias.com/xclmfdgeizdk 302
+/go/workspace https://referworkspace.app.goo.gl/sy2C 302
+
+# ── Legacy affiliate URL rewrites (catch any direct links in old content) ──
+/affiliate/* /go/:splat 301
