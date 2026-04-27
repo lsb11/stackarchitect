@@ -40,7 +40,6 @@ export default defineConfig({
   integrations: [
     sitemap({
       filter: (page) => !page.includes('/sitemap-page'),
-      lastmod: new Date(),
       serialize(item) {
         if (item.url === 'https://stackarchitect.xyz/') {
           return { ...item, priority: 1.0, changefreq: 'weekly' };
