@@ -122,3 +122,9 @@ For the full diagnosis of your specific tracking situation — including which i
 The Complete Kit includes the CAPI Shield Make.com JSON blueprint — import it in 60 seconds, add one Shopify webhook, and server-side tracking is live. Also includes TikTok CAPI, Stocky Swap, and P&L Auto. $29 one-time, deploys in 10 minutes.
 
 **[Get the Complete Kit — $29 →](/pro)**
+
+---
+
+> **See the full server-side setup**
+>
+> This guide covers the CAPI Shield implementation for Meta. For the [complete Shopify server-side tracking guide for 2026](/blog/shopify-server-side-tracking-complete-setup-guide/) — including Google Enhanced Conversions and TikTok Events API in the same Make.com scenario — see the full setup guide.

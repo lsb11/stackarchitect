@@ -223,3 +223,9 @@ Start with the [Make.com free account](/go/make) and follow the steps above. If 
 The Complete Kit includes a ready-to-import Make.com JSON blueprint for Google Enhanced Conversions — plus Meta CAPI, TikTok CAPI, Stocky Swap, and P&L Auto. Import and deploy all four in 10 minutes instead of building each from scratch. $29 one-time.
 
 **[Get the Complete Kit — $29 →](/pro)**
+
+---
+
+> **Also running Meta or TikTok ads?**
+>
+> This guide covers Google Enhanced Conversions only. The full setup guide covers [free server-side tracking via webhook for Shopify](/blog/shopify-server-side-tracking-complete-setup-guide/) across Meta CAPI, Google Enhanced Conversions, and TikTok Events API — all in one scenario.
