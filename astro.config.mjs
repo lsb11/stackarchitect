@@ -3,6 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 import indexnow from 'astro-indexnow';
+
 export default defineConfig({
   site: 'https://stackarchitect.xyz',
   output: 'static',
