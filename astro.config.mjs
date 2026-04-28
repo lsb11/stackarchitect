@@ -2,17 +2,15 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
-
+import indexnow from 'astro-indexnow';
 export default defineConfig({
   site: 'https://stackarchitect.xyz',
   output: 'static',
   trailingSlash: 'always',
-
   prefetch: {
     prefetchAll: false,
     defaultStrategy: 'hover',
   },
-
   image: {
     service: {
       entrypoint: 'astro/assets/services/sharp',
@@ -20,12 +18,10 @@ export default defineConfig({
     formats: ['avif', 'webp'],
     quality: 80,
   },
-
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
   },
-
   vite: {
     plugins: [tailwindcss()],
     build: {
@@ -36,7 +32,6 @@ export default defineConfig({
       devSourcemap: true,
     },
   },
-
   integrations: [
     sitemap({
       filter: (page) => !page.includes('/sitemap-page'),
@@ -54,5 +49,8 @@ export default defineConfig({
       },
     }),
     mdx(),
+    indexnow({
+      key: 'b953b757ff91da6971c05ff7f7e39668',
+    }),
   ],
 });
