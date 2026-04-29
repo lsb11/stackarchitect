@@ -228,7 +228,6 @@ import AttributionTracker from '../components/AttributionTracker.astro';
 <link rel="alternate" hreflang="x-default" href="https://stackarchitect.xyz/" />
 
 <!-- Performance: preload LCP + fonts -->
-<link rel="preload" as="image" href="https://d1yei2z3i6k35z.cloudfront.net/16370908/69a093a668d36_Gemini_Generated_Image_3i6wmo3i6wmo3i6w.png" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap">
@@ -313,10 +312,32 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text-3);line-heigh
 .stat-strip-hero{max-width:680px;margin:0 auto;}
 
 /* HERO VIDEO — now directly under CTA */
-.hero-video-wrap{max-width:340px;margin:8px auto 40px;position:relative;}
+.hero-video-wrap{max-width:720px;margin:8px auto 40px;position:relative;}
 .hero-video-glow{position:absolute;inset:-2px;border-radius:20px;background:linear-gradient(135deg,rgba(0,200,100,.4),rgba(0,168,164,.2),rgba(0,200,100,.1));z-index:0;filter:blur(1px);}
-.hero-video-box{position:relative;padding-bottom:177.78%;height:0;overflow:hidden;border-radius:18px;border:1px solid rgba(0,200,100,.25);background:var(--bg-3);z-index:1;box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 40px rgba(0,200,100,.08);}
+.hero-video-box{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:18px;border:1px solid rgba(0,200,100,.25);background:var(--bg-3);z-index:1;box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 40px rgba(0,200,100,.08);}
 .hero-video-box iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;border-radius:18px;}
+.hero-video-box video{position:absolute;top:0;left:0;width:100%;height:100%;border:0;border-radius:18px;object-fit:contain;background:#000;}
+.hero-video-transcript{margin-top:16px;font-size:14px;color:rgba(255,255,255,0.7);}
+.hero-video-transcript summary{cursor:pointer;padding:8px 12px;background:rgba(0,200,100,0.08);border:1px solid rgba(0,200,100,0.2);border-radius:6px;display:inline-block;font-weight:500;user-select:none;}
+.hero-video-transcript summary:hover{background:rgba(0,200,100,0.15);}
+.hero-video-transcript[open] summary{margin-bottom:12px;}
+.hero-video-transcript .transcript-body{padding:16px;background:rgba(255,255,255,0.03);border-radius:8px;line-height:1.6;}
+.hero-video-transcript .transcript-body p{margin:0 0 8px 0;}
+.hero-video-transcript .transcript-body p:last-child{margin-bottom:0;}
+
+/* WebVTT caption styling — YouTube Short feel, tuned for conversion */
+.hero-video-box video::cue {
+  background-color: rgba(2, 6, 23, 0.85);
+  color: #ffffff;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.35;
+  padding: 4px 10px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 0 6px rgba(0, 0, 0, 0.8);
+  letter-spacing: 0.01em;
+}
+
 .hero-video-caption{text-align:center;font-family:var(--mono);font-size:11px;color:var(--text-4);letter-spacing:.1em;text-transform:uppercase;margin-top:14px;}
 
 /* SCANNER — promoted to position #2 */
@@ -459,6 +480,32 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text-3);line-heigh
 </script>
 
 <AttributionTracker />
+
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": "How Shopify stores replace $700/month of paid apps for free",
+  "description": "Klaviyo, Elevar, Triple Whale, Stocky — every paid Shopify app draining your store has a free version that works just as well. One Make.com webhook handles server-side tracking, inventory, P&L and email for zero dollars. Free guides at stackarchitect.xyz, or skip the build with Complete Kit for $29.",
+  "thumbnailUrl": [
+    "https://stackarchitect.xyz/videos/poster-16x9.jpg",
+    "https://stackarchitect.xyz/videos/poster-9x16.jpg"
+  ],
+  "uploadDate": "2026-04-29",
+  "duration": "PT41S",
+  "contentUrl": "https://stackarchitect.xyz/videos/hero-long.mp4",
+  "embedUrl": "https://stackarchitect.xyz/",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Stack Architect",
+    "url": "https://stackarchitect.xyz/"
+  },
+  "transcript": "Your Shopify store is leaking $700 a month. Klaviyo. Elevar. Triple Whale. Stocky. Every paid app draining your store has a free version that works just as well. One Make.com webhook handles server-side tracking, inventory, P&L and email — for zero dollars. The free tier handles it. Shopify's killing Stocky August 31st. Klaviyo charges per profile now. We've documented every source. Free guides and tools at stackarchitect.xyz. Or skip the build — Complete Kit, $29, live in 10 minutes. stackarchitect.xyz.",
+  "potentialAction": {
+    "@type": "SeekToAction",
+    "target": "https://stackarchitect.xyz/?t={seek_to_second_number}",
+    "startOffset-input": "required name=seek_to_second_number"
+  }
+})} />
 </head>
 <body>
 
@@ -489,13 +536,34 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text-3);line-heigh
     <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00c864" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Remove anytime</span>
   </div>
 
-  <!-- Video directly under CTA -->
+  <!-- Self-hosted video with captions + transcript -->
   <div class="hero-video-wrap">
     <div class="hero-video-glow"></div>
     <div class="hero-video-box">
-      <iframe src="https://www.youtube.com/embed/gYCTdeW9OOU?rel=0&modestbranding=1&color=white" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" title="How Shopify stores replace $700/month of paid apps for free in 6 minutes — Stack Architect"></iframe>
+      <video
+        controls
+        preload="metadata"
+        poster="/videos/poster-16x9.jpg"
+        playsinline
+        title="How Shopify stores replace $700/month of paid apps for free in 6 minutes — Stack Architect">
+        <source src="/videos/hero-long.mp4" type="video/mp4">
+        <track kind="captions" srclang="en" label="English" src="/videos/hero-long.vtt" default>
+        Your browser does not support video playback. <a href="/videos/hero-long.mp4">Download the video</a>.
+      </video>
     </div>
-    <div class="hero-video-caption">30-second overview · How the stack works</div>
+    <div class="hero-video-caption">41-second overview · How the stack works</div>
+    <details class="hero-video-transcript">
+      <summary>Read transcript</summary>
+      <div class="transcript-body">
+        <p>Your Shopify store is leaking $700 a month.</p>
+        <p>Klaviyo. Elevar. Triple Whale. Stocky.</p>
+        <p>Every paid app draining your store has a free version that works just as well.</p>
+        <p>One Make.com webhook handles server-side tracking, inventory, P&amp;L and email — for zero dollars.</p>
+        <p>The free tier handles it. Shopify's killing Stocky August 31st. Klaviyo charges per profile now. We've documented every source.</p>
+        <p>Free guides and tools at stackarchitect.xyz. Or skip the build — Complete Kit, $29, live in 10 minutes.</p>
+        <p>stackarchitect.xyz.</p>
+      </div>
+    </details>
   </div>
 
   <div class="urgency" role="note"><span class="dot" style="background:var(--amber);animation:none;"></span>Shopify's Stocky app shuts down August 31, 2026 — free replacement ready now</div>
