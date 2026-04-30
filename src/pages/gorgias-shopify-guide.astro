@@ -1,0 +1,677 @@
+---
+// /src/pages/gorgias-shopify-guide.astro
+// Gorgias for Shopify — definitive guide page
+// Audience: £40K+/month Shopify stores evaluating Gorgias seriously
+// Affiliate: /go/gorgias ($200-500 bounty per paid conversion)
+
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const pageTitle = 'Gorgias for Shopify: Is It Worth It in 2026? Honest Setup Guide';
+const pageDescription = 'A 2026 buyer\'s guide to Gorgias for Shopify. Real pricing math, the 30-day rollout plan, hidden ticket costs, and the exact store size where it pays back. Honest, no fluff.';
+const canonicalUrl = 'https://stackarchitect.xyz/gorgias-shopify-guide/';
+const datePublished = '2026-04-30';
+const dateModified = '2026-04-30';
+
+// Schema: Article + FAQPage + HowTo + BreadcrumbList + SoftwareApplication
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      url: canonicalUrl,
+      name: pageTitle,
+      description: pageDescription,
+      dateModified,
+      breadcrumb: {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://stackarchitect.xyz' },
+          { '@type': 'ListItem', position: 2, name: 'Compare', item: 'https://stackarchitect.xyz/best-free-shopify-apps-2026/' },
+          { '@type': 'ListItem', position: 3, name: 'Gorgias for Shopify Guide', item: canonicalUrl },
+        ],
+      },
+    },
+    {
+      '@type': 'Article',
+      '@id': `${canonicalUrl}#article`,
+      headline: pageTitle,
+      description: pageDescription,
+      datePublished,
+      dateModified,
+      author: { '@type': 'Person', name: 'Luke', url: 'https://stackarchitect.xyz/about/' },
+      publisher: { '@type': 'Organization', name: 'Stack Architect', url: 'https://stackarchitect.xyz' },
+      inLanguage: 'en-GB',
+      url: canonicalUrl,
+      image: 'https://stackarchitect.xyz/og.png',
+    },
+    {
+      '@type': 'SoftwareApplication',
+      name: 'Gorgias',
+      applicationCategory: 'BusinessApplication',
+      operatingSystem: 'Web',
+      url: 'https://www.gorgias.com',
+      description: 'Customer support helpdesk built for Shopify and ecommerce stores. Ticket-based pricing, deep Shopify integration, multi-channel inbox.',
+      offers: {
+        '@type': 'AggregateOffer',
+        priceCurrency: 'USD',
+        lowPrice: '10',
+        highPrice: '900',
+        offerCount: 4,
+      },
+    },
+    {
+      '@type': 'HowTo',
+      name: 'How to set up Gorgias for a Shopify store in 30 days',
+      description: 'A four-week rollout plan to migrate Shopify customer support to Gorgias without losing tickets or dropping CSAT.',
+      totalTime: 'P30D',
+      step: [
+        { '@type': 'HowToStep', position: 1, name: 'Days 1-3: Audit and benchmark', text: 'Pull the last 90 days of support ticket data from your existing tool. Calculate monthly ticket volume, average response time, top 10 query categories, and current per-ticket cost. This is your baseline.' },
+        { '@type': 'HowToStep', position: 2, name: 'Days 4-7: Trial setup and Shopify connection', text: 'Start the 7-day Gorgias free trial. Connect Shopify, email, and your primary social channels (Instagram, Facebook). Import existing macros from your previous tool. Do not invite agents yet.' },
+        { '@type': 'HowToStep', position: 3, name: 'Days 8-14: Macros, rules, and routing', text: 'Build 15-20 high-volume macros covering your top query categories. Configure auto-tagging rules. Set up routing by channel and ticket type. Test with simulated tickets before going live.' },
+        { '@type': 'HowToStep', position: 4, name: 'Days 15-21: Soft launch with one agent', text: 'Move one channel (typically email) to Gorgias. Have one agent work in Gorgias while the rest of the team continues on the old tool. Identify gaps in macros and routing. Adjust before expanding.' },
+        { '@type': 'HowToStep', position: 5, name: 'Days 22-28: Full team migration', text: 'Move remaining channels and agents to Gorgias. Enable revenue attribution. Decommission the old tool but keep read access for 30 days for ticket history reference.' },
+        { '@type': 'HowToStep', position: 6, name: 'Days 29-30: First month review', text: 'Review actual ticket volume vs plan allowance. Check overage charges. Audit macro hit rates. Adjust the plan tier if you over-bought or are heading for overages.' },
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'Is Gorgias worth it for a Shopify store?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Gorgias is worth it for Shopify stores doing roughly £40,000/month GMV or more, with 200+ support tickets per month, multi-channel customer queries (email + chat + social), and a team of 3+ agents. Below that volume the ticket-based pricing usually costs more than the time it saves. Stores under 100 tickets per month are typically better served by free or lower-cost alternatives.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How much does Gorgias cost in 2026?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Gorgias has five tiers in 2026: Starter at $10/month (50 tickets, 3 user limit), Basic at $60/month (300 tickets, unlimited users), Pro at $360/month (2,000 tickets, includes 600 AI Agent interactions), Advanced at $900/month (5,000 tickets, 2,500 AI interactions), and Enterprise on custom contracts. Annual billing is approximately 16-25% cheaper. AI Agent automation is billed separately at $0.90-$1.00 per automated resolution. Overage rates are $0.36-$0.40 per ticket on Starter or $36-$40 per 100 tickets on higher plans.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Does Gorgias have a free trial?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Yes. Gorgias offers a 7-day free trial with full feature access on your selected plan. No credit card is required to start. The 7-day window is intentionally short — Gorgias expects buyers to evaluate by configuring their actual workflow, not by extended free use. Plan accordingly: have your ticket history exported and macro requirements drafted before starting the trial.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'What counts as a billable ticket in Gorgias?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'A billable ticket is any customer conversation your team responds to. This includes email replies, live chat sessions, replies to social media comments and DMs, SMS exchanges, and phone calls (when using voice add-ons). Auto-replies and spam are filtered out. Critically, replying to a comment under a Facebook or Instagram ad counts as a billable ticket — for stores with high paid social spend this can dominate ticket volume unexpectedly. Reopened tickets within 7 days of original resolution do not generate a new charge; reopens after that window do.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'What is the difference between Gorgias Helpdesk and AI Agent?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Gorgias Helpdesk is the core ticketing platform — shared inbox, macros, Shopify integration, and routing. AI Agent is a separate add-on that fully resolves tickets without human involvement, billed per automated resolution at $0.90-$1.00 each. Higher tiers (Pro and Advanced) include a bundle of AI Agent interactions in the base plan; lower tiers must purchase AI Agent capacity on top. AI Agent works best for high-repetition queries: order status, shipping times, return policies, simple product questions.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How long does it take to set up Gorgias for Shopify?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'A serious Gorgias rollout for a Shopify store takes 30 days end-to-end. Initial Shopify connection and basic email/chat setup takes 2-4 hours. Building the macro library and automation rules that make Gorgias actually pay back takes another 8-12 hours over the first two weeks. Soft-launching with one agent before full team migration adds another week. Stores that try to migrate everyone in week one typically miss productivity gains and end up paying for the platform without capturing the time savings.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Can Gorgias replace Zendesk for a Shopify store?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Yes, for ecommerce-focused workflows Gorgias generally outperforms Zendesk on Shopify-specific tasks: refund processing, order editing, and customer order history are native to Gorgias rather than requiring custom apps as on Zendesk. Gorgias\'s ticket-based pricing also avoids per-agent fees, which Zendesk charges per seat. For stores with non-ecommerce support needs (B2B, enterprise integrations, complex compliance workflows), Zendesk\'s broader feature set may justify its cost.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Should I use Gorgias or Tidio for my Shopify store?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Use Tidio if your store does under £40,000/month GMV, you handle under 200 support tickets per month, you operate primarily through chat and email, and you have a small team or solo operation. Tidio\'s Lyro AI on the free plan resolves a significant share of repetitive queries automatically. Use Gorgias if your store does £40,000+/month GMV, you handle 200+ tickets per month across multiple channels, your agents regularly modify orders or issue refunds, and your team has 3+ agents who need a structured shared inbox. The two tools target genuinely different stages of business maturity.',
+          },
+        },
+      ],
+    },
+  ],
+};
+---
+
+<Base
+  title={pageTitle}
+  description={pageDescription}
+  canonical={canonicalUrl}
+  ogImage="https://stackarchitect.xyz/og.png"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+  <Nav />
+
+  <!-- Breadcrumb -->
+  <nav aria-label="Breadcrumb" style="background:var(--bg-2);border-bottom:1px solid var(--border);padding:10px 24px;">
+    <div style="max-width:860px;margin:0 auto;">
+      <ol style="display:flex;align-items:center;gap:8px;list-style:none;font-family:var(--mono);font-size:10px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;" itemscope itemtype="https://schema.org/BreadcrumbList">
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item" style="color:var(--text-4);text-decoration:none;"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1">
+        </li>
+        <li style="opacity:.4;">/</li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/best-free-shopify-apps-2026/" itemprop="item" style="color:var(--text-4);text-decoration:none;"><span itemprop="name">Compare</span></a>
+          <meta itemprop="position" content="2">
+        </li>
+        <li style="opacity:.4;">/</li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span itemprop="name" style="color:var(--g);">Gorgias for Shopify</span>
+          <meta itemprop="position" content="3">
+        </li>
+      </ol>
+    </div>
+  </nav>
+
+  <main id="main-content">
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         HERO
+         ═══════════════════════════════════════════════════════════════════ -->
+    <section class="hero bg-grid" aria-label="Gorgias for Shopify: honest 2026 buyer's guide">
+      <div class="hero-inner" style="max-width:860px;margin:0 auto;padding:64px 24px;">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;opacity:.6;">
+          Updated April 2026 · 14 min read · Shopify customer support
+        </div>
+
+        <h1 style="font-family:var(--sans);font-weight:900;font-size:clamp(32px,5.5vw,56px);color:var(--text);letter-spacing:-.04em;line-height:1;margin-bottom:24px;">
+          Gorgias for Shopify:<br>
+          <span style="color:var(--g);">When It's Worth It</span><br>
+          <span style="color:var(--text-3);">(and When It Isn't)</span>
+        </h1>
+
+        <p style="font-size:19px;color:var(--text-2);line-height:1.65;margin-bottom:32px;max-width:720px;">
+          Most Gorgias guides on the internet are either thinly disguised Gorgias adverts or competitor takedowns from companies trying to sell you something else. This isn't either. It's a clear answer to a specific question: <strong>does your Shopify store need to be on Gorgias right now, or are you better off staying where you are?</strong> The honest answer depends on three numbers, and most of this page is about those three numbers.
+        </p>
+
+        <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:12px;padding:24px;margin:32px 0;">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;">// the short answer</div>
+          <p style="font-size:16px;color:var(--text-2);line-height:1.6;margin:0;">
+            Gorgias is the right call for Shopify stores doing <strong>£40,000+/month GMV</strong>, handling <strong>200+ support tickets/month</strong>, with a <strong>team of 3+ agents</strong> on multi-channel queries. Below that volume, the ticket-based pricing model usually costs more than the time it saves. There's a clearer breakdown of the maths below — including the hidden costs nobody mentions on the Gorgias landing page.
+          </p>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:14px;">
+          <a href="#right-fit" class="btn-outline" onclick="event.preventDefault();document.getElementById('right-fit').scrollIntoView({behavior:'smooth'})">
+            See if Gorgias fits your store
+          </a>
+          <a href="/go/gorgias" target="_blank" rel="noopener sponsored" class="btn pulse">
+            Start the 7-day free trial →
+          </a>
+        </div>
+
+        <p style="font-size:13px;color:var(--text-4);margin-top:16px;line-height:1.5;">
+          7-day free trial, no credit card required. Affiliate link — Stack Architect may receive a commission if you upgrade to a paid plan, at no cost to you. We don't recommend Gorgias for stores under £40k/month GMV; if that's you, see the <a href="/blog/tidio-vs-gorgias-shopify/" style="color:var(--text-3);text-decoration:underline;">Tidio comparison</a> instead.
+        </p>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         WHO THIS IS FOR / NOT FOR
+         ═══════════════════════════════════════════════════════════════════ -->
+    <section class="section" id="right-fit" aria-labelledby="fit-h">
+      <div class="inner-sm" style="max-width:860px;margin:0 auto;padding:72px 24px;">
+        <div class="sec-head">
+          <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Right-fit check</span>
+          <h2 id="fit-h" style="font-size:clamp(28px,4vw,40px);">The three numbers that decide it</h2>
+          <p style="font-size:17px;color:var(--text-3);max-width:640px;">Gorgias works on a ticket-based pricing model with steep cliffs between tiers. Whether it pays back depends almost entirely on these three figures — calculate them honestly before you start a trial.</p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin:40px 0;">
+          <div style="background:var(--bg-3);border:1.5px solid var(--border);border-radius:12px;padding:28px 24px;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--g);letter-spacing:.1em;margin-bottom:10px;">// NUMBER 1</div>
+            <div style="font-size:32px;font-weight:900;color:var(--text);margin-bottom:8px;">200+</div>
+            <div style="font-size:14px;color:var(--text-2);line-height:1.55;">Monthly support tickets across all channels. Below 100 tickets/month, lower-cost tools handle it. Above 200, manual workflows start losing time you can't recover.</div>
+          </div>
+
+          <div style="background:var(--bg-3);border:1.5px solid var(--border);border-radius:12px;padding:28px 24px;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--sky);letter-spacing:.1em;margin-bottom:10px;">// NUMBER 2</div>
+            <div style="font-size:32px;font-weight:900;color:var(--text);margin-bottom:8px;">£40k+</div>
+            <div style="font-size:14px;color:var(--text-2);line-height:1.55;">Monthly GMV. Below this revenue level, the £60-360/month base plan is a meaningful share of your operating margin. Gorgias is built for stores where £360/month is rounding error, not a debate.</div>
+          </div>
+
+          <div style="background:var(--bg-3);border:1.5px solid var(--border);border-radius:12px;padding:28px 24px;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--vio);letter-spacing:.1em;margin-bottom:10px;">// NUMBER 3</div>
+            <div style="font-size:32px;font-weight:900;color:var(--text);margin-bottom:8px;">3+</div>
+            <div style="font-size:14px;color:var(--text-2);line-height:1.55;">Agents touching customer support. Solo operators can use simpler tools. Gorgias's value compounds with team coordination — shared macros, routing rules, agent-level reporting.</div>
+          </div>
+        </div>
+
+        <div class="body-text" style="max-width:740px;">
+          <h3>The honest "do not buy" cases</h3>
+
+          <p>If any of these describe your store today, Gorgias is the wrong purchase regardless of how good the product is:</p>
+
+          <ul>
+            <li><strong>Under 100 tickets/month.</strong> The Starter plan at $10/month covers 50 tickets, the Basic plan at $60 covers 300. If you're at 80 tickets, you're paying $60/month for capacity you don't use, and the time savings on 80 tickets/month don't justify it. Free plans on alternatives like Tidio resolve a significant share of these queries with AI without paying anything.</li>
+
+            <li><strong>Solo operator handling support yourself.</strong> Gorgias's collaboration features — assignment, internal notes, agent reporting — assume a team. As a solo founder you don't need any of that. A simple shared inbox in Gmail or a free Tidio account handles it.</li>
+
+            <li><strong>Single channel (email only, or chat only).</strong> The strongest case for Gorgias is unifying email + chat + social DMs + SMS into one inbox. If your customers only ever email you, you're paying for a multi-channel inbox to do single-channel work. Use a focused single-channel tool.</li>
+
+            <li><strong>Heavy paid social with high comment volume.</strong> Counter-intuitive but important: Facebook and Instagram comments under your ads count as billable Gorgias tickets if your team responds via Gorgias. Stores spending heavily on Meta ads with thousands of comments per month can blow through ticket allowances on social engagement that doesn't actually need a helpdesk workflow. Audit before you migrate.</li>
+
+            <li><strong>Cost predictability is a hard constraint.</strong> Gorgias's pricing model is volume-based with overage charges. Most months are predictable. Black Friday, viral moments, or product issues can spike volume 3-5x and create overage bills you didn't plan for. If your support budget needs to be fixed, look at agent-based pricing models (Zendesk, HappyFox) instead — they cost more on a steady state but are predictable.</li>
+          </ul>
+
+          <h3>The honest "buy" cases</h3>
+
+          <p>Conversely, if any of these describe your store, Gorgias usually pays back within 60-90 days:</p>
+
+          <ul>
+            <li><strong>Multi-channel support is fragmented across tools.</strong> Email in Gmail, chat in a separate widget, Instagram DMs in one phone, Facebook in another. Reuniting these into one inbox is genuinely worth £60-360/month in agent productivity for any team handling 200+ tickets/month.</li>
+
+            <li><strong>Agents regularly modify orders.</strong> Issuing refunds, editing shipping addresses, applying discount codes, adding order notes — these actions are native to Gorgias rather than requiring tab-switching to Shopify admin. For agents who do this 20+ times a day, the time saved is meaningful.</li>
+
+            <li><strong>You need revenue attribution per ticket.</strong> Gorgias tracks revenue generated through support interactions (recovered carts, post-support purchases, returns avoided). For stores actively managing support as a profit centre rather than a cost centre, this data justifies the platform on its own.</li>
+
+            <li><strong>Your team is 3+ agents and growing.</strong> Gorgias doesn't charge per agent on Basic and above — you can add 5, 10, 50 agents at the same price. Agent-based tools (Zendesk especially) get expensive fast as teams grow. For scaling teams Gorgias's economics improve over time, not worsen.</li>
+
+            <li><strong>You have repetitive queries that AI can resolve.</strong> Order status, shipping times, return policies, sizing questions. Gorgias's AI Agent (paid add-on) resolves these without human involvement. For stores with strong knowledge bases and predictable query patterns, AI Agent can automate 30-50% of incoming volume — and free up the team for complex queries.</li>
+          </ul>
+
+          <div class="callout info" style="background:rgba(0,200,100,.025);border:1px solid rgba(0,200,100,.22);border-radius:8px;padding:20px;margin:32px 0;">
+            <div class="callout-label" style="font-family:var(--mono);font-size:11px;color:var(--g);letter-spacing:.1em;margin-bottom:8px;">// MIDDLE GROUND</div>
+            <p style="margin:0;font-size:15px;color:var(--text-2);line-height:1.6;">If you're sitting between these — say, 150 tickets/month, £30k GMV, two agents — start with Tidio's free plan and upgrade to a paid plan when you hit any of: 200+ tickets/month, third agent joining, or your first major refund/order-editing bottleneck. Gorgias becomes the right move when one of those triggers fires, not before. The <a href="/blog/tidio-vs-gorgias-shopify/" style="color:var(--g);">full comparison</a> covers what to use in the meantime.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         PRICING DEEP DIVE
+         ═══════════════════════════════════════════════════════════════════ -->
+    <section class="section-alt" aria-labelledby="pricing-h">
+      <div class="inner-sm" style="max-width:860px;margin:0 auto;padding:72px 24px;">
+        <div class="sec-head">
+          <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Pricing</span>
+          <h2 id="pricing-h" style="font-size:clamp(28px,4vw,40px);">Gorgias pricing in 2026 — what each plan actually costs</h2>
+          <p style="font-size:17px;color:var(--text-3);max-width:640px;">Five tiers. Volume-based. Looks simple on the marketing page, has three or four cost traps that aren't disclosed up front. Here's the real picture.</p>
+        </div>
+
+        <div style="overflow-x:auto;margin:32px 0;">
+          <table style="width:100%;border-collapse:collapse;font-size:14px;">
+            <thead>
+              <tr style="background:var(--bg-3);border-bottom:2px solid var(--border);">
+                <th style="text-align:left;padding:14px 12px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">Plan</th>
+                <th style="text-align:left;padding:14px 12px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">Monthly</th>
+                <th style="text-align:left;padding:14px 12px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">Tickets</th>
+                <th style="text-align:left;padding:14px 12px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">Agent seats</th>
+                <th style="text-align:left;padding:14px 12px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">Overage</th>
+              </tr>
+            </thead>
+            <tbody style="color:var(--text-2);">
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:14px 12px;font-weight:600;">Starter</td><td style="padding:14px 12px;">$10</td><td style="padding:14px 12px;">50</td><td style="padding:14px 12px;">3 max</td><td style="padding:14px 12px;">$0.40/ticket</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:14px 12px;font-weight:600;">Basic</td><td style="padding:14px 12px;">$60</td><td style="padding:14px 12px;">300</td><td style="padding:14px 12px;">Unlimited</td><td style="padding:14px 12px;">$40/100 tickets</td></tr>
+              <tr style="background:rgba(0,200,100,.025);border-bottom:1px solid var(--border);"><td style="padding:14px 12px;font-weight:600;">Pro <span style="font-family:var(--mono);font-size:10px;color:var(--g);">// recommended</span></td><td style="padding:14px 12px;">$360</td><td style="padding:14px 12px;">2,000</td><td style="padding:14px 12px;">Unlimited</td><td style="padding:14px 12px;">$36/100 tickets</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:14px 12px;font-weight:600;">Advanced</td><td style="padding:14px 12px;">$900</td><td style="padding:14px 12px;">5,000</td><td style="padding:14px 12px;">Unlimited</td><td style="padding:14px 12px;">$36/100 tickets</td></tr>
+              <tr><td style="padding:14px 12px;font-weight:600;">Enterprise</td><td style="padding:14px 12px;">Custom</td><td style="padding:14px 12px;">Custom</td><td style="padding:14px 12px;">Unlimited</td><td style="padding:14px 12px;">Negotiated</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p style="font-size:13px;color:var(--text-4);margin-bottom:24px;">All prices USD. Annual billing is approximately 16-25% cheaper than monthly. Per-ticket overage rates may vary by contract.</p>
+
+        <div class="body-text" style="max-width:740px;">
+          <h3>The hidden costs nobody mentions</h3>
+
+          <p>The plan price on the table above is the floor, not the typical bill. Stores running Gorgias seriously usually pay 30-60% more than the base plan. Where the extra goes:</p>
+
+          <p><strong>1. AI Agent is a separate add-on.</strong> Pro and Advanced plans include a bundle of AI Agent interactions (600 and 2,500 respectively), but if you exceed those bundles or you're on a lower tier, AI Agent is billed at $0.90-$1.00 per fully automated resolution. A store automating 30% of 2,000 tickets pays roughly $600-$2,000/month in AI Agent fees on top of the $360 Pro plan. AI Agent is genuinely valuable — but model the cost honestly before turning it on.</p>
+
+          <p><strong>2. Voice and SMS are billed separately.</strong> Phone support and SMS messaging are usage-based add-ons. Voice tickets start around $1.00 per ticket; SMS tickets start around $0.16 per ticket plus carrier fees. For a store handling 400 voice + 250 SMS tickets/month this adds approximately $300/month on top of the base plan.</p>
+
+          <p><strong>3. Social comments count as billable tickets.</strong> If your team replies to comments under Facebook or Instagram ads via Gorgias, each comment thread counts as a ticket. Stores running heavy paid social can see 2-3x ticket volume from social comments alone. If your social manager replies to comments outside Gorgias (in the Meta Business Suite, for example), they don't count — but then you lose the unified inbox benefit.</p>
+
+          <p><strong>4. Reopened tickets after 7 days bill again.</strong> A customer who replies to a closed ticket within 7 days continues the original ticket without an extra charge. After 7 days, the same conversation generates a new billable ticket. This adds up for stores with longer purchase cycles or shipping windows.</p>
+
+          <p><strong>5. Onboarding fees on Advanced and Enterprise.</strong> Setup, migration, and team training services for higher tiers commonly run into low four-figure amounts before the first paid month. Always ask explicitly during the sales conversation; the figure is rarely volunteered.</p>
+
+          <h3>What you actually pay — three real-world examples</h3>
+
+          <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:24px;margin:24px 0;">
+            <p style="margin:0 0 8px 0;font-family:var(--mono);font-size:11px;color:var(--g);letter-spacing:.1em;">// EXAMPLE A — apparel brand, £80k/month GMV</p>
+            <p style="margin:0 0 12px 0;font-size:14px;color:var(--text-2);line-height:1.6;">450 tickets/month average, no voice/SMS, no AI Agent yet. <strong>Plan: Basic ($60/month).</strong> 150 tickets over the 300 allowance × $40/100 = $60 in overages. <strong>Real monthly cost: ~$120.</strong></p>
+          </div>
+
+          <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:24px;margin:24px 0;">
+            <p style="margin:0 0 8px 0;font-family:var(--mono);font-size:11px;color:var(--sky);letter-spacing:.1em;">// EXAMPLE B — DTC supplements, £350k/month GMV</p>
+            <p style="margin:0 0 12px 0;font-size:14px;color:var(--text-2);line-height:1.6;">2,400 tickets/month average, AI Agent automating 25% of repetitive queries. <strong>Plan: Pro ($360/month).</strong> 400 tickets over allowance × $36/100 = $144 overage. AI Agent: 600 included; assume balance covered. <strong>Real monthly cost: ~$504.</strong> Without AI Agent automation, this store would be on Advanced ($900) within 3 months.</p>
+          </div>
+
+          <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:24px;margin:24px 0;">
+            <p style="margin:0 0 8px 0;font-family:var(--mono);font-size:11px;color:var(--vio);letter-spacing:.1em;">// EXAMPLE C — multi-channel beauty brand, £600k/month GMV</p>
+            <p style="margin:0 0 12px 0;font-size:14px;color:var(--text-2);line-height:1.6;">5,200 tickets/month including 800 social comments and 200 voice tickets, AI Agent at 35%. <strong>Plan: Advanced ($900/month).</strong> 200 tickets overage × $36/100 = $72. AI Agent overage: ~1,300 over the 2,500 bundle × $0.90 = $1,170. Voice: 200 × ~$1 = $200. <strong>Real monthly cost: ~$2,342.</strong></p>
+          </div>
+
+          <p>The pattern: as volume grows, so do the variable costs that don't show up in the plan price. The Pro and Advanced tiers in particular often see 50-150% uplift from add-ons. Plan accordingly.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         30-DAY ROLLOUT
+         ═══════════════════════════════════════════════════════════════════ -->
+    <section class="section" id="rollout" aria-labelledby="rollout-h" itemscope itemtype="https://schema.org/HowTo">
+      <div class="inner-sm" style="max-width:860px;margin:0 auto;padding:72px 24px;">
+        <meta itemprop="name" content="How to set up Gorgias for a Shopify store in 30 days">
+        <meta itemprop="totalTime" content="P30D">
+
+        <div class="sec-head">
+          <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Setup</span>
+          <h2 id="rollout-h" style="font-size:clamp(28px,4vw,40px);">The 30-day Gorgias rollout for Shopify</h2>
+          <p style="font-size:17px;color:var(--text-3);max-width:640px;">Most stores rush the migration, lose tickets in the cracks, and end the first month over budget without seeing productivity gains. This is the structured rollout that avoids both — used in production by stores migrating from Zendesk, Tidio, and direct-Gmail support.</p>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:20px;margin:40px 0;">
+
+          <div itemprop="step" itemscope itemtype="https://schema.org/HowToStep" style="background:var(--bg-3);border:1px solid var(--border);border-left:4px solid var(--g);border-radius:8px;padding:28px;">
+            <div style="display:flex;align-items:flex-start;gap:20px;">
+              <div style="flex-shrink:0;font-family:var(--mono);font-size:11px;color:var(--g);font-weight:700;letter-spacing:.1em;line-height:1.4;">DAYS<br>1–3</div>
+              <div>
+                <div itemprop="name" style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px;">Audit your current support reality</div>
+                <div itemprop="text" style="font-size:15px;color:var(--text-2);line-height:1.65;">Pull the last 90 days of ticket data from your existing tool (or your inbox if you're on direct email). Calculate four numbers: total monthly ticket volume by channel, average first-response time, top 10 query categories by volume, and current cost per ticket. This is your baseline — Gorgias will be measured against these numbers in 30 days. If you can't get these numbers, your support workflow has bigger problems than tooling and Gorgias won't fix them.</div>
+              </div>
+            </div>
+          </div>
+
+          <div itemprop="step" itemscope itemtype="https://schema.org/HowToStep" style="background:var(--bg-3);border:1px solid var(--border);border-left:4px solid var(--sky);border-radius:8px;padding:28px;">
+            <div style="display:flex;align-items:flex-start;gap:20px;">
+              <div style="flex-shrink:0;font-family:var(--mono);font-size:11px;color:var(--sky);font-weight:700;letter-spacing:.1em;line-height:1.4;">DAYS<br>4–7</div>
+              <div>
+                <div itemprop="name" style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px;">Trial setup and Shopify connection</div>
+                <div itemprop="text" style="font-size:15px;color:var(--text-2);line-height:1.65;">Start the 7-day free trial. Connect your Shopify store first — the integration takes about 10 minutes and is the foundation for everything else. Then add email (Gmail/Google Workspace via OAuth) and your primary social channel (Instagram or Facebook). Skip voice and SMS for now. Do not invite agents yet. Spend day 7 navigating the interface yourself before involving the team. The goal of week one is "I understand how Gorgias thinks", not "the team is on Gorgias".</div>
+              </div>
+            </div>
+          </div>
+
+          <div itemprop="step" itemscope itemtype="https://schema.org/HowToStep" style="background:var(--bg-3);border:1px solid var(--border);border-left:4px solid var(--vio);border-radius:8px;padding:28px;">
+            <div style="display:flex;align-items:flex-start;gap:20px;">
+              <div style="flex-shrink:0;font-family:var(--mono);font-size:11px;color:var(--vio);font-weight:700;letter-spacing:.1em;line-height:1.4;">DAYS<br>8–14</div>
+              <div>
+                <div itemprop="name" style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px;">Build macros, rules, and routing</div>
+                <div itemprop="text" style="font-size:15px;color:var(--text-2);line-height:1.65;">This week makes or breaks the rollout. Take your top 10 query categories from day 1-3's audit and build a macro for each. A good macro template includes: a tagged template response, a Shopify action (refund / order edit / discount code) where relevant, and a follow-up trigger. Then build auto-tagging rules — incoming tickets tagged automatically by keyword or channel. Then routing — who handles what. Stores that skip this week and migrate the team in week 2 typically see worse productivity in Gorgias than in their old tool for 60+ days. Don't skip.</div>
+              </div>
+            </div>
+          </div>
+
+          <div itemprop="step" itemscope itemtype="https://schema.org/HowToStep" style="background:var(--bg-3);border:1px solid var(--border);border-left:4px solid var(--amber);border-radius:8px;padding:28px;">
+            <div style="display:flex;align-items:flex-start;gap:20px;">
+              <div style="flex-shrink:0;font-family:var(--mono);font-size:11px;color:var(--amber);font-weight:700;letter-spacing:.1em;line-height:1.4;">DAYS<br>15–21</div>
+              <div>
+                <div itemprop="name" style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px;">Soft launch with one channel and one agent</div>
+                <div itemprop="text" style="font-size:15px;color:var(--text-2);line-height:1.65;">Move email-only to Gorgias first. Have your most experienced agent work in Gorgias while everyone else stays on the existing tool for chat and social. Daily 15-minute review with the soft-launch agent: which macros hit, which missed, where Shopify integration sped them up, where they lost time. Adjust macros and rules based on real friction. By day 21 you should have evidence that this agent is at least as fast as on the old tool — usually faster.</div>
+              </div>
+            </div>
+          </div>
+
+          <div itemprop="step" itemscope itemtype="https://schema.org/HowToStep" style="background:var(--bg-3);border:1px solid var(--border);border-left:4px solid #f87171;border-radius:8px;padding:28px;">
+            <div style="display:flex;align-items:flex-start;gap:20px;">
+              <div style="flex-shrink:0;font-family:var(--mono);font-size:11px;color:#f87171;font-weight:700;letter-spacing:.1em;line-height:1.4;">DAYS<br>22–28</div>
+              <div>
+                <div itemprop="name" style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px;">Full team migration and channel expansion</div>
+                <div itemprop="text" style="font-size:15px;color:var(--text-2);line-height:1.65;">Move remaining channels (chat, Instagram, Facebook) and all agents into Gorgias. Enable revenue attribution so the next month's data is meaningful. Decommission the old tool — but keep read-only access to its archive for 30 days for reference. Don't enable AI Agent yet. AI Agent works best after you have 60+ days of macro data showing exactly which queries are repetitive and which need human judgement; switching it on in week 4 burns money on imperfect automation.</div>
+              </div>
+            </div>
+          </div>
+
+          <div itemprop="step" itemscope itemtype="https://schema.org/HowToStep" style="background:var(--bg-3);border:1px solid var(--border);border-left:4px solid var(--g);border-radius:8px;padding:28px;">
+            <div style="display:flex;align-items:flex-start;gap:20px;">
+              <div style="flex-shrink:0;font-family:var(--mono);font-size:11px;color:var(--g);font-weight:700;letter-spacing:.1em;line-height:1.4;">DAYS<br>29–30</div>
+              <div>
+                <div itemprop="name" style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px;">First-month review and tier reassessment</div>
+                <div itemprop="text" style="font-size:15px;color:var(--text-2);line-height:1.65;">Compare against your day 1-3 baseline. Total tickets handled vs plan allowance — over or under? First-response time vs old tool — better, same, worse? Cost per ticket — actually cheaper or actually more expensive? If you over-bought your plan, downgrade now (Basic to Starter is one click). If you're consistently in overage territory, the next month's bill projection will tell you whether to upgrade tiers or whether AI Agent is now worth turning on. This is also the meeting where you decide whether to renew on annual billing for the 16-25% discount.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="callout warn" style="background:rgba(248,113,113,.04);border:1px solid rgba(248,113,113,.25);border-radius:8px;padding:20px;margin:32px 0;">
+          <div class="callout-label" style="font-family:var(--mono);font-size:11px;color:#f87171;letter-spacing:.1em;margin-bottom:8px;">// COMMON FAILURE MODE</div>
+          <p style="margin:0;font-size:15px;color:var(--text-2);line-height:1.6;">The single most common reason Gorgias rollouts disappoint: teams skip the macro-building week (days 8-14) because it doesn't feel like progress, then experience Gorgias as "Zendesk but with a Shopify sidebar". Macros and routing are where the productivity gains live. Without them you've bought a more expensive inbox.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         COMPETITOR COMPARISON
+         ═══════════════════════════════════════════════════════════════════ -->
+    <section class="section-alt" aria-labelledby="vs-h">
+      <div class="inner-sm" style="max-width:860px;margin:0 auto;padding:72px 24px;">
+        <div class="sec-head">
+          <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Alternatives</span>
+          <h2 id="vs-h" style="font-size:clamp(28px,4vw,40px);">Where Gorgias wins, where it loses</h2>
+          <p style="font-size:17px;color:var(--text-3);max-width:640px;">Gorgias is not the right answer for every Shopify store. These are the cases where alternatives actually win.</p>
+        </div>
+
+        <div class="body-text" style="max-width:740px;">
+
+          <h3>Gorgias vs Tidio — different stages, not different qualities</h3>
+
+          <p>Tidio's free plan resolves a meaningful share of repetitive queries automatically through Lyro AI. For Shopify stores under £40k/month GMV with under 200 tickets/month, the free plan handles the workload at zero cost. The decision rule is volume and channel complexity, not preference. Stores grow into Gorgias from Tidio, not from Gorgias to Tidio. <a href="/blog/tidio-vs-gorgias-shopify/">The full comparison covers the trigger points.</a></p>
+
+          <p><strong>Use Tidio when:</strong> &lt;£40k/month GMV, &lt;200 tickets/month, single or dual-channel (chat + email), solo or small team. <strong>Use Gorgias when:</strong> the opposite of all of these. <strong>If you're in between:</strong> stay on Tidio paid until the cliff between you and Gorgias is clearer.</p>
+
+          <h3>Gorgias vs Zendesk — ecommerce versus general purpose</h3>
+
+          <p>Zendesk is a more capable general-purpose helpdesk with broader CRM integration, more customization, and stronger enterprise compliance features. Gorgias is more capable specifically for Shopify ecommerce — refunds, order edits, customer order history, and revenue attribution are native rather than bolt-on. For a pure Shopify store, Gorgias's depth wins. For a multi-platform business (Shopify + Amazon + B2B + offline), Zendesk's flexibility usually wins.</p>
+
+          <p>Pricing models differ fundamentally. Zendesk charges per agent (typically $55-$199/agent/month). Gorgias charges per ticket regardless of agent count. For teams of 5+ agents, Gorgias's economics improve over Zendesk; for teams of 1-2 agents handling high ticket volume, Zendesk's per-agent model can be cheaper.</p>
+
+          <h3>Gorgias vs Reamaze — the underrated alternative</h3>
+
+          <p>Reamaze sits between Tidio and Gorgias on price ($29-$59/month per agent) and offers comparable Shopify integration depth. Per-agent pricing means Reamaze gets expensive faster than Gorgias as teams grow but is cheaper for small teams handling moderate volume. For a 2-agent store handling 400 tickets/month, Reamaze can be the cost winner. For 5+ agents handling 2,000+ tickets, Gorgias's flat fee structure pulls ahead.</p>
+
+          <h3>Gorgias vs Freshdesk — when budget is hard-capped</h3>
+
+          <p>Freshdesk has a free tier (up to 2 agents, basic features) and paid tiers from $15/agent/month. It lacks Gorgias's Shopify-native order management depth — refunds and order edits require switching to Shopify admin. For stores where the support workflow is "answer questions, occasionally refund", Freshdesk handles it at lower cost. For stores where the support workflow is "answer questions, modify orders, issue partial refunds, apply discount codes, retain customers" — agent productivity in Gorgias usually justifies the cost difference.</p>
+
+          <h3>The decision matrix</h3>
+
+          <table style="width:100%;border-collapse:collapse;font-size:14px;margin:24px 0;">
+            <thead>
+              <tr style="background:var(--bg-3);border-bottom:2px solid var(--border);">
+                <th style="text-align:left;padding:12px 10px;font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.08em;text-transform:uppercase;">Your situation</th>
+                <th style="text-align:left;padding:12px 10px;font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.08em;text-transform:uppercase;">Best fit</th>
+              </tr>
+            </thead>
+            <tbody style="color:var(--text-2);">
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:12px 10px;">Solo, &lt;100 tickets/month, mostly email</td><td style="padding:12px 10px;font-weight:600;">Tidio free or direct Gmail</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:12px 10px;">Small team, &lt;500 tickets, 2 channels</td><td style="padding:12px 10px;font-weight:600;">Tidio paid or Reamaze</td></tr>
+              <tr style="background:rgba(0,200,100,.025);border-bottom:1px solid var(--border);"><td style="padding:12px 10px;">3+ agents, 200-2,000 tickets, Shopify-only, multi-channel</td><td style="padding:12px 10px;font-weight:600;color:var(--g);">Gorgias Basic or Pro</td></tr>
+              <tr style="background:rgba(0,200,100,.025);border-bottom:1px solid var(--border);"><td style="padding:12px 10px;">5+ agents, 2,000+ tickets, deep Shopify ops</td><td style="padding:12px 10px;font-weight:600;color:var(--g);">Gorgias Pro or Advanced</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:12px 10px;">Multi-platform (Shopify + Amazon + B2B)</td><td style="padding:12px 10px;font-weight:600;">Zendesk</td></tr>
+              <tr><td style="padding:12px 10px;">Hard-capped budget, basic Shopify ops</td><td style="padding:12px 10px;font-weight:600;">Freshdesk</td></tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         FAQ
+         ═══════════════════════════════════════════════════════════════════ -->
+    <section class="section" id="faq" aria-labelledby="faq-h" itemscope itemtype="https://schema.org/FAQPage">
+      <div class="inner-sm" style="max-width:860px;margin:0 auto;padding:72px 24px;">
+        <div class="sec-head">
+          <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">FAQ</span>
+          <h2 id="faq-h" style="font-size:clamp(28px,4vw,40px);">Common questions before you commit</h2>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px;margin:32px 0;">
+
+          <details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">
+              <span itemprop="name">Is Gorgias worth it for a Shopify store?</span>
+            </summary>
+            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
+              <p itemprop="text">Gorgias is worth it for Shopify stores doing roughly £40,000/month GMV or more, with 200+ support tickets per month, multi-channel customer queries (email + chat + social), and a team of 3+ agents. Below that volume the ticket-based pricing usually costs more than the time it saves. Stores under 100 tickets per month are typically better served by free or lower-cost alternatives.</p>
+            </div>
+          </details>
+
+          <details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">
+              <span itemprop="name">How much does Gorgias cost in 2026?</span>
+            </summary>
+            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
+              <p itemprop="text">Five tiers in 2026: Starter $10/month (50 tickets, 3 user limit), Basic $60/month (300 tickets, unlimited users), Pro $360/month (2,000 tickets, 600 included AI Agent interactions), Advanced $900/month (5,000 tickets, 2,500 AI interactions), and Enterprise on custom contracts. Annual billing is approximately 16-25% cheaper. AI Agent automation is billed separately at $0.90-$1.00 per resolution. Overage rates are $0.36-$0.40 per ticket on Starter and $36-$40 per 100 tickets on higher plans.</p>
+            </div>
+          </details>
+
+          <details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">
+              <span itemprop="name">Does Gorgias have a free trial?</span>
+            </summary>
+            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
+              <p itemprop="text">Yes — a 7-day free trial with full feature access on your selected plan, no credit card required to start. The 7-day window is intentionally short. Plan accordingly: have your ticket history exported, your top 10 macro requirements drafted, and your Shopify connection details ready before you start. The trial is for evaluation through configuration, not for extended free use.</p>
+            </div>
+          </details>
+
+          <details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">
+              <span itemprop="name">What counts as a billable ticket in Gorgias?</span>
+            </summary>
+            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
+              <p itemprop="text">Any customer conversation your team responds to: email replies, live chat sessions, social media DMs and comments, SMS exchanges, and phone calls (with voice add-ons). Auto-replies and identified spam are filtered out. Critically, replying to a comment under a Facebook or Instagram ad counts as a billable ticket — for stores with high paid social spend this can dominate ticket volume unexpectedly. Reopened tickets within 7 days of original resolution don't generate a new charge; reopens after that window do.</p>
+            </div>
+          </details>
+
+          <details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">
+              <span itemprop="name">What is the difference between Gorgias Helpdesk and AI Agent?</span>
+            </summary>
+            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
+              <p itemprop="text">Gorgias Helpdesk is the core ticketing platform — shared inbox, macros, Shopify integration, routing, and reporting. AI Agent is a separate add-on that fully resolves tickets without human involvement, billed per automated resolution at $0.90-$1.00 each. Higher tiers (Pro and Advanced) include a bundle of AI Agent interactions in the base plan; lower tiers must purchase AI Agent capacity on top. AI Agent works best for high-repetition queries: order status, shipping times, return policies, simple product questions.</p>
+            </div>
+          </details>
+
+          <details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">
+              <span itemprop="name">How long does it take to set up Gorgias for Shopify?</span>
+            </summary>
+            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
+              <p itemprop="text">A serious rollout takes 30 days end-to-end. Initial Shopify connection and basic email/chat setup is 2-4 hours. Building the macro library and automation rules that make Gorgias actually pay back is another 8-12 hours over the first two weeks. Soft-launching with one agent before full team migration adds another week. Stores that try to migrate everyone in week one typically miss productivity gains and end up paying for the platform without capturing the time savings.</p>
+            </div>
+          </details>
+
+          <details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">
+              <span itemprop="name">Can Gorgias replace Zendesk for a Shopify store?</span>
+            </summary>
+            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
+              <p itemprop="text">For ecommerce-focused workflows, yes — Gorgias generally outperforms Zendesk on Shopify-specific tasks: refund processing, order editing, and customer order history are native to Gorgias rather than requiring custom apps. Gorgias's ticket-based pricing also avoids per-agent fees, which Zendesk charges per seat. For stores with non-ecommerce support needs (B2B, enterprise integrations, complex compliance workflows), Zendesk's broader feature set may justify its cost.</p>
+            </div>
+          </details>
+
+          <details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">
+              <span itemprop="name">Should I use Gorgias or Tidio for my Shopify store?</span>
+            </summary>
+            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
+              <p itemprop="text">Use Tidio if your store does under £40,000/month GMV, you handle under 200 tickets per month, you operate primarily through chat and email, and you have a small team or solo operation. Tidio's Lyro AI on the free plan resolves a significant share of repetitive queries automatically. Use Gorgias if your store does £40,000+/month GMV, you handle 200+ tickets per month across multiple channels, your agents regularly modify orders or issue refunds, and your team has 3+ agents who need a structured shared inbox. The two tools target genuinely different stages of business maturity.</p>
+            </div>
+          </details>
+
+          <details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">
+              <span itemprop="name">Can I switch from Gorgias back to a cheaper tool later?</span>
+            </summary>
+            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
+              <p itemprop="text">Yes. Gorgias allows month-to-month cancellation on monthly billing (no refunds on annual plans). Ticket history, macros, and customer data can be exported. The migration friction is real — agents adjust to new tooling, customers may notice changed ticket numbers — but it's not lock-in in any meaningful sense. Annual contracts are the only real commitment, and you should only sign annually after 60-90 days on monthly to validate fit.</p>
+            </div>
+          </details>
+
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         FINAL CTA
+         ═══════════════════════════════════════════════════════════════════ -->
+    <section class="section-alt" aria-label="Decide and start trial">
+      <div class="inner-sm" style="max-width:740px;margin:0 auto;padding:72px 24px;text-align:center;">
+        <span class="tag" style="margin-bottom:20px;display:inline-flex;">Ready to decide</span>
+
+        <h2 style="font-family:var(--sans);font-weight:900;font-size:clamp(28px,5vw,44px);color:var(--text);letter-spacing:-.04em;line-height:1.05;margin-bottom:20px;">
+          Three numbers, then decide.
+        </h2>
+
+        <p style="font-size:17px;color:var(--text-3);max-width:560px;margin:0 auto 32px;line-height:1.65;">
+          200+ tickets, £40k+ GMV, 3+ agents — start the trial. Anything less, save your money for now and stay on a free or lower-cost alternative until the next growth threshold.
+        </p>
+
+        <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-bottom:24px;">
+          <a href="/blog/tidio-vs-gorgias-shopify/" class="btn-outline">
+            Not sure yet? Read the comparison
+          </a>
+          <a href="/go/gorgias" target="_blank" rel="noopener sponsored" class="btn pulse">
+            Start the 7-day Gorgias trial →
+          </a>
+        </div>
+
+        <p style="font-size:13px;color:var(--text-4);max-width:520px;margin:0 auto;line-height:1.55;">
+          No credit card required for the trial. Affiliate disclosure: Stack Architect may earn a commission if you upgrade to a paid plan, at no extra cost to you. We don't recommend Gorgias for stores that don't meet the three thresholds above — see <a href="/blog/tidio-vs-gorgias-shopify/" style="color:var(--text-3);text-decoration:underline;">the Tidio comparison</a> if that's you.
+        </p>
+      </div>
+    </section>
+
+    <!-- Related guides — internal linking for SEO + reader flow -->
+    <section style="padding:48px 24px;background:var(--bg);border-top:1px solid var(--border);" aria-label="Related Shopify support reading">
+      <div style="max-width:740px;margin:0 auto;">
+        <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--text-4);margin-bottom:20px;">// Related reading</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <a href="/blog/tidio-vs-gorgias-shopify/" style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-3);border:1px solid var(--border);border-radius:8px;text-decoration:none;">
+            <span style="font-size:14px;font-weight:600;color:var(--text-2);">Tidio vs Gorgias for Shopify — full comparison</span>
+            <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);flex-shrink:0;margin-left:12px;">→</span>
+          </a>
+          <a href="/blog/tidio-for-shopify-complete-setup-guide/" style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-3);border:1px solid var(--border);border-radius:8px;text-decoration:none;">
+            <span style="font-size:14px;font-weight:600;color:var(--text-2);">Tidio for Shopify — complete setup guide</span>
+            <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);flex-shrink:0;margin-left:12px;">→</span>
+          </a>
+          <a href="/best-ai-tools-shopify/" style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-3);border:1px solid var(--border);border-radius:8px;text-decoration:none;">
+            <span style="font-size:14px;font-weight:600;color:var(--text-2);">Best AI tools for Shopify 2026 — 9 tools ranked</span>
+            <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);flex-shrink:0;margin-left:12px;">→</span>
+          </a>
+          <a href="/shopify-app-cost-calculator/" style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-3);border:1px solid var(--border);border-radius:8px;text-decoration:none;">
+            <span style="font-size:14px;font-weight:600;color:var(--text-2);">Shopify app cost calculator — what are you really paying?</span>
+            <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);flex-shrink:0;margin-left:12px;">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <Footer />
+</Base>
