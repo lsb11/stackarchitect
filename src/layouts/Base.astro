@@ -136,7 +136,6 @@ const personSchema = {
 const allSchemas = [...schemaArray, siteNavSchema, orgSchema, personSchema];
 
 const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
-import AttributionTracker from '../components/AttributionTracker.astro';
 ---
 
 <!DOCTYPE html>
@@ -208,18 +207,114 @@ import AttributionTracker from '../components/AttributionTracker.astro';
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
-    <!-- GA4 — replace G-TE6Z6CW514 with your actual ID -->
+    <!-- GA4 + AttributionTracker — measurement ID G-TE6Z6CW514 -->
     <!-- GA4_PLACEHOLDER_START -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TE6Z6CW514"></script>
-    <script>
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-TE6Z6CW514"></script>
+    <script is:inline>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
+      function gtag(){window.dataLayer.push(arguments);}
+      window.gtag = gtag;
       gtag('js', new Date());
       gtag('config', 'G-TE6Z6CW514');
+
+      // AttributionTracker — inlined directly to bypass Astro module bundling.
+      // Captures landing/UTM, fires affiliate_click + kit_click GA4 events,
+      // sets sa_attr cookie, stamps Stripe URLs with client_reference_id.
+      (function() {
+        'use strict';
+        try {
+          var LANDING_KEY = 'sa_landing';
+          var ATTR_COOKIE = 'sa_attr';
+          var NOW = Date.now();
+
+          if (!sessionStorage.getItem(LANDING_KEY)) {
+            var url = new URL(window.location.href);
+            var refHost = 'direct';
+            try {
+              if (document.referrer) refHost = new URL(document.referrer).hostname;
+            } catch (e) {}
+            sessionStorage.setItem(LANDING_KEY, JSON.stringify({
+              path:       url.pathname,
+              ref:        refHost,
+              utm_source: url.searchParams.get('utm_source')   || '',
+              utm_medium: url.searchParams.get('utm_medium')   || '',
+              utm_camp:   url.searchParams.get('utm_campaign') || '',
+              gclid:      url.searchParams.get('gclid')        || '',
+              fbclid:     url.searchParams.get('fbclid')       || '',
+              ts:         NOW
+            }));
+          }
+
+          function getLanding() {
+            try { return JSON.parse(sessionStorage.getItem(LANDING_KEY) || '{}'); }
+            catch (e) { return {}; }
+          }
+          function setAttrCookie(payload) {
+            var expires = new Date(NOW + 30 * 24 * 60 * 60 * 1000).toUTCString();
+            document.cookie = ATTR_COOKIE + '=' + encodeURIComponent(JSON.stringify(payload)) +
+              '; path=/; expires=' + expires + '; SameSite=Lax; Secure';
+          }
+          function b64url(str) {
+            return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+          }
+
+          document.addEventListener('click', function(e) {
+            var a = e.target.closest('a');
+            if (!a || !a.href) return;
+            var href = a.getAttribute('href') || '';
+            var absHref = a.href;
+
+            var isAffiliate = href.indexOf('/go/') === 0;
+            var isKitPage   = (href === '/pro' || href === '/pro/' || href.indexOf('/pro#') === 0);
+            var isStripe    = absHref.indexOf('buy.stripe.com') > -1;
+
+            if (!isAffiliate && !isKitPage && !isStripe) return;
+
+            var landing = getLanding();
+            var sourcePage = window.location.pathname;
+
+            setAttrCookie({
+              s:   sourcePage,
+              d:   isAffiliate ? href : (isStripe ? 'kit-stripe' : 'kit-page'),
+              l:   landing.path || '',
+              ref: landing.ref  || 'direct',
+              src: landing.utm_source || '',
+              cmp: landing.utm_camp   || '',
+              ts:  NOW
+            });
+
+            if (typeof window.gtag === 'function') {
+              window.gtag('event', isAffiliate ? 'affiliate_click' : 'kit_click', {
+                source_page:  sourcePage,
+                destination:  href,
+                landing_path: landing.path || '',
+                referrer:     landing.ref || 'direct',
+                utm_source:   landing.utm_source || '',
+                utm_campaign: landing.utm_camp || ''
+              });
+            }
+
+            if (isStripe) {
+              try {
+                var stripeUrl = new URL(absHref);
+                var payload = b64url(JSON.stringify({
+                  s:   sourcePage.slice(0, 40),
+                  l:   (landing.path || '').slice(0, 40),
+                  ref: (landing.ref  || '').slice(0, 30),
+                  src: (landing.utm_source || '').slice(0, 20),
+                  cmp: (landing.utm_camp   || '').slice(0, 20),
+                  ts:  NOW
+                }));
+                stripeUrl.searchParams.set('client_reference_id', payload);
+                a.href = stripeUrl.toString();
+              } catch (err) {}
+            }
+          }, true);
+        } catch (err) {}
+      })();
     </script>
     <!-- GA4_PLACEHOLDER_END -->
 
-    
 <style>
 @media(hover:hover){.related-link-item:hover{border-bottom-color:rgba(0,200,100,.2) !important;}}
 @media(max-width:640px){
@@ -228,7 +323,6 @@ import AttributionTracker from '../components/AttributionTracker.astro';
 }
 </style>
     <slot name="head" />
-      <AttributionTracker />
   </head>
   <body class="bg-black text-white font-mono min-h-screen flex flex-col">
     <!-- Named slot so child layouts can position Nav before breadcrumb -->
@@ -261,7 +355,7 @@ import AttributionTracker from '../components/AttributionTracker.astro';
     </div>
   </div>
 </div>
-<script>
+<script is:inline>
 (function(){
   var bar = document.getElementById('sa-sticky');
   if (!bar) return;
