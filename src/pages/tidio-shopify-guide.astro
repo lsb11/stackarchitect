@@ -1,0 +1,666 @@
+---
+// /src/pages/tidio-shopify-guide.astro
+// Tidio Review for Shopify — definitive 2026 buyer's guide
+// Audience: Shopify stores under $50K/month GMV, solo/small team, evaluating Tidio
+// Affiliate: /go/tidio → affiliate.tidio.com/5kfhrx3ot6tf (20-30% recurring)
+// Target keywords: "tidio review", "is tidio worth it", "tidio pricing 2026", "tidio shopify"
+// No cannibalisation with /blog/tidio-vs-gorgias-shopify/ (comparison intent)
+// or /blog/tidio-for-shopify-complete-setup-guide/ (how-to intent)
+
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const pageTitle = 'Tidio Review (2026): Is It Worth It for Shopify? Honest Breakdown';
+const pageDescription = 'Honest 2026 Tidio review for Shopify stores. Real pricing maths (the free plan caps at 50 conversations, paid plans run 2-3x advertised cost), Lyro AI hidden fees, and the three numbers that decide it. Built for stores under $50k/month GMV.';
+const canonicalUrl = 'https://stackarchitect.xyz/tidio-shopify-guide/';
+const datePublished = '2026-05-01';
+const dateModified = '2026-05-01';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': `${canonicalUrl}#webpage`,
+      url: canonicalUrl,
+      name: pageTitle,
+      description: pageDescription,
+      dateModified,
+      inLanguage: 'en-GB',
+      isPartOf: { '@id': 'https://stackarchitect.xyz/#website' },
+      breadcrumb: { '@id': `${canonicalUrl}#breadcrumb` },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://stackarchitect.xyz' },
+        { '@type': 'ListItem', position: 2, name: 'Compare', item: 'https://stackarchitect.xyz/best-free-shopify-apps-2026/' },
+        { '@type': 'ListItem', position: 3, name: 'Tidio Review', item: canonicalUrl },
+      ],
+    },
+    {
+      '@type': 'Article',
+      '@id': `${canonicalUrl}#article`,
+      headline: pageTitle,
+      description: pageDescription,
+      datePublished,
+      dateModified,
+      author: { '@type': 'Person', '@id': 'https://stackarchitect.xyz/#luke', name: 'Luke', url: 'https://stackarchitect.xyz/about/' },
+      publisher: { '@type': 'Organization', '@id': 'https://stackarchitect.xyz/#org', name: 'Stack Architect', url: 'https://stackarchitect.xyz' },
+      inLanguage: 'en-GB',
+      url: canonicalUrl,
+      image: 'https://stackarchitect.xyz/og.png',
+      mainEntityOfPage: { '@id': `${canonicalUrl}#webpage` },
+    },
+    {
+      '@type': 'SoftwareApplication',
+      '@id': `${canonicalUrl}#software`,
+      name: 'Tidio',
+      applicationCategory: 'BusinessApplication',
+      applicationSubCategory: 'Live Chat & Chatbot Software',
+      operatingSystem: 'Web',
+      url: 'https://www.tidio.com',
+      description: 'Live chat, chatbot, and AI customer service platform with strong Shopify integration. Conversation-based pricing rather than per-agent. Includes Lyro AI agent and Flows automation builder.',
+      offers: {
+        '@type': 'AggregateOffer',
+        priceCurrency: 'USD',
+        lowPrice: '0',
+        highPrice: '2999',
+        offerCount: 5,
+      },
+    },
+    {
+      '@type': 'Review',
+      '@id': `${canonicalUrl}#review`,
+      itemReviewed: { '@id': `${canonicalUrl}#software` },
+      author: { '@id': 'https://stackarchitect.xyz/#luke' },
+      datePublished: dateModified,
+      reviewBody: 'Tidio is the right call for Shopify stores doing under $50,000/month GMV, handling under 200 support tickets per month, with a 1-3 person team. The free plan is genuinely useful for stores under 50 monthly conversations. Above that the conversation-based pricing scales unpredictably and Lyro AI is a separate add-on that often doubles the bill. The advertised plan price is rarely what you actually pay.',
+      reviewRating: { '@type': 'Rating', ratingValue: '4', bestRating: '5', worstRating: '1' },
+      publisher: { '@id': 'https://stackarchitect.xyz/#org' },
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${canonicalUrl}#faq`,
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'Is Tidio worth it for a Shopify store?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Tidio is worth it for Shopify stores under $50,000/month GMV with under 200 support conversations per month, operating primarily through live chat and email, with a 1-3 person team. Below 50 conversations/month the free plan handles the workload at zero cost. Above 200 conversations or with a team of 4+ agents, ticket-based platforms like Gorgias usually have better unit economics. The Lyro AI free trial of 50 one-time conversations is also genuinely useful for testing automated resolution before committing to paid AI.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How much does Tidio cost in 2026?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Tidio has five tiers in 2026: Free ($0/month, 50 billable conversations, 10 seats, 50 one-time Lyro AI conversations), Starter ($24.17/month annual or $29/month monthly, 100 conversations, 10 seats), Growth (starts at $49.17/month annual, scales to ~$349/month by conversation volume, 250+ conversations), Plus ($749/month, removes the 10-seat cap), and Premium (from $2,999/month). Lyro AI is billed separately at $32.50-$39/month for 50 conversations and scales by volume. Flows automation is also separately billed starting at $24.17-$29/month per 2,000 reached visitors. Real-world bills typically run 2-3x the advertised plan price once add-ons and conversation overages are included.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Does Tidio have a free plan?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Yes — Tidio\'s free plan is genuinely useful, not a gated demo. It includes 50 billable conversations per month, 10 agent seats (no per-seat limit on the free tier), live chat, ticketing, and 50 one-time Lyro AI conversations as a lifetime trial. There is also a 7-day free trial of all premium features with no credit card required. The free plan reverts after the trial ends. The 50-conversation cap is the main constraint — stores doing more than ~10 chats per week will exhaust it quickly.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'What counts as a billable conversation in Tidio?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Tidio defines a billable conversation as any chat, ticket, email, or social thread where a human agent replies at least once. If a customer messages you and no human responds, it is not billed. Lyro AI replies and Flows do not count as human replies. Each new chat session is a separate billable conversation, including returning customers. Quotas refresh every 30 days from your billing date and unused capacity does not roll over.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How does Lyro AI pricing work in Tidio?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Lyro AI is a separate add-on billed independently of the base Tidio plan. Every Tidio account gets 50 one-time Lyro AI conversations as a lifetime free trial. Beyond that, paid Lyro starts at $32.50-$39 per month for 50 AI conversations and scales by volume up to ~$289/month for higher tiers. Lyro can also run independently without a paid Tidio plan, with usage starting at approximately $0.58 per AI conversation. Lyro replies do not count toward the base plan billable conversation limit.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Should I use Tidio or Gorgias for my Shopify store?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Use Tidio if your store is under $50,000/month GMV, you handle under 200 conversations per month, you have a 1-3 person team, and you operate primarily through chat and email. Tidio\'s free plan and Lyro AI trial cover small stores at zero cost. Use Gorgias if your store is doing $50,000+/month GMV, handling 200+ tickets across multiple channels (email, chat, social DMs, SMS, voice), with a team of 3+ agents who regularly modify orders or issue refunds. The two tools target genuinely different stages of business maturity. Stores typically grow into Gorgias from Tidio, not the other way around.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Why did Tidio double prices in December 2024?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'In December 2024 Tidio implemented a major pricing change that effectively doubled bills for many existing customers (documented cases of $32 jumping to $64 per month) without adequate advance notice. Reports from G2 and Capterra describe automatic credit card charges before customers could react. This is widely cited in 2026 reviews as a "bait and switch" event and is the single biggest credibility issue with Tidio. If you commit to Tidio, monitor announcements closely and avoid annual contracts until 60-90 days of monthly billing has validated fit.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Can I remove the "Powered by Tidio" branding?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Branding removal is not included on the Free or Starter plans. On the Growth plan, removing "Powered by Tidio" costs approximately $20/month as an add-on. It is included by default on Plus and higher plans. For a polished customer-facing brand experience this is a non-trivial extra cost — budget for it on Growth or factor it into the upgrade decision to Plus.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How long does it take to set up Tidio for Shopify?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Basic Tidio setup for a Shopify store takes 30-60 minutes — install the Shopify app, configure the chat widget appearance, set up basic operating hours, and import a few starter macros. Adding Lyro AI takes another 1-2 hours to upload your knowledge base content. Setting up Flows for lead capture or product recommendations takes 2-4 hours per flow. Most stores can be live with chat in under an hour and fully optimised with AI and flows inside a week.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'What are the best Tidio alternatives for Shopify?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'For stores larger than Tidio\'s sweet spot (over 200 conversations/month, 4+ agents, multi-channel): Gorgias is the natural step up with deeper Shopify integration. For per-seat pricing models with simpler structure: Reamaze ($29-59/agent/month). For budget-capped stores with basic Shopify needs: Freshdesk has a free tier and paid plans from $15/agent/month. For solo founders who only need chat: free plans on Crisp or Chatra cover the basics. The right alternative depends on which Tidio limit is hurting you — conversation cap, AI add-on cost, the 10-seat ceiling, or the December 2024 pricing trust issue.',
+          },
+        },
+      ],
+    },
+  ],
+};
+---
+
+<Base
+  title={pageTitle}
+  description={pageDescription}
+  canonical={canonicalUrl}
+  ogImage="https://stackarchitect.xyz/og.png"
+  pageType="article"
+  publishDate={datePublished}
+  updatedDate={dateModified}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+  <Nav />
+
+  <!-- Inline body styles — paragraph spacing, lists, headings (consistent with Gorgias page after font-sans switch) -->
+  <style>
+    .body-text p { margin: 0 0 18px 0; line-height: 1.7; font-size: 16px; color: var(--text-2); }
+    .body-text h3 { margin: 36px 0 16px 0; font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -.01em; }
+    .body-text ul { margin: 0 0 24px 0; padding-left: 0; list-style: none; }
+    .body-text ul li { padding: 10px 0 10px 24px; position: relative; line-height: 1.65; color: var(--text-2); border-bottom: 1px solid rgba(255,255,255,.04); }
+    .body-text ul li:before { content: "→"; position: absolute; left: 0; color: var(--g); font-family: var(--mono); }
+    .body-text ul li:last-child { border-bottom: none; }
+    .body-text ul li strong { color: var(--text); }
+    .sec-head h2 { margin-bottom: 12px; font-weight: 800; letter-spacing: -.02em; }
+    .sec-head p { margin-top: 0; }
+  </style>
+
+  <!-- Breadcrumb -->
+  <nav aria-label="Breadcrumb" style="background:var(--bg-2);border-bottom:1px solid var(--border);padding:10px 24px;">
+    <div style="max-width:860px;margin:0 auto;">
+      <ol style="display:flex;align-items:center;gap:8px;list-style:none;font-family:var(--mono);font-size:10px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">
+        <li><a href="/" style="color:var(--text-4);text-decoration:none;">Home</a></li>
+        <li style="opacity:.4;">/</li>
+        <li><a href="/best-free-shopify-apps-2026/" style="color:var(--text-4);text-decoration:none;">Compare</a></li>
+        <li style="opacity:.4;">/</li>
+        <li><span style="color:var(--g);">Tidio Review</span></li>
+      </ol>
+    </div>
+  </nav>
+
+  <main id="main-content">
+
+    <!-- HERO -->
+    <section class="hero bg-grid" aria-label="Tidio review for Shopify stores: honest 2026 buyer's guide">
+      <div class="hero-inner" style="max-width:860px;margin:0 auto;padding:64px 24px;">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;opacity:.6;">
+          Updated May 2026 · 12 min read · Shopify customer support
+        </div>
+
+        <!-- 5-second qualifier -->
+        <div style="background:rgba(0,200,100,.04);border-left:3px solid var(--g);padding:12px 16px;margin-bottom:24px;font-size:13px;color:var(--text-3);line-height:1.55;">
+          <strong style="color:var(--text-2);">Is this page for you?</strong> Yes if your Shopify store does under $50k/month GMV with a 1-3 person team. If you're bigger than that, save 12 minutes — <a href="/gorgias-shopify-guide/" style="color:var(--g);text-decoration:underline;">read the Gorgias review instead</a>.
+        </div>
+
+        <h1 style="font-family:var(--sans);font-weight:900;font-size:clamp(32px,5.5vw,56px);color:var(--text);letter-spacing:-.04em;line-height:1;margin-bottom:24px;">
+          Tidio Review (2026):<br>
+          <span style="color:var(--g);">When the Free Plan is Enough</span><br>
+          <span style="color:var(--text-3);">(and When It Isn't)</span>
+        </h1>
+
+        <p style="font-size:19px;color:var(--text-2);line-height:1.65;margin-bottom:32px;max-width:720px;">
+          Most Tidio reviews online are either thinly-disguised Tidio adverts ("4.7 stars, 300,000 happy customers!") or competitor takedowns trying to sell you something else. This isn't either. It's a clear answer to a specific question: <strong>does your Shopify store actually need to upgrade to a paid Tidio plan, or can you stay on free for another six months?</strong> Three numbers decide it. Most of this page is about those three numbers — plus the hidden costs that turn the advertised $29/month into a $150/month bill.
+        </p>
+
+        <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:12px;padding:24px;margin:32px 0;">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;">// the short answer</div>
+          <p style="font-size:16px;color:var(--text-2);line-height:1.6;margin:0;">
+            Tidio's <strong>free plan is genuinely useful</strong> for stores under 50 monthly conversations. The <strong>Starter plan ($24.17/month annual)</strong> is the sweet spot for stores doing 50-100 monthly conversations who need branded chat and basic flows. Above 200 conversations/month or with a team of 4+, ticket-based platforms like <a href="/gorgias-shopify-guide/" style="color:var(--g);">Gorgias</a> usually win on unit economics. The maths is below — including the Lyro AI add-on that doubles your bill.
+          </p>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:14px;">
+          <a href="#right-fit" class="btn-outline" onclick="event.preventDefault();document.getElementById('right-fit').scrollIntoView({behavior:'smooth'})">
+            See if Tidio fits your store
+          </a>
+          <a href="/go/tidio" target="_blank" rel="noopener sponsored" class="btn pulse">
+            Try Tidio free →
+          </a>
+        </div>
+
+        <p style="font-size:13px;color:var(--text-4);margin-top:16px;line-height:1.5;">
+          Free plan, no credit card required. 7-day premium trial included. Affiliate link — Stack Architect may earn a commission if you upgrade to a paid plan, at no cost to you. We don't recommend Tidio paid plans for stores doing 200+ conversations/month — see the <a href="/gorgias-shopify-guide/" style="color:var(--text-3);text-decoration:underline;">Gorgias review</a> instead.
+        </p>
+      </div>
+    </section>
+
+    <!-- TABLE OF CONTENTS -->
+    <section style="background:var(--bg-2);border-bottom:1px solid var(--border);padding:24px;">
+      <div style="max-width:860px;margin:0 auto;">
+        <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--text-4);margin-bottom:12px;">// Contents</div>
+        <ul style="display:flex;flex-wrap:wrap;gap:8px 20px;list-style:none;padding:0;margin:0;font-size:13px;">
+          <li><a href="#right-fit" style="color:var(--text-3);text-decoration:none;border-bottom:1px dotted var(--border);">1. Three numbers that decide it</a></li>
+          <li><a href="#pricing" style="color:var(--text-3);text-decoration:none;border-bottom:1px dotted var(--border);">2. 2026 pricing breakdown</a></li>
+          <li><a href="#hidden-costs" style="color:var(--text-3);text-decoration:none;border-bottom:1px dotted var(--border);">3. Hidden costs</a></li>
+          <li><a href="#trust" style="color:var(--text-3);text-decoration:none;border-bottom:1px dotted var(--border);">4. The Dec 2024 pricing event</a></li>
+          <li><a href="#alternatives" style="color:var(--text-3);text-decoration:none;border-bottom:1px dotted var(--border);">5. Alternatives</a></li>
+          <li><a href="#faq" style="color:var(--text-3);text-decoration:none;border-bottom:1px dotted var(--border);">6. FAQ</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- RIGHT-FIT CHECK -->
+    <section class="section" id="right-fit" aria-labelledby="fit-h">
+      <div class="inner-sm" style="max-width:860px;margin:0 auto;padding:72px 24px;">
+        <div class="sec-head">
+          <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Right-fit check</span>
+          <h2 id="fit-h" style="font-size:clamp(28px,4vw,40px);">The three numbers that decide it</h2>
+          <p style="font-size:17px;color:var(--text-3);max-width:640px;">Tidio is conversation-based, not seat-based. Whether free, Starter, or Growth is right depends almost entirely on these three figures. Calculate them honestly before you upgrade.</p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin:40px 0;">
+          <div style="background:var(--bg-3);border:1.5px solid var(--border);border-radius:12px;padding:28px 24px;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--g);letter-spacing:.1em;margin-bottom:10px;">// NUMBER 1</div>
+            <div style="font-size:32px;font-weight:900;color:var(--text);margin-bottom:8px;">50 / 100 / 250</div>
+            <div style="font-size:14px;color:var(--text-2);line-height:1.55;">Monthly billable conversations. Free covers 50. Starter covers 100. Growth starts at 250 and scales. Above 250 you're paying for a tier you may grow out of fast — model 6-month volume before committing.</div>
+          </div>
+
+          <div style="background:var(--bg-3);border:1.5px solid var(--border);border-radius:12px;padding:28px 24px;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--sky);letter-spacing:.1em;margin-bottom:10px;">// NUMBER 2</div>
+            <div style="font-size:32px;font-weight:900;color:var(--text);margin-bottom:8px;">$50k</div>
+            <div style="font-size:14px;color:var(--text-2);line-height:1.55;">Monthly GMV. Below $50k, the $24-49 plan price is meaningful relative to margin. Above $50k, your support volume usually outgrows Tidio's tier structure within 3-6 months and ticket-based platforms compete.</div>
+          </div>
+
+          <div style="background:var(--bg-3);border:1.5px solid var(--border);border-radius:12px;padding:28px 24px;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--vio);letter-spacing:.1em;margin-bottom:10px;">// NUMBER 3</div>
+            <div style="font-size:32px;font-weight:900;color:var(--text);margin-bottom:8px;">10 max</div>
+            <div style="font-size:14px;color:var(--text-2);line-height:1.55;">Agent seats. Every self-service plan caps at 10 agents — the 11th seat requires the $749/month Plus tier. If your team is approaching 10 agents, plan the upgrade or switch path now, not after you hit the wall.</div>
+          </div>
+        </div>
+
+        <div class="body-text" style="max-width:740px;">
+          <h3>The honest "stay on free" cases</h3>
+
+          <p>Tidio's free plan is genuinely usable. If any of these describe your store, don't upgrade yet:</p>
+
+          <ul>
+            <li><strong>Under 50 conversations/month.</strong> The free plan covers it. Upgrading buys capacity you don't use. Re-evaluate when you consistently hit 40+ conversations for two months running.</li>
+            <li><strong>Solo or 2-person team.</strong> All plan tiers (including free) include 10 seats — paying for Starter or Growth doesn't give you more agents, only more conversations and features.</li>
+            <li><strong>Just testing live chat.</strong> Free + the 50 one-time Lyro AI conversations gives you a real evaluation of whether AI chat resolves enough queries to justify paying for it. Most stores find Lyro handles 60-85% of routine inquiries — but verify on your traffic before paying the $32.50+/month add-on.</li>
+            <li><strong>Branding doesn't matter yet.</strong> "Powered by Tidio" appears on free and Starter plans. Stores in early validation usually don't care. Stores selling premium products care a lot — and that's a $20/month add-on or a Plus upgrade away.</li>
+          </ul>
+
+          <h3>The honest "upgrade to Starter" cases</h3>
+
+          <p>Starter ($24.17/month annual, $29/month monthly) makes sense when:</p>
+
+          <ul>
+            <li><strong>50-100 conversations/month consistently.</strong> Free won't cover it. Starter will. Don't jump straight to Growth — most stores at this volume don't need its analytics or permissions.</li>
+            <li><strong>You need basic analytics.</strong> Free has no visit tracking. Starter adds a live visitors list, basic analytics, and operating hours — useful for understanding when your support actually needs to be staffed.</li>
+            <li><strong>Email + chat unification matters.</strong> Starter adds proper email management. If you're juggling Gmail and live chat in separate places, Starter resolves that.</li>
+          </ul>
+
+          <h3>The "stop and consider Gorgias instead" cases</h3>
+
+          <p>If any of these describe your store, Tidio paid plans are probably the wrong long-term choice:</p>
+
+          <ul>
+            <li><strong>200+ conversations/month and growing.</strong> Tidio's Growth plan starts at $49.17 for 250 conversations but tier-jumps fast — by 1,000/month you're often at $180+/month before AI. Gorgias's Pro plan ($300/month, 2,000 tickets included) frequently has better unit economics at this volume.</li>
+            <li><strong>Multi-channel: chat + email + Instagram + Facebook + SMS.</strong> Tidio handles chat well but social DMs and SMS aren't its strength. Gorgias was built for unified multi-channel ecommerce support.</li>
+            <li><strong>Approaching 10 agents.</strong> The 11th seat triggers a $749/month Plus plan jump. Per-agent platforms like Reamaze or per-ticket platforms like Gorgias scale more predictably.</li>
+            <li><strong>Order-modifying support is core.</strong> If your agents regularly issue refunds, edit orders, or apply discount codes, Gorgias's native Shopify integration saves real time vs Tidio's tab-switching.</li>
+          </ul>
+
+          <div class="callout info" style="background:rgba(0,200,100,.025);border:1px solid rgba(0,200,100,.22);border-radius:8px;padding:20px;margin:32px 0;">
+            <div class="callout-label" style="font-family:var(--mono);font-size:11px;color:var(--g);letter-spacing:.1em;margin-bottom:8px;">// THE GROWTH PATH</div>
+            <p style="margin:0;font-size:15px;color:var(--text-2);line-height:1.6;">The realistic Tidio progression for a Shopify store: <strong>Free</strong> for first 6-12 months → <strong>Starter</strong> when conversations consistently exceed 50/month → <strong>Growth</strong> only if you genuinely need its analytics and the 250+ conversation tier matches your volume → <strong>migrate to Gorgias</strong> when you hit any of (200+ tickets/month, 4+ agents, multi-channel needs). Skipping straight from free to Growth is the most common overspend; the Starter plan is right for most stores.</p>
+          </div>
+        </div>
+
+        <!-- Mid-page CTA — high-intent moment after right-fit check -->
+        <div style="background:linear-gradient(135deg, rgba(0,200,100,.08), rgba(0,200,100,.02));border:1px solid rgba(0,200,100,.3);border-radius:12px;padding:24px;margin:32px 0;text-align:center;">
+          <p style="margin:0 0 14px 0;font-size:15px;color:var(--text-2);line-height:1.55;">If your store fits the Tidio sweet spot, the free plan is the right starting point. No card required.</p>
+          <a href="/go/tidio" target="_blank" rel="noopener sponsored" class="btn pulse" style="display:inline-block;">Try Tidio free →</a>
+          <p style="margin:10px 0 0 0;font-size:12px;color:var(--text-4);">7-day premium trial included. Reverts to free plan after.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- PRICING -->
+    <section class="section-alt" id="pricing" aria-labelledby="pricing-h">
+      <div class="inner-sm" style="max-width:860px;margin:0 auto;padding:72px 24px;">
+        <div class="sec-head">
+          <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Pricing</span>
+          <h2 id="pricing-h" style="font-size:clamp(28px,4vw,40px);">Tidio pricing in 2026 — what each plan actually costs</h2>
+          <p style="font-size:17px;color:var(--text-3);max-width:640px;">Five tiers. Conversation-based. The advertised price is rarely what you pay — Lyro AI and Flows are separately billed and most stores end up at 2-3x the headline cost.</p>
+        </div>
+
+        <div style="overflow-x:auto;margin:32px 0;">
+          <table style="width:100%;border-collapse:collapse;font-size:14px;">
+            <thead>
+              <tr style="background:var(--bg-3);border-bottom:2px solid var(--border);">
+                <th style="text-align:left;padding:14px 12px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">Plan</th>
+                <th style="text-align:left;padding:14px 12px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">Monthly (annual)</th>
+                <th style="text-align:left;padding:14px 12px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">Conversations</th>
+                <th style="text-align:left;padding:14px 12px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">Seats</th>
+                <th style="text-align:left;padding:14px 12px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">Lyro AI bundle</th>
+              </tr>
+            </thead>
+            <tbody style="color:var(--text-2);">
+              <tr style="background:rgba(0,200,100,.025);border-bottom:1px solid var(--border);"><td style="padding:14px 12px;font-weight:600;">Free <span style="font-family:var(--mono);font-size:10px;color:var(--g);">// recommended start</span></td><td style="padding:14px 12px;">$0</td><td style="padding:14px 12px;">50/mo</td><td style="padding:14px 12px;">10</td><td style="padding:14px 12px;">50 (one-time)</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:14px 12px;font-weight:600;">Starter</td><td style="padding:14px 12px;">$24.17 ($29/mo if monthly)</td><td style="padding:14px 12px;">100/mo</td><td style="padding:14px 12px;">10</td><td style="padding:14px 12px;">50 (one-time)</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:14px 12px;font-weight:600;">Growth</td><td style="padding:14px 12px;">$49.17 ($59/mo if monthly)</td><td style="padding:14px 12px;">250+ (scales)</td><td style="padding:14px 12px;">10</td><td style="padding:14px 12px;">Add-on only</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:14px 12px;font-weight:600;">Plus</td><td style="padding:14px 12px;">$749</td><td style="padding:14px 12px;">Custom</td><td style="padding:14px 12px;">Custom</td><td style="padding:14px 12px;">Custom</td></tr>
+              <tr><td style="padding:14px 12px;font-weight:600;">Premium</td><td style="padding:14px 12px;">$2,999+</td><td style="padding:14px 12px;">Unlimited</td><td style="padding:14px 12px;">Custom</td><td style="padding:14px 12px;">Custom</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p style="font-size:13px;color:var(--text-4);margin-bottom:24px;">All prices USD. Annual billing prices shown with monthly equivalent. Lyro AI starts at $32.50/month (50 conversations) and scales to ~$289/month. Flows automation starts at $24.17/month (2,000 reached visitors). Conversation overages trigger automatic tier upgrades at 95% usage unless disabled.</p>
+
+        <!-- After-table affiliate CTA -->
+        <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:20px 0 32px 0;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;">
+          <div style="flex:1;min-width:240px;">
+            <p style="margin:0;font-size:14px;color:var(--text-2);line-height:1.5;"><strong style="color:var(--text);">Want to test the free plan?</strong> Sign up takes 2 minutes — Shopify integration installs straight from the app store.</p>
+          </div>
+          <a href="/go/tidio" target="_blank" rel="noopener sponsored" class="btn" style="white-space:nowrap;">Try Tidio free →</a>
+        </div>
+
+        <div class="body-text" style="max-width:740px;" id="hidden-costs">
+          <h3>The hidden costs nobody mentions</h3>
+
+          <p>The plan price is the floor, not the typical bill. Stores running Tidio paid usually pay 2-3x the advertised price. Where the extra goes:</p>
+
+          <p><strong>1. Lyro AI is a separate bill — and it scales fast.</strong> The advertised $24-59/month plans don't include AI. Lyro starts at $32.50-$39 per month for 50 AI conversations and scales by volume up to ~$289/month. Lyro can also run independently of a paid plan at approximately $0.58 per conversation. A typical mid-sized Shopify store using AI ends up with $100+/month just on Lyro before adding the base plan.</p>
+
+          <p><strong>2. Flows are also separately billed.</strong> Tidio's chatbot Flows builder is a separate add-on at $24.17-$29/month for 2,000 reached visitors per month. Pricing is per visitor *reached* by the flow — even if they don't engage. High-traffic stores with prominent flow placement can blow through this allowance fast.</p>
+
+          <p><strong>3. Branding removal is paid.</strong> "Powered by Tidio" appears on Free, Starter, and (without add-on) Growth plans. Removal costs $20/month on Growth, included on Plus and above. For a polished customer-facing brand this is a meaningful extra.</p>
+
+          <p><strong>4. Auto-upgrade at 95% conversation usage.</strong> Unless you disable it, Tidio automatically upgrades your plan when you hit 95% of your conversation quota — and you pay the full higher tier for that month with no proration. If you hit your cap on day 1 of the billing cycle, you pay the full Growth or Plus rate that month. Set internal alerts at 60-70% and disable auto-upgrade if you want manual control.</p>
+
+          <p><strong>5. The Plus tier cliff.</strong> Going from Growth ($49-349/month) to Plus ($749/month) is a brutal jump. The trigger is usually the 11th seat, but it can also be conversation volume above ~5,000/month or features locked behind Plus. There's no smooth scaling between Growth and Plus — it's a $400-700/month vertical cliff.</p>
+
+          <h3>What you actually pay — three real-world examples</h3>
+
+          <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:24px;margin:24px 0;">
+            <p style="margin:0 0 8px 0;font-family:var(--mono);font-size:11px;color:var(--g);letter-spacing:.1em;">// EXAMPLE A — solo apparel founder, $15k/month GMV</p>
+            <p style="margin:0 0 12px 0;font-size:14px;color:var(--text-2);line-height:1.6;">35 conversations/month, just testing chat. <strong>Plan: Free ($0).</strong> Within free conversation limit, uses one-time Lyro AI trial. <strong>Real monthly cost: $0.</strong> Reassesses in 6 months when GMV passes $30k.</p>
+          </div>
+
+          <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:24px;margin:24px 0;">
+            <p style="margin:0 0 8px 0;font-family:var(--mono);font-size:11px;color:var(--sky);letter-spacing:.1em;">// EXAMPLE B — small jewellery brand, $35k/month GMV</p>
+            <p style="margin:0 0 12px 0;font-size:14px;color:var(--text-2);line-height:1.6;">85 conversations/month, 2-person team, branded chat needed. <strong>Plan: Starter ($24.17/month annual).</strong> Branding removal not yet priority. No paid Lyro yet. <strong>Real monthly cost: ~$24.</strong></p>
+          </div>
+
+          <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:24px;margin:24px 0;">
+            <p style="margin:0 0 8px 0;font-family:var(--mono);font-size:11px;color:var(--vio);letter-spacing:.1em;">// EXAMPLE C — DTC supplements, $80k/month GMV</p>
+            <p style="margin:0 0 12px 0;font-size:14px;color:var(--text-2);line-height:1.6;">350 conversations/month, 4-person team, Lyro AI active for FAQ deflection, Flows for cart recovery, branding removed. <strong>Plan: Growth ($59/month monthly) + Lyro ($75/month for ~150 AI conversations) + Flows ($29/month) + branding removal ($20/month).</strong> <strong>Real monthly cost: ~$183.</strong> At this volume, Gorgias Basic ($60/month + ~$50 in overages) starts to compete on price with deeper Shopify integration.</p>
+          </div>
+
+          <p>The pattern: the advertised price covers maybe 40-50% of what the bill actually becomes. Lyro and Flows together can equal or exceed the base plan. Plan accordingly — and re-evaluate against Gorgias once you cross 200 conversations/month.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- DECEMBER 2024 TRUST EVENT — distinctive section, AI citation magnet -->
+    <section class="section" id="trust" aria-labelledby="trust-h">
+      <div class="inner-sm" style="max-width:860px;margin:0 auto;padding:72px 24px;">
+        <div class="sec-head">
+          <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Trust note</span>
+          <h2 id="trust-h" style="font-size:clamp(28px,4vw,40px);">The December 2024 pricing event — what happened</h2>
+          <p style="font-size:17px;color:var(--text-3);max-width:640px;">No honest Tidio review can skip this. It's the single biggest reason cited in negative G2 and Capterra reviews through 2026 and it materially affects the trust calculation for new buyers.</p>
+        </div>
+
+        <div class="body-text" style="max-width:740px;">
+          <p>In December 2024, Tidio implemented a major pricing restructure that effectively doubled monthly bills for many existing customers. Documented cases on G2 and Capterra describe customers seeing their charges jump from approximately $32/month to $64/month, with reports of automatic credit card charges processing before customers had time to review or cancel.</p>
+
+          <p>The change was widely characterised as a "bait and switch" in user reviews — customers had committed to a pricing model that was changed unilaterally. Trustpilot and Reddit threads from late 2024 and early 2025 are full of churned-customer accounts. The trust impact persists into 2026 reviews.</p>
+
+          <p><strong>What this means for new buyers in 2026:</strong></p>
+
+          <ul>
+            <li><strong>Don't sign annual contracts immediately.</strong> Stay on monthly billing for 60-90 days minimum to validate the platform and watch for any pricing announcements. The annual discount (~17-20%) isn't worth the lock-in until you've confirmed Tidio fits your store.</li>
+            <li><strong>Monitor announcement channels.</strong> Tidio's pricing page, in-product announcements, and your account email — check periodically. The 2024 event hit hardest among customers who weren't paying close attention.</li>
+            <li><strong>Have a migration plan ready.</strong> Know which alternative you'd switch to if pricing changes again. Gorgias for larger stores. Reamaze for per-agent simplicity. Crisp or Chatra for solo founders.</li>
+            <li><strong>Free plan users are unaffected.</strong> If you're on the free tier, this doesn't apply to you — you're not paying anything to be doubled.</li>
+          </ul>
+
+          <p>None of this means Tidio is a bad product — Lyro AI genuinely works, the Shopify integration is clean, and the conversation-based pricing model is rational for the right size store. But the trust event is real and ongoing, and any honest review has to flag it.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ALTERNATIVES -->
+    <section class="section-alt" id="alternatives" aria-labelledby="vs-h">
+      <div class="inner-sm" style="max-width:860px;margin:0 auto;padding:72px 24px;">
+        <div class="sec-head">
+          <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Alternatives</span>
+          <h2 id="vs-h" style="font-size:clamp(28px,4vw,40px);">Where Tidio wins, where it loses</h2>
+          <p style="font-size:17px;color:var(--text-3);max-width:640px;">Tidio is excellent for a specific Shopify store profile. These are the cases where alternatives win.</p>
+        </div>
+
+        <div class="body-text" style="max-width:740px;">
+
+          <h3>Tidio vs Gorgias — different stages, not different qualities</h3>
+
+          <p>Tidio is built for small-to-medium Shopify stores managing chat and email. Gorgias is built for larger ecommerce stores managing multi-channel high-volume support. Stores grow into Gorgias from Tidio, not the other way around. <a href="/blog/tidio-vs-gorgias-shopify/">The full comparison covers the trigger points.</a></p>
+
+          <p><strong>Use Tidio when:</strong> &lt;$50k/month GMV, &lt;200 conversations/month, chat + email primary, 1-3 agents. <strong>Use Gorgias when:</strong> the opposite — see <a href="/gorgias-shopify-guide/">the Gorgias review</a>.</p>
+
+          <h3>Tidio vs Reamaze — per-agent vs per-conversation</h3>
+
+          <p>Reamaze charges $29-59 per agent per month with strong Shopify integration. For solo founders or 2-agent teams handling moderate conversation volume, Reamaze can be cheaper than Tidio Growth + Lyro + Flows. As teams grow past 4-5 agents, per-agent pricing gets expensive faster than Tidio's conversation-based model.</p>
+
+          <h3>Tidio vs Crisp — when you need a clean free plan</h3>
+
+          <p>Crisp's free plan is strong for chat alone (unlimited conversations on the free tier, 2 agents) but lacks Tidio's Shopify-native integration. For solo founders who want chat-only without paying anything, Crisp is genuinely better than Tidio's free plan. Once you need ticketing, multi-channel, or AI, Tidio pulls ahead.</p>
+
+          <h3>Tidio vs Chatra — solo founder simplicity</h3>
+
+          <p>Chatra has a permanent free plan with 1 agent and a single chat widget. For a one-person Shopify store that just wants a chat widget, Chatra is simpler than Tidio. Tidio wins as soon as you need email integration, social channels, or any automation.</p>
+
+          <h3>The decision matrix</h3>
+
+          <table style="width:100%;border-collapse:collapse;font-size:14px;margin:24px 0;">
+            <thead>
+              <tr style="background:var(--bg-3);border-bottom:2px solid var(--border);">
+                <th style="text-align:left;padding:12px 10px;font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.08em;text-transform:uppercase;">Your situation</th>
+                <th style="text-align:left;padding:12px 10px;font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.08em;text-transform:uppercase;">Best fit</th>
+              </tr>
+            </thead>
+            <tbody style="color:var(--text-2);">
+              <tr style="background:rgba(0,200,100,.025);border-bottom:1px solid var(--border);"><td style="padding:12px 10px;">Solo founder, &lt;50 conversations/month, testing</td><td style="padding:12px 10px;font-weight:600;color:var(--g);">Tidio Free</td></tr>
+              <tr style="background:rgba(0,200,100,.025);border-bottom:1px solid var(--border);"><td style="padding:12px 10px;">Small team, 50-100 conversations, branded chat needed</td><td style="padding:12px 10px;font-weight:600;color:var(--g);">Tidio Starter</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:12px 10px;">Growing team, 100-250 conversations, AI for FAQ deflection</td><td style="padding:12px 10px;font-weight:600;">Tidio Growth + Lyro</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:12px 10px;">200+ conversations/month, multi-channel, 4+ agents</td><td style="padding:12px 10px;font-weight:600;"><a href="/gorgias-shopify-guide/" style="color:var(--text-2);">Gorgias</a></td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:12px 10px;">Solo founder, chat-only, free forever</td><td style="padding:12px 10px;font-weight:600;">Crisp or Chatra free</td></tr>
+              <tr><td style="padding:12px 10px;">2-3 agent team, per-seat preference</td><td style="padding:12px 10px;font-weight:600;">Reamaze</td></tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- FAQ -->
+    <section class="section" id="faq" aria-labelledby="faq-h">
+      <div class="inner-sm" style="max-width:860px;margin:0 auto;padding:72px 24px;">
+        <div class="sec-head">
+          <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">FAQ</span>
+          <h2 id="faq-h" style="font-size:clamp(28px,4vw,40px);">Common questions before you commit</h2>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px;margin:32px 0;">
+
+          <details style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">Is Tidio worth it for a Shopify store?</summary>
+            <div style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
+              <p>Tidio is worth it for Shopify stores under $50,000/month GMV with under 200 support conversations per month, operating primarily through live chat and email, with a 1-3 person team. Below 50 conversations/month the free plan handles the workload at zero cost. Above 200 conversations or with a team of 4+ agents, ticket-based platforms like Gorgias usually have better unit economics.</p>
+            </div>
+          </details>
+
+          <details style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">How much does Tidio cost in 2026?</summary>
+            <div style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
+              <p>Five tiers: Free ($0/month, 50 conversations, 10 seats, 50 one-time Lyro), Starter ($24.17/month annual or $29 monthly, 100 conversations), Growth ($49.17/month annual scaling to ~$349 by volume, 250+ conversations), Plus ($749/month, removes the 10-seat cap), Premium ($2,999+/month). Lyro AI is separately billed at $32.50-$39/month and scales by volume. Flows are separately billed at $24.17-$29/month per 2,000 reached visitors. Real bills typically 2-3x the advertised plan price.</p>
+            </div>
+          </details>
+
+          <details style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">Does Tidio have a free plan?</summary>
+            <div style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
+              <p>Yes — Tidio's free plan is genuinely useful, not a gated demo. 50 billable conversations/month, 10 agent seats, live chat, ticketing, and 50 one-time Lyro AI conversations as a lifetime trial. There is also a 7-day free trial of all premium features with no credit card. The free plan reverts after the trial ends. The 50-conversation cap is the main constraint.</p>
+            </div>
+          </details>
+
+          <details style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">What counts as a billable conversation in Tidio?</summary>
+            <div style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
+              <p>Any chat, ticket, email, or social thread where a human agent replies at least once. If a customer messages and no human responds, it's not billed. Lyro AI replies and Flows do not count as human replies. Each new chat session is a separate billable conversation, including returning customers. Quotas refresh every 30 days from your billing date and unused capacity does not roll over.</p>
+            </div>
+          </details>
+
+          <details style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">How does Lyro AI pricing work in Tidio?</summary>
+            <div style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
+              <p>Lyro AI is a separate add-on billed independently. Every account gets 50 one-time Lyro conversations as a lifetime trial. Beyond that, paid Lyro starts at $32.50-$39/month for 50 AI conversations and scales to ~$289/month for higher tiers. Lyro can run independently without a paid Tidio plan at approximately $0.58 per AI conversation. Lyro replies don't count toward the base plan's billable conversation limit.</p>
+            </div>
+          </details>
+
+          <details style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">Should I use Tidio or Gorgias for my Shopify store?</summary>
+            <div style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
+              <p>Use Tidio if your store is under $50,000/month GMV, you handle under 200 conversations per month, you have a 1-3 person team, and you operate primarily through chat and email. Use Gorgias if your store is doing $50,000+/month GMV, handling 200+ tickets across multiple channels, with a team of 3+ agents. Stores typically grow into Gorgias from Tidio, not the other way around. <a href="/blog/tidio-vs-gorgias-shopify/" style="color:var(--g);">Full comparison here.</a></p>
+            </div>
+          </details>
+
+          <details style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">Why did Tidio double prices in December 2024?</summary>
+            <div style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
+              <p>In December 2024, Tidio implemented a major pricing change that effectively doubled bills for many existing customers (cases of $32 jumping to $64/month) without adequate advance notice. Reports describe automatic credit card charges before customers could react. This is the single biggest credibility issue with Tidio in 2026 reviews. Mitigation: stay on monthly billing for 60-90 days before considering annual, monitor announcements, and have a migration plan ready.</p>
+            </div>
+          </details>
+
+          <details style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">Can I remove the "Powered by Tidio" branding?</summary>
+            <div style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
+              <p>Branding removal is not included on Free or Starter plans. On Growth, removing "Powered by Tidio" costs approximately $20/month as an add-on. It's included by default on Plus and higher. For a polished customer-facing brand experience this is a non-trivial extra cost — budget for it on Growth or factor it into the upgrade decision to Plus.</p>
+            </div>
+          </details>
+
+          <details style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">How long does it take to set up Tidio for Shopify?</summary>
+            <div style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
+              <p>Basic setup takes 30-60 minutes — install the Shopify app, configure the chat widget, set operating hours, import starter macros. Adding Lyro AI takes 1-2 hours to upload your knowledge base. Setting up Flows takes 2-4 hours per flow. Most stores can be live with chat in under an hour and fully optimised inside a week. <a href="/blog/tidio-for-shopify-complete-setup-guide/" style="color:var(--g);">Full setup guide here.</a></p>
+            </div>
+          </details>
+
+          <details style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">What are the best Tidio alternatives for Shopify?</summary>
+            <div style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
+              <p>For larger stores (200+ conversations, 4+ agents): <a href="/gorgias-shopify-guide/" style="color:var(--g);">Gorgias</a> with deeper Shopify integration. For per-seat pricing: Reamaze ($29-59/agent/month). For budget caps: Freshdesk's free tier and $15/agent paid plans. For solo founders wanting permanent free chat: Crisp or Chatra. The right choice depends on which Tidio limit is hurting you — conversation cap, AI cost, 10-seat ceiling, or trust concerns.</p>
+            </div>
+          </details>
+
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- FINAL CTA -->
+    <section class="section-alt" aria-label="Decide and start trial">
+      <div class="inner-sm" style="max-width:740px;margin:0 auto;padding:72px 24px;text-align:center;">
+        <span class="tag" style="margin-bottom:20px;display:inline-flex;">Ready to decide</span>
+
+        <h2 style="font-family:var(--sans);font-weight:900;font-size:clamp(28px,5vw,44px);color:var(--text);letter-spacing:-.04em;line-height:1.05;margin-bottom:20px;">
+          Three numbers, then decide.
+        </h2>
+
+        <p style="font-size:17px;color:var(--text-3);max-width:560px;margin:0 auto 32px;line-height:1.65;">
+          Under 50 conversations/month — start free. 50-100 conversations and need branded chat — upgrade to Starter. Above 200 conversations — read the Gorgias review before paying for Tidio Growth.
+        </p>
+
+        <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-bottom:32px;">
+          <a href="/gorgias-shopify-guide/" class="btn-outline">
+            Bigger store? Read the Gorgias review
+          </a>
+          <a href="/go/tidio" target="_blank" rel="noopener sponsored" class="btn pulse">
+            Try Tidio free →
+          </a>
+        </div>
+
+        <!-- Outgrown-Tidio capture path -->
+        <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:24px 0;text-align:left;">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.1em;margin-bottom:8px;">// OUTGROWING TIDIO?</div>
+          <p style="margin:0;font-size:14px;color:var(--text-2);line-height:1.6;">If you're already past 200 conversations/month, paying $150+ in Tidio bills, or hitting the 10-seat cap — read the <a href="/gorgias-shopify-guide/" style="color:var(--g);text-decoration:underline;">Gorgias review</a>. Or compare both side-by-side in the <a href="/blog/tidio-vs-gorgias-shopify/" style="color:var(--g);text-decoration:underline;">Tidio vs Gorgias guide</a>.</p>
+        </div>
+
+        <p style="font-size:13px;color:var(--text-4);max-width:520px;margin:0 auto;line-height:1.55;">
+          Free plan available, no credit card required. Affiliate disclosure: Stack Architect uses the <code style="font-family:var(--mono);font-size:11px;color:var(--text-3);">/go/tidio</code> redirect (resolves to <code style="font-family:var(--mono);font-size:11px;color:var(--text-3);">affiliate.tidio.com/5kfhrx3ot6tf</code>) and may earn a commission if you upgrade to a paid plan, at no extra cost to you.
+        </p>
+      </div>
+    </section>
+
+    <!-- Related guides -->
+    <section style="padding:48px 24px;background:var(--bg);border-top:1px solid var(--border);" aria-label="Related Shopify support reading">
+      <div style="max-width:740px;margin:0 auto;">
+        <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--text-4);margin-bottom:20px;">// Related reading</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <a href="/gorgias-shopify-guide/" style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-3);border:1px solid var(--border);border-radius:8px;text-decoration:none;">
+            <span style="font-size:14px;font-weight:600;color:var(--text-2);">Gorgias review for Shopify — when it's worth it</span>
+            <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);flex-shrink:0;margin-left:12px;">→</span>
+          </a>
+          <a href="/blog/tidio-vs-gorgias-shopify/" style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-3);border:1px solid var(--border);border-radius:8px;text-decoration:none;">
+            <span style="font-size:14px;font-weight:600;color:var(--text-2);">Tidio vs Gorgias for Shopify — full comparison</span>
+            <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);flex-shrink:0;margin-left:12px;">→</span>
+          </a>
+          <a href="/blog/tidio-for-shopify-complete-setup-guide/" style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-3);border:1px solid var(--border);border-radius:8px;text-decoration:none;">
+            <span style="font-size:14px;font-weight:600;color:var(--text-2);">Tidio for Shopify — complete setup guide</span>
+            <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);flex-shrink:0;margin-left:12px;">→</span>
+          </a>
+          <a href="/best-free-shopify-apps-2026/" style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-3);border:1px solid var(--border);border-radius:8px;text-decoration:none;">
+            <span style="font-size:14px;font-weight:600;color:var(--text-2);">Best free Shopify apps 2026 — 40+ tools ranked</span>
+            <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);flex-shrink:0;margin-left:12px;">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <Footer />
+</Base>
