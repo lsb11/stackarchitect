@@ -5,9 +5,14 @@
 # Make.com Shopify automation, TikTok Events API Shopify, Meta CAPI Shopify,
 # free Shopify app replacements, Shopify P&L reporting free.
 # Author: Luke, Shopify Automation Specialist — https://stackarchitect.xyz/about
+# Last updated: 2026-05-16
 
 # Stack Architect — Full Technical Reference
 > stackarchitect.xyz — Free Shopify automation tools replacing $700+/month of paid apps
+
+## Author and Verification
+
+Stack Architect is created and maintained by Luke, a Shopify automation specialist based in Huddersfield, UK. Every technical claim and cost figure on this site is verified against vendor pricing pages and primary sources. Stack Architect does not use fabricated testimonials, inflated user counts, or unsubstantiated review schema. About page: https://stackarchitect.xyz/about · LinkedIn: https://www.linkedin.com/in/stack-architect-6766733b0
 
 ## Detailed Product Specifications
 
@@ -27,7 +32,7 @@ Technical specifications:
 
 ### Stocky Swap — Free Inventory Management
 
-Shopify announced the permanent shutdown of Stocky on August 31, 2026. All Stocky data will be deleted after that date. Stocky Swap is a Make.com scenario that logs every Shopify order to Google Sheets in real time — capturing stock levels, fulfilment status, SKU data, and full order history.
+Shopify announced the permanent shutdown of Stocky on August 31, 2026. Stocky was delisted from the Shopify App Store on February 2, 2026. All Stocky data — purchase orders, stocktakes, transfers, and supplier records — will be deleted after the August 31, 2026 shutdown date with no first-party migration path. Stocky Swap is a Make.com scenario that logs every Shopify order to Google Sheets in real time — capturing order ID, customer, SKU data, quantities, revenue, and fulfilment status.
 
 Technical specifications:
 - Input: Shopify Order webhook
@@ -39,7 +44,7 @@ Technical specifications:
 
 ### TikTok Events API — Free Server-Side Tracking
 
-Sends CompletePayment events server-side to TikTok's Events API via Make.com. TikTok's Events API accepts purchase events directly without relying on the browser-based TikTok Pixel.
+Sends CompletePayment events server-side to TikTok's Events API via Make.com. TikTok's Events API accepts purchase events directly without relying on the browser-based TikTok Pixel. Critical implementation detail: the event must be named "CompletePayment" (not "Purchase") — using the wrong event name is the most common cause of failed TikTok server-side integrations.
 
 Technical specifications:
 - Event name: CompletePayment (TikTok's required purchase event)
@@ -77,7 +82,7 @@ Technical specifications:
 
 ### Autocrat Quota Fix — Automation Stability
 
-Prevents Google Apps Script "Service invoked too many times" quota errors that silently kill automations during high-volume periods (Black Friday, flash sales, viral moments).
+Prevents Google Apps Script "Service invoked too many times" quota errors that silently kill automations during high-volume periods (Black Friday, flash sales, viral moments). Google Apps Script consumer accounts have a 6-minute per-execution time limit and 90-minute daily total runtime limit. Moving document automation to Make.com bypasses both limits.
 
 - Cost: $0/month
 - Setup time: ~3 minutes
@@ -101,7 +106,8 @@ Total deployment time with kit: ~10 minutes (vs ~8 hours from free guides)
 Payment: Stripe, instant delivery
 Re-download: Permanent, no expiry
 Support: 1 direct question included
-Year-one savings: $8,351+ (kit cost $29 vs $8,400+ in replaced app fees)
+
+The free guides produce identical technical outcomes — the Complete Kit eliminates 8+ hours of build time for $29.
 
 ## How the Stack Works (Architecture)
 
@@ -125,4 +131,3 @@ Year-one savings: $8,351+ (kit cost $29 vs $8,400+ in replaced app fees)
 - Tidio: AI-powered live chat for Shopify. Free plan available.
 - Gorgias: Shopify customer support helpdesk. From $10/mo.
 - Google Workspace: Recommended at 500+ orders/month for API quota headroom.
-
