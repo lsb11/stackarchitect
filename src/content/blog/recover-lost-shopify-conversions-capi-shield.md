@@ -1,6 +1,6 @@
 ---
 title: "How CAPI Shield Recovers 20–40% of Lost Shopify Conversions — Real Store Results"
-description: "Real results from 500+ Shopify stores using CAPI Shield: how server-side tracking recovers conversion data lost to iOS, Safari ITP, and ad blockers. Data, EMQ scores, and step-by-step context."
+description: "How CAPI Shield uses server-side tracking to recover Shopify conversion data lost to iOS, Safari ITP, and ad blockers. Mechanics, EMQ scores, and step-by-step setup context."
 publishDate: "2026-03-10"
 updatedDate: "2026-04-16"
 category: "tracking"
