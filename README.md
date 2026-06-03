@@ -1,43 +1,63 @@
-# Astro Starter Kit: Minimal
+# Stack Architect
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Free Shopify automation tools and diagnostic calculators that replace expensive paid apps — order logging to Google Sheets, server-side tracking helpers, profit/loss automation, and a library of free guides.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+🔗 **Live site:** https://stackarchitect.xyz
+⭐ **Flagship tool:** [Stocky Swap — free Shopify Stocky replacement](https://stackarchitect.xyz/stocky-swap/)
 
-## 🚀 Project Structure
+Built and maintained by Luke (UK).
 
-Inside of your Astro project, you'll see the following folders and files:
+---
+
+## What's here
+
+- **Automation tools** — e.g. [Stocky Swap](https://stackarchitect.xyz/stocky-swap/) (logs orders to Google Sheets via Make.com), [CAPI Shield](https://stackarchitect.xyz/capi-shield/), [P&L Automation](https://stackarchitect.xyz/shopify-profit-loss-automation/).
+- **Free calculators & diagnostics** — app-cost, break-even, attribution-gap, EMQ-score and more (see [`/tools`](https://stackarchitect.xyz/tools/)).
+- **Guides & comparisons** — long-form Shopify automation and migration content under [`/shopify-automation-guides`](https://stackarchitect.xyz/shopify-automation-guides/).
+
+Each tool is honest about scope — what it does *and* what it doesn't — so merchants can pick the right fit.
+
+## Tech stack
+
+- [Astro](https://astro.build) — static output (`output: 'static'`)
+- `@astrojs/sitemap` — auto-generated sitemap with real `lastmod` dates
+- `@astrojs/mdx` — MDX support for content
+- Markdown content collection in `src/content/blog/`
+- Deployed on **Cloudflare Pages** (Wrangler)
+
+## Project structure
 
 ```text
 /
-├── public/
+├── public/                 # static assets, _redirects, robots.txt
 ├── src/
-│   └── pages/
-│       └── index.astro
+│   ├── components/         # shared Astro components
+│   ├── content/
+│   │   └── blog/           # Markdown blog posts (content collection)
+│   └── pages/              # routes — .astro pages + blog/[slug].astro
+├── astro.config.mjs        # Astro config + sitemap serialization
 └── package.json
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Astro maps `.astro` / `.md` files in `src/pages/` to routes based on filename. Blog posts live in `src/content/blog/` and render through `src/pages/blog/[slug].astro`.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Commands
 
-Any static assets, like images, can be placed in the `public/` directory.
+Run from the project root:
 
-## 🧞 Commands
+| Command                  | Action                                              |
+| :----------------------- | :-------------------------------------------------- |
+| `npm install`            | Install dependencies                                |
+| `npm run dev`            | Start local dev server at `localhost:4321`          |
+| `npm run build`          | Build the production site to `./dist/`              |
+| `npm run preview`        | Preview the build locally before deploying          |
+| `npm run astro ...`      | Run CLI commands like `astro add`, `astro check`    |
+| `npm run generate-types` | Generate Cloudflare types via Wrangler              |
 
-All commands are run from the root of the project, from a terminal:
+## Deployment
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Pushes to the default branch build on Cloudflare Pages (project `stackarchitect2`). The build outputs to `./dist/`; the sitemap and `lastmod` dates are generated at build time — check the build log for the `[sitemap] indexed N URL(s)` line to confirm.
 
-## 👀 Want to learn more?
+---
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+© Stack Architect · stackarchitect.xyz
