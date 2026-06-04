@@ -8,7 +8,7 @@ import Nav from '../../components/Nav.astro';
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Google Apps Script Quotas 2026 — 6-Minute Limit, Every Error Code, Free Fix</title>
-<meta name="description" content="Google Apps Script quotas 2026: 6-minute execution limit, 90-minute daily runtime, 100 emails/day — every limit, every error code, every free fix. Consumer vs Workspace compared." />
+<meta name="description" content="Google Apps Script quotas 2026: 6-minute execution limit (consumer and Workspace), 90-minute daily trigger runtime, 20,000 UrlFetch calls/day, 100 emails/day — every limit, every error code, every free fix. Verified against the official docs." />
 <meta name="author" content="Luke" />
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <link rel="canonical" href="https://stackarchitect.xyz/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/" />
@@ -52,7 +52,7 @@ gtag('config', 'G-TE6Z6CW514', { send_page_view: true, anonymize_ip: true });
       "author": { "@type": "Organization", "name": "Stack Architect", "url": "https://stackarchitect.xyz" },
       "publisher": { "@type": "Organization", "name": "Stack Architect", "url": "https://stackarchitect.xyz" },
       "datePublished": "2026-03-22",
-      "dateModified": "2026-05-18",
+      "dateModified": "2026-06-04",
       "image": "https://stackarchitect.xyz/og.png",
       "speakable": {
         "@type": "SpeakableSpecification",
@@ -116,12 +116,12 @@ gtag('config', 'G-TE6Z6CW514', { send_page_view: true, anonymize_ip: true });
         {
           "@type": "Question",
           "name": "What is the Google Apps Script execution time limit in 2026?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Consumer (free) Google accounts are capped at 6 minutes per execution. Google Workspace accounts get 30 minutes per execution. Scripts that exceed the limit are hard-stopped mid-run with no graceful shutdown." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Both consumer (free) and Google Workspace accounts are capped at 6 minutes per execution in 2026 — per Google's official quota documentation. (Workspace accounts had a 30-minute limit in the past, but that no longer applies.) Scripts that exceed the limit are hard-stopped mid-run with no graceful shutdown." }
         },
         {
           "@type": "Question",
           "name": "What is the daily runtime limit for Google Apps Script in 2026?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Consumer accounts get 90 minutes of combined runtime per day. Google Workspace accounts get 6 hours per day. Quotas reset at midnight Pacific Time." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Google's official quota for triggers total runtime is 90 minutes per day on consumer accounts and 6 hours per day on Google Workspace accounts. This cap applies to trigger-driven executions; quotas reset 24 hours after the first request." }
         },
         {
           "@type": "Question",
@@ -136,12 +136,12 @@ gtag('config', 'G-TE6Z6CW514', { send_page_view: true, anonymize_ip: true });
         {
           "@type": "Question",
           "name": "Why does my script work in the morning but fail in the afternoon?",
-          "acceptedAnswer": { "@type": "Answer", "text": "This is the clearest sign of a daily quota problem. Your automations are exhausting the 90-minute daily runtime in the first half of the day, leaving nothing for afternoon processing. The quota resets at midnight Pacific Time." }
+          "acceptedAnswer": { "@type": "Answer", "text": "This is the clearest sign of a daily quota problem. Trigger-driven automations are exhausting the 90-minute daily trigger runtime (consumer) in the first half of the day, leaving nothing for afternoon processing. The quota resets 24 hours after the first request." }
         },
         {
           "@type": "Question",
           "name": "Have Google Apps Script quotas changed for 2026?",
-          "acceptedAnswer": { "@type": "Answer", "text": "The core limits — 6-minute consumer execution, 30-minute Workspace execution, 90-minute daily consumer runtime — have remained consistent. If you are seeing new failures in 2026, it is more likely that your volume has grown into the limits rather than that Google has tightened them." }
+          "acceptedAnswer": { "@type": "Answer", "text": "The core limits — 6-minute execution (for both consumer and Workspace accounts) and 90-minute daily trigger runtime on consumer accounts — have remained consistent into 2026. If you are seeing new failures, it is more likely that your volume has grown into the limits rather than that Google has tightened them." }
         },
         {
           "@type": "Question",
@@ -372,15 +372,15 @@ a{text-decoration:none;}
   </div>
 
   <div class="answer-box" id="quick-answer">
-    <p><strong>Quick answer &mdash; the numbers that matter in 2026:</strong> Consumer (free) Google accounts get a <strong>6-minute maximum execution time</strong> per script run and <strong>90 minutes of total daily runtime</strong>. Google Workspace accounts get <strong>30 minutes per execution</strong> and <strong>6 hours of daily runtime</strong>. UrlFetch calls are capped at <strong>20,000 per day</strong> on consumer accounts. These are the hard limits that cannot be increased &mdash; they are why Autocrat, Sheets automations, and document workflows fail at scale.</p>
+    <p><strong>Quick answer &mdash; the numbers that matter in 2026:</strong> Both consumer (free) and Google Workspace accounts get a <strong>6-minute maximum execution time</strong> per script run &mdash; the old 30-minute Workspace limit no longer applies. Consumer accounts are capped at <strong>90 minutes of trigger runtime per day</strong>; Workspace accounts get <strong>6 hours of trigger runtime per day</strong>. UrlFetch calls are capped at <strong>20,000 per day</strong> on consumer accounts (100,000 on Workspace). These are the hard limits that cannot be increased &mdash; they are why Autocrat, Sheets automations, and document workflows fail at scale. Figures verified against <a href="https://developers.google.com/apps-script/guides/services/quotas" rel="noopener" target="_blank" style="color:var(--accent);">Google&apos;s official Apps Script quota documentation</a>.</p>
   </div>
 
   <div class="pill-row">
-    <span class="pill"><b>6 min</b> consumer execution</span>
-    <span class="pill"><b>30 min</b> Workspace execution</span>
-    <span class="pill"><b>90 min</b> consumer daily runtime</span>
+    <span class="pill"><b>6 min</b> execution (all accounts)</span>
+    <span class="pill"><b>90 min</b> consumer trigger runtime/day</span>
+    <span class="pill"><b>6 hr</b> Workspace trigger runtime/day</span>
     <span class="pill"><b>20k</b> UrlFetch calls/day</span>
-    <span class="pill"><b>100</b> concurrent executions</span>
+    <span class="pill"><b>30</b> concurrent executions</span>
   </div>
 
   <nav class="toc" aria-label="Table of contents">
@@ -427,20 +427,20 @@ a{text-decoration:none;}
       <div class="quota-label">Max execution time &mdash; consumer</div>
       <p class="quota-desc">A single script run on a free Google account is hard-stopped after 6 minutes. This is the most common cause of incomplete document generation and partial Sheets processing.</p>
     </div>
-    <div class="quota-card">
-      <div class="quota-val">30 min</div>
+    <div class="quota-card quota-warn">
+      <div class="quota-val">6 min</div>
       <div class="quota-label">Max execution time &mdash; Workspace</div>
-      <p class="quota-desc">Google Workspace accounts get 30 minutes per execution. Still a hard ceiling &mdash; but five times more headroom for large batch jobs.</p>
+      <p class="quota-desc">Workspace accounts are held to the same 6-minute per-execution ceiling as consumer accounts. The 30-minute limit some older guides cite was retired &mdash; there is no longer any per-execution headroom from upgrading to Workspace.</p>
     </div>
     <div class="quota-card quota-warn">
       <div class="quota-val">90 min</div>
-      <div class="quota-label">Daily runtime &mdash; consumer</div>
-      <p class="quota-desc">Total combined runtime across all script executions per day on a free account. Once exhausted, all scripts for that account stop until midnight Pacific Time.</p>
+      <div class="quota-label">Trigger runtime/day &mdash; consumer</div>
+      <p class="quota-desc">Total combined runtime of trigger-driven executions per day on a free account. Once exhausted, triggered scripts stop until the quota resets 24 hours after the first request. Manual runs are not counted against this cap.</p>
     </div>
     <div class="quota-card">
       <div class="quota-val">6 hrs</div>
-      <div class="quota-label">Daily runtime &mdash; Workspace</div>
-      <p class="quota-desc">Google Workspace accounts get 6 hours of combined daily execution time. Sufficient for most high-volume automation stacks, though not unlimited.</p>
+      <div class="quota-label">Trigger runtime/day &mdash; Workspace</div>
+      <p class="quota-desc">Google Workspace accounts get 6 hours of trigger runtime per day. Sufficient for most high-volume automation stacks, though not unlimited.</p>
     </div>
     <div class="quota-card quota-warn">
       <div class="quota-val">20,000</div>
@@ -458,15 +458,15 @@ a{text-decoration:none;}
       <p class="quota-desc">Calls to Google Docs or Drive in any rolling 60-second window. Autocrat-style workflows that open, fill, and save documents hit this quickly on medium batches.</p>
     </div>
     <div class="quota-card">
-      <div class="quota-val">Midnight PT</div>
-      <div class="quota-label">Quota reset time</div>
-      <p class="quota-desc">All daily quotas reset at midnight Pacific Time &mdash; not your local timezone. Workflows that fail late in your day may recover before your next working morning.</p>
+      <div class="quota-val">24 hrs</div>
+      <div class="quota-label">Quota reset window</div>
+      <p class="quota-desc">Per Google's documentation, quotas are per user and reset 24 hours after the first request &mdash; a rolling window, not a fixed midnight cutoff. Workflows that fail late may recover roughly a day later.</p>
     </div>
   </div>
 
   <div class="callout">
     <span class="label">Consumer vs Workspace &mdash; when to upgrade</span>
-    <p>The 6-minute vs 30-minute execution gap is the single biggest reason to upgrade to Google Workspace for automation-heavy operations. If your Shopify order volume means scripts regularly hit the 6-minute ceiling, the upgrade decision covers the exact trigger point and $21/month cost calculation in our <a href="https://stackarchitect.xyz/blog/when-to-upgrade-free-make-google-workspace/">Upgrade Guide</a>.</p>
+    <p>Upgrading to Workspace does <strong>not</strong> raise the 6-minute per-execution ceiling &mdash; that is identical on both account types. What Workspace does raise is the <strong>daily</strong> headroom: trigger runtime (90 min &rarr; 6 hr), UrlFetch calls (20,000 &rarr; 100,000), and email recipients (100 &rarr; 1,500). If your Shopify order volume is hitting those daily caps, the upgrade decision &mdash; trigger point and $21/month cost calculation &mdash; is covered in our <a href="https://stackarchitect.xyz/blog/when-to-upgrade-free-make-google-workspace/">Upgrade Guide</a>.</p>
   </div>
 
   <table class="comparison-table">
@@ -479,11 +479,11 @@ a{text-decoration:none;}
       </tr>
     </thead>
     <tbody>
-      <tr><td><strong>Single execution time</strong></td><td class="highlight">6 minutes</td><td>30 minutes</td><td>Per run</td></tr>
-      <tr><td><strong>Daily total runtime</strong></td><td class="highlight">90 minutes</td><td>6 hours</td><td>Midnight PT</td></tr>
-      <tr><td><strong>UrlFetch calls/day</strong></td><td class="highlight">20,000</td><td>100,000</td><td>Midnight PT</td></tr>
-      <tr><td><strong>Document creates/day</strong></td><td class="highlight">250</td><td>1,500</td><td>Midnight PT</td></tr>
-      <tr><td><strong>Email recipients/day</strong></td><td class="highlight">100</td><td>1,500</td><td>Midnight PT</td></tr>
+      <tr><td><strong>Single execution time</strong></td><td class="highlight">6 minutes</td><td>6 minutes</td><td>Per run</td></tr>
+      <tr><td><strong>Trigger runtime/day</strong></td><td class="highlight">90 minutes</td><td>6 hours</td><td>24h rolling</td></tr>
+      <tr><td><strong>UrlFetch calls/day</strong></td><td class="highlight">20,000</td><td>100,000</td><td>24h rolling</td></tr>
+      <tr><td><strong>Document creates/day</strong></td><td class="highlight">250</td><td>1,500</td><td>24h rolling</td></tr>
+      <tr><td><strong>Email recipients/day</strong></td><td class="highlight">100</td><td>1,500</td><td>24h rolling</td></tr>
       <tr><td><strong>Concurrent executions</strong></td><td>30</td><td>30</td><td>Per moment</td></tr>
       <tr><td><strong>Script properties size</strong></td><td>500KB</td><td>500KB</td><td>Persistent</td></tr>
     </tbody>
@@ -517,7 +517,7 @@ a{text-decoration:none;}
     </thead>
     <tbody>
       <tr><td><strong>Service invoked too many times</strong></td><td>Service call rate</td><td>Too many calls to Sheets, Docs, Drive, or Gmail in a short window</td></tr>
-      <tr><td><strong>Exceeded maximum execution time</strong></td><td>6-min / 30-min ceiling</td><td>Single run took longer than allowed &mdash; script hard-stopped mid-execution</td></tr>
+      <tr><td><strong>Exceeded maximum execution time</strong></td><td>6-min execution ceiling</td><td>Single run took longer than 6 minutes &mdash; script hard-stopped mid-execution</td></tr>
       <tr><td><strong>Could not obtain lock</strong></td><td>Concurrent execution</td><td>Two runs tried to access the same resource simultaneously</td></tr>
       <tr><td><strong>Quota exceeded</strong></td><td>Daily service limit</td><td>UrlFetch, document creates, or email sends hit the daily cap</td></tr>
       <tr><td><strong>Daily limit for sending email exceeded</strong></td><td>100/day consumer cap</td><td>Email sends exhausted before end of day</td></tr>
@@ -541,7 +541,7 @@ a{text-decoration:none;}
 
   <div class="callout">
     <span class="label">Important limit on these approaches</span>
-    <p>Batching and backoff can take a stable 100-row workflow and scale it to 500 rows. They cannot take a 500-row workflow to 5,000 rows. At that point, the daily runtime ceiling is the binding constraint &mdash; and no code optimisation changes a 90-minute daily limit.</p>
+    <p>Batching and backoff can take a stable 100-row workflow and scale it to 500 rows. They cannot take a 500-row workflow to 5,000 rows. At that point, the daily trigger-runtime ceiling is the binding constraint &mdash; and no code optimisation changes a 90-minute daily limit.</p>
   </div>
 
   <div class="autocrat-section" id="autocrat">
@@ -598,11 +598,11 @@ a{text-decoration:none;}
   <div class="faq-wrap">
     <div class="faq-item">
       <p class="q">What is the Google Apps Script execution time limit in 2026?</p>
-      <p class="a">Consumer (free) Google accounts are capped at <strong>6 minutes per execution</strong>. Google Workspace accounts get <strong>30 minutes per execution</strong>. Scripts that exceed the limit are hard-stopped mid-run &mdash; no graceful shutdown, no warning, just termination.</p>
+      <p class="a">Both consumer (free) and Google Workspace accounts are capped at <strong>6 minutes per execution</strong> in 2026 &mdash; the 30-minute Workspace limit cited by older guides no longer applies. Scripts that exceed the limit are hard-stopped mid-run &mdash; no graceful shutdown, no warning, just termination.</p>
     </div>
     <div class="faq-item">
       <p class="q">What is the daily runtime limit for Google Apps Script in 2026?</p>
-      <p class="a">Consumer accounts get <strong>90 minutes of combined runtime per day</strong>. Google Workspace accounts get <strong>6 hours per day</strong>. Once the daily limit is exhausted, all scripts for that account stop executing until the quota resets at midnight Pacific Time.</p>
+      <p class="a">Google's official quota for <strong>triggers total runtime</strong> is <strong>90 minutes per day</strong> on consumer accounts and <strong>6 hours per day</strong> on Workspace accounts. This applies to trigger-driven executions; manual runs are not counted. The quota resets 24 hours after the first request.</p>
     </div>
     <div class="faq-item">
       <p class="q">What is the Google Apps Script UrlFetch daily limit?</p>
@@ -610,7 +610,7 @@ a{text-decoration:none;}
     </div>
     <div class="faq-item">
       <p class="q">Have Google Apps Script quotas changed for 2026?</p>
-      <p class="a">The core limits &mdash; 6-minute consumer execution, 30-minute Workspace execution, 90-minute daily consumer runtime &mdash; have remained consistent. Google does not announce quota changes prominently. If you are seeing new failures in 2026, it is more likely that your volume has grown into the limits rather than that Google has tightened them.</p>
+      <p class="a">The core limits &mdash; 6-minute execution (both consumer and Workspace) and 90-minute daily trigger runtime on consumer accounts &mdash; have remained consistent into 2026. Google does not announce quota changes prominently. If you are seeing new failures, it is more likely that your volume has grown into the limits rather than that Google has tightened them.</p>
     </div>
     <div class="faq-item">
       <p class="q">Can Google Apps Script quotas be increased?</p>
@@ -618,7 +618,7 @@ a{text-decoration:none;}
     </div>
     <div class="faq-item">
       <p class="q">Why does my script work in the morning but fail in the afternoon?</p>
-      <p class="a">This is the clearest sign of a daily quota problem. Your automations are exhausting the 90-minute daily runtime in the first half of the day, leaving nothing for afternoon processing. The quota resets at midnight Pacific Time &mdash; which is why everything works again the next morning.</p>
+      <p class="a">This is the clearest sign of a daily quota problem. Trigger-driven automations are exhausting the 90-minute daily trigger runtime (consumer) in the first half of the day, leaving nothing for afternoon processing. The quota resets 24 hours after the first request &mdash; which is why timing shifts day to day.</p>
     </div>
     <div class="faq-item">
       <p class="q">Why does the same script work one day and fail the next?</p>
