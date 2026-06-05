@@ -10,7 +10,7 @@ readTime: 12
 canonical: "https://stackarchitect.xyz/blog/scalable-google-sheets-automation-for-high-volume-workflows/"
 faqs:
   - question: "How many rows can Google Sheets handle for Shopify order automation?"
-    answer: "Google Sheets itself can handle up to 10 million cells per spreadsheet, which is sufficient for several years of order data for most stores. The limiting factor is not Sheets capacity but Google Apps Script quota limits — specifically the 6-minute execution time ceiling and 90-minute daily runtime on consumer accounts. Proper batching and architecture can scale Apps Script workflows to several hundred rows per day; above that, Make.com handles the data writing and Apps Script handles only lightweight analysis."
+    answer: "Google Sheets itself can handle up to 10 million cells per spreadsheet, which is sufficient for several years of order data for most stores. The limiting factor is not Sheets capacity but Google Apps Script quota limits — specifically the 6-minute execution-time ceiling (which applies to both consumer and Workspace accounts) and the 90-minute daily trigger-runtime limit on consumer accounts. Proper batching and architecture can scale Apps Script workflows to several hundred rows per day; above that, Make.com handles the data writing and Apps Script handles only lightweight analysis."
   - question: "What is the best architecture for high-volume Shopify automation in Google Sheets?"
     answer: "The most scalable free architecture is a hybrid approach: Make.com receives Shopify webhooks and writes raw order data directly to Google Sheets via the Sheets API, completely bypassing Apps Script execution time limits. Google Apps Script then runs lightweight scheduled analysis on the already-populated data — SUMIF calculations, alert checks, report generation — in short, focused runs well within the 6-minute ceiling."
   - question: "How do I handle Google Apps Script timeouts in a Shopify workflow?"
@@ -38,7 +38,7 @@ Google Sheets automation hits two separate walls as Shopify order volume grows:
 
 **Wall 1 — Apps Script execution time limit.** Consumer Google accounts cap single script executions at 6 minutes. A script processing 1,000 orders with document generation or external API calls may not complete in 6 minutes. When it hits the ceiling, it stops mid-run with no graceful completion.
 
-**Wall 2 — Apps Script daily runtime.** Consumer accounts get 90 minutes of combined runtime per day across all scripts. High-frequency triggers consuming 5 minutes each can exhaust this by mid-afternoon, leaving afternoon and evening orders unprocessed.
+**Wall 2 — Apps Script daily trigger runtime.** Consumer accounts get 90 minutes of trigger-driven runtime per day (manual runs are not counted against this cap). High-frequency triggers consuming 5 minutes each can exhaust this by mid-afternoon, leaving afternoon and evening orders unprocessed.
 
 The solutions differ depending on which wall you've hit and how far past it you need to scale.
 
@@ -85,7 +85,7 @@ function processBatch() {
 }
 ```
 
-Set a time-based trigger to run `processBatch` every 5–10 minutes. Each run processes 75 rows and saves progress. 2,000 rows per day requires approximately 27 runs of 75 rows each — well within the 90-minute daily runtime at roughly 30 seconds per run.
+Set a time-based trigger to run `processBatch` every 5–10 minutes. Each run processes 75 rows and saves progress. 2,000 rows per day requires approximately 27 runs of 75 rows each — well within the 90-minute daily trigger-runtime cap at roughly 30 seconds per run.
 
 ## Architecture Pattern 2 — Hybrid Make.com + Sheets
 

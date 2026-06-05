@@ -12,9 +12,9 @@ faqs:
   - question: "How many operations does Make.com give you for free?"
     answer: "Make.com's free plan gives 1,000 operations per month. A 4-5 branch Shopify automation scenario uses approximately 5-6 operations per order. This covers roughly 160-200 orders per month on the full automation stack before needing to upgrade to Make.com Core at $9/month."
   - question: "What does Google Workspace cost for one user?"
-    answer: "Google Workspace Business Starter costs $6/user/month billed monthly, or $6/user/month billed annually. For a solo operator, the total is $6/month. The main benefit for Shopify automation is the increase in Google Apps Script quotas — 30-minute execution time vs 6 minutes on consumer accounts, and 6 hours of daily runtime vs 90 minutes."
+    answer: "Google Workspace Business Starter costs $6/user/month billed monthly, or $6/user/month billed annually. For a solo operator, the total is $6/month. The main benefit for Shopify automation is the increase in Google Apps Script daily quotas. The 6-minute per-execution ceiling is identical on both consumer and Workspace accounts — upgrading does not change it. What Workspace raises is the daily headroom: trigger runtime goes from 90 minutes to 6 hours, UrlFetch calls from 20,000 to 100,000, document creates from 250 to 1,500, and email recipients from 100 to 1,500."
   - question: "Do I need Google Workspace for Make.com to work?"
-    answer: "No. Make.com works with any Google account including free Gmail. Google Workspace is only needed when Google Apps Script quota limits are causing automation failures — typically scripts hitting the 6-minute consumer execution ceiling or the 90-minute daily runtime limit."
+    answer: "No. Make.com works with any Google account including free Gmail. Google Workspace is only needed when Google Apps Script quota limits are causing automation failures — typically scripts hitting the 6-minute consumer execution ceiling or the 90-minute daily trigger-runtime limit."
   - question: "What is the combined cost of Make.com Core plus Google Workspace?"
     answer: "Make.com Core at $9/month plus Google Workspace Business Starter at $6/month equals $15/month total. This is the upgrade cost that makes sense for stores exceeding free plan limits. At 500+ orders per month with a multi-branch automation stack, this combination pays for itself in saved manual time within the first week."
   - question: "When should I upgrade Make.com from free to paid?"
@@ -39,7 +39,7 @@ The free stack — Make.com free + Gmail + Google Sheets on a consumer account �
 The free automation stack runs on:
 
 - **Make.com free:** 1,000 operations/month, webhook triggers included, multi-branch scenarios supported
-- **Gmail/Google account (consumer):** Google Apps Script execution limited to 6 minutes per run, 90 minutes total daily runtime, 250 document creates/day
+- **Gmail/Google account (consumer):** Google Apps Script execution limited to 6 minutes per run, 90 minutes total daily trigger runtime, 250 document creates/day
 - **Google Sheets (consumer):** No meaningful limits for most stores
 
 For stores under approximately 200 orders/month on a 5-branch scenario, this covers everything. The limits only become relevant as order volume increases or as you add more complex automations.
@@ -56,11 +56,11 @@ You start receiving "Operations limit exceeded" errors in your Make.com scenario
 
 If you have any automations using Google Apps Script (Autocrat, custom Sheets scripts, document generation), and they're stopping mid-execution with "Exceeded maximum execution time", you've hit the 6-minute consumer ceiling.
 
-**What to do:** Upgrade to Google Workspace ($6/month). Workspace accounts get 30-minute execution time — 5× the headroom.
+**What to do:** Upgrading to Google Workspace will *not* fix this — the 6-minute per-execution ceiling is identical on consumer and Workspace accounts. The real fixes are structural: batch your reads and writes so each run does less work, split the job into chunks that each finish inside 6 minutes (saving progress with PropertiesService between runs), or move the heavy work off Apps Script entirely onto Make.com, which has no per-execution time limit. See the [Scalable Google Sheets Automation guide](/blog/scalable-google-sheets-automation-for-high-volume-workflows) for the batching and chunking patterns.
 
 ### Signal 3 — Scripts working in the morning but failing in the afternoon
 
-This is the daily runtime quota signal. Consumer accounts get 90 minutes of combined Apps Script runtime per day. Once exhausted, all scripts stop until midnight Pacific Time.
+This is the daily trigger-runtime quota signal. Consumer accounts get 90 minutes of trigger-driven Apps Script runtime per day (manual runs are not counted). Once exhausted, trigger-driven scripts stop until the quota resets 24 hours after the first request of the day — a rolling window, not a fixed midnight cutoff.
 
 **What to do:** Upgrade to Google Workspace. Workspace accounts get 6 hours of daily runtime — 4× more headroom. This symptom almost always means you've outgrown the consumer quota, not that your scripts have bugs.
 
@@ -100,8 +100,8 @@ For a solo operator: $15/month.
 
 **What this gets you:**
 - 10,000 Make.com operations/month (covers ~2,000 orders/month on the full stack)
-- 30-minute Google Apps Script execution per run
-- 6 hours of daily Apps Script runtime
+- 6 hours of daily Apps Script trigger runtime (up from 90 minutes)
+- 100,000 UrlFetch calls/day (up from 20,000)
 - 1,500 document creates per day
 - Custom domain email
 - Google Workspace SLA
