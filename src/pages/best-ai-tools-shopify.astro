@@ -691,50 +691,6 @@ const breadcrumbSchema = {
 <Nav />
 
 <!-- ╔══════════════════════════════════════════════════════════╗ -->
-<!-- ║  NAVIGATION                                              ║ -->
-<!-- ╚══════════════════════════════════════════════════════════╝ -->
-<nav class="nav" id="top-nav" role="navigation" aria-label="Stack Architect main navigation">
-  <div class="nav-inner">
-    <div class="nav-status" aria-hidden="true">
-      <span class="pulse"></span>
-      AI_TOOLS // ACCESS_OPEN
-    </div>
-    <ul class="nav-links" role="list">
-      <li role="listitem"><a href="https://stackarchitect.xyz/" class="nav-link">~/HOME</a></li>
-      <li class="dropdown" role="listitem">
-        <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">Products <span style="font-size:8px;margin-left:3px">▾</span></a>
-        <ul class="dropdown-menu" role="menu">
-          <li role="menuitem"><a href="https://stackarchitect.xyz/capi-shield/" class="nav-link">CAPI_Shield<span class="nav-sub">Free Meta + Google server-side tracking</span></a></li>
-          <li role="menuitem"><a href="https://stackarchitect.xyz/stocky-swap/" class="nav-link">$0_Stocky_Swap<span class="nav-sub">Free inventory — replaces Stocky Aug 2026</span></a></li>
-          <li role="menuitem"><a href="https://stackarchitect.xyz/tiktok-events-api-shopify/" class="nav-link">TikTok_Events_API<span class="nav-sub">Free TikTok server-side tracking</span></a></li>
-          <li role="menuitem"><a href="https://stackarchitect.xyz/replace-klaviyo-free/" class="nav-link">Replace_Klaviyo_Free<span class="nav-sub">Free email automation via Systeme.io</span></a></li>
-          <li role="menuitem"><a href="https://stackarchitect.xyz/shopify-profit-loss-automation/" class="nav-link">Shopify_P&L_Auto<span class="nav-sub">Live profit and loss in Google Sheets free</span></a></li>
-          <li role="menuitem"><a href="https://stackarchitect.xyz/autocrat-quota-fix/" class="nav-link">Autocrat_Quota_Fix<span class="nav-sub">Fix Google Apps Script quota errors free</span></a></li>
-        </ul>
-      </li>
-      <li class="dropdown" role="listitem">
-        <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">Tools <span style="font-size:8px;margin-left:3px">▾</span></a>
-        <ul class="dropdown-menu" role="menu">
-          <li role="menuitem"><a href="https://stackarchitect.xyz/tools/" class="nav-link">All Tools<span class="nav-sub">Free tools to audit and automate your store</span></a></li>
-          <li role="menuitem"><a href="https://stackarchitect.xyz/shopify-automation-scanner/" class="nav-link">Automation Scanner<span class="nav-sub">Find which apps you can replace for $0</span></a></li>
-          <li role="menuitem"><a href="https://stackarchitect.xyz/shopify-app-cost-calculator/" class="nav-link">App Cost Calculator<span class="nav-sub">Calculate your exact monthly app bill</span></a></li>
-          <li role="menuitem"><a href="https://audit.stackarchitect.xyz" class="nav-link">App Audit<span class="nav-sub">AI audit — enter your apps, get a free savings report</span></a></li>
-        </ul>
-      </li>
-      <li class="dropdown" role="listitem">
-        <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">Guides <span style="font-size:8px;margin-left:3px">▾</span></a>
-        <ul class="dropdown-menu" role="menu">
-          <li role="menuitem"><a href="https://stackarchitect.xyz/shopify-automation-guides/" class="nav-link">All Guides<span class="nav-sub">Tracking, inventory, P&L and workflow guides</span></a></li>
-          <li role="menuitem"><a href="https://stackarchitect.xyz/ultimate-shopify-automation-guide/" class="nav-link">Ultimate Automation Guide<span class="nav-sub">The complete $0 automation setup guide</span></a></li>
-        </ul>
-      </li>
-    </ul>
-    <a href={AFF.make} class="nav-cta" target="_blank" rel="noopener sponsored"
-       id="nav-main-cta" aria-label="Replace Shopify apps free on Make.com">REPLACE MY APPS FREE →</a>
-  </div>
-</nav>
-
-<!-- ╔══════════════════════════════════════════════════════════╗ -->
 <!-- ║  PAGE CONTENT                                            ║ -->
 <!-- ╚══════════════════════════════════════════════════════════╝ -->
 <main class="page-wrap" id="main-content">
@@ -1580,52 +1536,6 @@ const breadcrumbSchema = {
   // Copyright year
   var c = document.getElementById('footer-copyright');
   if (c) c.textContent = '© ' + new Date().getFullYear() + ' STACK_ARCHITECT // CORE_DEPLOYMENT';
-
-  // Sticky nav state
-  var nav = document.getElementById('top-nav');
-  window.addEventListener('scroll', function() {
-    if (nav) nav.classList.toggle('scrolled', window.scrollY > 50);
-  }, { passive: true });
-
-  // Floating CTA
-  var navCta = document.getElementById('nav-main-cta');
-  if (navCta) {
-    var floatCta = navCta.cloneNode(true);
-    floatCta.id = 'float-cta';
-    floatCta.style.cssText = 'display:none;position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:99999;background:#00a854;color:#fff;border-color:#00c864;box-shadow:0 4px 15px rgba(0,168,84,.4);font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:900;text-decoration:none;text-transform:uppercase;padding:8px 18px;border-radius:4px;border:1px solid #00c864;white-space:nowrap;';
-    floatCta.textContent = 'REPLACE MY APPS →';
-    document.body.appendChild(floatCta);
-    window.addEventListener('scroll', function() {
-      var show = window.scrollY > 50;
-      floatCta.style.display = show ? 'block' : 'none';
-      navCta.style.visibility = show ? 'hidden' : 'visible';
-    }, { passive: true });
-  }
-
-  // Mobile dropdowns
-  document.querySelectorAll('.dropdown > .nav-link').forEach(function(link) {
-    link.addEventListener('click', function(e) {
-      if (window.innerWidth <= 768) {
-        e.preventDefault();
-        this.parentElement.classList.toggle('open');
-      }
-    });
-  });
-  var mobileStyle = document.createElement('style');
-  mobileStyle.textContent = '@media(max-width:768px){.dropdown.open .dropdown-menu{display:flex;}}';
-  document.head.appendChild(mobileStyle);
-  document.addEventListener('click', function(e) {
-    if (!e.target.closest('.dropdown')) {
-      document.querySelectorAll('.dropdown').forEach(function(d) { d.classList.remove('open'); });
-    }
-  });
-
-  // Active nav link highlight
-  var path = window.location.pathname;
-  document.querySelectorAll('.nav-link').forEach(function(link) {
-    var href = link.getAttribute('href');
-    if (href && (href === path || (path === '/' && href.endsWith('/')))) link.classList.add('active');
-  });
 
   // GA4 — affiliate click tracking
   var affiliatePatterns = [
