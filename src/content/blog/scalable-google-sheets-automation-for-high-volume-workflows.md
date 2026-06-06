@@ -1,6 +1,6 @@
 ---
-title: "Scalable Google Sheets Automation for Shopify 2026"
-description: "Architecture for Google Sheets automation handling thousands of Shopify orders without quota limits. Batching, checkpointing, hybrid Make.com approaches."
+title: "Scalable Google Sheets Automation 2026 — Past Apps Script Limits"
+description: "Outgrown Google Apps Script quota limits? The free architecture that scales Google Sheets automation to thousands of Shopify orders — batching, checkpoints, and the hybrid Make.com method that bypasses execution limits entirely."
 publishDate: "2026-03-20"
 updatedDate: "2026-04-16"
 category: "workflow"
@@ -120,7 +120,9 @@ Make.com handles the high-volume write path. Apps Script handles the low-frequen
 
 In your Make.com scenario, after receiving the Shopify webhook, add a Google Sheets → Add a Row module. Connect your Google account, select your spreadsheet and sheet, and map the order fields to columns. Make.com handles authentication and rate limiting automatically.
 
-This is exactly how [Stocky Swap](/stocky-swap) works — Make.com writes every order to a Sheet, Apps Script is not involved in the write path.
+[Make.com's free tier](/go/make) covers 1,000 operations per month — enough for most stores to run this entire write path at no cost, with no Apps Script execution limits in the way. You only pay if your order volume outgrows the free tier, at which point the $10.59/month Core plan covers thousands of orders per day.
+
+This is exactly how [Stocky Swap](/stocky-swap/) works — Make.com writes every order to a Sheet, Apps Script is not involved in the write path.
 
 ## Architecture Pattern 3 — Sheet Structure for Analytics Performance
 
@@ -184,8 +186,14 @@ For most Shopify stores — including those doing $1–2 million per year in rev
 
 ---
 
-## Get the pre-built Google Sheets automation files
+## Build it free, or skip the setup
 
-The Complete Kit includes two pre-configured Google Sheets templates (Stocky Swap inventory dashboard + P&L reporting dashboard) plus four Make.com JSON blueprints. All formulas, headers, and connections pre-set. $29 one-time.
+Everything in this guide runs on free tools. The architecture above — Make.com writing to Sheets, Apps Script handling lightweight analysis — costs nothing for most stores: [create a free Make.com account](/go/make) (1,000 operations/month free) and build the hybrid pattern yourself in an afternoon.
 
-**[Get the Complete Kit — $29 →](/pro)**
+If you'd rather not build it from scratch, the Complete Kit has it pre-configured.
+
+### Get the pre-built Google Sheets automation files
+
+The Complete Kit includes two pre-configured Google Sheets templates (Stocky Swap inventory dashboard + P&L reporting dashboard) plus four Make.com JSON blueprints. All formulas, headers, and connections pre-set — import and go. $29 one-time, no subscription.
+
+**[Get the Complete Kit — $29 →](/pro/)**
