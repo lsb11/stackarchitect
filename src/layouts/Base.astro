@@ -365,10 +365,11 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
   window.addEventListener('scroll', function(){
     if (shown) return;
     var pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-    if (pct >= 55) { bar.style.display = 'block'; shown = true; }
+    if (pct >= 55) { bar.style.display = 'block'; document.body.classList.add('sa-sticky-visible'); shown = true; }
   }, {passive: true});
   document.getElementById('sa-sticky-close').addEventListener('click', function(){
     bar.style.display = 'none';
+    document.body.classList.remove('sa-sticky-visible');
     sessionStorage.setItem('sa-sticky-dismissed', '1');
   });
 })();
