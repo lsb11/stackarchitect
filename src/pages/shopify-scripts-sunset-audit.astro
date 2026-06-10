@@ -460,31 +460,30 @@ import Nav from '../components/Nav.astro';
       background: var(--bg-3); border: 1px solid var(--border); border-radius: 14px;
       overflow: hidden;
     }
-    .pain-list { display: flex; flex-direction: column; gap: 0; }
+    .pain-list { display: flex; flex-direction: column; gap: 10px; padding: 28px 28px 0; }
     .pain-btn {
-      background: none; border: none; border-bottom: 1px solid var(--border);
-      padding: 14px 20px; cursor: pointer; width: 100%;
-      display: flex; align-items: center; justify-content: space-between;
-      transition: background .15s; text-align: left; gap: 12px;
+      width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 14px;
+      padding: 16px 18px; border-radius: 10px; border: 1.5px solid var(--border);
+      background: rgba(255,255,255,.025); text-align: left; cursor: pointer;
+      transition: all .2s; outline: none; font-family: var(--sans); min-height: 56px;
     }
-    .pain-btn:last-child { border-bottom: none; }
-    .pain-btn:hover { background: rgba(255,255,255,.03); }
-    .pain-btn.on { background: rgba(0,200,100,.06); }
+    .pain-btn:hover { border-color: var(--border-2); background: rgba(255,255,255,.04); }
+    .pain-btn:focus-visible { outline: 2px solid var(--g); outline-offset: 2px; }
+    .pain-btn.on { background: rgba(0,200,100,.06); border-color: rgba(0,200,100,.3); }
     .pain-chk {
-      width: 18px; height: 18px; border-radius: 4px; border: 1.5px solid var(--text-4);
-      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-      transition: background .15s, border-color .15s;
+      width: 20px; height: 20px; min-width: 20px; border-radius: 5px; border: 2px solid var(--border-2);
+      display: flex; align-items: center; justify-content: center; transition: all .15s; flex-shrink: 0;
     }
     .pain-btn.on .pain-chk { background: var(--g); border-color: var(--g); }
     .pain-label-wrap { flex: 1; }
-    .pain-label { font-size: 13px; color: var(--text-2); line-height: 1.45; }
+    .pain-label { font-size: 14px; font-weight: 500; color: var(--text-3); line-height: 1.4; transition: color .15s; }
+    .pain-btn.on .pain-label { color: var(--text); }
     .pain-badge {
-      font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: .1em;
-      text-transform: uppercase; background: rgba(245,158,11,.1); color: var(--amber);
-      border: 1px solid rgba(245,158,11,.2); padding: 2px 7px; border-radius: 3px;
-      display: inline-block; margin-top: 4px;
+      font-family: var(--mono); font-size: 10px; color: rgba(0,200,100,.6); letter-spacing: .1em;
+      text-transform: uppercase; display: block; margin-top: 3px;
     }
-    .pain-cost { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--red); white-space: nowrap; }
+    .pain-cost { font-family: var(--mono); font-size: 13px; font-weight: 700; color: rgba(252,129,129,.4); flex-shrink: 0; transition: color .15s; white-space: nowrap; }
+    .pain-btn.on .pain-cost { color: var(--red); }
     .scan-result {
       padding: 20px 20px 0; background: var(--bg-4); border-top: 1px solid var(--border);
       transition: background .3s;
