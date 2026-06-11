@@ -70,6 +70,12 @@ At paid tiers, Make.com remains significantly cheaper per operation.
 
 Zapier's pricing model counts each action in a multi-step Zap as a separate task. A 4-branch Make.com scenario (Shopify webhook → Meta CAPI + Google Sheets + TikTok + Systeme.io) would count as 4 tasks per order in Zapier. The same scenario in Make.com counts as approximately 5 operations. At 500 orders/month, that's 2,000 Zapier tasks vs ~2,500 Make.com operations — Zapier's $49/month plan vs Make.com's $9/month plan.
 
+## Calculate Your Own Cost Difference
+
+The tables above use a 500-orders/month example. Plug in your own automation volume to see the exact monthly and annual difference for your store:
+
+<iframe src="https://stackarchitect.xyz/embed/make-vs-zapier/" title="Make vs Zapier Cost Calculator" width="100%" height="560" style="border:0;max-width:640px" loading="lazy"></iframe>
+
 ## Shopify Flow — What It Actually Is
 
 Shopify Flow is often included in these comparisons as if it is a direct alternative to Make.com and Zapier. It is not. It is a fundamentally different tool.
