@@ -1,0 +1,38 @@
+---
+// EmbedLayout.astro
+// Bare layout for /embed/* routes. Deliberately omits everything in Base.astro
+// that doesn't belong inside someone else's iframe: nav, footer, breadcrumb,
+// GA4, AttributionTracker, sticky conversion bar, OG/Twitter, big schema graph.
+//
+// robots = "noindex, follow" — the bare embed page should NOT be indexed
+// (it's a near-duplicate of the canonical tool page), but search engines
+// SHOULD follow its attribution link back to the canonical page.
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  canonical: string; // the canonical tool page this embed mirrors
+}
+const { title, canonical } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="robots" content="noindex, follow" />
+    <!-- Point search engines and AI crawlers at the real page -->
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <style>
+      html, body { margin: 0; padding: 0; background: transparent; }
+      /* Small padding so the calculator border isn't flush against the iframe edge */
+      body { padding: 12px; box-sizing: border-box; }
+    </style>
+  </head>
+  <body class="text-white font-sans">
+    <slot />
+  </body>
+</html>
