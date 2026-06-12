@@ -80,7 +80,7 @@ const setupSteps = [
   { pos: 1, title: "Activate Make.com free",                        tool: "make.com/en/register — free tier, no credit card",         desc: "Sign up for Make.com free — 1,000 operations per month at no cost, enough for stores processing up to 300 orders per month. No credit card required. This is your automation hub routing Shopify order data to TikTok." },
   { pos: 2, title: "Import the TikTok Events API scenario",         tool: "import",                                                   desc: "One click imports the pre-built scenario into your Make.com workspace. The Webhooks trigger and HTTP module are already configured — no building from scratch, no technical knowledge needed. Once imported, open the Webhooks module and copy the generated webhook URL for Step 3." },
   { pos: 3, title: "Add Shopify webhook for order payment",         tool: "Shopify Admin → Settings → Notifications → Webhooks",      desc: "In Shopify Admin → Settings → Notifications → Webhooks, create a new webhook. Select Order payment as the event. Paste your Make.com webhook URL as the destination. Set format to JSON and save. This is the server-to-server trigger — entirely independent of the browser." },
-  { pos: 4, title: "Add your Pixel ID and Access Token",            tool: "Make.com → HTTP module → Body content",                    desc: "In the imported scenario, open the HTTP module. Replace YOUR_PIXEL_ID and YOUR_ACCESS_TOKEN in the body with your actual values from TikTok Ads Manager. Ensure Body input method is set to Key-value (Map mode) so Make.com expressions evaluate correctly." },
+  { pos: 4, title: "Add your Pixel ID and Access Token",            tool: "Make.com → HTTP module",                    desc: "In the imported scenario, open the HTTP module. Paste your Access Token into the Access-Token header, and replace YOUR_PIXEL_ID in the body's event_source_id field with your TikTok Pixel ID. Keep the quotes around the pixel ID so the body stays valid JSON." },
   { pos: 5, title: "Test in TikTok Events Manager",                 tool: "TikTok Ads Manager → Assets → Events → Test Events",      desc: "Place a test order in your Shopify store. In TikTok Ads Manager → Assets → Events → your pixel → Test Events tab, verify a server-side CompletePayment event appears within 2–3 minutes. Check the Event Match Quality score — aim for 6 or above." }
 ];
 
@@ -128,24 +128,27 @@ const relatedGuides = [
 
 // ─── Code template ───────────────────────────────────────────────────────────
 const codeTemplate = `{
-  "pixel_code": "YOUR_PIXEL_ID",
-  "event": "CompletePayment",
-  "event_id": "{{1.id}}",
-  "event_time": "{{formatDate(now; X)}}",
-  "access_token": "YOUR_ACCESS_TOKEN",
-  "properties": {
-    "value": "{{1.total_price}}",
-    "currency": "{{1.currency}}",
-    "order_id": "{{1.id}}"
-  },
-  "context": {
-    "user": {
-      "email": "{{sha256(1.email)}}",
-      "phone_number": "{{sha256(1.phone)}}"
-    },
-    "ip": "{{1.browser_ip}}",
-    "user_agent": "{{1.client_details.user_agent}}"
-  }
+  "event_source": "web",
+  "event_source_id": "YOUR_PIXEL_ID",
+  "data": [
+    {
+      "event": "CompletePayment",
+      "event_id": "{{1.id}}",
+      "event_time": {{formatDate(now; "X")}},
+      "properties": {
+        "value": {{1.total_price}},
+        "currency": "{{1.currency}}"
+      },
+      "context": {
+        "user": {
+          "email": "{{sha256(lower(trim(1.email)))}}",
+          "phone": "{{sha256(replace(1.phone; \\" \\"; \\"\\"))}}"
+        },
+        "ip": "{{1.client_details.browser_ip}}",
+        "user_agent": "{{1.client_details.user_agent}}"
+      }
+    }
+  ]
 }`;
 
 // ─── JSON-LD ──────────────────────────────────────────────────────────────────
@@ -366,6 +369,9 @@ const schemaGraph = {
       <a href={MAKE_URL} target="_blank" rel="noopener sponsored" class="btn pulse" aria-label="Deploy TikTok Events API free on Make.com">
         Deploy free via Make.com
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href={SCENARIO_URL} target="_blank" rel="noopener" class="btn-outline" aria-label="Clone the tested TikTok Events API scenario">
+        Clone the tested scenario →
       </a>
     </div>
 
@@ -818,7 +824,7 @@ const schemaGraph = {
         <a href="/shopify-app-cost-calculator">App Calculator</a>
         <a href="/privacy">Privacy</a>
         <a href="/terms">Terms</a>
-        <a href="/sitemap/">Sitemap</a>
+        <a href="/sitemap-page">Sitemap</a>
         <a href="mailto:support@stackarchitect.xyz">Support</a>
       </div>
     </nav>
