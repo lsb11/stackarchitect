@@ -1,0 +1,370 @@
+---
+import Nav from '../components/Nav.astro';
+const title = "Shopify Server-Side Tracking Tools: Live Pricing 2026 — Updated Monthly | Stack Architect";
+const description = "The maintained, dated price comparison for Shopify server-side tracking and attribution tools: Elevar, Triple Whale, Analyzify, Northbeam. Current monthly cost per tier, what's included, where paid beats free, last verified June 2026.";
+const canonical = "https://stackarchitect.xyz/shopify-tracking-tools-pricing/";
+const dateModified = "2026-06-12";
+const datePublished = "2026-06-12";
+const OG = "https://stackarchitect.xyz/og.png";
+
+// ── Pricing data — single source of truth for the page + schema. ──
+// Every figure is cross-referenced against the linked vendor pricing
+// pages and the dedicated Stack Architect breakdown for each tool.
+// Update the `verified` date and any changed figures once per month.
+const verified = "12 June 2026";
+
+const tools = [
+  {
+    name: "Elevar",
+    slug: "elevar-pricing",
+    altSlug: "elevar-alternative",
+    entry: "$50/mo",
+    entryLabel: "Starter — server-side Meta + Google CAPI",
+    range: "$0 – $500/mo",
+    tiers: [
+      { name: "Free", price: "$0", note: "Browser-side pixel only — no server-side CAPI" },
+      { name: "Starter", price: "$50/mo", note: "Server-side Meta CAPI + Google Enhanced Conversions, event dedup, data layer" },
+      { name: "Growth", price: "$250/mo", note: "Adds TikTok, Pinterest, Snapchat CAPI + Google Consent Mode v2" },
+      { name: "Pro", price: "$500/mo", note: "Fully managed data layer, priority support, advanced event customisation" },
+    ],
+    paidWins: "Managed data layer and multi-platform consent mode for GDPR markets — genuinely hard to self-build.",
+    billing: "Flat monthly per tier. Annual billing available.",
+  },
+  {
+    name: "Triple Whale",
+    slug: "how-much-does-triple-whale-cost",
+    slugPrefix: "faq/",
+    altSlug: "triple-whale-alternative",
+    entry: "$129/mo",
+    entryLabel: "Entry attribution + dashboards",
+    range: "$129 – $499/mo+",
+    tiers: [
+      { name: "Entry", price: "$129/mo", note: "Core attribution dashboard, server-side pixel" },
+      { name: "Growth", price: "$299/mo", note: "Up to ~$5M revenue, fuller attribution suite" },
+      { name: "Pro", price: "$499/mo", note: "Up to ~$20M revenue" },
+      { name: "Enterprise", price: "Custom", note: "$20M+ revenue, sales-led" },
+    ],
+    paidWins: "Unified analytics dashboard and creative/cohort reporting — it's a BI product, not just a CAPI pipe.",
+    billing: "Tiered by revenue band. ~20% off on annual billing.",
+  },
+  {
+    name: "Analyzify",
+    slug: "analyzify-pricing",
+    altSlug: "analyzify-alternative",
+    entry: "$99/mo",
+    entryLabel: "Growth — GA4 + Meta CAPI + Google EC",
+    range: "$99 – $299/mo",
+    tiers: [
+      { name: "Growth", price: "$99/mo", note: "GA4 setup, Meta CAPI, Google Enhanced Conversions, managed data layer" },
+      { name: "Pro", price: "$299/mo", note: "Adds TikTok, Pinterest, Snapchat CAPI + priority support" },
+    ],
+    paidWins: "Done-for-you GA4 + ecommerce setup with no configuration — value is the managed install, not the pipe.",
+    billing: "Flat monthly per tier; annual billing may reduce price. No free tier with server-side tracking.",
+  },
+  {
+    name: "Northbeam",
+    slug: "northbeam-pricing",
+    altSlug: "northbeam-alternative",
+    entry: "$300/mo",
+    entryLabel: "Entry — scales with ad spend",
+    range: "$300 – $2,000/mo+",
+    tiers: [
+      { name: "Entry", price: "~$300/mo", note: "Lower ad-spend bands" },
+      { name: "Mid", price: "~$500/mo", note: "Mid ad-spend bands" },
+      { name: "Scale", price: "$1,000 – $2,000/mo", note: "Higher ad-spend bands" },
+      { name: "Enterprise", price: "Custom", note: "Sales-led, based on monthly ad spend" },
+    ],
+    paidWins: "Multi-touch attribution modelling and media-mix analysis for stores spending heavily across many channels.",
+    billing: "Priced on monthly ad spend, not a flat fee. Sales call required for an exact quote.",
+  },
+];
+
+const lastReviewISO = dateModified;
+---
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="author" content="Stack Architect">
+  <link rel="canonical" href={canonical}>
+  <link rel="alternate" hreflang="en-GB" href={canonical}>
+  <link rel="alternate" hreflang="en-US" href={canonical}>
+  <link rel="alternate" hreflang="x-default" href={canonical}>
+  <meta property="og:type" content="article">
+  <meta property="og:url" content={canonical}>
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:image" content={OG}>
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="Stack Architect">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Shopify Server-Side Tracking Tools: Live Pricing 2026">
+  <meta name="twitter:description" content="Maintained, dated price comparison for Shopify tracking tools — Elevar, Triple Whale, Analyzify, Northbeam. Updated monthly.">
+  <meta name="twitter:image" content={OG}>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" /></noscript>
+  <link rel="stylesheet" href="/alternatives.css">
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      { "@type": "BreadcrumbList", "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://stackarchitect.xyz/" },
+        { "@type": "ListItem", "position": 2, "name": "Shopify Tracking Tools Pricing", "item": canonical }
+      ]},
+      { "@type": "Dataset",
+        "@id": canonical + "#dataset",
+        "name": "Shopify Server-Side Tracking Tools — Pricing 2026",
+        "description": "Maintained dataset of current monthly pricing tiers for Shopify server-side tracking and attribution tools: Elevar, Triple Whale, Analyzify, and Northbeam. Verified against vendor pricing pages and updated monthly.",
+        "url": canonical,
+        "creator": { "@type": "Organization", "name": "Stack Architect", "url": "https://stackarchitect.xyz/" },
+        "dateModified": dateModified,
+        "datePublished": datePublished,
+        "isAccessibleForFree": true,
+        "keywords": ["Elevar pricing", "Triple Whale pricing", "Analyzify pricing", "Northbeam pricing", "Shopify server-side tracking cost", "Shopify CAPI pricing 2026"],
+        "license": "https://stackarchitect.xyz/terms/"
+      },
+      { "@type": "WebPage", "@id": canonical + "#webpage", "url": canonical, "name": title, "description": description, "inLanguage": "en-GB", "dateModified": dateModified, "datePublished": datePublished, "speakable": { "@type": "SpeakableSpecification", "cssSelector": [".quick-answer p", "h1"] }, "isPartOf": { "@id": "https://stackarchitect.xyz/#website" } },
+      { "@type": "FAQPage", "mainEntity": [
+        { "@type": "Question", "name": "How much do Shopify server-side tracking tools cost in 2026?", "acceptedAnswer": { "@type": "Answer", "text": "Server-side tracking tools for Shopify in 2026 range from $50/month to over $2,000/month. Elevar starts at $50/month for Meta and Google CAPI. Analyzify starts at $99/month. Triple Whale starts at $129/month. Northbeam starts around $300/month and scales with ad spend. None of these have a free tier that includes server-side tracking — the free equivalent is a self-built Make.com pipeline (CAPI Shield) at $0/month." } },
+        { "@type": "Question", "name": "Which Shopify tracking tool is cheapest?", "acceptedAnswer": { "@type": "Answer", "text": "Of the managed paid tools, Elevar Starter at $50/month is the cheapest entry point for server-side Meta and Google CAPI. Analyzify Growth follows at $99/month, then Triple Whale at $129/month, then Northbeam from around $300/month. The lowest-cost option overall is a self-configured Make.com server-side pipeline at $0/month, which covers Meta CAPI and Google Enhanced Conversions but does not include a managed dashboard or multi-platform consent mode." } },
+        { "@type": "Question", "name": "Do any Shopify CAPI tools have a free plan?", "acceptedAnswer": { "@type": "Answer", "text": "Some tools have a free tier, but those free tiers provide browser-side pixel tracking only — not server-side Conversions API events. Elevar's free plan, for example, is browser-only. To get server-side tracking for free you need to self-build it with Make.com (CAPI Shield), which sends Shopify order webhooks directly to Meta CAPI and Google Enhanced Conversions at $0/month." } },
+        { "@type": "Question", "name": "When was this pricing last verified?", "acceptedAnswer": { "@type": "Answer", "text": "This pricing comparison was last verified on " + verified + ". Each figure is cross-referenced against the vendor's own pricing page and Stack Architect's dedicated breakdown for that tool. The page is reviewed and updated monthly." } }
+      ]}
+    ]
+  })} />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","@id":"https://stackarchitect.xyz/#luke","name":"Luke","jobTitle":"Shopify Automation Specialist","url":"https://stackarchitect.xyz/about/","sameAs":["https://www.linkedin.com/in/luke-stackarchitect","https://www.linkedin.com/company/stack-architect-xyz/"],"worksFor":{"@type":"Organization","@id":"https://stackarchitect.xyz/#org"},"knowsAbout":["Shopify server-side tracking pricing","Elevar pricing","Triple Whale pricing","Analyzify pricing","Northbeam pricing","Meta Conversions API","Google Enhanced Conversions","Make.com"]}</script>
+</head>
+<body>
+<Nav />
+<main id="main-content">
+  <section class="hero bg-grid" aria-label="Shopify tracking tools pricing 2026">
+    <div class="hero-inner">
+      <nav aria-label="Breadcrumb" style="margin-bottom:16px;">
+        <ol style="display:flex;align-items:center;gap:8px;list-style:none;padding:0;margin:0;font-family:var(--mono);font-size:11px;color:var(--text-4);">
+          <li><a href="https://stackarchitect.xyz/" style="color:var(--text-4);text-decoration:none;">Home</a></li>
+          <li aria-hidden="true" style="color:var(--border);">/</li>
+          <li style="color:var(--text-3);">Tracking Tools Pricing</li>
+        </ol>
+      </nav>
+
+      <div class="hero-dateline">
+        <span style="display:inline-flex;align-items:center;gap:7px;">
+          <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--g);"></span>
+          Live tracker · Last verified <time datetime={lastReviewISO}>{verified}</time> · Updated monthly
+        </span>
+      </div>
+
+      <div class="quick-answer" style="background:rgba(0,200,100,.06);border-left:3px solid var(--g);padding:14px 20px;border-radius:0 8px 8px 0;margin-bottom:24px;max-width:720px;">
+        <p style="font-size:15px;font-weight:500;color:var(--text);margin:0;line-height:1.65;"><strong style="color:var(--g);">Direct answer:</strong> Managed Shopify server-side tracking costs $50/mo (Elevar) to $2,000/mo+ (Northbeam). Cheapest entry points: Elevar $50, Analyzify $99, Triple Whale $129, Northbeam ~$300. None include server-side tracking on a free tier — the only $0 route is a self-built Make.com pipeline.</p>
+      </div>
+
+      <h1>Shopify Tracking Tools<br><span class="green">Live Pricing</span><br><span class="dim">2026, Updated Monthly.</span></h1>
+      <p class="hero-sub">One maintained, dated reference for what every server-side tracking and attribution tool actually costs this month — Elevar, Triple Whale, Analyzify, Northbeam. Current price per tier, what's included, and an honest note on where each paid tool genuinely beats the free build. Verified against vendor pricing pages; re-checked monthly.</p>
+
+      <div class="cost-row">
+        <div class="cost-pill"><div class="cost-v">$50/mo</div><div class="cost-l">Elevar (cheapest)</div></div>
+        <div class="cost-pill"><div class="cost-v">$99/mo</div><div class="cost-l">Analyzify</div></div>
+        <div class="cost-pill" style=""><div class="cost-v" style="color:var(--amber);">$129/mo</div><div class="cost-l">Triple Whale</div></div>
+        <div class="cost-pill"><div class="cost-v" style="color:var(--red);">~$300/mo</div><div class="cost-l">Northbeam</div></div>
+      </div>
+
+      <div class="hero-ctas">
+        <a href="#table" class="btn-outline" onclick="event.preventDefault();document.getElementById('table').scrollIntoView({behavior:'smooth'})">See Full Table <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"></path></svg></a>
+        <a href="#free" class="btn pulse" onclick="event.preventDefault();document.getElementById('free').scrollIntoView({behavior:'smooth'})">The $0 Option <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- AT-A-GLANCE TABLE -->
+  <section class="section-alt" id="table">
+    <div class="inner">
+      <div class="sec-head">
+        <span class="tag tag-dim" style="margin-bottom:14px;display:inline-flex;">// current monthly pricing · verified {verified}</span>
+        <h2>What each tool costs right now</h2>
+        <p>Entry price is the cheapest tier that includes real server-side Conversions API tracking — not a browser-only free plan.</p>
+      </div>
+
+      <div style="overflow-x:auto;margin-bottom:18px;border:1px solid var(--border);border-radius:10px;">
+        <table style="width:100%;border-collapse:collapse;font-size:14px;min-width:640px;">
+          <thead>
+            <tr style="background:var(--bg-3);">
+              <th style="text-align:left;padding:14px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--text-3);font-weight:700;border-bottom:1px solid var(--border);">Tool</th>
+              <th style="text-align:left;padding:14px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--text-3);font-weight:700;border-bottom:1px solid var(--border);">Entry (server-side)</th>
+              <th style="text-align:left;padding:14px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--text-3);font-weight:700;border-bottom:1px solid var(--border);">Full range</th>
+              <th style="text-align:left;padding:14px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--text-3);font-weight:700;border-bottom:1px solid var(--border);">Billing basis</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tools.map((t) => (
+              <tr style="border-bottom:1px solid var(--border);">
+                <td style="padding:14px 16px;font-weight:700;color:var(--text);"><a href={`/${t.slugPrefix ?? ''}${t.slug}/`} style="color:var(--text);text-decoration:none;border-bottom:1px solid var(--g-border);">{t.name}</a></td>
+                <td style="padding:14px 16px;color:var(--text-2);"><strong style="color:var(--g);">{t.entry}</strong><br><span style="font-size:12px;color:var(--text-4);">{t.entryLabel}</span></td>
+                <td style="padding:14px 16px;color:var(--text-2);font-variant-numeric:tabular-nums;">{t.range}</td>
+                <td style="padding:14px 16px;color:var(--text-3);font-size:13px;">{t.billing}</td>
+              </tr>
+            ))}
+            <tr style="background:var(--g-bg);">
+              <td style="padding:14px 16px;font-weight:700;color:var(--g);">Make.com self-build<br><span style="font-size:11px;color:var(--text-4);font-weight:400;">(CAPI Shield)</span></td>
+              <td style="padding:14px 16px;"><strong style="color:var(--g);">$0/mo</strong><br><span style="font-size:12px;color:var(--text-4);">Meta CAPI + Google EC, server-side</span></td>
+              <td style="padding:14px 16px;color:var(--text-2);">$0/mo</td>
+              <td style="padding:14px 16px;color:var(--text-3);font-size:13px;">Free tier of Make.com (1,000 ops/mo)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:12px;color:var(--text-4);max-width:720px;line-height:1.6;">Figures cross-referenced against each vendor's pricing page and the dedicated Stack Architect breakdown linked in the tool name. Vendors change pricing without notice; this table is re-verified monthly and dated at the top. Spot an out-of-date figure? <a href="mailto:support@stackarchitect.xyz" style="color:var(--g);">Tell us</a>.</p>
+    </div>
+  </section>
+
+  <!-- PER-TOOL DETAIL -->
+  <section class="section" id="detail">
+    <div class="inner">
+      <div class="sec-head">
+        <span class="tag tag-dim" style="margin-bottom:14px;display:inline-flex;">// tier-by-tier</span>
+        <h2>Every tier, and where paid actually wins</h2>
+        <p>The honest part most comparison pages skip: each of these tools does something the free build genuinely cannot.</p>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:18px;">
+        {tools.map((t) => (
+          <div style="border:1px solid var(--border);border-radius:12px;padding:24px;background:var(--bg-2);">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
+              <h3 style="margin:0;font-size:20px;color:var(--text);">{t.name}</h3>
+              <span style="font-family:var(--mono);font-size:13px;color:var(--g);font-weight:700;">{t.range}</span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:18px;">
+              {t.tiers.map((tier) => (
+                <div style="border:1px solid var(--border);border-radius:8px;padding:14px;background:var(--bg);">
+                  <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--text-4);letter-spacing:.1em;margin-bottom:6px;text-transform:uppercase;">{tier.name}</div>
+                  <div style="font-size:20px;font-weight:900;color:var(--text);margin-bottom:8px;font-variant-numeric:tabular-nums;">{tier.price}</div>
+                  <div style="font-size:12px;color:var(--text-3);line-height:1.55;">{tier.note}</div>
+                </div>
+              ))}
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:12px 16px;background:var(--g-bg);border-radius:8px;border:1px solid var(--g-border);margin-bottom:14px;">
+              <span style="color:var(--g);font-weight:700;flex-shrink:0;font-size:13px;">Where paid wins:</span>
+              <span style="font-size:13px;color:var(--text-2);line-height:1.6;">{t.paidWins}</span>
+            </div>
+            <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:13px;">
+              <a href={`/${t.slugPrefix ?? ''}${t.slug}/`} style="color:var(--g);text-decoration:none;font-weight:600;">Full {t.name} pricing breakdown →</a>
+              <a href={`/${t.altSlug}/`} style="color:var(--text-3);text-decoration:none;">Free {t.name} alternative →</a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- THE FREE OPTION -->
+  <section class="section-alt" id="free">
+    <div class="inner-sm">
+      <div class="sec-head">
+        <span class="tag tag-dim" style="margin-bottom:14px;display:inline-flex;">// the $0 route</span>
+        <h2>The free build that replaces the entry tier</h2>
+        <p>For Meta + Google server-side tracking — the one feature most stores actually need — you don't need any of the tools above.</p>
+      </div>
+      <div style="border:2px solid var(--g-border);border-radius:12px;padding:26px;background:var(--g-bg);">
+        <p style="font-size:15px;color:var(--text-2);line-height:1.7;margin:0 0 16px;"><strong style="color:var(--text);">CAPI Shield</strong> routes Shopify order webhooks straight to Meta Conversions API and Google Enhanced Conversions through Make.com's free tier — the same server-side outcome as Elevar Starter ($50/mo) or Triple Whale Entry ($129/mo), at $0. It runs on 1,000 free Make.com operations per month and deploys in about 6 minutes.</p>
+        <p style="font-size:14px;color:var(--text-3);line-height:1.7;margin:0 0 18px;">What it doesn't replace: a managed analytics dashboard (Triple Whale), multi-touch attribution modelling (Northbeam), or done-for-you GA4 setup (Analyzify). If you need those, the paid tool earns its price. If you need accurate server-side conversions, the free build matches it.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <a href="/capi-shield/" class="btn">Deploy CAPI Shield Free →</a>
+          <a href="/what-is-server-side-tracking-for-shopify/" class="btn-outline">What is server-side tracking?</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- METHODOLOGY / TRUST -->
+  <section class="section" id="methodology">
+    <div class="inner-sm">
+      <div class="sec-head">
+        <span class="tag tag-dim" style="margin-bottom:14px;display:inline-flex;">// how this stays current</span>
+        <h2>How this page is maintained</h2>
+      </div>
+      <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:12px;max-width:680px;">
+        <li style="display:flex;gap:10px;align-items:baseline;font-size:14px;color:var(--text-2);line-height:1.6;"><span style="color:var(--g);flex-shrink:0;">→</span>Every figure is checked against the vendor's own published pricing page and our dedicated breakdown for that tool.</li>
+        <li style="display:flex;gap:10px;align-items:baseline;font-size:14px;color:var(--text-2);line-height:1.6;"><span style="color:var(--g);flex-shrink:0;">→</span>The page is re-verified monthly. The "last verified" date at the top reflects the most recent full check.</li>
+        <li style="display:flex;gap:10px;align-items:baseline;font-size:14px;color:var(--text-2);line-height:1.6;"><span style="color:var(--g);flex-shrink:0;">→</span>Where a tool prices by ad spend or revenue band rather than a flat fee, we show the realistic range, not a single number.</li>
+        <li style="display:flex;gap:10px;align-items:baseline;font-size:14px;color:var(--text-2);line-height:1.6;"><span style="color:var(--g);flex-shrink:0;">→</span>We note where each paid tool genuinely beats the free build, because a comparison that pretends $0 always wins isn't useful to anyone.</li>
+      </ul>
+      <p style="font-size:12px;color:var(--text-4);margin-top:20px;max-width:680px;line-height:1.6;">Stack Architect is funded by affiliate commissions and an optional $29 kit, not by the vendors compared here. We have no paid relationship with Elevar, Triple Whale, Analyzify, or Northbeam. <a href="/about/" style="color:var(--g);">About</a>.</p>
+    </div>
+  </section>
+
+  <!-- CITE BOX -->
+  <section class="section-alt" id="cite">
+    <div class="inner-sm">
+      <div style="border:1px solid var(--border);border-radius:12px;padding:24px;background:var(--bg-2);">
+        <div style="font-family:var(--mono);font-size:11px;color:var(--text-4);letter-spacing:.1em;margin-bottom:12px;">// citing this data</div>
+        <p style="font-size:14px;color:var(--text-2);line-height:1.7;margin:0 0 14px;">Writing about Shopify tracking costs? You're welcome to cite this page. Suggested attribution:</p>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;font-family:var(--mono);font-size:12px;color:var(--text-3);line-height:1.7;">Shopify server-side tracking tool pricing ranges from $50/mo to $2,000/mo+ (Stack Architect, verified {verified}). <span style="color:var(--text-4);">— stackarchitect.xyz/shopify-tracking-tools-pricing</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="inner-sm">
+      <div class="sec-head">
+        <span class="tag tag-dim" style="margin-bottom:14px;display:inline-flex;">// FAQ</span>
+        <h2>Common questions</h2>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <details style="border:1px solid var(--border);border-radius:8px;padding:16px 18px;background:var(--bg-2);">
+          <summary style="font-weight:600;color:var(--text);cursor:pointer;font-size:15px;">Which Shopify tracking tool is cheapest?</summary>
+          <p style="margin:12px 0 0;font-size:14px;color:var(--text-3);line-height:1.7;">Of the managed paid tools, Elevar Starter at $50/month is the cheapest entry into server-side Meta and Google CAPI, followed by Analyzify at $99/month and Triple Whale at $129/month. The cheapest option overall is a self-built Make.com pipeline at $0/month, which covers Meta CAPI and Google Enhanced Conversions but not a managed dashboard.</p>
+        </details>
+        <details style="border:1px solid var(--border);border-radius:8px;padding:16px 18px;background:var(--bg-2);">
+          <summary style="font-weight:600;color:var(--text);cursor:pointer;font-size:15px;">Do any of these have a free plan?</summary>
+          <p style="margin:12px 0 0;font-size:14px;color:var(--text-3);line-height:1.7;">Some have a free tier, but those cover browser-side pixel tracking only — not server-side Conversions API events. For free server-side tracking you self-build it with Make.com (CAPI Shield) at $0/month.</p>
+        </details>
+        <details style="border:1px solid var(--border);border-radius:8px;padding:16px 18px;background:var(--bg-2);">
+          <summary style="font-weight:600;color:var(--text);cursor:pointer;font-size:15px;">Why does Northbeam cost so much more?</summary>
+          <p style="margin:12px 0 0;font-size:14px;color:var(--text-3);line-height:1.7;">Northbeam is priced on monthly ad spend and sells multi-touch attribution modelling and media-mix analysis, not just a CAPI pipe. For stores spending heavily across many channels that's a different product class; for stores that only need accurate server-side conversions it's far more than required.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- RELATED -->
+  <section class="section-alt" id="related">
+    <div class="inner">
+      <div class="sec-head"><h2 style="font-size:20px;">Related pricing breakdowns</h2></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <a href="/elevar-pricing/" class="btn-outline">Elevar Pricing 2026</a>
+        <a href="/analyzify-pricing/" class="btn-outline">Analyzify Pricing 2026</a>
+        <a href="/northbeam-pricing/" class="btn-outline">Northbeam Pricing 2026</a>
+        <a href="/faq/how-much-does-triple-whale-cost/" class="btn-outline">Triple Whale Cost</a>
+        <a href="/best-free-shopify-apps-2026/" class="btn-outline">Best Free Shopify Apps</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-conversion">
+      <span class="footer-conversion-text">Need server-side tracking without the $50–$500/mo bill?</span>
+      <a href="/capi-shield/" class="footer-conversion-cta">DEPLOY FREE →</a>
+    </div>
+    <span class="footer-system-title">STACK_ARCHITECT</span>
+    <div class="status-bar"><span class="status-indicator" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--g);"></span><span>SYSTEM_STABLE</span><span class="bar-sep"></span><span>BUILT ON ASTRO</span></div>
+    <div class="footer-links">
+      <a href="/">Stack</a><a href="/capi-shield/">CAPI Shield</a><a href="/stocky-swap">Stocky Swap</a><a href="/replace-klaviyo-free">Replace Klaviyo</a><a href="/tiktok-events-api-shopify/">TikTok CAPI</a><a href="/shopify-profit-loss-automation">P&L Auto</a><a href="/pro">Complete Kit — $29</a>
+    </div>
+    <div class="nav-secondary"><a href="/elevar-alternative">Elevar Alternative</a><a href="/triple-whale-alternative">Triple Whale Alternative</a><a href="/analyzify-alternative">Analyzify Alternative</a><a href="/northbeam-alternative">Northbeam Alternative</a><a href="/shopify-automation-guides">All Guides</a><a href="/sitemap/">Sitemap</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <div class="footer-divider"></div>
+    <div class="copyright">© 2026 Stack Architect. All rights reserved.</div>
+    <div class="affiliate-disclosure">Stack Architect uses affiliate links. We may earn a commission if you sign up for tools via our links — at no extra cost to you. We only recommend tools we use and have tested. <a href="/privacy">Privacy policy</a>.</div>
+  </div>
+</footer>
+</body>
+</html>
