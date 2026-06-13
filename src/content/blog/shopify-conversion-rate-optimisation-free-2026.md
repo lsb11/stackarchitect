@@ -42,7 +42,7 @@ Before analysing your conversion rate, verify you're measuring it accurately.
 
 **The tracking gap problem:** iOS restrictions, Safari ITP, and ad blockers mean browser-based tracking misses 20–40% of real purchases on most Shopify stores. If your GA4 shows 80 purchases and Shopify shows 100, your GA4 conversion rate is 20% artificially low. Every CRO decision based on this data is wrong.
 
-**Free fix:** Server-side tracking via [Make.com](/go/make) recovers the missing purchase events. [CAPI Shield](/capi-shield) covers Meta and Google simultaneously. [Google Enhanced Conversions](/shopify-google-ads-conversion-tracking) fixes Google Ads attribution specifically. Both deploy in under 10 minutes at $0.
+**Free fix:** Server-side tracking via [Make.com](/go/make) recovers the missing purchase events. [CAPI Shield](/capi-shield/) covers Meta and Google simultaneously. [Google Enhanced Conversions](/shopify-google-ads-conversion-tracking/) fixes Google Ads attribution specifically. Both deploy in under 10 minutes at $0.
 
 Only after fixing tracking does your conversion rate become a reliable number to optimise against.
 
@@ -50,7 +50,7 @@ Only after fixing tracking does your conversion rate become a reliable number to
 
 ### 1. Google Analytics 4 (Free)
 
-[Set up GA4 on Shopify free →](/blog/shopify-google-analytics-4-setup-free-2026)
+[Set up GA4 on Shopify free →](/blog/shopify-google-analytics-4-setup-free-2026/)
 
 GA4's Explore section lets you build custom funnel explorations showing exactly where sessions drop in your purchase funnel. The standard ecommerce funnel: session → product view → add to cart → begin checkout → purchase. Each step shows the drop-off percentage.
 
@@ -77,7 +77,7 @@ Shows sessions, add-to-carts, checkout initiations, and purchases with conversio
 
 ### 4. Shopify Product Reviews (Free App)
 
-The native Shopify Product Reviews app is free and adds star ratings and review text to product pages. More reviews → higher conversion rate, especially for new visitors from paid ads. Prioritise sending review request emails (covered in the [email marketing guide](/blog/shopify-email-marketing-free-2026)) to generate reviews systematically.
+The native Shopify Product Reviews app is free and adds star ratings and review text to product pages. More reviews → higher conversion rate, especially for new visitors from paid ads. Prioritise sending review request emails (covered in the [email marketing guide](/blog/shopify-email-marketing-free-2026/)) to generate reviews systematically.
 
 ### 5. Tidio Live Chat Free Plan (Free)
 
@@ -100,13 +100,13 @@ The highest-impact free checkout customisations available on all plans:
 
 **Settings → Notifications → Abandoned checkout**
 
-This built-in single email fires 10 hours after abandonment by default. It's free and captures some recoveries, but the timing is suboptimal (10 hours is too long for high-intent abandonment) and you can only send one email. Upgrade to the full [3-email sequence via Make.com + Systeme.io](/blog/shopify-abandoned-cart-recovery-free-2026) for 3–5× better recovery rates.
+This built-in single email fires 10 hours after abandonment by default. It's free and captures some recoveries, but the timing is suboptimal (10 hours is too long for high-intent abandonment) and you can only send one email. Upgrade to the full [3-email sequence via Make.com + Systeme.io](/blog/shopify-abandoned-cart-recovery-free-2026/) for 3–5× better recovery rates.
 
 ## Free Email and Retention Tools
 
 ### 8. [Systeme.io Free Plan](https://stackarchitect.xyz/go/systeme) (0–2,000 Contacts)
 
-The complete free email marketing stack: welcome sequence, abandoned cart recovery, post-purchase sequence, and win-back campaign. [Full setup guide →](/blog/shopify-email-marketing-free-2026)
+The complete free email marketing stack: welcome sequence, abandoned cart recovery, post-purchase sequence, and win-back campaign. [Full setup guide →](/blog/shopify-email-marketing-free-2026/)
 
 ### 9. Shopify Email (First 10,000 Emails/Month Free)
 
@@ -151,6 +151,6 @@ The total cost of implementing all six: $0/month. Most paid CRO apps target the 
 
 Before optimising your conversion rate, ensure your tracking is accurate. If your Google Ads and Meta Ads are optimising on 60–70% of real conversion data (due to iOS blocking), your CRO efforts are working with a corrupted signal. The Complete Kit deploys server-side tracking (CAPI Shield + Google Enhanced Conversions + TikTok CAPI), inventory management (Stocky Swap), and P&L reporting — four pre-built Make.com JSON blueprints, $29 one-time.
 
-**[Get the Complete Kit — $29 →](/pro)**
+**[Get the Complete Kit — $29 →](/pro/)**
 
 

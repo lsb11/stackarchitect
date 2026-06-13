@@ -159,7 +159,7 @@ Apply these to every Shopify automation scenario before treating it as productio
 - [ ] Test with a real order after building — not just Make.com's test data
 - [ ] Run scenario manually after any Shopify plan change or API version update
 
-The [Make.com beginner's guide](/blog/make-com-shopify-automation-guide) covers the initial scenario setup. The [scalable Sheets architecture guide](/blog/scalable-google-sheets-automation-for-high-volume-workflows) covers the Google Sheets patterns that support reliable data writing at volume. The [Google Apps Script quotas guide](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations) covers the Apps Script limits that affect any workflow using scheduled scripts alongside Make.com.
+The [Make.com beginner's guide](/blog/make-com-shopify-automation-guide/) covers the initial scenario setup. The [scalable Sheets architecture guide](/blog/scalable-google-sheets-automation-for-high-volume-workflows/) covers the Google Sheets patterns that support reliable data writing at volume. The [Google Apps Script quotas guide](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/) covers the Apps Script limits that affect any workflow using scheduled scripts alongside Make.com.
 
 
 ---
@@ -168,4 +168,4 @@ The [Make.com beginner's guide](/blog/make-com-shopify-automation-guide) covers 
 
 The Complete Kit includes Make.com JSON blueprints with deduplication, error handling, and retry logic already built in — CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto. $29 one-time.
 
-**[Get the Complete Kit — $29 →](/pro)**
+**[Get the Complete Kit — $29 →](/pro/)**

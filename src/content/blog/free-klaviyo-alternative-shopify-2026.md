@@ -130,7 +130,7 @@ Most stores need 2–3 core automations. Each takes 15–20 minutes to rebuild.
 
 **Step 5 — Connect Shopify**
 
-In Systeme.io: **Settings → Integrations → Shopify**. Use the native integration for basic order triggers. For more advanced abandoned cart and segmentation by purchase behaviour, connect via a [Make.com webhook](/blog/make-com-shopify-automation-guide) — this gives you real-time order data and full control over trigger logic.
+In Systeme.io: **Settings → Integrations → Shopify**. Use the native integration for basic order triggers. For more advanced abandoned cart and segmentation by purchase behaviour, connect via a [Make.com webhook](/blog/make-com-shopify-automation-guide/) — this gives you real-time order data and full control over trigger logic.
 
 **Step 6 — Test and cancel Klaviyo**
 
@@ -142,7 +142,7 @@ If your list exceeds 2,000 contacts, Systeme.io's paid plans start at $17/month 
 
 For stores that want the full Shopify ecommerce integration depth closer to Klaviyo, [GetResponse](/go/getresponse) is worth evaluating. It starts at $19/month for 1,000 contacts with abandoned cart and ecommerce automations — approximately 70% cheaper than Klaviyo at equivalent list sizes.
 
-The full comparison is covered in [Klaviyo vs GetResponse for Shopify 2026](/blog/klaviyo-vs-getresponse-shopify-2026).
+The full comparison is covered in [Klaviyo vs GetResponse for Shopify 2026](/blog/klaviyo-vs-getresponse-shopify-2026/).
 
 ## The Bottom Line
 
@@ -159,4 +159,4 @@ The one area where Klaviyo genuinely outperforms is deep ecommerce event segment
 
 If you're switching from Klaviyo, the Complete Kit includes the pre-configured Make.com scenarios for your entire Shopify backend — CAPI Shield (tracking), Stocky Swap (inventory), and P&L Auto (profit reporting) — so you can replace the rest of your paid stack at the same time. $29 one-time, no subscription.
 
-**[Get the Complete Kit — $29 →](/pro)**
+**[Get the Complete Kit — $29 →](/pro/)**

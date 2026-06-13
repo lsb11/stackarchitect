@@ -45,7 +45,7 @@ Three genuine free options exist for Shopify stores in 2026:
 - Full automation sequences with conditional logic
 - Sales funnels, CRM, affiliate management included
 - Shopify native integration + Make.com webhook support
-- [Klaviyo comparison →](/klaviyo-vs-systeme-io)
+- [Klaviyo comparison →](/klaviyo-vs-systeme-io/)
 
 **Shopify Email (best for simplicity)**
 - First 10,000 emails/month free, then $1/1,000
@@ -80,7 +80,7 @@ Enter your Shopify store URL. Systeme.io connects via OAuth. Once connected, Sys
 
 For stores that want to trigger Systeme.io sequences from specific Shopify events (abandoned checkout, specific product purchases, subscription renewals), use a [Make.com](/go/make) scenario with a Shopify webhook as the trigger and a Systeme.io HTTP module to create/tag contacts.
 
-This is the method that powers the abandoned cart recovery sequence — see the [abandoned cart guide](/blog/shopify-abandoned-cart-recovery-free-2026) for the full setup.
+This is the method that powers the abandoned cart recovery sequence — see the [abandoned cart guide](/blog/shopify-abandoned-cart-recovery-free-2026/) for the full setup.
 
 ## The Four Essential Automations
 
@@ -107,7 +107,7 @@ Every Shopify store should run these four sequences. Combined, they typically ac
 **Length:** 3 emails over 72 hours
 **Goal:** Recover 5–15% of abandoned checkouts
 
-See the full setup: [Shopify Abandoned Cart Recovery Free 2026](/blog/shopify-abandoned-cart-recovery-free-2026).
+See the full setup: [Shopify Abandoned Cart Recovery Free 2026](/blog/shopify-abandoned-cart-recovery-free-2026/).
 
 ### Automation 3 — Post-Purchase Sequence
 
@@ -182,6 +182,6 @@ For the typical Shopify store under £500k/year revenue running welcome, abandon
 
 ## Get the free automation stack that runs alongside your email
 
-While you're setting up email marketing, the same Make.com free account powers your server-side tracking, inventory, and P&L reporting. The [Complete Kit](/pro) has all four automations pre-built — import in 10 minutes. $29 one-time, 30-day guarantee.
+While you're setting up email marketing, the same Make.com free account powers your server-side tracking, inventory, and P&L reporting. The [Complete Kit](/pro/) has all four automations pre-built — import in 10 minutes. $29 one-time, 30-day guarantee.
 
-[Get the Complete Kit — $29 →](/pro)
+[Get the Complete Kit — $29 →](/pro/)

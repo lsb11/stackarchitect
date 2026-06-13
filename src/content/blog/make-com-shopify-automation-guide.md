@@ -79,7 +79,7 @@ Routes order data to Meta Conversions API and Google Enhanced Conversions server
 
 If you run Meta or Google Ads without server-side events, your ROAS data is incomplete and your campaigns are optimising blind. This is the highest-ROI automation on the list.
 
-Full setup: [CAPI Shield — free server-side tracking](/capi-shield)
+Full setup: [CAPI Shield — free server-side tracking](/capi-shield/)
 
 ### Scenario 2 — Stocky Swap (Live inventory to Google Sheets)
 
@@ -87,7 +87,7 @@ Every Shopify order automatically writes a new row to your Google Sheets invento
 
 Every paid alternative charges $29–$199/month. Stocky Swap does the same for $0.
 
-Full setup: [Stocky Swap — free inventory automation](/stocky-swap)
+Full setup: [Stocky Swap — free inventory automation](/stocky-swap/)
 
 ### Scenario 3 — P&L Auto (Live profit reporting)
 
@@ -95,13 +95,13 @@ Every order auto-populates revenue, COGS, Shopify transaction fees, and net prof
 
 If Scenario 1 or 2 is already set up, P&L is a single additional branch on your existing scenario — under 3 minutes to add.
 
-Full setup: [Shopify P&L Automation](/shopify-profit-loss-automation)
+Full setup: [Shopify P&L Automation](/shopify-profit-loss-automation/)
 
 ### Scenario 4 — TikTok Events API
 
 If you advertise on TikTok, branch the same webhook to TikTok's Events API. Critical detail: TikTok uses **CompletePayment** (not "Purchase") as the event name. Wrong name means events go to the wrong category in Events Manager.
 
-Full setup: [TikTok Events API for Shopify](/tiktok-events-api-shopify)
+Full setup: [TikTok Events API for Shopify](/tiktok-events-api-shopify/)
 
 ## The Multi-Branch Architecture
 
@@ -130,13 +130,13 @@ Five destinations. One trigger. One scenario. One free account.
 | 160–1,600 | ~9,600 | Core — $9/month |
 | 1,600–10,000 | ~60,000 | Pro — $16/month |
 
-The upgrade trigger and decision framework is covered in the [upgrade guide](/blog/when-to-upgrade-free-make-google-workspace).
+The upgrade trigger and decision framework is covered in the [upgrade guide](/blog/when-to-upgrade-free-make-google-workspace/).
 
 ## Three Mistakes to Avoid
 
-**Using Zapier.** Zapier's free plan does not support webhook triggers. You cannot build this stack on Zapier's free plan at any combination of scenarios. [Full comparison here](/blog/zapier-vs-shopify-flow-vs-make).
+**Using Zapier.** Zapier's free plan does not support webhook triggers. You cannot build this stack on Zapier's free plan at any combination of scenarios. [Full comparison here](/blog/zapier-vs-shopify-flow-vs-make/).
 
-**Not de-duplicating events.** When running browser pixels and server-side events simultaneously, include an `event_id` in both so platforms count one purchase, not two. The [CAPI Shield guide](/capi-shield) covers this in detail.
+**Not de-duplicating events.** When running browser pixels and server-side events simultaneously, include an `event_id` in both so platforms count one purchase, not two. The [CAPI Shield guide](/capi-shield/) covers this in detail.
 
 **Wrong TikTok event name.** The event is `CompletePayment`. Not `Purchase`, not `purchase`. The exact string matters — every other guide gets this wrong.
 
@@ -144,11 +144,11 @@ The upgrade trigger and decision framework is covered in the [upgrade guide](/bl
 
 1. [Create a free Make.com account](/go/make) — no credit card, instant
 2. Connect Shopify using the steps above — 3 minutes
-3. Deploy [CAPI Shield](/capi-shield) first — highest ROI
-4. Add [Stocky Swap](/stocky-swap) — urgent before August 31, 2026
-5. Add [P&L Auto](/shopify-profit-loss-automation) as a branch on the same scenario
+3. Deploy [CAPI Shield](/capi-shield/) first — highest ROI
+4. Add [Stocky Swap](/stocky-swap/) — urgent before August 31, 2026
+5. Add [P&L Auto](/shopify-profit-loss-automation/) as a branch on the same scenario
 
-The entire stack runs free for most Shopify stores. The [Zapier vs Make comparison](/blog/zapier-vs-shopify-flow-vs-make) has the full cost breakdown.
+The entire stack runs free for most Shopify stores. The [Zapier vs Make comparison](/blog/zapier-vs-shopify-flow-vs-make/) has the full cost breakdown.
 
 
 ---
@@ -157,4 +157,4 @@ The entire stack runs free for most Shopify stores. The [Zapier vs Make comparis
 
 The Complete Kit gives you four production-ready Make.com JSON blueprints for Shopify: CAPI Shield (server-side tracking), TikTok CAPI, Stocky Swap (inventory), and P&L Auto. Import each in 60 seconds instead of building from scratch. $29 one-time.
 
-**[Get the Complete Kit — $29 →](/pro)**
+**[Get the Complete Kit — $29 →](/pro/)**

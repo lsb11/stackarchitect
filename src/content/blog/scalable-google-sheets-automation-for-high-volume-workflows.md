@@ -181,7 +181,7 @@ The Sheets + Make.com hybrid handles most Shopify stores reliably. The genuine l
 - **Complex relational data** — if you need to join orders with customers, products, and suppliers frequently, a proper database (Airtable, Notion, or a lightweight SQL database) handles this better
 - **Real-time dashboards** — Sheets with formulas recalculate on every edit. At high volume, this creates a constant performance drag. Looker Studio connected to Sheets is a better dashboard layer for data you don't need to edit.
 
-For most Shopify stores — including those doing $1–2 million per year in revenue — the Sheets + Make.com architecture described here is more than sufficient. The [Google Apps Script quotas guide](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations) covers the specific limits in detail and the [upgrade guide](/blog/when-to-upgrade-free-make-google-workspace) covers when Google Workspace's higher quota ceilings become worth the $6/month cost.
+For most Shopify stores — including those doing $1–2 million per year in revenue — the Sheets + Make.com architecture described here is more than sufficient. The [Google Apps Script quotas guide](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/) covers the specific limits in detail and the [upgrade guide](/blog/when-to-upgrade-free-make-google-workspace/) covers when Google Workspace's higher quota ceilings become worth the $6/month cost.
 
 
 ---

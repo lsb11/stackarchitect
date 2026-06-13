@@ -42,7 +42,7 @@ This is the complete list of free replacements for the most common paid Shopify 
 ## Server-Side Tracking — Replace Elevar, Triple Whale, Analyzify
 
 **Paid cost:** $99–$299/month  
-**Free replacement:** [CAPI Shield](/capi-shield) via Make.com — $0
+**Free replacement:** [CAPI Shield](/capi-shield/) via Make.com — $0
 
 Elevar, Triple Whale, and Analyzify all charge monthly fees to route Shopify purchase events to Meta Conversions API and Google Enhanced Conversions server-to-server. CAPI Shield achieves identical Event Match Quality scores (7–8.5) using a Make.com webhook at $0 per month.
 
@@ -50,27 +50,27 @@ The same Make.com scenario simultaneously handles TikTok server-side tracking �
 
 **What you get free:** Server-to-server purchase events for Meta, Google, and TikTok. EMQ 7–8.5. 20–40% conversion recovery. iOS-proof. Ad-blocker-proof.
 
-[Deploy CAPI Shield free →](/capi-shield)
+[Deploy CAPI Shield free →](/capi-shield/)
 
 ---
 
 ## Inventory Management — Replace Shopify Stocky (Shutting Down August 31, 2026)
 
 **Paid cost:** $29–$199/month (Stocky was free, but its shutdown forces migration)  
-**Free replacement:** [Stocky Swap](/stocky-swap) via Make.com — $0
+**Free replacement:** [Stocky Swap](/stocky-swap/) via Make.com — $0
 
 Shopify is permanently closing Stocky on August 31, 2026 and deleting all data. Most paid alternatives — Linnworks, Skubana, Inventory Planner — charge $49–$199/month. Stocky Swap logs every Shopify order to Google Sheets in real time via Make.com webhook. Same data. Full control. $0 forever.
 
 **What you get free:** Real-time order logging, stock level tracking, SKU data, fulfilment status, full order history in your own Google Sheets. Deploys in 4 minutes.
 
-[Deploy Stocky Swap free →](/stocky-swap)
+[Deploy Stocky Swap free →](/stocky-swap/)
 
 ---
 
 ## Email Marketing — Replace Klaviyo
 
 **Paid cost:** $150–$400/month  
-**Free replacement:** [Systeme.io](/replace-klaviyo-free) — $0 (2,000 contacts, unlimited sends)
+**Free replacement:** [Systeme.io](/replace-klaviyo-free/) — $0 (2,000 contacts, unlimited sends)
 
 Klaviyo changed its billing model in February 2025 — stores now pay for every active profile whether they email them or not. Systeme.io's free plan includes 2,000 contacts, unlimited email sends, full automation sequences, sales funnels, a CRM, and affiliate management. For stores not using Klaviyo's advanced ecommerce segmentation, migration takes 30 minutes.
 
@@ -78,20 +78,20 @@ Stores needing more advanced segmentation than Systeme.io can handle should cons
 
 **What you get free:** Welcome sequences, abandoned cart emails, post-purchase flows, broadcast campaigns, sales funnels, CRM. 2,000 contacts unlimited.
 
-[Replace Klaviyo free →](/replace-klaviyo-free)
+[Replace Klaviyo free →](/replace-klaviyo-free/)
 
 ---
 
 ## P&L Reporting — Replace TrueProfit, BeProfit, Glew
 
 **Paid cost:** $19–$299/month  
-**Free replacement:** [P&L Auto](/shopify-profit-loss-automation) via Make.com + Google Sheets — $0
+**Free replacement:** [P&L Auto](/shopify-profit-loss-automation/) via Make.com + Google Sheets — $0
 
 TrueProfit and BeProfit charge monthly fees to show you what your Shopify orders actually cost and earned. P&L Auto writes every order's revenue, COGS, fees, and net profit to a Google Sheets dashboard the instant payment confirms. Real-time P&L without a BI tool subscription.
 
 **What you get free:** Live revenue, COGS, Shopify fees, ad spend, and net profit per order. Monthly P&L summary. SUMIFS dashboard. Data in your own Google account.
 
-[Deploy P&L Auto free →](/shopify-profit-loss-automation)
+[Deploy P&L Auto free →](/shopify-profit-loss-automation/)
 
 ---
 
@@ -134,6 +134,6 @@ For Shopify store owners publishing a newsletter alongside their store, Beehiiv'
 
 ## Skip the Build — Get All 4 Core Automations Pre-Built for $29
 
-The free guides above show you how to build each automation from scratch. If your time is worth more than the 8 hours it takes, the [Complete Kit](/pro) gives you four ready-to-import Make.com JSON blueprint files — CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto — plus two pre-configured Google Sheets templates. Import and deploy in 10 minutes instead of 8 hours. $29 one-time. No subscription.
+The free guides above show you how to build each automation from scratch. If your time is worth more than the 8 hours it takes, the [Complete Kit](/pro/) gives you four ready-to-import Make.com JSON blueprint files — CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto — plus two pre-configured Google Sheets templates. Import and deploy in 10 minutes instead of 8 hours. $29 one-time. No subscription.
 
-[Get the Complete Kit — $29 →](/pro)
+[Get the Complete Kit — $29 →](/pro/)

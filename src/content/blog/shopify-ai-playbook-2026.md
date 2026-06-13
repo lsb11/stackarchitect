@@ -87,7 +87,7 @@ Meta's Advantage+ AI, Google's Performance Max, and TikTok's Smart Campaigns all
 
 **The fix is server-side tracking:** sending purchase events directly from Shopify's server to Meta, Google, and TikTok via their Conversions APIs. This bypasses browsers entirely. Meta's [Conversions API](https://developers.facebook.com/docs/marketing-api/conversions-api) and Google's [Enhanced Conversions](https://support.google.com/google-ads/answer/9888656) both support server-side event submission with hashed first-party data — the mechanism that makes tracking reliable regardless of browser privacy settings.
 
-**Free approach:** [CAPI Shield](/capi-shield) — Make.com scenario that handles Meta CAPI, Google Enhanced Conversions, and TikTok Events API in one setup. Recovers 20–40% of missing purchase events. Deploys in under an hour. $0/month.
+**Free approach:** [CAPI Shield](/capi-shield/) — Make.com scenario that handles Meta CAPI, Google Enhanced Conversions, and TikTok Events API in one setup. Recovers 20–40% of missing purchase events. Deploys in under an hour. $0/month.
 
 This is the AI-adjacent investment with the clearest ROI on this list. Better purchase data → better AI ad optimisation → better ROAS.
 
@@ -105,7 +105,7 @@ This is the AI-adjacent investment with the clearest ROI on this list. Better pu
 
 **What AI does well:** resolving repetitive queries (order status, shipping, returns, FAQs) — which account for 60–70% of Shopify support volume.
 
-**Free approach:** [Tidio's Lyro AI](/blog/tidio-for-shopify-complete-setup-guide) on the free plan (50 AI conversations/month). With proper knowledge base configuration, resolves approximately 70% of inbound queries automatically. Setup takes 30 minutes.
+**Free approach:** [Tidio's Lyro AI](/blog/tidio-for-shopify-complete-setup-guide/) on the free plan (50 AI conversations/month). With proper knowledge base configuration, resolves approximately 70% of inbound queries automatically. Setup takes 30 minutes.
 
 **The operational leverage:** a properly configured Lyro AI setup running on Tidio's £29/month plan (200 conversations) can reduce human support hours by 60–70%. At a conservative operator value of £25/hour, 3 hours/week saved = £325/month in time value vs £29/month in cost.
 
@@ -131,7 +131,7 @@ This is the newest layer and the one most Shopify content sites have not yet ada
 
 5. **Register for Agentic Storefronts early access** at shopify.com/chatgpt — US stores can enable direct AI checkout now; international stores are in the queue.
 
-The [Agentic Storefronts complete setup guide](/blog/shopify-agentic-storefronts-setup-guide-2026) covers eligibility, Knowledge Base App configuration, product data optimisation, and exactly what to do if your store is not eligible yet.
+The [Agentic Storefronts complete setup guide](/blog/shopify-agentic-storefronts-setup-guide-2026/) covers eligibility, Knowledge Base App configuration, product data optimisation, and exactly what to do if your store is not eligible yet.
 
 ## The Priority Order
 
@@ -147,7 +147,7 @@ If you are implementing AI for your Shopify store from scratch, this is the orde
 
 Start at the top. Each stage builds on the previous one — better tracking data makes ad AI more effective, better email automation retains the customers those ads acquire, better support AI retains them further.
 
-The [best AI tools for Shopify 2026](/best-ai-tools-shopify) page ranks 9 specific tools by ROI for more detailed evaluation.
+The [best AI tools for Shopify 2026](/best-ai-tools-shopify/) page ranks 9 specific tools by ROI for more detailed evaluation.
 
 
 ---
@@ -156,4 +156,4 @@ The [best AI tools for Shopify 2026](/best-ai-tools-shopify) page ranks 9 specif
 
 Before AI can optimise your store, your tracking, inventory, and P&L data need to be accurate. The Complete Kit deploys server-side tracking (CAPI Shield), Stocky Swap (Stocky replacement), and P&L Auto via four pre-built Make.com JSON blueprints. $29 one-time.
 
-**[Get the Complete Kit — $29 →](/pro)**
+**[Get the Complete Kit — $29 →](/pro/)**

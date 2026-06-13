@@ -52,11 +52,11 @@ The result: lower monthly costs, faster store performance (fewer app scripts loa
 
 **What these do:** send server-side conversion events to Meta and Google, providing more reliable attribution than browser pixels alone.
 
-**Free replacement:** [CAPI Shield](/capi-shield) — a Make.com scenario that receives a Shopify Order Payment webhook and sends purchase events directly to Meta's Conversions API and Google's Enhanced Conversions. Same server-side result. Zero monthly cost.
+**Free replacement:** [CAPI Shield](/capi-shield/) — a Make.com scenario that receives a Shopify Order Payment webhook and sends purchase events directly to Meta's Conversions API and Google's Enhanced Conversions. Same server-side result. Zero monthly cost.
 
 The only ongoing cost is Make.com's free plan (sufficient for most stores) or Core plan at $9/month for higher volumes. Versus $199/month for Elevar — the saving is $190/month minimum.
 
-**Also handles:** TikTok Events API via an additional branch on the same Make.com scenario. Replaces WeltPixel and similar TikTok tracking apps ($39–$99/month). See [TikTok Events API setup](/tiktok-events-api-shopify).
+**Also handles:** TikTok Events API via an additional branch on the same Make.com scenario. Replaces WeltPixel and similar TikTok tracking apps ($39–$99/month). See [TikTok Events API setup](/tiktok-events-api-shopify/).
 
 ## Layer 2 — Inventory Management (Save $29–$199/Month, Urgent Aug 2026)
 
@@ -64,7 +64,7 @@ The only ongoing cost is Make.com's free plan (sufficient for most stores) or Co
 
 **What these do:** track stock levels, log orders, manage purchase orders, and alert on low stock.
 
-**Free replacement:** [Stocky Swap](/stocky-swap) + Google Sheets. Every Shopify order automatically writes to a Google Sheet you own. Add SUMIF formulas for live stock calculations, a Make.com scheduled scenario for low-stock email alerts. Full inventory management at $0.
+**Free replacement:** [Stocky Swap](/stocky-swap/) + Google Sheets. Every Shopify order automatically writes to a Google Sheet you own. Add SUMIF formulas for live stock calculations, a Make.com scheduled scenario for low-stock email alerts. Full inventory management at $0.
 
 **Why this is urgent:** Shopify Stocky stops functioning entirely on August 31, 2026. Any store not yet using an alternative will lose inventory visibility on that date. Stocky Swap deploys in 4 minutes.
 
@@ -86,7 +86,7 @@ The only ongoing cost is Make.com's free plan (sufficient for most stores) or Co
 
 **What these do:** calculate net profit per order accounting for COGS, Shopify fees, ad spend, and other costs.
 
-**Free replacement:** [Shopify P&L Auto](/shopify-profit-loss-automation) — a Make.com branch that writes revenue, COGS, Shopify transaction fees, and net profit for every order to a Google Sheet within 60 seconds of payment. If CAPI Shield is already running, P&L is a single additional branch on the same scenario — setup takes under 3 minutes.
+**Free replacement:** [Shopify P&L Auto](/shopify-profit-loss-automation/) — a Make.com branch that writes revenue, COGS, Shopify transaction fees, and net profit for every order to a Google Sheet within 60 seconds of payment. If CAPI Shield is already running, P&L is a single additional branch on the same scenario — setup takes under 3 minutes.
 
 ## Layer 5 — Document Automation (Save $49–$99/Month)
 
@@ -94,7 +94,7 @@ The only ongoing cost is Make.com's free plan (sufficient for most stores) or Co
 
 **What these do:** generate templated documents (invoices, certificates, contracts) from Google Sheets data
 
-**Free replacement:** [Autocrat Quota Fix](/autocrat-quota-fix) — moves document generation off Google Apps Script (which has hard execution time limits) into a Make.com scenario that calls the Google Docs API directly. No 6-minute ceiling, no document create limits, no shared quota pool.
+**Free replacement:** [Autocrat Quota Fix](/autocrat-quota-fix/) — moves document generation off Google Apps Script (which has hard execution time limits) into a Make.com scenario that calls the Google Docs API directly. No 6-minute ceiling, no document create limits, no shared quota pool.
 
 ## Layer 6 — Customer Support (Save $60–$300/Month)
 
@@ -143,7 +143,7 @@ The recommended deployment order:
 5. **Tidio** — install and configure Lyro AI, 30 minutes
 6. **Autocrat Quota Fix** — only if currently experiencing Apps Script quota errors
 
-The [Shopify automation stack for small stores](/blog/shopify-automation-stack-for-small-stores) covers the minimum viable version of this for stores just getting started.
+The [Shopify automation stack for small stores](/blog/shopify-automation-stack-for-small-stores/) covers the minimum viable version of this for stores just getting started.
 
 
 ---
@@ -152,4 +152,4 @@ The [Shopify automation stack for small stores](/blog/shopify-automation-stack-f
 
 The Complete Kit is the lean stack in file form — four Make.com JSON blueprints covering tracking (CAPI Shield + Google Ads), inventory (Stocky Swap), and P&L (P&L Auto), plus two pre-configured Google Sheets templates. $29 one-time, 10 minutes to deploy.
 
-**[Get the Complete Kit — $29 →](/pro)**
+**[Get the Complete Kit — $29 →](/pro/)**

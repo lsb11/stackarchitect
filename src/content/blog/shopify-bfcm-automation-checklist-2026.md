@@ -54,7 +54,7 @@ Your ad platforms need 60–90 days of clean conversion data to optimise effecti
 
 If you are running Meta Ads without server-side tracking, your Advantage+ Shopping campaigns and Manual campaigns are optimising on incomplete data right now — and that problem compounds exponentially during BFCM when iOS-heavy mobile traffic peaks.
 
-[CAPI Shield](/capi-shield) sends purchase events directly from Shopify's server to Meta Conversions API via Make.com webhook. It takes 6 minutes to deploy and costs $0/month. Every day you delay is a day of corrupted bidding signals.
+[CAPI Shield](/capi-shield/) sends purchase events directly from Shopify's server to Meta Conversions API via Make.com webhook. It takes 6 minutes to deploy and costs $0/month. Every day you delay is a day of corrupted bidding signals.
 
 **What to do:** Deploy CAPI Shield. Verify in Meta Events Manager → Test Events that server Purchase events appear alongside browser events. Check your Event Match Quality score reaches 7.0+ before September.
 
@@ -64,7 +64,7 @@ If you are running Meta Ads without server-side tracking, your Advantage+ Shoppi
 
 Google Smart Bidding and Performance Max need conversion history to optimise. During BFCM, you will spend your highest ad budgets of the year — likely 3–10x your normal daily spend. If your Google Ads conversion data is missing 25–40% of real purchases due to iOS and Safari restrictions, you are feeding bad signals into the algorithm at the worst possible time.
 
-[Free Shopify Google Ads Conversion Tracking](/shopify-google-ads-conversion-tracking) via Make.com recovers these lost conversions server-side. Same webhook as CAPI Shield — add it as a second branch in your existing Make.com scenario.
+[Free Shopify Google Ads Conversion Tracking](/shopify-google-ads-conversion-tracking/) via Make.com recovers these lost conversions server-side. Same webhook as CAPI Shield — add it as a second branch in your existing Make.com scenario.
 
 **What to do:** Add Google Enhanced Conversions to your Make.com scenario. Verify in Google Ads → Conversions → Diagnostics. Allow 30+ days of data before BFCM for Smart Bidding to incorporate the new signals.
 
@@ -72,7 +72,7 @@ Google Smart Bidding and Performance Max need conversion history to optimise. Du
 
 **Deadline: September**
 
-If you advertise on TikTok, the same iOS tracking problem applies — arguably worse, because TikTok's audience skews younger and more iOS-heavy than Meta. [TikTok Events API](/tiktok-events-api-shopify) via Make.com adds TikTok server-side tracking as a third branch on the same Shopify webhook. No additional Shopify setup required.
+If you advertise on TikTok, the same iOS tracking problem applies — arguably worse, because TikTok's audience skews younger and more iOS-heavy than Meta. [TikTok Events API](/tiktok-events-api-shopify/) via Make.com adds TikTok server-side tracking as a third branch on the same Shopify webhook. No additional Shopify setup required.
 
 ### ✅ 4. Verify your attribution windows before BFCM
 
@@ -93,7 +93,7 @@ BFCM is when attribution window mismatches cause the most confusion. Check:
 
 Shopify is permanently closing Stocky on August 31, 2026. All data is deleted after that date. If you rely on Stocky for inventory tracking, you must migrate before this date.
 
-[Stocky Swap](/stocky-swap) deploys in 4 minutes — a Make.com JSON blueprint that logs every order to Google Sheets in real time. It captures stock levels, SKU data, fulfilment status, and full order history. The Complete Kit includes the pre-built JSON file you can import in 60 seconds.
+[Stocky Swap](/stocky-swap/) deploys in 4 minutes — a Make.com JSON blueprint that logs every order to Google Sheets in real time. It captures stock levels, SKU data, fulfilment status, and full order history. The Complete Kit includes the pre-built JSON file you can import in 60 seconds.
 
 **For BFCM specifically:** Having real-time inventory data in Google Sheets during BFCM is essential for preventing overselling on high-demand SKUs. The Sheets dashboard gives you live visibility across all variants without needing to refresh Shopify admin constantly.
 
@@ -161,7 +161,7 @@ On Systeme.io: create an automation triggered by a tag that fires when someone a
 
 BFCM is when stores make expensive profitability mistakes — running promotions that look profitable in Shopify Analytics but are actually loss-making when COGS, transaction fees, and ad spend are included.
 
-[P&L Auto](/shopify-profit-loss-automation) logs every order's revenue, COGS, Shopify fees, and estimated ad spend to a Google Sheets dashboard in real time. During BFCM, you can see your actual net profit per order as orders come in — not weeks later when you reconcile.
+[P&L Auto](/shopify-profit-loss-automation/) logs every order's revenue, COGS, Shopify fees, and estimated ad spend to a Google Sheets dashboard in real time. During BFCM, you can see your actual net profit per order as orders come in — not weeks later when you reconcile.
 
 ### ✅ 12. Pre-load your COGS data before November
 
@@ -201,7 +201,7 @@ If all five fire correctly, your automation stack is BFCM-ready.
 
 If you have not set up any of the above, the Complete Kit gives you four Make.com JSON blueprints — CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto — ready to import in 10 minutes instead of building each one from scratch.
 
-**[Get the Complete Kit — $29 →](/pro)**
+**[Get the Complete Kit — $29 →](/pro/)**
 
 Deploy all four automations today. Run the test order checklist in October. Enter BFCM with a complete, verified automation stack.
 

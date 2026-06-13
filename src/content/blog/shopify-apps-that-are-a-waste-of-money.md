@@ -40,11 +40,11 @@ These are honest assessments. Some apps in this list have genuine strengths — 
 
 **Why stores pay for it:** it works reliably and requires no technical setup. The managed approach means you don't need to build and maintain a Make.com scenario yourself.
 
-**Why it's replaceable:** the underlying mechanism — sending purchase events to Meta's Conversions API and Google's Enhanced Conversions endpoint — is a well-documented free API. [CAPI Shield](/capi-shield) does the same thing using Make.com. The setup takes 2–3 hours once. After that, it runs automatically at zero marginal cost.
+**Why it's replaceable:** the underlying mechanism — sending purchase events to Meta's Conversions API and Google's Enhanced Conversions endpoint — is a well-documented free API. [CAPI Shield](/capi-shield/) does the same thing using Make.com. The setup takes 2–3 hours once. After that, it runs automatically at zero marginal cost.
 
 **When Elevar is worth it:** if you genuinely want a managed service with customer support and monitoring, and your time is worth more than 2–3 hours of setup. If you are comfortable with Make.com or willing to follow a setup guide, there is no functional justification for the $199/month cost.
 
-**Free replacement:** [CAPI Shield](/capi-shield)
+**Free replacement:** [CAPI Shield](/capi-shield/)
 
 ## Triple Whale — $129–$299/Month — Partially Replaceable
 
@@ -56,7 +56,7 @@ These are honest assessments. Some apps in this list have genuine strengths — 
 
 **When Triple Whale is worth it:** stores spending $50,000+/month across multiple ad channels where understanding attribution between Meta, Google, and TikTok materially affects budget allocation decisions. Below this threshold, blended ROAS (Shopify revenue divided by total ad spend) is usually sufficient for budget decisions.
 
-**Partial free replacement:** [CAPI Shield](/capi-shield) for the server-side tracking component. No free equivalent for multi-channel attribution modelling.
+**Partial free replacement:** [CAPI Shield](/capi-shield/) for the server-side tracking component. No free equivalent for multi-channel attribution modelling.
 
 ## Shopify Stocky — Shutting Down Anyway
 
@@ -64,7 +64,7 @@ These are honest assessments. Some apps in this list have genuine strengths — 
 
 **Why it's a waste of money:** it's free — but it is shutting down permanently on August 31, 2026. Any time spent configuring Stocky is time spent on a tool with a known end date.
 
-**What to do:** deploy [Stocky Swap](/stocky-swap) now. It provides the core functionality (order logging, stock tracking) at zero cost on a platform that isn't going away.
+**What to do:** deploy [Stocky Swap](/stocky-swap/) now. It provides the core functionality (order logging, stock tracking) at zero cost on a platform that isn't going away.
 
 ## Klaviyo — $30–$720/Month — Replaceable for Most Stores
 
@@ -76,7 +76,7 @@ These are honest assessments. Some apps in this list have genuine strengths — 
 
 **When Klaviyo is worth it:** stores with 25,000+ contacts actively using browse-abandonment triggers, predictive segmentation, or product-specific flow branching. These features have no free equivalent and drive measurable revenue for stores that use them properly.
 
-**Free replacement:** [Systeme.io](/go/systeme) for stores under 2,000 contacts. [GetResponse](/go/getresponse) at $19–$79/month for larger lists. Full migration guide at [Replace Klaviyo Free](/replace-klaviyo-free).
+**Free replacement:** [Systeme.io](/go/systeme) for stores under 2,000 contacts. [GetResponse](/go/getresponse) at $19–$79/month for larger lists. Full migration guide at [Replace Klaviyo Free](/replace-klaviyo-free/).
 
 ## Zapier — $20–$69/Month — Replaceable
 
@@ -86,7 +86,7 @@ These are honest assessments. Some apps in this list have genuine strengths — 
 
 **When Zapier is worth it:** if you use a specific Zapier connector that Make.com does not have, or your team is already deeply familiar with Zapier and the switching cost outweighs the savings. For standard Shopify automation use cases — tracking, inventory, P&L, email triggers — Make.com is functionally superior on the free plan.
 
-**Free replacement:** [Make.com](/go/make). Full comparison at [Zapier vs Make vs Shopify Flow](/blog/zapier-vs-shopify-flow-vs-make).
+**Free replacement:** [Make.com](/go/make). Full comparison at [Zapier vs Make vs Shopify Flow](/blog/zapier-vs-shopify-flow-vs-make/).
 
 ## P&L Reporting Apps — $19–$299/Month — Replaceable
 
@@ -98,7 +98,7 @@ These are honest assessments. Some apps in this list have genuine strengths — 
 
 **When a paid P&L app is worth it:** if you need sophisticated cohort analysis, customer lifetime value modelling, or attribution-adjusted profit reporting. These require more than basic arithmetic and are genuinely harder to replicate in Sheets.
 
-**Free replacement:** [Shopify P&L Automation](/shopify-profit-loss-automation)
+**Free replacement:** [Shopify P&L Automation](/shopify-profit-loss-automation/)
 
 ## WeltPixel and TikTok Tracking Apps — $39–$99/Month — Replaceable
 
@@ -106,7 +106,7 @@ These are honest assessments. Some apps in this list have genuine strengths — 
 
 **Why they're replaceable:** TikTok's Events API is a documented free endpoint. Make.com can call it directly with a Shopify Order Payment webhook — no app required. The only non-obvious detail is that TikTok's purchase event name is `CompletePayment` (not "Purchase") — using the wrong name sends events to the wrong category.
 
-**Free replacement:** [TikTok Events API setup](/tiktok-events-api-shopify) — runs as an additional branch on the same Make.com scenario as CAPI Shield. No additional cost.
+**Free replacement:** [TikTok Events API setup](/tiktok-events-api-shopify/) — runs as an additional branch on the same Make.com scenario as CAPI Shield. No additional cost.
 
 ## Apps That Are Worth Paying For
 
@@ -120,7 +120,7 @@ In the interest of completeness — these app categories generally have no free 
 
 **Upsell and cross-sell (Rebuy, CartHook):** post-purchase upsell flows have documented AOV impact. These are worth testing if your margins support the cost.
 
-The [full cost analysis](/blog/how-much-shopify-apps-really-cost-and-how-to-cut-your-app-bill-in-half) covers what these apps actually cost and how to calculate whether each one earns its monthly fee.
+The [full cost analysis](/blog/how-much-shopify-apps-really-cost-and-how-to-cut-your-app-bill-in-half/) covers what these apps actually cost and how to calculate whether each one earns its monthly fee.
 
 
 ---
@@ -129,4 +129,4 @@ The [full cost analysis](/blog/how-much-shopify-apps-really-cost-and-how-to-cut-
 
 The Complete Kit gives you four pre-built Make.com JSON blueprints — server-side tracking (replaces Elevar/Triple Whale), TikTok CAPI (replaces WeltPixel), Stocky Swap (replaces Stocky before August shutdown), and P&L Auto (replaces TrueProfit/BeProfit). $29 one-time, saves $700+/month.
 
-**[Get the Complete Kit — $29 →](/pro)**
+**[Get the Complete Kit — $29 →](/pro/)**

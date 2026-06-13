@@ -105,7 +105,7 @@ So the decision tree is short. If none of those four apply, move to Shopify Admi
 
 There's a spectrum here, and the right answer depends entirely on which features above you can't live without.
 
-**Option 1 — Rebuild the core workflow for $0.** If what you mainly need is "log every order and keep a live, accurate stock count outside Shopify," you can rebuild that yourself with a free Make.com scenario writing to a Google Sheet — no monthly fee and no code. It won't give you AI forecasting or bill-of-materials support, and it's not pretending to. But for many small and mid-sized stores, the day-to-day need is exactly that real-time ledger, and this covers it for nothing. We document the full build — and exactly what it does and doesn't do — on our [free Stocky replacement page](/stocky-swap). That honesty about its limits is the point: use it where it fits, not where it doesn't.
+**Option 1 — Rebuild the core workflow for $0.** If what you mainly need is "log every order and keep a live, accurate stock count outside Shopify," you can rebuild that yourself with a free Make.com scenario writing to a Google Sheet — no monthly fee and no code. It won't give you AI forecasting or bill-of-materials support, and it's not pretending to. But for many small and mid-sized stores, the day-to-day need is exactly that real-time ledger, and this covers it for nothing. We document the full build — and exactly what it does and doesn't do — on our [free Stocky replacement page](/stocky-swap/). That honesty about its limits is the point: use it where it fits, not where it doesn't.
 
 **Option 2 — A dedicated paid inventory platform.** If you truly need forecasting, automated replenishment, multi-location planning, or manufacturing/BOM support, a purpose-built platform will do it properly and it's a legitimate spend. These tools earn their fee precisely on the features the free route can't replicate. The trap to avoid is paying for that capability when your actual usage would've been fine on native tools or the $0 build — so revisit the four-feature checklist above before committing to a subscription.
 
@@ -117,7 +117,7 @@ The framing that keeps you out of trouble: **don't buy capability you won't use,
 2. **Recreate suppliers by hand.** They don't export. Do this early; it's the slow part.
 3. **Audit your real usage.** Which of the four advanced features do you actually use monthly?
 4. **None of them?** Move to Shopify Admin. You're finished, at zero cost.
-5. **Some of them?** Decide between the [$0 Make.com build](/stocky-swap) and a paid platform based on whether you need forecasting/BOM or just a live ledger.
+5. **Some of them?** Decide between the [$0 Make.com build](/stocky-swap/) and a paid platform based on whether you need forecasting/BOM or just a live ledger.
 6. **Run in parallel** before the deadline so you trust the new setup before Stocky goes dark.
 7. **Don't wait for August.** The export deadline is fixed; everything else is easier with runway.
 
@@ -125,4 +125,4 @@ The framing that keeps you out of trouble: **don't buy capability you won't use,
 
 Stocky's shutdown on August 31, 2026 is a firm deadline, not an emergency — *if* you act on the data export now. Get your records out, recreate your suppliers by hand, and then make a clear-eyed call: native tools if your needs are basic, a free DIY ledger if you need a live stock count without the fee, and a paid platform only if you genuinely depend on forecasting or manufacturing features. The worst outcome here isn't picking the wrong replacement — it's losing your history because you waited too long to export it.
 
-When you're ready to see the free build in detail, including an honest account of where it falls short, that's documented on the [Stocky Swap page](/stocky-swap).
+When you're ready to see the free build in detail, including an honest account of where it falls short, that's documented on the [Stocky Swap page](/stocky-swap/).

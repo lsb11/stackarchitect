@@ -90,7 +90,7 @@ This second effect is often more valuable than the reporting improvement. Recove
 
 CAPI Shield is free and deploys in approximately 2–3 hours. It covers Meta Conversions API and Google Enhanced Conversions simultaneously in a single Make.com scenario.
 
-The full step-by-step setup is at [CAPI Shield](/capi-shield). The overview:
+The full step-by-step setup is at [CAPI Shield](/capi-shield/). The overview:
 
 1. Create a free [Make.com](/go/make) account
 2. Set up a Shopify Order Payment webhook pointing to Make.com
@@ -112,7 +112,7 @@ After 7 days, check your Event Match Quality score in Meta Events Manager — ta
 - CAPI events visible in Meta Events Manager: should show alongside Pixel events with 80–95% deduplication overlap
 - Campaign ROAS: typically improves 15–30% over 2–4 weeks as the algorithm adjusts
 
-For the full diagnosis of your specific tracking situation — including which iOS change is causing the largest gap for your store — see the [iOS conversion tracking fix guide](/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates).
+For the full diagnosis of your specific tracking situation — including which iOS change is causing the largest gap for your store — see the [iOS conversion tracking fix guide](/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/).
 
 
 ---
@@ -121,7 +121,7 @@ For the full diagnosis of your specific tracking situation — including which i
 
 The Complete Kit includes the CAPI Shield Make.com JSON blueprint — import it in 60 seconds, add one Shopify webhook, and server-side tracking is live. Also includes TikTok CAPI, Stocky Swap, and P&L Auto. $29 one-time, deploys in 10 minutes.
 
-**[Get the Complete Kit — $29 →](/pro)**
+**[Get the Complete Kit — $29 →](/pro/)**
 
 ---
 

@@ -192,7 +192,7 @@ Router module (branches simultaneously):
 
 Three platforms. One webhook. One Make.com scenario. $0/month.
 
-[CAPI Shield](/capi-shield) covers the Meta and Google setup simultaneously if you prefer a guided implementation. The [TikTok Events API guide](/tiktok-events-api-shopify) covers the TikTok branch — including the critical `CompletePayment` event name that every other guide gets wrong.
+[CAPI Shield](/capi-shield/) covers the Meta and Google setup simultaneously if you prefer a guided implementation. The [TikTok Events API guide](/tiktok-events-api-shopify/) covers the TikTok branch — including the critical `CompletePayment` event name that every other guide gets wrong.
 
 ## The No-GTM Advantage
 
@@ -213,7 +213,7 @@ For stores already running Make.com for CAPI Shield or Stocky Swap, the Google E
 
 The campaign performance improvement typically follows 2–4 weeks after implementation as Google's Smart Bidding and Performance Max algorithms adjust to the more complete conversion dataset. Stores running ROAS-based bidding often see ROAS improvement as more real conversions surface — the same budget is now training on more accurate signal.
 
-Start with the [Make.com free account](/go/make) and follow the steps above. If you want the complete cross-platform setup covering Meta and TikTok simultaneously, [CAPI Shield](/capi-shield) covers all three in a single guided implementation.
+Start with the [Make.com free account](/go/make) and follow the steps above. If you want the complete cross-platform setup covering Meta and TikTok simultaneously, [CAPI Shield](/capi-shield/) covers all three in a single guided implementation.
 
 
 ---
@@ -222,7 +222,7 @@ Start with the [Make.com free account](/go/make) and follow the steps above. If 
 
 The Complete Kit includes a ready-to-import Make.com JSON blueprint for Google Enhanced Conversions — plus Meta CAPI, TikTok CAPI, Stocky Swap, and P&L Auto. Import and deploy all four in 10 minutes instead of building each from scratch. $29 one-time.
 
-**[Get the Complete Kit — $29 →](/pro)**
+**[Get the Complete Kit — $29 →](/pro/)**
 
 ---
 

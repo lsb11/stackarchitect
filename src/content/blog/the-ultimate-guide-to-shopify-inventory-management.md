@@ -72,7 +72,7 @@ The foundation of free Shopify inventory management is a single Make.com scenari
 - Full order history that survives any app or platform change
 - The foundation for every advanced feature described below
 
-**Setup overview** (full step-by-step at [Stocky Swap](/stocky-swap)):
+**Setup overview** (full step-by-step at [Stocky Swap](/stocky-swap/)):
 
 1. Create a free Make.com account at [make.com](/go/make)
 2. Create a new scenario with a Webhooks module as the trigger
@@ -137,7 +137,7 @@ Create a separate Make.com scenario that runs every morning at 8am. It reads you
 
 **Option 3 — Google Sheets email alert (no Make.com needed)**
 
-In Google Sheets, use **Tools → Script editor** to write a simple Apps Script function that sends an email when triggered. Set it to run daily via a time-based trigger. This works without Make.com if you prefer to keep everything in Google's ecosystem — but be aware of the [Google Apps Script quota limits](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations) on consumer accounts.
+In Google Sheets, use **Tools → Script editor** to write a simple Apps Script function that sends an email when triggered. Set it to run daily via a time-based trigger. This works without Make.com if you prefer to keep everything in Google's ecosystem — but be aware of the [Google Apps Script quota limits](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/) on consumer accounts.
 
 ## Sales Velocity Analysis
 
@@ -175,7 +175,7 @@ Shopify removed Stocky from the App Store on February 2, 2026. On August 31, 202
 **If you are currently using Stocky:**
 
 1. Export all data now — do not wait. In Stocky, export your full purchase order history and stocktake records as CSV. Store these files in Google Drive immediately.
-2. Deploy Stocky Swap before August 31 — the [Stocky Swap setup](/stocky-swap) takes 4 minutes and ensures no gap in order tracking.
+2. Deploy Stocky Swap before August 31 — the [Stocky Swap setup](/stocky-swap/) takes 4 minutes and ensures no gap in order tracking.
 3. Rebuild any supplier management workflows you relied on in Stocky using Sheet 3 above.
 
 **If you are not using Stocky:** you still need a real-time order logging system. The Make.com and Google Sheets approach is the standard free replacement regardless of whether Stocky was part of your previous workflow.
@@ -184,7 +184,7 @@ Shopify removed Stocky from the App Store on February 2, 2026. On August 31, 202
 
 Once your inventory ledger is running, connecting it to profit and loss reporting costs nothing additional — it's a second branch on your existing Make.com scenario.
 
-When each order arrives, Make.com writes to both your inventory sheet (quantity, fulfilment) and your P&L sheet (revenue, COGS, fees, net profit). The [Shopify P&L Automation](/shopify-profit-loss-automation) guide covers the full P&L setup. If you deploy both together, you have a live inventory and profit dashboard in one Google Sheets workbook — replacing tools that cost $50–$300/month combined.
+When each order arrives, Make.com writes to both your inventory sheet (quantity, fulfilment) and your P&L sheet (revenue, COGS, fees, net profit). The [Shopify P&L Automation](/shopify-profit-loss-automation/) guide covers the full P&L setup. If you deploy both together, you have a live inventory and profit dashboard in one Google Sheets workbook — replacing tools that cost $50–$300/month combined.
 
 ## When to Consider a Paid Inventory App
 
@@ -201,7 +201,7 @@ Below these thresholds, the Make.com and Google Sheets system is genuinely equiv
 
 The fastest path from zero to a working inventory system:
 
-1. **Deploy Stocky Swap now** — [4-minute setup](/stocky-swap). This gets order logging running immediately.
+1. **Deploy Stocky Swap now** — [4-minute setup](/stocky-swap/). This gets order logging running immediately.
 2. **Set up the sheet structure** — use the three-sheet layout above. Copy the SUMIF formulas into Sheet 2.
 3. **Add stock alert notifications** — add a second Make.com branch for email alerts on low stock.
 4. **Export Stocky data** if applicable — do this before August 31, 2026.
@@ -216,4 +216,4 @@ Every step above is free. The only ongoing cost is Make.com's Core plan at $9/mo
 
 The Complete Kit includes the Stocky Swap Make.com JSON blueprint — deploys in 60 seconds and starts capturing live inventory data immediately. Also includes CAPI Shield (tracking), TikTok CAPI, and P&L Auto. $29 one-time. Deploy before the Stocky shutdown deadline.
 
-**[Get the Complete Kit — $29 →](/pro)**
+**[Get the Complete Kit — $29 →](/pro/)**

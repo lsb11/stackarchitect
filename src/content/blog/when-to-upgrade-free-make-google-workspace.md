@@ -56,7 +56,7 @@ You start receiving "Operations limit exceeded" errors in your Make.com scenario
 
 If you have any automations using Google Apps Script (Autocrat, custom Sheets scripts, document generation), and they're stopping mid-execution with "Exceeded maximum execution time", you've hit the 6-minute consumer ceiling.
 
-**What to do:** Upgrading to Google Workspace will *not* fix this — the 6-minute per-execution ceiling is identical on consumer and Workspace accounts. The real fixes are structural: batch your reads and writes so each run does less work, split the job into chunks that each finish inside 6 minutes (saving progress with PropertiesService between runs), or move the heavy work off Apps Script entirely onto Make.com, which has no per-execution time limit. See the [Scalable Google Sheets Automation guide](/blog/scalable-google-sheets-automation-for-high-volume-workflows) for the batching and chunking patterns.
+**What to do:** Upgrading to Google Workspace will *not* fix this — the 6-minute per-execution ceiling is identical on consumer and Workspace accounts. The real fixes are structural: batch your reads and writes so each run does less work, split the job into chunks that each finish inside 6 minutes (saving progress with PropertiesService between runs), or move the heavy work off Apps Script entirely onto Make.com, which has no per-execution time limit. See the [Scalable Google Sheets Automation guide](/blog/scalable-google-sheets-automation-for-high-volume-workflows/) for the batching and chunking patterns.
 
 ### Signal 3 — Scripts working in the morning but failing in the afternoon
 
@@ -68,7 +68,7 @@ This is the daily trigger-runtime quota signal. Consumer accounts get 90 minutes
 
 If you use Autocrat or any document generation workflow and documents are being skipped, partially generated, or failing on busy days, you've hit the 250 document creates per day limit (consumer) or the document service call rate limit.
 
-**What to do:** Upgrade to Google Workspace (1,500 document creates/day) or move document generation off Apps Script entirely into a Make.com scenario calling the Google Docs API directly — covered in the [Autocrat quota fix guide](/autocrat-quota-fix).
+**What to do:** Upgrade to Google Workspace (1,500 document creates/day) or move document generation off Apps Script entirely into a Make.com scenario calling the Google Docs API directly — covered in the [Autocrat quota fix guide](/autocrat-quota-fix/).
 
 ### Signal 5 — You need multiple team members accessing automations
 
@@ -148,7 +148,7 @@ The full migration takes 2–4 hours of active work and causes zero downtime if 
 
 ## The Bottom Line
 
-Stay on the free stack until one of the 7 signals appears. When it does, the $15/month upgrade (Make.com Core + Google Workspace) is straightforward to justify. The [Make.com beginner's guide](/blog/make-com-shopify-automation-guide) covers the initial setup, and the [Google Apps Script quota guide](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations) covers the specific limits you'll hit as volume grows.
+Stay on the free stack until one of the 7 signals appears. When it does, the $15/month upgrade (Make.com Core + Google Workspace) is straightforward to justify. The [Make.com beginner's guide](/blog/make-com-shopify-automation-guide/) covers the initial setup, and the [Google Apps Script quota guide](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/) covers the specific limits you'll hit as volume grows.
 
 
 ---
@@ -157,4 +157,4 @@ Stay on the free stack until one of the 7 signals appears. When it does, the $15
 
 The Complete Kit is designed for Make.com's free tier — four JSON blueprints (CAPI Shield, TikTok CAPI, Stocky Swap, P&L Auto) that run within 1,000 operations/month for most Shopify stores. Import in 60 seconds each. $29 one-time.
 
-**[Get the Complete Kit — $29 →](/pro)**
+**[Get the Complete Kit — $29 →](/pro/)**

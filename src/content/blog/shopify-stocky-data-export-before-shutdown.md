@@ -152,7 +152,7 @@ There is a tempting sequence error here: export first, then deal with the replac
 
 The correct sequence:
 
-1. **Deploy Stocky Swap now** — [4-minute setup](/stocky-swap). This starts logging every new order immediately.
+1. **Deploy Stocky Swap now** — [4-minute setup](/stocky-swap/). This starts logging every new order immediately.
 2. **Export all Stocky data** — using the steps above. Do this within the next 30 days.
 3. **Import historical data** — use your exports to populate the opening stock figures in your new Sheet.
 4. **Cancel Stocky** — once your replacement is running and your historical data is exported.
@@ -165,7 +165,7 @@ Stocky Swap covers the core use case: every order automatically logged to a Goog
 
 **Purchase order management** — creating and tracking supplier orders. For this, your exported supplier database becomes a manual Google Sheets purchase order tracker. Not as slick as Stocky's UI, but functional and free.
 
-**Demand forecasting** — Stocky's algorithm-based forecasting has no direct free equivalent. The sales velocity analysis formulas in the [Ultimate Inventory Guide](/blog/the-ultimate-guide-to-shopify-inventory-management) cover a manual approach using SUMIF formulas on your order log.
+**Demand forecasting** — Stocky's algorithm-based forecasting has no direct free equivalent. The sales velocity analysis formulas in the [Ultimate Inventory Guide](/blog/the-ultimate-guide-to-shopify-inventory-management/) cover a manual approach using SUMIF formulas on your order log.
 
 **Barcode scanning for stocktakes** — if your team physically scans items during stock counts, you'll need a paid app with barcode scanning support. Stocky Swap does not cover physical scanning workflows.
 
@@ -183,7 +183,7 @@ If you do nothing else from this guide today, do this:
 
 That single action preserves your most valuable Stocky data. Everything else — deploying a replacement, importing historical data, setting up your new workflow — can follow. But the data export has a hard deadline and no recovery path if you miss it.
 
-[Deploy Stocky Swap in 4 minutes →](/stocky-swap)
+[Deploy Stocky Swap in 4 minutes →](/stocky-swap/)
 
 
 ---
@@ -192,4 +192,4 @@ That single action preserves your most valuable Stocky data. Everything else —
 
 After you export your data, deploy Stocky Swap to start capturing live inventory data immediately — no manual migration, no data loss. The Complete Kit includes the Stocky Swap Make.com JSON blueprint plus CAPI Shield, TikTok CAPI, and P&L Auto. $29 one-time.
 
-**[Get the Complete Kit — $29 →](/pro)**
+**[Get the Complete Kit — $29 →](/pro/)**

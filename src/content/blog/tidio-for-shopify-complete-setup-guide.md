@@ -166,7 +166,7 @@ Compare this to Gorgias: £60–£300/month for a system that requires more huma
 
 The initial setup takes 30 minutes. The weekly review routine takes 20 minutes. Four to six weeks later, Lyro is resolving 60–70% of inbound queries without human intervention — freeing your team for the 30–40% of queries that genuinely need a person.
 
-The [Tidio vs Gorgias full comparison](/blog/tidio-vs-gorgias-shopify) covers the cost and feature analysis for stores currently paying for a dedicated helpdesk.
+The [Tidio vs Gorgias full comparison](/blog/tidio-vs-gorgias-shopify/) covers the cost and feature analysis for stores currently paying for a dedicated helpdesk.
 
 
 ---
@@ -175,4 +175,4 @@ The [Tidio vs Gorgias full comparison](/blog/tidio-vs-gorgias-shopify) covers th
 
 While Tidio handles customer support, the Complete Kit covers tracking (CAPI Shield), inventory (Stocky Swap — replace Stocky before August shutdown), and P&L reporting. Four pre-built Make.com JSON blueprints, $29 one-time.
 
-**[Get the Complete Kit — $29 →](/pro)**
+**[Get the Complete Kit — $29 →](/pro/)**

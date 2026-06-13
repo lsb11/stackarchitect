@@ -54,7 +54,7 @@ The number you see on your credit card statement understates the true cost of Sh
 | Analyzify | $149/month | GA4 + server-side tracking |
 | WeltPixel | $39–$99/month | TikTok Events API |
 
-**Free replacement:** [CAPI Shield](/capi-shield) covers Meta and Google server-side tracking. [TikTok Events API](/tiktok-events-api-shopify) covers TikTok. Combined saving: $200–$500/month.
+**Free replacement:** [CAPI Shield](/capi-shield/) covers Meta and Google server-side tracking. [TikTok Events API](/tiktok-events-api-shopify/) covers TikTok. Combined saving: $200–$500/month.
 
 ### Email Marketing — $20 to $720/Month
 
@@ -76,7 +76,7 @@ The number you see on your credit card statement understates the true cost of Sh
 | Linnworks | $449/month |
 | Shopify Stocky | Free (shutting down August 31, 2026) |
 
-**Free replacement:** [Stocky Swap](/stocky-swap) — Make.com + Google Sheets. Full order logging, stock tracking, and low-stock alerts. **Urgent: deploy before August 31, 2026.**
+**Free replacement:** [Stocky Swap](/stocky-swap/) — Make.com + Google Sheets. Full order logging, stock tracking, and low-stock alerts. **Urgent: deploy before August 31, 2026.**
 
 ### P&L Reporting — $19 to $299/Month
 
@@ -86,7 +86,7 @@ The number you see on your credit card statement understates the true cost of Sh
 | TrueProfit | $19–$89/month |
 | Lifetimely | $29–$149/month |
 
-**Free replacement:** [Shopify P&L Auto](/shopify-profit-loss-automation) — revenue, COGS, fees, and net profit written to Google Sheets for every order automatically.
+**Free replacement:** [Shopify P&L Auto](/shopify-profit-loss-automation/) — revenue, COGS, fees, and net profit written to Google Sheets for every order automatically.
 
 ### Customer Support — $10 to $300/Month
 
@@ -151,7 +151,7 @@ The saving at this store size: **$7,932–$8,160 per year**.
 4. Check for double-payment: are any two apps doing the same thing?
 5. For tracking apps: is your Make.com scenario running alongside a paid tracking app? You're probably double-paying.
 
-The [Shopify apps that are a waste of money](/blog/shopify-apps-that-are-a-waste-of-money) guide covers specific apps category by category with honest assessments of which are genuinely useful and which are replaceable.
+The [Shopify apps that are a waste of money](/blog/shopify-apps-that-are-a-waste-of-money/) guide covers specific apps category by category with honest assessments of which are genuinely useful and which are replaceable.
 
 
 ---
@@ -160,4 +160,4 @@ The [Shopify apps that are a waste of money](/blog/shopify-apps-that-are-a-waste
 
 If you're cutting your app bill, the fastest route is the Complete Kit — four pre-configured Make.com JSON blueprints for server-side tracking (Meta + Google), TikTok CAPI, inventory management (Stocky replacement), and live P&L reporting. Replace $700+/month of paid apps. $29 one-time, files yours to keep.
 
-**[Get the Complete Kit — $29 →](/pro)**
+**[Get the Complete Kit — $29 →](/pro/)**

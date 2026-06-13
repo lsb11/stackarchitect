@@ -75,7 +75,7 @@ The 250-contact free tier is designed as a trial, not a sustainable free option.
 
 ### Systeme.io — Free up to 2,000 contacts (recommended)
 
-[Systeme.io](/replace-klaviyo-free) provides **2,000 contacts and unlimited email sends permanently free** — no credit card, no trial, no expiry. This covers the majority of UK Shopify stores that are in the 0–2,000 contact range.
+[Systeme.io](/replace-klaviyo-free/) provides **2,000 contacts and unlimited email sends permanently free** — no credit card, no trial, no expiry. This covers the majority of UK Shopify stores that are in the 0–2,000 contact range.
 
 **What UK stores get on Systeme.io free:**
 - 2,000 contacts, unlimited email sends
@@ -123,7 +123,7 @@ Klaviyo is not worth the cost if you are primarily using it for: welcome sequenc
 5. Update your Shopify notification settings or Make.com webhooks to point to Systeme.io
 6. Send a test email, confirm deliverability, then cancel Klaviyo before your next billing date
 
-Full migration typically takes 30–60 minutes for a standard Shopify email setup. The [Replace Klaviyo Free guide](/replace-klaviyo-free) covers every step in detail.
+Full migration typically takes 30–60 minutes for a standard Shopify email setup. The [Replace Klaviyo Free guide](/replace-klaviyo-free/) covers every step in detail.
 
 
 ---
@@ -132,4 +132,4 @@ Full migration typically takes 30–60 minutes for a standard Shopify email setu
 
 The Complete Kit gives you four Make.com JSON blueprints — CAPI Shield (server-side tracking), TikTok CAPI, Stocky Swap (Stocky replacement before August shutdown), and P&L Auto — plus two Google Sheets templates. Deploy your entire free Shopify backend in 10 minutes. $29 one-time, no subscription.
 
-**[Get the Complete Kit — $29 →](/pro)**
+**[Get the Complete Kit — $29 →](/pro/)**

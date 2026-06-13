@@ -78,7 +78,7 @@ Place a test order in Shopify (use a 100% discount code on any product). Go back
 
 If you run Meta or Google ads and are not running server-side tracking, your ad algorithms are working from incomplete data. iOS restrictions and browser limitations mean browser pixels miss 30–60% of purchase events for many stores. Campaigns are optimising blind.
 
-[CAPI Shield](/capi-shield) adds a branch to your Make.com scenario that sends each purchase event directly to Meta's Conversions API and Google's Enhanced Conversions endpoint. No browser involved. No iOS restriction applies.
+[CAPI Shield](/capi-shield/) adds a branch to your Make.com scenario that sends each purchase event directly to Meta's Conversions API and Google's Enhanced Conversions endpoint. No browser involved. No iOS restriction applies.
 
 **Why this is first:** the improvement in tracking data quality has compounding returns over time. Every week of better data means better algorithmic optimisation, better ROAS, lower effective CPAs. Starting this as early as possible maximises the compounding period.
 
@@ -88,11 +88,11 @@ At low order volume, the impact per order is larger in percentage terms — if y
 
 Every Shopify order should be automatically logged to a Google Sheet you own. This gives you a permanent, portable record of your business that survives any platform change, any app shutdown, and any pricing change.
 
-[Stocky Swap](/stocky-swap) adds a second branch to your Make.com scenario that writes an order row to a Google Sheet on every purchase. The setup takes 20 minutes.
+[Stocky Swap](/stocky-swap/) adds a second branch to your Make.com scenario that writes an order row to a Google Sheet on every purchase. The setup takes 20 minutes.
 
 **Urgent note:** if you currently use Shopify Stocky for inventory tracking, it shuts down permanently on August 31, 2026. Stocky Swap is the direct free replacement.
 
-At low volume, your Sheet also serves as your inventory system. Set up the structure from [the inventory guide](/blog/the-ultimate-guide-to-shopify-inventory-management) — it takes 30 minutes and gives you running stock calculations via SUMIF formulas that update automatically with every order.
+At low volume, your Sheet also serves as your inventory system. Set up the structure from [the inventory guide](/blog/the-ultimate-guide-to-shopify-inventory-management/) — it takes 30 minutes and gives you running stock calculations via SUMIF formulas that update automatically with every order.
 
 ## Step 4 — Email Automation (30–45 Minutes)
 
@@ -114,7 +114,7 @@ Once you have the Make.com scenario running, adding P&L tracking is a single add
 
 Add a Google Sheets → Append Row module to your existing scenario. Map: order revenue, Shopify transaction fee (2.9% + 30¢ on standard Shopify Payments), your COGS for the ordered product, and net profit calculation. Every order updates your P&L sheet automatically.
 
-The [Shopify P&L Automation](/shopify-profit-loss-automation) guide covers the exact mapping and sheet structure.
+The [Shopify P&L Automation](/shopify-profit-loss-automation/) guide covers the exact mapping and sheet structure.
 
 ## The Complete Small Store Stack at a Glance
 
@@ -139,9 +139,9 @@ As your store grows, add complexity in this order:
 
 **At $50,000+/month GMV:** consider [GetResponse](/go/getresponse) ($19/month) if your email list has grown beyond Systeme.io's 2,000 free contacts. The abandoned cart and post-purchase sequences become more valuable as revenue scales.
 
-**At $100,000+/month GMV:** the [lean stack guide](/blog/the-lean-shopify-tech-stack-2026) covers the full optimised setup for larger stores including TikTok Events API, more sophisticated inventory management, and the decision points for paid tools.
+**At $100,000+/month GMV:** the [lean stack guide](/blog/the-lean-shopify-tech-stack-2026/) covers the full optimised setup for larger stores including TikTok Events API, more sophisticated inventory management, and the decision points for paid tools.
 
-The [Make.com beginner's guide](/blog/make-com-shopify-automation-guide) covers the full scenario setup with screenshots if you are new to Make.com.
+The [Make.com beginner's guide](/blog/make-com-shopify-automation-guide/) covers the full scenario setup with screenshots if you are new to Make.com.
 
 
 ---
@@ -150,4 +150,4 @@ The [Make.com beginner's guide](/blog/make-com-shopify-automation-guide) covers 
 
 The Complete Kit collapses 8+ hours of setup into 10 minutes — four Make.com JSON blueprints (CAPI Shield, TikTok CAPI, Stocky Swap, P&L Auto) plus two Google Sheets templates, all pre-configured. $29 one-time. Perfect for small stores that want the stack without the build time.
 
-**[Get the Complete Kit — $29 →](/pro)**
+**[Get the Complete Kit — $29 →](/pro/)**

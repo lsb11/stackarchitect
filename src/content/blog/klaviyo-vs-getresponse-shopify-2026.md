@@ -120,7 +120,7 @@ GetResponse is the better choice when:
 
 For stores with fewer than 2,000 contacts, [Systeme.io](/go/systeme) provides unlimited email sends and full automation sequences permanently free. This makes the Klaviyo vs GetResponse comparison irrelevant below that threshold — there is a genuinely free alternative that covers the core use cases.
 
-The full free alternative comparison is in [the free Klaviyo alternative guide](/blog/free-klaviyo-alternative-shopify-2026).
+The full free alternative comparison is in [the free Klaviyo alternative guide](/blog/free-klaviyo-alternative-shopify-2026/).
 
 ## Migration from Klaviyo to GetResponse
 
@@ -155,4 +155,4 @@ For stores under 2,000 contacts: [Systeme.io is free and covers the same use cas
 
 The Complete Kit handles tracking (CAPI Shield replaces Elevar), inventory (Stocky Swap replaces Stocky before August shutdown), and P&L reporting (replaces TrueProfit/BeProfit) — four pre-built Make.com scenarios. $29 one-time, saves $700+/month ongoing.
 
-**[Get the Complete Kit — $29 →](/pro)**
+**[Get the Complete Kit — $29 →](/pro/)**

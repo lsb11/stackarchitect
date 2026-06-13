@@ -123,7 +123,7 @@ Meta Conversions API (CAPI) sends conversion events directly from your server to
 
 **Implementation:** Google Tag Manager server-side container + Shopify webhooks. GTM is free. Server container hosting is approximately $10–30/month — the only non-free component in this guide.
 
-[CAPI Shield](/capi-shield) is the free step-by-step implementation guide. It covers Meta CAPI and Google Ads server-side conversion tracking simultaneously in a single implementation.
+[CAPI Shield](/capi-shield/) is the free step-by-step implementation guide. It covers Meta CAPI and Google Ads server-side conversion tracking simultaneously in a single implementation.
 
 ### Step 6 — Verify Deduplication and Event Match Quality (10 minutes, after 7 days)
 
@@ -158,7 +158,7 @@ This uses ground-truth revenue data from Shopify — which counts every order re
 
 **Timeline:** Steps 1–3 show impact in 24–72 hours. Full CAPI shows full impact 7–14 days after implementation. Expected ROAS improvement: 20–40%.
 
-The [CAPI Shield setup guide](/capi-shield) covers every step of the full CAPI implementation including deduplication, event matching, and verification in Meta Events Manager.
+The [CAPI Shield setup guide](/capi-shield/) covers every step of the full CAPI implementation including deduplication, event matching, and verification in Meta Events Manager.
 
 
 ---
@@ -167,4 +167,4 @@ The [CAPI Shield setup guide](/capi-shield) covers every step of the full CAPI i
 
 The Complete Kit includes the CAPI Shield Make.com JSON blueprint — the fastest path to recovering your Meta ROAS. Import in 60 seconds, add one webhook, and server-side purchase events start flowing immediately. Also includes TikTok CAPI, Stocky Swap, and P&L Auto. $29 one-time.
 
-**[Get the Complete Kit — $29 →](/pro)**
+**[Get the Complete Kit — $29 →](/pro/)**

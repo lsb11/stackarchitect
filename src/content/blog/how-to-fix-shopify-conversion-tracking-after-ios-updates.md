@@ -128,7 +128,7 @@ Server-to-server communication is not subject to any browser privacy setting or 
 
 **How to implement free:**
 
-[CAPI Shield](/capi-shield) is the free implementation guide. It uses Make.com to receive a Shopify order webhook and forward a formatted purchase event to Meta's Conversions API endpoint. Setup takes 2–3 hours and covers both Meta CAPI and Google Enhanced Conversions simultaneously.
+[CAPI Shield](/capi-shield/) is the free implementation guide. It uses Make.com to receive a Shopify order webhook and forward a formatted purchase event to Meta's Conversions API endpoint. Setup takes 2–3 hours and covers both Meta CAPI and Google Enhanced Conversions simultaneously.
 
 **Critical: deduplication**
 
@@ -168,9 +168,9 @@ A residual 15–25% gap is expected and normal even with full server-side implem
 
 The iOS tracking problem affects TikTok and Google Ads as well, not just Meta. If TikTok Ads Manager shows significantly fewer purchases than Shopify, the same diagnostic applies.
 
-**For TikTok:** [TikTok Events API](/tiktok-events-api-shopify) is the server-side fix. Critical detail — TikTok's purchase event name is `CompletePayment`, not `Purchase`. Using the wrong name sends events to the wrong category.
+**For TikTok:** [TikTok Events API](/tiktok-events-api-shopify/) is the server-side fix. Critical detail — TikTok's purchase event name is `CompletePayment`, not `Purchase`. Using the wrong name sends events to the wrong category.
 
-**For Google:** Google Enhanced Conversions is the server-side equivalent of Meta CAPI. It is configured simultaneously as part of the [CAPI Shield](/capi-shield) setup, so implementing one covers both.
+**For Google:** Google Enhanced Conversions is the server-side equivalent of Meta CAPI. It is configured simultaneously as part of the [CAPI Shield](/capi-shield/) setup, so implementing one covers both.
 
 ## The Complete Fix Checklist
 
@@ -184,7 +184,7 @@ Work through these in order — each builds on the previous:
 - [ ] Verify deduplication overlap in Meta Events Manager after 7 days (10 minutes)
 - [ ] Check Event Match Quality score — target 6 or above (ongoing)
 
-The [CAPI Shield guide](/capi-shield) covers steps 5–7 in full detail including the Make.com scenario setup, API endpoint configuration, and verification process.
+The [CAPI Shield guide](/capi-shield/) covers steps 5–7 in full detail including the Make.com scenario setup, API endpoint configuration, and verification process.
 
 
 ---
@@ -193,7 +193,7 @@ The [CAPI Shield guide](/capi-shield) covers steps 5–7 in full detail includin
 
 The Complete Kit includes the CAPI Shield Make.com JSON blueprint — import it in 60 seconds and your server-side tracking is live. Also includes Google Ads Enhanced Conversions, TikTok CAPI, Stocky Swap, and P&L Auto. $29 one-time, deploys in 10 minutes.
 
-**[Get the Complete Kit — $29 →](/pro)**
+**[Get the Complete Kit — $29 →](/pro/)**
 
 ---
 
