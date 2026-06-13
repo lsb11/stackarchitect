@@ -28,6 +28,7 @@ const CANONICAL = `${SITE}/shopify-google-ads-conversion-tracking/`;
 const OG_IMAGE  = "https://stackarchitect.xyz/og.png";
 
 const MAKE_URL  = "/go/make";
+const SCENARIO_URL = "https://eu1.make.com/public/shared-scenario/QBl8tBAX4k1/shopify-to-google-ads-enhanced-conversio";
 const KIT_URL   = "https://buy.stripe.com/00wfZa7w1a3Bfo55tnfrW00";
 
 const heroStats = [
@@ -55,8 +56,8 @@ const setupSteps = [
   { pos: 1, title: "Create a free Make.com account",            tool: "make.com — free tier, no credit card",                     desc: "Sign up for Make.com free — 1,000 operations per month at no cost. For most Shopify stores processing under 300 orders/month, the free tier covers Google Ads Enhanced Conversions running indefinitely." },
   { pos: 2, title: "Create a scenario with a Webhooks trigger",  tool: "Make.com → Create scenario → Webhooks",                    desc: "In Make.com, create a new scenario. Add a Webhooks module as the trigger. Copy the webhook URL — you will paste this into Shopify in step 3." },
   { pos: 3, title: "Add the Shopify Order payment webhook",       tool: "Shopify Admin → Settings → Notifications → Webhooks",     desc: "In Shopify Admin → Settings → Notifications → Webhooks, create a new webhook. Event: Order payment. Format: JSON. Paste the Make.com webhook URL. Save. This is the server-to-server trigger — no browser required." },
-  { pos: 4, title: "Add an HTTP module targeting Google's API",   tool: "Make.com → HTTP → Make a request",                        desc: "Add an HTTP module. URL: https://googleads.googleapis.com/v17/customers/{customer-id}/conversionUploads:uploadClickConversions. Method: POST. Set your Google Ads conversion action ID, map gclid from the Shopify order, set conversion_date_time, and add conversion_value. Add an OAuth 2.0 connection using your Google Ads account." },
-  { pos: 5, title: "Hash customer email and phone",               tool: "Make.com → Tools → SHA-256",                              desc: "Before submitting, add SHA-256 hashing for customer email and phone number. These are the Enhanced Conversions fields Google uses to match purchases to signed-in Google accounts — dramatically improving attribution even when gclid is lost to iOS or Safari ITP." },
+  { pos: 4, title: "Add the Google Ads module",   tool: "Make.com → Google Ads → Upload a Click Conversion",                        desc: "Add the Google Ads module and choose Upload a Click Conversion. Connect your Google Ads account, then select your Customer ID and Conversion Action ID from the dropdowns. Map conversion value and currency from the Shopify order. No raw API URLs — the native module handles the Google Ads Conversions API for you." },
+  { pos: 5, title: "Add the hashed-email identifier",               tool: "Make.com → Google Ads → User Identifiers",                              desc: "In the same module, add a User Identifier and map Hashed Email to SHA-256 of the order email (lowercased and trimmed). This is the Enhanced Conversions match key — it lets Google attribute the sale even when the gclid is stripped by iOS or Safari ITP. The pre-built scenario already includes this mapping." },
   { pos: 6, title: "Verify in Google Ads → Conversions",         tool: "Google Ads → Tools → Conversions → Diagnostics",          desc: "Place a test order. In Google Ads → Tools → Conversions, check your conversion action shows Enhanced Conversions data. The diagnostics tab will confirm whether enhanced data is being received correctly within 24–48 hours." }
 ];
 
@@ -318,6 +319,9 @@ const schemaGraph = {
         Fix Google Ads tracking free
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
+      <a href={SCENARIO_URL} target="_blank" rel="noopener" class="btn-outline" aria-label="Clone the pre-built Google Ads Enhanced Conversions scenario">
+        Clone the scenario →
+      </a>
     </div>
 
     <p class="hero-cta-note">
@@ -444,8 +448,16 @@ const schemaGraph = {
       ))}
     </div>
 
+    <div style="background:rgba(0,200,100,.04);border:1px solid rgba(0,200,100,.2);border-left:3px solid var(--g);border-radius:10px;padding:22px 24px;margin-top:28px;text-align:left;">
+      <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--g);margin-bottom:8px;">Pre-built &amp; ready to import</div>
+      <p style="font-size:14px;color:var(--text-2);line-height:1.7;margin:0 0 16px;">Skip the manual build. This exact scenario is published free — the Google Ads module and the hashed-email Enhanced Conversions mapping are already configured. Clone it, connect your Google Ads account, select your Customer ID and Conversion Action, and you're live.</p>
+      <a href={SCENARIO_URL} target="_blank" rel="noopener" class="btn btn-sm" style="display:inline-flex;background:var(--g);">
+        Clone the free scenario →
+      </a>
+    </div>
+
     <div style="margin-top:24px;text-align:center;">
-      <p style="font-size:14px;color:var(--text-4);margin-bottom:16px;">Prefer the pre-built version? The Complete Kit includes a ready-to-import Make.com JSON blueprint for this exact setup — plus Meta CAPI, TikTok CAPI, Stocky Swap, and P&L Auto.</p>
+      <p style="font-size:14px;color:var(--text-4);margin-bottom:16px;">Prefer all four in one place? The Complete Kit includes a ready-to-import Make.com JSON blueprint for this exact setup — plus Meta CAPI, TikTok CAPI, Stocky Swap, and P&L Auto.</p>
       <a href={KIT_URL} class="btn btn-sm" target="_blank" rel="noopener">
         Get all 4 pre-built automations — $29
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
