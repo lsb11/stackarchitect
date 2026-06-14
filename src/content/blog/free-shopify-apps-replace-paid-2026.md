@@ -48,7 +48,7 @@ Elevar, Triple Whale, and Analyzify all charge monthly fees to route Shopify pur
 
 The same Make.com scenario simultaneously handles TikTok server-side tracking — replacing WeltPixel ($39+/month) and any TikTok-specific tracking apps. One webhook. Three ad platforms. Zero cost.
 
-**What you get free:** Server-to-server purchase events for Meta, Google, and TikTok. EMQ 7–8.5. 20–40% conversion recovery. iOS-proof. Ad-blocker-proof.
+**What you get free:** Server-to-server purchase events for Meta, Google, and TikTok. A feed this rich typically reaches EMQ 7–8.5. 20–40% conversion recovery. iOS-proof. Ad-blocker-proof.
 
 [Deploy CAPI Shield free →](/capi-shield/)
 

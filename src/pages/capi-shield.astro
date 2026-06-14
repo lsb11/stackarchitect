@@ -118,7 +118,7 @@ const faqs = [
   { q: "Does CAPI Shield replace my Meta Pixel?",                        a: "No. CAPI Shield works alongside your existing Meta Pixel, not instead of it. The pixel still captures upper-funnel events like ViewContent and AddToCart. CAPI Shield adds server-side Purchase events on top. Both fire simultaneously and Meta deduplicates them automatically using the event_id included in every server event." },
   { q: "What is the difference between CAPI Shield and Elevar or Northbeam?", a: "Elevar costs $150+/month and Northbeam costs $300+/month. CAPI Shield uses Make.com to achieve the same server-side event forwarding for free. The core technical outcome — server-side purchase events reaching Meta CAPI and Google Enhanced Conversions — is identical. Elevar and Northbeam add analytics dashboards on top. If you only need conversion recovery, CAPI Shield is the free equivalent." },
   { q: "Will CAPI Shield improve my ROAS?",                              a: "Indirectly, yes. CAPI Shield gives Meta and Google complete conversion data. Smart Bidding and Advantage+ Shopping use conversion signals to optimise delivery. Most stores see measurable ROAS improvement within 14–21 days as the algorithm relearns with full data." },
-  { q: "What is Event Match Quality and why does it matter?",            a: "Event Match Quality (EMQ) is Meta's 0–10 score for how well server-side events are matched to Meta user accounts. Scores above 7.0 indicate strong matching. CAPI Shield sends hashed email, phone, name, and IP address with every event, typically achieving EMQ scores of 7–8.5 in most Shopify deployments." },
+  { q: "What is Event Match Quality and why does it matter?",            a: "Event Match Quality (EMQ) is Meta's 0–10 score for how well server-side events are matched to Meta user accounts. Scores above 7.0 indicate strong matching. CAPI Shield sends hashed email, phone, name, IP and user-agent with every event — the data richness that typically reaches EMQ scores of 7–8.5 in Shopify deployments." },
   { q: "Is CAPI Shield GDPR compliant?",                                 a: "The data flows through your own Make.com workspace. CAPI Shield hashes all personally identifiable information (email, phone, name) before transmission using SHA-256, as required by Meta's Conversions API specification. Ensure your store's privacy policy covers server-side tracking data sharing." },
   { q: "How long does CAPI Shield setup take?",                          a: "Most stores are fully live within 6 minutes. The Make.com scenario takes 3–4 minutes to configure. The Shopify webhook takes under 2 minutes. Testing takes 1–2 minutes. No developer, no code, no infrastructure required." },
   { q: "Why is Shopify's built-in CAPI not enough?",                     a: "Shopify's native CAPI is still browser-triggered — the thank-you page Web Pixel must execute before the server event fires. If a browser blocks the Web Pixel, the server event may not fire. CAPI Shield uses a server-to-server webhook that fires from Shopify's backend the moment payment is confirmed, regardless of browser behaviour. This is why CAPI Shield achieves higher EMQ scores than Shopify's native integration." },
@@ -470,7 +470,7 @@ import AttributionTracker from '../components/AttributionTracker.astro';
         <div class="platform-label">Meta Conversions API</div>
         <div class="platform-title">Recover lost Meta purchase events</div>
         <div class="platform-desc">Meta CAPI sends Shopify purchase events server-to-server, bypassing iOS ITP, ad blockers, and Safari cookie restrictions. CAPI Shield sends hashed email, phone, name, and IP address with every event — the full customer signal set Meta needs for accurate attribution and Advantage+ optimisation.</div>
-        <div class="platform-metric">EMQ scores 7.0–8.5 achieved</div>
+        <div class="platform-metric">EMQ 7.0–8.5 typical</div>
       </div>
       <div class="platform-card google">
         <div class="platform-label">Google Enhanced Conversions</div>
@@ -495,7 +495,7 @@ import AttributionTracker from '../components/AttributionTracker.astro';
         <li><strong>IP address</strong> — medium impact. Available from the Shopify webhook payload.</li>
         <li><strong>Facebook click ID (fbclid)</strong> — high impact when present. Store this in a Shopify customer tag.</li>
       </ul>
-      <p>CAPI Shield maps all available Shopify order fields to Meta's customer information parameters automatically. Most stores achieve EMQ scores of 7.0–8.5 after deployment, compared to typical scores of 4.0–6.0 with Shopify's native CAPI integration.</p>
+      <p>CAPI Shield maps all available Shopify order fields to Meta's customer information parameters automatically. A feed this complete typically reaches EMQ scores of 7.0–8.5, compared to roughly 4.0–6.0 with Shopify's native CAPI integration.</p>
 
       <div class="callout warn">
         <div class="callout-label">Common mistake</div>
