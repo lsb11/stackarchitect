@@ -25,6 +25,8 @@ faqs:
     answer: "Yes. Tidio supports CSV import of customer and conversation history. Macro and automation logic doesn't transfer directly — you'll need to rebuild it inside Tidio. Most stores complete the switch in 4–8 hours of focused work. The reverse migration (Tidio to Gorgias) is also supported but typically takes longer because Gorgias macros are more sophisticated and require redesign rather than direct translation."
 ---
 
+# Tidio vs Gorgias vs Zendesk for Shopify 2026 — Which Is Worth It?
+
 > **The verdict, fast:** Tidio if you're under **$50k/mo** revenue. Gorgias if you're **$50k–$500k/mo** with a CX person. Zendesk only if you're **$500k+/mo** with a 5+ person CX team. Pick by your monthly revenue, not by the marketing pages.
 >
 > [Get Tidio Free →](https://stackarchitect.xyz/go/tidio) · [Try Gorgias →](https://stackarchitect.xyz/go/gorgias)
