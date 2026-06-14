@@ -71,7 +71,7 @@ import AttributionTracker from '../components/AttributionTracker.astro';
       {
         "@type": "Product",
         "name": "Stack Architect Complete Kit",
-        "description": "The Stack Architect Complete Kit is a $29 one-time purchase containing four ready-to-import Make.com automation scenario JSON files for Shopify: FILE_01 CAPI Shield (Meta Conversions API v25.0 + Google Enhanced Conversions via Google Ads Conversions API + GA4 Measurement Protocol server-side tracking), FILE_02 TikTok CAPI (TikTok Events API v1.3 CompletePayment server-side events), FILE_03 Stocky Swap (live inventory logging to Google Sheets, replacing Shopify Stocky before its August 31 2026 shutdown), and FILE_04 P&L Auto (live profit and loss reporting to Google Sheets). Also includes two pre-configured Google Sheets templates and a PDF setup guide. Replaces over $700 per month of paid Shopify apps including Elevar, Triple Whale, WeltPixel, Shopify Stocky, TrueProfit, and BeProfit. One-time $29. Instant access via Stripe.",
+        "description": "The Stack Architect Complete Kit is a $29 one-time purchase containing four ready-to-import Make.com automation scenario JSON files for Shopify: FILE_01 CAPI Shield (Meta Conversions API via Graph API v19.0 + Google Ads Enhanced Conversions, routed server-side), FILE_02 TikTok CAPI (TikTok Events API v1.3 CompletePayment server-side events), FILE_03 Stocky Swap (live inventory logging to Google Sheets, replacing Shopify Stocky before its August 31 2026 shutdown), and FILE_04 P&L Auto (live profit and loss reporting to Google Sheets). Also includes two pre-configured Google Sheets templates and a PDF setup guide. Replaces over $700 per month of paid Shopify apps including Elevar, Triple Whale, WeltPixel, Shopify Stocky, TrueProfit, and BeProfit. One-time $29. Instant access via Stripe.",
         "url": "https://stackarchitect.xyz/pro/",
         "image": "https://stackarchitect.xyz/og.png",
         "sku": "SA-COMPLETE-KIT-001",
@@ -89,7 +89,7 @@ import AttributionTracker from '../components/AttributionTracker.astro';
           "One-click import into Make.com",
           "Runs on Make.com free tier",
           "All Shopify plans supported",
-          "CAPI Shield — Meta Conversions API v25.0 + Google Ads Enhanced Conversions + GA4 server-side tracking",
+          "CAPI Shield — Meta Conversions API (Graph API v19.0) + Google Ads Enhanced Conversions, server-side",
           "TikTok CAPI — TikTok Events API v1.3 CompletePayment server-side events",
           "Stocky Swap — live inventory to Google Sheets, replaces Shopify Stocky before August 2026 shutdown",
           "P&L Auto — live profit and loss reporting to Google Sheets",
@@ -127,12 +127,12 @@ import AttributionTracker from '../components/AttributionTracker.astro';
         "name": "Stack Architect Complete Kit — Full Contents",
         "numberOfItems": 7,
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "FILE_01 — CAPI Shield Make.com Scenario (JSON)", "description": "Import-ready JSON blueprint. Meta Conversions API v25.0 + Google Enhanced Conversions (Google Ads Conversions API) + GA4 Measurement Protocol. Server-side purchase events. EMQ 7.0–8.5. Replaces Elevar, Triple Whale, Stape, and Littledata." },
+          { "@type": "ListItem", "position": 1, "name": "FILE_01 — CAPI Shield Make.com Scenario (JSON)", "description": "Import-ready JSON blueprint. Routes server-side purchase events to Meta Conversions API (Graph API v19.0) and Google Ads Enhanced Conversions via a built-in router. Sends SHA-256 hashed email, phone, name, plus IP and user-agent for high Event Match Quality. Replaces Elevar, Triple Whale, Stape, and Littledata." },
           { "@type": "ListItem", "position": 2, "name": "FILE_02 — TikTok CAPI Make.com Scenario (JSON)", "description": "Import-ready JSON blueprint. TikTok Events API v1.3 CompletePayment server-side events. EMQ 6–8. Replaces WeltPixel and Analyzify." },
           { "@type": "ListItem", "position": 3, "name": "FILE_03 — Stocky Swap Make.com Scenario (JSON)", "description": "Import-ready JSON blueprint. Live Shopify order logging to Google Sheets. Permanent replacement for Shopify Stocky before August 31 2026 shutdown." },
           { "@type": "ListItem", "position": 4, "name": "FILE_04 — P&L Auto Make.com Scenario (JSON)", "description": "Import-ready JSON blueprint. Automated revenue, COGS, and profit calculation into Google Sheets per order. Replaces TrueProfit and BeProfit." },
-          { "@type": "ListItem", "position": 5, "name": "Stocky Swap Inventory Google Sheets Template", "description": "Pre-configured spreadsheet with all 19 column headers, formulas, and formatting for the Stocky Swap inventory scenario." },
-          { "@type": "ListItem", "position": 6, "name": "P&L Auto Google Sheets Template", "description": "Pre-configured three-tab spreadsheet — Raw Orders, P&L Summary with SUMIFS dashboard, and COGS Table — ready to connect to Make.com." },
+          { "@type": "ListItem", "position": 5, "name": "Stocky Swap Inventory Google Sheets Template", "description": "Pre-configured spreadsheet with the six-column Inventory_Log (Timestamp, SKU, Change_Amount, Order_ID, Product, Notes), example rows, and a READ_ME_FIRST setup tab — ready to connect to the Stocky Swap scenario." },
+          { "@type": "ListItem", "position": 6, "name": "P&L Auto Google Sheets Template", "description": "Pre-configured spreadsheet with four tabs — Order_Data (per-order log), COGS_Table (your product costs), a live Dashboard that auto-totals revenue, fees, COGS and gross profit via SUM formulas, and a READ_ME_FIRST setup tab — ready to connect to the P&L Auto scenario." },
           { "@type": "ListItem", "position": 7, "name": "PDF Setup Guide and README", "description": "Complete setup documentation covering all four scenarios, placeholder values, troubleshooting, and support information." }
         ]
       }
@@ -639,7 +639,6 @@ import AttributionTracker from '../components/AttributionTracker.astro';
       <div class="hero-dateline">Instant access via Stripe · $29 one-time · Runs on Make.com's free tier · Updated April 2026</div>
       <div class="hero-proof">
         <span class="dot"></span>
-        <span class="hero-proof-stars" aria-label="5 stars">★★★★★</span>
         <span>One-time $29 · No subscription ever · 30-day money-back guarantee</span>
       </div>
 
@@ -691,7 +690,7 @@ import AttributionTracker from '../components/AttributionTracker.astro';
       <div class="folder-contents">
         <div class="folder-contents-label">// WHAT YOU GET INSTANTLY AFTER PAYMENT</div>
         <ul class="folder-file-list" aria-label="Complete Kit file contents">
-          <li class="folder-file"><span class="folder-file-icon">▸</span>FILE_01_CAPI_Shield.json — Meta CAPI v25.0 + Google Ads Enhanced Conversions + GA4<span class="folder-file-type">JSON</span></li>
+          <li class="folder-file"><span class="folder-file-icon">▸</span>FILE_01_CAPI_Shield.json — Meta CAPI (Graph v19.0) + Google Ads Enhanced Conversions<span class="folder-file-type">JSON</span></li>
           <li class="folder-file"><span class="folder-file-icon">▸</span>FILE_02_TikTok_CAPI.json — TikTok Events API v1.3<span class="folder-file-type">JSON</span></li>
           <li class="folder-file"><span class="folder-file-icon">▸</span>FILE_03_Stocky_Swap_Inventory.json — Live inventory log<span class="folder-file-type">JSON</span></li>
           <li class="folder-file"><span class="folder-file-icon">▸</span>FILE_04_P_and_L_Auto.json — Live P&amp;L to Sheets<span class="folder-file-type">JSON</span></li>
@@ -774,7 +773,7 @@ import AttributionTracker from '../components/AttributionTracker.astro';
             <span class="tag tag-sky" style="margin-bottom:10px;display:inline-flex;">Inventory Management</span>
             <div class="sol-urgent-name">Stocky Swap Scenario</div>
             <div class="sol-urgent-hl">Live inventory to Google Sheets — replaces Shopify Stocky before shutdown</div>
-            <p class="sol-urgent-desc">Every Shopify order auto-logged to Google Sheets in real time — stock levels, fulfilment status, full order history. Shopify closes Stocky on August 31, 2026 and deletes all data. This JSON file is ready to import today — 60 seconds from download to data capture. No data loss. No manual migration.</p>
+            <p class="sol-urgent-desc">Every Shopify order line item auto-logged to Google Sheets in real time — timestamp, SKU, quantity sold, order ID and product. Shopify closes Stocky on August 31, 2026 and deletes all data. This JSON file is ready to import today — 60 seconds from download to data capture. No data loss. No manual migration.</p>
             <div class="sol-reps" style="margin-bottom:12px;"><span class="sol-rep">Shopify Stocky</span><span class="sol-rep">Linnworks</span><span class="sol-rep">Skubana</span><span class="sol-rep">Inventory Planner</span></div>
             <div class="sol-urgent-meta"><span class="sol-urgent-save">Saves $29–$199/mo</span><span class="sol-urgent-time">~4 min after import</span></div>
             <div style="display:flex;gap:12px;flex-wrap:wrap;">
@@ -801,7 +800,7 @@ import AttributionTracker from '../components/AttributionTracker.astro';
             <span class="tag" style="font-size:9px;">FILE_01 // MAKE.COM JSON</span>
             <div class="sol-name">CAPI Shield Scenario</div>
             <div class="sol-hl">Meta + Google server-side tracking — instant</div>
-            <p class="sol-desc">Meta Conversions API v25.0 + Google GA4 Measurement Protocol, server-side via Shopify webhook. Bypasses iOS restrictions and ad blockers. Achieves EMQ 7–8.5. One click to import.</p>
+            <p class="sol-desc">Meta Conversions API (Graph API v19.0) + Google Ads Enhanced Conversions, server-side via Shopify webhook. Bypasses iOS restrictions and ad blockers. Sends hashed email, phone, name, IP and user-agent for high Event Match Quality. One click to import.</p>
             <div class="sol-rep-label">Replaces</div>
             <div class="sol-reps"><span class="sol-rep">Elevar $150+/mo</span><span class="sol-rep">Triple Whale $299+/mo</span><span class="sol-rep">Stape $29+/mo</span><span class="sol-rep">Littledata $99+/mo</span></div>
             <div class="sol-meta"><span class="sol-save">$149–$299/mo saved</span><span class="sol-time">~6 min after import</span></div>
@@ -1108,21 +1107,7 @@ import AttributionTracker from '../components/AttributionTracker.astro';
     </div>
   </section>
 
-  <!-- TESTIMONIALS -->
-  <section class="section" id="testimonials" aria-labelledby="testi-h">
-    <div class="inner">
-      <div class="sec-head">
-        <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">// What's in the kit</span>
-        <h2 id="testi-h">What store owners say</h2>
-        <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px;">
-          <span style="color:var(--amber);font-size:15px;letter-spacing:.1em;">★★★★★</span>
-          <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);">One-time $29 · 30-day money-back guarantee</span>
-        </div>
-      </div>
-      <div class="testi-grid">
-      </div>
-    </div>
-  </section>
+  <!-- TESTIMONIALS — removed until real customer reviews exist (no fabricated social proof) -->
 
   <!-- WHO IS IT FOR -->
   <section class="section-alt" id="who-its-for" aria-labelledby="for-h">
@@ -1166,25 +1151,25 @@ import AttributionTracker from '../components/AttributionTracker.astro';
         <meta itemprop="headline" content="Stack Architect Complete Kit — Shopify Automation JSON Blueprint Files for Make.com">
 
         <h3>What is the Stack Architect Complete Kit?</h3>
-        <p>The Stack Architect Complete Kit is a <strong>$29 one-time purchase</strong> that gives Shopify store owners seven ready-to-use files: four pre-configured Make.com automation scenario JSON blueprints, two Google Sheets templates, and a PDF setup guide. The four scenarios are CAPI Shield (Meta Conversions API v25.0 + Google Ads Enhanced Conversions + GA4 Measurement Protocol), TikTok CAPI (TikTok Events API v1.3), Stocky Swap (live inventory to Google Sheets, replacing Shopify Stocky before its August 31 2026 shutdown), and P&L Auto (live profit and loss reporting). Access is instant via Stripe — files open in your browser immediately after payment. The kit replaces over $700 per month of paid Shopify apps including Elevar, Triple Whale, WeltPixel, and TrueProfit.</p>
+        <p>The Stack Architect Complete Kit is a <strong>$29 one-time purchase</strong> that gives Shopify store owners seven ready-to-use files: four pre-configured Make.com automation scenario JSON blueprints, two Google Sheets templates, and a PDF setup guide. The four scenarios are CAPI Shield (Meta Conversions API via Graph API v19.0 + Google Ads Enhanced Conversions), TikTok CAPI (TikTok Events API v1.3), Stocky Swap (live inventory to Google Sheets, replacing Shopify Stocky before its August 31 2026 shutdown), and P&L Auto (live profit and loss reporting). Access is instant via Stripe — files open in your browser immediately after payment. The kit replaces over $700 per month of paid Shopify apps including Elevar, Triple Whale, WeltPixel, and TrueProfit.</p>
 
         <h3>What is a Make.com JSON blueprint and why does it matter?</h3>
         <p>A <strong>Make.com JSON blueprint</strong> (also called a scenario file) is a complete export of a finished Make.com automation. Every module, API endpoint, field mapping, routing rule, and connection setting is embedded inside the JSON file. Importing it into Make.com recreates the entire automation in one click — no manual configuration required. This is different from a guide or tutorial, which describes how to build the automation step by step. The Complete Kit gives you the finished blueprint files, not instructions for building them. At $29, the kit costs less than two hours of agency time and less than a single month of any tracking app it replaces.</p>
 
         <h3>How does CAPI Shield replace Elevar and Triple Whale?</h3>
-        <p>CAPI Shield is a Make.com automation scenario that routes Shopify order data server-to-server to <strong>Meta Conversions API v25.0</strong>, <strong>Google Ads Enhanced Conversions</strong>, and <strong>Google GA4 Measurement Protocol</strong> simultaneously. Because the signal travels server-to-server rather than browser-to-pixel, iOS 17+ restrictions, ad blockers, and cookie expiry cannot intercept it. Stores typically recover 20–40% of conversion data that was previously invisible to their ad platforms. The CAPI Shield JSON blueprint achieves EMQ scores of 7.0–8.5 — identical to Elevar ($150+ per month) — at $0 per month ongoing cost after the one-time $29 kit purchase.</p>
+        <p>CAPI Shield is a Make.com automation scenario that routes Shopify order data server-to-server to <strong>Meta Conversions API</strong> (Graph API v19.0) and <strong>Google Ads Enhanced Conversions</strong> via a built-in router. Because the signal travels server-to-server rather than browser-to-pixel, iOS 17+ restrictions, ad blockers, and cookie expiry cannot intercept it. Stores typically recover 20–40% of conversion data that was previously invisible to their ad platforms. The blueprint sends SHA-256 hashed email, phone, first and last name, plus IP and user-agent for strong Event Match Quality — the same server-side approach Elevar charges $150+ per month for — at $0 per month ongoing cost after the one-time $29 kit purchase.</p>
 
         <h3>What is Stocky Swap and why is the August 2026 deadline critical?</h3>
-        <p>Stocky Swap is the inventory management scenario in the Complete Kit. It replicates Shopify Stocky's core function — logging every order in real time to a Google Sheets inventory dashboard with 19 data columns including stock levels, SKU, fulfilment status, and order history. <strong>Shopify is permanently closing Stocky on August 31, 2026 and will delete all data after that date.</strong> The Stocky Swap JSON file imports in under 60 seconds and begins capturing data from the next order forward, requiring no manual data migration. It includes built-in deduplication via a searchRows module that prevents duplicate rows on Shopify webhook retries.</p>
+        <p>Stocky Swap is the inventory management scenario in the Complete Kit. It replicates Shopify Stocky's core function — logging every order line item in real time to a Google Sheets inventory log. Each sale writes a row with timestamp, SKU, quantity sold as a negative change amount, order ID, product title, and a note, across six clean columns. <strong>Shopify is permanently closing Stocky on August 31, 2026 and will delete all data after that date.</strong> The Stocky Swap JSON file imports in under 60 seconds and begins capturing data from the next order forward, requiring no manual data migration. Live stock per SKU is a single SUMIF away — the included template and README show exactly how.</p>
 
         <h3>How does the TikTok CAPI scenario work for Shopify?</h3>
         <p>The TikTok CAPI scenario uses a Shopify order webhook to POST a <strong>CompletePayment event</strong> to TikTok Events API v1.3 server-to-server via Make.com. The endpoint is <code style="font-family:var(--mono);font-size:12px;background:var(--bg-3);padding:1px 6px;border-radius:3px;">business-api.tiktok.com/open_api/v1.3/event/track/</code>. iOS Intelligent Tracking Prevention and ad blockers cannot intercept server-to-server signals. Most deployments achieve EMQ scores of 6–8. Email and phone are SHA-256 hashed inside Make.com before transmission. WeltPixel charges $39+ per month for TikTok server-side tracking. The Complete Kit achieves the same EMQ outcome at $0 per month ongoing.</p>
 
         <h3>How does P&L Auto replace TrueProfit?</h3>
-        <p>P&L Auto fires the instant a Shopify order is paid. It writes to a three-tab Google Sheets structure: Raw Orders (auto-populated, one row per line item), P&L Summary (SUMIFS dashboard by month), and a COGS Table (one-time setup with Variant_ID to cost price mapping via VLOOKUP). Every order captures 26 data fields including Gross_Revenue, Discounts, Net_Revenue, Payment_Gateway_Fee_Est, COGS_Per_Unit, and Is_First_Order. TrueProfit charges $19–$99 per month. The P&L Auto scenario produces a functionally equivalent real-time P&L dashboard at $0 per month.</p>
+        <p>P&L Auto fires the instant a Shopify order is paid. It writes one row per order to an Order_Data tab with ten fields — Order_ID, Date, Channel, Revenue, Discount, Shipping_Rev, Shopify_Fee, Payment_Fee, COGS, and Gross_Profit. A COGS_Table maps each Variant_ID to its cost price, and a live Dashboard tab auto-totals revenue, fees, COGS, gross profit, order count and average profit per order via SUM formulas. The Shopify fee defaults to 2.9% + $0.30 and is editable for your plan. TrueProfit charges $19–$99 per month; the P&L Auto scenario produces a real-time profit picture at $0 per month.</p>
 
         <h3>What is included in the Complete Kit for $29?</h3>
-        <p>The Stack Architect Complete Kit contains exactly seven files: <strong>FILE_01_CAPI_Shield.json</strong> (Meta Conversions API v25.0 + Google GA4), <strong>FILE_02_TikTok_CAPI.json</strong> (TikTok Events API v1.3), <strong>FILE_03_Stocky_Swap_Inventory.json</strong> (live inventory to Sheets), <strong>FILE_04_P_and_L_Auto.json</strong> (live P&L to Sheets), <strong>SA_Template_1_Stocky_Swap_Inventory.xlsx</strong> (pre-built inventory sheet with all 19 headers), <strong>SA_Template_2_PnL_Auto.xlsx</strong> (pre-built P&L dashboard with three tabs and all formulas), and <strong>README_Complete_Kit.pdf</strong> (full setup documentation). One direct support question is also included with every purchase. All files are accessible instantly via Stripe — no email required.</p>
+        <p>The Stack Architect Complete Kit contains exactly seven files: <strong>FILE_01_CAPI_Shield.json</strong> (Meta Conversions API via Graph API v19.0 + Google Ads Enhanced Conversions, split across a built-in router), <strong>FILE_02_TikTok_CAPI.json</strong> (TikTok Events API v1.3), <strong>FILE_03_Stocky_Swap_Inventory.json</strong> (live inventory to Sheets), <strong>FILE_04_P_and_L_Auto.json</strong> (live P&L to Sheets), <strong>SA_Template_1_Stocky_Swap_Inventory.xlsx</strong> (pre-built six-column inventory log with example rows and setup tab), <strong>SA_Template_2_PnL_Auto.xlsx</strong> (pre-built P&L workbook with four tabs including a live auto-totalling dashboard), and <strong>README_Complete_Kit.pdf</strong> (full setup documentation). One direct support question is also included with every purchase. All files are accessible instantly via Stripe — no email required.</p>
 
         <h3>Does the Complete Kit work for Shopify stores outside the US?</h3>
         <p>Yes. <strong>All four scenarios work globally.</strong> Shopify webhooks, Make.com, Meta Conversions API, Google GA4, and TikTok Events API all support international markets. The P&L Auto scenario supports any currency Shopify supports. Stores in the UK, EU, Australia, Canada, and all other Shopify markets are fully compatible. There are no geographic restrictions on any of the platforms the kit uses.</p>
@@ -1215,7 +1200,7 @@ import AttributionTracker from '../components/AttributionTracker.astro';
       {"@type":"Question","name":"How is the Complete Kit different from the free Stack Architect guides?","acceptedAnswer":{"@type":"Answer","text":"The free guides are step-by-step instructions for building each automation yourself. The Complete Kit gives you the finished JSON blueprint files. The technical outcome is identical — same EMQ scores, same attribution accuracy, same data. The difference is time: each guide takes approximately 2 hours, all four take 8+ hours. The kit deploys in 10 minutes total. At $29 — less than one month of WeltPixel — the payback period is 1.3 days."}},
       {"@type":"Question","name":"Do I need a paid Make.com plan?","acceptedAnswer":{"@type":"Answer","text":"No. All four scenarios run on Make.com's free tier (1,000 operations per month), sufficient for up to 300 orders per month. Stores above that can upgrade to Make.com Core for $9 per month — still over 95% cheaper than any paid tracking app."}},
       {"@type":"Question","name":"What Shopify apps does the Complete Kit replace?","acceptedAnswer":{"@type":"Answer","text":"CAPI Shield replaces Elevar ($150+/mo), Triple Whale ($299+/mo), and Northbeam ($300+/mo). TikTok CAPI replaces WeltPixel ($39+/mo) and Analyzify ($99+/mo). Stocky Swap replaces Shopify Stocky (shutting down August 31 2026), Linnworks, and Skubana. P&L Auto replaces TrueProfit and BeProfit ($19–$299/mo). Combined monthly savings typically exceed $696."}},
-      {"@type":"Question","name":"What is Stocky Swap and why is August 2026 the deadline?","acceptedAnswer":{"@type":"Answer","text":"Stocky Swap logs every Shopify order to a Google Sheets inventory dashboard in real time — 19 data columns including SKU, quantity, fulfilment status, and order history. Shopify is permanently shutting down Stocky on August 31, 2026 and will delete all data after that date. The JSON imports in 60 seconds and starts capturing data immediately."}},
+      {"@type":"Question","name":"What is Stocky Swap and why is August 2026 the deadline?","acceptedAnswer":{"@type":"Answer","text":"Stocky Swap logs every Shopify order line item to a Google Sheets inventory log in real time — six columns: timestamp, SKU, quantity sold as a negative change, order ID, product, and a note. Shopify is permanently shutting down Stocky on August 31, 2026 and will delete all data after that date. The JSON imports in 60 seconds and starts capturing data immediately."}},
       {"@type":"Question","name":"Will the kit work with my Shopify plan?","acceptedAnswer":{"@type":"Answer","text":"Yes. The kit uses Shopify webhooks available on every plan including Shopify Basic. No app installation required. The only change in Shopify Admin is adding one webhook URL under Settings → Notifications → Webhooks — a two-minute step that triggers all four automations simultaneously."}},
       {"@type":"Question","name":"Does the Complete Kit work outside the US?","acceptedAnswer":{"@type":"Answer","text":"Yes. All four scenarios work globally. Shopify webhooks, Make.com, Meta Conversions API, Google GA4, and TikTok Events API all support international markets. The P&L Auto scenario supports any Shopify-supported currency."}},
       {"@type":"Question","name":"Is this a subscription?","acceptedAnswer":{"@type":"Answer","text":"No. The Complete Kit is a one-time $29 payment. You own the files permanently. All four Make.com scenarios run on Make.com's free tier at $0 per month ongoing. No subscription, no renewal, no lock-in."}},
@@ -1239,7 +1224,6 @@ import AttributionTracker from '../components/AttributionTracker.astro';
     <div style="max-width:640px;margin:0 auto;">
       <div class="hero-proof" style="justify-content:center;margin-bottom:20px;">
         <span class="dot"></span>
-        <span class="hero-proof-stars" aria-label="5 stars">★★★★★</span>
         <span style="font-size:12px;color:var(--text-3);">One-time $29 · No subscription ever</span>
       </div>
       <h3>Your entire Shopify backend.<br><span style="color:var(--g)">Live in 10 minutes. $29.</span></h3>
@@ -1404,7 +1388,7 @@ import AttributionTracker from '../components/AttributionTracker.astro';
       },
       {
         q: "What is Stocky Swap and why is August 2026 the deadline?",
-        a: "Stocky Swap logs every Shopify order to a Google Sheets inventory dashboard in real time — 19 data columns including SKU, quantity, fulfilment status, and order history. Shopify is permanently shutting down Stocky on August 31, 2026 and will delete all data after that date. The JSON imports in 60 seconds and starts capturing data immediately."
+        a: "Stocky Swap logs every Shopify order line item to a Google Sheets inventory log in real time — six columns: timestamp, SKU, quantity sold as a negative change, order ID, product, and a note. Shopify is permanently shutting down Stocky on August 31, 2026 and will delete all data after that date. The JSON imports in 60 seconds and starts capturing data immediately."
       },
       {
         q: "Will the kit work with my Shopify plan?",
