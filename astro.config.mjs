@@ -207,7 +207,7 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      filter: (page) => !page.includes('/sitemap-page'),
+      filter: (page) => !page.includes('/sitemap-page') && !page.includes('/embed/'),
       serialize(item) {
         // Look up real lastmod from cache; fall back to build time as last resort.
         // Pass as ISO string — that's what @astrojs/sitemap's SitemapItem expects.
