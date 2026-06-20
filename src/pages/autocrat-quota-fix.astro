@@ -186,7 +186,15 @@ const schema = JSON.stringify({
         { "@type": "Question", "name": "Does Autocrat Quota Fix fix other Google Apps Script errors beyond Autocrat?",
           "acceptedAnswer": { "@type": "Answer", "text": "Yes. The same Make.com architecture fixes quota errors for any Google Apps Script workflow — Gmail sending limits, Google Sheets write quotas, Google Drive API limits, and any document generation pipeline. If the error message contains 'service invoked too many times' or 'exceeded maximum execution time', Autocrat Quota Fix resolves it." } },
         { "@type": "Question", "name": "Should I upgrade to Google Workspace instead of using Autocrat Quota Fix?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Google Workspace raises Apps Script quotas approximately 10x — which helps but does not eliminate the problem at high volume. Autocrat Quota Fix is the complete solution and works on free Gmail accounts. For stores processing 500+ orders per month, combining both removes all practical limits. Workspace is not required to start." } }
+          "acceptedAnswer": { "@type": "Answer", "text": "Google Workspace raises Apps Script quotas approximately 10x — which helps but does not eliminate the problem at high volume. Autocrat Quota Fix is the complete solution and works on free Gmail accounts. For stores processing 500+ orders per month, combining both removes all practical limits. Workspace is not required to start." } },
+        { "@type": "Question", "name": "Why does Autocrat only show 'Help' in the Extensions menu, with the 'Open' menu missing?",
+          "acceptedAnswer": { "@type": "Answer", "text": "This is caused by a Google Apps Script service disruption or an authorization reset, not a quota limit. The fix: open Autocrat, click Manage Triggers, note the Trigger Owner email, then log out of all other Google accounts (or use an Incognito window), sign in only to that owner account, and re-authorize. If the menu is still missing, uninstall and reinstall Autocrat and clear your browser cache. Your saved merge jobs are preserved but triggers must be re-created after reinstalling." } },
+        { "@type": "Question", "name": "Why is Autocrat not triggering or not showing in Extensions?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Most often this is multi-account authorization breaking the trigger, an add-on outage on Google's side, or an ad-blocker/web-filter blocking the add-on panel. Re-authorize from the trigger owner account only, reinstall and clear cache if needed, and test in Incognito with extensions disabled. On managed Workspace domains, confirm an admin has not restricted third-party add-ons." } },
+        { "@type": "Question", "name": "Why did Autocrat only merge 100 documents or stop partway through?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A run that stops after a fixed number of documents or partway through a batch is hitting a daily service quota or the 6-minute execution ceiling, not a permanent fault. Reduce the batch size, or for reliable high-volume generation move execution to Make.com, which processes in chunks and resumes from the exact row if interrupted rather than abandoning the remaining rows." } },
+        { "@type": "Question", "name": "Why is Autocrat only doing one line or one row?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Autocrat merging only a single row is usually a job-configuration issue rather than a quota error: check that the job's row range is not restricted to one row, that the merge condition or filter is not limiting which rows run, and that rows are not already flagged as merged in the status columns. Clearing stale 'merged' status values and re-running typically resolves it." } }
       ]
     }
   ]
@@ -867,6 +875,44 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
 
 <div class="divider"></div>
 
+<!-- ══ AUTOCRAT NOT WORKING / NOT TRIGGERING ══ -->
+<section class="section" id="not-working" aria-labelledby="notworking-h">
+<div class="inner">
+  <div class="sec-head">
+    <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Different problem</span>
+    <h2 id="notworking-h">Autocrat menu only showing "Help", not triggering, or missing from Extensions?</h2>
+    <p>This is a separate issue from quota errors — it's a Google-side add-on and authorization problem, not a volume limit. Here are the current verified fixes.</p>
+  </div>
+  <div class="body-text" style="max-width:860px;margin:0 auto;">
+
+    <div class="callout warn">
+      <div class="callout-label">This is not a quota error</div>
+      <p>If Autocrat's <strong>Open</strong> menu has vanished and only <strong>Help</strong> remains, the add-on appears uninstalled, or jobs stop triggering, this is caused by Google Apps Script service disruptions and authorization resets — not the execution limits the rest of this page covers. Batching and Make.com don't fix it; the steps below do.</p>
+    </div>
+
+    <h3>Fix 1 — Re-authorize from the trigger owner account only</h3>
+    <p>Autocrat jobs run under one specific Google account, and being signed into multiple Google accounts in the same browser frequently breaks authorization. Open Autocrat, click <strong>Manage Triggers</strong>, and note the email under <strong>Trigger Owner</strong>. Then log out of every other Google account (or open an Incognito window) and sign in to that owner account only, and re-authorize the add-on. This is the developer's recommended fix and also stops the flood of repeated authorization emails the recent update triggered.</p>
+
+    <h3>Fix 2 — Uninstall, reinstall, then clear your cache</h3>
+    <p>If the menu is still missing, uninstall Autocrat via <strong>Extensions → Add-ons → Manage add-ons</strong>, reinstall it from the Google Workspace Marketplace, then <strong>clear your browser cache</strong>. Several users report the reinstall only takes effect after the cache is cleared. Your merge jobs saved in the spreadsheet are preserved, but you will need to re-create your triggers after reinstalling.</p>
+
+    <h3>Fix 3 — Disable ad-blockers or domain web-filtering</h3>
+    <p>If Autocrat opens to a blank panel, an ad-blocker or your organization's web-filtering software is likely blocking the add-on's interface. Test in an Incognito window with extensions disabled, or temporarily turn off the ad-blocker. If you're on a managed Workspace domain, confirm an admin hasn't restricted third-party add-on access.</p>
+
+    <h3>Why the interface looks different</h3>
+    <p>Autocrat replaced its old sidebar with a step-by-step dialogue box, and a later update moved it to an embedded panel. If you're hunting for a sidebar that's no longer there, you're not broken — the workflow now runs through <strong>Extensions → Autocrat → Open → New Job</strong>.</p>
+
+    <div class="callout">
+      <div class="callout-label">If outages keep breaking a high-volume workflow</div>
+      <p>Re-authorizing and reinstalling resolves these add-on outages, but they recur whenever Google's add-on layer has a bad day — and for stores generating documents at volume, an outage means dropped documents. The structural way to stop add-on outages affecting you is to move document generation off the add-on entirely and run it through the <a href="#how-it-works">Make.com workflow described above</a>, which calls the Google Docs API directly and doesn't depend on the Autocrat add-on loading correctly.</p>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
 <!-- ══ CROSS-LINKS ══ -->
 <section class="section" aria-labelledby="stack-h">
 <div class="inner">
@@ -1004,6 +1050,16 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
     <details class="faq-item-a">
       <summary><span>Should I upgrade to Google Workspace instead?</span><span class="faq-ico" aria-hidden="true"></span></summary>
       <div class="faq-ans-a"><p>Google Workspace raises Apps Script quotas approximately 10x — which helps but does not eliminate the problem at high volume. Autocrat Quota Fix is the complete solution and works on free Gmail accounts. For stores processing 500+ orders per month, combining <a href={AFF.workspace} target="_blank" rel="noopener sponsored">Google Workspace</a> with Autocrat Quota Fix removes all practical limits. Workspace is not required to start.</p></div>
+    </details>
+
+    <details class="faq-item-a">
+      <summary><span>Why did Autocrat only merge 100 documents or stop partway through?</span><span class="faq-ico" aria-hidden="true"></span></summary>
+      <div class="faq-ans-a"><p>A run that stops after a fixed number of documents or partway through a batch is hitting a daily service quota or the 6-minute execution ceiling — not a permanent fault. Reduce the batch size, or for reliable high-volume generation move execution to <a href={AFF.make} target="_blank" rel="noopener sponsored">Make.com</a>, which processes in chunks and resumes from the exact row if interrupted rather than abandoning the remaining rows.</p></div>
+    </details>
+
+    <details class="faq-item-a">
+      <summary><span>Why is Autocrat only doing one line or one row?</span><span class="faq-ico" aria-hidden="true"></span></summary>
+      <div class="faq-ans-a"><p>Autocrat merging only a single row is usually a job-configuration issue rather than a quota error: check that the job's row range isn't restricted to one row, that the merge condition or filter isn't limiting which rows run, and that rows aren't already flagged as merged in the status columns. Clearing stale "merged" status values and re-running typically resolves it.</p></div>
     </details>
 
   </div>
