@@ -33,7 +33,7 @@ const schema = JSON.stringify({
       "@id": `${PAGE}#webpage`,
       "url": PAGE,
       "name": "Fix Google Apps Script Quota Errors Free — Autocrat Fix 2026",
-      "description": "Free fix for Google Apps Script quota errors. Autocrat Quota Fix uses Make.com to route document workflows through a dedicated API, eliminating 'service invoked too many times' errors — no 6-minute execution ceiling, no document-create cap, no code, 3 minutes. Free tier handles ~300 docs/day; scales to thousands/day on a paid Make.com plan.",
+      "description": "Free fix for Google Apps Script quota errors. Autocrat Quota Fix uses Make.com to route document workflows through a dedicated API, eliminating 'service invoked too many times' errors — no 6-minute execution ceiling, no document-create cap, no code, 3 minutes. Free tier covers roughly 300 docs/day depending on your scenario's step count; scales to thousands/day on a paid Make.com plan.",
       "datePublished": DATE_PUBLISHED,
       "dateModified": DATE_MODIFIED,
       "inLanguage": "en-GB",
@@ -88,7 +88,7 @@ const schema = JSON.stringify({
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Web",
       "url": PAGE,
-      "description": "Free fix for Google Apps Script 'service invoked too many times' quota errors. Routes Autocrat document workflows through Make.com to bypass shared consumer quota limits — no 6-minute execution ceiling, no document-create cap. Free tier handles ~300 docs/day; scales to thousands/day on a paid Make.com plan.",
+      "description": "Free fix for Google Apps Script 'service invoked too many times' quota errors. Routes Autocrat document workflows through Make.com to bypass shared consumer quota limits — no 6-minute execution ceiling, no document-create cap. Free tier covers roughly 300 docs/day depending on your scenario's step count; scales to thousands/day on a paid Make.com plan.",
       "featureList": [
         "Eliminates service invoked too many times errors",
         "Removes the 6-minute execution ceiling and document-create cap",
@@ -164,7 +164,7 @@ const schema = JSON.stringify({
       "@id": `${PAGE}#faq`,
       "mainEntity": [
         { "@type": "Question", "name": "What causes the 'service invoked too many times' error in Google Apps Script?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Google Apps Script enforces hard quota limits on all accounts. Free accounts are limited to 6 minutes per execution and 90 minutes total per day. When your automation hits these limits mid-run, the script throws a 'service invoked too many times' exception and stops processing. Autocrat Quota Fix routes workflows through Make.com, which has no equivalent execution time limits." } },
+          "acceptedAnswer": { "@type": "Answer", "text": "'Service invoked too many times' is a rate-limit error: your script called a Google service (Sheets, Docs, Drive, Gmail) too many times in a short window — most often a loop that reads or writes one row at a time. The free fix is batching: read all rows in one call, process them in memory, write back in one call. This is different from the 6-minute execution ceiling and the daily document-create cap, which are structural limits that batching cannot solve. For high-volume document generation that hits those structural ceilings, Autocrat Quota Fix moves execution to Make.com, which has no equivalent per-execution time limit." } },
         { "@type": "Question", "name": "What is Autocrat and why does it hit quota limits?",
           "acceptedAnswer": { "@type": "Answer", "text": "Autocrat is a Google Sheets add-on that generates Google Docs or PDFs from spreadsheet rows using templates. It runs on Google Apps Script, which has daily quota limits. High-volume stores processing hundreds of orders per day frequently exceed these limits, causing Autocrat to fail silently mid-batch with documents never generated." } },
         { "@type": "Question", "name": "How does Autocrat Quota Fix work?",
@@ -610,6 +610,11 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
   <div class="body-text" style="max-width:860px;margin:0 auto;">
 
     <p>Google Apps Script imposes hard limits on every account. Free Gmail accounts are capped at <strong>6 minutes per script execution</strong> and <strong>90 minutes of total daily execution time</strong>. Google Workspace accounts receive approximately 10x higher limits, but even Workspace accounts hit ceilings when processing high-volume order data through Autocrat.</p>
+    <div class="callout info">
+      <div class="callout-label">First — is this actually your problem?</div>
+      <p>If your error is <strong>"service invoked too many times"</strong> and it fires partway through a loop, you most likely have a row-by-row script and the fix is <strong>free</strong>: batch your reads and writes. Our <a href="/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script/">step-by-step batching guide with code</a> resolves it in minutes — no new tools needed. The structural fix on this page is for high-volume document generation that hits the <strong>6-minute execution ceiling</strong> or the <strong>daily document-create cap</strong> — limits that batching alone cannot solve.</p>
+    </div>
+
 
     <p>The problem is worse than it appears in your error logs. When a quota error fires mid-batch, the script stops processing immediately. Any rows that had not yet been processed when the error occurred are silently skipped — no document generated, no notification sent, no retry attempted. You only discover the gap when a customer complains about a missing invoice or a fulfilment confirmation that never arrived.</p>
 
@@ -768,9 +773,9 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
           <td class="win">~300/day on Make.com free tier; scales with plan</td>
         </tr>
         <tr>
-          <td>Quota error handling</td>
-          <td class="lose">Script stops, rows skipped silently</td>
-          <td class="win">Automatic retry with exponential backoff</td>
+          <td>"Service invoked too many times" (rate error)</td>
+          <td class="lose">Fixable free by batching; otherwise script stops</td>
+          <td class="win">Avoided via chunking + automatic backoff</td>
         </tr>
         <tr>
           <td>Processing on interruption</td>
@@ -943,7 +948,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
 
     <details class="faq-item-a">
       <summary><span>What causes the "service invoked too many times" error in Google Apps Script?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-a"><p>Google Apps Script enforces hard quota limits on all accounts. Free accounts are limited to 6 minutes per execution and 90 minutes total per day. When your automation hits these limits mid-run, the script throws a "service invoked too many times" exception and stops processing. Autocrat Quota Fix routes workflows through Make.com, which has no equivalent execution time limits.</p></div>
+      <div class="faq-ans-a"><p>"Service invoked too many times" is a <strong>rate-limit</strong> error — your script called a Google service too many times in a short window, usually a loop that reads or writes one row at a time. The free fix is batching: read all rows in one call, process them in memory, then write back in one call. See the <a href="/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script/">free batching fix with code</a>. This is separate from the 6-minute execution ceiling and the daily document-create cap — structural limits that batching cannot solve. For high-volume document generation that hits those ceilings, Autocrat Quota Fix moves execution to Make.com, which has no equivalent per-execution time limit.</p></div>
     </details>
 
     <details class="faq-item-a">
