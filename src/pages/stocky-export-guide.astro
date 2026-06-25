@@ -1,0 +1,339 @@
+---
+import Nav from '../components/Nav.astro';
+import RelatedGuides from '../components/RelatedGuides.astro';
+import Footer from '../components/Footer.astro';
+
+/**
+ * STOCKY EXPORT GUIDE — /stocky-export-guide/
+ * Primary: "how to export stocky data" / "stocky data export"
+ * Cluster spoke for: /stocky-shutdown/ (hub), /stocky-swap/, /stocky-migration-checklist/
+ * Intent: urgent, irreversible how-to. Lowest competition in the cluster.
+ */
+
+const SITE_URL = "https://stackarchitect.xyz";
+const PAGE_URL = `${SITE_URL}/stocky-export-guide/`;
+const SHUTDOWN_DATE = "August 31, 2026";
+const DATE_PUBLISHED = "2026-06-25";
+const DATE_MODIFIED = "2026-06-25";
+const MAKE_AFFILIATE = "/go/make";
+const LINKEDIN = "https://www.linkedin.com/company/stack-architect-xyz/";
+
+const SEO = {
+  title: "How to Export Stocky Data Before August 31, 2026 — Step-by-Step | Stack Architect",
+  description: "Export Stocky purchase orders, stocktakes and cost data to CSV before the August 31 2026 shutdown. Suppliers can't be exported — here's the workaround. Takes 15 minutes.",
+  canonical: PAGE_URL,
+  ogTitle: "How to Export Stocky Data Before August 31, 2026",
+  ogDescription: "Export Stocky purchase orders, stocktakes and cost data to CSV before the shutdown. Suppliers need a manual workaround. 15 minutes.",
+  ogImage: `${SITE_URL}/og.png`
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": `${PAGE_URL}#webpage`,
+      url: PAGE_URL,
+      name: SEO.title,
+      description: SEO.description,
+      datePublished: DATE_PUBLISHED,
+      dateModified: DATE_MODIFIED,
+      inLanguage: "en-GB",
+      isPartOf: { "@id": `${SITE_URL}/#website` },
+      author: { "@id": `${SITE_URL}/#luke` },
+      speakable: { "@type": "SpeakableSpecification", cssSelector: [".speakable-answer", ".faq-ans-s p"] },
+      about: [
+        { "@type": "Thing", name: "Stocky data export" },
+        { "@type": "Thing", name: "Shopify Stocky shutdown 2026" }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "Stack Architect",
+      publisher: { "@id": `${SITE_URL}/#organization` }
+    },
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "Stack Architect",
+      url: SITE_URL,
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/icon-512.png`, width: 512, height: 512 },
+      sameAs: [LINKEDIN]
+    },
+    {
+      "@type": "Person",
+      "@id": `${SITE_URL}/#luke`,
+      name: "Luke",
+      jobTitle: "Shopify Automation Specialist",
+      url: `${SITE_URL}/about/`,
+      sameAs: ["https://www.linkedin.com/in/luke-stackarchitect", LINKEDIN],
+      worksFor: { "@id": `${SITE_URL}/#organization` }
+    },
+    {
+      "@type": "HowTo",
+      "@id": `${PAGE_URL}#howto`,
+      name: "How to export your Stocky data before the August 31 2026 shutdown",
+      description: "Export Stocky purchase orders, stocktakes and cost data to CSV, and document suppliers manually, before Stocky shuts down on August 31 2026.",
+      totalTime: "PT20M",
+      estimatedCost: { "@type": "MonetaryAmount", currency: "USD", value: "0" },
+      step: [
+        { "@type": "HowToStep", position: 1, name: "Export purchase orders", text: "In Shopify admin go to Apps, Stocky, Reports. Select the purchase order report, set the date range to your full history, and export as CSV.", url: `${PAGE_URL}#step-1` },
+        { "@type": "HowToStep", position: 2, name: "Export stocktakes and cost data", text: "From the same Reports dropdown, export stocktake history, the inventory adjustment log, and ABC cost data, each as a separate CSV.", url: `${PAGE_URL}#step-2` },
+        { "@type": "HowToStep", position: 3, name: "Document suppliers manually", text: "Suppliers cannot be exported from Stocky. Screenshot each supplier's details or transcribe name, contact, lead time, MOQ and payment terms into a spreadsheet.", url: `${PAGE_URL}#step-3` },
+        { "@type": "HowToStep", position: 4, name: "Store the backup", text: "Save all CSVs and screenshots in one dated cloud folder, and set a calendar reminder for August 1 2026 as a final check.", url: `${PAGE_URL}#step-4` }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${PAGE_URL}#faq`,
+      mainEntity: [
+        { "@type": "Question", name: "Can I export Stocky suppliers to CSV?", acceptedAnswer: { "@type": "Answer", text: "No. Stocky has no supplier export function. Supplier names, contacts, lead times and minimum order quantities must be recreated manually before August 31, 2026 — screenshot them or transcribe them into a spreadsheet." } },
+        { "@type": "Question", name: "Where is the export option in Stocky?", acceptedAnswer: { "@type": "Answer", text: "In your Shopify admin, go to Apps, then Stocky, then the Reports dropdown. Each report — purchase orders, stocktakes, adjustments, cost data — exports separately as CSV. There is no single export-everything button." } },
+        { "@type": "Question", name: "Will I be able to export Stocky data after August 31, 2026?", acceptedAnswer: { "@type": "Answer", text: "Shopify provides read-only access for an unspecified limited period after shutdown, but the Stocky APIs stop on August 31, 2026 and no export tooling is guaranteed. Export everything before the deadline rather than relying on post-shutdown access." } },
+        { "@type": "Question", name: "Does Stocky data move to Shopify automatically?", acceptedAnswer: { "@type": "Answer", text: "No. Shopify has confirmed historical Stocky data such as purchase orders and stocktakes does not migrate into Shopify Admin automatically. Manual CSV export is the only way to keep it." } },
+        { "@type": "Question", name: "How long does exporting Stocky data take?", acceptedAnswer: { "@type": "Answer", text: "About 15 minutes for the CSV exports, plus 5 to 20 minutes to document suppliers manually depending on how many you have." } }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: "Stocky Shutdown", item: `${SITE_URL}/stocky-shutdown/` },
+        { "@type": "ListItem", position: 3, name: "Stocky Export Guide", item: PAGE_URL }
+      ]
+    }
+  ]
+};
+---
+
+<!doctype html>
+<html lang="en-GB" itemscope itemtype="https://schema.org/WebPage">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{SEO.title}</title>
+  <meta name="description" content={SEO.description} />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="author" content="Luke (Stack Architect)" />
+  <meta name="keywords" content="how to export stocky data, stocky data export, stocky csv export, export stocky purchase orders, save stocky data before shutdown, stocky supplier export" />
+  <link rel="canonical" href={SEO.canonical} />
+  <link rel="alternate" hreflang="en-gb" href={SEO.canonical} />
+  <link rel="alternate" hreflang="x-default" href={SEO.canonical} />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content={SEO.canonical} />
+  <meta property="og:title" content={SEO.ogTitle} />
+  <meta property="og:description" content={SEO.ogDescription} />
+  <meta property="og:image" content={SEO.ogImage} />
+  <meta property="og:site_name" content="Stack Architect" />
+  <meta property="og:locale" content="en_GB" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={SEO.ogTitle} />
+  <meta name="twitter:description" content={SEO.ogDescription} />
+  <meta name="twitter:image" content={SEO.ogImage} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" />
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd, null, 2)} />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --g: #00c864; --g-dim: #00a854; --g-bg: rgba(0,200,100,.08); --g-border: rgba(0,200,100,.2);
+      --bg: #020617; --bg-2: #06101e; --bg-3: #0a1628;
+      --border: #1e293b; --border-2: #263548;
+      --text: #f1f5f9; --text-2: #cbd5e1; --text-3: #94a3b8; --text-4: #64748b;
+      --amber: #fcd34d; --amber-bg: rgba(252,211,77,.06); --amber-border: rgba(252,211,77,.2);
+      --sky: #7dd3fc; --sky-bg: rgba(125,211,252,.07);
+      --red: #fc8181;
+      --mono: 'JetBrains Mono', monospace; --sans: 'Inter', -apple-system, sans-serif;
+      --radius: 6px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); background: var(--bg); color: var(--text-3); line-height: 1.75; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+
+    .urgency-banner { width: 100%; background: linear-gradient(90deg, #7f1d1d, #991b1b, #7f1d1d); padding: 12px 24px; text-align: center; font-family: var(--mono); font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #fca5a5; border-bottom: 1px solid rgba(255,100,100,.3); display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .urgency-banner strong { color: #fff; }
+    .dot-red { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--red); animation: dotRed 1.5s ease-in-out infinite; }
+    @keyframes dotRed { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+
+    .crumb { background: var(--bg-2); border-bottom: 1px solid var(--border); padding: 10px 24px; }
+    .crumb-inner { max-width: 860px; margin: 0 auto; }
+    .crumb ol { display: flex; align-items: center; gap: 8px; list-style: none; font-family: var(--mono); font-size: 10px; color: var(--text-4); text-transform: uppercase; letter-spacing: .08em; }
+    .crumb a { color: var(--text-4); transition: color .15s; }
+    .crumb a:hover { color: var(--g); }
+    .crumb .current { color: var(--sky); }
+    .crumb .sep { opacity: .4; }
+
+    main { max-width: 860px; margin: 0 auto; padding: 56px 24px 80px; }
+    .eyebrow { font-family: var(--mono); font-size: 10px; color: var(--text-4); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 18px; }
+    h1 { font-family: var(--sans); font-size: clamp(32px, 6vw, 52px); font-weight: 900; color: var(--text); line-height: 1.05; letter-spacing: -.03em; margin-bottom: 24px; }
+    .lead { font-size: 18px; color: var(--text-2); line-height: 1.7; margin-bottom: 24px; background: var(--bg-3); border: 1px solid var(--border-2); border-left: 3px solid var(--g); border-radius: 8px; padding: 22px 26px; }
+    .lead strong { color: var(--text); font-weight: 700; }
+
+    p { font-size: 16px; color: var(--text-3); line-height: 1.8; margin-bottom: 18px; }
+    p strong { color: var(--text-2); font-weight: 600; }
+    p a, li a { color: var(--g); border-bottom: 1px solid rgba(0,200,100,.3); transition: color .2s, border-color .2s; }
+    p a:hover, li a:hover { color: #86efac; }
+    code { font-family: var(--mono); font-size: 13px; background: rgba(255,255,255,.04); border: 1px solid var(--border); padding: 2px 7px; border-radius: 4px; color: var(--text-2); }
+
+    h2 { font-size: clamp(22px, 3.4vw, 30px); font-weight: 900; color: var(--text); letter-spacing: -.02em; line-height: 1.15; margin: 48px 0 16px; padding-top: 32px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+    h2::before { content: '//'; font-family: var(--mono); font-size: 13px; color: var(--g); font-weight: 700; }
+
+    ul, ol { margin: 0 0 24px; padding: 0; list-style: none; }
+    ul li { position: relative; padding: 10px 0 10px 28px; border-bottom: 1px solid rgba(255,255,255,.04); font-size: 15px; color: var(--text-3); line-height: 1.7; }
+    ul li:last-child { border-bottom: none; }
+    ul li::before { content: '→'; position: absolute; left: 0; top: 10px; color: var(--g); font-weight: 700; font-family: var(--mono); font-size: 13px; }
+    ul li strong { color: var(--text-2); }
+    ol { counter-reset: s; }
+    ol li { position: relative; padding: 12px 0 12px 44px; border-bottom: 1px solid rgba(255,255,255,.04); font-size: 15px; color: var(--text-3); line-height: 1.7; counter-increment: s; }
+    ol li:last-child { border-bottom: none; }
+    ol li::before { content: counter(s); position: absolute; left: 0; top: 10px; width: 26px; height: 26px; border-radius: 50%; background: rgba(0,200,100,.1); border: 1px solid rgba(0,200,100,.25); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--g); }
+    ol li strong { color: var(--text-2); }
+
+    .callout { background: var(--bg-3); border: 1px solid var(--border-2); border-radius: 10px; padding: 22px 24px; margin: 24px 0; border-left: 3px solid var(--g); }
+    .callout.warn { border-left-color: var(--amber); background: var(--amber-bg); }
+    .callout.info { border-left-color: var(--sky); background: var(--sky-bg); }
+    .callout-label { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--g); margin-bottom: 8px; }
+    .callout.warn .callout-label { color: var(--amber); }
+    .callout.info .callout-label { color: var(--sky); }
+    .callout p { font-size: 14px; color: var(--text-2); line-height: 1.7; margin: 0; }
+
+    .faq-list-s { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+    details.faq-item-s { border-radius: 10px; border: 1.5px solid var(--border); background: rgba(255,255,255,.02); }
+    details.faq-item-s[open] { border-color: rgba(125,211,252,.25); }
+    details.faq-item-s summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; cursor: pointer; list-style: none; font-size: 15px; font-weight: 600; color: var(--text-3); }
+    details.faq-item-s summary::-webkit-details-marker { display: none; }
+    details.faq-item-s[open] summary { color: var(--text); }
+    .faq-ans-s { padding: 0 22px 20px; font-size: 14px; color: var(--text-3); line-height: 1.75; }
+    .faq-ans-s a { color: var(--g); border-bottom: 1px solid rgba(0,200,100,.3); }
+
+    .cta-box { background: var(--g-bg); border: 1.5px solid var(--g-border); border-radius: 12px; padding: 28px 32px; margin: 40px 0 0; text-align: center; }
+    .cta-box h2 { border: none; padding: 0; margin: 0 0 10px; justify-content: center; }
+    .cta-box h2::before { display: none; }
+    .cta-box p { margin-bottom: 18px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-family: var(--sans); font-size: 15px; font-weight: 700; padding: 14px 28px; border-radius: var(--radius); background: var(--g); color: var(--bg); transition: background .2s, transform .15s; margin: 4px; }
+    .btn:hover { background: #00e070; transform: translateY(-2px); }
+    .btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--sans); font-size: 15px; font-weight: 600; padding: 13px 26px; border-radius: var(--radius); border: 1.5px solid var(--border-2); color: var(--text-2); transition: border-color .2s, color .2s; margin: 4px; }
+    .btn-outline:hover { border-color: var(--g); color: var(--g); }
+    .disclosure { font-size: 12px; color: var(--text-4); font-style: italic; margin-top: 16px; }
+
+    @media (max-width: 640px) { main { padding: 40px 20px 64px; } }
+  </style>
+</head>
+<body>
+<Nav />
+
+<div class="urgency-banner" role="alert">
+  <span class="dot-red" aria-hidden="true"></span>
+  <strong>STOCKY SHUTS DOWN AUG 31, 2026</strong> — export your data before it's deleted
+  <span class="dot-red" aria-hidden="true"></span>
+</div>
+
+<nav class="crumb" aria-label="Breadcrumb">
+  <div class="crumb-inner">
+    <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a href="/" itemprop="item"><span itemprop="name">Home</span></a><meta itemprop="position" content="1" />
+      </li>
+      <li class="sep" aria-hidden="true">/</li>
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a href="/stocky-shutdown/" itemprop="item"><span itemprop="name">Stocky Shutdown</span></a><meta itemprop="position" content="2" />
+      </li>
+      <li class="sep" aria-hidden="true">/</li>
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span class="current" itemprop="name">Export Guide</span><meta itemprop="position" content="3" />
+      </li>
+    </ol>
+  </div>
+</nav>
+
+<main id="main-content">
+
+  <p class="eyebrow">Stocky shutdown · Data export · Before {SHUTDOWN_DATE}</p>
+
+  <h1>How to Export Your Stocky Data Before August 31, 2026</h1>
+
+  <div class="lead speakable-answer">
+    <strong>To export your Stocky data, go to Shopify admin → Apps → Stocky → Reports, and export your purchase orders, stocktakes, and cost data as separate CSV files before August 31, 2026.</strong> Suppliers cannot be exported and must be documented manually. After the deadline, all Stocky data is permanently deleted and Shopify does not migrate it for you. The full export takes about 15 minutes.
+  </div>
+
+  <p>This is the exact, button-by-button process: what you can export, what you <em>cannot</em> (suppliers — with the workaround), and the order to do it in. Do it this week, not in August. If you haven't yet read what happens on shutdown day, start with the <a href="/stocky-shutdown/">full Stocky shutdown breakdown</a>. Already exported and need a replacement running? Jump to the <a href="/stocky-swap/">free Stocky replacement</a>.</p>
+
+  <h2>The one thing everyone gets wrong about the deadline</h2>
+  <p>Most guides say the app "stops working entirely" on August 31. That isn't quite what Shopify says. Per Shopify's official migration guidance, after August 31, 2026 you lose the ability to <em>use</em> Stocky for managing inventory, but you keep <strong>read-only access for a limited period</strong> afterward. That sounds reassuring. It isn't — the period is undefined, the APIs stop on the 31st, and read-only access includes no new export tooling. Treat August 31 as your hard wall.</p>
+
+  <h2>What you can export vs what you can't</h2>
+  <p>Read this before you touch anything — it's the part that catches stores out:</p>
+  <ul>
+    <li><strong>Exportable</strong> (Stocky → Reports, as CSV): purchase order history, stocktake records, inventory adjustment history, and product cost / ABC analysis data.</li>
+    <li><strong>NOT exportable</strong> (no export button exists): supplier records — names, contacts, lead times, MOQs, payment terms. This is the trap. Recreate them by hand.</li>
+    <li><strong>Also not exportable:</strong> reorder points, safety-stock levels, min/max thresholds. Screenshot or transcribe these.</li>
+  </ul>
+
+  <h2 id="step-1">Step 1 — Export your purchase orders (5 minutes)</h2>
+  <ol>
+    <li>In Shopify admin, go to <strong>Apps → Stocky</strong>.</li>
+    <li>Open the <strong>Reports</strong> dropdown.</li>
+    <li>Select the <strong>purchase order</strong> report. Set the date range to your <em>entire</em> history — the default range silently truncates older orders.</li>
+    <li>Export as <strong>CSV</strong>. It includes PO numbers, line items, quantities, unit costs, and dates.</li>
+    <li>Save with a dated filename: <code>2026-06-25_stocky_purchase_orders.csv</code>.</li>
+  </ol>
+  <p>Don't export POs one at a time as PDFs — that's the slow trap Shopify's own community threads complain about. Use the Reports export for one combined CSV.</p>
+
+  <h2 id="step-2">Step 2 — Export stocktakes and cost data (5 minutes)</h2>
+  <p>From the same <strong>Reports</strong> dropdown, export each separately:</p>
+  <ul>
+    <li><strong>Stocktake history</strong> — physical counts and "actual vs expected" variances.</li>
+    <li><strong>Inventory adjustment log</strong> — every manual change and its reason.</li>
+    <li><strong>ABC analysis / cost data</strong> — your product cost-per-item as Stocky stored it.</li>
+  </ul>
+  <p>One verification step that protects your margins: Stocky's stored cost prices can drift from Shopify Admin's. Before archiving, spot-check a handful of SKUs against recent supplier invoices — merchants have found cost prices understated by thousands per container order during exactly this check.</p>
+
+  <h2 id="step-3">Step 3 — Manually rebuild supplier records (5–20 minutes)</h2>
+  <p>Because suppliers can't be exported, you have two practical options:</p>
+  <p><strong>Fast method (most stores):</strong> open each supplier in Stocky and screenshot the full detail view — name, contact, lead time, MOQ, payment terms. Drop the screenshots in a dated Drive folder. Crude, but done in minutes.</p>
+  <p><strong>Clean method (if migrating to a new tool):</strong> build a spreadsheet with columns for supplier name, contact, email, lead time, MOQ, and payment terms, and transcribe each. You can recover some details from the purchase order CSV in Step 1. This becomes your import file for the new system.</p>
+
+  <h2 id="step-4">Step 4 — Store it where you'll actually find it</h2>
+  <p>Put all CSVs and screenshots in one clearly named folder — <code>Stocky Backup 2026</code> — in Google Drive, not on a single laptop. Set a calendar reminder for <strong>August 1, 2026</strong> as a final check while Stocky is still fully functional.</p>
+
+  <h2>What to do the moment your data is safe</h2>
+  <p>Exporting preserves your <em>history</em>. It does nothing for <em>going-forward</em> tracking — the moment Stocky stops, you need something already logging new orders. Deploy a free replacement now and run it in parallel, so you have weeks of verification rather than a cold cutover on September 1.</p>
+  <p><a href="/stocky-swap/">Stocky Swap</a> logs every Shopify order to a Google Sheet in real time via a <a href={MAKE_AFFILIATE} target="_blank" rel="noopener sponsored">Make.com</a> webhook — free permanently, about four minutes to set up, no app install. If your store needs full purchase-order and forecasting workflows, compare paid options on the <a href="/stocky-alternative/">Stocky alternatives page</a>, and use the <a href="/stocky-migration-risk-scorer/">migration risk scorer</a> to gauge complexity. Then work through the <a href="/stocky-migration-checklist/">full migration checklist</a>.</p>
+
+  <h2>Frequently asked questions</h2>
+  <div class="faq-list-s">
+    <details class="faq-item-s"><summary>Can I export Stocky suppliers to CSV?</summary><div class="faq-ans-s"><p>No. Stocky has no supplier export function. Supplier names, contacts, lead times, and MOQs must be recreated manually before August 31, 2026 — screenshot them or transcribe them into a spreadsheet.</p></div></details>
+    <details class="faq-item-s"><summary>Where is the export option in Stocky?</summary><div class="faq-ans-s"><p>In your Shopify admin, go to Apps → Stocky → Reports dropdown. Each report (purchase orders, stocktakes, adjustments, cost data) exports separately as CSV. There is no single export-everything button.</p></div></details>
+    <details class="faq-item-s"><summary>Will I be able to export after August 31, 2026?</summary><div class="faq-ans-s"><p>Shopify provides read-only access for an unspecified limited period after shutdown, but the APIs stop on August 31 and no export tooling is guaranteed. Export before the deadline.</p></div></details>
+    <details class="faq-item-s"><summary>Does Stocky data move to Shopify automatically?</summary><div class="faq-ans-s"><p>No. Shopify has confirmed historical Stocky data (purchase orders, stocktakes) does not migrate into Shopify Admin automatically. Manual export is the only way to keep it.</p></div></details>
+    <details class="faq-item-s"><summary>How long does the full export take?</summary><div class="faq-ans-s"><p>About 15 minutes for the CSV exports, plus 5–20 minutes to document suppliers manually depending on how many you have.</p></div></details>
+  </div>
+
+  <div class="cta-box">
+    <h2>Free Stocky Replacement — Deploy Before August 31</h2>
+    <p>Stocky Swap logs every Shopify order to Google Sheets in real time via Make.com. Free forever, deploys in 4 minutes, no code. Run it alongside Stocky now to verify it before the shutdown date.</p>
+    <a href="/stocky-swap/" class="btn">Deploy Stocky Swap Free →</a>
+    <a href="/stocky-alternative/" class="btn-outline">Compare All Alternatives</a>
+    <p class="disclosure">Stack Architect uses affiliate links. We may earn a commission if you sign up for tools via our links — at no extra cost to you. We only recommend tools we use ourselves.</p>
+  </div>
+
+</main>
+
+<RelatedGuides guides={[
+  { title: "Stocky Shutdown — What Gets Deleted Aug 31", href: "/stocky-shutdown/" },
+  { title: "Stocky Migration Checklist 2026", href: "/stocky-migration-checklist/" },
+  { title: "Free Stocky Replacement — Stocky Swap", href: "/stocky-swap/" },
+  { title: "What Happens to Stocky Purchase Orders?", href: "/blog/what-happens-to-stocky-purchase-orders/" },
+  { title: "All Stocky Alternatives Compared", href: "/stocky-alternative/" },
+]} />
+
+<Footer />
+</body>
+</html>
