@@ -1,7 +1,8 @@
 ---
 // Footer.astro — Stack Architect
 // Exact design tokens from design pack
-// Max conversion + SEO/GEO link coverage
+// SEO/GEO-optimised: hub-anchored topical silos, descriptive anchors,
+// semantic <nav> zoning, Stocky cluster wired in for discovery.
 interface Props {
   variant?: 'default' | 'minimal';
   ctaText?: string;
@@ -71,75 +72,63 @@ const year = new Date().getFullYear();
         </div>
       </div>
 
-      <!-- Link grid -->
+      <!-- Link grid — each column is a topical silo laddering up to a hub -->
       <div class="sa-footer-grid">
 
-        <!-- Products -->
-        <div class="sa-footer-col">
-          <div class="sa-footer-col-label">Products</div>
-          <a href="/">$0 Automation Stack</a>
-          <a href="/capi-shield/">CAPI Shield</a>
-          <a href="/shopify-google-ads-conversion-tracking/">Google Ads Tracking</a>
-          <a href="/stocky-swap/">Stocky Swap</a>
+        <!-- SILO 1: Free Tools (products) → hub: / -->
+        <nav class="sa-footer-col" aria-label="Free Shopify automation tools">
+          <a href="/" class="sa-footer-col-label sa-footer-hub">Free Tools</a>
+          <a href="/capi-shield/">CAPI Shield — Meta &amp; Google tracking</a>
+          <a href="/shopify-google-ads-conversion-tracking/">Google Ads Conversion Tracking</a>
           <a href="/tiktok-events-api-shopify/">TikTok Events API</a>
-          <a href="/replace-klaviyo-free/">Replace Klaviyo</a>
-          <a href="/shopify-profit-loss-automation/">P&amp;L Auto</a>
-          <a href="/autocrat-quota-fix/">Autocrat Quota Fix</a>
-          <a href="/stack/">★ Recommended Stack 2026</a>
+          <a href="/stocky-swap/">Stocky Swap — free inventory</a>
+          <a href="/replace-klaviyo-free/">Replace Klaviyo Free</a>
+          <a href="/shopify-profit-loss-automation/">Live P&amp;L Automation</a>
+          <a href="/stack/">★ The Recommended Stack 2026</a>
           <a href="/pro/" class="sa-g">Complete Kit — $29</a>
-          <a href="/best-ai-tools-shopify/">Best AI Tools 2026</a>
-        </div>
+        </nav>
 
-        <!-- Compare -->
-        <div class="sa-footer-col">
-          <div class="sa-footer-col-label">Compare</div>
-          <a href="/best-free-shopify-apps-2026/" style="color:var(--sa-g)">Best Free Shopify Apps 2026</a>
-          <a href="/shopify-ios-attribution-gap-benchmark/">iOS Attribution Gap Benchmark</a>
-          <a href="/shopify-tracking-tools-pricing/">Live Pricing Tracker 2026</a>
+        <!-- SILO 2: Compare & Alternatives → hub: /best-free-shopify-apps-2026/ -->
+        <nav class="sa-footer-col" aria-label="Compare apps and find free alternatives">
+          <a href="/best-free-shopify-apps-2026/" class="sa-footer-col-label sa-footer-hub">Compare &amp; Alternatives</a>
           <a href="/triple-whale-alternative/">Triple Whale Alternative</a>
           <a href="/elevar-alternative/">Elevar Alternative</a>
           <a href="/northbeam-alternative/">Northbeam Alternative</a>
           <a href="/analyzify-alternative/">Analyzify Alternative</a>
-          <a href="/stocky-alternative/">Stocky Alternative</a>
           <a href="/klaviyo-vs-systeme-io/">Klaviyo vs Systeme.io</a>
-          <div class="sa-footer-col-label" style="margin-top:16px;">Urgent</div>
-          <a href="/stocky-shutdown/" class="sa-footer-urgent">⚠ Stocky Shutdown — Aug 2026</a>
-          <a href="/shopify-scripts-sunset-audit/">Scripts Sunset Audit</a>
-        </div>
+          <a href="/shopify-tracking-tools-pricing/">Live Pricing Tracker 2026</a>
+          <a href="/shopify-ios-attribution-gap-benchmark/">iOS Attribution Gap Benchmark</a>
+        </nav>
 
-        <!-- FAQ -->
-        <div class="sa-footer-col">
-          <div class="sa-footer-col-label">Quick Answers</div>
-          <a href="/faq/">FAQ Hub — All Quick Answers</a>
+        <!-- SILO 3: Stocky Shutdown cluster → hub: /stocky-shutdown/ -->
+        <nav class="sa-footer-col" aria-label="Shopify Stocky shutdown and migration">
+          <a href="/stocky-shutdown/" class="sa-footer-col-label sa-footer-hub sa-footer-urgent-label">⚠ Stocky Shutdown — Aug 2026</a>
+          <a href="/stocky-alternative/">Best Free Stocky Alternative</a>
+          <a href="/stocky-export-guide/">How to Export Stocky Data</a>
+          <a href="/stocky-migration-checklist/">Stocky Migration Checklist</a>
+          <a href="/blog/stocky-vs-inventory-planner/">Stocky vs Inventory Planner</a>
+          <a href="/blog/stocky-vs-prediko/">Stocky vs Prediko</a>
+          <a href="/blog/what-happens-to-stocky-purchase-orders/">What Happens to Your POs</a>
+          <a href="/stocky-migration-risk-scorer/">Stocky Migration Risk Scorer</a>
+        </nav>
+
+        <!-- SILO 4: Answers, Tools-hub, Guides, Company -->
+        <nav class="sa-footer-col" aria-label="Answers, guides and company information">
+          <a href="/faq/" class="sa-footer-col-label sa-footer-hub">Quick Answers</a>
           <a href="/faq/what-replaces-stocky-after-august-2026/">What replaces Stocky?</a>
-          <a href="/faq/is-klaviyo-free/">Is Klaviyo free?</a>
-          <a href="/faq/how-much-does-triple-whale-cost/">Triple Whale pricing</a>
           <a href="/faq/what-is-server-side-tracking-for-shopify/">What is server-side tracking?</a>
-          <a href="/faq/what-is-the-shopify-capi/">What is the Shopify CAPI?</a>
           <a href="/faq/does-make-com-work-with-shopify/">Does Make.com work with Shopify?</a>
-          <a href="/faq/how-do-i-set-up-tiktok-events-api-on-shopify-without-code/">TikTok Events API — no code?</a>
-        </div>
 
-        <!-- Tools + Site -->
-        <div class="sa-footer-col">
-          <div class="sa-footer-col-label">Tools</div>
+          <a href="/tools/" class="sa-footer-col-label sa-footer-hub" style="margin-top:16px;">Tools &amp; Guides</a>
           <a href="/tools/">All 21 Free Tools</a>
-          <a href="/shopify-automation-scanner/">Automation Scanner</a>
-          <a href="/app-audit/">App Audit</a>
-          <a href="/shopify-app-stack-kill-or-keep-auditor/">App Stack Auditor</a>
-          <a href="/make-vs-zapier-cost-calculator/">Make vs Zapier</a>
-          <a href="/stocky-migration-risk-scorer/">Stocky Migration Scorer</a>
-          <div class="sa-footer-col-label" style="margin-top:16px;">Guides</div>
-          <a href="/shopify-automation-guides/">All Guides</a>
+          <a href="/shopify-automation-guides/">All Automation Guides</a>
           <a href="/ultimate-shopify-automation-guide/">Ultimate Automation Guide</a>
-          <a href="/blog/shopify-abandoned-cart-recovery-free-2026/">Abandoned Cart Recovery Free</a>
-          <a href="/blog/shopify-email-marketing-free-2026/">Email Marketing Free 2026</a>
-          <a href="/blog/shopify-conversion-rate-optimisation-free-2026/">CRO Free — 12 Free Tools</a>
+
           <div class="sa-footer-col-label" style="margin-top:16px;">Company</div>
           <a href="/about/">About</a>
           <a href="/privacy/">Privacy</a>
           <a href="/terms/">Terms</a>
-        </div>
+        </nav>
 
       </div>
 
@@ -319,6 +308,12 @@ const year = new Date().getFullYear();
     margin-bottom: 4px; padding-bottom: 8px;
     border-bottom: 1px solid var(--border);
   }
+  /* Hub labels are themselves links — the spoke ladders up to the hub */
+  a.sa-footer-hub {
+    color: var(--text-3); text-decoration: none;
+    transition: color var(--dur) var(--ease), border-color var(--dur);
+  }
+  a.sa-footer-hub:hover { color: var(--g); border-bottom-color: var(--g-border); }
   .sa-footer-col a {
     font-size: 12px; color: var(--text-mute);
     text-decoration: none; line-height: 1.4;
@@ -327,11 +322,9 @@ const year = new Date().getFullYear();
   .sa-footer-col a:hover { color: var(--text-2); }
   .sa-footer-col a.sa-g { color: var(--g); }
   .sa-footer-col a.sa-g:hover { color: var(--g-hover); }
-  .sa-footer-urgent {
-    color: rgba(252,129,129,.7) !important;
-    font-weight: 500;
-  }
-  .sa-footer-urgent:hover { color: #fc8181 !important; }
+  /* Urgent Stocky hub label keeps the red treatment but stays a hub link */
+  a.sa-footer-urgent-label { color: rgba(252,129,129,.85); }
+  a.sa-footer-urgent-label:hover { color: #fc8181; border-bottom-color: rgba(252,129,129,.3); }
 
   /* ── Divider ───────────────────────────────────────────────── */
   .sa-footer-divider {
