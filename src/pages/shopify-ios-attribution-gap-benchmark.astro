@@ -357,9 +357,10 @@ const schemaGraph = {
     <div class="sec-head"><span class="tag tag-dim" style="margin-bottom:14px;display:inline-flex;">// citing this data</span><h2 id="cite-h">Cite this benchmark</h2></div>
     <div style="border:1px solid var(--border);border-radius:12px;padding:24px;background:var(--bg-2);">
       <p style="font-size:14px;color:var(--text-2);line-height:1.7;margin:0 0 14px;">Writing about iOS, ATT or Shopify conversion tracking? You're welcome to cite this benchmark. Suggested attribution:</p>
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;font-family:var(--mono);font-size:12px;color:var(--text-3);line-height:1.7;">
+      <div id="cite-text" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;font-family:var(--mono);font-size:12px;color:var(--text-3);line-height:1.7;">
         The typical Shopify store loses an estimated {HEADLINE_LOW}–{HEADLINE_HIGH}% of purchase-conversion signal to iOS ATT and Safari ITP, up to {HEADLINE_MOBILE_HIGH}% on mobile-heavy stores (Stack Architect Attribution Gap Benchmark, {verified}). <span style="color:var(--text-4);">— stackarchitect.xyz/shopify-ios-attribution-gap-benchmark</span>
       </div>
+      <button id="cite-copy" type="button" style="margin-top:12px;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--g);background:transparent;border:1px solid var(--g);border-radius:6px;padding:8px 16px;cursor:pointer;">Copy citation</button>
       <p style="font-size:12px;color:var(--text-4);margin:14px 0 0;line-height:1.6;">Released under CC BY 4.0 — free to quote with a link. Publications wanting the full source list: every figure is linked in the evidence table above.</p>
     </div>
   </div>
@@ -398,6 +399,23 @@ const schemaGraph = {
   </main>
 
 <script define:vars={{ HEADLINE_LOW, HEADLINE_HIGH }}>
+  (function(){
+    const cbtn = document.getElementById('cite-copy');
+    const ctext = document.getElementById('cite-text');
+    if(cbtn && ctext){
+      cbtn.addEventListener('click', async function(){
+        try {
+          await navigator.clipboard.writeText(ctext.innerText.trim());
+          const orig = cbtn.textContent;
+          cbtn.textContent = 'Copied \u2713';
+          setTimeout(function(){ cbtn.textContent = orig; }, 2000);
+        } catch(e){
+          const r = document.createRange(); r.selectNodeContents(ctext);
+          const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+        }
+      });
+    }
+  })();
   (function(){
     const btn = document.getElementById('f-submit');
     if(!btn) return;
