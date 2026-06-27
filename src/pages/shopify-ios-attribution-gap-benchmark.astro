@@ -320,6 +320,16 @@ const schemaGraph = {
     </div>
 
     <div id="contrib-card" style="border:1px solid var(--border);border-radius:12px;background:var(--bg-2);padding:26px;">
+      <div id="gap-meter" style="margin-bottom:22px;padding:16px 18px;border:1px solid var(--g-border);border-radius:10px;background:var(--g-bg);">
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:10px;">
+          <span id="gap-meter-count" style="font-family:var(--mono);font-size:28px;font-weight:800;color:var(--g);line-height:1;">—</span>
+          <span id="gap-meter-goal" style="font-size:13px;color:var(--text-3);">of 10 stores needed to publish</span>
+        </div>
+        <div style="height:7px;background:var(--bg);border:1px solid var(--border);border-radius:99px;overflow:hidden;">
+          <div id="gap-meter-fill" style="height:100%;width:0%;background:var(--g);border-radius:99px;transition:width .6s ease;"></div>
+        </div>
+        <p id="gap-meter-note" style="font-size:12px;color:var(--text-4);margin:10px 0 0;">Loading current count…</p>
+      </div>
       <div style="display:flex;flex-direction:column;gap:16px;">
         <div>
           <label style="display:block;font-size:13px;font-weight:600;color:var(--text-2);margin-bottom:6px;">Conversions your ad platform reported last month</label>
@@ -336,6 +346,7 @@ const schemaGraph = {
           </select>
         </div>
         <button id="f-submit" class="btn pulse" style="width:100%;justify-content:center;">Calculate my gap &amp; contribute →</button>
+        <p id="contrib-thanks" style="display:none;font-size:13px;font-weight:600;color:var(--g);line-height:1.6;margin:0;"></p>
         <p style="font-size:11px;color:var(--text-4);line-height:1.6;margin:0;">Stored anonymously and in aggregate. We never publish individual store data or any identifying detail. Your two numbers join the dataset that produces a future first-party benchmark.</p>
       </div>
 
@@ -416,6 +427,30 @@ const schemaGraph = {
       });
     }
   })();
+  function refreshMeter(){
+    fetch('/api/gap-stats').then(function(r){return r.json();}).then(function(d){
+      var c=document.getElementById('gap-meter-count');
+      var g=document.getElementById('gap-meter-goal');
+      var f=document.getElementById('gap-meter-fill');
+      var n=document.getElementById('gap-meter-note');
+      if(!c) return;
+      if(d && d.ready){
+        c.textContent=d.median_gap_pct+'%';
+        g.textContent='measured iOS attribution gap';
+        f.style.width='100%';
+        n.textContent='Based on '+d.n+' real stores \u00b7 updates as more contribute';
+      } else if(d){
+        var nn=d.n||0, mn=d.min_n||10;
+        c.textContent=nn;
+        g.textContent='of '+mn+' stores needed to publish';
+        f.style.width=Math.min(100,(nn/mn)*100)+'%';
+        n.textContent=nn===0?'Be the first store to contribute a real measurement.':((mn-nn)+' more '+((mn-nn)===1?'store':'stores')+' until the figure goes live.');
+      }
+    }).catch(function(){
+      var n=document.getElementById('gap-meter-note'); if(n) n.textContent='Live count unavailable right now.';
+    });
+  }
+  refreshMeter();
   (function(){
     const btn = document.getElementById('f-submit');
     if(!btn) return;
@@ -445,13 +480,31 @@ const schemaGraph = {
       msgEl.textContent = context;
       resultBox.style.display = 'block';
 
-      // Store the anonymous contribution (aggregate dataset, no identifying data)
+      // Submit the real contribution to the first-party dataset (Cloudflare D1)
       try {
-        if (window.storage && typeof window.storage.set === 'function') {
-          const key = 'contrib:' + Date.now() + ':' + Math.random().toString(36).slice(2,8);
-          await window.storage.set(key, JSON.stringify({ gap: gap, platform: platform, ts: Date.now() }), true);
+        const res = await fetch('/api/submit-gap', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            actual_orders: Math.round(actual),
+            meta_reported: Math.round(reported),
+            window_days: 30,
+            platform_note: platform
+          })
+        });
+        const data = await res.json();
+        const thanks = document.getElementById('contrib-thanks');
+        if (res.ok) {
+          if (thanks) { thanks.textContent = 'Added to the dataset \u2713 Thank you \u2014 your numbers now help build the benchmark.'; thanks.style.display = 'block'; }
+          refreshMeter();
+        } else if (thanks) {
+          thanks.textContent = (data && data.error) ? data.error : 'Could not save your contribution \u2014 please try again.';
+          thanks.style.display = 'block';
         }
-      } catch(e) { /* non-blocking: the user still sees their result */ }
+      } catch(e) {
+        const thanks = document.getElementById('contrib-thanks');
+        if (thanks) { thanks.textContent = 'Network error \u2014 your gap is shown above, but the contribution did not save. Please try again.'; thanks.style.display = 'block'; }
+      }
     });
   })();
 </script>
