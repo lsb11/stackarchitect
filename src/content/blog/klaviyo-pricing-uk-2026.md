@@ -91,7 +91,7 @@ The 250-contact free tier is designed as a trial, not a sustainable free option.
 
 ### GetResponse — From ~£15/month for larger UK lists
 
-For UK stores over 2,000 contacts that need more sophistication than Systeme.io, [GetResponse](https://www.getresponse.com/referral/qiHBa) prices significantly more competitively than Klaviyo. At 5,000 contacts, GetResponse charges approximately $59/month (£46/month) vs Klaviyo's $100/month (£95/month including VAT).
+For UK stores over 2,000 contacts that need more sophistication than Systeme.io, [GetResponse](/go/getresponse) prices significantly more competitively than Klaviyo. At 5,000 contacts, GetResponse charges approximately $59/month (£46/month) vs Klaviyo's $100/month (£95/month including VAT).
 
 **Saving vs Klaviyo at 5,000 contacts:** £95/month → £46/month = **£588/year saved**
 
