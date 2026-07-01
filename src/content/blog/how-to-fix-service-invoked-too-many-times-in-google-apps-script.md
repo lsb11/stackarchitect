@@ -2,7 +2,7 @@
 title: "Fix 'Service Invoked Too Many Times' in Google Apps Script"
 description: "Exact causes of 'Service invoked too many times' in Google Apps Script and the code fix for each. Covers Sheets, Docs, Drive, Gmail, and Autocrat."
 publishDate: "2026-03-18"
-updatedDate: "2026-04-16"
+updatedDate: "2026-07-01"
 category: "workflow"
 badge: "Error Fix"
 badgeType: "new"
@@ -47,6 +47,7 @@ Common rate limits (consumer accounts):
 - Google Docs/Drive service calls: approximately 30 per minute
 - Gmail sends: 100 per day total (daily quota, not rate)
 - UrlFetch calls: 20,000 per day (daily quota)
+- Workspace Studio add-ons (Google Gemini Alpha program): 2-minute execution timeout, tighter than the standard 6 minutes — relevant if you build automations into Google's newer AI surfaces
 
 ## The Root Cause in 95% of Cases: Row-by-Row Processing
 
