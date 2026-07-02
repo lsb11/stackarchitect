@@ -21,7 +21,7 @@ faqs:
     answer: "Shopify Admin now includes native purchase order creation, vendor records, and receiving for free. For automated, forecast-driven purchase orders, use a paid tool like Inventory Planner or Prediko."
 relatedGuides:
   - title: "How to Export Stocky Data — Full Guide"
-    href: "/stocky-export-guide/"
+    href: "/blog/shopify-stocky-data-export-before-shutdown/"
     badge: "Urgent"
   - title: "Stocky Shutdown — What Happens Aug 31"
     href: "/stocky-shutdown/"
@@ -55,7 +55,7 @@ So your *sales* history is fine. It's your *purchasing* history — what you ord
 4. Export as **CSV** — it includes PO numbers, items, quantities, unit costs, and dates.
 5. Save with a dated filename and store it in a cloud folder.
 
-One catch worth repeating: **suppliers attached to those POs cannot be exported** — Stocky has no supplier export. You'll need to document supplier names, contacts, lead times, and terms manually. The full step-by-step, including the supplier workaround, is in the [Stocky export guide](/stocky-export-guide/).
+One catch worth repeating: **suppliers attached to those POs cannot be exported** — Stocky has no supplier export. You'll need to document supplier names, contacts, lead times, and terms manually. The full step-by-step, including the supplier workaround, is in the [Stocky export guide](/blog/shopify-stocky-data-export-before-shutdown/).
 
 A reconciliation tip that's saved merchants real money: Stocky's stored cost prices can drift from Shopify Admin's. Before archiving, spot-check a few SKUs against recent supplier invoices — stores have found cost prices understated by thousands per container order during exactly this check.
 

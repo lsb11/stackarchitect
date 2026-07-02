@@ -86,4 +86,4 @@ Most "Stocky vs Inventory Planner" articles are published by paid competitors, s
 
 A sensible decision path: run the [migration risk scorer](/stocky-migration-risk-scorer/) to gauge complexity, deploy free Stocky Swap now so tracking is covered immediately, and commit to Inventory Planner only if your honest usage audit says you need forecasting. For the full field, see the [complete Stocky alternatives comparison](/stocky-alternative/).
 
-Whichever way you go, [export your Stocky data first](/stocky-export-guide/) — it's deleted after August 31 and suppliers can't be exported at all.
+Whichever way you go, [export your Stocky data first](/blog/shopify-stocky-data-export-before-shutdown/) — it's deleted after August 31 and suppliers can't be exported at all.
