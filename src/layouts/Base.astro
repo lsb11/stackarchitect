@@ -81,16 +81,16 @@ const siteNavSchema = {
   ],
   url: [
     'https://stackarchitect.xyz/',
-    'https://stackarchitect.xyz/capi-shield',
-    'https://stackarchitect.xyz/stocky-swap',
-    'https://stackarchitect.xyz/tiktok-events-api-shopify',
-    'https://stackarchitect.xyz/replace-klaviyo-free',
-    'https://stackarchitect.xyz/shopify-profit-loss-automation',
-    'https://stackarchitect.xyz/shopify-automation-guides',
-    'https://stackarchitect.xyz/ultimate-shopify-automation-guide',
-    'https://stackarchitect.xyz/shopify-automation-scanner',
-    'https://stackarchitect.xyz/shopify-app-cost-calculator',
-    'https://stackarchitect.xyz/best-ai-tools-shopify',
+    'https://stackarchitect.xyz/capi-shield/',
+    'https://stackarchitect.xyz/stocky-swap/',
+    'https://stackarchitect.xyz/tiktok-events-api-shopify/',
+    'https://stackarchitect.xyz/replace-klaviyo-free/',
+    'https://stackarchitect.xyz/shopify-profit-loss-automation/',
+    'https://stackarchitect.xyz/shopify-automation-guides/',
+    'https://stackarchitect.xyz/ultimate-shopify-automation-guide/',
+    'https://stackarchitect.xyz/shopify-automation-scanner/',
+    'https://stackarchitect.xyz/shopify-app-cost-calculator/',
+    'https://stackarchitect.xyz/best-ai-tools-shopify/',
   ],
 };
 
@@ -122,7 +122,7 @@ const personSchema = {
   '@id': 'https://stackarchitect.xyz/#luke',
   'name': 'Luke',
   'jobTitle': 'Shopify Automation Specialist',
-  'url': 'https://stackarchitect.xyz/about',
+  'url': 'https://stackarchitect.xyz/about/',
   'sameAs': ['https://www.linkedin.com/in/luke-stackarchitect'],
   'worksFor': { '@type': 'Organization', '@id': 'https://stackarchitect.xyz/#org' },
   'knowsAbout': [
@@ -148,14 +148,7 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    
-    <!-- Speakable schema — voice assistants + AI voice summaries read these selectors aloud -->
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "SpeakableSpecification",
-      "cssSelector": ["h1", ".hero-sub", ".sec-head h2", ".sec-head p", ".faq-ans-c p", ".seo-prose p:first-of-type"]
-    })} />
-    
+
     <!-- Performance: DNS prefetch for third-party scripts loaded later -->
     <link rel="dns-prefetch" href="//www.googletagmanager.com" />
     <link rel="dns-prefetch" href="//www.google-analytics.com" />
@@ -173,16 +166,12 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
     <!-- Mobile browser chrome colour -->
     <meta name="theme-color" content="#0a0a0a" />
 
-    <!-- Article modified time -->
-    <meta
-      property="article:modified_time"
-      content={updatedDate ?? publishDate ?? new Date().toISOString()}
-    />
-
-    <!-- Hreflang — UK English primary audience -->
-    <link rel="alternate" hreflang="en-gb" href={canonical} />
-    <link rel="alternate" hreflang="en" href={canonical} />
-    <link rel="alternate" hreflang="x-default" href={canonical} />
+    <!-- Article modified time — only when a real date is known.
+         (Previously fell back to build time, which claimed every page was
+         modified on every deploy — a fake-freshness footprint.) -->
+    {(updatedDate ?? publishDate) && (
+      <meta property="article:modified_time" content={updatedDate ?? publishDate} />
+    )}
 
     <!-- Open Graph -->
     <meta property="og:title" content={ogTitle ?? title} />
