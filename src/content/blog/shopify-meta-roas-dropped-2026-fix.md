@@ -20,6 +20,8 @@ faqs:
   - question: "How much ROAS can I recover by fixing Shopify Meta tracking?"
     answer: "Most stores implementing full server-side CAPI recover 20–40% of previously invisible conversions. Two effects follow: reported ROAS increases as more purchases appear in Ads Manager, and Meta's algorithm improves its targeting and bidding decisions because it now has more complete purchase data to learn from."
 relatedGuides:
+  - title: "iOS Attribution Gap Benchmark — the sourced loss figures"
+    href: "/shopify-ios-attribution-gap-benchmark"
   - title: "CAPI Shield — Free Server-Side Tracking"
     href: "/capi-shield"
   - title: "TikTok Events API — Free Setup Guide"

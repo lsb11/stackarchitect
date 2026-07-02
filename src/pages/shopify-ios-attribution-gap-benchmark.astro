@@ -24,9 +24,9 @@ const SITE       = "https://stackarchitect.xyz";
 const CANONICAL  = `${SITE}/shopify-ios-attribution-gap-benchmark/`;
 const OG         = `${SITE}/og.png`;
 const datePublished = "2026-06-13";
-const dateModified  = "2026-06-13";
-const verified      = "13 June 2026";
-const lastReviewISO = "2026-06-13";
+const dateModified  = "2026-07-02";
+const verified      = "2 July 2026";
+const lastReviewISO = "2026-07-02";
 
 // ── The synthesised headline range (from sourced figures below) ──
 const HEADLINE_LOW  = 20;
@@ -36,12 +36,12 @@ const HEADLINE_MOBILE_HIGH = 50;
 // ── Sourced data points (every row links to a real, named source) ──
 const dataPoints = [
   {
-    metric: "iOS users who opted OUT of tracking after ATT",
-    value: "~75%",
-    detail: "Within 60 days of the April 2021 ATT prompt, the IDFA was zeroed out for roughly three-quarters of iOS users globally; opt-in stabilised near 25% and has not materially moved since.",
-    source: "AdLibrary — iOS 14 ATT Five-Year Retrospective",
-    sourceUrl: "https://adlibrary.com/posts/ios-14-att",
-    sourceDate: "May 2026"
+    metric: "iOS users who declined app tracking (opt-out) — 2021 launch",
+    value: "~75–80%",
+    detail: "In the months after the April 2021 ATT prompt, most iOS users declined app tracking; early panels put opt-in in the low-20s%. Note: opt-in has since risen — AppsFlyer's global panel reported ~50% opt-in by 2024–2025 — so current app-tracking loss is lower than the 2021 launch figure. Web pixel loss (the basis of this benchmark) is driven by Safari ITP, ad blockers and consent rejection in addition to ATT.",
+    source: "AppsFlyer — ATT opt-in rate data (2021 launch vs 2024–25 anniversary)",
+    sourceUrl: "https://www.appsflyer.com/company/newsroom/pr/post-att-growth/",
+    sourceDate: "Apr 2025"
   },
   {
     metric: "Reduction in Meta Ads tracking accuracy from ATT",
@@ -68,20 +68,20 @@ const dataPoints = [
     sourceDate: "Jul 2025"
   },
   {
-    metric: "Self-reported Meta revenue impact from ATT",
+    metric: "Meta's own estimated 2022 revenue impact from ATT",
     value: "~$10B",
-    detail: "Meta publicly attributed a self-reported revenue hit of around $10 billion to ATT in the year following its rollout, before rebuilding its measurement stack around modelled conversions and CAPI.",
-    source: "AdLibrary — iOS 14 ATT Retrospective",
-    sourceUrl: "https://adlibrary.com/posts/ios-14-att",
-    sourceDate: "May 2026"
+    detail: "On Meta's Q4 2021 earnings call (Feb 2022), CFO David Wehner told analysts the iOS ATT headwind was 'on the order of $10 billion' for 2022 — roughly 8% of annual revenue. Meta reaffirmed the ~$10B order of magnitude on its Q2 2022 call.",
+    source: "Meta Q4 2021 earnings call (David Wehner), via MacRumors",
+    sourceUrl: "https://www.macrumors.com/2022/02/03/facebook-10-billion-in-2022-apple-measures/",
+    sourceDate: "Feb 2022"
   },
   {
-    metric: "iOS attribution reliability (current)",
-    value: "Degrading",
-    detail: "iOS 26 beta analysis in late 2025 confirmed Meta attribution is 'increasingly unreliable for iOS users' — iPhone users click, convert, and the dashboard under-reports it.",
-    source: "DOJO AI — Meta Ads Attribution 2026",
-    sourceUrl: "https://www.dojoai.com/blog/meta-ads-attribution-2026-changes-fixes",
-    sourceDate: "Mar 2026"
+    metric: "Safari ITP: first-party cookie lifetime cap",
+    value: "7 days",
+    detail: "Safari's Intelligent Tracking Prevention caps script-writable first-party cookies at 7 days and blocks third-party cookies entirely — structurally degrading browser-based attribution for the ~50%+ of Shopify mobile traffic on iOS Safari, independent of ATT opt-in trends.",
+    source: "WebKit — Tracking Prevention (Apple)",
+    sourceUrl: "https://webkit.org/tracking-prevention/",
+    sourceDate: "Ongoing"
   }
 ];
 
