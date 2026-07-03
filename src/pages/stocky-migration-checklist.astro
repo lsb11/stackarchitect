@@ -324,6 +324,63 @@ const jsonLd = {
     <p class="disclosure">Stack Architect uses affiliate links. We may earn a commission if you sign up for tools via our links — at no extra cost to you. We only recommend tools we use ourselves.</p>
   </div>
 
+
+<section aria-label="Shopify Admin comparison" style="max-width:900px;margin:3rem auto 0;padding:0 1.25rem">
+  <h2 style="font-size:1.45rem;margin:0 0 .5rem">What Shopify Admin replaces natively &mdash; and what it doesn't</h2>
+  <p style="opacity:.88;max-width:75ch">Shopify's answer to the shutdown is that basic inventory management now lives in Shopify Admin on every plan. That's true &mdash; and materially incomplete. Here is the honest split, because choosing your Phase&nbsp;2 replacement depends entirely on which column your workflow lives in:</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin:1rem 0">
+    <div style="border:1px solid rgba(110,200,140,.45);border-radius:12px;padding:1rem 1.2rem">
+      <h3 style="margin:0 0 .5rem;font-size:1.05rem">Shopify Admin now covers (no app needed)</h3>
+      <p style="margin:0;opacity:.9;line-height:1.7">Stock tracking across multiple locations &middot; inventory transfers between locations &middot; stock adjustments with reason codes &middot; basic purchase order creation &middot; low-stock alerts &middot; inventory reporting in Analytics</p>
+    </div>
+    <div style="border:1px solid rgba(220,120,80,.5);border-radius:12px;padding:1rem 1.2rem">
+      <h3 style="margin:0 0 .5rem;font-size:1.05rem">Shopify Admin does NOT cover</h3>
+      <p style="margin:0;opacity:.9;line-height:1.7">Demand forecasting &middot; automated reorder-point calculations &middot; velocity-based restock recommendations &middot; safety-stock buffers &middot; supplier lead-time and MOQ tracking &middot; a stock ledger you own outside Shopify</p>
+    </div>
+  </div>
+  <p style="opacity:.88;max-width:75ch">If everything you used Stocky for sits in the left column, migrate to Admin and you're done &mdash; genuinely, no app required. If you need anything in the right column: the ledger piece is what the <a href="/stocky-swap/" style="color:#59c9ff">free Stocky Swap route</a> covers for $0, and the forecasting piece means a paid tool &mdash; compared honestly in the <a href="/stocky-alternative/" style="color:#59c9ff">full market map</a>.</p>
+  <h2 style="font-size:1.35rem;margin:2.2rem 0 .5rem">The three dates that define your deadline</h2>
+  <p style="opacity:.9"><strong>7 July 2025</strong> &mdash; inventory transfers and min/max forecasting were removed from Stocky (if yours "stopped working properly," this is why).<br/>
+  <strong>2 February 2026</strong> &mdash; Stocky delisted from the App Store; no reinstalls if you uninstall.<br/>
+  <strong>31 August 2026</strong> &mdash; complete shutdown; unexported data is permanently gone.</p>
+  <h2 style="font-size:1.35rem;margin:2.2rem 0 .5rem">Copy this checklist into your task manager</h2>
+  <p style="opacity:.88;max-width:75ch">The whole plan as plain text &mdash; paste it into Notion, Asana, Todoist, or an email to whoever runs your ops:</p>
+  <pre id="smc-copy-src" style="white-space:pre-wrap;background:rgba(128,128,128,.12);padding:1rem 1.2rem;border-radius:10px;font-size:.85em;line-height:1.65">STOCKY MIGRATION CHECKLIST (deadline: 31 Aug 2026) &mdash; stackarchitect.xyz/stocky-migration-checklist/
+
+PHASE 1 &mdash; PRESERVE (this week)
+[ ] Export purchase-order history from Stocky (CSV)
+[ ] Export stocktake / adjustment records (CSV)
+[ ] Manually record ALL supplier data &mdash; names, contacts, lead times, MOQs (Stocky cannot export suppliers)
+[ ] Save exports somewhere outside Shopify (Drive/Dropbox)
+
+PHASE 2 &mdash; CHOOSE (1&ndash;2 days)
+[ ] Only need stock tracking/transfers/basic POs? &rarr; Shopify Admin native, done
+[ ] Need an order-driven stock ledger you own? &rarr; free Make.com + Google Sheets route ($0)
+[ ] Need forecasting/reorder automation? &rarr; shortlist a paid tool ($29&ndash;$120/mo bracket)
+[ ] Multi-channel (Amazon/eBay/Etsy)? &rarr; sync-first tool
+[ ] Manufacture from raw materials? &rarr; BOM-capable tool (Katana/Craftybase class)
+
+PHASE 3 &mdash; DEPLOY IN PARALLEL (same day)
+[ ] Set up the replacement while Stocky still runs
+[ ] Do NOT uninstall Stocky yet
+
+PHASE 4 &mdash; VERIFY (2&ndash;4 weeks)
+[ ] Compare stock counts between systems weekly
+[ ] Recreate supplier records in the new system
+[ ] Let forecasting tools calibrate (they need weeks of sales data)
+
+PHASE 5 &mdash; CUT OVER (well before 31 Aug)
+[ ] Final export from Stocky
+[ ] Switch daily workflow to the new system
+[ ] Confirm nothing still depends on Stocky, then retire it</pre>
+  <button id="smc-copy-btn" type="button" style="margin-top:.5rem;padding:.55rem 1.1rem;border-radius:8px;border:1px solid rgba(128,128,128,.4);background:transparent;color:inherit;cursor:pointer">Copy checklist</button>
+  <script>
+    (function(){var b=document.getElementById('smc-copy-btn'),p=document.getElementById('smc-copy-src');
+    if(!b||!p)return;b.addEventListener('click',function(){
+      navigator.clipboard.writeText(p.textContent).then(function(){b.textContent='Copied \u2713';setTimeout(function(){b.textContent='Copy checklist';},1600);});
+    });})();
+  </script>
+</section>
 </main>
 
 <RelatedGuides guides={[
