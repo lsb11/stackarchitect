@@ -31,6 +31,7 @@ relatedGuides:
     href: "/stocky-alternative/"
 ---
 
+# What Happens to Stocky Purchase Orders After August 31, 2026?
 **All Stocky purchase order history — PO numbers, line items, costs, dates — is permanently deleted after August 31, 2026, and Shopify does not migrate it. To keep it, export your purchase orders as CSV from Stocky → Reports before the deadline. Suppliers attached to those POs cannot be exported and must be documented manually.**
 
 If you've built up months or years of purchase order history in Stocky, this is the question that matters. This page explains exactly what's lost, what survives, how to save your PO history before the deadline, and how to rebuild the purchase-order workflow afterward — the specific data-loss question the general [shutdown guide](/stocky-shutdown/) doesn't have room to fully cover.

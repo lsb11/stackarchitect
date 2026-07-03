@@ -30,7 +30,7 @@ relatedGuides:
   - title: "Klaviyo vs GetResponse for Shopify 2026"
     href: "/blog/klaviyo-vs-getresponse-shopify-2026"
   - title: "Is Klaviyo free? — Full answer"
-    href: "/is-klaviyo-free"
+    href: "/replace-klaviyo-free/"
 ---
 
 # Klaviyo Pricing UK 2026 — Exact £ Costs, VAT, and Free Alternatives
