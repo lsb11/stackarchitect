@@ -32,16 +32,16 @@ const { source = 'onsite' } = Astro.props;
   </p>
 
   <div id="gc-form">
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;">
-      <div class="calc-field">
+    <div class="gc-grid">
+      <div class="gc-field">
         <label for="gc-reported">Conversions your ad platform reported</label>
         <input id="gc-reported" type="number" inputmode="numeric" min="0" step="1" placeholder="e.g. 320" />
       </div>
-      <div class="calc-field">
+      <div class="gc-field">
         <label for="gc-actual">Actual Shopify orders, same period</label>
         <input id="gc-actual" type="number" inputmode="numeric" min="20" step="1" placeholder="e.g. 470" />
       </div>
-      <div class="calc-field">
+      <div class="gc-field">
         <label for="gc-window">Measurement window</label>
         <select id="gc-window">
           <option value="30" selected>Last 30 days</option>
@@ -50,8 +50,8 @@ const { source = 'onsite' } = Astro.props;
         </select>
       </div>
     </div>
-    <button id="gc-submit" class="calc-btn" type="button">ADD MY (ANONYMOUS) RESULT →</button>
-    <p id="gc-msg" role="status" aria-live="polite" style="font-size:12px;color:#a1a1aa;margin:10px 0 0;min-height:1.2em;"></p>
+    <button id="gc-submit" type="button">ADD MY (ANONYMOUS) RESULT →</button>
+    <p id="gc-msg" role="status" aria-live="polite">Two numbers, no store name, no email.</p>
   </div>
 
   <div id="gc-done" style="display:none;">
@@ -63,6 +63,42 @@ const { source = 'onsite' } = Astro.props;
     </p>
   </div>
 </div>
+
+<style>
+  #gap-contribute .gc-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+    gap:18px;
+    margin-bottom:18px;
+  }
+  #gap-contribute .gc-field{display:flex;flex-direction:column;gap:8px;}
+  #gap-contribute .gc-field label{
+    font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:#8b8b93;line-height:1.4;min-height:2.4em;display:flex;align-items:flex-end;
+  }
+  #gap-contribute .gc-field input,
+  #gap-contribute .gc-field select{
+    background:#000;border:1px solid #2a2a2a;color:#fff;
+    font-family:inherit;font-size:15px;padding:12px 14px;width:100%;
+    outline:none;border-radius:6px;transition:border-color .2s;
+    -webkit-appearance:none;appearance:none;
+  }
+  #gap-contribute .gc-field select{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%234ade80' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;
+  }
+  #gap-contribute .gc-field input:focus,
+  #gap-contribute .gc-field select:focus{border-color:#4ade80;}
+  #gap-contribute .gc-field input::placeholder{color:#5a5a5a;}
+  #gap-contribute #gc-submit{
+    width:100%;background:#4ade80;color:#000;font-family:inherit;
+    font-size:13px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;
+    padding:15px;border:none;border-radius:6px;cursor:pointer;transition:background .2s;
+  }
+  #gap-contribute #gc-submit:hover{background:#22c55e;}
+  #gap-contribute #gc-submit:disabled{opacity:.6;cursor:not-allowed;}
+  #gap-contribute #gc-msg{font-size:12px;color:#8b8b93;margin:12px 0 0;min-height:1.2em;line-height:1.5;}
+</style>
 
 <script>
   (function () {
