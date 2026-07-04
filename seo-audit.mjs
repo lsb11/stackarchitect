@@ -106,6 +106,13 @@ for (const f of htmlFiles) {
   if (h1s === 0 && !isNoindexOk) warn(`${page} — no <h1>`);
   if (h1s > 1) warn(`${page} — ${h1s} <h1> tags`);
 
+
+  // dead onclick handlers: onclick="fn()" must resolve to a global in the page
+  for (const fn of new Set([...html.matchAll(/onclick="(\w+)\(/g)].map(m=>m[1]))) {
+    if (!(new RegExp('function\\s+'+fn+'\\b').test(html) || new RegExp('window\\.'+fn+'\\s*=').test(html)))
+      err(`${page} — onclick handler ${fn}() has NO global definition (script bundled as module? use is:inline)`);
+  }
+
   // JSON-LD validity
   const ldBlocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
   for (const [, body] of ldBlocks) {
