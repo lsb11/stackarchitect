@@ -1,6 +1,8 @@
 ---
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+// Inline data-flow diagram (raw SVG → stays in the DOM: Google-Images indexable + accessible title/desc)
+import capiFlowSvg from '../assets/diagrams/capi-shield-data-flow.svg?raw';
 /**
  * src/pages/capi-shield.astro
  * stackarchitect.xyz/capi-shield
@@ -434,6 +436,13 @@ import AttributionTracker from '../components/AttributionTracker.astro';
       <h2 id="how-h">Webhook-triggered. Server-to-server. Browser cannot interfere.</h2>
       <p>CAPI Shield uses a Shopify webhook — not a browser pixel — to trigger every conversion event.</p>
     </div>
+
+    <figure class="capi-flow-figure" style="margin:0 0 40px;border:1px solid var(--border);border-radius:16px;background:#080a09;padding:22px clamp(12px,3vw,28px);">
+      <Fragment set:html={capiFlowSvg} />
+      <figcaption style="font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.06em;text-transform:uppercase;margin-top:14px;text-align:center;">
+        CAPI Shield data flow — Shopify webhook → Make.com (hash + dedupe) → Meta CAPI, Google Enhanced Conversions &amp; TikTok Events API, server-to-server
+      </figcaption>
+    </figure>
 
     <div class="flow-grid" role="list">
       {flowSteps.map(s => (

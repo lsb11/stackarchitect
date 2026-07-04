@@ -1,0 +1,96 @@
+<svg role="img" aria-labelledby="costChartTitle costChartDesc" viewBox="0 0 1120 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;font-family:var(--mono,ui-monospace,Menlo,monospace);">
+  <title id="costChartTitle">Cumulative 12-month cost: paid Shopify app stack vs the free $0 stack</title>
+  <desc id="costChartDesc">A line chart comparing cumulative spend over twelve months. The paid app stack climbs steadily to roughly $12,000 by month twelve, while the free stack stays flat at $0. The shaded area between the two lines represents the total amount saved.</desc>
+
+  <defs>
+    <linearGradient id="paidFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ef4444" stop-opacity="0.20"/>
+      <stop offset="1" stop-color="#ef4444" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="savedFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#00c864" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#00c864" stop-opacity="0.02"/>
+    </linearGradient>
+    <linearGradient id="paidLine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f87171"/>
+      <stop offset="1" stop-color="#ef4444"/>
+    </linearGradient>
+  </defs>
+
+  <!-- plot frame: x 120..1020, y 60..400  → 12 months, $0..$12,000 -->
+  <!-- gridlines + y labels ($) -->
+  <g stroke="#1f1f1f" stroke-width="1">
+    <line x1="120" y1="400" x2="1020" y2="400"/>
+    <line x1="120" y1="315" x2="1020" y2="315" stroke-dasharray="3 6"/>
+    <line x1="120" y1="230" x2="1020" y2="230" stroke-dasharray="3 6"/>
+    <line x1="120" y1="145" x2="1020" y2="145" stroke-dasharray="3 6"/>
+    <line x1="120" y1="60"  x2="1020" y2="60"  stroke-dasharray="3 6"/>
+  </g>
+  <g fill="#52525b" font-size="10.5" text-anchor="end">
+    <text x="106" y="404">$0</text>
+    <text x="106" y="319">$3k</text>
+    <text x="106" y="234">$6k</text>
+    <text x="106" y="149">$9k</text>
+    <text x="106" y="64">$12k</text>
+  </g>
+
+  <!-- x labels (months) -->
+  <g fill="#52525b" font-size="10.5" text-anchor="middle">
+    <text x="120" y="422">M1</text>
+    <text x="270" y="422">M3</text>
+    <text x="495" y="422">M6</text>
+    <text x="720" y="422">M9</text>
+    <text x="1020" y="422">M12</text>
+  </g>
+  <text x="570" y="446" text-anchor="middle" fill="#64748b" font-size="10.5" letter-spacing="0.5">Months since switching — cumulative spend</text>
+
+  <!-- SAVED area between the two lines (paid line down to y=400 baseline == free line) -->
+  <!-- paid stack ≈ $1000/mo: M1..M12 → $1k..$12k. y = 400 - (val/12000)*340 -->
+  <path d="M120 400
+           L120 371.7 L195 343.3 L270 315 L345 286.7 L420 258.3 L495 230
+           L570 201.7 L645 173.3 L720 145 L795 116.7 L870 88.3 L1020 60
+           L1020 400 Z"
+        fill="url(#savedFill)"/>
+
+  <!-- paid area under its own line for depth -->
+  <path d="M120 371.7 L195 343.3 L270 315 L345 286.7 L420 258.3 L495 230
+           L570 201.7 L645 173.3 L720 145 L795 116.7 L870 88.3 L1020 60
+           L1020 400 L120 400 Z"
+        fill="url(#paidFill)" opacity="0.6"/>
+
+  <!-- free stack line (flat at $0) -->
+  <line x1="120" y1="400" x2="1020" y2="400" stroke="#00c864" stroke-width="3"/>
+  <circle cx="1020" cy="400" r="4.5" fill="#00c864"/>
+
+  <!-- paid stack line -->
+  <polyline points="120,371.7 195,343.3 270,315 345,286.7 420,258.3 495,230 570,201.7 645,173.3 720,145 795,116.7 870,88.3 1020,60"
+            fill="none" stroke="url(#paidLine)" stroke-width="3" stroke-linejoin="round"/>
+  <circle cx="1020" cy="60" r="4.5" fill="#ef4444"/>
+
+  <!-- endpoint callouts -->
+  <g>
+    <rect x="852" y="26" width="168" height="26" rx="7" fill="#180d0d" stroke="#7f1d1d" stroke-width="1.2"/>
+    <text x="936" y="43" text-anchor="middle" fill="#f87171" font-size="11" font-weight="800">Paid stack: ~$12,000</text>
+  </g>
+  <g>
+    <rect x="852" y="368" width="168" height="26" rx="7" fill="#0b1f14" stroke="#132018" stroke-width="1.2"/>
+    <text x="936" y="385" text-anchor="middle" fill="#00c864" font-size="11" font-weight="800">Free stack: $0</text>
+  </g>
+
+  <!-- "You save" label in the gap -->
+  <g transform="translate(430 250)">
+    <text x="0" y="0" fill="#00c864" font-size="15" font-weight="800">You keep this.</text>
+    <text x="0" y="20" fill="#94a3b8" font-size="11">$1,428–$12,000 / year, depending on your stack</text>
+  </g>
+
+  <!-- legend -->
+  <g font-size="11">
+    <line x1="120" y1="474" x2="150" y2="474" stroke="url(#paidLine)" stroke-width="3"/>
+    <text x="158" y="478" fill="#94a3b8">Paid apps (Klaviyo · Triple Whale · Stocky · Zapier)</text>
+    <line x1="560" y1="474" x2="590" y2="474" stroke="#00c864" stroke-width="3"/>
+    <text x="598" y="478" fill="#94a3b8">Stack Architect free stack — flat $0, forever</text>
+  </g>
+
+  <!-- title tag top-left -->
+  <text x="120" y="44" fill="#475569" font-size="10" font-weight="800" letter-spacing="1.5">// CUMULATIVE COST OVER 12 MONTHS</text>
+</svg>
