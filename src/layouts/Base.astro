@@ -133,7 +133,98 @@ const personSchema = {
     'Shopify CAPI', 'Elevar alternative', 'Triple Whale alternative',
   ],
 };
-const allSchemas = [...schemaArray, siteNavSchema, orgSchema, personSchema];
+// Site-wide WebSite node. 26+ pages reference "@id": ".../#website" in
+// isPartOf but the node was only defined on a handful of pages — a dangling
+// reference everywhere else. Defining it once here resolves it site-wide.
+const webSiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': 'https://stackarchitect.xyz/#website',
+  'url': 'https://stackarchitect.xyz/',
+  'name': 'Stack Architect',
+  'description':
+    'Free Shopify automation tools replacing $700+/month of paid apps — server-side tracking, inventory, email, TikTok Events API, P&L.',
+  'publisher': { '@id': 'https://stackarchitect.xyz/#org' },
+  'inLanguage': 'en-GB',
+};
+
+// ── Auto-BreadcrumbList ─────────────────────────────────────────────
+// 36 pages shipped without BreadcrumbList structured data (blog posts had
+// it via BlogPost.astro; most .astro pages didn't). Generate one from the
+// URL path on any indexable page that doesn't already declare one —
+// checked recursively so @graph-embedded breadcrumbs aren't duplicated.
+const canonicalPath = new URL(canonical).pathname;
+
+const schemaJson = JSON.stringify(schemaArray);
+const alreadyHasBreadcrumbSchema = schemaJson.includes('"BreadcrumbList"');
+const alreadyHasWebSiteSchema = schemaJson.includes('"WebSite"');
+
+function humanizeSlug(slug: string): string {
+  const overrides: Record<string, string> = {
+    'capi-shield': 'CAPI Shield',
+    'pro': 'Complete Kit',
+    'blog': 'Guides',
+    'tools': 'Tools',
+    'faq': 'FAQ',
+    'stack': 'The Recommended Stack',
+  };
+  if (overrides[slug]) return overrides[slug];
+  return slug
+    .split('-')
+    .map((w) => {
+      const upper: Record<string, string> = {
+        'ai': 'AI', 'pl': 'P&L', 'roas': 'ROAS', 'emq': 'EMQ', 'ga4': 'GA4',
+        'ios': 'iOS', 'api': 'API', 'seo': 'SEO', 'vs': 'vs', 'io': 'io',
+        'tiktok': 'TikTok', 'bfcm': 'BFCM', 'crm': 'CRM', 'cro': 'CRO',
+      };
+      if (upper[w]) return upper[w];
+      return w.charAt(0).toUpperCase() + w.slice(1);
+    })
+    .join(' ');
+}
+
+let autoBreadcrumbSchema: object | null = null;
+if (!alreadyHasBreadcrumbSchema && !noindex && canonicalPath !== '/') {
+  const segments = canonicalPath.split('/').filter(Boolean);
+  const items = [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://stackarchitect.xyz/' },
+  ];
+  let acc = '';
+  segments.forEach((seg, i) => {
+    acc += '/' + seg;
+    const isLast = i === segments.length - 1;
+    items.push({
+      '@type': 'ListItem',
+      position: i + 2,
+      // Final crumb: use the page's H1-ish title (strip brand suffix) for accuracy.
+      name: isLast ? (title.split('—')[0].split('|')[0].trim() || humanizeSlug(seg)) : humanizeSlug(seg),
+      // Per Google guidance the final item may omit `item`.
+      // '/blog/' has no index page — the real guides hub is /shopify-automation-guides/.
+      ...(isLast
+        ? {}
+        : {
+            item:
+              seg === 'blog'
+                ? 'https://stackarchitect.xyz/shopify-automation-guides/'
+                : `https://stackarchitect.xyz${acc}/`,
+          }),
+    });
+  });
+  autoBreadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': items,
+  };
+}
+
+const allSchemas = [
+  ...schemaArray,
+  siteNavSchema,
+  orgSchema,
+  personSchema,
+  ...(alreadyHasWebSiteSchema ? [] : [webSiteSchema]),
+  ...(autoBreadcrumbSchema ? [autoBreadcrumbSchema] : []),
+];
 
 const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
 ---
@@ -148,6 +239,14 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+
+    <!-- Feed discovery: Googlebot, Bingbot and AI crawlers poll RSS for new URLs -->
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Stack Architect — Shopify Automation Guides"
+      href="/rss.xml"
+    />
 
     <!-- Performance: DNS prefetch for third-party scripts loaded later -->
     <link rel="dns-prefetch" href="//www.googletagmanager.com" />

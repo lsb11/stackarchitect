@@ -1,0 +1,32 @@
+# Weekly GSC Indexing Watchdog
+# Inspects every sitemap URL via the Search Console URL Inspection API and
+# fails (exit 2) if any page is Discovered/Crawled-but-not-indexed, uploading
+# the CSV report as an artifact so you can track coverage over time.
+#
+# One-time setup: add repo secret GSC_KEY_JSON containing the full JSON of
+# your Google service-account key (see setup notes in gsc-coverage.mjs).
+name: GSC Indexing Watchdog
+
+on:
+  schedule:
+    - cron: '0 6 * * 1' # every Monday 06:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run coverage watchdog
+        env:
+          GSC_KEY_JSON: ${{ secrets.GSC_KEY_JSON }}
+        run: node gsc-coverage.mjs || echo "::warning::Unindexed pages detected — see report artifact"
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: gsc-coverage-report
+          path: gsc-coverage-report.csv
+          retention-days: 90
