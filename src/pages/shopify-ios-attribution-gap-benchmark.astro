@@ -421,6 +421,28 @@ const schemaGraph = {
     });})();
   </script>
 </section>
+
+<section aria-label="Live badge" style="max-width:860px;margin:0 auto 3rem;padding:1.25rem 1.5rem;border:1px solid rgba(128,128,128,.25);border-radius:12px">
+  <h2 style="margin:0 0 .5rem;font-size:1.2em">Or add the live badge</h2>
+  <p style="margin:0 0 .8rem;opacity:.85">A lightweight SVG badge for READMEs, docs, and posts. It shows the current benchmark figure and switches to the first-party median automatically once 10 verified stores are in. Updates hourly.</p>
+  <p style="margin:0 0 1rem;"><img src="/api/gap-badge" alt="iOS attribution gap — live benchmark badge" width="238" height="20" loading="lazy" /></p>
+  <p style="margin:0 0 .3rem;font-size:.8em;opacity:.7;text-transform:uppercase;letter-spacing:.06em">Markdown (GitHub / npm README)</p>
+  <pre id="gapb-md" style="white-space:pre-wrap;word-break:break-all;background:rgba(128,128,128,.12);padding:.9rem;border-radius:8px;font-size:.78em;cursor:pointer" title="Click to select">[![Shopify iOS Attribution Gap](https://stackarchitect.xyz/api/gap-badge)](https://stackarchitect.xyz/shopify-ios-attribution-gap-benchmark/)</pre>
+  <button id="gapb-md-copy" type="button" style="margin:.5rem 0 1rem;padding:.5rem 1rem;border-radius:8px;border:1px solid rgba(128,128,128,.4);background:transparent;color:inherit;cursor:pointer">Copy Markdown</button>
+  <p style="margin:0 0 .3rem;font-size:.8em;opacity:.7;text-transform:uppercase;letter-spacing:.06em">HTML</p>
+  <pre id="gapb-html" style="white-space:pre-wrap;word-break:break-all;background:rgba(128,128,128,.12);padding:.9rem;border-radius:8px;font-size:.78em;cursor:pointer" title="Click to select">&lt;a href="https://stackarchitect.xyz/shopify-ios-attribution-gap-benchmark/"&gt;&lt;img src="https://stackarchitect.xyz/api/gap-badge" alt="Shopify iOS Attribution Gap — live benchmark" width="238" height="20" loading="lazy"&gt;&lt;/a&gt;</pre>
+  <button id="gapb-html-copy" type="button" style="margin-top:.5rem;padding:.5rem 1rem;border-radius:8px;border:1px solid rgba(128,128,128,.4);background:transparent;color:inherit;cursor:pointer">Copy HTML</button>
+  <script>
+    (function(){
+      [["gapb-md-copy","gapb-md","Copy Markdown"],["gapb-html-copy","gapb-html","Copy HTML"]].forEach(function(cfg){
+        var b=document.getElementById(cfg[0]),p=document.getElementById(cfg[1]);
+        if(!b||!p)return;b.addEventListener("click",function(){
+          navigator.clipboard.writeText(p.textContent).then(function(){b.textContent="Copied \u2713";setTimeout(function(){b.textContent=cfg[2];},1600);});
+        });
+      });
+    })();
+  </script>
+</section>
 </main>
 
 <script define:vars={{ HEADLINE_LOW, HEADLINE_HIGH }}>
