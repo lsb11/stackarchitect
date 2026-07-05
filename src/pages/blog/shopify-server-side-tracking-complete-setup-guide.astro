@@ -66,7 +66,10 @@ import Nav from '../../components/Nav.astro';
           "@id": "https://stackarchitect.xyz/blog/shopify-server-side-tracking-complete-setup-guide/"
         },
         "url": "https://stackarchitect.xyz/blog/shopify-server-side-tracking-complete-setup-guide/",
-        "image": "https://stackarchitect.xyz/og.png",
+        "image": [
+          "https://stackarchitect.xyz/og.png",
+          "https://stackarchitect.xyz/diagrams/shopify-server-side-tracking-flow-2026.svg"
+        ],
         "articleSection": "Tracking",
         "keywords": ["shopify server-side tracking","meta conversions api","google enhanced conversions","tiktok events api","shopify capi","server-side tracking make.com","shopify conversion tracking 2026"],
         "speakable": {
@@ -742,6 +745,12 @@ import Nav from '../../components/Nav.astro';
     <p>The key distinction is where the event originates. A browser pixel depends on the customer&rsquo;s device: their browser settings, installed extensions, network conditions, and whether they accepted your cookie banner. A server event originates from Shopify&rsquo;s infrastructure &mdash; it fires regardless of what the customer&rsquo;s browser does, making it immune to ad blockers, iOS privacy restrictions, and Safari&rsquo;s Intelligent Tracking Prevention.</p>
     <h3>Server-side vs browser pixel: the architecture</h3>
   </div>
+  <figure style="max-width:960px;margin:28px auto;border:1px solid #2f2f2f;border-radius:18px;overflow:hidden;background:#050505;">
+    <img src="/diagrams/shopify-server-side-tracking-flow-2026.svg"
+         alt="Shopify server-side tracking architecture diagram 2026 — one Shopify orders/paid webhook feeds a single Make.com scenario that hashes customer data and sends server-to-server events to Meta Conversions API, Google Enhanced Conversions and TikTok Events API, bypassing iOS Link Tracking Protection and ad blockers"
+         width="1200" height="630" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
+    <figcaption style="padding:12px 18px;font-size:13px;color:#9a9a9a;border-top:1px solid #232323;">The complete $0 architecture: one webhook, one Make.com scenario, three ad platforms fed server-to-server. Nothing in this path can be blocked client-side.</figcaption>
+  </figure>
   <div class="flow-compare">
     <div class="flow-card broken">
       <div class="flow-title">&#x2715; Browser pixel only</div>
