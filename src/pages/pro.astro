@@ -1447,7 +1447,7 @@ import AttributionTracker from '../components/AttributionTracker.astro';
     <p style="font-size:14px;color:#94a3b8;line-height:1.7;margin-bottom:24px;">Every field pre-mapped. Every API connected. 30-day money-back guarantee. $29 one-time — no subscription, ever.</p>
     <a href="https://buy.stripe.com/00wfZa7w1a3Bfo55tnfrW00" style="display:inline-flex;align-items:center;gap:8px;font-family:'Inter',-apple-system,sans-serif;font-size:15px;font-weight:700;color:#020617;background:#00c864;padding:14px 28px;border-radius:8px;text-decoration:none;margin-bottom:12px;">Get the Complete Kit — $29 →</a>
     <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#64748b;">30-day money-back guarantee · Instant access · No subscription</div>
-    <button id="exit-continue" style="display:block;margin:14px auto 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:#475569;background:none;border:none;cursor:pointer;text-decoration:underline;">No thanks, I'll spend 8 hours building it</button>
+    <button id="exit-continue" style="display:block;margin:14px auto 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:#475569;background:none;border:none;cursor:pointer;text-decoration:underline;">No thanks — I'll build it myself</button>
   </div>
 </div>
 
@@ -1494,34 +1494,6 @@ import AttributionTracker from '../components/AttributionTracker.astro';
 })();
 </script>
 
-<!-- SA Sticky Conversion Bar -->
-<div id="sa-sticky" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#0a0a0a;border-top:1px solid #1f1f1f;padding:12px 20px;box-shadow:0 -4px 24px rgba(0,0,0,.4);">
-  <div style="max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between;">
-    <p style="margin:0;font-size:13px;color:#a1a1aa;font-family:system-ui,sans-serif;flex:1;min-width:160px;">Your store is leaking <strong style="color:#fff;">$700+/mo</strong> to paid apps.</p>
-    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-      <a href="/pro/" style="display:inline-flex;align-items:center;gap:6px;background:#fbbf24;color:#000;font-weight:700;font-size:13px;padding:9px 18px;border-radius:6px;text-decoration:none;white-space:nowrap;" onclick="sessionStorage.setItem('sa-sticky-clicked','1')">Get the Kit — $29 &#8594;</a>
-      <a href="/go/make" target="_blank" rel="noopener sponsored" style="display:inline-flex;align-items:center;gap:6px;background:transparent;color:#00c864;font-weight:600;font-size:13px;padding:9px 18px;border-radius:6px;text-decoration:none;border:1px solid rgba(0,200,100,.3);white-space:nowrap;" onclick="sessionStorage.setItem('sa-sticky-clicked','1')">Start Free &#8594;</a>
-      <button id="sa-sticky-close" aria-label="Dismiss" style="background:transparent;border:none;color:#52525b;font-size:18px;cursor:pointer;padding:4px 8px;line-height:1;flex-shrink:0;">&#215;</button>
-    </div>
-  </div>
-</div>
-<script>
-(function(){
-  var bar = document.getElementById('sa-sticky');
-  if (!bar) return;
-  if (sessionStorage.getItem('sa-sticky-dismissed') || sessionStorage.getItem('sa-sticky-clicked')) return;
-  if (window.location.pathname === '/pro/' || window.location.pathname === '/pro/') return;
-  var shown = false;
-  window.addEventListener('scroll', function(){
-    if (shown) return;
-    var pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-    if (pct >= 55) { bar.style.display = 'block'; shown = true; }
-  }, {passive: true});
-  document.getElementById('sa-sticky-close').addEventListener('click', function(){
-    bar.style.display = 'none';
-    sessionStorage.setItem('sa-sticky-dismissed', '1');
-  });
-})();
-</script>
+
 </body>
 </html>
