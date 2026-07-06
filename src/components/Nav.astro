@@ -15,7 +15,7 @@ interface Props {
 }
 const { showAnnouncement = true } = Astro.props;
 
-const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="20" height="20" fill="none" aria-hidden="true"><rect x="17" y="65" width="66" height="9" rx="2.6" fill="#34d377"/><rect x="23.5" y="52" width="53" height="9" rx="2.6" fill="#34d377"/><rect x="30" y="39" width="40" height="9" rx="2.6" fill="#34d377"/><rect x="36.5" y="26" width="27" height="9" rx="2.6" fill="#86efac"/></svg>`;
+const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="20" height="20" fill="none" aria-hidden="true"><rect x="17" y="65" width="66" height="9" rx="2.6" fill="#34d377"/><rect x="23.5" y="52" width="53" height="9" rx="2.6" fill="#34d377"/><rect x="30" y="39" width="40" height="9" rx="2.6" fill="#34d377"/><rect x="36.5" y="26" width="27" height="9" rx="2.6" fill="#7ee2a8"/></svg>`;
 
 const products = [
   { href: '/capi-shield/', title: 'CAPI Shield', desc: 'Meta + Google server-side tracking, free' },
@@ -161,6 +161,30 @@ const guides = [
   </div>
 </nav>
 
+<style is:global>
+  /* ── Sitewide atmosphere (ships with Nav, reaching every page) ── */
+  @import "@fontsource/sora/600.css";
+  @import "@fontsource/sora/700.css";
+  @import "@fontsource/jetbrains-mono/500.css";
+
+  h1, h2 { font-family: 'Sora', 'Inter', -apple-system, sans-serif; letter-spacing: -0.02em; }
+
+  body::after {
+    content: ""; position: fixed; inset: 0; z-index: 2147483646; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity: .028; mix-blend-mode: overlay;
+  }
+
+  .text-aurora {
+    background: linear-gradient(115deg, #34d377 0%, #7ee2a8 48%, #2dd4bf 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity .65s cubic-bezier(.2,.7,.3,1), transform .65s cubic-bezier(.2,.7,.3,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } body::after { display: none; } }
+</style>
+
 <style>
   /* Announcement — one honest, dated line. Amber = urgency, used nowhere else. */
   .sa-announce {
@@ -191,6 +215,12 @@ const guides = [
     transition: border-color .25s ease, background .25s ease;
   }
   .sa-nav.scrolled { border-bottom-color: var(--color-border, #222825); }
+  .sa-nav::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+    background: linear-gradient(90deg, transparent 8%, rgba(52,211,119,.35) 50%, transparent 92%);
+    opacity: 0; transition: opacity .4s ease; pointer-events: none;
+  }
+  .sa-nav.scrolled::after { opacity: 1; }
   .sa-nav-inner {
     max-width: 1180px; margin: 0 auto; padding: 0 24px;
     display: flex; align-items: center; gap: 28px; height: 64px;

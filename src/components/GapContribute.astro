@@ -16,19 +16,19 @@ interface Props {
 const { source = 'onsite' } = Astro.props;
 ---
 
-<div id="gap-contribute" data-source={source} style="display:none;margin-top:24px;border:1px solid #14532d;background:linear-gradient(180deg,#04170c,#0a0a0a);padding:24px;">
+<div id="gap-contribute" data-source={source} style="display:none;margin-top:24px;border:1px solid #14532d;background:linear-gradient(180deg,#04170c,#0c0f0d);padding:24px;">
   <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px;">
     <h3 style="font-size:15px;font-weight:800;color:#fff;margin:0;">Add your numbers to the live benchmark</h3>
-    <span style="font-family:ui-monospace,monospace;font-size:11px;color:#4ade80;letter-spacing:.08em;text-transform:uppercase;"><span id="gc-count">–</span> of <span id="gc-goal">10</span> stores</span>
+    <span style="font-family:ui-monospace,monospace;font-size:11px;color:#34d377;letter-spacing:.08em;text-transform:uppercase;"><span id="gc-count">–</span> of <span id="gc-goal">10</span> stores</span>
   </div>
   <div style="height:6px;background:#111;border-radius:99px;overflow:hidden;margin-bottom:14px;">
-    <div id="gc-fill" style="height:100%;width:0%;background:#4ade80;border-radius:99px;transition:width .6s ease;"></div>
+    <div id="gc-fill" style="height:100%;width:0%;background:#34d377;border-radius:99px;transition:width .6s ease;"></div>
   </div>
-  <p style="font-size:13px;color:#a1a1aa;line-height:1.6;margin:0 0 16px;">
+  <p style="font-size:13px;color:#93a09a;line-height:1.6;margin:0 0 16px;">
     You already have the real figures open — contribute them anonymously and help publish the first
     genuine first-party iOS attribution gap figure for Shopify stores. Two numbers, no store name,
     no email. Submissions are reviewed before inclusion.
-    <a href="/shopify-ios-attribution-gap-benchmark/" style="color:#4ade80;">See the benchmark &amp; methodology →</a>
+    <a href="/shopify-ios-attribution-gap-benchmark/" style="color:#34d377;">See the benchmark &amp; methodology →</a>
   </p>
 
   <div id="gc-form">
@@ -55,11 +55,11 @@ const { source = 'onsite' } = Astro.props;
   </div>
 
   <div id="gc-done" style="display:none;">
-    <p style="font-size:14px;color:#4ade80;font-weight:700;margin:0 0 6px;">✓ Submitted for review — thank you.</p>
-    <p style="font-size:13px;color:#a1a1aa;line-height:1.6;margin:0;">
+    <p style="font-size:14px;color:#34d377;font-weight:700;margin:0 0 6px;">✓ Submitted for review — thank you.</p>
+    <p style="font-size:13px;color:#93a09a;line-height:1.6;margin:0;">
       Once 10 verified stores are in, the benchmark publishes a genuine first-party figure —
       and you'll have helped build it. Track progress on the
-      <a href="/shopify-ios-attribution-gap-benchmark/" style="color:#4ade80;">live benchmark page</a>.
+      <a href="/shopify-ios-attribution-gap-benchmark/" style="color:#34d377;">live benchmark page</a>.
     </p>
   </div>
 </div>
@@ -78,7 +78,7 @@ const { source = 'onsite' } = Astro.props;
   }
   #gap-contribute .gc-field input,
   #gap-contribute .gc-field select{
-    background:#000;border:1px solid #2a2a2a;color:#fff;
+    background:#000;border:1px solid #262c29;color:#fff;
     font-family:inherit;font-size:15px;padding:12px 14px;width:100%;
     outline:none;border-radius:6px;transition:border-color .2s;
     -webkit-appearance:none;appearance:none;
@@ -88,14 +88,14 @@ const { source = 'onsite' } = Astro.props;
     background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;
   }
   #gap-contribute .gc-field input:focus,
-  #gap-contribute .gc-field select:focus{border-color:#4ade80;}
+  #gap-contribute .gc-field select:focus{border-color:#34d377;}
   #gap-contribute .gc-field input::placeholder{color:#5a5a5a;}
   #gap-contribute #gc-submit{
-    width:100%;background:#4ade80;color:#000;font-family:inherit;
-    font-size:13px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;
+    width:100%;background:#34d377;color:#000;font-family:inherit;
+    font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
     padding:15px;border:none;border-radius:6px;cursor:pointer;transition:background .2s;
   }
-  #gap-contribute #gc-submit:hover{background:#22c55e;}
+  #gap-contribute #gc-submit:hover{background:#34d377;}
   #gap-contribute #gc-submit:disabled{opacity:.6;cursor:not-allowed;}
   #gap-contribute #gc-msg{font-size:12px;color:#8b8b93;margin:12px 0 0;min-height:1.2em;line-height:1.5;}
 </style>
@@ -136,7 +136,7 @@ const { source = 'onsite' } = Astro.props;
       const actual = Math.round(Number((document.getElementById('gc-actual') as HTMLInputElement).value));
       const windowDays = Number((document.getElementById('gc-window') as HTMLSelectElement).value);
 
-      msg.style.color = '#a1a1aa';
+      msg.style.color = '#93a09a';
       if (!reported && reported !== 0) { msg.textContent = 'Enter the conversions your ad platform reported.'; return; }
       if (!actual) { msg.textContent = 'Enter your actual Shopify order count for the same period.'; return; }
       if (actual < 20) { msg.textContent = 'The benchmark needs at least 20 orders in the window to be a meaningful measurement.'; return; }

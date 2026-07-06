@@ -25,92 +25,92 @@ const breadcrumb = [
     <div id="reading-progress"></div>
     
 <style>
-  .tool-hero{padding:48px 24px 32px;background:#000;border-bottom:1px solid #1f1f1f;}
+  .tool-hero{padding:48px 24px 32px;background:#000;border-bottom:1px solid #222825;}
   .tool-hero-inner{max-width:860px;margin:0 auto;}
-  .tool-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;border:1px solid rgba(74,222,128,.3);color:#4ade80;background:rgba(74,222,128,.06);margin-bottom:18px;}
-  .tool-badge .dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:dp 2s infinite;}
+  .tool-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;border:1px solid rgba(52,211,119,.3);color:#34d377;background:rgba(52,211,119,.06);margin-bottom:18px;}
+  .tool-badge .dot{width:6px;height:6px;border-radius:50%;background:#34d377;animation:dp 2s infinite;}
   @keyframes dp{0%,100%{opacity:1;}50%{opacity:.3;}}
-  .tool-hero h1{font-size:clamp(22px,4vw,38px);font-weight:900;color:#fff;letter-spacing:-.03em;line-height:1.05;margin-bottom:12px;}
-  .tool-hero h1 .green{color:#4ade80;}
-  .tool-hero-desc{font-size:14px;color:#a1a1aa;line-height:1.75;max-width:600px;margin-bottom:20px;}
+  .tool-hero h1{font-size:clamp(22px,4vw,38px);font-weight:700;color:#fff;letter-spacing:-.03em;line-height:1.05;margin-bottom:12px;}
+  .tool-hero h1 .green{color:#34d377;}
+  .tool-hero-desc{font-size:14px;color:#93a09a;line-height:1.75;max-width:600px;margin-bottom:20px;}
   .tool-trust{display:flex;flex-wrap:wrap;gap:16px;}
-  .tool-trust span{font-size:11px;color:#52525b;display:flex;align-items:center;gap:5px;}
-  .tool-trust span::before{content:'✓';color:#4ade80;font-weight:700;}
+  .tool-trust span{font-size:11px;color:#6b7671;display:flex;align-items:center;gap:5px;}
+  .tool-trust span::before{content:'✓';color:#34d377;font-weight:700;}
 
-  .calc-section{padding:40px 24px;background:#0a0a0a;border-bottom:1px solid #1f1f1f;}
+  .calc-section{padding:40px 24px;background:#0c0f0d;border-bottom:1px solid #222825;}
   .calc-inner{max-width:860px;margin:0 auto;}
-  .calc-card{border:1px solid #1f1f1f;background:#000;padding:32px;}
+  .calc-card{border:1px solid #222825;background:#000;padding:32px;}
   .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
   @media(max-width:600px){.calc-grid{grid-template-columns:1fr;}}
   .calc-field{display:flex;flex-direction:column;gap:6px;}
-  .calc-field label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9ca3af;}
-  .calc-field input,.calc-field select{background:#000;border:1px solid #2a2a2a;color:#fff;font-family:inherit;font-size:15px;padding:12px 14px;outline:none;transition:border-color .2s;width:100%;border-radius:6px;}
-  .calc-field input:focus,.calc-field select:focus{border-color:#4ade80;}
+  .calc-field label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#93a09a;}
+  .calc-field input,.calc-field select{background:#000;border:1px solid #262c29;color:#fff;font-family:inherit;font-size:15px;padding:12px 14px;outline:none;transition:border-color .2s;width:100%;border-radius:6px;}
+  .calc-field input:focus,.calc-field select:focus{border-color:#34d377;}
   .calc-field input::placeholder{color:#6b7280;}
-  .calc-btn{width:100%;background:#4ade80;color:#000;font-family:inherit;font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;padding:14px;border:none;cursor:pointer;transition:background .2s;margin-top:8px;}
-  .calc-btn:hover{background:#22c55e;}
-  .calc-result{display:none;margin-top:32px;border:1px solid #2a2a2a;border-radius:10px;background:#0a0a0a;padding:28px;}
+  .calc-btn{width:100%;background:#34d377;color:#000;font-family:inherit;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:14px;border:none;cursor:pointer;transition:background .2s;margin-top:8px;}
+  .calc-btn:hover{background:#34d377;}
+  .calc-result{display:none;margin-top:32px;border:1px solid #262c29;border-radius:10px;background:#0c0f0d;padding:28px;}
   .calc-result.show{display:block;}
-  .result-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:8px;}
-  .result-value{font-size:36px;font-weight:900;color:#4ade80;line-height:1;letter-spacing:-.03em;}
+  .result-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#93a09a;margin-bottom:8px;}
+  .result-value{font-size:36px;font-weight:700;color:#34d377;line-height:1;letter-spacing:-.03em;}
   .result-sub{font-size:12px;color:#8b8b93;margin-top:6px;line-height:1.6;}
   .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin-bottom:20px;}
-  .result-cell{background:#000;border:1px solid #2a2a2a;border-radius:8px;padding:20px 18px;}
-  .result-insight{font-size:12px;color:#a1a1aa;line-height:1.7;border-top:1px solid #1f1f1f;padding-top:16px;margin-top:16px;}
+  .result-cell{background:#000;border:1px solid #262c29;border-radius:8px;padding:20px 18px;}
+  .result-insight{font-size:12px;color:#93a09a;line-height:1.7;border-top:1px solid #222825;padding-top:16px;margin-top:16px;}
   .result-insight strong{color:#fff;}
-  .result-cta{display:inline-block;margin-top:16px;font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#000;background:#4ade80;padding:10px 20px;text-decoration:none;transition:background .2s;}
-  .result-cta:hover{background:#22c55e;}
-  .result-warn{border-left:3px solid #4ade80;padding-left:16px;margin-top:16px;}
+  .result-cta{display:inline-block;margin-top:16px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#000;background:#34d377;padding:10px 20px;text-decoration:none;transition:background .2s;}
+  .result-cta:hover{background:#34d377;}
+  .result-warn{border-left:3px solid #34d377;padding-left:16px;margin-top:16px;}
 
-  .aff-block{margin:24px 0;border:1px solid rgba(74,222,128,.2);background:rgba(74,222,128,.04);padding:20px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+  .aff-block{margin:24px 0;border:1px solid rgba(52,211,119,.2);background:rgba(52,211,119,.04);padding:20px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;}
   .aff-block-text{flex:1;}
-  .aff-block-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#52525b;margin-bottom:6px;}
+  .aff-block-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#6b7671;margin-bottom:6px;}
   .aff-block-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;}
-  .aff-block-desc{font-size:11px;color:#71717a;line-height:1.6;}
-  .aff-block-link{flex-shrink:0;display:inline-flex;align-items:center;font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#4ade80;border:1px solid rgba(74,222,128,.4);padding:8px 16px;text-decoration:none;transition:all .2s;white-space:nowrap;}
-  .aff-block-link:hover{background:#4ade80;color:#000;}
-  .aff-disclosure{font-size:9px;color:#3f3f46;margin-top:8px;}
+  .aff-block-desc{font-size:11px;color:#6b7671;line-height:1.6;}
+  .aff-block-link{flex-shrink:0;display:inline-flex;align-items:center;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#34d377;border:1px solid rgba(52,211,119,.4);padding:8px 16px;text-decoration:none;transition:all .2s;white-space:nowrap;}
+  .aff-block-link:hover{background:#34d377;color:#000;}
+  .aff-disclosure{font-size:9px;color:#2f3733;margin-top:8px;}
 
-  .editorial{padding:48px 24px;background:#000;border-bottom:1px solid #1f1f1f;}
+  .editorial{padding:48px 24px;background:#000;border-bottom:1px solid #222825;}
   .editorial-inner{max-width:720px;margin:0 auto;}
-  .editorial h2{font-size:clamp(18px,3vw,26px);font-weight:900;color:#fff;letter-spacing:-.03em;margin:36px 0 12px;line-height:1.2;}
+  .editorial h2{font-size:clamp(18px,3vw,26px);font-weight:700;color:#fff;letter-spacing:-.03em;margin:36px 0 12px;line-height:1.2;}
   .editorial h2:first-child{margin-top:0;}
-  .editorial p{font-size:13px;color:#a1a1aa;line-height:1.85;margin-bottom:16px;}
-  .editorial strong{color:#e4e4e7;}
-  .editorial a{color:#4ade80;text-decoration:underline;}
+  .editorial p{font-size:13px;color:#93a09a;line-height:1.85;margin-bottom:16px;}
+  .editorial strong{color:#dfe6e2;}
+  .editorial a{color:#34d377;text-decoration:underline;}
   .editorial ul{list-style:none;padding:0;margin:0 0 16px;}
-  .editorial ul li{font-size:13px;color:#a1a1aa;line-height:1.75;padding:6px 0 6px 20px;position:relative;border-bottom:1px solid #0a0a0a;}
-  .editorial ul li::before{content:'→';position:absolute;left:0;color:#4ade80;font-size:11px;}
+  .editorial ul li{font-size:13px;color:#93a09a;line-height:1.75;padding:6px 0 6px 20px;position:relative;border-bottom:1px solid #0c0f0d;}
+  .editorial ul li::before{content:'→';position:absolute;left:0;color:#34d377;font-size:11px;}
 
-  .faq-section{padding:48px 24px;background:#0a0a0a;border-bottom:1px solid #1f1f1f;}
+  .faq-section{padding:48px 24px;background:#0c0f0d;border-bottom:1px solid #222825;}
   .faq-inner{max-width:720px;margin:0 auto;}
-  .faq-heading{font-size:clamp(18px,3vw,24px);font-weight:900;color:#fff;letter-spacing:-.03em;margin-bottom:28px;}
-  .faq-item{border:1px solid #1f1f1f;margin-bottom:8px;background:#000;}
-  .faq-item summary{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;cursor:pointer;list-style:none;font-size:12px;font-weight:700;color:#a1a1aa;letter-spacing:.02em;gap:16px;}
+  .faq-heading{font-size:clamp(18px,3vw,24px);font-weight:700;color:#fff;letter-spacing:-.03em;margin-bottom:28px;}
+  .faq-item{border:1px solid #222825;margin-bottom:8px;background:#000;}
+  .faq-item summary{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;cursor:pointer;list-style:none;font-size:12px;font-weight:700;color:#93a09a;letter-spacing:.02em;gap:16px;}
   .faq-item summary::-webkit-details-marker{display:none;}
-  .faq-item[open] summary{color:#fff;border-bottom:1px solid #1f1f1f;}
-  .faq-item[open]{border-color:rgba(74,222,128,.3);}
-  .faq-arrow{flex-shrink:0;font-size:10px;color:#52525b;transition:transform .2s;}
-  .faq-item[open] .faq-arrow{transform:rotate(180deg);color:#4ade80;}
-  .faq-answer{padding:16px 20px;font-size:12px;color:#71717a;line-height:1.8;}
-  .faq-answer a{color:#4ade80;}
+  .faq-item[open] summary{color:#fff;border-bottom:1px solid #222825;}
+  .faq-item[open]{border-color:rgba(52,211,119,.3);}
+  .faq-arrow{flex-shrink:0;font-size:10px;color:#6b7671;transition:transform .2s;}
+  .faq-item[open] .faq-arrow{transform:rotate(180deg);color:#34d377;}
+  .faq-answer{padding:16px 20px;font-size:12px;color:#6b7671;line-height:1.8;}
+  .faq-answer a{color:#34d377;}
 
-  .cta-strip-tool{padding:40px 24px;background:#0a0a0a;border-top:1px solid #1f1f1f;text-align:center;}
-  .cta-strip-tool h2{font-size:clamp(16px,3vw,22px);font-weight:900;color:#fff;letter-spacing:-.03em;margin-bottom:8px;}
-  .cta-strip-tool p{font-size:12px;color:#52525b;margin-bottom:20px;}
-  .cta-strip-tool a{display:inline-block;background:#4ade80;color:#000;font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;padding:14px 28px;text-decoration:none;transition:background .2s;}
-  .cta-strip-tool a:hover{background:#22c55e;}
-  #reading-progress{position:fixed;top:0;left:0;width:0;height:2px;background:#4ade80;z-index:9999;transition:width .1s;}
+  .cta-strip-tool{padding:40px 24px;background:#0c0f0d;border-top:1px solid #222825;text-align:center;}
+  .cta-strip-tool h2{font-size:clamp(16px,3vw,22px);font-weight:700;color:#fff;letter-spacing:-.03em;margin-bottom:8px;}
+  .cta-strip-tool p{font-size:12px;color:#6b7671;margin-bottom:20px;}
+  .cta-strip-tool a{display:inline-block;background:#34d377;color:#000;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:14px 28px;text-decoration:none;transition:background .2s;}
+  .cta-strip-tool a:hover{background:#34d377;}
+  #reading-progress{position:fixed;top:0;left:0;width:0;height:2px;background:#34d377;z-index:9999;transition:width .1s;}
 
-  .emq-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid #1f1f1f;border-radius:8px;margin:8px 0 24px;}
+  .emq-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid #222825;border-radius:8px;margin:8px 0 24px;}
   table.emq-table{width:100%;border-collapse:collapse;font-size:13px;min-width:560px;}
-  table.emq-table thead th{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#52525b;text-align:left;padding:13px 16px;border-bottom:1px solid #1f1f1f;background:rgba(255,255,255,.02);}
+  table.emq-table thead th{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6b7671;text-align:left;padding:13px 16px;border-bottom:1px solid #222825;background:rgba(255,255,255,.02);}
   table.emq-table thead th.num{text-align:right;}
-  table.emq-table tbody td{padding:13px 16px;border-bottom:1px solid #141414;color:#a1a1aa;vertical-align:top;line-height:1.6;}
-  table.emq-table tbody td.num{text-align:right;font-family:monospace;font-weight:700;color:#4ade80;white-space:nowrap;}
+  table.emq-table tbody td{padding:13px 16px;border-bottom:1px solid #171c19;color:#93a09a;vertical-align:top;line-height:1.6;}
+  table.emq-table tbody td.num{text-align:right;font-family:monospace;font-weight:700;color:#34d377;white-space:nowrap;}
   table.emq-table tbody tr:last-child td{border-bottom:none;}
   table.emq-table tbody tr:nth-child(even) td{background:rgba(255,255,255,.012);}
-  table.emq-table strong{color:#e4e4e7;}
+  table.emq-table strong{color:#dfe6e2;}
 </style>
 
 
@@ -131,59 +131,59 @@ const breadcrumb = [
   <section class="calc-section">
     <div class="calc-inner">
       <div class="calc-card">
-        <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#52525b;margin-bottom:20px;">// EMQ_SCORE_CALCULATOR</div>
+        <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#6b7671;margin-bottom:20px;">// EMQ_SCORE_CALCULATOR</div>
 
         <div style="margin-bottom:20px;">
-          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#52525b;margin-bottom:12px;">Which customer data signals are you currently sending?</div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6b7671;margin-bottom:12px;">Which customer data signals are you currently sending?</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;" id="emq-signals">
             
-            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border:1px solid #1f1f1f;padding:12px;background:#0a0a0a;transition:border-color .2s;" class="signal-label" for="sig-email">
-              <input type="checkbox" id="sig-email" data-signal="email" style="margin-top:2px;accent-color:#4ade80;cursor:pointer;" />
+            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border:1px solid #222825;padding:12px;background:#0c0f0d;transition:border-color .2s;" class="signal-label" for="sig-email">
+              <input type="checkbox" id="sig-email" data-signal="email" style="margin-top:2px;accent-color:#34d377;cursor:pointer;" />
               <div>
-                <div style="font-size:11px;font-weight:700;color:#e4e4e7;">Email address (hashed)</div>
-                <div style="font-size:10px;color:#52525b;margin-top:2px;">High impact</div>
+                <div style="font-size:11px;font-weight:700;color:#dfe6e2;">Email address (hashed)</div>
+                <div style="font-size:10px;color:#6b7671;margin-top:2px;">High impact</div>
               </div>
             </label>
-            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border:1px solid #1f1f1f;padding:12px;background:#0a0a0a;transition:border-color .2s;" class="signal-label" for="sig-phone">
-              <input type="checkbox" id="sig-phone" data-signal="phone" style="margin-top:2px;accent-color:#4ade80;cursor:pointer;" />
+            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border:1px solid #222825;padding:12px;background:#0c0f0d;transition:border-color .2s;" class="signal-label" for="sig-phone">
+              <input type="checkbox" id="sig-phone" data-signal="phone" style="margin-top:2px;accent-color:#34d377;cursor:pointer;" />
               <div>
-                <div style="font-size:11px;font-weight:700;color:#e4e4e7;">Phone number (hashed)</div>
-                <div style="font-size:10px;color:#52525b;margin-top:2px;">High impact</div>
+                <div style="font-size:11px;font-weight:700;color:#dfe6e2;">Phone number (hashed)</div>
+                <div style="font-size:10px;color:#6b7671;margin-top:2px;">High impact</div>
               </div>
             </label>
-            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border:1px solid #1f1f1f;padding:12px;background:#0a0a0a;transition:border-color .2s;" class="signal-label" for="sig-external_id">
-              <input type="checkbox" id="sig-external_id" data-signal="external_id" style="margin-top:2px;accent-color:#4ade80;cursor:pointer;" />
+            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border:1px solid #222825;padding:12px;background:#0c0f0d;transition:border-color .2s;" class="signal-label" for="sig-external_id">
+              <input type="checkbox" id="sig-external_id" data-signal="external_id" style="margin-top:2px;accent-color:#34d377;cursor:pointer;" />
               <div>
-                <div style="font-size:11px;font-weight:700;color:#e4e4e7;">External ID / Customer ID</div>
-                <div style="font-size:10px;color:#52525b;margin-top:2px;">Medium impact</div>
+                <div style="font-size:11px;font-weight:700;color:#dfe6e2;">External ID / Customer ID</div>
+                <div style="font-size:10px;color:#6b7671;margin-top:2px;">Medium impact</div>
               </div>
             </label>
-            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border:1px solid #1f1f1f;padding:12px;background:#0a0a0a;transition:border-color .2s;" class="signal-label" for="sig-click_id">
-              <input type="checkbox" id="sig-click_id" data-signal="fbc" style="margin-top:2px;accent-color:#4ade80;cursor:pointer;" />
+            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border:1px solid #222825;padding:12px;background:#0c0f0d;transition:border-color .2s;" class="signal-label" for="sig-click_id">
+              <input type="checkbox" id="sig-click_id" data-signal="fbc" style="margin-top:2px;accent-color:#34d377;cursor:pointer;" />
               <div>
-                <div style="font-size:11px;font-weight:700;color:#e4e4e7;">Click ID (fbc)</div>
-                <div style="font-size:10px;color:#52525b;margin-top:2px;">High impact</div>
+                <div style="font-size:11px;font-weight:700;color:#dfe6e2;">Click ID (fbc)</div>
+                <div style="font-size:10px;color:#6b7671;margin-top:2px;">High impact</div>
               </div>
             </label>
-            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border:1px solid #1f1f1f;padding:12px;background:#0a0a0a;transition:border-color .2s;" class="signal-label" for="sig-ip">
-              <input type="checkbox" id="sig-ip" data-signal="ip" style="margin-top:2px;accent-color:#4ade80;cursor:pointer;" />
+            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border:1px solid #222825;padding:12px;background:#0c0f0d;transition:border-color .2s;" class="signal-label" for="sig-ip">
+              <input type="checkbox" id="sig-ip" data-signal="ip" style="margin-top:2px;accent-color:#34d377;cursor:pointer;" />
               <div>
-                <div style="font-size:11px;font-weight:700;color:#e4e4e7;">IP address</div>
-                <div style="font-size:10px;color:#52525b;margin-top:2px;">Low impact</div>
+                <div style="font-size:11px;font-weight:700;color:#dfe6e2;">IP address</div>
+                <div style="font-size:10px;color:#6b7671;margin-top:2px;">Low impact</div>
               </div>
             </label>
-            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border:1px solid #1f1f1f;padding:12px;background:#0a0a0a;transition:border-color .2s;" class="signal-label" for="sig-ua">
-              <input type="checkbox" id="sig-ua" data-signal="ua" style="margin-top:2px;accent-color:#4ade80;cursor:pointer;" />
+            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border:1px solid #222825;padding:12px;background:#0c0f0d;transition:border-color .2s;" class="signal-label" for="sig-ua">
+              <input type="checkbox" id="sig-ua" data-signal="ua" style="margin-top:2px;accent-color:#34d377;cursor:pointer;" />
               <div>
-                <div style="font-size:11px;font-weight:700;color:#e4e4e7;">User agent string</div>
-                <div style="font-size:10px;color:#52525b;margin-top:2px;">Low impact</div>
+                <div style="font-size:11px;font-weight:700;color:#dfe6e2;">User agent string</div>
+                <div style="font-size:10px;color:#6b7671;margin-top:2px;">Low impact</div>
               </div>
             </label>
-            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border:1px solid #1f1f1f;padding:12px;background:#0a0a0a;transition:border-color .2s;" class="signal-label" for="sig-fbp">
-              <input type="checkbox" id="sig-fbp" data-signal="fbp" style="margin-top:2px;accent-color:#4ade80;cursor:pointer;" />
+            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border:1px solid #222825;padding:12px;background:#0c0f0d;transition:border-color .2s;" class="signal-label" for="sig-fbp">
+              <input type="checkbox" id="sig-fbp" data-signal="fbp" style="margin-top:2px;accent-color:#34d377;cursor:pointer;" />
               <div>
-                <div style="font-size:11px;font-weight:700;color:#e4e4e7;">Meta Pixel (browser)</div>
-                <div style="font-size:10px;color:#52525b;margin-top:2px;">Baseline</div>
+                <div style="font-size:11px;font-weight:700;color:#dfe6e2;">Meta Pixel (browser)</div>
+                <div style="font-size:10px;color:#6b7671;margin-top:2px;">Baseline</div>
               </div>
             </label>
           </div>
@@ -280,9 +280,9 @@ const breadcrumb = [
           </thead>
           <tbody>
             <tr><td><strong style="color:#f87171;">Poor</strong></td><td class="num">1–4</td><td>Pixel-only or a barely-configured CAPI. You are missing the majority of matchable events. Implementing the Conversions API with hashed email is the single highest-impact move available.</td></tr>
-            <tr><td><strong style="color:#fbbf24;">OK</strong></td><td class="num">5–6</td><td>CAPI is live but under-fed. You are sending too few customer parameters per event. Audit each event and add the missing fields — phone, external_id, fbc, fbp. Meta’s own internal benchmark sits around 6.</td></tr>
+            <tr><td><strong style="color:#f5b64d;">OK</strong></td><td class="num">5–6</td><td>CAPI is live but under-fed. You are sending too few customer parameters per event. Audit each event and add the missing fields — phone, external_id, fbc, fbp. Meta’s own internal benchmark sits around 6.</td></tr>
             <tr><td><strong style="color:#a3e635;">Good</strong></td><td class="num">7–8</td><td>Solid setup. Focus on edge cases: is fbc captured on every ad-click landing, is fbp passed on every event, is hashing consistent? This is where most well-run Shopify stores land.</td></tr>
-            <tr><td><strong style="color:#4ade80;">Great</strong></td><td class="num">9–10</td><td>Top tier. Maintain it — watch for regressions from theme updates, app changes, or checkout customisations that silently break the CAPI payload.</td></tr>
+            <tr><td><strong style="color:#34d377;">Great</strong></td><td class="num">9–10</td><td>Top tier. Maintain it — watch for regressions from theme updates, app changes, or checkout customisations that silently break the CAPI payload.</td></tr>
           </tbody>
         </table>
       </div>
@@ -323,7 +323,7 @@ const breadcrumb = [
           </tbody>
         </table>
       </div>
-      <p style="font-size:12px;color:#52525b;">Figures reflect Meta’s published Conversions API guidance and 2026 EMQ documentation. EMQ updates on a rolling 48-hour window, so allow two days after any change before re-reading your score in Events Manager (Data Sources → your dataset → Events).</p>
+      <p style="font-size:12px;color:#6b7671;">Figures reflect Meta’s published Conversions API guidance and 2026 EMQ documentation. EMQ updates on a rolling 48-hour window, so allow two days after any change before re-reading your score in Events Manager (Data Sources → your dataset → Events).</p>
 
     </div>
   </section>
@@ -423,9 +423,9 @@ const breadcrumb = [
     const missing = spend > 0 ? Math.round(spend * (1 - matchRate / 100) * 0.15) : null;
 
     let grade, gradeColor;
-    if (score >= 8) { grade = 'Excellent — top attribution quality'; gradeColor = '#4ade80'; }
+    if (score >= 8) { grade = 'Excellent — top attribution quality'; gradeColor = '#34d377'; }
     else if (score >= 6) { grade = 'Good — minor improvements possible'; gradeColor = '#a3e635'; }
-    else if (score >= 4) { grade = 'Moderate — significant lift available'; gradeColor = '#fbbf24'; }
+    else if (score >= 4) { grade = 'Moderate — significant lift available'; gradeColor = '#f5b64d'; }
     else { grade = 'Low — attribution data unreliable'; gradeColor = '#f87171'; }
 
     document.getElementById('emq-score').textContent = score.toFixed(1);
