@@ -804,13 +804,7 @@ const schemaWebPage = {
   </div>
 </section>
 
-<!-- ─── STICKY FOOTER CTA (matches homepage) ─── -->
-<div class="sticky-cta" role="complementary" aria-label="Still paying for apps prompt">
-  <div class="sticky-cta-inner">
-    <span>Still paying for Shopify apps? Replace them all — free, 6 minutes, no code.</span>
-    <a href="/go/make" class="btn-primary" target="_blank" rel="sponsored nofollow noopener">Replace My Apps Free →</a>
-  </div>
-</div>
+
 
 <!-- ─── FOOTER — exact homepage match ─── -->
 <Footer />
@@ -846,18 +840,7 @@ const schemaWebPage = {
     }, 200);
   }
 
-  // Sticky CTA — hide on scroll up, show on scroll down
-  let lastY = 0;
-  const stickyCta = document.querySelector('.sticky-cta');
-  window.addEventListener('scroll', () => {
-    const y = window.scrollY;
-    if (y > 600) {
-      stickyCta.classList.toggle('sticky-cta--hidden', y < lastY);
-    } else {
-      stickyCta.classList.add('sticky-cta--hidden');
-    }
-    lastY = y;
-  }, { passive: true });
+
 </script>
 
 </body>
@@ -1140,10 +1123,6 @@ const schemaWebPage = {
   .email-trust { font-size: 11px; color: var(--text-dim); margin-top: 16px; font-family: var(--font-mono); }
 
   /* ─── STICKY CTA ─── */
-  .sticky-cta { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10,10,10,0.97); border-top: 1px solid var(--border); padding: 12px 24px; z-index: 90; transition: transform 0.25s; }
-  .sticky-cta--hidden { transform: translateY(100%); }
-  .sticky-cta-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-  .sticky-cta-inner span { font-size: 13px; color: var(--text-secondary); font-family: var(--font-mono); }
 
   /* ─── FOOTER ─── */
   .footer { background: #080808; border-top: 1px solid var(--border); padding: 48px 0 32px; }
@@ -1180,7 +1159,6 @@ const schemaWebPage = {
     .nav-cta { font-size: 10px; padding: 7px 10px; }
     .hero { padding: 40px 0 36px; }
     .nl-input-row { flex-direction: column; }
-    .sticky-cta-inner span { font-size: 11px; }
   }
   @media (max-width: 480px) {
     .container { padding: 0 16px; }
@@ -1191,7 +1169,7 @@ const schemaWebPage = {
   }
 
   @media print {
-    .nav, .nav-cta, .hero-actions, .deploy-cta-row, .email-section, .newsletter-section, .sticky-cta { display: none; }
+    .nav, .nav-cta, .hero-actions, .deploy-cta-row, .email-section, .newsletter-section { display: none; }
     body { background: #fff; color: #000; }
   }
 </style>

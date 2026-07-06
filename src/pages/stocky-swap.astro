@@ -405,7 +405,6 @@ const jsonLd = {
     }
     html { scroll-behavior: smooth; }
     body { font-family: var(--sans); background: var(--bg); color: var(--text-3); line-height: 1.75; -webkit-font-smoothing: antialiased; overflow-x: hidden; padding-bottom: 0; }
-    body.has-sticky-cta { padding-bottom: 72px; }
     ::selection { background: rgba(52,211,119,.2); color: var(--text); }
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
@@ -619,15 +618,6 @@ const jsonLd = {
     .pro-features { list-style: none; padding: 0; margin: 0 auto 24px; max-width: 480px; text-align: left; }
     .pro-features li { position: relative; padding: 7px 0 7px 24px; font-size: 14px; color: var(--text-3); }
     .pro-features li::before { content: "✓"; position: absolute; left: 0; top: 7px; color: var(--vio); font-weight: 700; }
-
-    .sticky-cta { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(2,6,23,.96); backdrop-filter: blur(12px); border-top: 1px solid var(--g-border); padding: 12px 20px; display: none; align-items: center; justify-content: space-between; gap: 16px; z-index: 9999; flex-wrap: wrap; box-shadow: 0 -8px 24px rgba(0,0,0,.4); }
-    .sticky-cta.show { display: flex; }
-    .sticky-cta-text { font-family: var(--mono); font-size: 11px; font-weight: 800; color: var(--text-2); letter-spacing: .08em; text-transform: uppercase; flex: 1; min-width: 140px; }
-    .sticky-cta-text .danger { color: var(--red); }
-    .sticky-cta a.btn-sm { font-family: var(--sans); flex-shrink: 0; }
-    .sticky-cta-close { background: transparent; border: 1px solid var(--border); color: var(--text-4); font-family: var(--mono); font-size: 14px; line-height: 1; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; transition: color .2s, border-color .2s; flex-shrink: 0; }
-    .sticky-cta-close:hover { color: var(--text); border-color: var(--text-4); }
-
     @media (max-width: 640px) {
       .hero { padding: 48px 20px 40px; }
       .hero-ctas { flex-direction: column; align-items: stretch; max-width: 320px; margin-left: auto; margin-right: auto; }
@@ -635,9 +625,6 @@ const jsonLd = {
       .section, .section-alt { padding: 56px 20px; }
       .author-line { flex-direction: column; padding: 14px; max-width: 100%; }
       .author-text { text-align: center; }
-      .sticky-cta { padding: 10px 14px; }
-      .sticky-cta-text { font-size: 10px; }
-      body.has-sticky-cta { padding-bottom: 88px; }
     }
   </style>
 
@@ -1500,15 +1487,7 @@ const jsonLd = {
   </main>
 
 <!-- Sticky bottom CTA — appears after scroll, dismissible -->
-<div class="sticky-cta" id="stickyCta" role="complementary" aria-label="Quick CTA">
-  <div class="sticky-cta-text">
-    <span class="danger">Stocky shuts down in <span id="sticky-days">--</span> days.</span> Replace it free.
-  </div>
-  <a href={MAKE_AFFILIATE} class="btn btn-sm" target="_blank" rel="noopener sponsored" data-cta="sticky-make">
-    Start Free →
-  </a>
-  <button type="button" class="sticky-cta-close" id="stickyCtaClose" aria-label="Dismiss">×</button>
-</div>
+
 
 <RelatedGuides guides={[
   { title: "How to Export Stocky Data Before Aug 31", href: "/blog/shopify-stocky-data-export-before-shutdown/" },
@@ -1568,7 +1547,7 @@ const jsonLd = {
     var stickyDismissed = false;
 
     function showSticky() {
-      if (stickyShown || stickyDismissed) return;
+      if (stickyShown || stickyDismissed || !stickyCta) return;
       stickyShown = true;
       stickyCta.classList.add('show');
       document.body.classList.add('has-sticky-cta');
@@ -1576,6 +1555,7 @@ const jsonLd = {
     }
     function hideSticky() {
       stickyDismissed = true;
+      if (!stickyCta) return;
       stickyCta.classList.remove('show');
       document.body.classList.remove('has-sticky-cta');
       if (typeof gtag === 'function') gtag('event', 'sticky_cta_dismissed', { event_category: 'engagement' });

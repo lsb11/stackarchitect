@@ -602,15 +602,7 @@ import Footer from '../components/Footer.astro';
 </main>
 
 <!-- ═══ SCROLL BAR ═══ -->
-<div class="scroll-bar" id="scroll-bar" style="display:none;">
-  <div class="scroll-bar-inner">
-    <div class="scroll-bar-text">Stocky shuts down August 2026. <span>Replace it now — free, 4 minutes.</span></div>
-    <div class="scroll-bar-actions">
-      <button class="scroll-bar-dismiss" id="scroll-dismiss">Dismiss</button>
-      <a href="https://stackarchitect.xyz/stocky-swap/" class="btn btn-sm pulse">Deploy Stocky Swap Free →</a>
-    </div>
-  </div>
-</div>
+
 
 <!-- ═══ FOOTER ═══ -->
 <Footer />
@@ -687,12 +679,13 @@ import Footer from '../components/Footer.astro';
     if (gone) return;
     var pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
     var bar = document.getElementById('scroll-bar');
+    if (!bar) return;
     if (pct > 60 && !shown) { bar.style.display = 'block'; shown = true; }
     else if (pct < 40 && shown) { bar.style.display = 'none'; shown = false; }
   }, { passive: true });
   var dismiss = document.getElementById('scroll-dismiss');
   if (dismiss) dismiss.addEventListener('click', function() {
-    document.getElementById('scroll-bar').style.display = 'none'; gone = true;
+    var b2 = document.getElementById('scroll-bar'); if (b2) b2.style.display = 'none'; gone = true;
   });
 })();
 

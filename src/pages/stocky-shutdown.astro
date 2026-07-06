@@ -520,19 +520,6 @@ import Footer from '../components/Footer.astro';
     .btn-danger:hover { background: #f87171; }
 
     /* SCROLL BAR */
-    .scroll-bar {
-      position: fixed; bottom: 0; left: 0; right: 0; z-index: 99;
-      background: rgba(10,10,10,.97); border-top: 1px solid var(--red-border);
-      padding: 12px 24px; display: none;
-    }
-    .scroll-bar.visible { display: block; }
-    .scroll-bar-inner {
-      max-width: 900px; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between; gap: 16px;
-    }
-    .scroll-bar-text { font-size: 13px; color: var(--text-3); }
-    .scroll-bar-text span { color: var(--red); font-weight: 600; }
-    .scroll-bar-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
     .dismiss-btn {
       background: none; border: none; cursor: pointer;
       font-family: var(--mono); font-size: 9px; color: var(--text-4);
@@ -1021,83 +1008,12 @@ import Footer from '../components/Footer.astro';
 </section>
 
 <!-- SCROLL BAR -->
-<div class="scroll-bar" id="scroll-bar" role="complementary">
-  <div class="scroll-bar-inner">
-    <div class="scroll-bar-text">
-      <span>Stocky shuts down August 31, 2026.</span> Free replacement deploys in 4 minutes.
-    </div>
-    <div class="scroll-bar-actions">
-      <button class="dismiss-btn" id="scroll-dismiss" aria-label="Dismiss">Dismiss</button>
-      <a href="/stocky-swap/" class="btn" style="font-size:10px;padding:9px 16px;">Replace Free →</a>
-    </div>
-  </div>
-</div>
+
 
 <!-- FOOTER -->
 <Footer />
 
-<script>
-  // Countdown clock
-  function updateCountdown() {
-    const deadline = new Date('2026-08-31T23:59:59Z');
-    const now = new Date();
-    const diff = deadline - now;
-    if (diff <= 0) {
-      ['cd-d','cd-h','cd-m','cd-s'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = '00';
-      });
-      return;
-    }
-    const days = Math.floor(diff / 86400000);
-    const hours = Math.floor((diff % 86400000) / 3600000);
-    const mins = Math.floor((diff % 3600000) / 60000);
-    const secs = Math.floor((diff % 60000) / 1000);
-    const pad = n => String(n).padStart(2, '0');
-    const d = document.getElementById('cd-d');
-    const h = document.getElementById('cd-h');
-    const m = document.getElementById('cd-m');
-    const s = document.getElementById('cd-s');
-    if (d) d.textContent = days;
-    if (h) h.textContent = pad(hours);
-    if (m) m.textContent = pad(mins);
-    if (s) s.textContent = pad(secs);
-  }
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
 
-  // Scroll bar
-  const scrollBar = document.getElementById('scroll-bar');
-  const dismissBtn = document.getElementById('scroll-dismiss');
-  let dismissed = false;
-  window.addEventListener('scroll', () => {
-    if (!dismissed && window.scrollY > 400) {
-      scrollBar.classList.add('visible');
-    }
-  });
-  if (dismissBtn) {
-    dismissBtn.addEventListener('click', () => {
-      dismissed = true;
-      scrollBar.classList.remove('visible');
-    });
-  }
-
-  // FAQ accordion
-  document.querySelectorAll('.faq-q').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const item = btn.closest('.faq-item');
-      const isOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item.open').forEach(i => {
-        i.classList.remove('open');
-        i.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
-      });
-      if (!isOpen) {
-        item.classList.add('open');
-        btn.setAttribute('aria-expanded', 'true');
-      }
-    });
-  });
-</script>
 
 
 
