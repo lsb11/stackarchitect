@@ -354,7 +354,7 @@ h1 em{font-style:normal;color:var(--green)}
   <!-- PHASE 1: SELECT APPS -->
   <div class="phase on" id="phase-input">
     <div class="card" id="card-chips">
-      <div class="clabel">// Step 1 &mdash; Tap every app you currently pay for</div>
+      <div class="clabel">Step 1 &mdash; Tap every app you currently pay for</div>
       <p class="chint">Tap to select. We pre-fill typical costs which you confirm next.</p>
       <div class="chips" id="chip-grid"></div>
       <div class="swrap">
@@ -371,7 +371,7 @@ h1 em{font-style:normal;color:var(--green)}
       </div>
     </div>
     <div class="card" id="card-costs" style="display:none;">
-      <div class="clabel">// Step 2 &mdash; Confirm your monthly costs</div>
+      <div class="clabel">Step 2 &mdash; Confirm your monthly costs</div>
       <p class="chint">We have pre-filled typical prices. Update any that do not match your plan.</p>
       <div class="thead"><span>App</span><span>Monthly cost</span><span></span></div>
       <div id="app-list"></div>
@@ -1035,7 +1035,7 @@ function renderResults(results, totalSpend) {
   var topAct = [];
   for (var i = 0; i < sorted.length && topAct.length < 4; i++) { if (sorted[i].v === 'REPLACE_FREE') topAct.push(sorted[i]); }
 
-  var html = '<div class="reyebrow">// Audit complete &mdash; ' + results.length + ' app' + (results.length > 1 ? 's' : '') + ' analysed</div>';
+  var html = '<div class="reyebrow">Audit complete &mdash; ' + results.length + ' app' + (results.length > 1 ? 's' : '') + ' analysed</div>';
   html += '<div class="rtitle">' + (rc > 0 ? rc + ' app' + (rc > 1 ? 's' : '') + ' you can replace for <span style="color:var(--green)">$0</span>.' : 'Here is your full stack analysis.') + '</div>';
   html += '<div class="tiles"><div class="tile"><div class="tv cr">$' + Math.round(totalSpend).toLocaleString() + '</div><div class="tl">Current / mo</div></div><div class="tile"><div class="tv cg">$' + Math.round(ts).toLocaleString() + '</div><div class="tl">Recoverable / mo</div></div><div class="tile"><div class="tv cw">$' + Math.round(remaining).toLocaleString() + '</div><div class="tl">Remaining / mo</div></div></div>';
   html += '<div class="scorebar"><div class="ring ' + gc + '">' + grade + '</div><div class="sbody"><div class="slabel">Stack Efficiency Score</div><div class="shead">' + score + '/100 &mdash; Grade ' + grade + '</div><div class="ssub">' + gm + '</div><div class="sbd"><span class="sstat"><strong style="color:var(--green)">' + rc + '</strong> replaceable</span><span class="sstat"><strong style="color:var(--warn)">' + cc + '</strong> worth reviewing</span><span class="sstat"><strong style="color:var(--muted)">' + kc + '</strong> worth keeping</span>' + (annual > 0 ? '<span class="sstat"><strong style="color:var(--green)">$' + Math.round(annual).toLocaleString() + '/yr</strong> annual saving</span>' : '') + '</div></div></div>';
@@ -1044,7 +1044,7 @@ function renderResults(results, totalSpend) {
   }
   html += buildEC(ts);
   if (topAct.length > 0) {
-    html += '<div class="sl">// Priority action plan &mdash; do these first</div><div class="ckl"><div class="ckltitle">&#9889; Highest-impact replacements, in order</div>';
+    html += '<div class="sl">Priority action plan &mdash; do these first</div><div class="ckl"><div class="ckltitle">&#9889; Highest-impact replacements, in order</div>';
     for (var i = 0; i < topAct.length; i++) {
       var r = topAct[i];
       var link = (r.sa && SA[r.sa]) ? SA[r.sa] : (r.af && AFF[r.af]) ? AFF[r.af] : '#';
@@ -1052,9 +1052,9 @@ function renderResults(results, totalSpend) {
     }
     html += '</div>';
   }
-  html += '<div class="sl">// Full app-by-app breakdown</div>';
+  html += '<div class="sl">Full app-by-app breakdown</div>';
   for (var i = 0; i < sorted.length; i++) html += renderCard(sorted[i], i);
-  html += '<div class="bcta"><div class="bctaey">// Full deployment guides</div><div class="bctat">Get the complete $0 automation stack</div><div class="bctas">All six free tools, step-by-step Make.com blueprints, and setup guides &mdash; free forever.</div><a href="' + AFF.make + '" target="_blank" rel="noopener sponsored" class="bctabtn" onclick="trk(\'make\',\'bottom_cta\')">Get Make.com Free &rarr;</a></div>';
+  html += '<div class="bcta"><div class="bctaey">Full deployment guides</div><div class="bctat">Get the complete $0 automation stack</div><div class="bctas">All six free tools, step-by-step Make.com blueprints, and setup guides &mdash; free forever.</div><a href="' + AFF.make + '" target="_blank" rel="noopener sponsored" class="bctabtn" onclick="trk(\'make\',\'bottom_cta\')">Get Make.com Free &rarr;</a></div>';
   html += '<div class="rwrap"><button class="rbtn" type="button" onclick="reset()">&larr; Run another audit</button></div>';
   html += '<div class="affnotice">Affiliate links keep this tool free &mdash; at no extra cost to you.<br><a href="https://stackarchitect.xyz/privacy/" style="color:var(--hint);text-decoration:underline;">Privacy policy</a></div>';
   var el = document.getElementById('phase-results');
