@@ -1574,7 +1574,188 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
 })();
 </script>
 
+<!-- =============================================================== -->
+<!-- FOOTER                                                           -->
+<!-- =============================================================== -->
+<Footer
+  ctaText="Still paying for Shopify apps? Replace all six in under 10 minutes — <strong>free forever</strong>. Or get the pre-built kit for <strong>$29</strong>."
+  ctahref="/pro/"
+  ctaBtnText="Get the Kit — $29 →"
+/>
 
+<!-- =============================================================== -->
+<!-- SCRIPTS — Scanner, countdown, scroll bar, FAQ, guide             -->
+<!-- =============================================================== -->
+<script is:inline>
+(function() {
+  // Header scroll effect
+  var header = document.querySelector('.product-terminal-bar') || document.querySelector('nav');
+  window.addEventListener('scroll', function() {
+    var s = window.scrollY;
+    if (header) header.classList.toggle('scrolled', s > 50);
+  }, { passive: true });
+
+  // Footer copyright
+  var el = document.getElementById('footer-copyright');
+  if (el) el.textContent = '© ' + new Date().getFullYear() + ' STACK_ARCHITECT // CORE_DEPLOYMENT';
+
+  // Stocky countdown
+  function updateCountdown() {
+    var target = new Date('2026-08-31T23:59:59Z');
+    var now = new Date();
+    var diff = target - now;
+    if (diff <= 0) { ['cd-d','cd-h','cd-m'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent='0';}); return; }
+    var days = Math.floor(diff / 86400000);
+    var hours = Math.floor((diff % 86400000) / 3600000);
+    var mins = Math.floor((diff % 3600000) / 60000);
+    var d=document.getElementById('cd-d'); if(d) d.textContent=days;
+    var h=document.getElementById('cd-h'); if(h) h.textContent=String(hours).padStart(2,'0');
+    var m=document.getElementById('cd-m'); if(m) m.textContent=String(mins).padStart(2,'0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 30000);
+
+  // Scroll bar reveal
+  var shown = false, gone = false;
+  window.addEventListener('scroll', function() {
+    if (gone) return;
+    var pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+    var bar = document.getElementById('scroll-bar');
+    if (!bar) return;
+    if (pct > 55 && !shown) { bar.style.display = 'block'; shown = true; }
+    else if (pct < 35 && shown) { bar.style.display = 'none'; shown = false; }
+  }, { passive: true });
+  var dismiss = document.getElementById('scroll-dismiss');
+  if (dismiss) dismiss.addEventListener('click', function() {
+    var bar = document.getElementById('scroll-bar');
+    if (bar) bar.style.display = 'none';
+    gone = true;
+  });
+})();
+
+// Scanner logic
+(function() {
+  var P = [
+    { id:'t', label:'Losing ad attribution after iOS updates — Meta/Google', cost:299, badge:'Most common', sol:'CAPI Shield', url:'/capi-shield/' },
+    { id:'k', label:'Paying Klaviyo $150+/month for email marketing', cost:300, badge:'Replace free', sol:'Replace Klaviyo Free', url:'/replace-klaviyo-free/' },
+    { id:'tk', label:'Running TikTok ads — losing 20–40% of conversions', cost:149, badge:'TikTok CAPI', sol:'TikTok Events API', url:'/tiktok-events-api-shopify/' },
+    { id:'i', label:'Paying for inventory or stock sync apps', cost:149, badge:'Aug 2026 urgent', sol:'Stocky Swap', url:'/stocky-swap/' },
+    { id:'p', label:'No live P&L — manual CSV exports or no reporting', cost:99, badge:'Quick fix', sol:'P&L Auto', url:'/shopify-profit-loss-automation/' },
+    { id:'a', label:'Google Scripts or Make.com failing mid-month', cost:99, badge:null, sol:'Autocrat Quota Fix', url:'/autocrat-quota-fix/' }
+  ];
+  var sel = [], cur = 0, tgt = 0, raf;
+  var list = document.getElementById('sc-list');
+  if (!list) return;
+  P.forEach(function(p) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'pain-btn';
+    b.setAttribute('role', 'checkbox'); b.setAttribute('aria-checked', 'false');
+    b.innerHTML = '<div style="display:flex;align-items:center;gap:12px;flex:1;"><div class="pain-chk" id="chk' + p.id + '"><svg id="chkv' + p.id + '" width="11" height="9" viewBox="0 0 11 9" fill="none" style="display:none"><path d="M1 4.5L3.8 7.5L10 1" stroke="#0c0f0d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="pain-label-wrap"><div class="pain-label">' + p.label + '</div>' + (p.badge ? '<span class="pain-badge">' + p.badge + '</span>' : '') + '</div></div><div class="pain-cost">~$' + p.cost + '/mo</div>';
+    b.onclick = function() { scToggle(p, b); };
+    list.appendChild(b); p._b = b;
+  });
+  function scToggle(p, b) {
+    var on = sel.indexOf(p.id) === -1;
+    if (on) sel.push(p.id); else sel.splice(sel.indexOf(p.id), 1);
+    b.classList.toggle('on', on); b.setAttribute('aria-checked', '' + on);
+    var v = document.getElementById('chkv' + p.id); if (v) v.style.display = on ? 'block' : 'none';
+    scUpdate();
+  }
+  function scUpdate() {
+    var tot = 0, recs = [];
+    P.forEach(function(p) { if (sel.indexOf(p.id) !== -1) { tot += p.cost; if (recs.indexOf(p.sol) === -1) recs.push(p.sol); } });
+    tgt = tot; cancelAnimationFrame(raf);
+    (function go() {
+      if (cur < tgt) cur += Math.max(1, Math.ceil((tgt - cur) / 5));
+      else if (cur > tgt) cur -= Math.max(1, Math.ceil((cur - tgt) / 5));
+      var n = document.getElementById('sc-n'); if(n) n.textContent = cur.toLocaleString('en-US');
+      if (cur !== tgt) raf = requestAnimationFrame(go);
+    })();
+    var res = document.getElementById('sc-result');
+    if (res) res.className = 'scan-result' + (tot > 0 ? ' leak' : '');
+    var yr = document.getElementById('sc-yr'); if(yr) yr.style.display = tot > 0 ? 'block' : 'none';
+    var yn = document.getElementById('sc-yn'); if(yn) yn.textContent = (tot * 12).toLocaleString('en-US');
+    var rc = document.getElementById('sc-recs'); if(rc){ rc.style.display = recs.length ? 'flex' : 'none'; rc.style.flexDirection='column'; }
+    var rl = document.getElementById('sc-recs-list'); if(rl) rl.innerHTML = recs.map(function(r) { return '<div class="sr-recs-item">' + r + '</div>'; }).join('');
+    var btn = document.getElementById('sc-btn');
+    if (btn) {
+      if (sel.length) { btn.disabled = false; btn.className = 'scan-cta ready'; btn.textContent = 'Build My Free Plan — Save $' + tot + '/mo →'; }
+      else { btn.disabled = true; btn.className = 'scan-cta'; btn.textContent = 'Select at least one issue above'; }
+    }
+  }
+  window.scNext = function() {
+    if (!sel.length) return;
+    var tot = 0, items = [];
+    P.forEach(function(p) { if (sel.indexOf(p.id) !== -1) { tot += p.cost; items.push(p); } });
+    var ph = document.getElementById('sc-plan-h'); if(ph) ph.textContent = 'You are losing ~$' + tot + '/mo';
+    var pi = document.getElementById('sc-plan-items');
+    if(pi) pi.innerHTML = items.map(function(p, i) {
+      return '<div class="plan-item"><div class="plan-num">' + (i + 1) + '</div><div><div class="plan-sol">' + p.sol + '</div><div class="plan-fix">Fixes: ' + p.label + '</div><div class="plan-rec">Recovers ~$' + p.cost + '/mo → <a href="' + p.url + '" style="color:var(--g)">Deploy now →</a></div></div></div>';
+    }).join('');
+    var ss = document.getElementById('sc-scan'); if(ss) ss.style.display = 'none';
+    var sp = document.getElementById('sc-plan'); if(sp) sp.style.display = 'block';
+  };
+  window.scSubmit = function() {
+    var emailEl = document.getElementById('sc-email');
+    var e = (emailEl ? emailEl.value : '').trim();
+    if (!e || !e.includes('@')) { if (emailEl) { emailEl.style.borderColor = 'var(--red)'; emailEl.focus(); } return; }
+    if (emailEl) emailEl.style.borderColor = '';
+    window.open('https://stackarchitect.beehiiv.com/subscribe?email=' + encodeURIComponent(e), '_blank');
+    var plan = document.getElementById('sc-plan'); if(plan) plan.style.display = 'none';
+    var done = document.getElementById('sc-done'); if(done) done.style.display = 'block';
+  };
+})();
+
+// Guide email capture
+window.gfGet = function() {
+  var emailEl = document.getElementById('gf-email');
+  var e = (emailEl ? emailEl.value : '').trim();
+  if (!e || !e.includes('@')) { if (emailEl) { emailEl.style.borderColor = 'var(--red)'; emailEl.focus(); } return; }
+  if (emailEl) emailEl.style.borderColor = '';
+  window.open('https://stackarchitect.beehiiv.com/subscribe?email=' + encodeURIComponent(e), '_blank');
+  window.open('https://d1yei2z3i6k35z.cloudfront.net/16370908/69a2ac505857c_The_Master_Library.pdf', '_blank');
+  var form = document.getElementById('gf-form'); if(form) form.style.display = 'none';
+  var done = document.getElementById('gf-done'); if(done) done.style.display = 'block';
+  var confirm = document.getElementById('gf-confirm'); if(confirm) confirm.textContent = 'Guides on their way — check your inbox!';
+};
+
+// FAQ render — 18 questions matching schema
+(function() {
+  var Q = [
+    { q: "What is the best free alternative to Shopify Stocky in 2026?", a: "<a href='/stocky-swap/'>Stocky Swap</a>. Stocky shuts down August 31, 2026 — all data deleted after that date. Stocky Swap logs every Shopify order to Google Sheets in real time via Make.com — free forever, deploys in 4 minutes, no app fees. See the full <a href='/stocky-alternative/'>Stocky alternatives comparison</a>." },
+    { q: "How do I replace Elevar for free on Shopify?", a: "<a href='/capi-shield/'>CAPI Shield</a> replaces Elevar free. Routes Shopify purchase events server-side to Meta Conversions API and Google Enhanced Conversions via Make.com, typically reaching EMQ 7–8.5 — matching Elevar at $199+/month, at $0. See the full <a href='/elevar-alternative/'>Elevar alternative guide</a>." },
+    { q: "What is the best free Klaviyo alternative for Shopify in 2026?", a: "<a href='/replace-klaviyo-free/'>Systeme.io</a> — unlimited emails, full automation sequences, funnels, and CRM on the free plan up to 2,000 contacts. Klaviyo charges $150–$400/month for the same volume. Migration takes 30 minutes. Calculate your savings with the <a href='/klaviyo-to-systeme-migration-savings-calculator/'>Klaviyo Migration Savings Calculator</a>." },
+    { q: "Does Make.com work with Shopify?", a: "Yes — natively. Make.com has 100+ Shopify triggers and actions and works via Shopify webhooks. The free tier includes 1,000 operations/month. Full answer: <a href='/make-com-shopify/'>Does Make.com work with Shopify?</a>" },
+    { q: "What is the Shopify Conversions API (CAPI)?", a: "The Shopify CAPI sends purchase events server-side directly to Meta and Google Ads, bypassing iOS privacy restrictions and ad blockers. Recovers 20–40% of conversion data lost to browser tracking. Full explanation: <a href='/capi-shield/'>What is the Shopify CAPI?</a>" },
+    { q: "How do I set up TikTok server-side tracking for Shopify without code?", a: "Use Make.com to route Shopify order webhooks as CompletePayment events to TikTok's Events API server-to-server. Full free walkthrough: <a href='/tiktok-events-api-shopify/'>TikTok Events API Shopify setup — no code</a>. Takes 6 minutes." },
+    { q: "How much does Triple Whale cost and is there a free alternative?", a: "Triple Whale costs $129–$599+/month depending on plan. The free alternative is <a href='/capi-shield/'>CAPI Shield</a> — server-side tracking to Meta and Google Ads at $0. Full breakdown: <a href='/triple-whale-alternative/'>Triple Whale pricing</a> and <a href='/triple-whale-alternative/'>Triple Whale alternative</a>." },
+    { q: "What is server-side tracking for Shopify and why does it matter in 2026?", a: "Server-side tracking sends purchase events directly from your server to ad platforms, bypassing iOS privacy restrictions and ad blockers that block browser-based pixels. Recovers 20–40% of conversions that would otherwise go unmeasured. Full guide: <a href='/blog/shopify-server-side-tracking-complete-setup-guide/'>What is server-side tracking for Shopify?</a>" },
+    { q: "Do I have to keep paying $500+/month on Shopify apps?", a: "No. The $0 Automation Stack replaces six categories of paid apps — tracking, inventory, email marketing, TikTok CAPI, P&L reporting, and automation stability — using Make.com, Google Sheets, and Systeme.io free plans. Deploy in minutes and reclaim $700+ per month. Or purchase the <a href='/pro/'>Complete Kit for $29</a> for the pre-built files." },
+    { q: "What is the Stack Architect Complete Kit ($29)?", a: "The <a href='/pro/'>Complete Kit</a> is a $29 one-time purchase that gives you four ready-to-import Make.com JSON blueprints — CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto — plus two Google Sheets templates and four Loom walkthroughs. Every field pre-configured. Import and go live in 10 minutes. 30-day money-back guarantee. No subscription, ever." },
+    { q: "Is my Shopify data secure with this stack?", a: "Completely secure. Your data stays inside your own Google account and Make.com workspace. Stack Architect has zero access to your Shopify orders, customer data, or ad accounts. GDPR compliant by design." },
+    { q: "Can I set up Shopify automation without a developer?", a: "Yes. Zero coding required. Every tool uses pre-built Make.com scenarios. The most complex setup takes under 15 minutes. The <a href='/pro/'>$29 Complete Kit</a> gives you pre-configured JSON files that import in one click." },
+    { q: "Why is my Shopify Google Ads conversion tracking showing wrong numbers?", a: "iOS Link Tracking Protection strips the gclid from ad URLs in Safari, Mail, and Messages. Without gclid, Google can't attribute the purchase. The fix is <a href='/shopify-google-ads-conversion-tracking/'>Google Enhanced Conversions via Make.com</a> — free, 6 minutes, recovers 15–40% of lost conversions." },
+    { q: "How do I prepare my Shopify store for AI shopping and ChatGPT citations?", a: "Three requirements: structured data (Product, Offer, FAQPage schema), server-side tracking for accurate signals, and an llms.txt file at your domain root. Run the free <a href='/shopify-agentic-storefront-readiness-checker/'>AI Storefront Readiness Checker</a> for a 12-point audit." },
+    { q: "What's the difference between Make.com and Zapier for Shopify automation?", a: "Make.com's free tier: 1,000 operations/month. Zapier's free tier: 100 tasks/month — 10x fewer. Make.com counts per module, not per multi-step zap, making branching workflows much cheaper. For Shopify stores over 100 orders/month, Make.com is typically 3–5x cheaper. Compare exactly with the <a href='/make-vs-zapier-cost-calculator/'>Make vs Zapier Calculator</a>." },
+    { q: "What happens to my Stocky data when Shopify shuts it down on August 31, 2026?", a: "All Stocky data — purchase orders, stocktakes, transfers, supplier records, demand forecasts, SKU history — is permanently deleted after August 31, 2026 per Shopify's official shutdown notice. No migration path provided. <a href='/stocky-swap/'>Stocky Swap</a> replaces it free in 4 minutes. Score your migration risk with the <a href='/stocky-migration-risk-scorer/'>Stocky Migration Risk Scorer</a>." },
+    { q: "How much does a typical Shopify store save with the free automation stack?", a: "Typical savings: $400–$1,600/month. Example stack: Klaviyo ($150–$400) + Triple Whale or Elevar ($150–$300) + Stocky ($29–$199) + Zapier ($79–$200) + TrueProfit ($19–$99) = $427–$1,198/month replaced. The $29 Complete Kit pays for itself in under a week. Calculate your exact figure with the <a href='/shopify-app-cost-calculator/'>App Cost Calculator</a>." },
+    { q: "Why is Stack Architect free and how does it make money?", a: "Two revenue streams: (1) affiliate commissions from tools we use and recommend — Make.com, Systeme.io, GetResponse, Beehiiv, Tidio, Gorgias, Google Workspace — these cost you nothing extra; (2) the optional $29 Complete Kit. No subscriptions, no upsells, no data sold." }
+  ];
+  var c = document.getElementById('faq-list');
+  if (!c) return;
+  Q.forEach(function(item) {
+    var d = document.createElement('details');
+    d.className = 'faq-item-c';
+    d.setAttribute('itemscope', '');
+    d.setAttribute('itemprop', 'mainEntity');
+    d.setAttribute('itemtype', 'https://schema.org/Question');
+    d.innerHTML = '<summary><span itemprop="name">' + item.q + '</span><span class="faq-ico"></span></summary>'
+      + '<div class="faq-ans-c" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">'
+      + '<p itemprop="text">' + item.a + '</p></div>';
+    c.appendChild(d);
+  });
+})();
+</script>
 
 
 </body>
