@@ -311,7 +311,24 @@ const guides = [
     border-top: 1px solid var(--color-border, #222825);
     background: var(--color-surface, #0c0f0d);
   }
-  .sa-mobile-menu.open { display: block; }
+  .sa-mobile-menu.open {
+    display: block;
+    /* Fixed panel under the header, scrolls independently of the page so
+       every item — including the CTA — is always reachable on short viewports.
+       100dvh tracks the *dynamic* viewport, so iOS Safari's collapsing URL bar
+       can't clip the bottom. Fallback to vh for older browsers. */
+    position: fixed; left: 0; right: 0;
+    top: var(--sa-header-h, 64px);
+    height: calc(100vh - var(--sa-header-h, 64px));
+    height: calc(100dvh - var(--sa-header-h, 64px));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+    z-index: 99;
+  }
+  /* Lock the page behind the open menu so touch scrolls the panel, not the body */
+  :global(body.sa-menu-open) { overflow: hidden; touch-action: none; }
   .sa-mobile-group { padding: 14px 0; border-bottom: 1px solid var(--color-border, #222825); }
   .sa-mobile-label {
     font: 600 11px/1 var(--font-sans, sans-serif); text-transform: uppercase;
@@ -374,14 +391,52 @@ const guides = [
 
   var hamburger = document.getElementById('sa-hamburger');
   var mobileMenu = document.getElementById('sa-mobile-menu');
+
+  // Measure the real header height (announcement bar may be present/absent,
+  // nav height changes at the 480px breakpoint) so the fixed menu panel sits
+  // flush under it and its scroll area is exactly the space that remains.
+  function setHeaderHeight() {
+    if (!nav) return;
+    // The announcement bar sits above the sticky nav and scrolls away with the
+    // page. Anchor the fixed panel to the nav's current bottom edge, so the
+    // menu is always flush under whatever header is actually on screen.
+    var rect = nav.getBoundingClientRect();
+    var headerBottom = rect.top + rect.height;
+    document.documentElement.style.setProperty('--sa-header-h', Math.max(0, Math.round(headerBottom)) + 'px');
+  }
+
+  function setMenu(open) {
+    hamburger.classList.toggle('open', open);
+    mobileMenu.classList.toggle('open', open);
+    mobileMenu.setAttribute('aria-hidden', String(!open));
+    hamburger.setAttribute('aria-expanded', String(open));
+    hamburger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    document.body.classList.toggle('sa-menu-open', open);
+    closeAll();
+  }
+
   if (hamburger && mobileMenu) {
     hamburger.addEventListener('click', function () {
-      var open = hamburger.classList.toggle('open');
-      mobileMenu.classList.toggle('open', open);
-      mobileMenu.setAttribute('aria-hidden', String(!open));
-      hamburger.setAttribute('aria-expanded', String(open));
-      closeAll();
+      var willOpen = !hamburger.classList.contains('open');
+      if (willOpen) setHeaderHeight();
+      setMenu(willOpen);
     });
+
+    // Close on link tap (menu is fixed, so navigation should release the lock)
+    mobileMenu.addEventListener('click', function (e) {
+      if (e.target.closest('a')) setMenu(false);
+    });
+
+    // Escape closes the mobile menu too
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && hamburger.classList.contains('open')) setMenu(false);
+    });
+
+    // Keep the panel correctly sized through rotation, resize, and the iOS
+    // URL-bar collapse. Only recompute while open to avoid needless work.
+    window.addEventListener('resize', function () {
+      if (hamburger.classList.contains('open')) setHeaderHeight();
+    }, { passive: true });
   }
 })();
 </script>
