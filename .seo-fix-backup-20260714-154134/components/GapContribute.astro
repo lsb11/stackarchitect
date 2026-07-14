@@ -1,0 +1,174 @@
+---
+/**
+ * GapContribute.astro — inline contribution card for the live iOS attribution
+ * gap benchmark. Mount on any page where a visitor has real store data in
+ * front of them (calculators, tracking guides).
+ *
+ * - Lazy: fetches /api/gap-stats only when revealed (call window.gapContributeShow()).
+ * - Posts the two raw numbers to /api/submit-gap; the server validates hard and
+ *   computes the gap itself — this card never sends a percentage.
+ * - Anonymous by design: two integers, a window, and an optional platform note.
+ */
+interface Props {
+  /** Optional context string appended to platform_note, e.g. "gap-calculator" */
+  source?: string;
+}
+const { source = 'onsite' } = Astro.props;
+---
+
+<div id="gap-contribute" data-source={source} style="display:none;margin-top:24px;border:1px solid #14532d;background:linear-gradient(180deg,#04170c,#0c0f0d);padding:24px;">
+  <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px;">
+    <h3 style="font-size:15px;font-weight:800;color:#fff;margin:0;">Add your numbers to the live benchmark</h3>
+    <span style="font-family:ui-monospace,monospace;font-size:11px;color:#34d377;letter-spacing:.08em;text-transform:uppercase;"><span id="gc-count">–</span> of <span id="gc-goal">10</span> stores</span>
+  </div>
+  <div style="height:6px;background:#111;border-radius:99px;overflow:hidden;margin-bottom:14px;">
+    <div id="gc-fill" style="height:100%;width:0%;background:#34d377;border-radius:99px;transition:width .6s ease;"></div>
+  </div>
+  <p style="font-size:13px;color:#93a09a;line-height:1.6;margin:0 0 16px;">
+    You already have the real figures open — contribute them anonymously and help publish the first
+    genuine first-party iOS attribution gap figure for Shopify stores. Two numbers, no store name,
+    no email. Submissions are reviewed before inclusion.
+    <a href="/shopify-ios-attribution-gap-benchmark/" style="color:#34d377;">See the benchmark &amp; methodology →</a>
+  </p>
+
+  <div id="gc-form">
+    <div class="gc-grid">
+      <div class="gc-field">
+        <label for="gc-reported">Conversions your ad platform reported</label>
+        <input id="gc-reported" type="number" inputmode="numeric" min="0" step="1" placeholder="e.g. 320" />
+      </div>
+      <div class="gc-field">
+        <label for="gc-actual">Actual Shopify orders, same period</label>
+        <input id="gc-actual" type="number" inputmode="numeric" min="20" step="1" placeholder="e.g. 470" />
+      </div>
+      <div class="gc-field">
+        <label for="gc-window">Measurement window</label>
+        <select id="gc-window">
+          <option value="30" selected>Last 30 days</option>
+          <option value="7">Last 7 days</option>
+          <option value="90">Last 90 days</option>
+        </select>
+      </div>
+    </div>
+    <button id="gc-submit" type="button">ADD MY (ANONYMOUS) RESULT →</button>
+    <p id="gc-msg" role="status" aria-live="polite">Two numbers, no store name, no email.</p>
+  </div>
+
+  <div id="gc-done" style="display:none;">
+    <p style="font-size:14px;color:#34d377;font-weight:700;margin:0 0 6px;">✓ Submitted for review — thank you.</p>
+    <p style="font-size:13px;color:#93a09a;line-height:1.6;margin:0;">
+      Once 10 verified stores are in, the benchmark publishes a genuine first-party figure —
+      and you'll have helped build it. Track progress on the
+      <a href="/shopify-ios-attribution-gap-benchmark/" style="color:#34d377;">live benchmark page</a>.
+    </p>
+  </div>
+</div>
+
+<style>
+  #gap-contribute .gc-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+    gap:18px;
+    margin-bottom:18px;
+  }
+  #gap-contribute .gc-field{display:flex;flex-direction:column;gap:8px;}
+  #gap-contribute .gc-field label{
+    font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:#8b8b93;line-height:1.4;min-height:2.4em;display:flex;align-items:flex-end;
+  }
+  #gap-contribute .gc-field input,
+  #gap-contribute .gc-field select{
+    background:#000;border:1px solid #262c29;color:#fff;
+    font-family:inherit;font-size:15px;padding:12px 14px;width:100%;
+    outline:none;border-radius:6px;transition:border-color .2s;
+    -webkit-appearance:none;appearance:none;
+  }
+  #gap-contribute .gc-field select{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%234ade80' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;
+  }
+  #gap-contribute .gc-field input:focus,
+  #gap-contribute .gc-field select:focus{border-color:#34d377;}
+  #gap-contribute .gc-field input::placeholder{color:#5a5a5a;}
+  #gap-contribute #gc-submit{
+    width:100%;background:#34d377;color:#000;font-family:inherit;
+    font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    padding:15px;border:none;border-radius:6px;cursor:pointer;transition:background .2s;
+  }
+  #gap-contribute #gc-submit:hover{background:#34d377;}
+  #gap-contribute #gc-submit:disabled{opacity:.6;cursor:not-allowed;}
+  #gap-contribute #gc-msg{font-size:12px;color:#8b8b93;margin:12px 0 0;min-height:1.2em;line-height:1.5;}
+</style>
+
+<script>
+  (function () {
+    const root = document.getElementById('gap-contribute');
+    if (!root) return;
+    let statsLoaded = false;
+
+    async function loadStats() {
+      if (statsLoaded) return;
+      statsLoaded = true;
+      try {
+        const r = await fetch('/api/gap-stats');
+        const d = await r.json();
+        const n = d.n ?? 0;
+        const goal = d.min_n ?? 10;
+        const countEl = document.getElementById('gc-count');
+        const goalEl = document.getElementById('gc-goal');
+        const fillEl = document.getElementById('gc-fill');
+        if (countEl) countEl.textContent = String(n);
+        if (goalEl) goalEl.textContent = String(goal);
+        if (fillEl) fillEl.style.width = Math.min(100, (n / goal) * 100) + '%';
+      } catch { /* meter is decorative; the form still works */ }
+    }
+
+    // Public reveal hook — call after a calculator result renders.
+    (window as any).gapContributeShow = function () {
+      root.style.display = 'block';
+      loadStats();
+    };
+
+    const btn = document.getElementById('gc-submit');
+    if (btn) btn.addEventListener('click', async () => {
+      const msg = document.getElementById('gc-msg')!;
+      const reported = Math.round(Number((document.getElementById('gc-reported') as HTMLInputElement).value));
+      const actual = Math.round(Number((document.getElementById('gc-actual') as HTMLInputElement).value));
+      const windowDays = Number((document.getElementById('gc-window') as HTMLSelectElement).value);
+
+      msg.style.color = '#93a09a';
+      if (!reported && reported !== 0) { msg.textContent = 'Enter the conversions your ad platform reported.'; return; }
+      if (!actual) { msg.textContent = 'Enter your actual Shopify order count for the same period.'; return; }
+      if (actual < 20) { msg.textContent = 'The benchmark needs at least 20 orders in the window to be a meaningful measurement.'; return; }
+      if (reported > actual) { msg.textContent = 'The benchmark measures under-reporting only (platform showing fewer conversions than Shopify). Over-attribution is normal — see the benchmark page for why.'; return; }
+
+      (btn as HTMLButtonElement).disabled = true;
+      msg.textContent = 'Submitting…';
+      try {
+        const r = await fetch('/api/submit-gap', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            meta_reported: reported,
+            actual_orders: actual,
+            window_days: windowDays,
+            platform_note: 'source:' + (root.dataset.source || 'onsite'),
+          }),
+        });
+        const d = await r.json();
+        if (r.ok && d.ok) {
+          document.getElementById('gc-form')!.style.display = 'none';
+          document.getElementById('gc-done')!.style.display = 'block';
+        } else {
+          msg.style.color = '#f87171';
+          msg.textContent = d.error || 'Could not submit — please try again.';
+          (btn as HTMLButtonElement).disabled = false;
+        }
+      } catch {
+        msg.style.color = '#f87171';
+        msg.textContent = 'Network error — please try again.';
+        (btn as HTMLButtonElement).disabled = false;
+      }
+    });
+  })();
+</script>

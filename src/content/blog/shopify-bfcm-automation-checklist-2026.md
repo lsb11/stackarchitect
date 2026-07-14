@@ -14,7 +14,7 @@ faqs:
   - question: "What is the biggest automation mistake Shopify stores make before BFCM?"
     answer: "The biggest mistake is running paid ads with broken conversion tracking during the highest-spend period of the year. Stores spending $10,000–$100,000+ on Black Friday ads with browser-only tracking are optimising their campaigns on 60–75% of real conversion data at best. Every mis-attributed conversion during BFCM corrupts Smart Bidding models right when they matter most. Setting up server-side tracking via Make.com before BFCM is the highest-ROI automation task for most Shopify stores."
   - question: "How many Make.com operations does a Shopify store use during BFCM?"
-    answer: "During BFCM, a typical Shopify store processes 3–10x its normal daily order volume. If your store averages 50 orders per day and processes 300 orders on Black Friday, and each order consumes 4 Make.com operations across CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto, that is 1,200 operations on Black Friday alone — already over the free tier's 1,000 monthly limit. For BFCM, upgrade to Make.com Core ($9/month, 10,000 operations) in October and downgrade in January."
+    answer: "During BFCM, a typical Shopify store processes 3–10x its normal daily order volume. If your store averages 50 orders per day and processes 300 orders on Black Friday, and each order consumes 4 Make.com operations across CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto, that is 1,200 operations on Black Friday alone — already over the free tier's 1,000 monthly limit. For BFCM, upgrade to Make.com Core ($12/month, 10,000 credits) in October and downgrade in January."
   - question: "Should I use Klaviyo or Systeme.io for my BFCM email campaigns?"
     answer: "For BFCM broadcast campaigns, both work. The key consideration is your contact list size and sending volume. Systeme.io's free plan supports 2,000 contacts with unlimited sends — sufficient for most small stores. For stores with 5,000+ contacts running complex abandoned cart and browse abandonment sequences during BFCM, Klaviyo's advanced segmentation may justify its cost during the peak period. Either way, set up your abandonment sequences at least 6 weeks before BFCM to allow time for testing."
   - question: "How do I make sure my Google Ads and Meta Ads tracking is accurate during BFCM?"
@@ -107,12 +107,12 @@ Add a BFCM tab to your Stocky Swap Sheets that flags SKUs at risk of stockout. U
 
 **Deadline: October — upgrade before BFCM**
 
-The Make.com free tier covers 1,000 operations per month. During BFCM, your order volume may multiply 5–10x. Each order triggers 3–5 operations across your automation stack.
+The Make.com free tier covers 1,000 credits per month. During BFCM, your order volume may multiply 5–10x. Each order triggers 3–5 operations across your automation stack.
 
 **Calculate your BFCM operations budget:**
 - Forecast your Black Friday order count (use last year × 1.2 as a baseline)
 - Multiply by 4 operations per order (CAPI Shield + Google CAPI + Stocky Swap + P&L Auto)
-- If the result exceeds 1,000, upgrade to **Make.com Core ($9/month, 10,000 operations)** in October
+- If the result exceeds 1,000, upgrade to **Make.com Core ($12/month, 10,000 credits)** in October
 
 Downgrade back to free in January. The $27 cost for three months of Core tier during BFCM is worth it.
 

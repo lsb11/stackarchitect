@@ -53,7 +53,7 @@ Recovery rate for this sequence: 5–15% of abandoned checkouts depending on you
 ## What You Need
 
 - A [Systeme.io free account](https://stackarchitect.xyz/go/systeme) — 2,000 contacts, unlimited sends, free
-- A [Make.com free account](/go/make) — 1,000 ops/month, free
+- A [Make.com free account](/go/make) — 1,000 credits/month, free
 - Your Shopify Admin access (Settings → Notifications → Webhooks)
 
 ## Step 1 — Create the Systeme.io Automation

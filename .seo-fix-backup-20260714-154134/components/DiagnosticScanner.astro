@@ -1,0 +1,159 @@
+---
+// "Find Your Profit Leak" diagnostic — replicates homepage tool
+// Systeme.io form action preserved from original site
+---
+
+<div class="border border-[#222825] bg-[#0c0f0d] p-6 my-8" id="diagnostic-scanner">
+  <h3 class="text-xs text-[#6b7671] uppercase tracking-widest mb-1">PROFIT_LEAK_SCANNER</h3>
+  <p class="text-xs text-gray-500 mb-5">Select every app or tool you currently pay for:</p>
+
+  <div id="diagnostic-form">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-6" id="app-checkboxes">
+      {/* Each item: label, monthly cost */}
+    </div>
+    <button
+      id="scan-btn"
+      class="w-full bg-[#34d377] text-black font-bold text-sm py-3 uppercase tracking-wide hover:bg-[#34d377] transition-colors"
+    >
+      CALCULATE MY MONTHLY LOSS →
+    </button>
+  </div>
+
+  <div id="diagnostic-results" class="hidden">
+    <div class="border border-red-700 bg-red-950/30 p-4 mb-5">
+      <div class="text-xs text-red-400 uppercase tracking-wide mb-1">MONTHLY PROFIT LEAK</div>
+      <div class="text-3xl font-bold text-red-400" id="total-loss">$0</div>
+      <div class="text-xs text-gray-500 mt-1" id="annual-loss"></div>
+    </div>
+
+    <div id="recommendations" class="space-y-2 mb-6"></div>
+
+    <a href="/pro/" class="block w-full text-center bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm py-4 px-4 mb-4 transition-colors">
+      ⚡ Skip the build — get all 4 automations pre-built for $29 →
+    </a>
+    <p class="text-xs text-center text-gray-500 mb-5">One-time · instant access · no subscription · or use the free guides below</p>
+    <div class="border border-[#34d377]/20 bg-[#34d377]/5 p-4">
+      <div class="text-xs text-[#34d377] uppercase tracking-wide font-bold mb-2">
+        GET YOUR FREE DEPLOYMENT GUIDE
+      </div>
+      <p class="text-xs text-gray-400 mb-3">
+        Free weekly Shopify automation tips. Unsubscribe anytime.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-2">
+        <input
+          type="email"
+          id="scanner-email"
+          placeholder="your@email.com"
+          class="flex-1 bg-black border border-[#222825] text-white text-sm px-3 py-2 font-mono focus:border-[#34d377] focus:outline-none"
+        />
+        <button
+          id="scanner-subscribe-btn"
+          class="bg-[#34d377] text-black font-bold text-xs px-4 py-2 uppercase tracking-wide hover:bg-[#34d377] transition-colors whitespace-nowrap"
+        >
+          GET FREE GUIDE →
+        </button>
+      </div>
+      <p class="text-xs text-gray-600 mt-2">Powered by Beehiiv · No spam</p>
+    </div>
+
+    <button
+      id="reset-btn"
+      class="mt-4 text-xs text-[#6b7671] hover:text-white underline"
+    >
+      ← Start over
+    </button>
+  </div>
+</div>
+
+<script>
+  const apps = [
+    { id: 'klaviyo', label: 'Klaviyo / email platform', cost: 45 },
+    { id: 'triplewhale', label: 'Triple Whale / Northbeam (tracking)', cost: 299 },
+    { id: 'elevar', label: 'Elevar (server-side tracking)', cost: 200 },
+    { id: 'stocky', label: 'Shopify Stocky / inventory app', cost: 19 },
+    { id: 'gorgias', label: 'Gorgias / Zendesk (support)', cost: 60 },
+    { id: 'recharge', label: 'ReCharge / subscriptions', cost: 99 },
+    { id: 'loox', label: 'Loox / Yotpo (reviews)', cost: 34 },
+    { id: 'pnl', label: 'BeProfit / profit analytics', cost: 50 },
+    { id: 'tidio', label: 'Tidio / live chat', cost: 29 },
+    { id: 'recart', label: 'Recart / SMS marketing', cost: 50 },
+  ];
+
+  const replacements: Record<string, string> = {
+    klaviyo: 'Replace Klaviyo → Systeme.io (FREE up to 2,000 contacts)',
+    triplewhale: 'Replace Triple Whale → CAPI Shield server-side tracking (FREE)',
+    elevar: 'Replace Elevar → CAPI Shield via Make.com (FREE)',
+    stocky: 'Replace Stocky → Google Sheets inventory system (FREE)',
+    pnl: 'Replace profit analytics → Live P&L Google Sheets template (FREE)',
+  };
+
+  // Build checkboxes
+  const container = document.getElementById('app-checkboxes');
+  apps.forEach(({ id, label, cost }) => {
+    const div = document.createElement('div');
+    div.innerHTML = `
+      <label class="flex items-start gap-2 cursor-pointer group">
+        <input type="checkbox" id="app-${id}" value="${cost}" class="mt-0.5 accent-[#34d377]" />
+        <span class="text-xs text-gray-400 group-hover:text-white transition-colors">
+          ${label}
+          <span class="text-[#6b7671]">($${cost}/mo)</span>
+        </span>
+      </label>
+    `;
+    container?.appendChild(div);
+  });
+
+  document.getElementById('scan-btn')?.addEventListener('click', () => {
+    const checkboxes = document.querySelectorAll<HTMLInputElement>('#app-checkboxes input:checked');
+    let total = 0;
+    const selected: string[] = [];
+
+    checkboxes.forEach((cb) => {
+      total += parseInt(cb.value, 10);
+      const id = cb.id.replace('app-', '');
+      selected.push(id);
+    });
+
+    document.getElementById('total-loss')!.textContent = `$${total.toLocaleString()}`;
+    document.getElementById('annual-loss')!.textContent = `= $${(total * 12).toLocaleString()} per year in avoidable costs`;
+
+    const recDiv = document.getElementById('recommendations')!;
+    recDiv.innerHTML = '';
+
+    selected.forEach((id) => {
+      if (replacements[id]) {
+        const div = document.createElement('div');
+        div.className =
+          'text-xs text-[#34d377] border border-[#34d377]/20 bg-[#34d377]/5 px-3 py-2';
+        div.textContent = '→ ' + replacements[id];
+        recDiv.appendChild(div);
+      }
+    });
+
+    document.getElementById('diagnostic-form')!.classList.add('hidden');
+    document.getElementById('diagnostic-results')!.classList.remove('hidden');
+  });
+
+  document.getElementById('scanner-subscribe-btn')?.addEventListener('click', () => {
+    const emailInput = document.getElementById('scanner-email') as HTMLInputElement;
+    const email = emailInput?.value?.trim();
+    if (!email || !email.includes('@')) {
+      emailInput.style.borderColor = '#ef4444';
+      emailInput.placeholder = 'Enter a valid email';
+      return;
+    }
+    emailInput.style.borderColor = '#34d377';
+    window.open('https://stackarchitect.beehiiv.com/subscribe?email=' + encodeURIComponent(email), '_blank');
+    emailInput.value = '';
+    const btn = document.getElementById('scanner-subscribe-btn');
+    if (btn) { btn.textContent = 'CHECK YOUR INBOX ✓'; btn.style.background = '#34d377'; }
+  });
+
+  document.getElementById('reset-btn')?.addEventListener('click', () => {
+    document.querySelectorAll<HTMLInputElement>('#app-checkboxes input').forEach((cb) => {
+      cb.checked = false;
+    });
+    document.getElementById('diagnostic-form')!.classList.remove('hidden');
+    document.getElementById('diagnostic-results')!.classList.add('hidden');
+  });
+</script>

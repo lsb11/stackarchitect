@@ -1,0 +1,442 @@
+---
+import "@fontsource/sora/600.css";
+import "@fontsource/sora/700.css";
+import "@fontsource/jetbrains-mono/500.css";
+// Nav.astro — Stack Architect, 2026 refresh
+// Changes vs previous version:
+//  • Fake status ticker ("PRODUCT_NODES // ACCESS_OPEN") replaced with ONE
+//    honest, dated announcement: the Stocky shutdown. Real deadline, real link.
+//    DELETE the announcement bar after 31 Aug 2026.
+//  • [Brackets], ▾ carets, SNAKE_CASE labels removed.
+//  • Dropdowns trimmed to the post-prune URL set (see 01-PRUNE-MAP.md).
+//  • ONE CTA in the nav: the kit. Everything else is navigation.
+//  • Same JS behaviour (scroll state, dropdowns, hamburger) — Escape,
+//    outside-click and aria states preserved.
+
+interface Props {
+  showAnnouncement?: boolean;
+}
+const { showAnnouncement = true } = Astro.props;
+
+const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="20" height="20" fill="none" aria-hidden="true"><rect x="17" y="65" width="66" height="9" rx="2.6" fill="#34d377"/><rect x="23.5" y="52" width="53" height="9" rx="2.6" fill="#34d377"/><rect x="30" y="39" width="40" height="9" rx="2.6" fill="#34d377"/><rect x="36.5" y="26" width="27" height="9" rx="2.6" fill="#7ee2a8"/></svg>`;
+
+const products = [
+  { href: '/capi-shield/', title: 'CAPI Shield', desc: 'Meta + Google server-side tracking, free' },
+  { href: '/shopify-google-ads-conversion-tracking/', title: 'Google Ads tracking', desc: 'Enhanced Conversions setup, free' },
+  { href: '/tiktok-events-api-shopify/', title: 'TikTok Events API', desc: 'TikTok server-side tracking, free' },
+  { href: '/stocky-swap/', title: 'Stocky Swap', desc: 'Free inventory — replaces Stocky' },
+  { href: '/replace-klaviyo-free/', title: 'Replace Klaviyo', desc: 'Free email automation via Systeme.io' },
+  { href: '/shopify-profit-loss-automation/', title: 'Live P&L', desc: 'Profit and loss in Google Sheets, free' },
+  { href: '/autocrat-quota-fix/', title: 'Autocrat Quota Fix', desc: 'Fix Apps Script quota errors, free' },
+];
+
+const tools = [
+  { href: '/shopify-automation-scanner/', title: 'Automation Scanner', desc: 'Find which apps you can replace for $0' },
+  { href: '/shopify-app-cost-calculator/', title: 'App Cost Calculator', desc: 'Your exact monthly app bill' },
+  { href: '/make-vs-zapier-cost-calculator/', title: 'Make vs Zapier', desc: 'Compare automation platform costs' },
+  { href: '/stocky-migration-risk-scorer/', title: 'Stocky Risk Scorer', desc: 'Score your migration risk before Aug 31' },
+  { href: '/app-audit/', title: 'App Audit', desc: 'AI audit — free savings report' },
+];
+
+const guides = [
+  { href: '/ultimate-shopify-automation-guide/', title: 'Ultimate Automation Guide', desc: 'The full playbook, start to finish' },
+  { href: '/blog/shopify-server-side-tracking-complete-setup-guide/', title: 'Server-side tracking', desc: 'Why it matters and how to set it up' },
+  { href: '/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/', title: 'Apps Script quotas', desc: 'Limits explained, with workarounds' },
+  { href: '/stocky-shutdown/', title: 'Stocky shutdown — Aug 31', desc: 'What happens and what data is deleted' },
+  { href: '/best-free-shopify-apps-2026/', title: 'Best free Shopify apps 2026', desc: 'Every category, ranked' },
+  { href: '/shopify-app-pricing-index/', title: 'Tracking tools: pricing index', desc: 'Elevar, Analyzify, Northbeam & more — real costs' },
+];
+---
+
+<a id="top" class="sr-only" aria-hidden="true"></a>
+
+{showAnnouncement && (
+  <div class="sa-announce" role="region" aria-label="Announcement">
+    <a href="/stocky-shutdown/">
+      <span class="sa-announce-dot" aria-hidden="true"></span>
+      Shopify Stocky shuts down <strong class="figure">31 Aug 2026</strong> — export your data and migrate free
+      <span class="sa-announce-arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+)}
+
+<nav class="sa-nav" id="sa-nav-main" aria-label="Main navigation">
+  <div class="sa-nav-inner">
+
+    <a href="/" class="sa-logo" aria-label="Stack Architect home">
+      <span class="sa-logo-mark" set:html={logoSvg} />
+      <span class="sa-logo-text">Stack&nbsp;Architect</span>
+    </a>
+
+    <div class="sa-nav-links" id="sa-nav-links">
+
+      <div class="sa-drop" id="drop-products">
+        <button class="sa-drop-btn" type="button" aria-haspopup="true" aria-expanded="false" data-drop="products">
+          Products
+        </button>
+        <div class="sa-drop-panel" id="panel-products" role="menu">
+          {products.map((p) => (
+            <a href={p.href} class="sa-drop-item" role="menuitem">
+              <span class="sa-drop-title">{p.title}</span>
+              <span class="sa-drop-desc">{p.desc}</span>
+            </a>
+          ))}
+          <div class="sa-drop-divider"></div>
+          <a href="/stack/" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">The recommended stack</span>
+            <span class="sa-drop-desc">All seven tools, vetted and ranked</span>
+          </a>
+          <a href="/pro/" class="sa-drop-item sa-drop-item--pro" role="menuitem">
+            <span class="sa-drop-title">Complete kit — <span class="figure">$29</span></span>
+            <span class="sa-drop-desc">Every scenario ready to import — live in 10 minutes</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="sa-drop" id="drop-tools">
+        <button class="sa-drop-btn" type="button" aria-haspopup="true" aria-expanded="false" data-drop="tools">
+          Tools
+        </button>
+        <div class="sa-drop-panel" id="panel-tools" role="menu">
+          {tools.map((t) => (
+            <a href={t.href} class="sa-drop-item" role="menuitem">
+              <span class="sa-drop-title">{t.title}</span>
+              <span class="sa-drop-desc">{t.desc}</span>
+            </a>
+          ))}
+          <div class="sa-drop-divider"></div>
+          <a href="/tools/" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">All free tools</span>
+            <span class="sa-drop-desc">Calculators and diagnostics, no signup</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="sa-drop" id="drop-guides">
+        <button class="sa-drop-btn" type="button" aria-haspopup="true" aria-expanded="false" data-drop="guides">
+          Guides
+        </button>
+        <div class="sa-drop-panel" id="panel-guides" role="menu">
+          {guides.map((g) => (
+            <a href={g.href} class="sa-drop-item" role="menuitem">
+              <span class="sa-drop-title">{g.title}</span>
+              <span class="sa-drop-desc">{g.desc}</span>
+            </a>
+          ))}
+          <div class="sa-drop-divider"></div>
+          <a href="/shopify-automation-guides/" class="sa-drop-item" role="menuitem">
+            <span class="sa-drop-title">All guides</span>
+            <span class="sa-drop-desc">Everything, organised by topic</span>
+          </a>
+        </div>
+      </div>
+
+      <a href="/about/" class="sa-nav-plain">About</a>
+    </div>
+
+    <div class="sa-nav-right">
+      <a href="/pro/" class="sa-nav-cta">Get the kit — <span class="figure-inline">$29</span></a>
+    </div>
+
+    <button class="sa-hamburger" id="sa-hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sa-mobile-menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="sa-mobile-menu" id="sa-mobile-menu" aria-hidden="true">
+    <div class="sa-mobile-group">
+      <div class="sa-mobile-label">Products</div>
+      {products.map((p) => <a href={p.href}>{p.title}</a>)}
+      <a href="/stack/">The recommended stack</a>
+    </div>
+    <div class="sa-mobile-group">
+      <div class="sa-mobile-label">Tools</div>
+      {tools.map((t) => <a href={t.href}>{t.title}</a>)}
+      <a href="/tools/">All free tools</a>
+    </div>
+    <div class="sa-mobile-group">
+      <div class="sa-mobile-label">Guides</div>
+      {guides.map((g) => <a href={g.href}>{g.title}</a>)}
+      <a href="/shopify-automation-guides/">All guides</a>
+      <a href="/about/">About</a>
+    </div>
+    <a href="/pro/" class="sa-mobile-cta">Get the complete kit — $29</a>
+  </div>
+</nav>
+
+<style is:global>
+  /* ── Sitewide atmosphere (ships with Nav, reaching every page) ── */
+  h1, h2 { font-family: 'Sora', 'Inter', -apple-system, sans-serif; letter-spacing: -0.02em; }
+
+  body::after {
+    content: ""; position: fixed; inset: 0; z-index: 2147483646; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity: .028; mix-blend-mode: overlay;
+  }
+
+  .text-aurora {
+    background: linear-gradient(115deg, #34d377 0%, #7ee2a8 48%, #2dd4bf 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity .65s cubic-bezier(.2,.7,.3,1), transform .65s cubic-bezier(.2,.7,.3,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } body::after { display: none; } }
+</style>
+
+<style>
+  /* Announcement — one honest, dated line. Amber = urgency, used nowhere else. */
+  .sa-announce {
+    background: color-mix(in srgb, var(--color-urgent, #f59e0b) 9%, var(--color-surface, #0c0f0d));
+    border-bottom: 1px solid color-mix(in srgb, var(--color-urgent, #f59e0b) 25%, transparent);
+  }
+  .sa-announce a {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 16px; text-decoration: none;
+    font-size: 13px; color: var(--color-body, #b6c0ba);
+  }
+  .sa-announce strong { color: var(--color-urgent, #f59e0b); font-weight: 700; }
+  .sa-announce-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--color-urgent, #f59e0b);
+    animation: sa-pulse 2.4s ease-in-out infinite;
+  }
+  .sa-announce-arrow { color: var(--color-urgent, #f59e0b); transition: transform .18s ease; }
+  .sa-announce a:hover .sa-announce-arrow { transform: translateX(3px); }
+  @keyframes sa-pulse { 0%,100% { opacity: 1 } 50% { opacity: .35 } }
+
+  /* Nav shell */
+  .sa-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: color-mix(in srgb, var(--color-surface, #0c0f0d) 82%, transparent);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid transparent;
+    transition: border-color .25s ease, background .25s ease;
+  }
+  .sa-nav.scrolled { border-bottom-color: var(--color-border, #222825); }
+  .sa-nav::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+    background: linear-gradient(90deg, transparent 8%, rgba(52,211,119,.35) 50%, transparent 92%);
+    opacity: 0; transition: opacity .4s ease; pointer-events: none;
+  }
+  .sa-nav.scrolled::after { opacity: 1; }
+  .sa-nav-inner {
+    max-width: 1180px; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: center; gap: 28px; height: 64px;
+  }
+
+  .sa-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .sa-logo-text {
+    font-family: var(--font-display, sans-serif);
+    font-weight: 700; font-size: 16px; letter-spacing: -0.01em;
+    color: var(--color-heading, #f2f5f3);
+  }
+
+  .sa-nav-links { display: flex; align-items: center; gap: 4px; flex: 1; }
+
+  .sa-drop { position: relative; }
+  .sa-drop-btn, .sa-nav-plain {
+    appearance: none; background: none; border: 0; cursor: pointer;
+    font: 500 14px/1 var(--font-sans, sans-serif);
+    color: var(--color-body, #b6c0ba);
+    padding: 10px 12px; border-radius: 8px; text-decoration: none;
+    transition: color .15s ease, background .15s ease;
+  }
+  .sa-drop-btn:hover, .sa-nav-plain:hover,
+  .sa-drop.open .sa-drop-btn { color: var(--color-heading, #f2f5f3); background: var(--color-subtle, #262c29); }
+
+  .sa-drop-panel {
+    position: absolute; top: calc(100% + 10px); left: 0; min-width: 340px;
+    background: var(--color-surface-overlay, #171c19);
+    border: 1px solid var(--color-border, #222825);
+    border-radius: 14px; padding: 8px;
+    box-shadow: 0 24px 60px -12px rgba(0,0,0,.55);
+    opacity: 0; visibility: hidden; transform: translateY(-6px);
+    transition: opacity .18s ease, transform .18s ease, visibility .18s;
+  }
+  .sa-drop.open .sa-drop-panel { opacity: 1; visibility: visible; transform: translateY(0); }
+
+  .sa-drop-item {
+    display: block; padding: 10px 12px; border-radius: 9px; text-decoration: none;
+    transition: background .12s ease;
+  }
+  .sa-drop-item:hover { background: var(--color-subtle, #262c29); }
+  .sa-drop-title {
+    display: block; font: 600 14px/1.3 var(--font-sans, sans-serif);
+    color: var(--color-heading, #f2f5f3);
+  }
+  .sa-drop-item:hover .sa-drop-title { color: var(--color-accent, #34d377); }
+  .sa-drop-desc {
+    display: block; margin-top: 2px;
+    font: 400 12.5px/1.4 var(--font-sans, sans-serif);
+    color: var(--color-muted, #7d8a83);
+  }
+  .sa-drop-divider { height: 1px; background: var(--color-border, #222825); margin: 6px 8px; }
+  .sa-drop-item--pro { background: color-mix(in srgb, var(--color-accent, #34d377) 7%, transparent); }
+
+  .figure, .figure-inline {
+    font-family: var(--font-mono, monospace);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The one CTA */
+  .sa-nav-cta {
+    display: inline-flex; align-items: center; gap: 6px;
+    font: 600 13.5px/1 var(--font-sans, sans-serif);
+    color: var(--color-accent-ink, #052e16);
+    background: var(--color-accent, #34d377);
+    padding: 10px 16px; border-radius: 10px; text-decoration: none;
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .sa-nav-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px -6px color-mix(in srgb, var(--color-accent, #34d377) 45%, transparent);
+  }
+
+  /* Hamburger + mobile */
+  .sa-hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: 0; cursor: pointer; padding: 10px; margin-left: auto;
+  }
+  .sa-hamburger span {
+    width: 20px; height: 2px; background: var(--color-heading, #f2f5f3);
+    border-radius: 2px; transition: transform .2s ease, opacity .2s ease;
+  }
+  .sa-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .sa-hamburger.open span:nth-child(2) { opacity: 0; }
+  .sa-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .sa-mobile-menu {
+    display: none; padding: 8px 24px 28px;
+    border-top: 1px solid var(--color-border, #222825);
+    background: var(--color-surface, #0c0f0d);
+  }
+  .sa-mobile-menu.open {
+    display: block;
+    /* Fixed panel under the header, scrolls independently of the page so
+       every item — including the CTA — is always reachable on short viewports.
+       100dvh tracks the *dynamic* viewport, so iOS Safari's collapsing URL bar
+       can't clip the bottom. Fallback to vh for older browsers. */
+    position: fixed; left: 0; right: 0;
+    top: var(--sa-header-h, 64px);
+    height: calc(100vh - var(--sa-header-h, 64px));
+    height: calc(100dvh - var(--sa-header-h, 64px));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+    z-index: 99;
+  }
+  /* Lock the page behind the open menu so touch scrolls the panel, not the body */
+  :global(body.sa-menu-open) { overflow: hidden; touch-action: none; }
+  .sa-mobile-group { padding: 14px 0; border-bottom: 1px solid var(--color-border, #222825); }
+  .sa-mobile-label {
+    font: 600 11px/1 var(--font-sans, sans-serif); text-transform: uppercase;
+    letter-spacing: .08em; color: var(--color-muted, #7d8a83); margin-bottom: 10px;
+  }
+  .sa-mobile-group a {
+    display: block; padding: 9px 0; text-decoration: none;
+    font: 500 15px/1.3 var(--font-sans, sans-serif); color: var(--color-body, #b6c0ba);
+  }
+  .sa-mobile-group a:active { color: var(--color-accent, #34d377); }
+  .sa-mobile-cta {
+    display: block; margin-top: 18px; padding: 14px; text-align: center;
+    border-radius: 12px; text-decoration: none;
+    font: 600 15px/1 var(--font-sans, sans-serif);
+    background: var(--color-accent, #34d377); color: var(--color-accent-ink, #052e16);
+  }
+
+  @media (max-width: 900px) {
+    .sa-nav-links, .sa-nav-right { display: none; }
+    .sa-hamburger { display: flex; }
+  }
+  @media (max-width: 480px) {
+    .sa-nav-inner { padding: 0 16px; height: 58px; }
+    .sa-announce a { font-size: 12px; padding: 7px 12px; }
+  }
+</style>
+
+<script is:inline>
+(function () {
+  var nav = document.getElementById('sa-nav-main');
+  window.addEventListener('scroll', function () {
+    if (nav) nav.classList.toggle('scrolled', window.scrollY > 24);
+  }, { passive: true });
+
+  var drops = document.querySelectorAll('.sa-drop');
+  function closeAll() {
+    drops.forEach(function (d) {
+      d.classList.remove('open');
+      var b = d.querySelector('.sa-drop-btn');
+      if (b) b.setAttribute('aria-expanded', 'false');
+    });
+  }
+  drops.forEach(function (drop) {
+    var btn = drop.querySelector('.sa-drop-btn');
+    if (!btn) return;
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var wasOpen = drop.classList.contains('open');
+      closeAll();
+      if (!wasOpen) {
+        drop.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+  document.addEventListener('click', closeAll);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeAll();
+  });
+
+  var hamburger = document.getElementById('sa-hamburger');
+  var mobileMenu = document.getElementById('sa-mobile-menu');
+
+  // Measure the real header height (announcement bar may be present/absent,
+  // nav height changes at the 480px breakpoint) so the fixed menu panel sits
+  // flush under it and its scroll area is exactly the space that remains.
+  function setHeaderHeight() {
+    if (!nav) return;
+    // The announcement bar sits above the sticky nav and scrolls away with the
+    // page. Anchor the fixed panel to the nav's current bottom edge, so the
+    // menu is always flush under whatever header is actually on screen.
+    var rect = nav.getBoundingClientRect();
+    var headerBottom = rect.top + rect.height;
+    document.documentElement.style.setProperty('--sa-header-h', Math.max(0, Math.round(headerBottom)) + 'px');
+  }
+
+  function setMenu(open) {
+    hamburger.classList.toggle('open', open);
+    mobileMenu.classList.toggle('open', open);
+    mobileMenu.setAttribute('aria-hidden', String(!open));
+    hamburger.setAttribute('aria-expanded', String(open));
+    hamburger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    document.body.classList.toggle('sa-menu-open', open);
+    closeAll();
+  }
+
+  if (hamburger && mobileMenu) {
+    hamburger.addEventListener('click', function () {
+      var willOpen = !hamburger.classList.contains('open');
+      if (willOpen) setHeaderHeight();
+      setMenu(willOpen);
+    });
+
+    // Close on link tap (menu is fixed, so navigation should release the lock)
+    mobileMenu.addEventListener('click', function (e) {
+      if (e.target.closest('a')) setMenu(false);
+    });
+
+    // Escape closes the mobile menu too
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && hamburger.classList.contains('open')) setMenu(false);
+    });
+
+    // Keep the panel correctly sized through rotation, resize, and the iOS
+    // URL-bar collapse. Only recompute while open to avoid needless work.
+    window.addEventListener('resize', function () {
+      if (hamburger.classList.contains('open')) setHeaderHeight();
+    }, { passive: true });
+  }
+})();
+</script>

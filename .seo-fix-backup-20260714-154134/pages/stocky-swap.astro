@@ -1,0 +1,1615 @@
+---
+import Nav from '../components/Nav.astro';
+import RelatedGuides from '../components/RelatedGuides.astro';
+import Footer from '../components/Footer.astro';
+
+/**
+ * STOCKY SWAP — /stocky-swap/ — MAXIMUM VERSION v2
+ *
+ * Primary: "free Stocky alternative"
+ * Secondary: "Stocky replacement", "Stocky shutdown alternative", "$0 Stocky alternative",
+ *            "cheap Stocky alternative", "Stocky alternative 2026", "replace Stocky free"
+ *
+ * Cluster hub for: /stocky-shutdown/, /stocky-alternative/, /stocky-migration-risk-scorer/,
+ *                  /blog/shopify-stocky-data-export-before-shutdown/
+ *
+ * Strategy notes:
+ * - Win uncontested "free + fast + editorially honest" positioning
+ * - 12 schema types for max AI Overview citation surface
+ * - 8 Make.com affiliate placements with contextual relevance
+ * - Cross-cluster internal linking (~30 links)
+ * - Honest "what it doesn't do" section earns trust + AI citations
+ * - Migration timeline, store-size playbooks, troubleshooting capture long-tail queries
+ * - Sticky bottom CTA + time-on-page trigger for conversion
+ */
+
+const SITE_URL = "https://stackarchitect.xyz";
+const PAGE_URL = `${SITE_URL}/stocky-swap/`;
+const SHUTDOWN_DATE = "August 31, 2026";
+const SHUTDOWN_DATE_ISO = "2026-08-31T23:59:59Z";
+const DATE_PUBLISHED = "2026-01-01";
+const DATE_MODIFIED = '2026-05-18';
+
+// Affiliate links
+const MAKE_AFFILIATE = "/go/make";
+const GETRESPONSE_AFFILIATE = "/go/getresponse";
+const SYSTEME_AFFILIATE = "/go/systeme";
+
+// Verifiable artefacts
+const SCENARIO_URL = "https://eu1.make.com/public/shared-scenario/YKK7FScMAx2/shopify-order-to-google-sheets-stock-log";
+const SETUP_GUIDE_PDF = "https://d1yei2z3i6k35z.cloudfront.net/16370908/699ce1532f77d_Manual_The0ShopifyInventoryBridge.pdf";
+const LINKEDIN = "https://www.linkedin.com/company/stack-architect-xyz/";
+const PRO_URL = `${SITE_URL}/pro/`;
+
+const SEO = {
+  title: "Free Stocky Replacement Tool 2026 — $0 Make.com Setup | Stack Architect",
+  description:
+    "Stocky shuts down August 31, 2026. The free replacement: a public Make.com scenario logging every Shopify order to Google Sheets in real-time. $0/month forever, no code, 4-minute deploy. Honest comparison vs Qoblex, SKUSavvy, Inventory Planner, Sumtracker, Prediko.",
+  canonical: PAGE_URL,
+  ogTitle: "Free Stocky Replacement (4-Min Setup) — $0/Month Forever",
+  ogDescription: "Stocky closes Aug 31, 2026. Replace it free with Make.com + Google Sheets. No fees, no code, live in 4 minutes. Independent comparison of every paid alternative.",
+  ogImage: `${SITE_URL}/og.png`
+};
+
+// ─────────────────────────────────────────────────────────────────────
+// JSON-LD GRAPH — 12 schema types, all defensible, AI-citation optimised
+// ─────────────────────────────────────────────────────────────────────
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": `${PAGE_URL}#webpage`,
+      url: PAGE_URL,
+      name: SEO.title,
+      description: SEO.description,
+      datePublished: DATE_PUBLISHED,
+      dateModified: DATE_MODIFIED,
+      inLanguage: "en-GB",
+      isPartOf: { "@id": `${SITE_URL}/#website` },
+      primaryImageOfPage: { "@id": `${PAGE_URL}#primaryimage` },
+      author: { "@id": `${SITE_URL}/#luke` },
+      reviewedBy: { "@id": `${SITE_URL}/#luke` },
+      speakable: {
+        "@type": "SpeakableSpecification",
+        cssSelector: [
+          ".speakable-answer",
+          ".speakable-howto",
+          ".speakable-comparison",
+          ".speakable-limits",
+          ".speakable-timeline",
+          ".faq-ans-s p"
+        ]
+      },
+      about: [
+        { "@type": "Thing", name: "Shopify Stocky Replacement" },
+        { "@type": "Thing", name: "Free Shopify Inventory Management" },
+        { "@type": "Thing", name: "Shopify Google Sheets Order Logging" },
+        { "@type": "Thing", name: "Make.com Shopify Automation" },
+        { "@type": "Thing", name: "Stocky App Shutdown 2026" }
+      ],
+      mentions: [
+        { "@type": "SoftwareApplication", name: "Shopify", url: "https://www.shopify.com" },
+        { "@type": "SoftwareApplication", name: "Make.com", url: "https://www.make.com", alternateName: "Integromat" },
+        { "@type": "SoftwareApplication", name: "Google Sheets", url: "https://sheets.google.com" },
+        { "@type": "SoftwareApplication", name: "Stocky", description: "Shopify-owned inventory app shutting down August 31, 2026" },
+        { "@type": "SoftwareApplication", name: "Qoblex", url: "https://qoblex.com" },
+        { "@type": "SoftwareApplication", name: "SKUSavvy", url: "https://www.skusavvy.com" },
+        { "@type": "SoftwareApplication", name: "Inventory Planner", url: "https://www.inventory-planner.com" },
+        { "@type": "SoftwareApplication", name: "Sumtracker", url: "https://www.sumtracker.com" },
+        { "@type": "SoftwareApplication", name: "Prediko", url: "https://www.prediko.io" },
+        { "@type": "SoftwareApplication", name: "Cin7 Core", url: "https://cin7.com" }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "Stack Architect",
+      description: "Free Shopify automation tools — replace paid apps with Make.com and Google Sheets.",
+      publisher: { "@id": `${SITE_URL}/#organization` }
+    },
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "Stack Architect",
+      url: SITE_URL,
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/icon-512.png`, width: 512, height: 512 },
+      sameAs: [LINKEDIN]
+    },
+    {
+      "@type": "Person",
+      "@id": `${SITE_URL}/#luke`,
+      name: "Luke",
+      jobTitle: "Shopify Automation Specialist",
+      url: `${SITE_URL}/about/`,
+      sameAs: ["https://www.linkedin.com/in/luke-stackarchitect", LINKEDIN],
+      worksFor: { "@id": `${SITE_URL}/#organization` },
+      knowsAbout: [
+        "Shopify automation",
+        "Shopify inventory management",
+        "Make.com workflows",
+        "Google Sheets automation",
+        "Shopify Stocky replacement",
+        "Webhook integrations"
+      ]
+    },
+    {
+      "@type": "ImageObject",
+      "@id": `${PAGE_URL}#primaryimage`,
+      url: SEO.ogImage,
+      width: 1200,
+      height: 630,
+      caption: "Stocky Swap — free Shopify Stocky replacement that logs orders to Google Sheets via Make.com"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": `${PAGE_URL}#software`,
+      name: "Stocky Swap",
+      alternateName: ["Free Stocky Alternative", "Stocky Replacement"],
+      url: PAGE_URL,
+      description: "Free Shopify inventory automation that replaces the Stocky app. Logs every Shopify order to Google Sheets in real-time using a public Make.com scenario. Permanent free replacement before the August 31, 2026 Stocky shutdown.",
+      applicationCategory: "BusinessApplication",
+      applicationSubCategory: "Inventory Management",
+      operatingSystem: "Web — Shopify, Make.com, Google Workspace",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+        availability: "https://schema.org/InStock",
+        description: "Free forever — runs on Make.com free tier"
+      },
+      featureList: [
+        "Real-time Shopify order logging to Google Sheets via webhook",
+        "Pre-built public Make.com scenario — one-click clone",
+        "$0/month on Make.com free tier",
+        "No code required",
+        "Full data ownership — your Google Sheet, your data",
+        "Runs alongside Stocky during migration",
+        "Compatible with all Shopify plans (Basic, Shopify, Advanced, Plus)",
+        "Forward-only order ledger architecture"
+      ],
+      requirements: "Free Make.com account, Shopify store (any plan), Google account",
+      author: { "@id": `${SITE_URL}/#luke` }
+    },
+    {
+      "@type": "Service",
+      "@id": `${PAGE_URL}#service`,
+      name: "Stocky Swap Setup Guidance",
+      provider: { "@id": `${SITE_URL}/#organization` },
+      areaServed: "Worldwide",
+      serviceType: "Free Shopify automation guidance",
+      description: "Free step-by-step setup guidance for the Stocky Swap Make.com scenario including PDF setup guide, public scenario URL, and migration playbook for Shopify stores transitioning off Stocky before the August 31, 2026 shutdown."
+    },
+    {
+      "@type": "HowTo",
+      "@id": `${PAGE_URL}#howto`,
+      name: "How to replace Shopify Stocky with a free Make.com + Google Sheets workflow",
+      description: "Three steps to deploy Stocky Swap before the August 31, 2026 Stocky shutdown. Total time under 5 minutes.",
+      totalTime: "PT5M",
+      estimatedCost: { "@type": "MonetaryAmount", currency: "USD", value: "0" },
+      supply: [
+        { "@type": "HowToSupply", name: "Free Make.com account" },
+        { "@type": "HowToSupply", name: "Shopify store on any plan" },
+        { "@type": "HowToSupply", name: "Google account with Google Sheets" }
+      ],
+      tool: [
+        { "@type": "HowToTool", name: "Make.com" },
+        { "@type": "HowToTool", name: "Shopify Webhooks" },
+        { "@type": "HowToTool", name: "Google Sheets" }
+      ],
+      step: [
+        {
+          "@type": "HowToStep",
+          position: 1,
+          name: "Create a free Make.com account",
+          text: "Sign up at make.com — no credit card required. The free tier is sufficient for the Stocky Swap workflow on most stores.",
+          url: MAKE_AFFILIATE
+        },
+        {
+          "@type": "HowToStep",
+          position: 2,
+          name: "Clone the public Stocky Swap scenario",
+          text: "Open the public Make.com scenario URL and click Clone. The scenario imports pre-configured — Shopify webhook trigger, data mapper, Google Sheets writer.",
+          url: SCENARIO_URL
+        },
+        {
+          "@type": "HowToStep",
+          position: 3,
+          name: "Connect Shopify and Google Sheets, switch on",
+          text: "Add your Shopify API credentials, link your Google Sheet, activate the scenario. Order logging begins on the next paid order.",
+          url: SETUP_GUIDE_PDF
+        }
+      ]
+    },
+    {
+      "@type": "ItemList",
+      "@id": `${PAGE_URL}#alternatives`,
+      name: "Stocky alternatives ranked for Shopify in 2026",
+      description: "Independent ranking of free and paid Stocky alternatives by use case in 2026, including the August 31 shutdown context.",
+      numberOfItems: 8,
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Stocky Swap (free)", url: PAGE_URL },
+        { "@type": "ListItem", position: 2, name: "Native Shopify Inventory (free)", url: "https://help.shopify.com/en/manual/products/inventory" },
+        { "@type": "ListItem", position: 3, name: "Qoblex", url: "https://qoblex.com" },
+        { "@type": "ListItem", position: 4, name: "SKUSavvy", url: "https://www.skusavvy.com" },
+        { "@type": "ListItem", position: 5, name: "Sumtracker", url: "https://www.sumtracker.com" },
+        { "@type": "ListItem", position: 6, name: "Inventory Planner by Sage", url: "https://www.inventory-planner.com" },
+        { "@type": "ListItem", position: 7, name: "Prediko", url: "https://www.prediko.io" },
+        { "@type": "ListItem", position: 8, name: "Cin7 Core", url: "https://cin7.com" }
+      ]
+    },
+    {
+      "@type": "Course",
+      "@id": `${PAGE_URL}#course`,
+      name: "Stocky Swap Setup — Free Stocky Replacement in 4 Minutes",
+      description: "Free 5-step course covering the complete deployment of Stocky Swap, the free Stocky alternative, before the August 31, 2026 Shopify Stocky shutdown.",
+      provider: { "@id": `${SITE_URL}/#organization` },
+      hasCourseInstance: {
+        "@type": "CourseInstance",
+        courseMode: "online",
+        courseWorkload: "PT5M",
+        instructor: { "@id": `${SITE_URL}/#luke` }
+      },
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${PAGE_URL}#faq`,
+      mainEntity: [
+        {
+          "@type": "Question",
+          name: "What is the best free Stocky alternative in 2026?",
+          acceptedAnswer: { "@type": "Answer", text: "Stocky Swap is the leading free Stocky alternative for Shopify in 2026. It logs every Shopify order to Google Sheets in real-time via a public Make.com scenario, deploys in under 5 minutes, runs on Make.com's free tier with no monthly fees, and stores all data in a Google Sheet you own. Paid alternatives like Qoblex, SKUSavvy, Sumtracker, Inventory Planner, and Prediko offer deeper forecasting features but cost between $59 and $999 per month." }
+        },
+        {
+          "@type": "Question",
+          name: "When does Shopify Stocky shut down?",
+          acceptedAnswer: { "@type": "Answer", text: "Shopify Stocky shuts down permanently on August 31, 2026. Shopify removed Stocky from the App Store on February 2, 2026. After the shutdown date, the app stops functioning and Stocky's purchase order history, supplier records, stocktake data, and demand forecasts are permanently deleted. Your Shopify Admin inventory levels are not affected — only data stored inside the Stocky app." }
+        },
+        {
+          "@type": "Question",
+          name: "Is Stocky Swap actually free?",
+          acceptedAnswer: { "@type": "Answer", text: "Yes. Stocky Swap is a free Make.com scenario that runs on Make.com's free tier — 1,000 credits/month (formerly called operations) at zero cost. There are no Stack Architect fees, no setup charges, and no hidden costs. Stack Architect earns a small affiliate commission if you create a new Make.com account through this page, which keeps the guides free to access." }
+        },
+        {
+          "@type": "Question",
+          name: "Do I need to know how to code to use Stocky Swap?",
+          acceptedAnswer: { "@type": "Answer", text: "No coding is required. The Make.com scenario is pre-built and publicly shared — you click Clone, connect your Shopify store and a Google Sheet via OAuth, and switch the scenario on. Setup typically takes under 5 minutes. The full PDF setup guide walks through every step with screenshots." }
+        },
+        {
+          "@type": "Question",
+          name: "What does Stocky Swap log to Google Sheets?",
+          acceptedAnswer: { "@type": "Answer", text: "Each new Shopify order produces a Google Sheet row containing: order ID, order timestamp, customer name, line item SKU, product name, quantity sold, line revenue, and fulfilment status. The webhook fires from Shopify the moment an order is created, so the Sheet updates within seconds." }
+        },
+        {
+          "@type": "Question",
+          name: "Will Stocky Swap interfere with my Shopify store or apps?",
+          acceptedAnswer: { "@type": "Answer", text: "No. Stocky Swap is a one-way listener — it reads new order data via Shopify's webhook API and writes to your own Google Sheet. It does not modify products, inventory levels, customer records, or other Shopify data. It runs independently of Stocky and any other inventory app, so you can run it alongside Stocky as a parallel verification system before the August 31 2026 shutdown." }
+        },
+        {
+          "@type": "Question",
+          name: "What are the paid Stocky alternatives in 2026?",
+          acceptedAnswer: { "@type": "Answer", text: "The paid Stocky alternatives most-cited by independent reviewers in 2026: Qoblex (multi-channel inventory and procurement, ~$99-$249/mo), SKUSavvy (mobile-first warehouse management, ~$99-$499/mo), Sumtracker (bundles and kits, ~$59-$199/mo), Inventory Planner by Sage (advanced forecasting, ~$249-$999/mo), Cin7 Core (multi-warehouse, ~$349+/mo), and Prediko (AI demand forecasting, ~$119-$499/mo). Stocky Swap is positioned for stores wanting order logging at $0 rather than full inventory accounting." }
+        },
+        {
+          "@type": "Question",
+          name: "Can Stocky Swap import my historical Stocky data?",
+          acceptedAnswer: { "@type": "Answer", text: "Stocky Swap is a forward-only logger — it begins recording orders from the moment you switch it on. To preserve historical Stocky data, export your purchase orders, stocktakes, and supplier records from inside Stocky before the August 31 2026 shutdown. The Stocky data export guide on Stack Architect walks through what to save and how." }
+        },
+        {
+          "@type": "Question",
+          name: "Does Stocky Swap handle refunds, returns, or multi-location stock?",
+          acceptedAnswer: { "@type": "Answer", text: "Stocky Swap is built as a forward-only order ledger — it logs every new paid Shopify order. For full inventory accounting that handles refunds, returns, and multi-location stock movements, pair Stocky Swap with native Shopify Admin inventory tracking (which manages stock-on-hand correctly across these scenarios), or use the Stack Architect Pro bundle which includes additional Make.com scenarios for refund and return handling." }
+        },
+        {
+          "@type": "Question",
+          name: "What if my store outgrows the Make.com free tier?",
+          acceptedAnswer: { "@type": "Answer", text: "Make.com's free tier covers 1,000 credits/month (formerly called operations). When your order volume requires more, Make.com's Core plan starts at $12 per month for 10,000 credits — still significantly cheaper than any paid Shopify inventory app. The same Stocky Swap scenario continues to run on the higher tier without modification." }
+        },
+        {
+          "@type": "Question",
+          name: "Is Stocky Swap better than the native Shopify inventory tools?",
+          acceptedAnswer: { "@type": "Answer", text: "They serve different purposes. Native Shopify Admin inventory handles stock-on-hand, transfers between locations, and basic receiving — and that's already free. Stocky Swap adds an independent, externally-owned audit log of every order in a Google Sheet you control — useful for finance reconciliation, accountant handoff, custom reporting, and as insurance against future Shopify changes. Most Shopify stores benefit from running both: native inventory for stock control, Stocky Swap for the order ledger." }
+        },
+        {
+          "@type": "Question",
+          name: "How do I migrate from Stocky to Stocky Swap?",
+          acceptedAnswer: { "@type": "Answer", text: "Migration takes three phases. First, export Stocky's historical data (purchase orders, stocktakes, supplier records) before any export functions are restricted. Second, deploy Stocky Swap and run it in parallel with Stocky for at least two weeks to verify orders are logging correctly. Third, after verification, you can switch off Stocky's daily use and rely on Stocky Swap as your forward order ledger. The full migration playbook is on the Stack Architect Stocky shutdown page." }
+        },
+        {
+          "@type": "Question",
+          name: "What is the cheapest Stocky alternative for Shopify?",
+          acceptedAnswer: { "@type": "Answer", text: "Stocky Swap at $0 per month is the cheapest Stocky alternative for Shopify in 2026. It runs on Make.com's free tier with no Stack Architect fees. The next cheapest paid options start at approximately $12 per month for Make.com Core (if you outgrow free) or around $59 per month for entry-tier paid Shopify inventory apps like Sumtracker." }
+        },
+        {
+          "@type": "Question",
+          name: "Can I use Stocky Swap with multiple Shopify stores?",
+          acceptedAnswer: { "@type": "Answer", text: "Yes. Each Shopify store needs its own Make.com webhook connection, but the Stocky Swap scenario can be cloned and configured separately per store. Multi-store operators typically point each store's webhook to a separate tab or sheet within one master Google Sheets workbook for unified reporting. Note that Make.com free tier operations are counted across all your scenarios — high multi-store volume may require upgrading to Make.com Core." }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: "Stocky Swap", item: PAGE_URL }
+      ]
+    }
+  ]
+};
+---
+
+<!doctype html>
+<html lang="en-GB" itemscope itemtype="https://schema.org/WebPage">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{SEO.title}</title>
+  <meta name="description" content={SEO.description} />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="author" content="Luke (Stack Architect)" />
+  <link rel="canonical" href={SEO.canonical} />
+
+  <meta name="article:published_time" content={`${DATE_PUBLISHED}T00:00:00Z`} />
+  <meta name="article:modified_time" content={`${DATE_MODIFIED}T00:00:00Z`} />
+  <meta name="article:author" content="Luke" />
+  <meta name="article:section" content="Shopify Inventory" />
+  <meta name="article:tag" content="Stocky alternative, Stocky replacement, Stocky shutdown, Free Shopify inventory, Make.com Shopify" />
+
+  <link rel="alternate" hreflang="en" href={SEO.canonical} />
+  <link rel="alternate" hreflang="en-gb" href={SEO.canonical} />
+  <link rel="alternate" hreflang="x-default" href={SEO.canonical} />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content={SEO.canonical} />
+  <meta property="og:title" content={SEO.ogTitle} />
+  <meta property="og:description" content={SEO.ogDescription} />
+  <meta property="og:image" content={SEO.ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Stocky Swap — free Stocky alternative for Shopify" />
+  <meta property="og:site_name" content="Stack Architect" />
+  <meta property="og:locale" content="en_GB" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={SEO.ogTitle} />
+  <meta name="twitter:description" content={SEO.ogDescription} />
+  <meta name="twitter:image" content={SEO.ogImage} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://www.make.com" />
+  <link rel="dns-prefetch" href="https://eu1.make.com" />
+  <link rel="preload" as="image" href={SEO.ogImage} />
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" />
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd, null, 2)} />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --g: #34d377; --g-dim: #15803d; --g-bg: rgba(52,211,119,.08); --g-border: rgba(52,211,119,.2);
+      --bg: #0c0f0d; --bg-2: #0f1311; --bg-3: #121614; --bg-4: #171c19;
+      --border: #222825; --border-2: #2f3733;
+      --text: #f2f5f3; --text-2: #b6c0ba; --text-3: #93a09a; --text-4: #6b7671; --text-inv: #0c0f0d;
+      --red: #f08a8a; --red-bg: rgba(240,138,138,.07); --red-border: rgba(240,138,138,.18);
+      --sky: #8ccfe8; --sky-bg: rgba(140,207,232,.07); --sky-border: rgba(140,207,232,.18);
+      --amber: #f5b64d; --amber-bg: rgba(245,182,77,.06); --amber-border: rgba(245,182,77,.2);
+      --vio: #c3b8ef; --vio-bg: rgba(195,184,239,.07); --vio-border: rgba(195,184,239,.2);
+      --mono: 'JetBrains Mono', monospace; --sans: 'Inter', -apple-system, sans-serif;
+      --radius: 6px; --shadow-g: 0 8px 28px rgba(52,211,119,.3);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); background: var(--bg); color: var(--text-3); line-height: 1.75; -webkit-font-smoothing: antialiased; overflow-x: hidden; padding-bottom: 0; }
+    ::selection { background: rgba(52,211,119,.2); color: var(--text); }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: rgba(52,211,119,.3); border-radius: 2px; }
+    a { text-decoration: none; color: inherit; }
+
+    .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; background: var(--g); color: var(--text-inv); padding: 12px 20px; border-radius: 4px; font-weight: 700; z-index: 99999; }
+    .skip-link:focus { position: fixed; top: 16px; left: 16px; width: auto; height: auto; }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-family: var(--sans); font-size: 16px; font-weight: 700; text-decoration: none; letter-spacing: -.01em; padding: 16px 32px; border-radius: var(--radius); border: none; cursor: pointer; white-space: nowrap; background: var(--g); color: var(--text-inv); transition: background .2s, transform .15s, box-shadow .2s; min-height: 52px; }
+    .btn:hover { background: #45e28a; transform: translateY(-2px); box-shadow: var(--shadow-g); }
+    .btn.pulse { animation: btnGlow 2.8s ease-in-out infinite; }
+    @keyframes btnGlow { 0%,100% { box-shadow: 0 0 16px rgba(52,211,119,.1); } 50% { box-shadow: 0 0 28px rgba(52,211,119,.28); } }
+    .btn-sm { font-size: 14px; padding: 12px 22px; min-height: 44px; }
+    .btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--sans); font-size: 15px; font-weight: 600; text-decoration: none; padding: 15px 28px; border-radius: var(--radius); border: 1.5px solid var(--border-2); background: transparent; color: var(--text-2); transition: border-color .2s, color .2s, background .2s; min-height: 52px; }
+    .btn-outline:hover { border-color: var(--g); color: var(--g); background: var(--g-bg); }
+
+    .section { padding: 80px 24px; }
+    .section-alt { padding: 80px 24px; background: var(--bg-2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .inner { max-width: 1000px; margin: 0 auto; }
+    .inner-md { max-width: 860px; margin: 0 auto; }
+    .inner-sm { max-width: 720px; margin: 0 auto; }
+    .sec-head { text-align: center; margin-bottom: 48px; }
+    .sec-head h2 { font-family: var(--sans); font-weight: 700; font-size: clamp(26px, 4vw, 40px); letter-spacing: -.03em; color: var(--text); line-height: 1.1; margin-bottom: 12px; }
+    .sec-head p { font-size: 16px; color: var(--text-3); max-width: 580px; margin: 0 auto; line-height: 1.7; }
+
+    .urgency-banner { width: 100%; background: linear-gradient(90deg, #7f1d1d, #991b1b, #7f1d1d); padding: 12px 24px; text-align: center; font-family: var(--mono); font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #fca5a5; border-bottom: 1px solid rgba(255,100,100,.3); display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .urgency-banner strong { color: #fff; }
+    .dot-red { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--red); animation: dotRed 1.5s ease-in-out infinite; }
+    @keyframes dotRed { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+
+    .crumb { background: var(--bg-2); border-bottom: 1px solid var(--border); padding: 10px 24px; }
+    .crumb-inner { max-width: 1100px; margin: 0 auto; }
+    .crumb ol { display: flex; align-items: center; gap: 8px; list-style: none; font-family: var(--mono); font-size: 10px; color: var(--text-4); text-transform: uppercase; letter-spacing: .08em; }
+    .crumb a { color: var(--text-4); transition: color .15s; }
+    .crumb a:hover { color: var(--g); }
+    .crumb .current { color: var(--sky); }
+    .crumb .sep { opacity: .4; }
+
+    .hero { padding: 64px 24px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero-inner { max-width: 920px; margin: 0 auto; position: relative; }
+    .hero-meta { font-family: var(--mono); font-size: 10px; color: var(--text-4); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 18px; opacity: .8; }
+    .hero h1 { font-size: clamp(40px, 7vw, 80px); font-weight: 700; color: var(--text); line-height: .95; letter-spacing: -.05em; margin: 0 auto 24px; max-width: 820px; }
+    .hero h1 .green { color: var(--g); }
+    .hero h1 .dim { color: var(--text-4); }
+    .hero-sub { font-size: clamp(16px, 2.2vw, 19px); color: var(--text-3); max-width: 660px; margin: 0 auto 28px; line-height: 1.7; }
+    .hero-sub strong { color: var(--text-2); font-weight: 600; }
+    .hero-ctas { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px; margin-bottom: 14px; }
+
+    .bg-grid { background-color: var(--bg); background-image: radial-gradient(ellipse 80% 40% at 50% 0%, rgba(52,211,119,.06) 0%, transparent 60%), radial-gradient(circle, var(--border) 1px, transparent 1px); background-size: 100% 100%, 44px 44px; }
+
+    .countdown-strip { background: var(--amber-bg); border: 1px solid var(--amber-border); border-radius: 10px; padding: 18px 24px; margin: 0 auto 28px; max-width: 560px; text-align: center; }
+    .countdown-label { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--amber); margin-bottom: 10px; }
+    .countdown-nums { display: flex; gap: 10px; justify-content: center; align-items: center; }
+    .cd-unit { text-align: center; }
+    .cd-val { font-family: var(--mono); font-size: 26px; font-weight: 700; color: var(--text); line-height: 1; }
+    .cd-l { font-size: 9px; color: var(--text-4); margin-top: 4px; font-family: var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+    .cd-sep { font-family: var(--mono); font-size: 22px; color: var(--text-4); padding-top: 2px; }
+
+    .speakable-answer { background: var(--bg-3); border: 1px solid var(--border-2); border-left: 3px solid var(--g); border-radius: 8px; padding: 22px 26px; margin: 32px auto; max-width: 760px; text-align: left; }
+    .speakable-answer .label { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--g); margin-bottom: 10px; }
+    .speakable-answer p { font-size: 15px; color: var(--text-2); line-height: 1.7; margin: 0; }
+    .speakable-answer p strong { color: var(--text); }
+
+    .trust-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; max-width: 760px; margin: 0 auto; }
+    .trust-cell { background: var(--bg); padding: 18px 12px; text-align: center; }
+    .trust-v { font-family: var(--mono); font-size: 18px; font-weight: 700; color: var(--g); line-height: 1; }
+    .trust-l { font-size: 10px; color: var(--text-4); text-transform: uppercase; letter-spacing: .1em; margin-top: 6px; font-family: var(--mono); }
+    @media (max-width: 640px) { .trust-strip { grid-template-columns: repeat(2,1fr); } }
+
+    .body-text { max-width: 760px; margin: 0 auto; }
+    .body-text p { font-size: 16px; color: var(--text-3); line-height: 1.8; margin-bottom: 18px; text-align: left; }
+    .body-text p strong { color: var(--text-2); font-weight: 600; }
+    .body-text p a { color: var(--g); text-decoration: underline; }
+    .body-text h3 { font-weight: 800; font-size: clamp(20px, 2.8vw, 24px); color: var(--text); letter-spacing: -.02em; line-height: 1.2; margin: 36px 0 14px; text-align: left; }
+    .body-text h4 { font-weight: 700; font-size: 17px; color: var(--text-2); letter-spacing: -.01em; margin: 24px 0 10px; }
+    .body-text ul { list-style: none; padding: 0; margin: 0 0 22px; }
+    .body-text ul li { position: relative; padding: 10px 0 10px 26px; font-size: 15px; color: var(--text-3); line-height: 1.65; border-bottom: 1px solid var(--border); }
+    .body-text ul li::before { content: "→"; position: absolute; left: 0; top: 10px; color: var(--g); font-weight: 700; }
+    .body-text ul li:last-child { border-bottom: none; }
+    .body-text ul li strong { color: var(--text-2); }
+
+    .comp-wrap { overflow-x: auto; margin: 24px 0; border-radius: 12px; border: 1px solid var(--border); }
+    .comp-table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    .comp-table th, .comp-table td { padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--border); font-size: 14px; }
+    .comp-table th { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-4); background: rgba(255,255,255,.025); }
+    .comp-table td { color: var(--text-3); }
+    .comp-table tr:last-child td { border-bottom: none; }
+    .comp-table .row-tool { font-weight: 700; color: var(--text); }
+    .comp-table .row-tool .sub { font-weight: 400; font-size: 11px; color: var(--text-4); display: block; margin-top: 2px; }
+    .comp-table .win { color: var(--g); font-weight: 600; }
+    .comp-table .neutral { color: var(--text-3); }
+    .comp-table .miss { color: var(--text-4); }
+    .comp-table tr.highlight td { background: rgba(52,211,119,.04); }
+    .comp-table tr.highlight .row-tool { color: var(--g); }
+
+    .step-cards { display: flex; flex-direction: column; gap: 14px; margin: 24px 0; }
+    .step-card { background: var(--bg-3); border: 1px solid var(--border); border-radius: 10px; padding: 22px 24px; display: flex; gap: 18px; align-items: flex-start; }
+    .step-num { width: 32px; height: 32px; min-width: 32px; border-radius: 50%; background: rgba(52,211,119,.1); border: 1px solid rgba(52,211,119,.25); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--g); flex-shrink: 0; }
+    .step-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .step-desc { font-size: 14px; color: var(--text-3); line-height: 1.65; }
+    .step-desc a { color: var(--g); text-decoration: underline; }
+    .step-tool { font-family: var(--mono); font-size: 10px; color: var(--text-4); background: rgba(255,255,255,.03); border: 1px solid var(--border); padding: 3px 8px; border-radius: 3px; display: inline-block; margin-top: 8px; }
+
+    .callout { background: var(--bg-3); border: 1px solid var(--border-2); border-radius: 10px; padding: 22px 24px; margin: 24px 0; border-left: 3px solid var(--g); text-align: left; }
+    .callout.warn { border-left-color: var(--amber); background: var(--amber-bg); }
+    .callout.info { border-left-color: var(--sky); background: var(--sky-bg); }
+    .callout.purple { border-left-color: var(--vio); background: var(--vio-bg); }
+    .callout-label { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--g); margin-bottom: 8px; }
+    .callout.warn .callout-label { color: var(--amber); }
+    .callout.info .callout-label { color: var(--sky); }
+    .callout.purple .callout-label { color: var(--vio); }
+    .callout p { font-size: 14px; color: var(--text-2); line-height: 1.7; margin: 0; }
+    .callout p + p { margin-top: 10px; }
+    .callout p strong { color: var(--text); }
+    .callout p a { color: var(--g); text-decoration: underline; }
+
+    .section-cta { background: rgba(52,211,119,.06); border: 1.5px solid rgba(52,211,119,.2); border-radius: 12px; padding: 28px 32px; margin: 36px 0; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+    .section-cta-text h4 { font-weight: 800; font-size: 18px; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+    .section-cta-text p { font-size: 13px; color: var(--text-3); margin: 0; }
+    @media (max-width: 600px) { .section-cta { flex-direction: column; align-items: flex-start; } .section-cta .btn { width: 100%; justify-content: center; } }
+
+    .aff-note { font-size: 12px; color: var(--text-4); font-style: italic; margin: 10px auto 0; max-width: 540px; text-align: center; line-height: 1.6; }
+    .aff-note a { color: var(--text-3); text-decoration: underline; }
+
+    .author-line { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 32px; padding: 14px 22px; background: rgba(255,255,255,.02); border: 1px solid var(--border); border-radius: 100px; max-width: 460px; margin-left: auto; margin-right: auto; }
+    .author-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--g-bg); border: 1px solid var(--g-border); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-weight: 800; color: var(--g); font-size: 12px; }
+    .author-text { font-size: 13px; color: var(--text-3); line-height: 1.4; text-align: left; }
+    .author-text strong { color: var(--text-2); font-weight: 600; }
+    .author-text a { color: var(--text-3); text-decoration: underline; }
+
+    .timeline { position: relative; margin: 32px 0; padding-left: 24px; border-left: 2px solid var(--border); }
+    .timeline-item { position: relative; padding: 0 0 28px 28px; }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-item::before { content: ""; position: absolute; left: -33px; top: 4px; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 2px solid var(--g); }
+    .timeline-date { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--g); margin-bottom: 6px; }
+    .timeline-title { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 6px; line-height: 1.3; }
+    .timeline-desc { font-size: 14px; color: var(--text-3); line-height: 1.65; }
+    .timeline-desc a { color: var(--g); text-decoration: underline; }
+
+    .playbook-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 32px 0; }
+    .playbook-card { background: var(--bg-3); border: 1.5px solid var(--border); border-radius: 12px; padding: 24px; transition: border-color .2s, transform .2s; }
+    .playbook-card:hover { border-color: var(--g-border); transform: translateY(-3px); }
+    .playbook-tag { font-family: var(--mono); font-size: 9px; font-weight: 700; color: var(--g); letter-spacing: .15em; text-transform: uppercase; margin-bottom: 10px; }
+    .playbook-name { font-weight: 800; font-size: 17px; color: var(--text); letter-spacing: -.01em; margin-bottom: 8px; }
+    .playbook-desc { font-size: 13px; color: var(--text-3); line-height: 1.65; margin-bottom: 14px; }
+    .playbook-desc strong { color: var(--text-2); }
+    .playbook-list { list-style: none; padding: 0; margin: 0; font-size: 12px; }
+    .playbook-list li { position: relative; padding: 6px 0 6px 16px; color: var(--text-3); line-height: 1.5; border-bottom: 1px solid var(--border); }
+    .playbook-list li::before { content: "·"; position: absolute; left: 0; top: 6px; color: var(--g); font-weight: 700; font-size: 18px; line-height: 1; }
+    .playbook-list li:last-child { border-bottom: none; }
+    @media (max-width: 760px) { .playbook-grid { grid-template-columns: 1fr; } }
+
+    .vs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+    .vs-card { background: var(--bg-3); border: 1px solid var(--border); border-radius: 10px; padding: 22px 24px; }
+    .vs-card-title { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 14px; }
+    .vs-card-title.win { color: var(--g); }
+    .vs-card-title.lose { color: var(--text-4); }
+    .vs-list { list-style: none; padding: 0; margin: 0; }
+    .vs-list li { position: relative; padding: 8px 0 8px 22px; font-size: 14px; color: var(--text-3); line-height: 1.6; }
+    .vs-list li::before { position: absolute; left: 0; top: 7px; font-weight: 700; }
+    .vs-list.pros li::before { content: "✓"; color: var(--g); }
+    .vs-list.cons li::before { content: "✕"; color: var(--text-4); }
+    @media (max-width: 600px) { .vs-grid { grid-template-columns: 1fr; } }
+
+    .crosslink-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
+    .crosslink-card { background: var(--bg-3); border: 1.5px solid var(--border); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; transition: border-color .2s, transform .2s; }
+    .crosslink-card:hover { border-color: var(--g-border); transform: translateY(-3px); }
+    .crosslink-tag { font-family: var(--mono); font-size: 9px; font-weight: 700; color: var(--g); letter-spacing: .15em; text-transform: uppercase; margin-bottom: 10px; }
+    .crosslink-name { font-weight: 800; font-size: 17px; color: var(--text); letter-spacing: -.01em; margin-bottom: 6px; }
+    .crosslink-desc { font-size: 13px; color: var(--text-3); line-height: 1.6; flex: 1; }
+    .crosslink-arrow { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--g); margin-top: 12px; }
+    @media (max-width: 600px) { .crosslink-grid { grid-template-columns: 1fr; } }
+
+    .glossary-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 28px 0; }
+    .glossary-item { background: var(--bg-3); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; }
+    .glossary-term { font-weight: 800; font-size: 14px; color: var(--text); margin-bottom: 6px; }
+    .glossary-def { font-size: 13px; color: var(--text-3); line-height: 1.65; margin: 0; }
+    .glossary-def a { color: var(--g); text-decoration: underline; }
+    @media (max-width: 600px) { .glossary-grid { grid-template-columns: 1fr; } }
+
+    .trouble-list { display: flex; flex-direction: column; gap: 12px; margin: 24px 0; }
+    .trouble-item { background: var(--bg-3); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; }
+    .trouble-q { font-weight: 700; font-size: 15px; color: var(--text); margin-bottom: 8px; line-height: 1.4; }
+    .trouble-a { font-size: 14px; color: var(--text-3); line-height: 1.7; margin: 0; }
+    .trouble-a a { color: var(--g); text-decoration: underline; }
+    .trouble-a strong { color: var(--text-2); }
+
+    .faq-list-s { display: flex; flex-direction: column; gap: 8px; margin-top: 32px; }
+    details.faq-item-s { border-radius: 10px; border: 1.5px solid var(--border); background: rgba(255,255,255,.02); transition: border-color .2s; }
+    details.faq-item-s[open] { border-color: rgba(140,207,232,.25); background: rgba(140,207,232,.025); }
+    details.faq-item-s summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; cursor: pointer; list-style: none; min-height: 58px; font-size: 15px; font-weight: 600; color: var(--text-3); }
+    details.faq-item-s summary::-webkit-details-marker { display: none; }
+    details.faq-item-s[open] summary { color: var(--text); }
+    .faq-ico { width: 14px; height: 14px; min-width: 14px; position: relative; opacity: .4; }
+    .faq-ico::before { content: ''; position: absolute; top: 2px; left: 1px; width: 9px; height: 9px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); transition: transform .25s; }
+    details.faq-item-s[open] .faq-ico { opacity: 1; color: var(--sky); }
+    details.faq-item-s[open] .faq-ico::before { transform: rotate(225deg); top: 5px; }
+    .faq-ans-s { padding: 0 22px 20px; font-size: 14px; color: var(--text-3); line-height: 1.75; border-top: 1px solid var(--border); padding-top: 14px; }
+    .faq-ans-s a { color: var(--g); text-decoration: underline; }
+    .faq-ans-s strong { color: var(--text-2); }
+
+    .pro-block { background: linear-gradient(180deg, var(--bg-3) 0%, var(--bg-2) 100%); border: 1.5px solid var(--vio); border-radius: 16px; padding: 36px 32px; margin: 48px auto 0; max-width: 760px; text-align: center; box-shadow: 0 8px 28px rgba(195,184,239,.08); }
+    .pro-tag { display: inline-block; font-family: var(--mono); font-size: 10px; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; color: var(--vio); background: rgba(195,184,239,.08); border: 1px solid rgba(195,184,239,.2); padding: 5px 12px; border-radius: 100px; margin-bottom: 16px; }
+    .pro-block h3 { font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -.02em; margin-bottom: 10px; }
+    .pro-block p { font-size: 15px; color: var(--text-3); line-height: 1.7; margin-bottom: 18px; max-width: 580px; margin-left: auto; margin-right: auto; }
+    .pro-block .pro-price { font-family: var(--mono); font-size: 32px; font-weight: 800; color: var(--text); margin: 18px 0 8px; }
+    .pro-block .pro-price-sub { font-size: 12px; color: var(--text-4); margin-bottom: 22px; }
+    .pro-block .btn-pro { background: var(--vio); color: var(--text-inv); }
+    .pro-block .btn-pro:hover { background: #d8c8ff; }
+    .pro-features { list-style: none; padding: 0; margin: 0 auto 24px; max-width: 480px; text-align: left; }
+    .pro-features li { position: relative; padding: 7px 0 7px 24px; font-size: 14px; color: var(--text-3); }
+    .pro-features li::before { content: "✓"; position: absolute; left: 0; top: 7px; color: var(--vio); font-weight: 700; }
+    @media (max-width: 640px) {
+      .hero { padding: 48px 20px 40px; }
+      .hero-ctas { flex-direction: column; align-items: stretch; max-width: 320px; margin-left: auto; margin-right: auto; }
+      .btn, .btn-outline { width: 100%; justify-content: center; }
+      .section, .section-alt { padding: 56px 20px; }
+      .author-line { flex-direction: column; padding: 14px; max-width: 100%; }
+      .author-text { text-align: center; }
+    }
+  </style>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TE6Z6CW514"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TE6Z6CW514');
+  </script>
+
+    <!-- Feed discovery -->
+    <link rel="alternate" type="application/rss+xml" title="Stack Architect — Shopify Automation Guides" href="/rss.xml" />
+  </head>
+
+<body>
+<Nav />
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<div class="urgency-banner" role="alert" aria-label="Stocky shutdown countdown">
+  <span class="dot-red" aria-hidden="true"></span>
+  <strong>STOCKY SHUTS DOWN AUG 31, 2026</strong>
+  — <span id="stocky-countdown">calculating…</span> —
+  replace it free today
+  <span class="dot-red" aria-hidden="true"></span>
+</div>
+
+<nav class="crumb" aria-label="Breadcrumb">
+  <div class="crumb-inner">
+    <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
+        <meta itemprop="position" content="1" />
+      </li>
+      <li class="sep" aria-hidden="true">/</li>
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span class="current" itemprop="name">Stocky Swap</span>
+        <meta itemprop="position" content="2" />
+      </li>
+    </ol>
+  </div>
+</nav>
+
+<main id="main-content">
+
+  <section class="hero bg-grid" aria-labelledby="hero-heading">
+    <div class="hero-inner">
+      <div class="hero-meta">
+        Updated {new Date(DATE_MODIFIED).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })} · Free Stocky alternative · 14-min read
+      </div>
+
+      <h1 id="hero-heading">
+        The free<br />
+        <span class="green">Stocky alternative.</span><br />
+        <span class="dim">Live in 4 minutes.</span>
+      </h1>
+
+      <p class="hero-sub">
+        Shopify Stocky closes <strong>{SHUTDOWN_DATE}</strong>. Stocky Swap is the free replacement — a public Make.com scenario that logs every Shopify order to your own Google Sheet in real time. <strong>$0/month forever, no code, no app install.</strong>
+      </p>
+
+      <div class="countdown-strip" aria-label="Time remaining until Stocky shuts down">
+        <div class="countdown-label">⚠ Stocky shuts down in</div>
+        <div class="countdown-nums">
+          <div class="cd-unit"><div class="cd-val" id="cd-days">--</div><div class="cd-l">days</div></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-unit"><div class="cd-val" id="cd-hours">--</div><div class="cd-l">hrs</div></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-unit"><div class="cd-val" id="cd-mins">--</div><div class="cd-l">min</div></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-unit"><div class="cd-val" id="cd-secs">--</div><div class="cd-l">sec</div></div>
+        </div>
+      </div>
+
+      <div class="hero-ctas">
+        <a href={MAKE_AFFILIATE} class="btn pulse" target="_blank" rel="noopener sponsored" data-cta="hero-make">
+          Replace Stocky Free in 4 Minutes →
+        </a>
+        <a href={SCENARIO_URL} class="btn-outline" target="_blank" rel="noopener" data-cta="hero-scenario">
+          Clone the tested scenario →
+        </a>
+      </div>
+
+      <p class="aff-note">
+        Make.com is an affiliate partner. Sign up via this page and Stack Architect earns a small commission at no cost to you — that's how the guides stay free. <a href="/privacy/">Disclosure</a>.
+      </p>
+
+      <div class="author-line" style="margin-top: 28px;">
+        <div class="author-avatar">L</div>
+        <div class="author-text">
+          Built and tested by <strong>Luke</strong>, Shopify Automation Specialist at <a href={LINKEDIN} target="_blank" rel="noopener">Stack Architect</a>.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 16px;">
+    <div class="speakable-answer">
+      <div class="label">↳ Quick answer</div>
+      <p>
+        <strong>Stocky Swap is a free Stocky alternative for Shopify in 2026.</strong> It uses a public Make.com scenario to log every new Shopify order to a Google Sheet you own — in real time, with no monthly fees and no code. Setup takes under 5 minutes. It runs forward-only on Make.com's free tier, making it the cheapest direct path off Stocky before the August 31, 2026 shutdown. For deeper inventory features (forecasting, multi-warehouse, purchase orders), see the paid alternatives comparison below — Qoblex, SKUSavvy, Sumtracker, Inventory Planner, and Prediko range from $59 to $999 per month.
+      </p>
+    </div>
+
+    <div class="trust-strip">
+      <div class="trust-cell"><div class="trust-v">$0</div><div class="trust-l">per month</div></div>
+      <div class="trust-cell"><div class="trust-v">~4 min</div><div class="trust-l">to deploy</div></div>
+      <div class="trust-cell"><div class="trust-v">Real-time</div><div class="trust-l">webhook sync</div></div>
+      <div class="trust-cell"><div class="trust-v">Public</div><div class="trust-l">Make.com scenario</div></div>
+    </div>
+  </section>
+
+  <section class="section-alt">
+    <div class="inner-md body-text">
+      <div class="sec-head">
+        <h2>Stocky is closing. You need somewhere for orders to go.</h2>
+      </div>
+
+      <p>
+        On <strong>February 2, 2026</strong>, Shopify removed Stocky from the App Store. On <strong>{SHUTDOWN_DATE}</strong>, Stocky stops working entirely — purchase orders, supplier records, stocktake history, and demand forecasts are deleted. Your Shopify Admin inventory levels survive (those live in Shopify, not in Stocky), but everything that lived inside the Stocky app is gone.
+      </p>
+
+      <p>
+        For most stores, the immediate question isn't "which $99/month replacement do I buy?" It's <strong>"where do new orders go starting September 1?"</strong> That's what Stocky Swap solves. It's not a full inventory accounting system — it's a real-time order ledger that lives in a Google Sheet you control, deployed in minutes, free forever via <a href={MAKE_AFFILIATE} target="_blank" rel="noopener sponsored">Make.com</a>.
+      </p>
+
+      <p>
+        If you need deeper features (multi-channel sync, demand forecasting, purchase order management, multi-warehouse), the <a href="#comparison">comparison table below</a> covers the paid alternatives the Shopify community is migrating to. If you just need orders flowing into something you own — keep reading.
+      </p>
+
+      <div class="callout warn">
+        <div class="callout-label">⚠ Time-sensitive</div>
+        <p>Stocky's export functions may be restricted before the official shutdown date. <a href="/blog/shopify-stocky-data-export-before-shutdown/">Export your Stocky data now</a> while every function still works — see the <a href="/blog/shopify-stocky-data-export-before-shutdown/">step-by-step export guide</a> — and set up Stocky Swap in parallel so you're verified before September 1.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="inner-md">
+      <div class="sec-head">
+        <h2>Migration timeline — what to do, when</h2>
+        <p>The closer you get to August 31, the more risk. Here's the calmest path off Stocky.</p>
+      </div>
+
+      <div class="timeline speakable-timeline">
+        <div class="timeline-item">
+          <div class="timeline-date">This week</div>
+          <div class="timeline-title">Export your Stocky data</div>
+          <div class="timeline-desc">
+            Open Stocky in Shopify Admin. Export Purchase Orders, Stocktakes, and Transfers as CSV. Manually copy supplier contact details (Stocky's CSV export doesn't include them in full). Save everything to a Google Drive folder named <code>Stocky_Export_2026-Q2</code>. <a href="/blog/shopify-stocky-data-export-before-shutdown/">Full export guide →</a>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">This week (also)</div>
+          <div class="timeline-title">Deploy Stocky Swap in parallel</div>
+          <div class="timeline-desc">
+            <a href={MAKE_AFFILIATE} target="_blank" rel="noopener sponsored">Create a free Make.com account</a>, clone the <a href={SCENARIO_URL} target="_blank" rel="noopener">public Stocky Swap scenario</a>, connect Shopify and Google Sheets, switch on. Total time: ~4 minutes. Don't switch off Stocky yet — run both side-by-side as a verification system.
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">Next 2 weeks</div>
+          <div class="timeline-title">Verify Stocky Swap matches Stocky</div>
+          <div class="timeline-desc">
+            Place a few real orders. Confirm each one shows up in your Google Sheet within seconds and that the line items match what Stocky records. Cross-check daily for two weeks. If discrepancies appear, the Make.com scenario History tab shows exactly which webhook was processed and why any failed.
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">June 2026</div>
+          <div class="timeline-title">Decide on paid features (if you need them)</div>
+          <div class="timeline-desc">
+            If your business genuinely needs purchase order workflows, demand forecasting, or multi-warehouse stock, this is the month to evaluate <a href="#comparison">Qoblex, SKUSavvy, Sumtracker, Inventory Planner, or Prediko</a>. Don't try to make this decision in August when everyone else is panic-migrating.
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">July 2026</div>
+          <div class="timeline-title">Run your final Stocky exports</div>
+          <div class="timeline-desc">
+            Take a final snapshot of all Stocky data. Verify your Google Drive backup is complete. Confirm Stocky Swap has been logging cleanly for 6+ weeks. Make a final go/no-go decision on any paid replacement.
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">August 31, 2026</div>
+          <div class="timeline-title">Stocky shuts down</div>
+          <div class="timeline-desc">
+            App stops working. Stocky data is permanently deleted. Stocky Swap continues running unchanged. Your Google Sheet keeps logging every new order. You don't lift a finger that day — that's the entire point of doing this in May rather than August.
+          </div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <div class="callout-label">↳ The honest reason to act early</div>
+        <p>Make.com's free tier is global and Shopify's webhooks are reliable — but support response times for everyone (Shopify, Make.com, Google) get worse as more merchants hit the August deadline simultaneously. Setting up in May means support is responsive if something breaks. <a href={MAKE_AFFILIATE} target="_blank" rel="noopener sponsored">Start Make.com setup now →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt">
+    <div class="inner-md">
+      <div class="sec-head">
+        <h2>Deploy Stocky Swap in 3 steps</h2>
+        <p>Total time: under 5 minutes. No code. No app install. No credit card.</p>
+      </div>
+
+      <div class="step-cards speakable-howto">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-title">Create a free Make.com account</div>
+            <div class="step-desc">
+              Sign up at <a href={MAKE_AFFILIATE} target="_blank" rel="noopener sponsored">make.com</a>. No credit card required. The free tier (1,000 credits/month) is enough to run Stocky Swap on a small-to-medium store.
+            </div>
+            <span class="step-tool">~60 seconds</span>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-title">Clone the public Stocky Swap scenario</div>
+            <div class="step-desc">
+              Open the <a href={SCENARIO_URL} target="_blank" rel="noopener">public Make.com scenario</a> and click Clone. The scenario imports into your workspace pre-configured — Shopify webhook trigger, line-item iterator, Google Sheets row writer. No building from scratch.
+            </div>
+            <div class="callout info" style="margin:14px 0 0;">
+              <div class="callout-label">Tested & verified</div>
+              <p style="margin:0;font-size:14px;line-height:1.6;">This scenario is live-tested: a multi-item order writes one row per SKU to Google Sheets, with timestamp, quantity, order ID and product name. It's not a mockup — it's the exact build we run and verified end-to-end.</p>
+            </div>
+            <span class="step-tool">~90 seconds</span>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-title">Connect Shopify + Google Sheets, switch on</div>
+            <div class="step-desc">
+              Add your Shopify API credentials, link your Google Sheet, and toggle the scenario active. Order logging begins on the next paid order. The <a href={SETUP_GUIDE_PDF} target="_blank" rel="noopener">PDF setup guide</a> walks every step with screenshots if you get stuck.
+            </div>
+            <span class="step-tool">~2-3 minutes</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-cta">
+        <div class="section-cta-text">
+          <h4>Ready in 4 minutes</h4>
+          <p>Free Make.com account → clone the scenario → switch on. That's it.</p>
+        </div>
+        <a href={MAKE_AFFILIATE} class="btn" target="_blank" rel="noopener sponsored" data-cta="steps-make">
+          Start Free →
+        </a>
+      </div>
+
+      {/* SCREENSHOT PLACEHOLDER 1: Make.com scenario flow view (Shopify trigger → mapper → Google Sheets writer). When you add it, save to /public/screenshots/stocky-swap-make-flow.png and replace this comment with: <img src="/screenshots/stocky-swap-make-flow.png" alt="Stocky Swap Make.com scenario flow view showing Shopify webhook, data mapper, and Google Sheets writer modules" loading="lazy" style="width:100%;border:1px solid var(--border);border-radius:12px;margin:32px 0;" /> */}
+
+      {/* SCREENSHOT PLACEHOLDER 2: Google Sheet showing real order rows after a test order. Save to /public/screenshots/stocky-swap-sheet.png with caption "Live Stocky Swap output — every order logged to a Google Sheet you own." */}
+    </div>
+  </section>
+
+  <section class="section" id="comparison">
+    <div class="inner">
+      <div class="sec-head">
+        <h2>Stocky Swap vs every paid alternative in 2026</h2>
+        <p>Public pricing as of June 2026 — verify directly with each vendor before purchase.</p>
+      </div>
+
+      <div class="speakable-comparison">
+      <div class="comp-wrap">
+        <table class="comp-table" aria-label="Comparison of free Stocky alternative versus paid alternatives">
+          <thead>
+            <tr>
+              <th style="min-width: 180px;">Tool</th>
+              <th>Best for</th>
+              <th>Monthly cost (entry)</th>
+              <th>Setup time</th>
+              <th>Data ownership</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="highlight">
+              <td class="row-tool">Stocky Swap<span class="sub">Make.com + Google Sheets</span></td>
+              <td class="neutral">Forward-only order logging — replaces Stocky's order tracking at $0</td>
+              <td class="win">$0</td>
+              <td class="win">~4 minutes</td>
+              <td class="win">Your Google Sheet</td>
+            </tr>
+            <tr>
+              <td class="row-tool">Native Shopify Inventory<span class="sub">Built into Admin</span></td>
+              <td class="neutral">Basic stock levels and transfers</td>
+              <td class="win">Included</td>
+              <td class="neutral">Already there</td>
+              <td class="neutral">Shopify-owned</td>
+            </tr>
+            <tr>
+              <td class="row-tool">Qoblex<span class="sub">qoblex.com</span></td>
+              <td class="neutral">Multi-channel inventory + procurement</td>
+              <td class="miss">~$99–$249/mo</td>
+              <td class="miss">Hours</td>
+              <td class="miss">Vendor-locked</td>
+            </tr>
+            <tr>
+              <td class="row-tool">SKUSavvy<span class="sub">skusavvy.com</span></td>
+              <td class="neutral">Mobile-first warehouse management (WMS)</td>
+              <td class="miss">~$99–$499/mo</td>
+              <td class="miss">Hours</td>
+              <td class="miss">Vendor-locked</td>
+            </tr>
+            <tr>
+              <td class="row-tool">Sumtracker<span class="sub">sumtracker.com</span></td>
+              <td class="neutral">Bundles, kits, multi-store</td>
+              <td class="miss">~$59–$199/mo</td>
+              <td class="miss">Hours</td>
+              <td class="miss">Vendor-locked</td>
+            </tr>
+            <tr>
+              <td class="row-tool">Inventory Planner<span class="sub">inventory-planner.com (Sage)</span></td>
+              <td class="neutral">Advanced demand forecasting</td>
+              <td class="miss">~$249–$999/mo</td>
+              <td class="miss">Days</td>
+              <td class="miss">Vendor-locked</td>
+            </tr>
+            <tr>
+              <td class="row-tool">Prediko<span class="sub">prediko.io</span></td>
+              <td class="neutral">AI forecasting + raw materials</td>
+              <td class="miss">~$119–$499/mo</td>
+              <td class="miss">Hours</td>
+              <td class="miss">Vendor-locked</td>
+            </tr>
+            <tr>
+              <td class="row-tool">Cin7 Core<span class="sub">cin7.com</span></td>
+              <td class="neutral">Multi-warehouse + B2B</td>
+              <td class="miss">~$349+/mo</td>
+              <td class="miss">Days</td>
+              <td class="miss">Vendor-locked</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-label">↳ How to choose</div>
+        <p><strong>Just need order logging</strong> (orders flowing into something you own from September 1)? Stocky Swap. <strong>Need full forecasting and purchase orders for a complex multi-channel operation?</strong> Inventory Planner or Qoblex are the most-cited paid replacements in 2026. <strong>Mobile warehouse picking and packing?</strong> SKUSavvy. Stack Architect doesn't earn affiliate commission from the paid tools listed — pricing is included for transparency.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt">
+    <div class="inner-md body-text">
+      <div class="sec-head">
+        <h2>Feature-by-feature comparisons</h2>
+        <p>How Stocky Swap actually stacks up against each major alternative.</p>
+      </div>
+
+      <h3>Stocky Swap vs Qoblex</h3>
+      <p>Qoblex is the most-recommended paid Stocky alternative on Shopify Community forums in 2026. Genuinely strong product — multi-channel inventory, procurement workflows, and landed cost management. The right choice for stores with complex purchase order requirements or multiple sales channels (Amazon, eBay, POS, Shopify all feeding one inventory pool).</p>
+
+      <div class="vs-grid">
+        <div class="vs-card">
+          <div class="vs-card-title win">Stocky Swap wins on</div>
+          <ul class="vs-list pros">
+            <li>Cost — $0 vs $99–$249/month</li>
+            <li>Setup speed — 4 minutes vs hours</li>
+            <li>Data ownership — your Google Sheet, never locked in</li>
+            <li>No vendor risk — Make.com and Google are independent of each other</li>
+            <li>Compatible with literally every Shopify plan including 1-day-old new stores</li>
+          </ul>
+        </div>
+        <div class="vs-card">
+          <div class="vs-card-title lose">Qoblex wins on</div>
+          <ul class="vs-list cons">
+            <li>Purchase order management (Stocky Swap has none)</li>
+            <li>Multi-channel sync to Amazon/eBay (Stocky Swap is Shopify-only)</li>
+            <li>Landed cost calculations</li>
+            <li>Demand forecasting</li>
+            <li>Customer support (you get a human; Stocky Swap is self-serve)</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Stocky Swap vs SKUSavvy</h3>
+      <p>SKUSavvy is the leading mobile-first WMS for Shopify in 2026. If your team picks and packs in a warehouse with a barcode scanner, SKUSavvy is built for that. Stocky Swap is not — it's a passive order logger, not a warehouse operation system.</p>
+
+      <div class="vs-grid">
+        <div class="vs-card">
+          <div class="vs-card-title win">Stocky Swap wins on</div>
+          <ul class="vs-list pros">
+            <li>Cost — $0 vs $99–$499/month</li>
+            <li>No mobile app needed</li>
+            <li>No staff training required</li>
+            <li>Works for stores with no warehouse (3PL, dropship, single fulfilment location)</li>
+          </ul>
+        </div>
+        <div class="vs-card">
+          <div class="vs-card-title lose">SKUSavvy wins on</div>
+          <ul class="vs-list cons">
+            <li>Barcode scanning and mobile picking</li>
+            <li>Purchase orders and supplier management</li>
+            <li>Min/max stock levels with auto-reordering</li>
+            <li>Multi-location stock transfers</li>
+            <li>Anything warehouse-floor operational</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Stocky Swap vs Sumtracker</h3>
+      <p>Sumtracker is most-recommended for stores selling product bundles and kits (e.g. you sell a "starter kit" comprising 3 separate SKUs from your inventory). Stocky Swap doesn't model bundles — it logs raw line items.</p>
+
+      <div class="vs-grid">
+        <div class="vs-card">
+          <div class="vs-card-title win">Stocky Swap wins on</div>
+          <ul class="vs-list pros">
+            <li>Cost — $0 vs $59–$199/month</li>
+            <li>Simplicity — no bundle configuration needed</li>
+            <li>Stores selling individual products with no kits</li>
+          </ul>
+        </div>
+        <div class="vs-card">
+          <div class="vs-card-title lose">Sumtracker wins on</div>
+          <ul class="vs-list cons">
+            <li>Bundle and kit decomposition</li>
+            <li>Component-level stock tracking</li>
+            <li>Multi-store inventory consolidation</li>
+            <li>Purchase order generation</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Stocky Swap vs Inventory Planner (by Sage)</h3>
+      <p>Inventory Planner is the heavyweight here — Sage acquired it because it's enterprise-grade demand forecasting. If you're spending $50,000+/month on stock and need to optimise reorder timing across hundreds of SKUs, this is the right tool. For everyone else, it's overkill at $249–$999/month.</p>
+
+      <div class="vs-grid">
+        <div class="vs-card">
+          <div class="vs-card-title win">Stocky Swap wins on</div>
+          <ul class="vs-list pros">
+            <li>Cost — $0 vs $249–$999/month</li>
+            <li>Speed to deploy — minutes vs days/weeks</li>
+            <li>Stores under ~$500k annual revenue typically don't need this</li>
+          </ul>
+        </div>
+        <div class="vs-card">
+          <div class="vs-card-title lose">Inventory Planner wins on</div>
+          <ul class="vs-list cons">
+            <li>Sophisticated demand forecasting</li>
+            <li>Stock coverage and reorder timing</li>
+            <li>Multi-location planning</li>
+            <li>Sage ecosystem integrations (accountancy)</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Stocky Swap vs Prediko</h3>
+      <p>Prediko has been running aggressive paid ads against "Stocky alternative" search queries throughout 2026 and offers free Stocky migration. Solid product for D2C brands wanting AI-driven forecasting and raw materials planning. Different category from Stocky Swap — it's forecasting-first, not order-logging-first.</p>
+
+      <div class="vs-grid">
+        <div class="vs-card">
+          <div class="vs-card-title win">Stocky Swap wins on</div>
+          <ul class="vs-list pros">
+            <li>Cost — $0 vs $119–$499/month</li>
+            <li>No data lock-in — leave any time, your Sheet is yours</li>
+            <li>No commitment to forecast accuracy claims</li>
+          </ul>
+        </div>
+        <div class="vs-card">
+          <div class="vs-card-title lose">Prediko wins on</div>
+          <ul class="vs-list cons">
+            <li>AI demand forecasting</li>
+            <li>Raw material requirements planning</li>
+            <li>Free Stocky data migration (assisted)</li>
+            <li>D2C-focused features (subscriptions, replenishment)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout purple">
+        <div class="callout-label">↳ Honest take</div>
+        <p>If you genuinely need <strong>purchase orders, forecasting, or warehouse picking</strong>, pay for the right tool — these aren't problems Stocky Swap pretends to solve. If you mostly need <strong>"orders showing up somewhere I own from September 1"</strong>, Stocky Swap is the right fit and a paid alternative is wasted money. Most Stocky users sit in the second camp, which is why this page exists.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="inner-md body-text">
+      <div class="sec-head">
+        <h2>What Stocky Swap does — and doesn't — do</h2>
+        <p>The honesty section. Read this before deploying.</p>
+      </div>
+
+      <div class="speakable-limits">
+      <h3>What it does</h3>
+      <ul>
+        <li><strong>Logs every paid Shopify order</strong> to a Google Sheet row in real time (order ID, timestamp, customer, SKU, product, quantity, revenue, fulfilment status)</li>
+        <li><strong>Runs via Shopify webhook</strong> — not polling, so updates arrive within seconds of an order being placed</li>
+        <li><strong>Stores data in your Google Sheet</strong> — full ownership, no vendor lock-in, exportable any time</li>
+        <li><strong>Costs $0</strong> on <a href={MAKE_AFFILIATE} target="_blank" rel="noopener sponsored">Make.com's free tier</a></li>
+        <li><strong>Runs alongside Stocky</strong> until the August 31 shutdown — verify it's working in parallel before relying on it</li>
+        <li><strong>Compatible with all Shopify plans</strong> — Basic, Shopify, Advanced, Plus, Starter</li>
+        <li><strong>Re-deployable across multiple stores</strong> — clone the same scenario per store, point each to a separate sheet or tab</li>
+      </ul>
+
+      <h3>What it does NOT do</h3>
+      <ul>
+        <li><strong>Backfill historical Stocky data</strong> — it logs forward from the moment you switch it on. Export your Stocky purchase orders, stocktakes, and supplier records separately before the shutdown.</li>
+        <li><strong>Calculate stock-on-hand with refund/return adjustments</strong> — it's a forward order ledger, not an accounting system. For full inventory accounting, rely on native Shopify Admin inventory or pair with a paid alternative.</li>
+        <li><strong>Manage purchase orders or supplier workflows</strong> — Stocky's strongest feature. If POs are critical to your operation, you need Qoblex, Inventory Planner, or similar.</li>
+        <li><strong>Provide demand forecasting</strong> — for AI-driven forecasting, Prediko or Inventory Planner are the category leaders.</li>
+        <li><strong>Run mobile warehouse picking</strong> — that's SKUSavvy's category, not Stocky Swap's.</li>
+        <li><strong>Track bundles or kit components</strong> — that's Sumtracker territory.</li>
+      </ul>
+      </div>
+
+      <div class="callout">
+        <div class="callout-label">↳ Who Stocky Swap is right for</div>
+        <p>Small-to-medium Shopify stores that used Stocky mostly for <strong>order tracking and basic inventory visibility</strong>, want a $0 path off the app before September 1, and either don't need PO/forecasting features or run those workflows somewhere else (an accountant, a separate system, native Shopify). For complex inventory accounting, this isn't the right tool — that's what the paid alternatives in the table above exist for. <a href="/stocky-migration-risk-scorer/">Run our 60-second migration risk assessment →</a> if you're not sure which side you fall on.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt">
+    <div class="inner-md">
+      <div class="sec-head">
+        <h2>Playbooks by store size</h2>
+        <p>The right migration plan depends on your order volume. Here are the three patterns we see.</p>
+      </div>
+
+      <div class="playbook-grid">
+        <div class="playbook-card">
+          <div class="playbook-tag">↳ Small store</div>
+          <div class="playbook-name">Under 50 orders/day</div>
+          <div class="playbook-desc">Stocky Swap is almost certainly all you need. Native Shopify inventory handles stock-on-hand. <strong>Total monthly cost: $0.</strong></div>
+          <ul class="playbook-list">
+            <li>Deploy Stocky Swap free tier</li>
+            <li>Use native Shopify inventory for stock</li>
+            <li>Skip paid alternatives entirely</li>
+            <li>Optional: <a href={SYSTEME_AFFILIATE} target="_blank" rel="noopener sponsored">Systeme.io</a> free for email if replacing Klaviyo</li>
+          </ul>
+        </div>
+
+        <div class="playbook-card">
+          <div class="playbook-tag">↳ Mid store</div>
+          <div class="playbook-name">50–500 orders/day</div>
+          <div class="playbook-desc">Stocky Swap as the order ledger. Native Shopify or one focused paid tool for the gap (POs, forecasting, or bundles — pick one).</div>
+          <ul class="playbook-list">
+            <li>Stocky Swap on Make.com Core ($9/mo)</li>
+            <li>One paid tool only — don't stack 3+</li>
+            <li>If POs matter most: Qoblex (~$99)</li>
+            <li>If bundles matter most: Sumtracker (~$59)</li>
+          </ul>
+        </div>
+
+        <div class="playbook-card">
+          <div class="playbook-tag">↳ Large store</div>
+          <div class="playbook-name">500+ orders/day</div>
+          <div class="playbook-desc">Stocky Swap is still useful as an independent audit log, but it's not your primary system. Pick a real WMS or planning tool.</div>
+          <ul class="playbook-list">
+            <li>Inventory Planner / Prediko for forecasting</li>
+            <li>SKUSavvy / Cin7 for warehouse ops</li>
+            <li>Stocky Swap as backup audit log ($0)</li>
+            <li>Make.com Core ($9) is the cheapest gap-filler</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-label">↳ Sizing your Make.com tier</div>
+        <p>Free tier (1,000 credits/month) covers most small stores. <strong>Make.com Core at $12/month</strong> covers 10,000 ops — appropriate once you pass roughly 100 orders/day with the standard Stocky Swap scenario. <a href="/blog/when-to-upgrade-free-make-google-workspace/">Full Make.com tier guide →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="inner-md body-text">
+      <div class="sec-head">
+        <h2>Troubleshooting Stocky Swap</h2>
+        <p>The five issues that occasionally come up in the first hour of setup.</p>
+      </div>
+
+      <div class="trouble-list">
+        <div class="trouble-item">
+          <div class="trouble-q">My Make.com scenario won't activate</div>
+          <p class="trouble-a">Almost always a missing Shopify connection. In the scenario, click the first module (the Shopify webhook trigger) and check the connection dropdown — it should show your store URL. If empty, click "Add" and authorise via Shopify OAuth. <a href={SETUP_GUIDE_PDF} target="_blank" rel="noopener">Setup guide screenshots →</a></p>
+        </div>
+        <div class="trouble-item">
+          <div class="trouble-q">Test orders aren't appearing in my Google Sheet</div>
+          <p class="trouble-a">Two common causes. First, Shopify only sends webhooks for <strong>real paid orders</strong> by default — draft orders and 0-value test orders may not trigger. Place a real test order with a 100% discount code instead. Second, check the Make.com scenario History tab — it'll show whether the webhook fired and which step failed.</p>
+        </div>
+        <div class="trouble-item">
+          <div class="trouble-q">"Authorisation failed" when connecting Google Sheets</div>
+          <p class="trouble-a">Sign out of all Google accounts in the browser, sign back in to <strong>only</strong> the account that owns the target Sheet, then retry the OAuth flow in Make.com. Multi-account browsers cause about 80% of Google Sheets connection issues.</p>
+        </div>
+        <div class="trouble-item">
+          <div class="trouble-q">Orders are logging but the columns are misaligned</div>
+          <p class="trouble-a">The scenario writes to specific column letters. If you've added or deleted columns in your Google Sheet after cloning, click the Google Sheets module in Make.com and re-map the columns. Or — easier — start with a fresh sheet that matches the scenario's expected layout.</p>
+        </div>
+        <div class="trouble-item">
+          <div class="trouble-q">I'm hitting Make.com's free tier limit</div>
+          <p class="trouble-a">Each order = 1-2 operations on the standard scenario. If you're consistently over 1,000/month, upgrade to Make.com Core at $12/month for 10,000 credits — still cheaper than any Shopify inventory app. <a href={MAKE_AFFILIATE} target="_blank" rel="noopener sponsored">Upgrade in your Make.com dashboard →</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt">
+    <div class="inner-md body-text">
+      <div class="sec-head">
+        <h2>Glossary</h2>
+        <p>The terms in this guide, explained briefly.</p>
+      </div>
+
+      <div class="glossary-grid">
+        <div class="glossary-item">
+          <div class="glossary-term">Webhook</div>
+          <p class="glossary-def">A real-time notification sent from one system to another when an event happens. Shopify fires a webhook every time an order is created — Stocky Swap listens for it.</p>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">Make.com operation</div>
+          <p class="glossary-def">One module run in a Make.com scenario. The free tier allows 1,000 credits/month (formerly called operations); the standard Stocky Swap scenario uses 1-2 operations per order.</p>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">OAuth</div>
+          <p class="glossary-def">The standard secure-authorisation flow used to connect apps without sharing passwords. Make.com uses OAuth to talk to Shopify and Google Sheets.</p>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">Forward-only ledger</div>
+          <p class="glossary-def">A logging system that records new events but doesn't backfill history. Stocky Swap is forward-only — historical Stocky data must be exported separately.</p>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">Stock-on-hand</div>
+          <p class="glossary-def">The actual physical quantity of a product available right now. Calculated by a system that tracks orders + restocks + returns. Native Shopify inventory does this; Stocky Swap doesn't.</p>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">Public scenario</div>
+          <p class="glossary-def">A Make.com scenario shared via URL that anyone can clone into their own workspace. Stocky Swap's public scenario is at <a href={SCENARIO_URL} target="_blank" rel="noopener">eu1.make.com</a>.</p>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">Stocky shutdown</div>
+          <p class="glossary-def">Shopify's permanent retirement of the Stocky app on {SHUTDOWN_DATE}. App stops working; data is deleted. <a href="/stocky-shutdown/">Full timeline →</a></p>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">CAPI</div>
+          <p class="glossary-def">Conversions API — Meta's server-side tracking endpoint, unrelated to Stocky but often discussed in the same Shopify automation context. <a href="/capi-shield/">CAPI Shield →</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="inner-md">
+      <div class="sec-head">
+        <h2>Other Stocky resources</h2>
+        <p>Stack Architect's full Stocky shutdown coverage — bookmark these.</p>
+      </div>
+
+      <div class="crosslink-grid">
+        <a href="/stocky-shutdown/" class="crosslink-card">
+          <div class="crosslink-tag">↳ Background</div>
+          <div class="crosslink-name">Shopify Stocky Shutdown — what happens August 31</div>
+          <div class="crosslink-desc">The full shutdown timeline, what data gets deleted, and what survives in Shopify Admin.</div>
+          <div class="crosslink-arrow">Read the timeline →</div>
+        </a>
+
+        <a href="/blog/shopify-stocky-data-export-before-shutdown/" class="crosslink-card">
+          <div class="crosslink-tag">↳ How-to</div>
+          <div class="crosslink-name">Stocky data export — what to save before the deadline</div>
+          <div class="crosslink-desc">Step-by-step export of purchase orders, stocktakes, transfers, and supplier records.</div>
+          <div class="crosslink-arrow">Read the guide →</div>
+        </a>
+
+        <a href="/stocky-alternative/" class="crosslink-card">
+          <div class="crosslink-tag">↳ Comparison</div>
+          <div class="crosslink-name">Stocky alternatives compared — verdict in 2 minutes</div>
+          <div class="crosslink-desc">Free vs paid Stocky alternatives, ranked by use case. Independent comparison.</div>
+          <div class="crosslink-arrow">See the comparison →</div>
+        </a>
+
+        <a href="/stocky-migration-risk-scorer/" class="crosslink-card">
+          <div class="crosslink-tag">↳ Tool</div>
+          <div class="crosslink-name">Stocky Migration Risk Scorer — 60-second assessment</div>
+          <div class="crosslink-desc">Calculate your migration risk based on order volume and Stocky usage depth.</div>
+          <div class="crosslink-arrow">Run the assessment →</div>
+        </a>
+
+        <a href="/blog/the-ultimate-guide-to-shopify-inventory-management/" class="crosslink-card">
+          <div class="crosslink-tag">↳ Guide</div>
+          <div class="crosslink-name">Ultimate guide to Shopify inventory management 2026</div>
+          <div class="crosslink-desc">Beyond Stocky: how to think about inventory across all Shopify tools and tiers.</div>
+          <div class="crosslink-arrow">Read the guide →</div>
+        </a>
+
+        <a href="/blog/make-com-shopify-automation-guide/" class="crosslink-card">
+          <div class="crosslink-tag">↳ Make.com</div>
+          <div class="crosslink-name">Make.com for Shopify — complete beginner's guide</div>
+          <div class="crosslink-desc">Free Make.com setup walkthrough for Shopify operators new to the platform.</div>
+          <div class="crosslink-arrow">Read the guide →</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt">
+    <div class="inner-md">
+      <div class="sec-head">
+        <h2>Frequently asked questions</h2>
+        <p>The questions Shopify operators ask before switching off Stocky.</p>
+      </div>
+
+      <div class="faq-list-s">
+
+        <details class="faq-item-s">
+          <summary>What is the best free Stocky alternative in 2026? <span class="faq-ico" aria-hidden="true"></span></summary>
+          <div class="faq-ans-s">
+            <p><strong>Stocky Swap</strong> is the leading free Stocky alternative for Shopify in 2026. It logs every Shopify order to a Google Sheet in real-time via a public Make.com scenario, deploys in under 5 minutes, runs on Make.com's free tier, and stores data in a Google Sheet you own. Paid alternatives like Qoblex, SKUSavvy, Sumtracker, and Inventory Planner offer deeper forecasting features but cost between $59 and $999/month.</p>
+          </div>
+        </details>
+
+        <details class="faq-item-s">
+          <summary>When does Shopify Stocky shut down? <span class="faq-ico" aria-hidden="true"></span></summary>
+          <div class="faq-ans-s">
+            <p>Shopify Stocky shuts down permanently on <strong>{SHUTDOWN_DATE}</strong>. Shopify removed Stocky from the App Store on February 2, 2026. After the shutdown, the app stops working and Stocky's purchase order history, supplier records, stocktake data, and demand forecasts are permanently deleted. <a href="/stocky-shutdown/">Read the full shutdown timeline →</a></p>
+          </div>
+        </details>
+
+        <details class="faq-item-s">
+          <summary>What is the cheapest Stocky alternative for Shopify? <span class="faq-ico" aria-hidden="true"></span></summary>
+          <div class="faq-ans-s">
+            <p>Stocky Swap at <strong>$0/month</strong> is the cheapest Stocky alternative in 2026. It runs on <a href={MAKE_AFFILIATE} target="_blank" rel="noopener sponsored">Make.com's free tier</a> with no Stack Architect fees. Paid options start around $12/month for Make.com Core (if you outgrow free), or ~$59/month for entry-tier paid Shopify inventory apps like Sumtracker.</p>
+          </div>
+        </details>
+
+        <details class="faq-item-s">
+          <summary>Is Stocky Swap actually free? <span class="faq-ico" aria-hidden="true"></span></summary>
+          <div class="faq-ans-s">
+            <p>Yes. Stocky Swap is a free Make.com scenario. It runs on Make.com's free tier — 1,000 credits/month (formerly called operations) at no cost. Stack Architect earns a small affiliate commission if you create a Make.com account through this page, which is how the guides stay free. There are no Stack Architect fees, no setup charges, no hidden costs.</p>
+          </div>
+        </details>
+
+        <details class="faq-item-s">
+          <summary>Do I need to know how to code to use Stocky Swap? <span class="faq-ico" aria-hidden="true"></span></summary>
+          <div class="faq-ans-s">
+            <p>No coding required. The Make.com scenario is pre-built and shared publicly — you click Clone, connect your Shopify and Google Sheet via OAuth, and switch the scenario on. Setup typically takes under 5 minutes. The <a href={SETUP_GUIDE_PDF} target="_blank" rel="noopener">PDF setup guide</a> covers every step with screenshots.</p>
+          </div>
+        </details>
+
+        <details class="faq-item-s">
+          <summary>What does Stocky Swap log to Google Sheets? <span class="faq-ico" aria-hidden="true"></span></summary>
+          <div class="faq-ans-s">
+            <p>Each new Shopify order produces a Google Sheet row containing: order ID, order timestamp, customer name, line item SKU, product name, quantity sold, line revenue, and fulfilment status. The webhook fires from Shopify the moment an order is created — not on a polling interval — so the Sheet updates within seconds.</p>
+          </div>
+        </details>
+
+        <details class="faq-item-s">
+          <summary>Will Stocky Swap interfere with my Shopify store or other apps? <span class="faq-ico" aria-hidden="true"></span></summary>
+          <div class="faq-ans-s">
+            <p>No. Stocky Swap is a one-way listener — it reads Shopify order data via webhook and writes to your Google Sheet. It does not modify products, inventory levels, customer records, or any other Shopify data. It runs independently of Stocky and any inventory app, so you can run it alongside Stocky as a parallel verification system before the {SHUTDOWN_DATE} shutdown.</p>
+          </div>
+        </details>
+
+        <details class="faq-item-s">
+          <summary>What are the paid Stocky alternatives in 2026? <span class="faq-ico" aria-hidden="true"></span></summary>
+          <div class="faq-ans-s">
+            <p>The paid Stocky alternatives most-cited by independent reviewers in 2026: <strong>Qoblex</strong> (multi-channel inventory + procurement, ~$99–$249/mo), <strong>SKUSavvy</strong> (mobile-first WMS, ~$99–$499/mo), <strong>Sumtracker</strong> (bundles and kits, ~$59–$199/mo), <strong>Inventory Planner by Sage</strong> (advanced forecasting, ~$249–$999/mo), <strong>Cin7 Core</strong> (multi-warehouse, ~$349+/mo), <strong>Prediko</strong> (AI demand forecasting, ~$119–$499/mo). <a href="#comparison">See the full comparison table →</a></p>
+          </div>
+        </details>
+
+        <details class="faq-item-s">
+          <summary>Can Stocky Swap import my historical Stocky data? <span class="faq-ico" aria-hidden="true"></span></summary>
+          <div class="faq-ans-s">
+            <p>Stocky Swap is a forward-only logger — it begins recording orders from the moment you switch it on. To preserve historical Stocky data, export your purchase orders, stocktakes, and supplier records from inside Stocky before the {SHUTDOWN_DATE} shutdown. The <a href="/blog/shopify-stocky-data-export-before-shutdown/">Stocky data export guide</a> covers what to save and how.</p>
+          </div>
+        </details>
+
+        <details class="faq-item-s">
+          <summary>Does Stocky Swap handle refunds, returns, or multi-location stock? <span class="faq-ico" aria-hidden="true"></span></summary>
+          <div class="faq-ans-s">
+            <p>Stocky Swap is a forward-only order ledger — every paid Shopify order produces a Google Sheet row. For full inventory accounting that handles refunds, returns, and multi-location stock-on-hand calculations, rely on native Shopify Admin inventory tracking (which manages these correctly), or pair with the <a href={PRO_URL}>Stack Architect Pro bundle</a> which includes additional Make.com scenarios for refund and return handling.</p>
+          </div>
+        </details>
+
+        <details class="faq-item-s">
+          <summary>Is Stocky Swap better than the native Shopify inventory tools? <span class="faq-ico" aria-hidden="true"></span></summary>
+          <div class="faq-ans-s">
+            <p>They serve different purposes. Native Shopify Admin inventory handles stock-on-hand, transfers between locations, and basic receiving — already free. Stocky Swap adds an independent, externally-owned audit log of every order in a Google Sheet you control — useful for finance reconciliation, accountant handoff, custom reporting, and as insurance against future Shopify changes. Most stores benefit from running both.</p>
+          </div>
+        </details>
+
+        <details class="faq-item-s">
+          <summary>How do I migrate from Stocky to Stocky Swap? <span class="faq-ico" aria-hidden="true"></span></summary>
+          <div class="faq-ans-s">
+            <p>Migration is three phases. <strong>First</strong>, export Stocky's historical data (purchase orders, stocktakes, supplier records) before any export functions are restricted. <strong>Second</strong>, deploy Stocky Swap and run it in parallel with Stocky for at least two weeks to verify orders are logging correctly. <strong>Third</strong>, after verification, you can switch off Stocky's daily use and rely on Stocky Swap as your forward order ledger. <a href="#timeline">Full migration timeline →</a></p>
+          </div>
+        </details>
+
+        <details class="faq-item-s">
+          <summary>Can I use Stocky Swap with multiple Shopify stores? <span class="faq-ico" aria-hidden="true"></span></summary>
+          <div class="faq-ans-s">
+            <p>Yes. Each Shopify store needs its own Make.com webhook connection, but the Stocky Swap scenario can be cloned and configured separately per store. Multi-store operators typically point each store's webhook to a separate tab or sheet within one master Google Sheets workbook for unified reporting. Make.com free tier operations are counted across all your scenarios — high multi-store volume may require upgrading to Make.com Core ($9/mo).</p>
+          </div>
+        </details>
+
+        <details class="faq-item-s">
+          <summary>What if my store outgrows the Make.com free tier? <span class="faq-ico" aria-hidden="true"></span></summary>
+          <div class="faq-ans-s">
+            <p>Make.com's free tier covers 1,000 credits/month (formerly called operations). When your order volume requires more, Make.com's Core plan starts at $12/month for 10,000 credits — still significantly cheaper than any paid Shopify inventory app. The same Stocky Swap scenario keeps running on the higher tier without modification.</p>
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="inner-md">
+      <div class="pro-block">
+        <div class="pro-tag">↳ Optional upgrade</div>
+        <h3>Want every Shopify automation done?</h3>
+        <p>Stocky Swap is free and covers order logging. To see how it fits alongside the other free tools — server-side tracking, email, P&amp;L — explore the <a href="/">complete $0 automation stack</a>. The <strong>Stack Architect Pro</strong> bundle ($29 one-time) includes the same Stocky Swap scenario plus pre-built Make.com scenarios for the rest of the stack:</p>
+        <ul class="pro-features">
+          <li>Stocky Swap (free here, included in Pro)</li>
+          <li>CAPI Shield — server-side Meta tracking</li>
+          <li>TikTok Events API — server-side TikTok tracking</li>
+          <li>P&amp;L Automation — daily revenue + cost reporting</li>
+          <li>Refund/return handling for full inventory accounting</li>
+          <li>Replace Klaviyo — free email automation alternative</li>
+        </ul>
+        <div class="pro-price">$29</div>
+        <div class="pro-price-sub">one-time · lifetime access · all six automations</div>
+        <a href={PRO_URL} class="btn btn-pro" data-cta="pro-upsell">See what's in Pro →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt">
+    <div class="inner-md" style="text-align:center;">
+      <div class="sec-head">
+        <h2>Stocky closes August 31. Replace it free in 4 minutes.</h2>
+        <p>Free Make.com account. Public scenario. Google Sheet you own.</p>
+      </div>
+
+      <div class="hero-ctas" style="margin-top: 24px;">
+        <a href={MAKE_AFFILIATE} class="btn pulse" target="_blank" rel="noopener sponsored" data-cta="footer-make">
+          Replace Stocky Free in 4 Minutes →
+        </a>
+        <a href={SCENARIO_URL} class="btn-outline" target="_blank" rel="noopener" data-cta="footer-scenario">
+          View public scenario
+        </a>
+      </div>
+
+      <p class="aff-note">
+        Make.com is an affiliate partner. Sign up via this page and Stack Architect earns a small commission at no cost to you. <a href="/privacy/">Disclosure</a>.
+      </p>
+    </div>
+  </section>
+
+  <section style="max-width:760px;margin:0 auto;padding:40px 24px;border-top:1px solid #222825;"><h2 style="font-size:15px;font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:4px;">Related reading</h2><p style="font-size:12px;color:#6b7671;margin-bottom:18px;">Related guides and tools from Stack Architect.</p><div style="display:grid;gap:10px;"><a href="/blog/replace-shopify-stocky-with-a-0-inventory-system/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:14px;font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Replace Shopify Stocky with a $0 inventory system →</a><a href="/stocky-shutdown/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:14px;font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Stocky shutdown: what you need to know →</a><a href="/stocky-migration-risk-scorer/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:14px;font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Stocky migration risk scorer →</a></div></section>
+  </main>
+
+<!-- Sticky bottom CTA — appears after scroll, dismissible -->
+
+
+<RelatedGuides guides={[
+  { title: "How to Export Stocky Data Before Aug 31", href: "/blog/shopify-stocky-data-export-before-shutdown/" },
+  { title: "Stocky Migration Checklist", href: "/stocky-migration-checklist/" },
+  { title: "Stocky Alternative 2026 — Free Replacement", href: "/stocky-alternative/" },
+  { title: "Stocky Shutdown — What Gets Deleted Aug 31", href: "/stocky-shutdown/" },
+  { title: "What Replaces Stocky After August 2026?", href: "/stocky-alternative/" },
+  { title: "Live Shopify P&L Automation — Free", href: "/shopify-profit-loss-automation/" },
+]} />
+
+
+<section aria-label="Sources" style="max-width:860px;margin:3rem auto 2rem;padding:1.25rem 1.5rem;border:1px solid rgba(128,128,128,.25);border-radius:12px;font-size:.95em">
+  <h2 style="margin:0 0 .5rem;font-size:1.15em">Sources &amp; primary documentation</h2>
+  <p style="margin:0 0 .6rem;opacity:.85">Every technical claim and price on this page can be verified against the official documentation:</p>
+  <ul style="margin:0;padding-left:1.2em">
+      <li style="margin:.35em 0"><a href="https://help.shopify.com/en/manual/products/inventory/stocky" target="_blank" rel="noopener">Shopify — Stocky inventory app documentation</a></li>
+      <li style="margin:.35em 0"><a href="https://shopify.dev/docs/api/webhooks" target="_blank" rel="noopener">Shopify.dev — Webhooks API reference</a></li>
+      <li style="margin:.35em 0"><a href="https://www.make.com/en/pricing" target="_blank" rel="noopener">Make.com — official pricing & free plan limits</a></li>
+  </ul>
+</section>
+<Footer />
+
+<script is:inline>
+  (function() {
+    var deadline = new Date('2026-08-31T23:59:59Z').getTime();
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+    function tick() {
+      var now = Date.now();
+      var diff = deadline - now;
+      if (diff <= 0) {
+        var banner = document.getElementById('stocky-countdown');
+        if (banner) banner.textContent = 'Stocky has shut down';
+        return;
+      }
+      var d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      var h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      var s = Math.floor((diff % (1000 * 60)) / 1000);
+
+      var setEl = function(id, val) { var el = document.getElementById(id); if (el) el.textContent = pad(val); };
+      setEl('cd-days', d); setEl('cd-hours', h); setEl('cd-mins', m); setEl('cd-secs', s);
+
+      var stickyDays = document.getElementById('sticky-days');
+      if (stickyDays) stickyDays.textContent = d;
+
+      var banner = document.getElementById('stocky-countdown');
+      if (banner) banner.textContent = d + 'd ' + pad(h) + 'h ' + pad(m) + 'm';
+    }
+    tick();
+    setInterval(tick, 1000);
+
+    // Sticky CTA — show after 50% scroll OR 30 seconds, whichever first
+    var stickyCta = document.getElementById('stickyCta');
+    var stickyClose = document.getElementById('stickyCtaClose');
+    var stickyShown = false;
+    var stickyDismissed = false;
+
+    function showSticky() {
+      if (stickyShown || stickyDismissed || !stickyCta) return;
+      stickyShown = true;
+      stickyCta.classList.add('show');
+      document.body.classList.add('has-sticky-cta');
+      if (typeof gtag === 'function') gtag('event', 'sticky_cta_shown', { event_category: 'engagement' });
+    }
+    function hideSticky() {
+      stickyDismissed = true;
+      if (!stickyCta) return;
+      stickyCta.classList.remove('show');
+      document.body.classList.remove('has-sticky-cta');
+      if (typeof gtag === 'function') gtag('event', 'sticky_cta_dismissed', { event_category: 'engagement' });
+    }
+
+    if (stickyClose) stickyClose.addEventListener('click', hideSticky);
+
+    setTimeout(showSticky, 30000);
+    window.addEventListener('scroll', function() {
+      var pct = window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      if (pct >= 0.5) showSticky();
+    }, { passive: true });
+
+    // CTA tracking
+    document.addEventListener('click', function(e) {
+      var el = e.target.closest('[data-cta]');
+      if (!el || typeof gtag !== 'function') return;
+      gtag('event', 'cta_click', {
+        event_category: 'stocky_swap',
+        event_label: el.getAttribute('data-cta'),
+        link_url: el.getAttribute('href')
+      });
+    });
+
+    // Affiliate click tracking
+    document.addEventListener('click', function(e) {
+      var el = e.target.closest('a[href]');
+      if (!el || typeof gtag !== 'function') return;
+      var href = el.getAttribute('href') || '';
+      if (href.indexOf('make.com') !== -1 || href.indexOf('/go/make') !== -1) {
+        gtag('event', 'affiliate_click', { event_category: 'affiliate', event_label: 'make_com_stocky_swap', link_url: href, post_url: window.location.pathname });
+      }
+      if (href.indexOf('/go/getresponse') !== -1) {
+        gtag('event', 'affiliate_click', { event_category: 'affiliate', event_label: 'getresponse_stocky_swap', link_url: href });
+      }
+      if (href.indexOf('/go/systeme') !== -1) {
+        gtag('event', 'affiliate_click', { event_category: 'affiliate', event_label: 'systeme_stocky_swap', link_url: href });
+      }
+    });
+
+    // Scroll depth tracking
+    var fired = {};
+    window.addEventListener('scroll', function() {
+      var pct = Math.round((window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight)) * 100);
+      [25, 50, 75, 100].forEach(function(t) {
+        if (pct >= t && !fired[t]) {
+          fired[t] = true;
+          if (typeof gtag === 'function') {
+            gtag('event', 'scroll_depth', { event_category: 'engagement', event_label: t + '%', post_url: window.location.pathname });
+          }
+        }
+      });
+    }, { passive: true });
+  })();
+</script>
+
+</body>
+</html>

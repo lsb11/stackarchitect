@@ -12,7 +12,7 @@ faqs:
   - question: "What automation does a small Shopify store actually need?"
     answer: "A small Shopify store (under 1,000 orders per month) needs four things: server-side conversion tracking so ad algorithms have complete data, order logging to a spreadsheet for inventory visibility, email automation for welcome and abandoned cart sequences, and a basic P&L calculation. All four are available free. Everything else — advanced attribution, multi-location inventory, sophisticated segmentation — can wait until revenue justifies the cost."
   - question: "Is Make.com free for small Shopify stores?"
-    answer: "Yes. Make.com's free plan gives 1,000 operations per month. A small store running server-side tracking, order logging, and P&L reporting on a 3-branch Make.com scenario uses approximately 4 operations per order. At 250 orders per month, that is 1,000 operations — exactly the free plan limit. Stores under 250 orders per month run everything free indefinitely. Above 250 orders, Make.com Core at $9/month covers up to 2,500 orders per month."
+    answer: "Yes. Make.com's free plan gives 1,000 credits per month. A small store running server-side tracking, order logging, and P&L reporting on a 3-branch Make.com scenario uses approximately 4 operations per order. At 250 orders per month, that is 1,000 credits — exactly the free plan limit. Stores under 250 orders per month run everything free indefinitely. Above 250 orders, Make.com Core at $12/month covers up to 2,500 orders per month."
   - question: "What should a Shopify store automate first?"
     answer: "Server-side conversion tracking should be the first automation deployed. This is because it directly affects the quality of data your ad algorithms use to optimise campaigns. Broken tracking means your advertising budget is being optimised on incomplete information — improving this has compounding returns. After tracking, automate order logging for inventory visibility, then email sequences for abandoned cart recovery."
   - question: "Do I need Google Workspace for Shopify automation?"
@@ -33,7 +33,7 @@ relatedGuides:
 
 Most Shopify automation guides are written for stores doing serious volume — the setups assume you're already paying hundreds of pounds a month on apps and want to optimise that spend. This guide is for stores earlier in the journey: under 1,000 orders per month, watching every expense, and trying to build a solid operational foundation without overcomplicating things.
 
-Everything here is free. The full stack costs $0/month for stores under approximately 250 orders/month, and $9/month above that.
+Everything here is free. The full stack costs $0/month for stores under approximately 250 orders/month, and $12/month above that.
 
 ## What a Small Store Actually Needs
 
@@ -127,13 +127,13 @@ The [Shopify P&L Automation](/shopify-profit-loss-automation/) guide covers the 
 | P&L tracking | P&L Auto | 5 min (after CAPI) | $0 |
 | **Total** | | **~4 hours** | **$0/month** |
 
-For stores between 250–1,000 orders per month, Make.com Core at $9/month covers the additional operation volume. Everything else remains free.
+For stores between 250–1,000 orders per month, Make.com Core at $12/month covers the additional operation volume. Everything else remains free.
 
 ## When to Add More
 
 As your store grows, add complexity in this order:
 
-**At 250+ orders/month:** upgrade Make.com to Core ($9/month) for 10,000 operations. Everything else stays the same.
+**At 250+ orders/month:** upgrade Make.com to Core ($12/month) for 10,000 credits. Everything else stays the same.
 
 **At $30,000+/month GMV:** add Tidio for customer support. The free tier (50 Lyro AI conversations/month) handles support volume at this size without human agents for most queries.
 

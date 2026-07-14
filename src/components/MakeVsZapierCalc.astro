@@ -123,14 +123,14 @@ const { embed = false } = Astro.props;
     const set = (id: string, v: string) => { const el = document.getElementById(id); if (el) el.textContent = v; };
 
     const makeEl = document.getElementById('mz-make');
-    if (makeEl) { makeEl.textContent = makeCost === 0 ? 'FREE' : '£' + makeCost + '/mo'; (makeEl as HTMLElement).style.color = '#34d377'; }
+    if (makeEl) { makeEl.textContent = makeCost === 0 ? 'FREE' : '$' + makeCost + '/mo'; (makeEl as HTMLElement).style.color = '#34d377'; }
     set('mz-make-plan', makePlan + ' (' + ops.toLocaleString() + ' ops needed)');
-    set('mz-zapier', zapierCost === 0 ? 'FREE' : '£' + zapierCost + '/mo');
+    set('mz-zapier', zapierCost === 0 ? 'FREE' : '$' + zapierCost + '/mo');
     set('mz-zapier-plan', zapierPlan);
 
     const savingEl = document.getElementById('mz-saving');
-    if (savingEl) { savingEl.textContent = saving > 0 ? '£' + saving + '/mo' : '£0'; (savingEl as HTMLElement).style.color = saving > 0 ? '#34d377' : '#6b7671'; }
-    set('mz-annual', saving > 0 ? '£' + (saving * 12).toLocaleString() : '£0');
+    if (savingEl) { savingEl.textContent = saving > 0 ? '$' + saving + '/mo' : '£0'; (savingEl as HTMLElement).style.color = saving > 0 ? '#34d377' : '#6b7671'; }
+    set('mz-annual', saving > 0 ? '$' + (saving * 12).toLocaleString() : '£0');
 
     const insight = saving > 0
       ? '<strong>Switching to Make.com saves £' + saving + '/month</strong> (£' + (saving * 12) + '/year) at your automation volume. Make.com also handles the multi-path routing required for Shopify CAPI, TikTok Events API, and Google Sheets simultaneously — which Zapier cannot do in a single workflow.'

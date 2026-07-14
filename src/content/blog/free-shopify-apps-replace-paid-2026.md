@@ -12,7 +12,7 @@ faqs:
   - question: "What paid Shopify apps can be replaced for free in 2026?"
     answer: "The most expensive paid Shopify apps with free replacements in 2026 are: Elevar and Triple Whale for server-side tracking (replaced by CAPI Shield via Make.com at $0 vs $150–$299/month), Klaviyo for email marketing (replaced by Systeme.io at $0 vs $150–$400/month), Shopify Stocky for inventory management (replaced by Stocky Swap at $0 — Stocky shuts down August 31 2026), TrueProfit and BeProfit for P&L reporting (replaced by P&L Auto via Google Sheets at $0 vs $19–$99/month), and Zapier for automation (replaced by Make.com free tier at $0 vs $79–$200/month)."
   - question: "Is Make.com actually free for Shopify automation?"
-    answer: "Yes. Make.com's free plan includes 1,000 operations per month with no time limit and no credit card required. For a typical Shopify store processing under 300 orders per month, the free tier covers CAPI Shield, Stocky Swap, TikTok Events API, and P&L Auto running simultaneously. Each order webhook consumes 3–5 operations across all scenarios combined, meaning 1,000 operations supports roughly 200–333 orders per month on the free tier."
+    answer: "Yes. Make.com's free plan includes 1,000 credits per month with no time limit and no credit card required. For a typical Shopify store processing under 300 orders per month, the free tier covers the whole stack as one consolidated scenario with router branches (the free plan allows two active scenarios). Each order webhook consumes 3–5 operations across all scenarios combined, meaning 1,000 credits supports roughly 250 orders per month on the free tier."
   - question: "Can Systeme.io really replace Klaviyo for Shopify email marketing?"
     answer: "For most Shopify stores, yes. Systeme.io's free plan includes 2,000 contacts with unlimited email sends, automation sequences (welcome series, abandoned cart, post-purchase), sales funnels, CRM, and affiliate management. The features Systeme.io lacks compared to Klaviyo are predictive analytics, deep ecommerce segmentation based on purchase history, and the Klaviyo Flows AI. Stores that primarily use Klaviyo for triggered email sequences — which is the majority — can migrate fully to Systeme.io and save $150–$400 per month."
   - question: "What is the best free alternative to Shopify Stocky before the August 2026 shutdown?"
@@ -98,11 +98,11 @@ TrueProfit and BeProfit charge monthly fees to show you what your Shopify orders
 ## Automation Platform — Replace Zapier
 
 **Paid cost:** $79–$200/month  
-**Free replacement:** [Make.com](/go/make) — $0 (1,000 operations/month)
+**Free replacement:** [Make.com](/go/make) — $0 (1,000 credits/month)
 
-Make.com's free tier gives you 1,000 operations per month — 10 times more than Zapier's 100 free tasks. For Shopify automation, Make.com includes native Shopify modules, full webhook support, HTTP request modules, Google Sheets integration, and conditional logic. Every tool on this page runs on Make.com's free tier.
+Make.com's free tier gives you 1,000 credits per month — 10 times more than Zapier's 100 free tasks. For Shopify automation, Make.com includes native Shopify modules, full webhook support, HTTP request modules, Google Sheets integration, and conditional logic. Every tool on this page runs on Make.com's free tier.
 
-**What you get free:** 1,000 operations/month, unlimited scenarios, all core integrations, webhook triggers, visual scenario builder.
+**What you get free:** 1,000 credits/month, unlimited scenarios, all core integrations, webhook triggers, visual scenario builder.
 
 [Create free Make.com account →](/go/make)
 

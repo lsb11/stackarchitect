@@ -1,0 +1,162 @@
+---
+// Footer.astro — Stack Architect, 2026 refresh
+// Changes vs previous version:
+//  • "SYSTEM_STABLE // 2026" replaced with a real human line — this is the
+//    highest-leverage E-E-A-T pixel on every page. Fill in your surname.
+//  • Dual CTA block (kit + affiliate) reduced to ONE: the kit. Affiliate
+//    links belong in content where they have context, not the site chrome.
+//    (This also removes a sitewide `sponsored` outlink from every page.)
+//  • Link silos trimmed to the post-prune URL set — no links to pages
+//    that now 301, which would leak internal-link signals through redirects.
+//  • Stocky column carries a real date and should be REMOVED after ~Oct 2026.
+const year = new Date().getFullYear();
+const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="22" height="22" fill="none" aria-hidden="true"><rect x="17" y="65" width="66" height="9" rx="2.6" fill="#34d377"/><rect x="23.5" y="52" width="53" height="9" rx="2.6" fill="#34d377"/><rect x="30" y="39" width="40" height="9" rx="2.6" fill="#34d377"/><rect x="36.5" y="26" width="27" height="9" rx="2.6" fill="#7ee2a8"/></svg>`;
+---
+
+<footer class="sa-footer">
+  <div class="sa-footer-inner">
+
+    <!-- Single, quiet CTA -->
+    <div class="sa-footer-cta">
+      <div>
+        <div class="sa-footer-cta-title">Everything on this site, ready to import.</div>
+        <div class="sa-footer-cta-sub">Four Make.com scenarios + two Sheets templates. Live in about 10 minutes.</div>
+      </div>
+      <a href="/pro/" class="sa-footer-btn">Get the kit — <span class="figure">$29</span></a>
+    </div>
+
+    <div class="sa-footer-grid">
+      <nav class="sa-footer-col" aria-label="Free tools">
+        <a href="/" class="sa-footer-hub">Free tools</a>
+        <a href="/capi-shield/">CAPI Shield — Meta &amp; Google tracking</a>
+        <a href="/shopify-google-ads-conversion-tracking/">Google Ads conversion tracking</a>
+        <a href="/tiktok-events-api-shopify/">TikTok Events API</a>
+        <a href="/stocky-swap/">Stocky Swap — free inventory</a>
+        <a href="/replace-klaviyo-free/">Replace Klaviyo free</a>
+        <a href="/shopify-profit-loss-automation/">Live P&amp;L automation</a>
+        <a href="/stack/">The recommended stack</a>
+      </nav>
+
+      <!-- REMOVE this column after the shutdown window closes (~Oct 2026) -->
+      <nav class="sa-footer-col" aria-label="Stocky shutdown">
+        <a href="/stocky-shutdown/" class="sa-footer-hub sa-footer-urgent">Stocky shuts down 31 Aug 2026</a>
+        <a href="/stocky-alternative/">Best free Stocky alternative</a>
+        <a href="/blog/shopify-stocky-data-export-before-shutdown/">Export your Stocky data first</a>
+        <a href="/stocky-migration-checklist/">Migration checklist</a>
+        <a href="/stocky-migration-risk-scorer/">Migration risk scorer</a>
+      </nav>
+
+      <nav class="sa-footer-col" aria-label="Guides and comparisons">
+        <a href="/shopify-automation-guides/" class="sa-footer-hub">Guides</a>
+        <a href="/ultimate-shopify-automation-guide/">Ultimate automation guide</a>
+        <a href="/blog/shopify-server-side-tracking-complete-setup-guide/">Server-side tracking, explained</a>
+        <a href="/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/">Apps Script quotas</a>
+        <a href="/best-free-shopify-apps-2026/">Best free Shopify apps 2026</a>
+        <a href="/shopify-app-pricing-index/">Tracking tools — pricing index</a>
+        <a href="/tools/">All free tools</a>
+      </nav>
+
+      <nav class="sa-footer-col" aria-label="Company">
+        <a href="/about/" class="sa-footer-hub">Company</a>
+        <a href="/about/">About</a>
+        <a href="https://www.linkedin.com/in/luke-stackarchitect" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/terms/">Terms</a>
+      </nav>
+    </div>
+
+    <div class="sa-footer-base">
+      <div class="sa-footer-identity">
+        <span class="sa-footer-mark" set:html={logoSvg} />
+        <div>
+          <div class="sa-footer-name">Stack Architect</div>
+          <!-- E-E-A-T line. Use your real full name; link it to /about/. -->
+          <div class="sa-footer-human">
+            Built and maintained by <a href="/about/">Luke Sandelands</a> in the UK.
+            Every automation on this site runs in production stores.
+          </div>
+        </div>
+      </div>
+      <div class="sa-footer-legal">© {year} Stack Architect · Some links are affiliate links — <a href="/about/#affiliates">how this site is funded</a></div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .sa-footer {
+    border-top: 1px solid var(--color-border, #222825);
+    background: var(--color-surface, #0c0f0d);
+    margin-top: 96px;
+  }
+  .sa-footer-inner { max-width: 1180px; margin: 0 auto; padding: 0 24px 40px; }
+
+  .sa-footer-cta {
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    padding: 32px 28px; margin-top: -1px;
+    border: 1px solid var(--color-border, #222825); border-top: 0;
+    border-radius: 0 0 16px 16px;
+    background: var(--color-surface-raised, #121614);
+  }
+  .sa-footer-cta-title {
+    font-family: var(--font-display, sans-serif);
+    font-weight: 700; font-size: 19px; letter-spacing: -0.015em;
+    color: var(--color-heading, #f2f5f3);
+  }
+  .sa-footer-cta-sub { margin-top: 4px; font-size: 13.5px; color: var(--color-muted, #7d8a83); }
+  .sa-footer-btn {
+    flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px;
+    font: 600 14px/1 var(--font-sans, sans-serif);
+    background: var(--color-accent, #34d377); color: var(--color-accent-ink, #052e16);
+    padding: 13px 20px; border-radius: 11px; text-decoration: none;
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .sa-footer-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px -6px color-mix(in srgb, var(--color-accent, #34d377) 45%, transparent);
+  }
+  .figure { font-family: var(--font-mono, monospace); font-variant-numeric: tabular-nums; }
+
+  .sa-footer-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px;
+    padding: 48px 4px;
+  }
+  .sa-footer-col { display: flex; flex-direction: column; gap: 9px; }
+  .sa-footer-col a {
+    font: 400 13.5px/1.45 var(--font-sans, sans-serif);
+    color: var(--color-muted, #7d8a83); text-decoration: none;
+    transition: color .12s ease;
+  }
+  .sa-footer-col a:hover { color: var(--color-heading, #f2f5f3); }
+  .sa-footer-hub {
+    font-weight: 600 !important; font-size: 12px !important;
+    text-transform: uppercase; letter-spacing: .08em;
+    color: var(--color-body, #b6c0ba) !important; margin-bottom: 6px;
+  }
+  .sa-footer-urgent { color: var(--color-urgent, #f59e0b) !important; }
+
+  .sa-footer-base {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 24px;
+    padding-top: 28px; border-top: 1px solid var(--color-border, #222825);
+  }
+  .sa-footer-identity { display: flex; gap: 12px; align-items: flex-start; }
+  .sa-footer-name {
+    font-family: var(--font-display, sans-serif);
+    font-weight: 700; font-size: 14px; color: var(--color-heading, #f2f5f3);
+  }
+  .sa-footer-human { margin-top: 3px; font-size: 12.5px; color: var(--color-muted, #7d8a83); max-width: 420px; line-height: 1.5; }
+  .sa-footer-human a { color: var(--color-body, #b6c0ba); text-decoration: underline; text-underline-offset: 2px; }
+  .sa-footer-human a:hover { color: var(--color-accent, #34d377); }
+  .sa-footer-legal { font-size: 12px; color: var(--color-muted, #7d8a83); text-align: right; line-height: 1.6; }
+  .sa-footer-legal a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+
+  @media (max-width: 900px) {
+    .sa-footer-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+    .sa-footer-cta { flex-direction: column; align-items: flex-start; }
+    .sa-footer-base { flex-direction: column; }
+    .sa-footer-legal { text-align: left; }
+  }
+  @media (max-width: 480px) {
+    .sa-footer-grid { grid-template-columns: 1fr; }
+    .sa-footer-inner { padding: 0 16px 32px; }
+  }
+</style>

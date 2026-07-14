@@ -120,7 +120,7 @@ Make.com handles the high-volume write path. Apps Script handles the low-frequen
 
 In your Make.com scenario, after receiving the Shopify webhook, add a Google Sheets → Add a Row module. Connect your Google account, select your spreadsheet and sheet, and map the order fields to columns. Make.com handles authentication and rate limiting automatically.
 
-[Make.com's free tier](/go/make) covers 1,000 operations per month — enough for most stores to run this entire write path at no cost, with no Apps Script execution limits in the way. You only pay if your order volume outgrows the free tier, at which point the $10.59/month Core plan covers thousands of orders per day.
+[Make.com's free tier](/go/make) covers 1,000 credits per month — enough for most stores to run this entire write path at no cost, with no Apps Script execution limits in the way. You only pay if your order volume outgrows the free tier, at which point the $12/month Core plan covers thousands of orders per day.
 
 This is exactly how [Stocky Swap](/stocky-swap/) works — Make.com writes every order to a Sheet, Apps Script is not involved in the write path.
 
@@ -188,7 +188,7 @@ For most Shopify stores — including those doing $1–2 million per year in rev
 
 ## Build it free, or skip the setup
 
-Everything in this guide runs on free tools. The architecture above — Make.com writing to Sheets, Apps Script handling lightweight analysis — costs nothing for most stores: [create a free Make.com account](/go/make) (1,000 operations/month free) and build the hybrid pattern yourself in an afternoon.
+Everything in this guide runs on free tools. The architecture above — Make.com writing to Sheets, Apps Script handling lightweight analysis — costs nothing for most stores: [create a free Make.com account](/go/make) (1,000 credits/month free) and build the hybrid pattern yourself in an afternoon.
 
 If you'd rather not build it from scratch, the Complete Kit has it pre-configured.
 

@@ -82,7 +82,7 @@ These are honest assessments. Some apps in this list have genuine strengths — 
 
 **What it does:** connects apps and automates workflows with a visual, no-code interface.
 
-**Why it's replaceable:** Make.com does the same job with 10× more free operations per month, includes webhook triggers on the free plan (which Zapier restricts to paid plans), and supports multi-branch scenarios at no additional cost. Every Shopify automation task that Zapier handles is doable in Make.com.
+**Why it's replaceable:** Make.com does the same job with 10× more free credits per month, includes webhook triggers on the free plan (which Zapier restricts to paid plans), and supports multi-branch scenarios at no additional cost. Every Shopify automation task that Zapier handles is doable in Make.com.
 
 **When Zapier is worth it:** if you use a specific Zapier connector that Make.com does not have, or your team is already deeply familiar with Zapier and the switching cost outweighs the savings. For standard Shopify automation use cases — tracking, inventory, P&L, email triggers — Make.com is functionally superior on the free plan.
 

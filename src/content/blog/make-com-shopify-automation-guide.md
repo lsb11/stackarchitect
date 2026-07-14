@@ -10,15 +10,15 @@ readTime: 16
 canonical: "https://stackarchitect.xyz/blog/make-com-shopify-automation-guide/"
 faqs:
   - question: "Is Make.com free for Shopify automation?"
-    answer: "Make.com's free plan gives 1,000 operations per month — 10× more than Zapier's 100 free tasks — and includes webhook triggers and HTTP modules. Most Shopify stores under 250 orders per month run the complete automation stack free indefinitely."
+    answer: "Make.com's free plan gives 1,000 credits per month — 10× more than Zapier's 100 free tasks — and includes webhook triggers and HTTP modules. Most Shopify stores under 250 orders per month run the complete automation stack free indefinitely."
   - question: "How do I connect Make.com to Shopify?"
     answer: "In Make.com, create a new scenario and add a Webhooks module as the trigger. Click Add to generate a webhook URL and copy it. In Shopify Admin, go to Settings → Notifications → Webhooks, click Create webhook, select Order payment as the event, paste your Make.com URL, set format to JSON, and save. The connection takes about 3 minutes."
   - question: "What is the difference between Make.com and Zapier for Shopify?"
-    answer: "Make.com's free plan gives 1,000 operations vs Zapier's 100 tasks. Make.com supports multi-step scenarios with branching — one webhook fans out to multiple destinations simultaneously — which Zapier restricts to paid plans. At equivalent paid tiers, Make.com is approximately 4× cheaper per operation."
+    answer: "Make.com's free plan gives 1,000 credits vs Zapier's 100 tasks. Make.com supports multi-step scenarios with branching — one webhook fans out to multiple destinations simultaneously — which Zapier restricts to paid plans. At equivalent paid tiers, Make.com is approximately 4× cheaper per operation."
   - question: "Does Make.com work without coding?"
     answer: "Yes. Make.com is a visual drag-and-drop automation builder. No code is required to connect Shopify, send data to Google Sheets, Meta CAPI, TikTok Events API, or Systeme.io. Every module is configured through form fields in the visual editor."
   - question: "How many Shopify orders can Make.com handle on the free plan?"
-    answer: "A 4-branch scenario uses approximately 5-6 operations per order. At 1,000 operations per month, the free plan covers roughly 160-200 orders per month on the full automation stack."
+    answer: "A 4-branch scenario uses approximately 5-6 operations per order. At 1,000 credits per month, the free plan covers roughly 160-200 orders per month on the full automation stack."
 relatedGuides:
   - title: "Zapier vs Make vs Shopify Flow — Honest comparison 2026"
     href: "/blog/zapier-vs-shopify-flow-vs-make"
@@ -43,7 +43,7 @@ Make.com (formerly Integromat) is a visual automation platform. You connect serv
 
 The key difference from Zapier: **one trigger can branch to multiple destinations simultaneously.** One Shopify Order Payment webhook fans out to Meta CAPI, Google Enhanced Conversions, TikTok Events API, Google Sheets inventory, and P&L reporting — five destinations, one trigger, $0/month on the free plan.
 
-Make.com's free plan gives **1,000 operations per month** — 10× more than Zapier's 100 free tasks — and includes [webhook triggers and HTTP modules](https://www.make.com/en/help/tools/webhooks) at no cost. Most stores under 250 orders/month run the complete stack free indefinitely.
+Make.com's free plan gives **1,000 credits per month** — 10× more than Zapier's 100 free tasks — and includes [webhook triggers and HTTP modules](https://www.make.com/en/help/tools/webhooks) at no cost. Most stores under 250 orders/month run the complete stack free indefinitely.
 
 ## How to Connect Make.com to Shopify in 3 Minutes
 
@@ -127,7 +127,7 @@ Five destinations. One trigger. One scenario. One free account.
 | Orders/month | Operations used | Plan needed |
 |---|---|---|
 | Under 160 | ~960 | **Free — $0/month** |
-| 160–1,600 | ~9,600 | Core — $9/month |
+| 160–1,600 | ~9,600 | Core — $12/month |
 | 1,600–10,000 | ~60,000 | Pro — $16/month |
 
 The upgrade trigger and decision framework is covered in the [upgrade guide](/blog/when-to-upgrade-free-make-google-workspace/).

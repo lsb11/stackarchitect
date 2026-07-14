@@ -1,0 +1,443 @@
+---
+import '../styles/global.css';
+
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  schema?: object | object[];
+  noindex?: boolean;
+  pageType?: 'website' | 'article' | 'product';
+  updatedDate?: string;
+  publishDate?: string;
+  breadcrumb?: BreadcrumbItem[];
+}
+
+const {
+  title,
+  description,
+  canonical: _rawCanonical,
+  ogTitle,
+  ogDescription,
+  ogImage,
+  schema,
+  noindex = false,
+  pageType = 'website',
+  updatedDate,
+  publishDate,
+  breadcrumb,
+} = Astro.props;
+
+// Always force canonical to the primary non-www domain.
+// Matches astro.config.mjs `trailingSlash: 'always'` — every canonical
+// ends with `/` to prevent duplicate-URL splits in GSC indexing.
+// Corrects www., bare paths, and trailing-slash mismatches from any page.
+const canonical = (() => {
+  const raw = _rawCanonical ?? Astro.url.pathname;
+  let path;
+  try {
+    path = raw.startsWith('http') ? new URL(raw).pathname : raw;
+  } catch {
+    path = Astro.url.pathname;
+  }
+  // Enforce trailing slash (unless it's a file path ending in an extension)
+  if (!path.endsWith('/') && !/\.[a-z0-9]{2,5}$/i.test(path)) {
+    path = path + '/';
+  }
+  // Collapse any accidental double slashes
+  path = path.replace(/\/+/g, '/');
+  return 'https://stackarchitect.xyz' + path;
+})();
+
+const schemaArray = schema
+  ? Array.isArray(schema)
+    ? schema
+    : [schema]
+  : [];
+
+const siteNavSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SiteNavigationElement',
+  name: [
+    'Home',
+    'CAPI Shield',
+    'Stocky Swap',
+    'TikTok Events API',
+    'Replace Klaviyo Free',
+    'Shopify P&L Automation',
+    'All Guides',
+    'Ultimate Automation Guide',
+    'Shopify Automation Scanner',
+    'App Cost Calculator',
+    'Best AI Tools for Shopify',
+  ],
+  url: [
+    'https://stackarchitect.xyz/',
+    'https://stackarchitect.xyz/capi-shield/',
+    'https://stackarchitect.xyz/stocky-swap/',
+    'https://stackarchitect.xyz/tiktok-events-api-shopify/',
+    'https://stackarchitect.xyz/replace-klaviyo-free/',
+    'https://stackarchitect.xyz/shopify-profit-loss-automation/',
+    'https://stackarchitect.xyz/shopify-automation-guides/',
+    'https://stackarchitect.xyz/ultimate-shopify-automation-guide/',
+    'https://stackarchitect.xyz/shopify-automation-scanner/',
+    'https://stackarchitect.xyz/shopify-app-cost-calculator/',
+    'https://stackarchitect.xyz/best-ai-tools-shopify/',
+  ],
+};
+
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': 'https://stackarchitect.xyz/#org',
+  'name': 'Stack Architect',
+  'url': 'https://stackarchitect.xyz',
+  'logo': {
+    '@type': 'ImageObject',
+    'url': 'https://stackarchitect.xyz/icon-512.png',
+    'width': 512,
+    'height': 512,
+  },
+  'description': 'Free Shopify automation tools replacing $700+/month of paid apps. Server-side tracking, inventory management, email marketing, TikTok Events API, P&L reporting. No code required.',
+  'contactPoint': {
+    '@type': 'ContactPoint',
+    'email': 'support@stackarchitect.xyz',
+    'contactType': 'customer support',
+  },
+  'sameAs': ['https://www.linkedin.com/in/luke-stackarchitect'],
+};
+
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': 'https://stackarchitect.xyz/#luke',
+  'name': 'Luke',
+  'jobTitle': 'Shopify Automation Specialist',
+  'url': 'https://stackarchitect.xyz/about/',
+  'sameAs': ['https://www.linkedin.com/in/luke-stackarchitect'],
+  'worksFor': { '@type': 'Organization', '@id': 'https://stackarchitect.xyz/#org' },
+  'knowsAbout': [
+    'Shopify automation', 'server-side tracking', 'Meta Conversions API',
+    'Google Enhanced Conversions', 'TikTok Events API', 'Make.com',
+    'Google Sheets automation', 'Shopify app cost reduction',
+    'email marketing automation', 'Shopify inventory management',
+    'Shopify CAPI', 'Elevar alternative', 'Triple Whale alternative',
+  ],
+};
+// Site-wide WebSite node. 26+ pages reference "@id": ".../#website" in
+// isPartOf but the node was only defined on a handful of pages — a dangling
+// reference everywhere else. Defining it once here resolves it site-wide.
+const webSiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': 'https://stackarchitect.xyz/#website',
+  'url': 'https://stackarchitect.xyz/',
+  'name': 'Stack Architect',
+  'description':
+    'Free Shopify automation tools replacing $700+/month of paid apps — server-side tracking, inventory, email, TikTok Events API, P&L.',
+  'publisher': { '@id': 'https://stackarchitect.xyz/#org' },
+  'inLanguage': 'en-GB',
+};
+
+// ── Auto-BreadcrumbList ─────────────────────────────────────────────
+// 36 pages shipped without BreadcrumbList structured data (blog posts had
+// it via BlogPost.astro; most .astro pages didn't). Generate one from the
+// URL path on any indexable page that doesn't already declare one —
+// checked recursively so @graph-embedded breadcrumbs aren't duplicated.
+const canonicalPath = new URL(canonical).pathname;
+
+const schemaJson = JSON.stringify(schemaArray);
+const alreadyHasBreadcrumbSchema = schemaJson.includes('"BreadcrumbList"');
+const alreadyHasWebSiteSchema = schemaJson.includes('"WebSite"');
+
+function humanizeSlug(slug: string): string {
+  const overrides: Record<string, string> = {
+    'capi-shield': 'CAPI Shield',
+    'pro': 'Complete Kit',
+    'blog': 'Guides',
+    'tools': 'Tools',
+    'faq': 'FAQ',
+    'stack': 'The Recommended Stack',
+  };
+  if (overrides[slug]) return overrides[slug];
+  return slug
+    .split('-')
+    .map((w) => {
+      const upper: Record<string, string> = {
+        'ai': 'AI', 'pl': 'P&L', 'roas': 'ROAS', 'emq': 'EMQ', 'ga4': 'GA4',
+        'ios': 'iOS', 'api': 'API', 'seo': 'SEO', 'vs': 'vs', 'io': 'io',
+        'tiktok': 'TikTok', 'bfcm': 'BFCM', 'crm': 'CRM', 'cro': 'CRO',
+      };
+      if (upper[w]) return upper[w];
+      return w.charAt(0).toUpperCase() + w.slice(1);
+    })
+    .join(' ');
+}
+
+let autoBreadcrumbSchema: object | null = null;
+if (!alreadyHasBreadcrumbSchema && !noindex && canonicalPath !== '/') {
+  const segments = canonicalPath.split('/').filter(Boolean);
+  const items = [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://stackarchitect.xyz/' },
+  ];
+  let acc = '';
+  segments.forEach((seg, i) => {
+    acc += '/' + seg;
+    const isLast = i === segments.length - 1;
+    items.push({
+      '@type': 'ListItem',
+      position: i + 2,
+      // Final crumb: use the page's H1-ish title (strip brand suffix) for accuracy.
+      name: isLast ? (title.split('—')[0].split('|')[0].trim() || humanizeSlug(seg)) : humanizeSlug(seg),
+      // Per Google guidance the final item may omit `item`.
+      // '/blog/' has no index page — the real guides hub is /shopify-automation-guides/.
+      ...(isLast
+        ? {}
+        : {
+            item:
+              seg === 'blog'
+                ? 'https://stackarchitect.xyz/shopify-automation-guides/'
+                : `https://stackarchitect.xyz${acc}/`,
+          }),
+    });
+  });
+  autoBreadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': items,
+  };
+}
+
+const allSchemas = [
+  ...schemaArray,
+  siteNavSchema,
+  orgSchema,
+  personSchema,
+  ...(alreadyHasWebSiteSchema ? [] : [webSiteSchema]),
+  ...(autoBreadcrumbSchema ? [autoBreadcrumbSchema] : []),
+];
+
+const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
+---
+
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary SEO -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Feed discovery: Googlebot, Bingbot and AI crawlers poll RSS for new URLs -->
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Stack Architect — Shopify Automation Guides"
+      href="/rss.xml"
+    />
+
+    <!-- Performance: DNS prefetch for third-party scripts loaded later -->
+    <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="//www.google-analytics.com" />
+    <meta
+      name="robots"
+      content={noindex
+        ? 'noindex, nofollow'
+        : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1'}
+    />
+
+    <!-- Preconnect to affiliate domains -->
+    <link rel="preconnect" href="https://www.make.com" />
+    <link rel="preconnect" href="https://systeme.io" />
+
+    <!-- Mobile browser chrome colour -->
+    <meta name="theme-color" content="#0c0f0d" />
+
+    <!-- Article modified time — only when a real date is known.
+         (Previously fell back to build time, which claimed every page was
+         modified on every deploy — a fake-freshness footprint.) -->
+    {(updatedDate ?? publishDate) && (
+      <meta property="article:modified_time" content={updatedDate ?? publishDate} />
+    )}
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={ogTitle ?? title} />
+    <meta property="og:description" content={ogDescription ?? description} />
+    <meta property="og:type" content={pageType === 'article' ? 'article' : 'website'} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Stack Architect" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:image" content={ogImage ?? 'https://stackarchitect.xyz/og.png'} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogTitle ?? title} />
+
+    <!-- Twitter/X Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={ogTitle ?? title} />
+    <meta name="twitter:description" content={ogDescription ?? description} />
+    <meta
+      name="twitter:image"
+      content={ogImage ?? 'https://stackarchitect.xyz/og.png'}
+    />
+
+    <!-- JSON-LD Schema -->
+    {allSchemas.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+
+    <!-- Favicon -->
+   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- GA4 + AttributionTracker — measurement ID G-TE6Z6CW514 -->
+    <!-- GA4_PLACEHOLDER_START -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-TE6Z6CW514"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){window.dataLayer.push(arguments);}
+      window.gtag = gtag;
+      gtag('js', new Date());
+      gtag('config', 'G-TE6Z6CW514');
+
+      // AttributionTracker — inlined directly to bypass Astro module bundling.
+      // Captures landing/UTM, fires affiliate_click + kit_click GA4 events,
+      // sets sa_attr cookie, stamps Stripe URLs with client_reference_id.
+      (function() {
+        'use strict';
+        try {
+          var LANDING_KEY = 'sa_landing';
+          var ATTR_COOKIE = 'sa_attr';
+          var NOW = Date.now();
+
+          if (!sessionStorage.getItem(LANDING_KEY)) {
+            var url = new URL(window.location.href);
+            var refHost = 'direct';
+            try {
+              if (document.referrer) refHost = new URL(document.referrer).hostname;
+            } catch (e) {}
+            sessionStorage.setItem(LANDING_KEY, JSON.stringify({
+              path:       url.pathname,
+              ref:        refHost,
+              utm_source: url.searchParams.get('utm_source')   || '',
+              utm_medium: url.searchParams.get('utm_medium')   || '',
+              utm_camp:   url.searchParams.get('utm_campaign') || '',
+              gclid:      url.searchParams.get('gclid')        || '',
+              fbclid:     url.searchParams.get('fbclid')       || '',
+              ts:         NOW
+            }));
+          }
+
+          function getLanding() {
+            try { return JSON.parse(sessionStorage.getItem(LANDING_KEY) || '{}'); }
+            catch (e) { return {}; }
+          }
+          function setAttrCookie(payload) {
+            var expires = new Date(NOW + 30 * 24 * 60 * 60 * 1000).toUTCString();
+            document.cookie = ATTR_COOKIE + '=' + encodeURIComponent(JSON.stringify(payload)) +
+              '; path=/; expires=' + expires + '; SameSite=Lax; Secure';
+          }
+          function b64url(str) {
+            return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+          }
+
+          document.addEventListener('click', function(e) {
+            var a = e.target.closest('a');
+            if (!a || !a.href) return;
+            var href = a.getAttribute('href') || '';
+            var absHref = a.href;
+
+            var isAffiliate = href.indexOf('/go/') === 0;
+            var isKitPage   = (href === '/pro/' || href === '/pro/' || href.indexOf('/pro#') === 0);
+            var isStripe    = absHref.indexOf('buy.stripe.com') > -1;
+
+            if (!isAffiliate && !isKitPage && !isStripe) return;
+
+            var landing = getLanding();
+            var sourcePage = window.location.pathname;
+
+            setAttrCookie({
+              s:   sourcePage,
+              d:   isAffiliate ? href : (isStripe ? 'kit-stripe' : 'kit-page'),
+              l:   landing.path || '',
+              ref: landing.ref  || 'direct',
+              src: landing.utm_source || '',
+              cmp: landing.utm_camp   || '',
+              ts:  NOW
+            });
+
+            if (typeof window.gtag === 'function') {
+              window.gtag('event', isAffiliate ? 'affiliate_click' : 'kit_click', {
+                source_page:  sourcePage,
+                destination:  href,
+                landing_path: landing.path || '',
+                referrer:     landing.ref || 'direct',
+                utm_source:   landing.utm_source || '',
+                utm_campaign: landing.utm_camp || ''
+              });
+            }
+
+            if (isStripe) {
+              try {
+                var stripeUrl = new URL(absHref);
+                var payload = b64url(JSON.stringify({
+                  s:   sourcePage.slice(0, 40),
+                  l:   (landing.path || '').slice(0, 40),
+                  ref: (landing.ref  || '').slice(0, 30),
+                  src: (landing.utm_source || '').slice(0, 20),
+                  cmp: (landing.utm_camp   || '').slice(0, 20),
+                  ts:  NOW
+                }));
+                stripeUrl.searchParams.set('client_reference_id', payload);
+                a.href = stripeUrl.toString();
+              } catch (err) {}
+            }
+          }, true);
+        } catch (err) {}
+      })();
+    </script>
+    <!-- GA4_PLACEHOLDER_END -->
+
+<style>
+@media(hover:hover){.related-link-item:hover{border-bottom-color:rgba(52,211,119,.2) !important;}}
+@media(max-width:640px){
+  .related-link-item{padding:12px 0 !important;}
+  .related-link-item > div:last-child{display:none;}
+}
+</style>
+    <slot name="head" />
+  </head>
+  <body class="bg-black text-white font-sans min-h-screen flex flex-col">
+    <!-- Named slot so child layouts can position Nav before breadcrumb -->
+    <slot name="header" />
+
+    {hasBreadcrumb && (
+      <nav aria-label="Breadcrumb" class="breadcrumb border-b border-[#222825]">
+        {breadcrumb!.map((item, i) => (
+          <>
+            {i > 0 && <span class="breadcrumb-separator">/</span>}
+            {item.href
+              ? <a href={item.href}>{item.label}</a>
+              : <span class="text-white">{item.label}</span>
+            }
+          </>
+        ))}
+      </nav>
+    )}
+
+    <slot />
+  
+
+  </body>
+</html>

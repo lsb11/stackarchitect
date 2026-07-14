@@ -1,0 +1,220 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const schemas = [{"@context":"https://schema.org","@type":"WebApplication","name":"Autocrat vs Native Google Sheets Speed Calculator — Free Automation Comparison","url":"https://stackarchitect.xyz/autocrat-vs-native-google-sheets-speed-calculator/","description":"Calculate how much time and money you save using Autocrat vs native Google Sheets for document generation. See your annual efficiency gain and whether Google Workspace is worth upgrading for your volume.","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"Stack Architect","url":"https://stackarchitect.xyz"}},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What causes Autocrat quota errors in Google Sheets?","acceptedAnswer":{"@type":"Answer","text":"Autocrat uses Google Docs API calls to merge data into templates. The free Google account is limited to a certain number of API calls per day. High-volume document generation (typically above 50–100 documents per day) can exhaust this quota, causing the Autocrat script to fail silently. The fix is either to batch document generation using time-based triggers or upgrade to Google Workspace which has significantly higher API quotas."}},{"@type":"Question","name":"Is Google Workspace worth it for a small Shopify store?","acceptedAnswer":{"@type":"Answer","text":"For stores under 300 orders per month with simple automation needs, free Gmail + Google Sheets is usually sufficient. For stores above 500 orders/month, or those running complex multi-step automations, Workspace at $5.20/user/month is worth the investment for quota headroom alone. The professional email domain (yourname@yourbusiness.com) and Google Drive storage increase are additional benefits at that price point."}},{"@type":"Question","name":"Can I fix Google Apps Script quota errors without Workspace?","acceptedAnswer":{"@type":"Answer","text":"Yes, partially. The Autocrat Quota Fix approach involves restructuring your script to use batch processing instead of per-order triggers, implementing exponential backoff for rate limit errors, and using time-based triggers instead of onChange triggers to spread execution across available quota windows. This approach works for many stores but has upper limits — above a certain order volume, Workspace becomes the only reliable solution."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://stackarchitect.xyz/tools/"},{"@type":"ListItem","position":3,"name":"Autocrat vs Native Google Sheets Speed Calculator — Free Automation Comparison","item":"https://stackarchitect.xyz/autocrat-vs-native-google-sheets-speed-calculator/"}]}];
+
+const breadcrumb = [
+  { label: 'Home', href: '/' },
+  { label: 'Tools', href: '/tools/' },
+  { label: 'Autocrat vs Native Google Sheets Speed Calculator — Free Automation Comparison' },
+];
+---
+
+<Base noindex
+  title="Autocrat vs Native Google Sheets Speed Calculator — Free Automation Comparison | Stack Architect"
+  description="Calculate how much time and money you save using Autocrat vs native Google Sheets for document generation. See your annual efficiency gain and whether Google Workspace is worth upgrading for your volume."
+  canonical="https://stackarchitect.xyz/autocrat-vs-native-google-sheets-speed-calculator/"
+  schema={schemas}
+  breadcrumb={breadcrumb}
+>
+  <Nav slot="header" />
+
+  <main class="flex-1">
+    <div id="reading-progress"></div>
+    
+<style>
+  .tool-hero{padding:48px 24px 32px;background:#000;border-bottom:1px solid #222825;}
+  .tool-hero-inner{max-width:860px;margin:0 auto;}
+  .tool-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;border:1px solid rgba(52,211,119,.3);color:#34d377;background:rgba(52,211,119,.06);margin-bottom:18px;}
+  .tool-badge .dot{width:6px;height:6px;border-radius:50%;background:#34d377;animation:dp 2s infinite;}
+  @keyframes dp{0%,100%{opacity:1;}50%{opacity:.3;}}
+  .tool-hero h1{font-size:clamp(22px,4vw,38px);font-weight:700;color:#fff;letter-spacing:-.03em;line-height:1.05;margin-bottom:12px;}
+  .tool-hero h1 .green{color:#34d377;}
+  .tool-hero-desc{font-size:14px;color:#93a09a;line-height:1.75;max-width:600px;margin-bottom:20px;}
+  .tool-trust{display:flex;flex-wrap:wrap;gap:16px;}
+  .tool-trust span{font-size:11px;color:#6b7671;display:flex;align-items:center;gap:5px;}
+  .tool-trust span::before{content:'✓';color:#34d377;font-weight:700;}
+
+  .calc-section{padding:40px 24px;background:#0c0f0d;border-bottom:1px solid #222825;}
+  .calc-inner{max-width:860px;margin:0 auto;}
+  .calc-card{border:1px solid #222825;background:#000;padding:32px;}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
+  @media(max-width:600px){.calc-grid{grid-template-columns:1fr;}}
+  .calc-field{display:flex;flex-direction:column;gap:6px;}
+  .calc-field label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#93a09a;}
+  .calc-field input,.calc-field select{background:#000;border:1px solid #262c29;color:#fff;font-family:inherit;font-size:15px;padding:12px 14px;outline:none;transition:border-color .2s;width:100%;border-radius:6px;}
+  .calc-field input:focus,.calc-field select:focus{border-color:#34d377;}
+  .calc-field input::placeholder{color:#6b7280;}
+  .calc-btn{width:100%;background:#34d377;color:#000;font-family:inherit;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:14px;border:none;cursor:pointer;transition:background .2s;margin-top:8px;}
+  .calc-btn:hover{background:#34d377;}
+  .calc-result{display:none;margin-top:32px;border:1px solid #262c29;border-radius:10px;background:#0c0f0d;padding:28px;}
+  .calc-result.show{display:block;}
+  .result-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#93a09a;margin-bottom:8px;}
+  .result-value{font-size:36px;font-weight:700;color:#34d377;line-height:1;letter-spacing:-.03em;}
+  .result-sub{font-size:12px;color:#8b8b93;margin-top:6px;line-height:1.6;}
+  .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin-bottom:20px;}
+  .result-cell{background:#000;border:1px solid #262c29;border-radius:8px;padding:20px 18px;}
+  .result-insight{font-size:12px;color:#93a09a;line-height:1.7;border-top:1px solid #222825;padding-top:16px;margin-top:16px;}
+  .result-insight strong{color:#fff;}
+  .result-cta{display:inline-block;margin-top:16px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#000;background:#34d377;padding:10px 20px;text-decoration:none;transition:background .2s;}
+  .result-cta:hover{background:#34d377;}
+  .result-warn{border-left:3px solid #34d377;padding-left:16px;margin-top:16px;}
+
+  .aff-block{margin:24px 0;border:1px solid rgba(52,211,119,.2);background:rgba(52,211,119,.04);padding:20px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+  .aff-block-text{flex:1;}
+  .aff-block-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#6b7671;margin-bottom:6px;}
+  .aff-block-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;}
+  .aff-block-desc{font-size:11px;color:#6b7671;line-height:1.6;}
+  .aff-block-link{flex-shrink:0;display:inline-flex;align-items:center;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#34d377;border:1px solid rgba(52,211,119,.4);padding:8px 16px;text-decoration:none;transition:all .2s;white-space:nowrap;}
+  .aff-block-link:hover{background:#34d377;color:#000;}
+  .aff-disclosure{font-size:9px;color:#2f3733;margin-top:8px;}
+
+  .editorial{padding:48px 24px;background:#000;border-bottom:1px solid #222825;}
+  .editorial-inner{max-width:720px;margin:0 auto;}
+  .editorial h2{font-size:clamp(18px,3vw,26px);font-weight:700;color:#fff;letter-spacing:-.03em;margin:36px 0 12px;line-height:1.2;}
+  .editorial h2:first-child{margin-top:0;}
+  .editorial p{font-size:13px;color:#93a09a;line-height:1.85;margin-bottom:16px;}
+  .editorial strong{color:#dfe6e2;}
+  .editorial a{color:#34d377;text-decoration:underline;}
+  .editorial ul{list-style:none;padding:0;margin:0 0 16px;}
+  .editorial ul li{font-size:13px;color:#93a09a;line-height:1.75;padding:6px 0 6px 20px;position:relative;border-bottom:1px solid #0c0f0d;}
+  .editorial ul li::before{content:'→';position:absolute;left:0;color:#34d377;font-size:11px;}
+
+  .faq-section{padding:48px 24px;background:#0c0f0d;border-bottom:1px solid #222825;}
+  .faq-inner{max-width:720px;margin:0 auto;}
+  .faq-heading{font-size:clamp(18px,3vw,24px);font-weight:700;color:#fff;letter-spacing:-.03em;margin-bottom:28px;}
+  .faq-item{border:1px solid #222825;margin-bottom:8px;background:#000;}
+  .faq-item summary{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;cursor:pointer;list-style:none;font-size:12px;font-weight:700;color:#93a09a;letter-spacing:.02em;gap:16px;}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item[open] summary{color:#fff;border-bottom:1px solid #222825;}
+  .faq-item[open]{border-color:rgba(52,211,119,.3);}
+  .faq-arrow{flex-shrink:0;font-size:10px;color:#6b7671;transition:transform .2s;}
+  .faq-item[open] .faq-arrow{transform:rotate(180deg);color:#34d377;}
+  .faq-answer{padding:16px 20px;font-size:12px;color:#6b7671;line-height:1.8;}
+  .faq-answer a{color:#34d377;}
+
+  .cta-strip-tool{padding:40px 24px;background:#0c0f0d;border-top:1px solid #222825;text-align:center;}
+  .cta-strip-tool h2{font-size:clamp(16px,3vw,22px);font-weight:700;color:#fff;letter-spacing:-.03em;margin-bottom:8px;}
+  .cta-strip-tool p{font-size:12px;color:#6b7671;margin-bottom:20px;}
+  .cta-strip-tool a{display:inline-block;background:#34d377;color:#000;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:14px 28px;text-decoration:none;transition:background .2s;}
+  .cta-strip-tool a:hover{background:#34d377;}
+  #reading-progress{position:fixed;top:0;left:0;width:0;height:2px;background:#34d377;z-index:9999;transition:width .1s;}
+</style>
+
+
+  <section class="tool-hero">
+    <div class="tool-hero-inner">
+      <div class="tool-badge"><span class="dot"></span>FREE TOOL // Google Sheets Automation</div>
+      <h1>Autocrat vs Native <span class="green">Sheets Speed Calculator</span></h1>
+      <p class="tool-hero-desc">Calculate how much time and money you save using Autocrat vs native Google Sheets for document generation. See your annual efficiency gain and whether Google Workspace is worth upgrading for your volume.</p>
+      <div class="tool-trust"><span>Free forever</span><span>No account required</span><span>Instant results</span></div>
+    </div>
+  </section>
+  <section class="calc-section"><div class="calc-inner"><div class="calc-card">
+    <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#6b7671;margin-bottom:20px;">SHEETS_AUTOMATION_CALCULATOR</div>
+    <div class="calc-grid">
+      <div class="calc-field"><label>Documents generated per month</label><input type="number" id="ac-docs" placeholder="e.g. 150" /></div>
+      <div class="calc-field"><label>Manual time per document (minutes)</label><input type="number" id="ac-manual-time" placeholder="e.g. 8" /></div>
+      <div class="calc-field"><label>Automated time per document (minutes)</label><input type="number" id="ac-auto-time" placeholder="e.g. 0.5" /></div>
+      <div class="calc-field"><label>Your hourly rate or staff cost £/hr</label><input type="number" id="ac-rate" placeholder="e.g. 25" /></div>
+      <div class="calc-field"><label>Current Google account type</label><select id="ac-account"><option value="free">Free (gmail.com)</option><option value="workspace">Google Workspace</option></select></div>
+      <div class="calc-field"><label>Monthly Shopify order volume</label><input type="number" id="ac-orders" placeholder="e.g. 400" /></div>
+    </div>
+    <button class="calc-btn" onclick="calcAutocrat()">CALCULATE TIME SAVINGS →</button>
+    <div class="calc-result" id="ac-result">
+      <div class="result-grid">
+        <div class="result-cell"><div class="result-label">Monthly Time Saved</div><div class="result-value" id="ac-time">--</div><div class="result-sub">Hours per month</div></div>
+        <div class="result-cell"><div class="result-label">Monthly Cost Saving</div><div class="result-value" id="ac-cost" style="font-size:28px;">--</div><div class="result-sub">At your hourly rate</div></div>
+        <div class="result-cell"><div class="result-label">Workspace ROI</div><div class="result-value" id="ac-ws-roi" style="font-size:22px;">--</div><div class="result-sub">vs free account at your volume</div></div>
+      </div>
+      <div class="result-insight" id="ac-insight"></div>
+    </div>
+  </div>
+  
+  <div class="aff-block">
+    <div class="aff-block-text">
+      <div class="aff-block-label">Recommended tool</div>
+      <div class="aff-block-title">Google Workspace — Recommended for 500+ orders/month</div>
+      <div class="aff-block-desc">Workspace removes Gmail API limits and Sheets API quotas that cause automation failures at high order volumes. Recommended for stores processing 500+ orders/month.</div>
+    </div>
+    <div>
+      <a href="/go/workspace" target="_blank" rel="noopener sponsored" class="aff-block-link">Activate Workspace →</a>
+      <div class="aff-disclosure">Affiliate link — costs you nothing extra</div>
+    </div>
+  </div></div></section>
+  <section class="editorial"><div class="editorial-inner"><h2>When Google Sheets Automation Breaks — And How to Fix It</h2>
+  <p>Google Sheets automation via Apps Script is a core part of the free Shopify automation stack. But it has a known failure point: Google API quotas. The free tier limits include a maximum number of email sends per day (100 via Gmail), a maximum execution time per script run (6 minutes), and a daily quota for script triggers. At Shopify order volumes above 300–500 per month, stores running complex multi-step scripts start hitting these limits regularly.</p>
+  <p>The symptoms are typically silent: automations that appear to run but don't complete, scripts that fail mid-execution without error notifications, and quota errors that appear in the Apps Script execution log but are never surfaced to the user. Orders that were meant to trigger inventory updates, email notifications, or P&L entries simply don't — creating invisible data gaps.</p>
+  <h2>Google Workspace vs Free Gmail for Shopify Automation</h2>
+  <p><a href="/go/workspace" target="_blank" rel="noopener sponsored">Google Workspace</a> (from $5.20/user/month on Business Starter) removes the Gmail sending limit entirely (no daily cap), increases Apps Script execution quotas to 6 hours/day vs 1 hour/day on free, and provides better reliability for script triggers at high volume. For any store processing over 500 orders per month and running automation via Apps Script, the Workspace cost is easily justified by the risk mitigation alone.</p></div></section>
+  
+  <section class="faq-section">
+    <div class="faq-inner">
+      <h2 class="faq-heading">COMMON_QUESTIONS</h2>
+      
+    <details class="faq-item">
+      <summary><span>What causes Autocrat quota errors in Google Sheets?</span><span class="faq-arrow">▼</span></summary>
+      <div class="faq-answer">
+        <p>Autocrat uses Google Docs API calls to merge data into templates. The free Google account is limited to a certain number of API calls per day. High-volume document generation (typically above 50–100 documents per day) can exhaust this quota, causing the Autocrat script to fail silently. The fix is either to batch document generation using time-based triggers or upgrade to Google Workspace which has significantly higher API quotas.</p>
+      </div>
+    </details>
+    <details class="faq-item">
+      <summary><span>Is Google Workspace worth it for a small Shopify store?</span><span class="faq-arrow">▼</span></summary>
+      <div class="faq-answer">
+        <p>For stores under 300 orders per month with simple automation needs, free Gmail + Google Sheets is usually sufficient. For stores above 500 orders/month, or those running complex multi-step automations, Workspace at $5.20/user/month is worth the investment for quota headroom alone. The professional email domain (yourname@yourbusiness.com) and Google Drive storage increase are additional benefits at that price point.</p>
+      </div>
+    </details>
+    <details class="faq-item">
+      <summary><span>Can I fix Google Apps Script quota errors without Workspace?</span><span class="faq-arrow">▼</span></summary>
+      <div class="faq-answer">
+        <p>Yes, partially. The Autocrat Quota Fix approach involves restructuring your script to use batch processing instead of per-order triggers, implementing exponential backoff for rate limit errors, and using time-based triggers instead of onChange triggers to spread execution across available quota windows. This approach works for many stores but has upper limits — above a certain order volume, Workspace becomes the only reliable solution.</p>
+      </div>
+    </details>
+    </div>
+  </section>
+  <section class="cta-strip-tool"><h2>Fix Your Automation Quota Issues</h2><p>Free tool. No account. Instant results.</p><a href="/autocrat-quota-fix/">Fix Your Automation Quota Issues →</a></section>
+  </main>
+
+  <Footer />
+</Base>
+
+<script is:inline>
+  // Reading progress bar
+  const bar = document.getElementById('reading-progress');
+  if (bar) {
+    window.addEventListener('scroll', () => {
+      const pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      bar.style.width = Math.min(pct, 100) + '%';
+    }, { passive: true });
+  }
+
+function calcAutocrat() {
+    const docs = parseInt(document.getElementById('ac-docs').value) || 0;
+    const manualTime = parseFloat(document.getElementById('ac-manual-time').value) || 0;
+    const autoTime = parseFloat(document.getElementById('ac-auto-time').value) || 0;
+    const rate = parseFloat(document.getElementById('ac-rate').value) || 0;
+    const account = document.getElementById('ac-account').value;
+    const orders = parseInt(document.getElementById('ac-orders').value) || 0;
+    if (!docs || !manualTime) return;
+    const timeSavedMins = docs * (manualTime - autoTime);
+    const timeSavedHrs = (timeSavedMins / 60).toFixed(1);
+    const costSaving = ((timeSavedMins / 60) * rate).toFixed(0);
+    const workspaceCost = 5.20; // approx Business Starter per user GBP/month
+    const wsRoi = parseInt(costSaving) > 0 ? ((parseInt(costSaving) / workspaceCost) * 100).toFixed(0) + '%' : 'N/A';
+    document.getElementById('ac-time').textContent = timeSavedHrs + ' hrs';
+    document.getElementById('ac-cost').textContent = '£' + parseInt(costSaving).toLocaleString() + '/mo';
+    document.getElementById('ac-ws-roi').textContent = wsRoi;
+    let insight = '';
+    if (orders > 500 && account === 'free') {
+      insight = '<strong>Google Workspace recommended at your order volume.</strong> Free Gmail accounts have API rate limits that cause automation failures above 500 orders/month. Workspace at $5.20/user/month removes these limits and costs far less than the downtime risk. ';
+    }
+    if (parseInt(costSaving) > 100) {
+      insight += '<strong>Strong automation ROI.</strong> You save an estimated £' + costSaving + '/month in staff time by automating document generation. ';
+    }
+    if (!insight) insight = 'Solid time saving from automation. For high-volume operations, ensure you are using Apps Script triggers correctly to avoid hitting Google\'s free tier quotas.';
+    document.getElementById('ac-insight').innerHTML = insight;
+    document.getElementById('ac-result').classList.add('show');
+  }
+</script>
