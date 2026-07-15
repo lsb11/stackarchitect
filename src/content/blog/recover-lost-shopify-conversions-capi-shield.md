@@ -20,6 +20,9 @@ faqs:
   - question: "How long does it take to see recovered conversions after implementing CAPI Shield?"
     answer: "The CAPI events start flowing immediately after setup. However, the impact on reported ROAS and campaign performance typically becomes visible 7–14 days after implementation, as Meta's and Google's algorithms adjust their optimisation models based on the more complete conversion data."
 relatedGuides:
+  - title: "Meta One-Click Conversions API for Shopify — What It Fixes"
+    href: "/blog/meta-one-click-conversions-api-shopify"
+    badge: "New for 2026"
   - title: "CAPI Shield — Full Product Guide and Setup Instructions"
     href: "/capi-shield"
     badge: "Deploy Free"

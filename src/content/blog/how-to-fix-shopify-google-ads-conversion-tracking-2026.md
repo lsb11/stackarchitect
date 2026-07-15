@@ -22,6 +22,9 @@ faqs:
   - question: "What is the difference between Google Ads conversion tracking and Google Enhanced Conversions?"
     answer: "Standard Google Ads conversion tracking uses a browser-based pixel (gTag) that fires when the customer's browser loads your order confirmation page. It is subject to iOS restrictions, ad blockers, and cookie clearing. Google Enhanced Conversions is a supplementary layer that sends hashed customer data server-to-server, independently of browser state. Running both simultaneously — browser pixel plus server-side Enhanced Conversions — gives Google the most complete picture of your actual purchase volume."
 relatedGuides:
+  - title: "Meta One-Click Conversions API for Shopify — What It Fixes"
+    href: "/blog/meta-one-click-conversions-api-shopify"
+    badge: "New for 2026"
   - title: "CAPI Shield — Free Meta + Google Server-Side Tracking"
     href: "/capi-shield"
     badge: "Deploy Free"

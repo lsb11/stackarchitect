@@ -22,6 +22,9 @@ faqs:
   - question: "Does server-side tracking completely fix the iOS tracking problem?"
     answer: "Server-side tracking significantly reduces the tracking gap but does not eliminate it entirely. Browser pixels handle the first-party tracking layer including page views, add-to-cart, and checkout events. Server-side CAPI handles the purchase conversion event reliably regardless of browser settings. Running both simultaneously with proper deduplication is the standard approach — typical residual gap after full CAPI implementation is 15-25%."
 relatedGuides:
+  - title: "Meta One-Click Conversions API for Shopify — What It Fixes"
+    href: "/blog/meta-one-click-conversions-api-shopify"
+    badge: "New for 2026"
   - title: "iOS Attribution Gap Benchmark — How Much Conversion Data You Lose"
     href: "/shopify-ios-attribution-gap-benchmark"
     badge: "Data"
