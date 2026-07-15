@@ -8,6 +8,7 @@ badge: "New for 2026"
 badgeType: "urgent"
 readTime: 6
 canonical: "https://stackarchitect.xyz/blog/meta-one-click-conversions-api-shopify/"
+ogImage: "https://stackarchitect.xyz/og/og-meta-one-click-capi.png"
 faqs:
   - question: "What is the Meta one-click Conversions API?"
     answer: "Announced by Meta on 15 April 2026, the Meta-enabled Conversions API is a free, one-click setup inside Events Manager. Meta hosts the server-side infrastructure itself — no code, no server, no maintenance. It creates a server-side connection alongside your existing Meta Pixel, with event_id deduplication handled automatically, covering standard web events like ViewContent, AddToCart, InitiateCheckout, and Purchase."
