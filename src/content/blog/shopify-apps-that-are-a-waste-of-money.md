@@ -2,7 +2,7 @@
 title: "Shopify Apps That Are a Waste of Money 2026"
 description: "Shopify apps not worth the cost in 2026, why each is replaceable, and the free alternative that does the same job. Honest assessments, no affiliate bias."
 publishDate: "2026-03-12"
-updatedDate: "2026-04-16"
+updatedDate: "2026-07-16"
 category: "automation"
 badge: "Cut List"
 badgeType: "comparison"
