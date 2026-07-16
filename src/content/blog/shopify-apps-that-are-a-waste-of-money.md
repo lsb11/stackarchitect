@@ -12,9 +12,9 @@ faqs:
   - question: "Which Shopify apps are not worth paying for in 2026?"
     answer: "In 2026, the most commonly overpaid-for Shopify apps are: paid server-side tracking apps (Elevar, Triple Whale) which are replaceable free with CAPI Shield; Shopify Stocky (shutting down August 2026 anyway); email apps above the Systeme.io free tier for stores under 2,000 contacts; P&L reporting apps replaced free by Make.com and Google Sheets; and simple automation connectors where Make.com's free plan covers the same functionality."
   - question: "Is Elevar worth it for Shopify?"
-    answer: "For most stores, no. Elevar costs $199/month and provides server-side tracking for Meta and Google. CAPI Shield provides the same server-side tracking functionality free using Make.com webhooks and the native Conversions API endpoints. The primary Elevar advantage is a managed, no-code setup with customer support — worth paying for if you want someone else to handle the implementation, but not for the tracking capability itself."
+    answer: "For most stores, no. Elevar costs $200/month and provides server-side tracking for Meta and Google. CAPI Shield provides the same server-side tracking functionality free using Make.com webhooks and the native Conversions API endpoints. The primary Elevar advantage is a managed, no-code setup with customer support — worth paying for if you want someone else to handle the implementation, but not for the tracking capability itself."
   - question: "Is Triple Whale worth it for Shopify?"
-    answer: "Triple Whale costs $129–$299/month and provides attribution reporting plus server-side tracking. The attribution reporting is genuinely useful for multi-channel stores running significant ad budgets across Meta, Google, and TikTok simultaneously. For stores under $100,000/month ad spend, blended ROAS (total revenue divided by total ad spend) provides sufficient decision-making data without paying for attribution software."
+    answer: "Triple Whale costs $149–$749/month and provides attribution reporting plus server-side tracking. The attribution reporting is genuinely useful for multi-channel stores running significant ad budgets across Meta, Google, and TikTok simultaneously. For stores under $100,000/month ad spend, blended ROAS (total revenue divided by total ad spend) provides sufficient decision-making data without paying for attribution software."
   - question: "Should I pay for Klaviyo on Shopify?"
     answer: "Klaviyo is worth paying for if you have 25,000+ contacts and actively use its predictive segmentation, browse-abandonment triggers, and deep ecommerce event tracking for sophisticated campaign segmentation. For stores running welcome sequences, abandoned cart, and post-purchase flows on a list under 10,000 contacts — Systeme.io provides the same core functionality free, and GetResponse provides it for $19-79/month."
 relatedGuides:
@@ -34,7 +34,7 @@ Not every Shopify app is worth paying for. Some are genuinely useful with no fre
 
 These are honest assessments. Some apps in this list have genuine strengths — noted where relevant. The question is whether those strengths justify the cost for your specific store.
 
-## Elevar — $199/Month — Replaceable
+## Elevar — $200/Month — Replaceable
 
 **What it does:** server-side conversion tracking for Meta and Google, with a managed setup and monitoring dashboard.
 
@@ -46,7 +46,7 @@ These are honest assessments. Some apps in this list have genuine strengths — 
 
 **Free replacement:** [CAPI Shield](/capi-shield/)
 
-## Triple Whale — $129–$299/Month — Partially Replaceable
+## Triple Whale — $149–$749/Month — Partially Replaceable
 
 **What it does:** multi-touch attribution across Meta, Google, and TikTok, plus server-side tracking and a unified revenue dashboard.
 

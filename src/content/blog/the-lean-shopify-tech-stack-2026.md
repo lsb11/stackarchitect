@@ -10,7 +10,7 @@ readTime: 12
 canonical: "https://stackarchitect.xyz/blog/the-lean-shopify-tech-stack-2026/"
 faqs:
   - question: "What apps can I replace for free on Shopify in 2026?"
-    answer: "In 2026, Shopify stores can replace: Elevar or Triple Whale (server-side tracking, $150-299/month) with CAPI Shield free; Shopify Stocky (inventory, shutting down August 2026) with Stocky Swap free; Klaviyo (email, $150-400/month) with Systeme.io free; TikTok tracking apps like WeltPixel ($39-99/month) with TikTok Events API via Make.com free; P&L reporting apps ($25-299/month) with Shopify P&L Auto free; and Autocrat document automation with a Make.com-based replacement free."
+    answer: "In 2026, Shopify stores can replace: Elevar or Triple Whale (server-side tracking, $149–$950/month) with CAPI Shield free; Shopify Stocky (inventory, shutting down August 2026) with Stocky Swap free; Klaviyo (email, $150-400/month) with Systeme.io free; TikTok tracking apps like WeltPixel ($39-99/month) with TikTok Events API via Make.com free; P&L reporting apps ($25-299/month) with Shopify P&L Auto free; and Autocrat document automation with a Make.com-based replacement free."
   - question: "What is a lean Shopify tech stack?"
     answer: "A lean Shopify tech stack uses the minimum number of apps and tools to run a store effectively — prioritising free alternatives over paid subscriptions wherever the functionality is equivalent. The core principle is that most Shopify operational layers (tracking, inventory, email, P&L, workflow automation) can be covered by Make.com webhooks, Google Sheets, and free SaaS platforms — without installing apps that add monthly costs, slow your store, or create vendor dependency."
   - question: "How much can I save by switching to the free Shopify stack?"
@@ -48,7 +48,7 @@ The result: lower monthly costs, faster store performance (fewer app scripts loa
 
 ## Layer 1 — Ad Tracking (Save $150–$299/Month)
 
-**What stores pay for:** Elevar ($199/month), Triple Whale ($129–$299/month), Northbeam ($300+/month), Analyzify ($149/month)
+**What stores pay for:** Elevar ($200–$950/month), Triple Whale ($149–$749/month), Northbeam ($300+/month), Analyzify ($149/month)
 
 **What these do:** send server-side conversion events to Meta and Google, providing more reliable attribution than browser pixels alone.
 
@@ -120,7 +120,7 @@ Not everything has a free replacement that matches quality. These are worth keep
 
 | Layer | Paid app replaced | Paid cost | Free replacement | Free cost |
 |---|---|---|---|---|
-| Ad tracking (Meta + Google) | Elevar | $199/month | CAPI Shield | $0 |
+| Ad tracking (Meta + Google) | Elevar | $200/month | CAPI Shield | $0 |
 | TikTok tracking | WeltPixel | $39/month | TikTok Events API | $0 |
 | Inventory | Inventory Planner | $99/month | Stocky Swap | $0 |
 | Email marketing | Klaviyo (5k contacts) | $100/month | Systeme.io | $0 |
