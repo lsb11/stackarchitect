@@ -1,8 +1,8 @@
 ---
-title: "Shopify Inventory Management 2026 — Free Systems That Scale"
-description: "Manage Shopify inventory free in 2026 with Google Sheets and Make.com. Order tracking, stock alerts, supplier management, and prep for Stocky's shutdown."
+title: "Shopify Inventory in Google Sheets — Free 2026 System (Replaces Stocky)"
+description: "Send Shopify inventory to Google Sheets free in 2026: real-time order logging via Make.com, stock alerts, supplier tracking, and a Stocky replacement before the Aug 31 shutdown."
 publishDate: "2026-03-28"
-updatedDate: "2026-04-16"
+updatedDate: "2026-07-17"
 category: "inventory"
 badge: "Complete Guide"
 badgeType: "new"
