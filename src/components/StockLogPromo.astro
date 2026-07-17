@@ -14,6 +14,7 @@ const ROWS = [
 ];
 ---
 
+<section class="sl-outer">
 <aside class="sl-block" aria-labelledby="sl-h">
   <div class="sl-left">
     <span class="sl-badge">{APP_STORE_URL ? "On the Shopify App Store" : "Launching August 2026 · Shopify App Store"}</span>
@@ -57,14 +58,17 @@ const ROWS = [
       ) : (
         <a class="sl-cta" href={NOTIFY_URL} rel="noopener" target="_blank">Get notified at launch &rarr;</a>
       )}
+      <a class="sl-live-link" href="https://stocklog.onrender.com/" rel="noopener" target="_blank">See StockLog live &rarr;</a>
       <span class="sl-alt">Want $0 instead? <a href="/stocky-swap/">Stocky Swap</a> stays free.</span>
     </div>
     <p class="sl-disc">StockLog is built by Stack Architect — a first-party product, not an affiliate recommendation.</p>
   </div>
 </aside>
+</section>
 
 <style>
-  .sl-block{display:grid;grid-template-columns:minmax(0,0.92fr) minmax(0,1.08fr);gap:clamp(24px,4vw,52px);align-items:start;border:1px solid var(--line,#2a2f2a);border-radius:14px;padding:clamp(24px,3.5vw,40px);margin:34px 0;background:linear-gradient(135deg,rgba(34,197,94,.08),transparent 55%)}
+  .sl-outer{max-width:1140px;margin:0 auto;padding:clamp(40px,7vh,72px) 24px}
+  .sl-block{display:grid;grid-template-columns:minmax(0,0.92fr) minmax(0,1.08fr);gap:clamp(24px,4vw,52px);align-items:start;border:1px solid var(--line,#2a2f2a);border-radius:14px;padding:clamp(24px,3.5vw,40px);margin:0;background:linear-gradient(135deg,rgba(34,197,94,.08),transparent 55%)}
   .sl-badge{display:inline-block;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.07em;text-transform:uppercase;border:1px solid #22c55e;color:#22c55e;border-radius:999px;padding:3px 10px;margin-bottom:14px}
   .sl-mark{display:block;font-weight:800;font-size:clamp(30px,3.4vw,40px);letter-spacing:-.025em;line-height:1}
   .sl-mark-g{color:#22c55e}
@@ -83,11 +87,14 @@ const ROWS = [
   .sl-lg-close{display:flex;justify-content:space-between;margin-top:4px;padding-top:8px;border-top:3px double var(--line,#3a403a);font-size:10.5px;color:var(--text-4,#8b918b)}
   .sl-title{font-size:clamp(20px,2.2vw,24px);margin:0 0 10px;letter-spacing:-.015em;line-height:1.25}
   .sl-copy{margin:0 0 14px;line-height:1.65;color:var(--text-2,#c9cec9)}
-  .sl-feats{margin:0 0 14px;padding-left:20px;line-height:1.85;color:var(--text-2,#c9cec9)}
+  .sl-feats{margin:0 0 16px;padding:0;list-style:none;line-height:1.85;color:var(--text-2,#c9cec9)}
+  .sl-feats li{position:relative;padding-left:22px}
+  .sl-feats li::before{content:'+';position:absolute;left:0;color:#22c55e;font-family:ui-monospace,monospace;font-weight:600}
   .sl-price{margin:0 0 18px;font-size:15px;color:var(--text-1,#e8ebe8)}
   .sl-ctas{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
   .sl-cta{display:inline-block;background:#22c55e;color:#0b120c;font-weight:700;padding:11px 20px;border-radius:8px;text-decoration:none}
   .sl-cta:hover{filter:brightness(1.08)}
+  .sl-live-link{font-size:14px;color:#22c55e;text-decoration:underline;text-underline-offset:3px}
   .sl-alt{font-size:13.5px;color:var(--text-4,#8b918b)}
   .sl-disc{margin:14px 0 0;font-size:12px;color:var(--text-4,#8b918b)}
   @media (max-width:860px){.sl-block{grid-template-columns:1fr;gap:26px}}
