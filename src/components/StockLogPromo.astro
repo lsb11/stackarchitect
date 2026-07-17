@@ -1,0 +1,54 @@
+---
+// StockLog cross-promotion — first-party product block for Stocky pages.
+// Honest state: launching on the Shopify App Store, August 2026.
+// When the app is approved: set APP_STORE_URL to the live listing and the
+// CTA switches automatically from "Get notified" to "Install StockLog".
+const APP_STORE_URL = ""; // e.g. "https://apps.shopify.com/stocklog" once approved
+const NOTIFY_URL = "https://stackarchitect.beehiiv.com/subscribe";
+---
+
+<aside class="sl-block" aria-labelledby="sl-h">
+  <div class="sl-head">
+    <span class="sl-mark">Stock<span class="sl-mark-g">Log</span></span>
+    <span class="sl-badge">{APP_STORE_URL ? "On the Shopify App Store" : "Launching August 2026 · Shopify App Store"}</span>
+  </div>
+  <h3 id="sl-h" class="sl-title">Prefer a hosted app over spreadsheets? We built one.</h3>
+  <p class="sl-copy">
+    StockLog is our Shopify app for stores that want a real database instead of
+    a Sheet: a persistent stock ledger inside your admin. Orders decrement
+    on-hand quantity, cancellations and restocking refunds go back
+    automatically, every movement is timestamped with a reason — and it
+    imports your Stocky CSV export so nothing is lost on 31 August.
+  </p>
+  <ul class="sl-feats">
+    <li>One-click sync of your current Shopify stock</li>
+    <li>Stocky CSV import with full audit trail</li>
+    <li>Low-stock flags against per-variant reorder points</li>
+    <li>$7.99/month · 7-day free trial · billed through Shopify</li>
+  </ul>
+  <div class="sl-ctas">
+    {APP_STORE_URL ? (
+      <a class="sl-cta" href={APP_STORE_URL} rel="noopener">Install StockLog &rarr;</a>
+    ) : (
+      <a class="sl-cta" href={NOTIFY_URL} rel="noopener" target="_blank">Get notified at launch &rarr;</a>
+    )}
+    <span class="sl-alt">Want $0 instead? <a href="/stocky-swap/">Stocky Swap</a> stays free.</span>
+  </div>
+  <p class="sl-disc">StockLog is built by Stack Architect — a first-party product, not an affiliate recommendation.</p>
+</aside>
+
+<style>
+  .sl-block{border:1px solid var(--line,#2a2f2a);border-radius:14px;padding:26px 28px;margin:34px 0;background:linear-gradient(180deg,rgba(15,123,74,.07),transparent 70%)}
+  .sl-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+  .sl-mark{font-weight:800;font-size:19px;letter-spacing:-.02em}
+  .sl-mark-g{color:#22c55e}
+  .sl-badge{font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.07em;text-transform:uppercase;border:1px solid #22c55e;color:#22c55e;border-radius:999px;padding:3px 10px}
+  .sl-title{font-size:21px;margin:0 0 8px;letter-spacing:-.01em}
+  .sl-copy{margin:0 0 14px;line-height:1.65;color:var(--text-2,#c9cec9);max-width:70ch}
+  .sl-feats{margin:0 0 18px;padding-left:20px;line-height:1.8;color:var(--text-2,#c9cec9)}
+  .sl-ctas{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .sl-cta{display:inline-block;background:#22c55e;color:#0b120c;font-weight:700;padding:11px 20px;border-radius:8px;text-decoration:none}
+  .sl-cta:hover{filter:brightness(1.08)}
+  .sl-alt{font-size:13.5px;color:var(--text-4,#8b918b)}
+  .sl-disc{margin:14px 0 0;font-size:12px;color:var(--text-4,#8b918b)}
+</style>
