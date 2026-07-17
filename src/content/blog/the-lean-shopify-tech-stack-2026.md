@@ -48,7 +48,7 @@ The result: lower monthly costs, faster store performance (fewer app scripts loa
 
 ## Layer 1 — Ad Tracking (Save $150–$299/Month)
 
-**What stores pay for:** Elevar ($200–$950/month), Triple Whale ($149–$749/month), Northbeam ($300+/month), Analyzify ($149/month)
+**What stores pay for:** Elevar ($225–$1,250/month), Triple Whale (GMV-based pricing), Northbeam ($300+/month), Analyzify ($145+/month)
 
 **What these do:** send server-side conversion events to Meta and Google, providing more reliable attribution than browser pixels alone.
 
@@ -120,7 +120,7 @@ Not everything has a free replacement that matches quality. These are worth keep
 
 | Layer | Paid app replaced | Paid cost | Free replacement | Free cost |
 |---|---|---|---|---|
-| Ad tracking (Meta + Google) | Elevar | $200/month | CAPI Shield | $0 |
+| Ad tracking (Meta + Google) | Elevar | $225/month | CAPI Shield | $0 |
 | TikTok tracking | WeltPixel | $39/month | TikTok Events API | $0 |
 | Inventory | Inventory Planner | $99/month | Stocky Swap | $0 |
 | Email marketing | Klaviyo (5k contacts) | $100/month | Systeme.io | $0 |

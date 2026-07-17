@@ -14,7 +14,7 @@ faqs:
   - question: "Why do Shopify app costs keep increasing?"
     answer: "Three main reasons: usage-based pricing (Klaviyo, Gorgias) means costs grow automatically as your store grows; annual price increases across most SaaS tools average 10–20% per year; and feature expansion means tools that started as single-purpose apps now charge for bundles including features you may not use. Many stores are also double-paying — using an app for a function that another app they already pay for could handle."
   - question: "Which Shopify apps have free replacements?"
-    answer: "The most common paid apps with free replacements in 2026: server-side tracking apps like Elevar ($200–$950/month) replaced by CAPI Shield free; Shopify Stocky replaced by Stocky Swap free before August 2026 shutdown; Klaviyo ($150-400/month) replaced by Systeme.io free up to 2,000 contacts; TikTok tracking apps replaced by Make.com Events API free; P&L reporting apps replaced by Shopify P&L Auto free."
+    answer: "The most common paid apps with free replacements in 2026: server-side tracking apps like Elevar ($225–$1,250/month) replaced by CAPI Shield free; Shopify Stocky replaced by Stocky Swap free before August 2026 shutdown; Klaviyo ($150-400/month) replaced by Systeme.io free up to 2,000 contacts; TikTok tracking apps replaced by Make.com Events API free; P&L reporting apps replaced by Shopify P&L Auto free."
   - question: "Does removing Shopify apps affect store performance?"
     answer: "Removing unnecessary apps almost always improves store performance. Each app adds JavaScript to your storefront. Tracking and marketing apps are particularly heavy — some load 200–400KB of JavaScript on every page. Removing three to five apps can meaningfully improve Core Web Vitals scores, particularly Largest Contentful Paint and Total Blocking Time."
 relatedGuides:
@@ -48,8 +48,8 @@ The number you see on your credit card statement understates the true cost of Sh
 
 | App | Monthly cost | What it does |
 |---|---|---|
-| Elevar | $200/month | Server-side tracking for Meta + Google |
-| Triple Whale | $149–$749/month | Attribution + server-side tracking |
+| Elevar | $225/month | Server-side tracking for Meta + Google |
+| Triple Whale | GMV-based | Attribution + server-side tracking |
 | Northbeam | $300–$500/month | Multi-touch attribution |
 | Analyzify | $149/month | GA4 + server-side tracking |
 | WeltPixel | $39–$99/month | TikTok Events API |
@@ -105,7 +105,7 @@ Here is what a mid-sized Shopify store ($50,000–$150,000/month GMV) typically 
 
 | Category | App | Monthly cost |
 |---|---|---|
-| Server-side tracking | Elevar | $200 |
+| Server-side tracking | Elevar | $225 |
 | Email marketing | Klaviyo (10k contacts) | $175 |
 | Inventory | Inventory Planner | $99 |
 | P&L reporting | BeProfit | $49 |

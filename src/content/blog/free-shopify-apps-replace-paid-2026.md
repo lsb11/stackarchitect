@@ -18,7 +18,7 @@ faqs:
   - question: "What is the best free alternative to Shopify Stocky before the August 2026 shutdown?"
     answer: "Stocky Swap by Stack Architect is the best free Stocky alternative before the August 31, 2026 shutdown. It logs every Shopify order to Google Sheets in real time via Make.com webhook, capturing stock levels, SKU data, fulfilment status, and full order history. It deploys in 4 minutes, costs $0 forever, and runs on Make.com's free tier. Unlike paid alternatives (Linnworks, Skubana, Inventory Planner), Stocky Swap stores your data in your own Google account with no vendor lock-in."
   - question: "How much can a Shopify store save by switching to free apps?"
-    answer: "Based on the verified pricing differences between paid Shopify apps and their free alternatives, the average monthly saving works out at around $742 per month, or $8,904 per year. The breakdown: server-side tracking ($149–$299/month saved), email marketing ($150–$400/month saved), inventory management ($29–$199/month saved), P&L reporting ($19–$99/month saved), and automation platform ($79–$200/month saved). Stores currently paying for all five categories save between $426 and $1,197 per month by switching to free alternatives."
+    answer: "Based on the verified pricing differences between paid Shopify apps and their free alternatives, the average monthly saving works out at around $985 per month, or $11,820 per year. The breakdown: server-side tracking ($145–$650/month saved), email marketing ($150–$400/month saved), inventory management ($29–$199/month saved), P&L reporting ($19–$99/month saved), and automation platform ($79–$200/month saved). Stores currently paying for all five categories save between $426 and $1,197 per month by switching to free alternatives."
 relatedGuides:
   - title: "CAPI Shield — Free Server-Side Tracking"
     href: "/capi-shield"
@@ -41,7 +41,7 @@ This is the complete list of free replacements for the most common paid Shopify 
 
 ## Server-Side Tracking — Replace Elevar, Triple Whale, Analyzify
 
-**Paid cost:** $99–$299/month  
+**Paid cost:** $145–$650/month  
 **Free replacement:** [CAPI Shield](/capi-shield/) via Make.com — $0
 
 Elevar, Triple Whale, and Analyzify all charge monthly fees to route Shopify purchase events to Meta Conversions API and Google Enhanced Conversions server-to-server. CAPI Shield achieves identical Event Match Quality scores (7–8.5) using a Make.com webhook at $0 per month.
