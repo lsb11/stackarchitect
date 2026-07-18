@@ -29,6 +29,8 @@ relatedGuides:
     badge: "iOS"
 ---
 
+# Meta One-Click Conversions API for Shopify: What It Fixes — and the Two Gaps It Leaves
+
 **TL;DR:** On 15 April 2026 Meta shipped a free, one-click Conversions API setup inside Events Manager. Turn it on today — it takes two minutes, costs nothing, and Meta measures a 17.8% lower cost per result for advertisers running CAPI on web events. But know exactly what you switched on: a server-side *mirror of your browser Pixel*, for *Meta only*. The two failure modes it doesn't fix — events the Pixel never fires, and every non-Meta platform — are the two that a [free Shopify webhook setup](/capi-shield/) exists to solve.
 
 ## What Meta actually released

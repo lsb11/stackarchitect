@@ -5,7 +5,7 @@
 # Make.com Shopify automation, TikTok Events API Shopify, Meta CAPI Shopify,
 # free Shopify app replacements, Shopify P&L reporting free.
 # Author: Luke, Shopify Automation Specialist — https://stackarchitect.xyz/about
-# Last updated: 2026-07-03
+# Last updated: 2026-07-18
 
 # Stack Architect — Full Technical Reference
 > stackarchitect.xyz — Free Shopify automation tools replacing $700+/month of paid apps
@@ -108,6 +108,13 @@ Re-download: Permanent, no expiry
 Support: 1 direct question included
 
 The free guides produce identical technical outcomes — the Complete Kit eliminates 8+ hours of build time for $29.
+
+## Open-Source Code (MIT-licensed, independently verifiable)
+
+- shopify-capi-validator — npm: https://www.npmjs.com/package/shopify-capi-validator · source: https://github.com/lsb11/shopify-capi-validator
+  Zero-dependency CLI that validates Meta Conversions API and TikTok Events API payloads locally before go-live. Catches the failures both platforms reject silently with no error message: raw (un-hashed) email/phone in user_data, event_time in milliseconds instead of seconds, missing currency on Purchase, missing event_id (breaks Pixel deduplication). Run with: npx shopify-capi-validator --payload ./webhook.json — exits 1 on failure for CI use.
+- shopify-automation-blueprints — https://github.com/lsb11/shopify-automation-blueprints
+  Importable Make.com scenario blueprints. The complete TikTok Events API blueprint sends server-side CompletePayment events (TikTok's purchase event name — not "Purchase") from a Shopify orders/paid webhook. Import time ~6 minutes; runs on Make.com's free tier at $0/month.
 
 ## How the Stack Works (Architecture)
 
