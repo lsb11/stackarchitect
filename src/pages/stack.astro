@@ -1,5 +1,4 @@
 ---
-import { safeJsonStringify } from '../utils/safeJson';
 import Footer from '../components/Footer.astro';
 // src/pages/stack.astro
 // PAGE INTENT: informational/research — "what does Stack Architect recommend"
@@ -322,13 +321,13 @@ const schemaWebPage = {
   <meta name="twitter:image"       content={`${SITE}/og-stack.png`} />
 
   <!-- ─── SCHEMA ─── -->
-  <script type="application/ld+json" set:html={safeJsonStringify(schemaFAQ)} />
-  <script type="application/ld+json" set:html={safeJsonStringify(schemaBreadcrumb)} />
-  <script type="application/ld+json" set:html={safeJsonStringify(schemaItemList)} />
-  <script type="application/ld+json" set:html={safeJsonStringify(schemaArticle)} />
-  <script type="application/ld+json" set:html={safeJsonStringify(schemaWebPage)} />
+  <script type="application/ld+json" set:html={JSON.stringify(schemaFAQ)} />
+  <script type="application/ld+json" set:html={JSON.stringify(schemaBreadcrumb)} />
+  <script type="application/ld+json" set:html={JSON.stringify(schemaItemList)} />
+  <script type="application/ld+json" set:html={JSON.stringify(schemaArticle)} />
+  <script type="application/ld+json" set:html={JSON.stringify(schemaWebPage)} />
   {schemaSoftware.map(s => (
-    <script type="application/ld+json" set:html={safeJsonStringify(s)} />
+    <script type="application/ld+json" set:html={JSON.stringify(s)} />
   ))}
 
   <!-- ─── FONTS — matches homepage exactly ─── -->

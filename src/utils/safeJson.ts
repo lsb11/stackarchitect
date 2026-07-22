@@ -9,8 +9,8 @@
  */
 export function safeJsonStringify(obj: any, replacer?: (this: any, key: string, value: any) => any, space?: string | number): string {
   const jsonString = JSON.stringify(obj, replacer, space);
-  return jsonString?
+  return jsonString
     .replace(/</g, '\\u003c')
     .replace(/>/g, '\\u003e')
-    .replace(/&/g, '\\u0026') ?? '';
+    .replace(/&/g, '\\u0026');
 }
