@@ -1,4 +1,5 @@
 ---
+import { safeJsonStringify } from '../utils/safeJson';
 import Nav from '../components/Nav.astro';
 import StockLogPromo from '../components/StockLogPromo.astro';
 import RelatedGuides from '../components/RelatedGuides.astro';
@@ -137,7 +138,7 @@ const jsonLd = {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" />
 
-  <script type="application/ld+json" set:html={JSON.stringify(jsonLd, null, 2)} />
+  <script type="application/ld+json" set:html={safeJsonStringify(jsonLd, null, 2)} />
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

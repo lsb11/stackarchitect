@@ -1,4 +1,5 @@
 ---
+import { safeJsonStringify } from '../utils/safeJson';
 /**
  * Evidence.astro — proof block for real screenshots / recordings.
  *
@@ -96,7 +97,7 @@ const schema = videoSrc
   </figcaption>
 </figure>
 
-<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+<script type="application/ld+json" set:html={safeJsonStringify(schema)} />
 
 <style>
   .evidence {

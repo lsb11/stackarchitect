@@ -1,4 +1,5 @@
 ---
+import { safeJsonStringify } from '../utils/safeJson';
 import '../styles/global.css';
 
 interface BreadcrumbItem {
@@ -302,7 +303,7 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
     />
 
     <!-- JSON-LD Schema -->
-    {allSchemas.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+    {allSchemas.map((s) => <script type="application/ld+json" set:html={safeJsonStringify(s)} />)}
 
     <!-- Favicon -->
    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

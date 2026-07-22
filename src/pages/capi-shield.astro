@@ -1,4 +1,5 @@
 ---
+import { safeJsonStringify } from '../utils/safeJson';
 import Disclosure from "../components/Disclosure.astro";
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
@@ -252,7 +253,7 @@ import AttributionTracker from '../components/AttributionTracker.astro';
   <meta name="twitter:image"       content={OG_IMAGE} />
 
   <!-- ─── JSON-LD: 5 schema blocks ─── -->
-  <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
+  <script type="application/ld+json" set:html={safeJsonStringify(schemaGraph)} />
 
   <!-- ─── Fonts — preconnect first, then stylesheet ─── -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -272,7 +273,7 @@ import AttributionTracker from '../components/AttributionTracker.astro';
   
     <!-- Feed discovery -->
     <link rel="alternate" type="application/rss+xml" title="Stack Architect — Shopify Automation Guides" href="/rss.xml" />
-    <script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps \u2014 server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
+    <script type="application/ld+json" set:html={safeJsonStringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps \u2014 server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
   </head>
 
 <body>

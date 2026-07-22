@@ -1,4 +1,5 @@
 ---
+import { safeJsonStringify } from '../utils/safeJson';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 // src/pages/best-ai-tools-shopify.astro
@@ -166,10 +167,10 @@ const breadcrumbSchema = {
   <meta name="twitter:image"       content="https://stackarchitect.xyz/og.png" />
 
   <!-- ── JSON-LD Schemas ──────────────────────────────────────── -->
-  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <script type="application/ld+json" set:html={safeJsonStringify(articleSchema)} />
+  <script type="application/ld+json" set:html={safeJsonStringify(itemListSchema)} />
+  <script type="application/ld+json" set:html={safeJsonStringify(faqSchema)} />
+  <script type="application/ld+json" set:html={safeJsonStringify(breadcrumbSchema)} />
 
   <!-- ── Fonts ────────────────────────────────────────────────── -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -689,7 +690,7 @@ const breadcrumbSchema = {
   
     <!-- Feed discovery -->
     <link rel="alternate" type="application/rss+xml" title="Stack Architect — Shopify Automation Guides" href="/rss.xml" />
-    <script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps \u2014 server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
+    <script type="application/ld+json" set:html={safeJsonStringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps \u2014 server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
   </head>
 
 <body>

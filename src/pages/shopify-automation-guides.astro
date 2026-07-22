@@ -1,4 +1,5 @@
 ---
+import { safeJsonStringify } from '../utils/safeJson';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 // src/pages/shopify-automation-guides.astro
@@ -235,11 +236,11 @@ const schemaSoftwareApp = {
   <meta http-equiv="last-modified" content="Sat, 20 Jun 2026 00:00:00 GMT" />
 
   <!-- ── SCHEMA ── -->
-  <script type="application/ld+json" set:html={JSON.stringify(schemaWebPage)} />
-  <script type="application/ld+json" set:html={JSON.stringify(schemaItemList)} />
-  <script type="application/ld+json" set:html={JSON.stringify(schemaFAQ)} />
-  <script type="application/ld+json" set:html={JSON.stringify(schemaBreadcrumb)} />
-  <script type="application/ld+json" set:html={JSON.stringify(schemaSoftwareApp)} />
+  <script type="application/ld+json" set:html={safeJsonStringify(schemaWebPage)} />
+  <script type="application/ld+json" set:html={safeJsonStringify(schemaItemList)} />
+  <script type="application/ld+json" set:html={safeJsonStringify(schemaFAQ)} />
+  <script type="application/ld+json" set:html={safeJsonStringify(schemaBreadcrumb)} />
+  <script type="application/ld+json" set:html={safeJsonStringify(schemaSoftwareApp)} />
 
   <!-- ── FONTS ── -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
