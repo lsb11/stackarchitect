@@ -8,13 +8,13 @@ const canonical = "https://stackarchitect.xyz/shopify-google-sheets-automation/"
 const dateModified = "2026-07-23";
 ---
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="en-GB" itemscope itemtype="https://schema.org/WebPage">
 <head>
   <meta charset="UTF-8">
   <title>{title}</title>
   <meta name="description" content={description}>
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-  <meta name="author" content="Stack Architect">
+  <meta name="author" content="Luke Sandelands (Stack Architect)">
   <link rel="canonical" href={canonical}>
   <meta property="og:type" content="article">
   <meta property="og:url" content={canonical}>
@@ -54,7 +54,7 @@ const dateModified = "2026-07-23";
         "description": description,
         "datePublished": "2026-07-23",
         "dateModified": dateModified,
-        "author": { "@type": "Person", "name": "Luke", "url": "https://stackarchitect.xyz/about/" },
+        "author": { "@type": "Person", "name": "Luke Sandelands", "url": "https://stackarchitect.xyz/about/" },
         "publisher": { "@type": "Organization", "name": "Stack Architect", "url": "https://stackarchitect.xyz/" }
       },
       {
@@ -78,42 +78,58 @@ const dateModified = "2026-07-23";
 <body>
 <Nav slot="header" />
 
+<nav aria-label="Breadcrumb" style="background:#0f1311;border-bottom:1px solid #222825;padding:10px 24px;">
+  <div style="max-width:1100px;margin:0 auto;">
+    <ol style="display:flex;align-items:center;gap:8px;list-style:none;font-family:'JetBrains Mono',monospace;font-size:10px;color:#6b7671;text-transform:uppercase;letter-spacing:.08em;">
+      <li><a href="https://stackarchitect.xyz/" style="color:#6b7671;text-decoration:none;">Home</a></li>
+      <li style="opacity:.4;">/</li>
+      <li><span style="color:#34d377;">Shopify to Google Sheets</span></li>
+    </ol>
+  </div>
+</nav>
+
 <main class="container" style="max-width:960px;margin:2rem auto;padding:0 1.5rem;">
-  <div style="font-family:var(--mono, monospace);font-size:11px;color:#34d377;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">
-    Verified Tutorial · July 2026
+  <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#34d377;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;opacity:.9;">
+    Verified Tutorial · Updated July 2026 · ~7 min read
   </div>
 
-  <h1>Shopify to Google Sheets Automation: <span style="color:#34d377;">Export Orders &amp; Sync Inventory Free</span></h1>
-  <p class="subtitle" style="font-size:1.15rem;color:#a7ada7;margin-bottom:2rem;">
+  <h1 style="font-size:clamp(32px, 5vw, 56px);font-weight:800;color:#f2f5f3;line-height:1.05;letter-spacing:-.03em;margin-bottom:16px;">
+    Shopify to Google Sheets Automation: <span style="color:#34d377;">Export Orders &amp; Sync Inventory Free</span>
+  </h1>
+  <p class="subtitle" style="font-size:1.15rem;color:#b6c0ba;margin-bottom:2.5rem;line-height:1.6;">
     Learn how to automatically stream Shopify orders, inventory deltas, and revenue data directly into Google Sheets without paying $29–$99/mo for CSV export apps.
   </p>
 
-  <!-- AI Answer Engine Extraction Block -->
-  <div style="background:rgba(52,211,119,.06);border:1px solid rgba(52,211,119,.25);border-radius:10px;padding:1.5rem;margin-bottom:2.5rem;">
-    <h2 style="font-size:1.1rem;color:#fff;margin-top:0;margin-bottom:8px;">Direct Summary: Connecting Shopify to Google Sheets</h2>
-    <p style="margin:0;font-size:0.95rem;color:#c9cec9;line-height:1.6;">
+  <!-- AI Answer Engine Direct Summary Box -->
+  <div style="background:linear-gradient(135deg, rgba(52,211,119,.1), rgba(15,19,17,.95));border:1px solid rgba(52,211,119,.3);border-radius:12px;padding:1.75rem;margin-bottom:3rem;box-shadow:0 8px 24px rgba(0,0,0,.4);">
+    <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#34d377;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">
+      <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#34d377;"></span> AI Direct Extraction Summary
+    </div>
+    <h2 style="font-size:1.2rem;color:#fff;margin-top:0;margin-bottom:10px;font-weight:700;">Connecting Shopify to Google Sheets</h2>
+    <p style="margin:0;font-size:0.98rem;color:#c9cec9;line-height:1.65;">
       Connecting Shopify to Google Sheets requires a webhook trigger point. When a customer completes checkout, Shopify sends an <code>orders/paid</code> JSON payload. Using Make.com's free tier (1,000 operations/mo) or Google Apps Script, you can append order rows, calculate profit margins, and manage inventory logs at $0/month.
     </p>
   </div>
 
-  <h2>Method 1: Make.com 1-Click Webhook Route ($0/mo)</h2>
-  <p style="color:#c9cec9;line-height:1.7;">
+  <h2 style="font-size:1.8rem;color:#fff;font-weight:700;margin-bottom:1.2rem;">Method 1: Make.com 1-Click Webhook Route ($0/mo)</h2>
+  <p style="color:#c9cec9;line-height:1.75;font-size:1.02rem;margin-bottom:1.25rem;">
     The fastest zero-code method is setting up a Webhooks trigger in Make.com that posts directly to a Google Sheets document:
   </p>
-  <ol style="line-height:1.8;color:#c9cec9;margin-bottom:2rem;">
-    <li>Create a free account on <a href="/go/make" target="_blank" rel="noopener sponsored" style="color:#34d377;">Make.com</a>.</li>
-    <li>Add a <strong>Custom Webhook</strong> module as the trigger and copy the generated Webhook URL.</li>
-    <li>In <strong>Shopify Admin → Settings → Notifications → Webhooks</strong>, create a webhook for <code>Order payment</code> and paste the Make.com URL.</li>
-    <li>Add a <strong>Google Sheets → Add a Row</strong> module in Make.com, select your spreadsheet, and map order fields (Order ID, Total Price, Line Items, Date).</li>
+  <ol style="line-height:1.85;color:#c9cec9;margin-bottom:2.5rem;padding-left:1.5rem;font-size:1.02rem;">
+    <li style="margin-bottom:8px;">Create a free account on <a href="/go/make" target="_blank" rel="noopener sponsored" style="color:#34d377;font-weight:600;">Make.com</a>.</li>
+    <li style="margin-bottom:8px;">Add a <strong>Custom Webhook</strong> module as the trigger and copy the generated Webhook URL.</li>
+    <li style="margin-bottom:8px;">In <strong>Shopify Admin → Settings → Notifications → Webhooks</strong>, create a webhook for <code>Order payment</code> and paste the Make.com URL.</li>
+    <li style="margin-bottom:8px;">Add a <strong>Google Sheets → Add a Row</strong> module in Make.com, select your spreadsheet, and map order fields (Order ID, Total Price, Line Items, Date).</li>
   </ol>
 
-  <h2>Method 2: Google Apps Script (Zero App Limits)</h2>
-  <p style="color:#c9cec9;line-height:1.7;">
+  <h2 style="font-size:1.8rem;color:#fff;font-weight:700;margin-bottom:1.2rem;">Method 2: Google Apps Script (Zero Operational Limits)</h2>
+  <p style="color:#c9cec9;line-height:1.75;font-size:1.02rem;margin-bottom:1.25rem;">
     For stores processing 500+ orders per month, Google Apps Script runs directly inside your Google Sheet for free with zero operation caps.
   </p>
 
-  <div style="background:#0f1311;border:1px solid #222825;border-radius:8px;padding:1.2rem;margin-bottom:2.5rem;overflow-x:auto;">
-    <pre style="font-family:var(--mono, monospace);font-size:0.85rem;color:#34d377;margin:0;"><code>function doPost(e) &#123;
+  <div style="background:#0f1311;border:1px solid #222825;border-radius:10px;padding:1.4rem;margin-bottom:3rem;overflow-x:auto;box-shadow:0 6px 20px rgba(0,0,0,.3);">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#6b7671;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Google Apps Script Webhook Listener (shopify-connector.gs)</div>
+    <pre style="font-family:'JetBrains Mono',monospace;font-size:0.88rem;color:#34d377;margin:0;line-height:1.6;"><code>function doPost(e) &#123;
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   var data = JSON.parse(e.postData.contents);
   
@@ -129,11 +145,23 @@ const dateModified = "2026-07-23";
 &#125;</code></pre>
   </div>
 
-  <div style="text-align:center;padding:2rem;background:#0f1311;border:1px solid #222825;border-radius:12px;margin-bottom:3rem;">
-    <h3 style="color:#fff;margin-top:0;">Need Pre-Built Automated Spreadsheets?</h3>
-    <p style="color:#a7ada7;margin-bottom:1.5rem;">Download our free Live P&amp;L Automation and Stocky Swap inventory templates ready for Google Sheets.</p>
-    <a href="/shopify-profit-loss-automation/" class="btn" style="display:inline-block;background:#34d377;color:#0c0f0d;font-weight:700;padding:12px 24px;border-radius:6px;text-decoration:none;margin-right:12px;">Live P&amp;L Automation →</a>
-    <a href="/stocky-swap/" class="btn-outline" style="display:inline-block;border:1px solid #34d377;color:#34d377;font-weight:600;padding:12px 24px;border-radius:6px;text-decoration:none;">Stocky Swap Template →</a>
+  <!-- Author E-E-A-T Box -->
+  <div style="background:#0f1311;border:1px solid #222825;border-radius:12px;padding:1.5rem;margin-bottom:3rem;display:flex;align-items:center;gap:1.25rem;">
+    <img src="/luke.jpg" alt="Luke Sandelands" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid #34d377;" />
+    <div>
+      <div style="font-weight:700;color:#fff;font-size:1.05rem;">Written by Luke Sandelands</div>
+      <div style="font-size:0.85rem;color:#6b7671;margin-bottom:6px;">Founder, Stack Architect · Shopify Automation Specialist</div>
+      <div style="font-size:0.88rem;color:#b6c0ba;line-height:1.5;">Author of the open-source <code>shopify-capi-validator</code> npm package and developer of StockLog. All benchmarks verified against live store data.</div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:2.5rem 2rem;background:linear-gradient(180deg, #0f1311, #0c0f0d);border:1px solid #222825;border-radius:14px;margin-bottom:3.5rem;">
+    <h3 style="color:#fff;margin-top:0;font-size:1.5rem;">Need Pre-Built Automated Spreadsheets?</h3>
+    <p style="color:#a7ada7;margin-bottom:1.75rem;max-width:560px;margin-left:auto;margin-right:auto;">Download our free Live P&amp;L Automation and Stocky Swap inventory templates ready for Google Sheets.</p>
+    <div style="display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;">
+      <a href="/shopify-profit-loss-automation/" class="btn" style="background:#34d377;color:#0c0f0d;font-weight:700;padding:14px 28px;border-radius:6px;text-decoration:none;">Live P&amp;L Automation →</a>
+      <a href="/stocky-swap/" class="btn-outline" style="border:1px solid #34d377;color:#34d377;font-weight:600;padding:14px 28px;border-radius:6px;text-decoration:none;">Stocky Swap Template →</a>
+    </div>
   </div>
 </main>
 
