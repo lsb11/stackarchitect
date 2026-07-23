@@ -821,7 +821,8 @@ const schema = {
     }
 
     const sleep = ms => new Promise(r => setTimeout(r,ms));
-    const defaultApps = () => ['Klaviyo','Triple Whale','Gorgias'].map(n => appLibrary.find(a => a.name===n)).filter(Boolean);
+    const defaultAppsCache = appLibrary.filter(a => a.name === 'Klaviyo' || a.name === 'Triple Whale' || a.name === 'Gorgias');
+    const defaultApps = () => defaultAppsCache;
 
     // ── RENDER ────────────────────────────────────────────────────
     function renderResults(detected, domain) {
