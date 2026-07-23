@@ -110,9 +110,20 @@ for (const f of htmlFiles) {
 
 
   // dead onclick handlers: onclick="fn()" must resolve to a global in the page
-  for (const fn of new Set([...html.matchAll(/onclick="(\w+)\(/g)].map(m=>m[1]))) {
-    if (!(new RegExp('function\\s+'+fn+'\\b').test(html) || new RegExp('window\\.'+fn+'\\s*=').test(html)))
-      err(`${page} — onclick handler ${fn}() has NO global definition (script bundled as module? use is:inline)`);
+  const fnsArr = [...new Set([...html.matchAll(/onclick="(\w+)\(/g)].map(m=>m[1]))];
+  if (fnsArr.length > 0) {
+    const fnsPattern = fnsArr.join('|');
+    const defRegex = new RegExp(`(?:function\\s+(${fnsPattern})\\b)|(?:window\\.(${fnsPattern})\\s*=)`, 'g');
+    const existingFns = new Set();
+    for (const match of html.matchAll(defRegex)) {
+      if (match[1]) existingFns.add(match[1]);
+      if (match[2]) existingFns.add(match[2]);
+      if (existingFns.size === fnsArr.length) break;
+    }
+    for (const fn of fnsArr) {
+      if (!existingFns.has(fn))
+        err(`${page} — onclick handler ${fn}() has NO global definition (script bundled as module? use is:inline)`);
+    }
   }
 
   // JSON-LD validity
