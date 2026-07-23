@@ -12,7 +12,7 @@ const err = (m) => errors.push(m);
 const warn = (m) => warns.push(m);
 
 // ---- collect built pages -------------------------------------------------
-function walk(dir) {
+export function walk(dir) {
   const out = [];
   for (const e of readdirSync(dir, { withFileTypes: true })) {
     const p = join(dir, e.name);
@@ -21,6 +21,8 @@ function walk(dir) {
   }
   return out;
 }
+
+if (import.meta.filename === process.argv[1]) {
 const files = walk(DIST);
 const htmlFiles = files.filter((f) => f.endsWith('.html'));
 const builtPaths = new Set(
@@ -172,3 +174,4 @@ errors.forEach((e) => console.log('ERR  ' + e));
 console.log(`\n===== ${warns.length} WARNINGS =====`);
 warns.forEach((w) => console.log('warn ' + w));
 process.exit(errors.length ? 1 : 0);
+}
