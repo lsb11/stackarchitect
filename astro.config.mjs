@@ -208,34 +208,7 @@ export default defineConfig({
   integrations: [
     sitemap({
       filter: (page) => {
-        // ── TIER-3 SOFT PRUNE (2026-07-08) ─────────────────────────────
-        // These URLs stay LIVE (no 404, no noindex, no redirect) so any
-        // Bing-indexed copy is untouched — but they are removed from the
-        // sitemap so Google's quality re-evaluation runs against the
-        // curated ~40-URL core, not the full long tail. Every URL below
-        // had ≈0 impressions across 3 months of GSC + Bing data and is a
-        // thin variant of a stronger page. If one starts earning traffic
-        // or links, delete it from this list to re-include it.
-        // Full-prune trigger (noindex/301): see ACTION-PLAN.md §3.
-        const SITEMAP_EXCLUDE = [
-          '/autocrat-vs-native-google-sheets-speed-calculator/',
-          '/ga4-vs-shopify-revenue-reconciler/',
-          '/shopify-influencer-gifting-roi-calculator/',
-          '/shopify-plan-upgrade-break-even-calculator/',
-          '/shopify-plus-break-even-revenue-calculator/',
-          '/shopify-shipping-margin-calculator/',
-          '/shopify-app-pricing-index/',
-          '/shopify-tracking-tools-pricing/',
-          '/tiktok-vs-meta-roas-bridge-calculator/',
-          '/shopify-profit-loss-leak-finder/',
-          '/shopify-scripts-sunset-audit/',
-          '/shopify-agentic-storefront-readiness-checker/',
-          '/shopify-app-stack-kill-or-keep-auditor/',
-          '/klaviyo-to-systeme-migration-savings-calculator/',
-          '/shopify-vs-meta-attribution-gap-calculator/',
-          '/meta-emq-score-estimator/',
-        ];
-        if (SITEMAP_EXCLUDE.some((p) => page.endsWith(p))) return false;
+        // Exclude utility/embed pages from sitemap
         return !page.includes('/sitemap-page') && !page.includes('/embed/');
       },
       serialize(item) {

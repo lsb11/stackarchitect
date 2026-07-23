@@ -22,7 +22,7 @@ export function walk(dir) {
   return out;
 }
 
-if (import.meta.filename === process.argv[1]) {
+if (process.argv[1] && process.argv[1].endsWith('seo-audit.mjs')) {
 const files = walk(DIST);
 const htmlFiles = files.filter((f) => f.endsWith('.html'));
 const builtPaths = new Set(
@@ -138,9 +138,9 @@ for (const f of htmlFiles) {
 for (const [t, pages] of titles) if (pages.length > 1) warn(`DUPLICATE TITLE on ${pages.join(' , ')} :: "${t.slice(0, 70)}"`);
 for (const [d, pages] of descs) if (pages.length > 1) warn(`DUPLICATE DESCRIPTION on ${pages.join(' , ')}`);
 
-// ---- sitemap checks --------------------------------------------------------
 const smIndex = join(DIST, 'sitemap-index.xml');
 if (!existsSync(smIndex)) err('sitemap-index.xml missing from dist');
+
 else {
   const sitemaps = [...readFileSync(smIndex, 'utf8').matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
   const smUrls = [];
