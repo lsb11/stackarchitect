@@ -1588,10 +1588,10 @@ document.getElementById('guides-submit')?.addEventListener('click', function () 
     return;
   }
   el.style.borderColor = '';
-  fetch('https://api.systeme.io/api/contacts', {
+  fetch('/api/submit-guide', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-API-Key': 'kdsymoc8fwhwwc604vrofp4jt0rb5bjosmzs5dqd4r8suo4avx4xsik4ixqvwgo4' },
-    body: JSON.stringify({ email, tags: [{ name: 'guides-capture' }] })
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email })
   }).catch(() => {});
   if (typeof gtag !== 'undefined') {
     gtag('event', 'guides_email_capture', { event_category: 'conversion', event_label: 'guides_hub' });
