@@ -1,9 +1,10 @@
 ---
+import Base from '../../layouts/Base.astro';
 // /embed/app-cost-calculator/ — iframe-able LIVE widget for the Shopify App Waste Calculator.
 // Designed to be embedded on agency websites and partner blogs to drive DR 70+ backlinks.
 import EmbedLayout from '../../layouts/EmbedLayout.astro';
 ---
-
+<Base title="Stack Architect" description="">
 <EmbedLayout
   title="Shopify App Waste Calculator — Stack Architect"
   canonical="https://stackarchitect.xyz/shopify-app-cost-calculator/"
@@ -57,7 +58,51 @@ import EmbedLayout from '../../layouts/EmbedLayout.astro';
     </a>
   </div>
 
-  <style>
+  
+
+  <script>
+    // Pure Vanilla JS for fast, dependency-free execution inside the iframe
+    document.addEventListener('DOMContentLoaded', function() {
+      var inputs = ['mkt', 'trk', 'inv'];
+      var ranges = {};
+      var values = {};
+      var totalEl = document.getElementById('scw-total');
+      
+      // Calculate Waste (assuming 85% is recoverable, as per canonical calculator)
+      function updateCalculation() {
+        var totalMonthly = 0;
+        inputs.forEach(function(key) {
+          var val = parseInt(ranges[key].value, 10) || 0;
+          values[key].textContent = val.toLocaleString();
+          totalMonthly += val;
+        });
+        
+        var annualWaste = totalMonthly * 12;
+        var recoverable = Math.round(annualWaste * 0.85); // 85% average recovery
+        
+        // Animate the number slightly
+        totalEl.style.opacity = '0.5';
+        setTimeout(function() {
+          totalEl.textContent = recoverable.toLocaleString();
+          totalEl.style.opacity = '1';
+        }, 50);
+      }
+      
+      inputs.forEach(function(key) {
+        ranges[key] = document.getElementById('range-' + key);
+        values[key] = document.getElementById('val-' + key);
+        
+        ranges[key].addEventListener('input', updateCalculation);
+      });
+      
+      // Initial calculation
+      updateCalculation();
+    });
+  </script>
+</EmbedLayout>
+</Base>
+
+<style>
     /* Premium Widget Aesthetics */
     .scw {
       font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
@@ -254,44 +299,3 @@ import EmbedLayout from '../../layouts/EmbedLayout.astro';
       text-decoration: underline;
     }
   </style>
-
-  <script>
-    // Pure Vanilla JS for fast, dependency-free execution inside the iframe
-    document.addEventListener('DOMContentLoaded', function() {
-      var inputs = ['mkt', 'trk', 'inv'];
-      var ranges = {};
-      var values = {};
-      var totalEl = document.getElementById('scw-total');
-      
-      // Calculate Waste (assuming 85% is recoverable, as per canonical calculator)
-      function updateCalculation() {
-        var totalMonthly = 0;
-        inputs.forEach(function(key) {
-          var val = parseInt(ranges[key].value, 10) || 0;
-          values[key].textContent = val.toLocaleString();
-          totalMonthly += val;
-        });
-        
-        var annualWaste = totalMonthly * 12;
-        var recoverable = Math.round(annualWaste * 0.85); // 85% average recovery
-        
-        // Animate the number slightly
-        totalEl.style.opacity = '0.5';
-        setTimeout(function() {
-          totalEl.textContent = recoverable.toLocaleString();
-          totalEl.style.opacity = '1';
-        }, 50);
-      }
-      
-      inputs.forEach(function(key) {
-        ranges[key] = document.getElementById('range-' + key);
-        values[key] = document.getElementById('val-' + key);
-        
-        ranges[key].addEventListener('input', updateCalculation);
-      });
-      
-      // Initial calculation
-      updateCalculation();
-    });
-  </script>
-</EmbedLayout>

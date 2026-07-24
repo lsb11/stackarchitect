@@ -1,7 +1,6 @@
 ---
-import Nav from '../components/Nav.astro';
+import Base from '../layouts/Base.astro';
 import AuthorCard from '../components/AuthorCard.astro';
-import Footer from '../components/Footer.astro';
 
 const SITE     = "https://stackarchitect.xyz";
 const CANON    = `${SITE}/best-free-shopify-apps-2026/`;
@@ -627,40 +626,9 @@ const schemaGraph = {
 };
 import TableOfContents from '../components/TableOfContents.astro';
 ---
-
-<!DOCTYPE html>
-<html lang="en-GB">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Best Free Shopify Apps 2026 — 40+ Tools Ranked Across 10 Categories</title>
-  <meta name="description" content="The definitive list of the best free Shopify apps in 2026 — 40+ genuinely free tools across tracking, email, inventory, automation, reviews, SEO, and more. Save $700+/month based on the verified pricing differences between paid apps and free alternatives." />
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-  <meta name="author" content="Stack Architect" />
-  <link rel="canonical" href={CANON} />
-  <link rel="alternate" hreflang="en-GB" href={CANON} />
-  <link rel="alternate" hreflang="en-US" href={CANON} />
-  <link rel="alternate" hreflang="en-AU" href={CANON} />
-  <link rel="alternate" hreflang="x-default" href={CANON} />
-
-  <meta property="og:type" content="article" />
-  <meta property="og:url" content={CANON} />
-  <meta property="og:title" content="Best Free Shopify Apps 2026 — 40+ Tools Ranked (Save $700+/Month)" />
-  <meta property="og:description" content="The definitive list of 40+ genuinely free Shopify apps across 10 categories — server-side tracking, email, inventory, automation, reviews, SEO, and more. " />
-  <meta property="og:image" content={OG} />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Best Free Shopify Apps 2026 — Stack Architect" />
-  <meta property="og:site_name" content="Stack Architect" />
-  <meta property="og:locale" content="en_GB" />
-
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Best Free Shopify Apps 2026 — 40+ Tools Ranked" />
-  <meta name="twitter:description" content="The definitive list of 40+ genuinely free Shopify apps. Save $700+/month based on verified vendor pricing pages." />
-  <meta name="twitter:image" content={OG} />
-
-  <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
+<Base title="Best Free Shopify Apps 2026 — 40+ Tools Ranked Across 10 Categories" description="The definitive list of the best free Shopify apps in 2026 — 40+ genuinely free tools across tracking, email, inventory, automation, reviews, SEO, and more. Save $700+/month based on the verified pricing differences between paid apps and free alternatives.">
+<Fragment slot="head">
+<script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -669,189 +637,11 @@ import TableOfContents from '../components/TableOfContents.astro';
 
   <!-- GA4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TE6Z6CW514"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-TE6Z6CW514');</script>
-
-  <style>
-    :root {
-      --g:#34d377;--g-bg:rgba(52,211,119,.07);--g-border:rgba(52,211,119,.2);
-      --bg:#0c0f0d;--bg-2:#0f1311;--bg-3:#121614;
-      --border:#222825;--border-2:#2f3733;
-      --text:#f2f5f3;--text-2:#b6c0ba;--text-3:#93a09a;--text-4:#6b7671;
-      --red:#f08a8a;--red-bg:rgba(240,138,138,.07);--red-border:rgba(240,138,138,.2);
-      --amber:#f5b64d;--amber-bg:rgba(245,182,77,.07);--amber-border:rgba(245,182,77,.2);
-      --mono:'JetBrains Mono',monospace;
-      --sans:'Inter',-apple-system,sans-serif;
-    }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{font-family:var(--sans);background:var(--bg);color:var(--text-3);line-height:1.7;-webkit-font-smoothing:antialiased}
-    a{text-decoration:none;color:inherit}
-
-    /* DIRECT ANSWER */
-    .direct-answer{background:var(--g-bg);border-top:1px solid var(--g-border);border-bottom:1px solid var(--g-border);padding:16px 24px}
-    .direct-answer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:flex-start;gap:14px}
-    .da-label{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--g);letter-spacing:.15em;white-space:nowrap;margin-top:3px;opacity:.7;text-transform:uppercase}
-    .direct-answer p{font-size:14px;color:var(--text-2);line-height:1.7;margin:0}
-
-    /* BREADCRUMB */
-    .breadcrumb{padding:14px 24px 0;max-width:1200px;margin:0 auto;display:flex;gap:7px;font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.06em;text-transform:uppercase;flex-wrap:wrap}
-    .breadcrumb a{color:var(--text-4);transition:color .15s}.breadcrumb a:hover{color:var(--g)}.bc-sep{color:var(--border)}
-
-    /* HERO */
-    .hero{padding:72px 24px 60px;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(52,211,119,.07) 0%,transparent 60%)}
-    .hero-inner{max-width:900px;margin:0 auto;text-align:center}
-    .hero-dateline{font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:8px}
-    .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--g);animation:dotPing 2.2s ease-in-out infinite;flex-shrink:0}
-    @keyframes dotPing{0%,100%{box-shadow:0 0 0 0 rgba(52,211,119,.4)}70%{box-shadow:0 0 0 8px rgba(52,211,119,0)}}
-    h1{font-size:clamp(36px,6vw,68px);font-weight:700;color:var(--text);letter-spacing:-.04em;line-height:.98;margin-bottom:28px}
-    h1 .grn{color:var(--g)}h1 .dim{color:var(--text-4)}
-    .hero-sub{font-size:clamp(16px,2.2vw,20px);color:var(--text-3);max-width:680px;margin:0 auto 32px;line-height:1.7}
-    .hero-sub strong{color:var(--text-2)}
-    .stat-strip{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-bottom:36px}
-    .stat-pill{background:var(--bg-2);border:1px solid var(--border);border-radius:8px;padding:12px 20px;text-align:center;min-width:110px}
-    .stat-pill .sv{font-family:var(--mono);font-size:18px;font-weight:800;color:var(--g);display:block;line-height:1}
-    .stat-pill .sl{font-size:11px;color:var(--text-4);margin-top:4px;text-transform:uppercase;letter-spacing:.08em}
-    .hero-ctas{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:12px}
-    .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:15px;font-weight:700;padding:14px 28px;border-radius:8px;background:var(--g);color:#0c0f0d;transition:all .2s;text-decoration:none}
-    .btn:hover{background:#45e28a;transform:translateY(-1px);box-shadow:0 8px 28px rgba(52,211,119,.3)}
-    .btn.pulse{animation:btnGlow 2.8s ease-in-out infinite}
-    @keyframes btnGlow{0%,100%{box-shadow:0 0 16px rgba(52,211,119,.1)}50%{box-shadow:0 0 28px rgba(52,211,119,.28)}}
-    .btn-outline{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:15px;font-weight:600;padding:14px 28px;border-radius:8px;border:1.5px solid var(--border-2);color:var(--text-2);transition:all .2s;text-decoration:none}
-    .btn-outline:hover{border-color:var(--g);color:var(--g)}
-    .hero-note{font-size:12px;color:var(--text-4);line-height:1.6}
-    .hero-note a{color:rgba(52,211,119,.6);text-decoration:underline}
-
-    /* CATEGORY NAV (sticky quick-jump) */
-    .cat-nav{background:var(--bg-2);border-bottom:1px solid var(--border);padding:14px 24px;position:sticky;top:64px;z-index:90}
-    .cat-nav-inner{max-width:1200px;margin:0 auto;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-    .cat-nav-label{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--text-4);letter-spacing:.12em;text-transform:uppercase;margin-right:6px;white-space:nowrap}
-    .cat-pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:5px 12px;border-radius:20px;background:var(--bg-3);border:1px solid var(--border);color:var(--text-4);cursor:pointer;text-decoration:none;transition:all .15s;white-space:nowrap}
-    .cat-pill:hover{background:var(--g-bg);border-color:var(--g-border);color:var(--g)}
-
-    /* MAIN LAYOUT */
-    .page-body{max-width:1200px;margin:0 auto;padding:0 24px 100px;display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start}
-    .sidebar{position:sticky;top:120px}
-    .sidebar-nav{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:20px}
-    .sidebar-label{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--text-4);letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px}
-    .sidebar-link{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;font-size:13px;color:var(--text-3);transition:all .15s;margin-bottom:2px;cursor:pointer;text-decoration:none}
-    .sidebar-link:hover,.sidebar-link.active{background:var(--g-bg);color:var(--text);border-color:var(--g-border)}
-    .sidebar-emoji{font-size:14px;width:20px;text-align:center}
-    .sidebar-cta{margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
-    .main-content{min-width:0}
-
-    /* CATEGORY SECTIONS */
-    .category-section{margin-bottom:64px;scroll-margin-top:130px}
-    .cat-header{margin-bottom:24px}
-    .cat-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:4px 10px;border-radius:3px;border:1px solid var(--border-2);color:var(--text-4);background:transparent;margin-bottom:14px}
-    .cat-title{font-size:clamp(22px,3vw,32px);font-weight:700;color:var(--text);letter-spacing:-.03em;line-height:1.05;margin-bottom:8px}
-    .cat-tagline{font-size:15px;color:var(--text-3);line-height:1.65}
-    .urgent-banner{background:var(--red-bg);border:1px solid var(--red-border);border-radius:8px;padding:12px 16px;margin-bottom:20px;display:flex;align-items:center;gap:10px}
-    .urgent-banner-text{font-size:13px;color:var(--red);line-height:1.5}
-
-    /* TOOL CARDS */
-    .tools-grid{display:flex;flex-direction:column;gap:16px}
-    .tool-card{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s}
-    .tool-card:hover{border-color:var(--border-2)}
-    .tool-card.stack-pick{border-color:rgba(52,211,119,.25);background:rgba(52,211,119,.02)}
-    .tool-card.warning{border-color:rgba(240,138,138,.25);background:rgba(240,138,138,.02)}
-    .tool-card-inner{padding:22px 24px}
-    .tool-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap}
-    .tool-name{font-size:17px;font-weight:800;color:var(--text);letter-spacing:-.02em}
-    .tool-badge{display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;letter-spacing:.04em;flex-shrink:0}
-    .badge-stack{background:var(--g-bg);border:1px solid var(--g-border);color:var(--g)}
-    .badge-native{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.2);color:#60a5fa}
-    .badge-affiliate{background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);color:#a78bfa}
-    .badge-freemium{background:rgba(245,182,77,.08);border:1px solid rgba(245,182,77,.2);color:var(--amber)}
-    .badge-free{background:rgba(52,211,119,.08);border:1px solid rgba(52,211,119,.15);color:var(--g)}
-    .badge-warning{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red)}
-    .tool-meta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:14px}
-    .tool-meta-item{font-size:12px;color:var(--text-4);display:flex;align-items:center;gap:5px}
-    .tool-meta-label{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-4)}
-    .tool-meta-val{font-weight:600;color:var(--text-3)}
-    .tool-meta-val.green{color:var(--g)}
-    .tool-desc{font-size:14px;color:var(--text-3);line-height:1.75;margin-bottom:16px}
-    .tool-detail{font-family:var(--mono);font-size:11px;color:var(--text-4);background:var(--bg-3);border-radius:6px;padding:8px 12px;margin-bottom:16px;line-height:1.6}
-    .tool-cta{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--g);padding:10px 18px;border-radius:7px;border:1px solid var(--g-border);background:var(--g-bg);transition:all .15s;text-decoration:none}
-    .tool-cta:hover{background:rgba(52,211,119,.12);transform:translateY(-1px)}
-    .tool-cta.warning-cta{color:var(--red);border-color:var(--red-border);background:var(--red-bg)}
-    .saves-badge{display:inline-flex;align-items:center;font-size:11px;font-weight:700;color:var(--g);background:var(--g-bg);border:1px solid var(--g-border);border-radius:6px;padding:3px 9px;margin-left:8px}
-
-    /* SAVINGS CALCULATOR */
-    .savings-widget{background:var(--bg-2);border:1px solid var(--border);border-radius:14px;padding:28px;margin-bottom:48px}
-    .savings-widget h2{font-size:20px;font-weight:800;color:var(--text);letter-spacing:-.02em;margin-bottom:6px}
-    .savings-widget p{font-size:14px;color:var(--text-3);margin-bottom:20px;line-height:1.65}
-    .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
-    .calc-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
-    .calc-row:last-child{border:none}
-    .calc-label{display:flex;align-items:center;gap:8px}
-    .calc-checkbox{width:16px;height:16px;accent-color:var(--g);cursor:pointer}
-    .calc-total{background:var(--g-bg);border:1px solid var(--g-border);border-radius:10px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;margin-top:16px}
-    .calc-total-label{font-size:13px;font-weight:600;color:var(--text-2)}
-    .calc-total-val{font-family:var(--mono);font-size:24px;font-weight:800;color:var(--g)}
-
-    /* FAQ */
-    .faq-section{margin-bottom:64px}
-    .sec-head{margin-bottom:28px}
-    .sec-head h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:var(--text);letter-spacing:-.03em;line-height:1.05;margin-bottom:8px}
-    .sec-head p{font-size:15px;color:var(--text-3);line-height:1.65}
-    .faq-list{display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:12px;overflow:hidden}
-    .faq-item{border-bottom:1px solid var(--border)}.faq-item:last-child{border:none}
-    .faq-q{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;background:transparent;border:none;padding:18px 20px;cursor:pointer;font-size:14px;font-weight:600;color:var(--text-2);text-align:left;font-family:var(--sans);transition:color .15s,background .15s}
-    .faq-q:hover{color:var(--text);background:rgba(255,255,255,.02)}
-    .faq-a{display:none;padding:0 20px 18px}.faq-a p{font-size:13px;color:var(--text-3);line-height:1.8}
-    .faq-a.open{display:block}
-    .faq-chev{flex-shrink:0;transition:transform .2s}
-    .faq-chev.open{transform:rotate(180deg)}
-
-    /* BOTTOM CTA */
-    .bottom-cta{background:var(--bg-2);border-top:1px solid var(--border);padding:80px 24px;text-align:center}
-    .bottom-cta-inner{max-width:640px;margin:0 auto}
-    .bottom-cta h2{font-size:clamp(26px,4vw,44px);font-weight:700;color:var(--text);letter-spacing:-.03em;line-height:1.05;margin-bottom:16px}
-    .bottom-cta h2 .grn{color:var(--g)}
-    .bottom-cta p{font-size:16px;color:var(--text-3);margin-bottom:28px;line-height:1.7}
-    .trust-row{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-top:20px}
-    .trust-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-4)}
-
-    /* FOOTER */
-    .footer{background:var(--bg-3);border-top:1px solid var(--border);padding:48px 24px 32px}
-    .footer-inner{max-width:1200px;margin:0 auto}
-    .footer-conversion{background:var(--g-bg);border:1px solid var(--g-border);border-radius:10px;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:36px}
-    .footer-conversion-text{font-size:14px;font-weight:600;color:var(--text-2)}.footer-conversion-text span{color:var(--text)}
-    .footer-conversion-cta{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:var(--g);color:#0c0f0d;padding:10px 18px;border-radius:5px;text-decoration:none;white-space:nowrap}
-    .footer-links{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
-    .footer-links a{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--text-4);padding:4px 10px;border:1px solid var(--border);border-radius:3px;transition:all .15s;text-decoration:none}
-    .footer-links a:hover{color:var(--g);border-color:var(--g-border)}
-    .footer-nav{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:20px}
-    .footer-nav a{font-size:12px;color:var(--text-4);transition:color .15s;text-decoration:none}.footer-nav a:hover{color:var(--g)}
-    .footer-divider{height:1px;background:var(--border);margin-bottom:16px}
-    .footer-copy{font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.1em;margin-bottom:8px}
-    .footer-disc{font-size:11px;color:var(--text-4);line-height:1.7;max-width:600px}.footer-disc a{color:var(--text-4);text-decoration:underline}
-
-    /* RESPONSIVE */
-    @media(max-width:900px){
-      .page-body{grid-template-columns:1fr;gap:0}
-      .sidebar{display:none}
-      .cat-nav{display:block}
-    }
-    @media(max-width:600px){
-      .hero{padding:48px 20px 40px}
-      .stat-strip{gap:8px}
-      .stat-pill{min-width:90px;padding:10px 14px}
-      .tool-card-inner{padding:18px 16px}
-      .calc-grid{grid-template-columns:1fr}
-      .direct-answer-inner{flex-direction:column;gap:6px}
-      .da-label{display:none}
-    }
-  </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","@id":"https://stackarchitect.xyz/#luke","name":"Luke","jobTitle":"Shopify Automation Specialist","url":"https://stackarchitect.xyz/about/","sameAs":["https://www.linkedin.com/in/luke-stackarchitect","https://www.linkedin.com/company/stack-architect-xyz/","https://github.com/lsb11","https://www.npmjs.com/package/shopify-capi-validator"],"worksFor":{"@type":"Organization","@id":"https://stackarchitect.xyz/#org"},"knowsAbout":["Shopify automation","server-side tracking","Meta Conversions API","Google Enhanced Conversions","TikTok Events API","Make.com","Google Sheets automation","Shopify app cost reduction","email marketing automation","Shopify inventory management","Shopify CAPI","Elevar alternative","Triple Whale alternative","Analyzify alternative","Northbeam alternative","Klaviyo alternative","Stocky alternative"]}</script>
-  
-    <!-- Feed discovery -->
-    <link rel="alternate" type="application/rss+xml" title="Stack Architect — Shopify Automation Guides" href="/rss.xml" />
-    <script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps \u2014 server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","@id":"https://stackarchitect.xyz/#luke","name":"Luke","jobTitle":"Shopify Automation Specialist","url":"https://stackarchitect.xyz/about/","sameAs":["https://www.linkedin.com/in/luke-stackarchitect","https://www.linkedin.com/company/stack-architect-xyz/","https://github.com/lsb11","https://www.npmjs.com/package/shopify-capi-validator"],"worksFor":{"@type":"Organization","@id":"https://stackarchitect.xyz/#org"},"knowsAbout":["Shopify automation","server-side tracking","Meta Conversions API","Google Enhanced Conversions","TikTok Events API","Make.com","Google Sheets automation","Shopify app cost reduction","email marketing automation","Shopify inventory management","Shopify CAPI","Elevar alternative","Triple Whale alternative","Analyzify alternative","Northbeam alternative","Klaviyo alternative","Stocky alternative"]}</script>
+<script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps \u2014 server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
   </head>
 
 <body>
-<Nav />
 
 <!-- DIRECT ANSWER BLOCK (AI citation extraction) -->
 <div class="direct-answer" role="note" aria-label="Direct answer">
@@ -1201,7 +991,6 @@ import TableOfContents from '../components/TableOfContents.astro';
 </div>
 
 <!-- FOOTER -->
-<Footer />
 
 <script>
   // Savings calculator
@@ -1237,8 +1026,223 @@ import TableOfContents from '../components/TableOfContents.astro';
   }, { rootMargin: '-20% 0px -70% 0px' });
   sections.forEach(function(s) { observer.observe(s); });
 </script>
+</Fragment>
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Best Free Shopify Apps 2026 — 40+ Tools Ranked Across 10 Categories</title>
+  <meta name="description" content="The definitive list of the best free Shopify apps in 2026 — 40+ genuinely free tools across tracking, email, inventory, automation, reviews, SEO, and more. Save $700+/month based on the verified pricing differences between paid apps and free alternatives." />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="author" content="Stack Architect" />
+  <link rel="canonical" href={CANON} />
+  <link rel="alternate" hreflang="en-GB" href={CANON} />
+  <link rel="alternate" hreflang="en-US" href={CANON} />
+  <link rel="alternate" hreflang="en-AU" href={CANON} />
+  <link rel="alternate" hreflang="x-default" href={CANON} />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content={CANON} />
+  <meta property="og:title" content="Best Free Shopify Apps 2026 — 40+ Tools Ranked (Save $700+/Month)" />
+  <meta property="og:description" content="The definitive list of 40+ genuinely free Shopify apps across 10 categories — server-side tracking, email, inventory, automation, reviews, SEO, and more. " />
+  <meta property="og:image" content={OG} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Best Free Shopify Apps 2026 — Stack Architect" />
+  <meta property="og:site_name" content="Stack Architect" />
+  <meta property="og:locale" content="en_GB" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Best Free Shopify Apps 2026 — 40+ Tools Ranked" />
+  <meta name="twitter:description" content="The definitive list of 40+ genuinely free Shopify apps. Save $700+/month based on verified vendor pricing pages." />
+  <meta name="twitter:image" content={OG} />
+
+  
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-TE6Z6CW514');</script>
+
+  
+  
+  
+    <!-- Feed discovery -->
+    <link rel="alternate" type="application/rss+xml" title="Stack Architect — Shopify Automation Guides" href="/rss.xml" />
+    
 
 
 
 </body>
-</html>
+</Base>
+
+<style>
+    :root {
+      --g:#34d377;--g-bg:rgba(52,211,119,.07);--g-border:rgba(52,211,119,.2);
+      --bg:#0c0f0d;--bg-2:#0f1311;--bg-3:#121614;
+      --border:#222825;--border-2:#2f3733;
+      --text:#f2f5f3;--text-2:#b6c0ba;--text-3:#93a09a;--text-4:#6b7671;
+      --red:#f08a8a;--red-bg:rgba(240,138,138,.07);--red-border:rgba(240,138,138,.2);
+      --amber:#f5b64d;--amber-bg:rgba(245,182,77,.07);--amber-border:rgba(245,182,77,.2);
+      --mono:'JetBrains Mono',monospace;
+      --sans:'Inter',-apple-system,sans-serif;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--sans);background:var(--bg);color:var(--text-3);line-height:1.7;-webkit-font-smoothing:antialiased}
+    a{text-decoration:none;color:inherit}
+
+    /* DIRECT ANSWER */
+    .direct-answer{background:var(--g-bg);border-top:1px solid var(--g-border);border-bottom:1px solid var(--g-border);padding:16px 24px}
+    .direct-answer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:flex-start;gap:14px}
+    .da-label{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--g);letter-spacing:.15em;white-space:nowrap;margin-top:3px;opacity:.7;text-transform:uppercase}
+    .direct-answer p{font-size:14px;color:var(--text-2);line-height:1.7;margin:0}
+
+    /* BREADCRUMB */
+    .breadcrumb{padding:14px 24px 0;max-width:1200px;margin:0 auto;display:flex;gap:7px;font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.06em;text-transform:uppercase;flex-wrap:wrap}
+    .breadcrumb a{color:var(--text-4);transition:color .15s}.breadcrumb a:hover{color:var(--g)}.bc-sep{color:var(--border)}
+
+    /* HERO */
+    .hero{padding:72px 24px 60px;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(52,211,119,.07) 0%,transparent 60%)}
+    .hero-inner{max-width:900px;margin:0 auto;text-align:center}
+    .hero-dateline{font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:8px}
+    .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--g);animation:dotPing 2.2s ease-in-out infinite;flex-shrink:0}
+    @keyframes dotPing{0%,100%{box-shadow:0 0 0 0 rgba(52,211,119,.4)}70%{box-shadow:0 0 0 8px rgba(52,211,119,0)}}
+    h1{font-size:clamp(36px,6vw,68px);font-weight:700;color:var(--text);letter-spacing:-.04em;line-height:.98;margin-bottom:28px}
+    h1 .grn{color:var(--g)}h1 .dim{color:var(--text-4)}
+    .hero-sub{font-size:clamp(16px,2.2vw,20px);color:var(--text-3);max-width:680px;margin:0 auto 32px;line-height:1.7}
+    .hero-sub strong{color:var(--text-2)}
+    .stat-strip{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-bottom:36px}
+    .stat-pill{background:var(--bg-2);border:1px solid var(--border);border-radius:8px;padding:12px 20px;text-align:center;min-width:110px}
+    .stat-pill .sv{font-family:var(--mono);font-size:18px;font-weight:800;color:var(--g);display:block;line-height:1}
+    .stat-pill .sl{font-size:11px;color:var(--text-4);margin-top:4px;text-transform:uppercase;letter-spacing:.08em}
+    .hero-ctas{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:12px}
+    .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:15px;font-weight:700;padding:14px 28px;border-radius:8px;background:var(--g);color:#0c0f0d;transition:all .2s;text-decoration:none}
+    .btn:hover{background:#45e28a;transform:translateY(-1px);box-shadow:0 8px 28px rgba(52,211,119,.3)}
+    .btn.pulse{animation:btnGlow 2.8s ease-in-out infinite}
+    @keyframes btnGlow{0%,100%{box-shadow:0 0 16px rgba(52,211,119,.1)}50%{box-shadow:0 0 28px rgba(52,211,119,.28)}}
+    .btn-outline{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:15px;font-weight:600;padding:14px 28px;border-radius:8px;border:1.5px solid var(--border-2);color:var(--text-2);transition:all .2s;text-decoration:none}
+    .btn-outline:hover{border-color:var(--g);color:var(--g)}
+    .hero-note{font-size:12px;color:var(--text-4);line-height:1.6}
+    .hero-note a{color:rgba(52,211,119,.6);text-decoration:underline}
+
+    /* CATEGORY NAV (sticky quick-jump) */
+    .cat-nav{background:var(--bg-2);border-bottom:1px solid var(--border);padding:14px 24px;position:sticky;top:64px;z-index:90}
+    .cat-nav-inner{max-width:1200px;margin:0 auto;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+    .cat-nav-label{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--text-4);letter-spacing:.12em;text-transform:uppercase;margin-right:6px;white-space:nowrap}
+    .cat-pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:5px 12px;border-radius:20px;background:var(--bg-3);border:1px solid var(--border);color:var(--text-4);cursor:pointer;text-decoration:none;transition:all .15s;white-space:nowrap}
+    .cat-pill:hover{background:var(--g-bg);border-color:var(--g-border);color:var(--g)}
+
+    /* MAIN LAYOUT */
+    .page-body{max-width:1200px;margin:0 auto;padding:0 24px 100px;display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start}
+    .sidebar{position:sticky;top:120px}
+    .sidebar-nav{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:20px}
+    .sidebar-label{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--text-4);letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px}
+    .sidebar-link{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;font-size:13px;color:var(--text-3);transition:all .15s;margin-bottom:2px;cursor:pointer;text-decoration:none}
+    .sidebar-link:hover,.sidebar-link.active{background:var(--g-bg);color:var(--text);border-color:var(--g-border)}
+    .sidebar-emoji{font-size:14px;width:20px;text-align:center}
+    .sidebar-cta{margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+    .main-content{min-width:0}
+
+    /* CATEGORY SECTIONS */
+    .category-section{margin-bottom:64px;scroll-margin-top:130px}
+    .cat-header{margin-bottom:24px}
+    .cat-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:4px 10px;border-radius:3px;border:1px solid var(--border-2);color:var(--text-4);background:transparent;margin-bottom:14px}
+    .cat-title{font-size:clamp(22px,3vw,32px);font-weight:700;color:var(--text);letter-spacing:-.03em;line-height:1.05;margin-bottom:8px}
+    .cat-tagline{font-size:15px;color:var(--text-3);line-height:1.65}
+    .urgent-banner{background:var(--red-bg);border:1px solid var(--red-border);border-radius:8px;padding:12px 16px;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+    .urgent-banner-text{font-size:13px;color:var(--red);line-height:1.5}
+
+    /* TOOL CARDS */
+    .tools-grid{display:flex;flex-direction:column;gap:16px}
+    .tool-card{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s}
+    .tool-card:hover{border-color:var(--border-2)}
+    .tool-card.stack-pick{border-color:rgba(52,211,119,.25);background:rgba(52,211,119,.02)}
+    .tool-card.warning{border-color:rgba(240,138,138,.25);background:rgba(240,138,138,.02)}
+    .tool-card-inner{padding:22px 24px}
+    .tool-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+    .tool-name{font-size:17px;font-weight:800;color:var(--text);letter-spacing:-.02em}
+    .tool-badge{display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;letter-spacing:.04em;flex-shrink:0}
+    .badge-stack{background:var(--g-bg);border:1px solid var(--g-border);color:var(--g)}
+    .badge-native{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.2);color:#60a5fa}
+    .badge-affiliate{background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);color:#a78bfa}
+    .badge-freemium{background:rgba(245,182,77,.08);border:1px solid rgba(245,182,77,.2);color:var(--amber)}
+    .badge-free{background:rgba(52,211,119,.08);border:1px solid rgba(52,211,119,.15);color:var(--g)}
+    .badge-warning{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red)}
+    .tool-meta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:14px}
+    .tool-meta-item{font-size:12px;color:var(--text-4);display:flex;align-items:center;gap:5px}
+    .tool-meta-label{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-4)}
+    .tool-meta-val{font-weight:600;color:var(--text-3)}
+    .tool-meta-val.green{color:var(--g)}
+    .tool-desc{font-size:14px;color:var(--text-3);line-height:1.75;margin-bottom:16px}
+    .tool-detail{font-family:var(--mono);font-size:11px;color:var(--text-4);background:var(--bg-3);border-radius:6px;padding:8px 12px;margin-bottom:16px;line-height:1.6}
+    .tool-cta{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--g);padding:10px 18px;border-radius:7px;border:1px solid var(--g-border);background:var(--g-bg);transition:all .15s;text-decoration:none}
+    .tool-cta:hover{background:rgba(52,211,119,.12);transform:translateY(-1px)}
+    .tool-cta.warning-cta{color:var(--red);border-color:var(--red-border);background:var(--red-bg)}
+    .saves-badge{display:inline-flex;align-items:center;font-size:11px;font-weight:700;color:var(--g);background:var(--g-bg);border:1px solid var(--g-border);border-radius:6px;padding:3px 9px;margin-left:8px}
+
+    /* SAVINGS CALCULATOR */
+    .savings-widget{background:var(--bg-2);border:1px solid var(--border);border-radius:14px;padding:28px;margin-bottom:48px}
+    .savings-widget h2{font-size:20px;font-weight:800;color:var(--text);letter-spacing:-.02em;margin-bottom:6px}
+    .savings-widget p{font-size:14px;color:var(--text-3);margin-bottom:20px;line-height:1.65}
+    .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+    .calc-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+    .calc-row:last-child{border:none}
+    .calc-label{display:flex;align-items:center;gap:8px}
+    .calc-checkbox{width:16px;height:16px;accent-color:var(--g);cursor:pointer}
+    .calc-total{background:var(--g-bg);border:1px solid var(--g-border);border-radius:10px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;margin-top:16px}
+    .calc-total-label{font-size:13px;font-weight:600;color:var(--text-2)}
+    .calc-total-val{font-family:var(--mono);font-size:24px;font-weight:800;color:var(--g)}
+
+    /* FAQ */
+    .faq-section{margin-bottom:64px}
+    .sec-head{margin-bottom:28px}
+    .sec-head h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:var(--text);letter-spacing:-.03em;line-height:1.05;margin-bottom:8px}
+    .sec-head p{font-size:15px;color:var(--text-3);line-height:1.65}
+    .faq-list{display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+    .faq-item{border-bottom:1px solid var(--border)}.faq-item:last-child{border:none}
+    .faq-q{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;background:transparent;border:none;padding:18px 20px;cursor:pointer;font-size:14px;font-weight:600;color:var(--text-2);text-align:left;font-family:var(--sans);transition:color .15s,background .15s}
+    .faq-q:hover{color:var(--text);background:rgba(255,255,255,.02)}
+    .faq-a{display:none;padding:0 20px 18px}.faq-a p{font-size:13px;color:var(--text-3);line-height:1.8}
+    .faq-a.open{display:block}
+    .faq-chev{flex-shrink:0;transition:transform .2s}
+    .faq-chev.open{transform:rotate(180deg)}
+
+    /* BOTTOM CTA */
+    .bottom-cta{background:var(--bg-2);border-top:1px solid var(--border);padding:80px 24px;text-align:center}
+    .bottom-cta-inner{max-width:640px;margin:0 auto}
+    .bottom-cta h2{font-size:clamp(26px,4vw,44px);font-weight:700;color:var(--text);letter-spacing:-.03em;line-height:1.05;margin-bottom:16px}
+    .bottom-cta h2 .grn{color:var(--g)}
+    .bottom-cta p{font-size:16px;color:var(--text-3);margin-bottom:28px;line-height:1.7}
+    .trust-row{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-top:20px}
+    .trust-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-4)}
+
+    /* FOOTER */
+    .footer{background:var(--bg-3);border-top:1px solid var(--border);padding:48px 24px 32px}
+    .footer-inner{max-width:1200px;margin:0 auto}
+    .footer-conversion{background:var(--g-bg);border:1px solid var(--g-border);border-radius:10px;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:36px}
+    .footer-conversion-text{font-size:14px;font-weight:600;color:var(--text-2)}.footer-conversion-text span{color:var(--text)}
+    .footer-conversion-cta{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:var(--g);color:#0c0f0d;padding:10px 18px;border-radius:5px;text-decoration:none;white-space:nowrap}
+    .footer-links{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+    .footer-links a{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--text-4);padding:4px 10px;border:1px solid var(--border);border-radius:3px;transition:all .15s;text-decoration:none}
+    .footer-links a:hover{color:var(--g);border-color:var(--g-border)}
+    .footer-nav{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:20px}
+    .footer-nav a{font-size:12px;color:var(--text-4);transition:color .15s;text-decoration:none}.footer-nav a:hover{color:var(--g)}
+    .footer-divider{height:1px;background:var(--border);margin-bottom:16px}
+    .footer-copy{font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.1em;margin-bottom:8px}
+    .footer-disc{font-size:11px;color:var(--text-4);line-height:1.7;max-width:600px}.footer-disc a{color:var(--text-4);text-decoration:underline}
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      .page-body{grid-template-columns:1fr;gap:0}
+      .sidebar{display:none}
+      .cat-nav{display:block}
+    }
+    @media(max-width:600px){
+      .hero{padding:48px 20px 40px}
+      .stat-strip{gap:8px}
+      .stat-pill{min-width:90px;padding:10px 14px}
+      .tool-card-inner{padding:18px 16px}
+      .calc-grid{grid-template-columns:1fr}
+      .direct-answer-inner{flex-direction:column;gap:6px}
+      .da-label{display:none}
+    }
+  </style>

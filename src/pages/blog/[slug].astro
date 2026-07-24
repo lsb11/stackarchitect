@@ -1,4 +1,5 @@
 ---
+import Base from '../../layouts/Base.astro';
 import { getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
 
@@ -13,7 +14,9 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
-
+<Base title="Stack Architect" description="">
 <BlogPost entry={entry}>
   <Content />
 </BlogPost>
+</Base>
+

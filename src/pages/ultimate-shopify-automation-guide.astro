@@ -1,7 +1,6 @@
 ---
-import Nav from '../components/Nav.astro';
+import Base from '../layouts/Base.astro';
 import AuthorCard from '../components/AuthorCard.astro';
-import Footer from '../components/Footer.astro';
 
 const SITE           = 'https://stackarchitect.xyz';
 const PAGE_URL       = `${SITE}/ultimate-shopify-automation-guide/`;
@@ -108,63 +107,18 @@ const softwareAppSchema = {
 const allSchemas = [articleSchema, breadcrumbSchema, howToTrackingSchema, howToInventorySchema, faqSchema, softwareAppSchema];
 import TableOfContents from '../components/TableOfContents.astro';
 ---
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title}</title>
-  <meta name="description" content={description} />
-  <link rel="canonical" href={PAGE_URL} />
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-
-  <!-- Open Graph -->
-  <meta property="og:type"                content="article" />
-  <meta property="og:url"                 content={PAGE_URL} />
-  <meta property="og:title"               content={title} />
-  <meta property="og:description"         content={description} />
-  <meta property="og:image"               content={OG_IMAGE} />
-  <meta property="og:image:width"         content="1200" />
-  <meta property="og:image:height"        content="630" />
-  <meta property="og:site_name"           content="Stack Architect" />
-  <meta property="article:published_time" content={DATE_PUBLISHED} />
-  <meta property="article:modified_time"  content={DATE_MODIFIED} />
-  <meta property="article:author"         content="Stack Architect" />
-  <meta property="article:section"        content="Shopify Automation" />
-
-  <!-- Twitter card -->
-  <meta name="twitter:card"        content="summary_large_image" />
-  <meta name="twitter:title"       content={title} />
-  <meta name="twitter:description" content={description} />
-  <meta name="twitter:image"       content={OG_IMAGE} />
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="/alternatives.css" />
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- JSON-LD structured data — one block per schema -->
-  {allSchemas.map(schema => (
-    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+<Base title={title} description="The complete free Shopify automation guide for 2026. Save $700+/month: fix your Q1 ROAS crisis (iOS 26 + Shopify pixel change), replace paid apps, automate inventory before Stocky retires August 2026 — no code, 35 minutes." schema={allSchemas}>
+<Fragment slot="head">
+<script type="application/ld+json" set:html={JSON.stringify(allSchemas)} />
   ))}
   <!-- GA4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TE6Z6CW514"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-TE6Z6CW514');
-  </script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","@id":"https://stackarchitect.xyz/#luke","name":"Luke","jobTitle":"Shopify Automation Specialist","url":"https://stackarchitect.xyz/about/","sameAs":["https://www.linkedin.com/in/luke-stackarchitect","https://www.linkedin.com/company/stack-architect-xyz/","https://github.com/lsb11","https://www.npmjs.com/package/shopify-capi-validator"],"worksFor":{"@type":"Organization","@id":"https://stackarchitect.xyz/#org"},"knowsAbout":["Shopify automation","server-side tracking","Meta Conversions API","Google Enhanced Conversions","TikTok Events API","Make.com","Google Sheets automation","Shopify app cost reduction","email marketing automation","Shopify inventory management","Shopify CAPI","Elevar alternative","Triple Whale alternative","Analyzify alternative","Northbeam alternative","Klaviyo alternative","Stocky alternative"]}</script>
-  
-    <!-- Feed discovery -->
-    <link rel="alternate" type="application/rss+xml" title="Stack Architect — Shopify Automation Guides" href="/rss.xml" />
-    <script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps \u2014 server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","@id":"https://stackarchitect.xyz/#luke","name":"Luke","jobTitle":"Shopify Automation Specialist","url":"https://stackarchitect.xyz/about/","sameAs":["https://www.linkedin.com/in/luke-stackarchitect","https://www.linkedin.com/company/stack-architect-xyz/","https://github.com/lsb11","https://www.npmjs.com/package/shopify-capi-validator"],"worksFor":{"@type":"Organization","@id":"https://stackarchitect.xyz/#org"},"knowsAbout":["Shopify automation","server-side tracking","Meta Conversions API","Google Enhanced Conversions","TikTok Events API","Make.com","Google Sheets automation","Shopify app cost reduction","email marketing automation","Shopify inventory management","Shopify CAPI","Elevar alternative","Triple Whale alternative","Analyzify alternative","Northbeam alternative","Klaviyo alternative","Stocky alternative"]}</script>
+<script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps \u2014 server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
   </head>
 
 <body>
-  <Nav activePage="ultimate-guide" />
-
+  
   <main id="main-content">
     <div class="guide-layout">
 
@@ -271,7 +225,7 @@ import TableOfContents from '../components/TableOfContents.astro';
 
           <div class="callout">
             <div class="callout-label">What this guide covers</div>
-            <p>Q1 2026 ROAS crisis fix (iOS 26 + Shopify pixel change) · Server-side tracking (CAPI Shield) · Inventory automation before Stocky retires Aug 31 2026 (Stocky Swap) · Workflow automation (Make.com) · AI-driven traffic and Agentic Storefronts · Script stability (Quota Fix) · Email and funnel automation (Systeme.io) · 8 free app replacements · A complete 35-minute deployment action plan.{' '}
+            <p>Q1 2026 ROAS crisis fix (iOS 26 + Shopify pixel change) · Server-side tracking (CAPI Shield) · Inventory automation before Stocky retires Aug 31 2026 (Stocky Swap) · Workflow automation (Make.com) · AI-driven traffic and Agentic Storefronts · Script stability (Quota Fix) · Email and funnel automation (Systeme.io) · 8 free app replacements · A complete 35-minute deployment action plan.
               <a href={`${SITE}/shopify-automation-guides`}>Browse all 40+ individual topic guides in the full automation library →</a>
             </p>
           </div>
@@ -848,7 +802,6 @@ import TableOfContents from '../components/TableOfContents.astro';
 </div>
 <AuthorCard />
   </div>
-<Footer />
 
   <style>
     .guide-layout{display:grid;grid-template-columns:260px 1fr;gap:48px;max-width:1100px;margin:0 auto;padding:56px 24px 100px;align-items:start;}
@@ -997,7 +950,47 @@ import TableOfContents from '../components/TableOfContents.astro';
       scrollDismiss?.addEventListener('click', () => { scrollBar.style.display = 'none'; barDismissed = true; });
     }
   </script>
+</Fragment>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={PAGE_URL} />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+  <!-- Open Graph -->
+  <meta property="og:type"                content="article" />
+  <meta property="og:url"                 content={PAGE_URL} />
+  <meta property="og:title"               content={title} />
+  <meta property="og:description"         content={description} />
+  <meta property="og:image"               content={OG_IMAGE} />
+  <meta property="og:image:width"         content="1200" />
+  <meta property="og:image:height"        content="630" />
+  <meta property="og:site_name"           content="Stack Architect" />
+  <meta property="article:published_time" content={DATE_PUBLISHED} />
+  <meta property="article:modified_time"  content={DATE_MODIFIED} />
+  <meta property="article:author"         content="Stack Architect" />
+  <meta property="article:section"        content="Shopify Automation" />
+
+  <!-- Twitter card -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image"       content={OG_IMAGE} />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/alternatives.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  
+    <!-- Feed discovery -->
+    <link rel="alternate" type="application/rss+xml" title="Stack Architect — Shopify Automation Guides" href="/rss.xml" />
+    
 
 
 </body>
-</html>
+</Base>
+

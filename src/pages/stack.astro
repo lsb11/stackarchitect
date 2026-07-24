@@ -1,6 +1,6 @@
 ---
+import Base from '../layouts/Base.astro';
 import AuthorCard from '../components/AuthorCard.astro';
-import Footer from '../components/Footer.astro';
 // src/pages/stack.astro
 // PAGE INTENT: informational/research — "what does Stack Architect recommend"
 // HOMEPAGE INTENT: transactional — "replace my apps / deploy now"
@@ -284,45 +284,9 @@ const schemaWebPage = {
   "isPartOf": { "@type": "WebSite", "url": SITE, "name": "Stack Architect" },
 };
 ---
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- ─── PRIMARY META ─── -->
-  <title>Recommended Shopify Stack 2026 — 7 Free Tools, Vetted &amp; Ranked | Stack Architect</title>
-  <meta name="description" content="The exact free Shopify automation stack recommended by Stack Architect — 7 vetted tools replacing $700+/month of paid apps. Make.com, Systeme.io, Tidio, Meta CAPI, TikTok Events API and more. No code required." />
-  <link rel="canonical" href={CANONICAL} />
-
-  <!-- ─── HREFLANG (UK/US/AU/CA audience) ─── -->
-  <link rel="alternate" hreflang="en-gb"    href={CANONICAL} />
-  <link rel="alternate" hreflang="en-us"    href={CANONICAL} />
-  <link rel="alternate" hreflang="en-au"    href={CANONICAL} />
-  <link rel="alternate" hreflang="en-ca"    href={CANONICAL} />
-  <link rel="alternate" hreflang="x-default" href={CANONICAL} />
-
-  <!-- ─── ROBOTS ─── -->
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-
-  <!-- ─── OPEN GRAPH ─── -->
-  <meta property="og:type"        content="website" />
-  <meta property="og:url"         content={CANONICAL} />
-  <meta property="og:title"       content="Recommended Shopify Stack 2026 — 7 Free Tools, Vetted & Ranked" />
-  <meta property="og:description" content="7 free tools replacing $700+/month of paid Shopify apps — vetted, ranked, and honest about when to upgrade." />
-  <meta property="og:image"       content={`${SITE}/og-stack.png`} />
-  <meta property="og:site_name"   content="Stack Architect" />
-  <meta property="og:locale"      content="en_GB" />
-
-  <!-- ─── TWITTER ─── -->
-  <meta name="twitter:card"        content="summary_large_image" />
-  <meta name="twitter:title"       content="Recommended Shopify Stack 2026 — 7 Free Tools" />
-  <meta name="twitter:description" content="7 free tools replacing $700+/month of paid Shopify apps. No code. Deploy fast." />
-  <meta name="twitter:image"       content={`${SITE}/og-stack.png`} />
-
-  <!-- ─── SCHEMA ─── -->
-  <script type="application/ld+json" set:html={JSON.stringify(schemaFAQ)} />
+<Base title="Recommended Shopify Stack 2026 — 7 Free Tools, Vetted &amp; Ranked | Stack Architect" description="The exact free Shopify automation stack recommended by Stack Architect — 7 vetted tools replacing $700+/month of paid apps. Make.com, Systeme.io, Tidio, Meta CAPI, TikTok Events API and more. No code required.">
+<Fragment slot="head">
+<script type="application/ld+json" set:html={JSON.stringify(schemaFAQ)} />
   <script type="application/ld+json" set:html={JSON.stringify(schemaBreadcrumb)} />
   <script type="application/ld+json" set:html={JSON.stringify(schemaItemList)} />
   <script type="application/ld+json" set:html={JSON.stringify(schemaArticle)} />
@@ -337,20 +301,8 @@ const schemaWebPage = {
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <!-- GA4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TE6Z6CW514"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-TE6Z6CW514');
-  </script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","@id":"https://stackarchitect.xyz/#luke","name":"Luke","jobTitle":"Shopify Automation Specialist","url":"https://stackarchitect.xyz/about/","sameAs":["https://www.linkedin.com/in/luke-stackarchitect","https://www.linkedin.com/company/stack-architect-xyz/","https://github.com/lsb11","https://www.npmjs.com/package/shopify-capi-validator"],"worksFor":{"@type":"Organization","@id":"https://stackarchitect.xyz/#org"},"knowsAbout":["Shopify automation","server-side tracking","Meta Conversions API","Google Enhanced Conversions","TikTok Events API","Make.com","Google Sheets automation","Shopify app cost reduction","email marketing automation","Shopify inventory management","Shopify CAPI","Elevar alternative","Triple Whale alternative","Analyzify alternative","Northbeam alternative","Klaviyo alternative","Stocky alternative"]}</script>
-  
-    <!-- Feed discovery -->
-    <link rel="alternate" type="application/rss+xml" title="Stack Architect — Shopify Automation Guides" href="/rss.xml" />
-  </head>
-
-<body>
-
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","@id":"https://stackarchitect.xyz/#luke","name":"Luke","jobTitle":"Shopify Automation Specialist","url":"https://stackarchitect.xyz/about/","sameAs":["https://www.linkedin.com/in/luke-stackarchitect","https://www.linkedin.com/company/stack-architect-xyz/","https://github.com/lsb11","https://www.npmjs.com/package/shopify-capi-validator"],"worksFor":{"@type":"Organization","@id":"https://stackarchitect.xyz/#org"},"knowsAbout":["Shopify automation","server-side tracking","Meta Conversions API","Google Enhanced Conversions","TikTok Events API","Make.com","Google Sheets automation","Shopify app cost reduction","email marketing automation","Shopify inventory management","Shopify CAPI","Elevar alternative","Triple Whale alternative","Analyzify alternative","Northbeam alternative","Klaviyo alternative","Stocky alternative"]}</script>
+</Fragment>
 <!-- ─── SKIP NAV ─── -->
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
@@ -831,7 +783,7 @@ const schemaWebPage = {
 </div>
 <AuthorCard />
   </div>
-<Footer />
+
 
 <!-- ─── JS: dropdown + newsletter submit ─── -->
 <script is:inline>
@@ -866,9 +818,7 @@ const schemaWebPage = {
 
 
 </script>
-
-</body>
-</html>
+</Base>
 
 <style>
   /* ─── RESET ─── */
@@ -1197,7 +1147,6 @@ const schemaWebPage = {
     body { background: #fff; color: #000; }
   }
 </style>
-
 <style>
 .tool-grid > *{display:flex;flex-direction:column;}
 .tool-grid > * a[href*="free"]{margin-top:auto;}

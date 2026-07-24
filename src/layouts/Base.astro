@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
 
 interface BreadcrumbItem {
   label: string;
@@ -9,7 +11,7 @@ interface BreadcrumbItem {
 interface Props {
   title: string;
   description: string;
-  canonical: string;
+  canonical?: string;
   ogTitle?: string;
   ogDescription?: string;
   ogImage?: string;
@@ -428,16 +430,17 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
   </head>
   <body class="bg-black text-white font-sans min-h-screen flex flex-col">
     <!-- Named slot so child layouts can position Nav before breadcrumb -->
+    <Nav />
     <slot name="header" />
 
     {hasBreadcrumb && (
-      <nav aria-label="Breadcrumb" class="breadcrumb border-b border-[#222825]">
+      <nav aria-label="Breadcrumb" class="breadcrumb">
         {breadcrumb!.map((item, i) => (
           <>
             {i > 0 && <span class="breadcrumb-separator">/</span>}
             {item.href
               ? <a href={item.href}>{item.label}</a>
-              : <span class="text-white">{item.label}</span>
+              : <span>{item.label}</span>
             }
           </>
         ))}
@@ -445,7 +448,7 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
     )}
 
     <slot />
-  
+    <Footer />
 
   </body>
 </html>

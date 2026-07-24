@@ -1,5 +1,5 @@
 ---
-import Footer from '../components/Footer.astro';
+import Base from '../layouts/Base.astro';
 import appsData from '../data/apps.json';
 import { getCollection } from 'astro:content';
 
@@ -29,88 +29,7 @@ allBlogs.forEach(post => {
 });
 // sitemap.astro — self-contained, no layout dependency
 ---
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sitemap — Stack Architect | Free Shopify Automation Tools</title>
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Stack Architect">
-  <meta property="og:title" content="Site Map — Stack Architect">
-  <meta property="og:description" content="Every free tool, guide, and comparison on Stack Architect.">
-  <meta property="og:url" content="https://stackarchitect.xyz/sitemap-page/">
-  <meta property="og:image" content="https://stackarchitect.xyz/og.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Site Map — Stack Architect">
-  <meta name="twitter:description" content="Every free tool, guide, and comparison on Stack Architect.">
-  <meta name="twitter:image" content="https://stackarchitect.xyz/og.png">
-
-<meta name="description" content="Complete sitemap of all Stack Architect pages — free Shopify tools, automation guides, blog posts, and product pages.">
-<meta name="robots" content="noindex, follow">
-<link rel="canonical" href="https://stackarchitect.xyz/sitemap-page/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--green:#00C896;--dark:#0d0d1a;--dark2:#1a1a2e;--border:#2a2a42;--text:#e8e8f0;--muted:#8888aa;--dim:#555570;--radius:8px;--font:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono','Fira Code',monospace}
-html{font-size:16px;scroll-behavior:smooth}
-body{font-family:var(--font);color:var(--text);background:#0f0f1e;line-height:1.65;min-height:100vh}
-a{color:var(--green);text-decoration:none}
-a:hover{text-decoration:underline}
-.site-header{background:var(--dark);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
-.brand{color:#fff;font-weight:700;font-size:1.05rem;font-family:var(--mono)}
-.brand:hover{color:var(--green);text-decoration:none}
-.header-nav{display:flex;gap:20px}
-.header-nav a{font-size:.85rem;color:var(--muted)}
-.header-nav a:hover{color:var(--green);text-decoration:none}
-.wrap{max-width:900px;margin:0 auto;padding:48px 24px 80px}
-.sitemap-header{display:flex;align-items:center;gap:20px;margin-bottom:40px;padding-bottom:28px;border-bottom:1px solid var(--border);flex-wrap:wrap}
-.logo-block{display:flex;align-items:center;gap:14px}
-.logo-block img{height:52px;width:auto;border-radius:6px}
-.logo-text .name{font-size:1.4rem;font-weight:700;color:#fff;font-family:var(--mono);display:block}
-.logo-text .tag{font-size:.72rem;color:var(--green);font-family:var(--mono);letter-spacing:.08em}
-.sitemap-meta{margin-left:auto;font-size:.75rem;color:var(--dim);font-family:var(--mono);text-align:right;line-height:1.7}
-h1{font-size:1.6rem;font-weight:700;color:#fff;margin-bottom:8px}
-.lead{font-size:.9rem;color:var(--muted);margin-bottom:44px;line-height:1.75;max-width:620px}
-.section{margin-bottom:36px}
-.section-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--green);font-family:var(--mono);margin-bottom:12px;display:flex;align-items:center;gap:10px}
-.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
-.section-count{color:var(--dim);font-size:.68rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:6px}
-.item{display:flex;align-items:flex-start;gap:8px;padding:10px 14px;border:1px solid var(--border);border-radius:6px;background:var(--dark2);transition:border-color .15s}
-.item:hover{border-color:var(--green)}
-.item-main{flex:1;min-width:0}
-.item-main a{color:var(--text);font-size:.85rem;line-height:1.4;display:block}
-.item-main a:hover{color:var(--green);text-decoration:none}
-.item-path{display:block;font-size:.7rem;color:var(--dim);font-family:var(--mono);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.badge{font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0;margin-top:2px;font-family:var(--mono);letter-spacing:.03em}
-.bn{background:rgba(0,200,150,.1);color:var(--green);border:1px solid rgba(0,200,150,.25)}
-.bu{background:rgba(239,68,68,.1);color:#ef4444;border:1px solid rgba(239,68,68,.25)}
-.bt{background:rgba(59,130,246,.1);color:#3b82f6;border:1px solid rgba(59,130,246,.25)}
-.sitemap-foot{margin-top:44px;padding-top:20px;border-top:1px solid var(--border);font-size:.75rem;color:var(--dim);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
-footer{background:var(--dark);border-top:1px solid var(--border);padding:20px 24px;text-align:center;font-size:.78rem;color:var(--dim);font-family:var(--mono)}
-footer a{color:var(--dim)}
-.back{color:var(--muted);font-size:.85rem;display:inline-flex;align-items:center;gap:6px;margin-bottom:28px}
-.back:hover{color:var(--green);text-decoration:none}
-@media(max-width:600px){.grid{grid-template-columns:1fr}.sitemap-meta{margin-left:0}.header-nav{display:none}}
-</style>
-  <!-- GA4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TE6Z6CW514"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-TE6Z6CW514');
-  </script>
-
-    <!-- Feed discovery -->
-    <link rel="alternate" type="application/rss+xml" title="Stack Architect — Shopify Automation Guides" href="/rss.xml" />
-    <script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps \u2014 server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
-  </head>
-<body>
-
+<Base title="Sitemap — Stack Architect | Free Shopify Automation Tools" description="Complete sitemap of all Stack Architect pages — free Shopify tools, automation guides, blog posts, and product pages.">
 <header class="site-header">
   <a class="brand" href="/">Stack Architect</a>
   <nav class="header-nav">
@@ -242,8 +161,49 @@ footer a{color:var(--dim)}
     <a href="/" style="color:var(--muted)">← Return to Stack Architect</a>
   </div>
 </div>
+</Base>
 
-<Footer />
-
-</body>
-</html>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--green:#00C896;--dark:#0d0d1a;--dark2:#1a1a2e;--border:#2a2a42;--text:#e8e8f0;--muted:#8888aa;--dim:#555570;--radius:8px;--font:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono','Fira Code',monospace}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:#0f0f1e;line-height:1.65;min-height:100vh}
+a{color:var(--green);text-decoration:none}
+a:hover{text-decoration:underline}
+.site-header{background:var(--dark);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.brand{color:#fff;font-weight:700;font-size:1.05rem;font-family:var(--mono)}
+.brand:hover{color:var(--green);text-decoration:none}
+.header-nav{display:flex;gap:20px}
+.header-nav a{font-size:.85rem;color:var(--muted)}
+.header-nav a:hover{color:var(--green);text-decoration:none}
+.wrap{max-width:900px;margin:0 auto;padding:48px 24px 80px}
+.sitemap-header{display:flex;align-items:center;gap:20px;margin-bottom:40px;padding-bottom:28px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.logo-block{display:flex;align-items:center;gap:14px}
+.logo-block img{height:52px;width:auto;border-radius:6px}
+.logo-text .name{font-size:1.4rem;font-weight:700;color:#fff;font-family:var(--mono);display:block}
+.logo-text .tag{font-size:.72rem;color:var(--green);font-family:var(--mono);letter-spacing:.08em}
+.sitemap-meta{margin-left:auto;font-size:.75rem;color:var(--dim);font-family:var(--mono);text-align:right;line-height:1.7}
+h1{font-size:1.6rem;font-weight:700;color:#fff;margin-bottom:8px}
+.lead{font-size:.9rem;color:var(--muted);margin-bottom:44px;line-height:1.75;max-width:620px}
+.section{margin-bottom:36px}
+.section-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--green);font-family:var(--mono);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.section-count{color:var(--dim);font-size:.68rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:6px}
+.item{display:flex;align-items:flex-start;gap:8px;padding:10px 14px;border:1px solid var(--border);border-radius:6px;background:var(--dark2);transition:border-color .15s}
+.item:hover{border-color:var(--green)}
+.item-main{flex:1;min-width:0}
+.item-main a{color:var(--text);font-size:.85rem;line-height:1.4;display:block}
+.item-main a:hover{color:var(--green);text-decoration:none}
+.item-path{display:block;font-size:.7rem;color:var(--dim);font-family:var(--mono);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.badge{font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0;margin-top:2px;font-family:var(--mono);letter-spacing:.03em}
+.bn{background:rgba(0,200,150,.1);color:var(--green);border:1px solid rgba(0,200,150,.25)}
+.bu{background:rgba(239,68,68,.1);color:#ef4444;border:1px solid rgba(239,68,68,.25)}
+.bt{background:rgba(59,130,246,.1);color:#3b82f6;border:1px solid rgba(59,130,246,.25)}
+.sitemap-foot{margin-top:44px;padding-top:20px;border-top:1px solid var(--border);font-size:.75rem;color:var(--dim);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+footer{background:var(--dark);border-top:1px solid var(--border);padding:20px 24px;text-align:center;font-size:.78rem;color:var(--dim);font-family:var(--mono)}
+footer a{color:var(--dim)}
+.back{color:var(--muted);font-size:.85rem;display:inline-flex;align-items:center;gap:6px;margin-bottom:28px}
+.back:hover{color:var(--green);text-decoration:none}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.sitemap-meta{margin-left:0}.header-nav{display:none}}
+</style>

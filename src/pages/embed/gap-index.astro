@@ -1,8 +1,9 @@
 ---
+import Base from '../../layouts/Base.astro';
 // /embed/gap-index/ — iframe-able LIVE widget for the Shopify iOS Attribution Gap benchmark.
 import EmbedLayout from '../../layouts/EmbedLayout.astro';
 ---
-
+<Base title="Stack Architect" description="">
 <EmbedLayout
   title="Shopify iOS Attribution Gap — Live Benchmark — Stack Architect"
   canonical="https://stackarchitect.xyz/shopify-ios-attribution-gap-benchmark/"
@@ -19,17 +20,7 @@ import EmbedLayout from '../../layouts/EmbedLayout.astro';
     </a>
   </div>
 
-  <style>
-    .gapw{font-family:ui-sans-serif,system-ui,-apple-system,sans-serif;background:#0b0f14;color:#e8eef4;border:1px solid #223041;border-radius:14px;padding:1.1rem 1.25rem;max-width:340px;margin:0 auto;text-align:center}
-    .gapw-head{display:flex;align-items:center;justify-content:center;gap:.6rem;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;opacity:.85}
-    .gapw-live{display:inline-flex;align-items:center;gap:.3rem;color:#7ef0b2;font-weight:700}
-    .gapw-dot{width:.5rem;height:.5rem;border-radius:50%;background:#38e08c;animation:gapwpulse 1.6s infinite}
-    @keyframes gapwpulse{0%,100%{opacity:1}50%{opacity:.35}}
-    .gapw-num{font-size:3rem;font-weight:800;line-height:1.1;margin:.35rem 0 .1rem;background:linear-gradient(90deg,#7ef0b2,#59c9ff);-webkit-background-clip:text;background-clip:text;color:transparent}
-    .gapw-sub{font-size:.82rem;opacity:.8;min-height:1.2em}
-    .gapw-credit{display:block;margin-top:.7rem;font-size:.72rem;color:#59c9ff;text-decoration:none;opacity:.9}
-    .gapw-credit:hover{text-decoration:underline}
-  </style>
+  
 
   <script>
     fetch('/api/gap-stats').then(function(r){return r.json();}).then(function(d){
@@ -46,3 +37,16 @@ import EmbedLayout from '../../layouts/EmbedLayout.astro';
     });
   </script>
 </EmbedLayout>
+</Base>
+
+<style>
+    .gapw{font-family:ui-sans-serif,system-ui,-apple-system,sans-serif;background:#0b0f14;color:#e8eef4;border:1px solid #223041;border-radius:14px;padding:1.1rem 1.25rem;max-width:340px;margin:0 auto;text-align:center}
+    .gapw-head{display:flex;align-items:center;justify-content:center;gap:.6rem;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;opacity:.85}
+    .gapw-live{display:inline-flex;align-items:center;gap:.3rem;color:#7ef0b2;font-weight:700}
+    .gapw-dot{width:.5rem;height:.5rem;border-radius:50%;background:#38e08c;animation:gapwpulse 1.6s infinite}
+    @keyframes gapwpulse{0%,100%{opacity:1}50%{opacity:.35}}
+    .gapw-num{font-size:3rem;font-weight:800;line-height:1.1;margin:.35rem 0 .1rem;background:linear-gradient(90deg,#7ef0b2,#59c9ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .gapw-sub{font-size:.82rem;opacity:.8;min-height:1.2em}
+    .gapw-credit{display:block;margin-top:.7rem;font-size:.72rem;color:#59c9ff;text-decoration:none;opacity:.9}
+    .gapw-credit:hover{text-decoration:underline}
+  </style>

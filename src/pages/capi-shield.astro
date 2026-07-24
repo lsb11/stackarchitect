@@ -1,8 +1,7 @@
 ---
+import Base from '../layouts/Base.astro';
 import Disclosure from "../components/Disclosure.astro";
-import Nav from '../components/Nav.astro';
 import AuthorCard from '../components/AuthorCard.astro';
-import Footer from '../components/Footer.astro';
 // Inline data-flow diagram (raw SVG → stays in the DOM: Google-Images indexable + accessible title/desc)
 import capiFlowSvg from '../assets/diagrams/capi-shield-data-flow.svg?raw';
 /**
@@ -214,47 +213,9 @@ const schemaGraph = {
 import AttributionTracker from '../components/AttributionTracker.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 ---
-
-<!DOCTYPE html>
-<html lang="en-GB">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- ─── Primary SEO ─── -->
-  <title>CAPI Shield — Free Meta CAPI & Google Tracking for Shopify 2026</title>
-  <meta name="description" content="Recover 20–40% of lost Shopify conversions free with CAPI Shield. Server-side Meta Conversions API + Google Enhanced Conversions — bypasses iOS & ad blockers, no code, 6 minutes." />
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-  <meta name="author" content="Stack Architect" />
-  <link rel="canonical" href={CANONICAL} />
-
-  <!-- ─── GEO: hreflang (UK, US, AU, CA — all served identically) ─── -->
-  <link rel="alternate" hreflang="en-GB"    href={CANONICAL} />
-  <link rel="alternate" hreflang="en-US"    href={CANONICAL} />
-  <link rel="alternate" hreflang="en-AU"    href={CANONICAL} />
-  <link rel="alternate" hreflang="en-CA"    href={CANONICAL} />
-  <link rel="alternate" hreflang="x-default" href={CANONICAL} />
-
-  <!-- ─── Open Graph ─── -->
-  <meta property="og:type"         content="website" />
-  <meta property="og:url"          content={CANONICAL} />
-  <meta property="og:title"        content="CAPI Shield — Free Meta CAPI & Google Tracking for Shopify 2026" />
-  <meta property="og:description"  content="Recover 20–40% of lost Shopify conversion data. Free server-side tracking via Make.com — deploys in 6 minutes, no code, replaces Elevar and Northbeam." />
-  <meta property="og:image"        content={OG_IMAGE} />
-  <meta property="og:image:width"  content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt"    content="CAPI Shield — free Shopify server-side tracking for Meta and Google" />
-  <meta property="og:site_name"    content="Stack Architect" />
-  <meta property="og:locale"       content="en_GB" />
-
-  <!-- ─── Twitter ─── -->
-  <meta name="twitter:card"        content="summary_large_image" />
-  <meta name="twitter:title"       content="CAPI Shield — Free Meta CAPI & Google Tracking for Shopify 2026" />
-  <meta name="twitter:description" content="Recover lost Shopify conversions. Free Meta CAPI + Google Enhanced Conversions server-side tracking. No code, 6 minutes." />
-  <meta name="twitter:image"       content={OG_IMAGE} />
-
-  <!-- ─── JSON-LD: 5 schema blocks ─── -->
-  <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
+<Base title="CAPI Shield — Free Meta CAPI & Google Tracking for Shopify 2026" description="Recover 20–40% of lost Shopify conversions free with CAPI Shield. Server-side Meta Conversions API + Google Enhanced Conversions — bypasses iOS & ad blockers, no code, 6 minutes.">
+<Fragment slot="head">
+<script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
 
   <!-- ─── Fonts — preconnect first, then stylesheet ─── -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -263,22 +224,11 @@ import TableOfContents from '../components/TableOfContents.astro';
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" /></noscript>
   <!-- GA4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TE6Z6CW514"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-TE6Z6CW514');
-  </script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","@id":"https://stackarchitect.xyz/#luke","name":"Luke","jobTitle":"Shopify Automation Specialist","url":"https://stackarchitect.xyz/about/","sameAs":["https://www.linkedin.com/in/luke-stackarchitect","https://www.linkedin.com/company/stack-architect-xyz/","https://github.com/lsb11","https://www.npmjs.com/package/shopify-capi-validator"],"worksFor":{"@type":"Organization","@id":"https://stackarchitect.xyz/#org"},"knowsAbout":["Shopify automation","server-side tracking","Meta Conversions API","Google Enhanced Conversions","TikTok Events API","Make.com","Google Sheets automation","Shopify app cost reduction","email marketing automation","Shopify inventory management","Shopify CAPI","Elevar alternative","Triple Whale alternative","Analyzify alternative","Northbeam alternative","Klaviyo alternative","Stocky alternative"]}</script>
-      <AttributionTracker />
-  
-    <!-- Feed discovery -->
-    <link rel="alternate" type="application/rss+xml" title="Stack Architect — Shopify Automation Guides" href="/rss.xml" />
-    <script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps \u2014 server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","@id":"https://stackarchitect.xyz/#luke","name":"Luke","jobTitle":"Shopify Automation Specialist","url":"https://stackarchitect.xyz/about/","sameAs":["https://www.linkedin.com/in/luke-stackarchitect","https://www.linkedin.com/company/stack-architect-xyz/","https://github.com/lsb11","https://www.npmjs.com/package/shopify-capi-validator"],"worksFor":{"@type":"Organization","@id":"https://stackarchitect.xyz/#org"},"knowsAbout":["Shopify automation","server-side tracking","Meta Conversions API","Google Enhanced Conversions","TikTok Events API","Make.com","Google Sheets automation","Shopify app cost reduction","email marketing automation","Shopify inventory management","Shopify CAPI","Elevar alternative","Triple Whale alternative","Analyzify alternative","Northbeam alternative","Klaviyo alternative","Stocky alternative"]}</script>
+<script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps \u2014 server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
   </head>
 
 <body>
-<Nav />
 
 <!-- ════════════════════════════════════════════════════════════════════════════
      NAV
@@ -806,11 +756,6 @@ import TableOfContents from '../components/TableOfContents.astro';
 </div>
 <AuthorCard />
 </div>
-<Footer
-  ctaText="Your ads are optimising on incomplete data. Deploy CAPI Shield and fix it — <strong>free</strong>."
-  ctahref="/capi-shield/"
-  ctaBtnText="Deploy CAPI Shield Free →"
-/>
 
 <!-- ════════════════════════════════════════════════════════════════════════════
      CLIENT SCRIPTS
@@ -850,10 +795,70 @@ import TableOfContents from '../components/TableOfContents.astro';
   if (cr) cr.textContent = `© ${new Date().getFullYear()} STACK_ARCHITECT // CAPI_SHIELD // TRACKING_RESTORED`;
 })();
 </script>
+</Fragment>
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ─── Primary SEO ─── -->
+  <title>CAPI Shield — Free Meta CAPI & Google Tracking for Shopify 2026</title>
+  <meta name="description" content="Recover 20–40% of lost Shopify conversions free with CAPI Shield. Server-side Meta Conversions API + Google Enhanced Conversions — bypasses iOS & ad blockers, no code, 6 minutes." />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="author" content="Stack Architect" />
+  <link rel="canonical" href={CANONICAL} />
+
+  <!-- ─── GEO: hreflang (UK, US, AU, CA — all served identically) ─── -->
+  <link rel="alternate" hreflang="en-GB"    href={CANONICAL} />
+  <link rel="alternate" hreflang="en-US"    href={CANONICAL} />
+  <link rel="alternate" hreflang="en-AU"    href={CANONICAL} />
+  <link rel="alternate" hreflang="en-CA"    href={CANONICAL} />
+  <link rel="alternate" hreflang="x-default" href={CANONICAL} />
+
+  <!-- ─── Open Graph ─── -->
+  <meta property="og:type"         content="website" />
+  <meta property="og:url"          content={CANONICAL} />
+  <meta property="og:title"        content="CAPI Shield — Free Meta CAPI & Google Tracking for Shopify 2026" />
+  <meta property="og:description"  content="Recover 20–40% of lost Shopify conversion data. Free server-side tracking via Make.com — deploys in 6 minutes, no code, replaces Elevar and Northbeam." />
+  <meta property="og:image"        content={OG_IMAGE} />
+  <meta property="og:image:width"  content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt"    content="CAPI Shield — free Shopify server-side tracking for Meta and Google" />
+  <meta property="og:site_name"    content="Stack Architect" />
+  <meta property="og:locale"       content="en_GB" />
+
+  <!-- ─── Twitter ─── -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="CAPI Shield — Free Meta CAPI & Google Tracking for Shopify 2026" />
+  <meta name="twitter:description" content="Recover lost Shopify conversions. Free Meta CAPI + Google Enhanced Conversions server-side tracking. No code, 6 minutes." />
+  <meta name="twitter:image"       content={OG_IMAGE} />
+
+  <!-- ─── JSON-LD: 5 schema blocks ─── -->
+  
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TE6Z6CW514');
+  </script>
+  
+      <AttributionTracker />
+  
+    <!-- Feed discovery -->
+    <link rel="alternate" type="application/rss+xml" title="Stack Architect — Shopify Automation Guides" href="/rss.xml" />
+    
 
 <!-- ════════════════════════════════════════════════════════════════════════════
      STYLES
      ════════════════════════════════════════════════════════════════════════════ -->
+
+
+
+
+</body>
+</Base>
+
 <style is:global>
 
 /* ── Base ── */
@@ -1140,8 +1145,3 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
   body{background:#fff;color:#000;}
 }
 </style>
-
-
-
-</body>
-</html>

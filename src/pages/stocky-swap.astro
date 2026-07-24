@@ -1,9 +1,8 @@
 ---
-import Nav from '../components/Nav.astro';
+import Base from '../layouts/Base.astro';
 import StockLogPromo from '../components/StockLogPromo.astro';
 import RelatedGuides from '../components/RelatedGuides.astro';
 import AuthorCard from '../components/AuthorCard.astro';
-import Footer from '../components/Footer.astro';
 
 /**
  * STOCKY SWAP — /stocky-swap/ — MAXIMUM VERSION v2
@@ -342,54 +341,9 @@ const jsonLd = {
 };
 import TableOfContents from '../components/TableOfContents.astro';
 ---
-
-<!doctype html>
-<html lang="en-GB" itemscope itemtype="https://schema.org/WebPage">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>{SEO.title}</title>
-  <meta name="description" content={SEO.description} />
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-  <meta name="author" content="Luke (Stack Architect)" />
-  <link rel="canonical" href={SEO.canonical} />
-
-  <meta name="article:published_time" content={`${DATE_PUBLISHED}T00:00:00Z`} />
-  <meta name="article:modified_time" content={`${DATE_MODIFIED}T00:00:00Z`} />
-  <meta name="article:author" content="Luke" />
-  <meta name="article:section" content="Shopify Inventory" />
-  <meta name="article:tag" content="Stocky alternative, Stocky replacement, Stocky shutdown, Free Shopify inventory, Make.com Shopify" />
-
-  <link rel="alternate" hreflang="en" href={SEO.canonical} />
-  <link rel="alternate" hreflang="en-gb" href={SEO.canonical} />
-  <link rel="alternate" hreflang="x-default" href={SEO.canonical} />
-
-  <meta property="og:type" content="article" />
-  <meta property="og:url" content={SEO.canonical} />
-  <meta property="og:title" content={SEO.ogTitle} />
-  <meta property="og:description" content={SEO.ogDescription} />
-  <meta property="og:image" content={SEO.ogImage} />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Stocky Swap — free Stocky alternative for Shopify" />
-  <meta property="og:site_name" content="Stack Architect" />
-  <meta property="og:locale" content="en_GB" />
-
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={SEO.ogTitle} />
-  <meta name="twitter:description" content={SEO.ogDescription} />
-  <meta name="twitter:image" content={SEO.ogImage} />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="dns-prefetch" href="https://www.make.com" />
-  <link rel="dns-prefetch" href="https://eu1.make.com" />
-  <link rel="preload" as="image" href={SEO.ogImage} />
-
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" />
-
-  <script type="application/ld+json" set:html={JSON.stringify(jsonLd, null, 2)} />
+<Base title="Stack Architect" description="">
+<Fragment slot="head">
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd, null, 2)} />
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -631,20 +585,7 @@ import TableOfContents from '../components/TableOfContents.astro';
   </style>
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TE6Z6CW514"></script>
-  <script is:inline>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-TE6Z6CW514');
-  </script>
-
-    <!-- Feed discovery -->
-    <link rel="alternate" type="application/rss+xml" title="Stack Architect — Shopify Automation Guides" href="/rss.xml" />
-  </head>
-
-<body>
-<Nav />
-
+</Fragment>
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
 <div class="urgency-banner" role="alert" aria-label="Stocky shutdown countdown">
@@ -1528,7 +1469,7 @@ import TableOfContents from '../components/TableOfContents.astro';
 </div>
 <AuthorCard />
   </div>
-<Footer />
+
 
 <script is:inline>
   (function() {
@@ -1631,6 +1572,5 @@ import TableOfContents from '../components/TableOfContents.astro';
     }, { passive: true });
   })();
 </script>
+</Base>
 
-</body>
-</html>
