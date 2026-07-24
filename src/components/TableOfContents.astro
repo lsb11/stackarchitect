@@ -8,34 +8,13 @@ const { headings = [] } = Astro.props;
 
 {headings.length > 0 && (
   <div class="toc-wrapper">
-    <!-- Inline, compact ToC for the top of the page -->
-    <nav class="toc-inline" aria-label="Table of contents">
-      <div class="toc-header">
-        <div class="toc-title">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
-          CONTENTS
-        </div>
-      </div>
-      <div class="toc-body">
-        <ul class="toc-list">
-          {headings.map((h) => (
-            <li>
-              <a href={`#${h.id}`}>
-                <span class="toc-text">{h.text.replace(/&amp;/g, '&')}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </nav>
-
     <!-- Floating Widget for scrolling (Desktop & Mobile) -->
     <div class="toc-floating-widget" id="toc-widget">
       <button class="toc-fab" id="toc-fab" aria-label="Toggle Table of Contents" title="Table of Contents">
         <svg class="icon-menu" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
         <svg class="icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
       </button>
-      <nav class="toc-floating-panel" id="toc-panel" aria-label="Floating Table of contents">
+      <nav class="toc-floating-panel" id="toc-panel" aria-label="Table of contents">
         <div class="toc-header">
           <div class="toc-title">CONTENTS</div>
         </div>
@@ -56,25 +35,6 @@ const { headings = [] } = Astro.props;
 )}
 
 <style>
-  /* 
-   * 2026 Premium Aesthetic:
-   * 1. Compact inline ToC at the top for initial context.
-   * 2. Sleek Floating Action Button (FAB) + Popover for scrolling.
-   * This completely solves content overlap while maintaining maximum aesthetics.
-   */
-  .toc-inline {
-    width: 100%;
-    max-width: 760px;
-    margin: 2rem auto 3rem;
-    padding: 1.25rem;
-    border-radius: 12px;
-    background: rgba(12, 15, 13, 0.4);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-  }
-
   /* Shared Styles */
   .toc-header {
     display: flex;
@@ -158,7 +118,7 @@ const { headings = [] } = Astro.props;
     visibility: hidden;
   }
 
-  /* Show FAB only after scrolling past the inline ToC */
+  /* Show FAB based on scroll */
   .toc-floating-widget.is-visible .toc-fab {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -225,11 +185,10 @@ const { headings = [] } = Astro.props;
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // 1. FAB Toggle Logic
     const widget = document.getElementById('toc-widget');
     const fab = document.getElementById('toc-fab');
-    const inlineToc = document.querySelector('.toc-inline');
     
+    // 1. FAB Toggle Logic
     if (fab && widget) {
       fab.addEventListener('click', () => {
         widget.classList.toggle('is-open');
@@ -237,39 +196,36 @@ const { headings = [] } = Astro.props;
 
       // Close panel when clicking outside
       document.addEventListener('click', (e) => {
-        if (widget.classList.contains('is-open') && !widget.contains(e.target)) {
+        if (widget.classList.contains('is-open') && !widget.contains(e.target as Node)) {
           widget.classList.remove('is-open');
         }
       });
     }
 
-    // 2. Show/Hide FAB based on scroll position (show after passing inline ToC)
-    if (widget && inlineToc) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          // If inline TOC is completely out of view above, show the FAB
-          if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
-            widget.classList.add('is-visible');
-          } else {
-            widget.classList.remove('is-visible');
-            widget.classList.remove('is-open'); // close panel if scrolled back up
-          }
-        });
-      }, { rootMargin: '0px', threshold: 0 });
-      observer.observe(inlineToc);
-    } else if (widget) {
-      // Fallback if no inline TOC (shouldn't happen based on structure, but safe)
-      widget.classList.add('is-visible');
+    // 2. Show/Hide FAB based on scroll position (show after scrolling down 300px)
+    if (widget) {
+      const handleScroll = () => {
+        if (window.scrollY > 300) {
+          widget.classList.add('is-visible');
+        } else {
+          widget.classList.remove('is-visible');
+          widget.classList.remove('is-open'); // auto-close if scrolled back to top
+        }
+      };
+      
+      // Check on load
+      handleScroll();
+      // Check on scroll
+      window.addEventListener('scroll', handleScroll, { passive: true });
     }
 
-    // 3. Smooth scroll and active state logic for BOTH navs
+    // 3. Smooth scroll and active state logic
     const links = document.querySelectorAll('.toc-wrapper a[href^="#"]');
     const sections = Array.from(links).map(link => {
       const id = link.getAttribute('href');
       return id ? document.querySelector(id) : null;
     }).filter(Boolean);
 
-    // Filter to unique sections to avoid double-observing
     const uniqueSections = [...new Set(sections)];
 
     links.forEach(anchor => {
@@ -288,8 +244,8 @@ const { headings = [] } = Astro.props;
           });
           history.pushState(null, '', href);
           
-          // Auto-close floating panel on mobile after click
-          if (window.innerWidth < 768 && widget) {
+          // Auto-close floating panel after click
+          if (widget) {
             widget.classList.remove('is-open');
           }
         }
@@ -301,7 +257,7 @@ const { headings = [] } = Astro.props;
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             links.forEach(link => link.classList.remove('active'));
-            // Highlight active link in both inline and floating panels
+            // Highlight active link
             const activeLinks = document.querySelectorAll(`.toc-wrapper a[href="#${entry.target.id}"]`);
             activeLinks.forEach(activeLink => activeLink.classList.add('active'));
           }
