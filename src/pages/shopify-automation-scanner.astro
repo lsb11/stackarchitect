@@ -1,5 +1,4 @@
 ---
-import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 import Footer from '../components/Footer.astro';
@@ -83,12 +82,48 @@ const schema = {
 };
 import TableOfContents from '../components/TableOfContents.astro';
 ---
-<Base title={title} description={description}>
-<Fragment slot="head">
-<script type="application/ld+json" set:html={JSON.stringify(schema)} />
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","@id":"https://stackarchitect.xyz/#luke","name":"Luke","jobTitle":"Shopify Automation Specialist","url":"https://stackarchitect.xyz/about/","sameAs":["https://www.linkedin.com/in/luke-stackarchitect","https://www.linkedin.com/company/stack-architect-xyz/","https://github.com/lsb11","https://www.npmjs.com/package/shopify-capi-validator"],"worksFor":{"@type":"Organization","@id":"https://stackarchitect.xyz/#org"},"knowsAbout":["Shopify automation","server-side tracking","Meta Conversions API","Google Enhanced Conversions","TikTok Events API","Make.com","Google Sheets automation","Shopify app cost reduction","email marketing automation","Shopify inventory management","Shopify CAPI","Elevar alternative","Triple Whale alternative","Analyzify alternative","Northbeam alternative","Klaviyo alternative","Stocky alternative"]}</script>
-<script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps \u2014 server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
-<style>
+
+<!DOCTYPE html>
+<html lang="en-GB" style="background:#0c0f0d;">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>{title}</title>
+  <meta name="description"  content={description} />
+  <meta name="author"       content="Stack Architect" />
+  <link rel="canonical"     href={PAGE_URL} />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+
+  <meta property="og:title"       content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url"         content={PAGE_URL} />
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="Stack Architect" />
+  <meta property="og:image"       content={`${SITE_URL}/og-scanner.png`} />
+
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image"       content={`${SITE_URL}/og-scanner.png`} />
+
+  <!-- Dark chrome on mobile — matches site background exactly -->
+  <meta name="theme-color" content="#0c0f0d" />
+
+  <!-- Performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://api.allorigins.win" />
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@500;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+  <style>
     /* ── DESIGN TOKENS ─────────────────────────────────────────── */
     :root {
       --green:   #15803d;
@@ -278,9 +313,25 @@ import TableOfContents from '../components/TableOfContents.astro';
       .faq-section           { padding-left:24px; padding-right:24px; }
     }
   </style>
-</Fragment>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TE6Z6CW514"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TE6Z6CW514');
+  </script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","@id":"https://stackarchitect.xyz/#luke","name":"Luke","jobTitle":"Shopify Automation Specialist","url":"https://stackarchitect.xyz/about/","sameAs":["https://www.linkedin.com/in/luke-stackarchitect","https://www.linkedin.com/company/stack-architect-xyz/","https://github.com/lsb11","https://www.npmjs.com/package/shopify-capi-validator"],"worksFor":{"@type":"Organization","@id":"https://stackarchitect.xyz/#org"},"knowsAbout":["Shopify automation","server-side tracking","Meta Conversions API","Google Enhanced Conversions","TikTok Events API","Make.com","Google Sheets automation","Shopify app cost reduction","email marketing automation","Shopify inventory management","Shopify CAPI","Elevar alternative","Triple Whale alternative","Analyzify alternative","Northbeam alternative","Klaviyo alternative","Stocky alternative"]}</script>
+  
+    <!-- Feed discovery -->
+    <link rel="alternate" type="application/rss+xml" title="Stack Architect — Shopify Automation Guides" href="/rss.xml" />
+    <script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps \u2014 server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
+  </head>
 
-<main>
+<body>
+  <Nav />
+
+  <main>
     <section
       id="shopify-app-calculator"
       itemscope
@@ -680,7 +731,7 @@ import TableOfContents from '../components/TableOfContents.astro';
 </div>
 <AuthorCard />
   </div>
-
+<Footer />
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" defer></script>
 
@@ -918,4 +969,5 @@ import TableOfContents from '../components/TableOfContents.astro';
     // ── XSS ESCAPE ────────────────────────────────────────────────
     function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
   </script>
-</Base>
+</body>
+</html>

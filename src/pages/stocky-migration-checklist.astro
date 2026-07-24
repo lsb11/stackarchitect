@@ -1,5 +1,4 @@
 ---
-import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import StockLogPromo from '../components/StockLogPromo.astro';
 import RelatedGuides from '../components/RelatedGuides.astro';
@@ -110,10 +109,39 @@ const jsonLd = {
 };
 import TableOfContents from '../components/TableOfContents.astro';
 ---
-<Base title="Shopify Stocky Migration Checklist 2026 — Every Step Before Aug 31 | Stack Architect" description="The complete Stocky migration checklist: export data, rebuild suppliers, deploy a replacement, verify, and cut over — in the right order, before the August 31 2026 shutdown.">
-<Fragment slot="head">
-<script type="application/ld+json" set:html={JSON.stringify(jsonLd, null, 2)} />
-<style>
+
+<!doctype html>
+<html lang="en-GB" itemscope itemtype="https://schema.org/WebPage">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{SEO.title}</title>
+  <meta name="description" content={SEO.description} />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="author" content="Luke (Stack Architect)" />
+  <link rel="canonical" href={SEO.canonical} />
+  <link rel="alternate" hreflang="en-gb" href={SEO.canonical} />
+  <link rel="alternate" hreflang="x-default" href={SEO.canonical} />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content={SEO.canonical} />
+  <meta property="og:title" content={SEO.ogTitle} />
+  <meta property="og:description" content={SEO.ogDescription} />
+  <meta property="og:image" content={SEO.ogImage} />
+  <meta property="og:site_name" content="Stack Architect" />
+  <meta property="og:locale" content="en_GB" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={SEO.ogTitle} />
+  <meta name="twitter:description" content={SEO.ogDescription} />
+  <meta name="twitter:image" content={SEO.ogImage} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" />
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd, null, 2)} />
+
+  <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --g: #34d377; --g-dim: #15803d; --g-bg: rgba(52,211,119,.08); --g-border: rgba(52,211,119,.2);
@@ -191,7 +219,12 @@ import TableOfContents from '../components/TableOfContents.astro';
 
     @media (max-width: 640px) { main { padding: 40px 20px 64px; } }
   </style>
-</Fragment>
+
+    <!-- Feed discovery -->
+    <link rel="alternate" type="application/rss+xml" title="Stack Architect — Shopify Automation Guides" href="/rss.xml" />
+  </head>
+<body>
+<Nav />
 
 <div class="urgency-banner" role="alert">
   <span class="dot-red" aria-hidden="true"></span>
@@ -382,4 +415,6 @@ PHASE 5 &mdash; CUT OVER (well before 31 Aug)
 </div>
 <AuthorCard />
   </div>
-</Base>
+<Footer />
+</body>
+</html>
