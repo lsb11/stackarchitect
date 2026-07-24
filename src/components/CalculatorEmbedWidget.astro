@@ -1,0 +1,185 @@
+---
+interface Props {
+  embedPath: string; // e.g. "/embed/app-cost-calculator/"
+  title: string;
+}
+
+const { embedPath, title } = Astro.props;
+const fullUrl = `https://stackarchitect.xyz${embedPath}`;
+
+const embedCode = `<iframe src="${fullUrl}" width="100%" height="700" frameborder="0" style="border:1px solid rgba(52, 211, 119, 0.2);border-radius:12px;background:#0c0f0d;box-shadow:0 8px 32px rgba(0,0,0,0.2);"></iframe><div style="text-align:right;font-family:system-ui,sans-serif;font-size:11px;margin-top:8px;opacity:0.8;"><a href="https://stackarchitect.xyz" target="_blank" rel="noopener" style="color:#34d377;text-decoration:none;font-weight:600;">Powered by Stack Architect</a></div>`;
+---
+
+<div class="embed-widget-wrapper" aria-label={`Embed ${title} on your site`}>
+  <div class="ew-header">
+    <div class="ew-icon-box">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+    </div>
+    <div class="ew-title-box">
+      <h3 class="ew-title">Embed this Calculator</h3>
+      <p class="ew-subtitle">Add this free interactive tool to your Shopify agency site or blog. Drives engagement and requires no maintenance.</p>
+    </div>
+  </div>
+
+  <div class="ew-code-box">
+    <textarea class="ew-textarea" readonly aria-label="Embed code" id={`embed-code-${embedPath.replace(/\\W+/g, '-')}`}>${embedCode}</textarea>
+    <button class="ew-copy-btn" onclick={`copyEmbedCode('embed-code-${embedPath.replace(/\\W+/g, '-')}', this)`}>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <span>Copy Snippet</span>
+    </button>
+  </div>
+</div>
+
+<script is:inline>
+  function copyEmbedCode(id, btn) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    
+    navigator.clipboard.writeText(el.value).then(() => {
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span style="color:#34d377">Copied!</span>`;
+      btn.classList.add('copied');
+      
+      setTimeout(() => {
+        btn.innerHTML = originalHtml;
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+</script>
+
+<style>
+  .embed-widget-wrapper {
+    margin: 4rem auto;
+    padding: 2rem;
+    background: rgba(12, 15, 13, 0.6);
+    border: 1px solid rgba(52, 211, 119, 0.2);
+    border-radius: 16px;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    max-width: 900px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .embed-widget-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(52, 211, 119, 0.4), transparent);
+  }
+
+  .ew-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .ew-icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: rgba(52, 211, 119, 0.1);
+    border: 1px solid rgba(52, 211, 119, 0.2);
+    border-radius: 12px;
+    color: #34d377;
+    flex-shrink: 0;
+  }
+
+  .ew-title {
+    font-family: var(--sans, system-ui, sans-serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 0.25rem 0;
+    letter-spacing: -0.02em;
+  }
+
+  .ew-subtitle {
+    font-family: var(--sans, system-ui, sans-serif);
+    font-size: 0.95rem;
+    color: #a0aba5;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .ew-code-box {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .ew-textarea {
+    width: 100%;
+    height: 100px;
+    background: transparent;
+    border: none;
+    padding: 1.25rem 1.25rem 3.5rem 1.25rem;
+    color: #34d377;
+    font-family: var(--mono, ui-monospace, monospace);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    resize: none;
+    outline: none;
+  }
+  
+  .ew-textarea::selection {
+    background: rgba(52, 211, 119, 0.2);
+  }
+
+  .ew-copy-btn {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    color: #ffffff;
+    font-family: var(--sans, system-ui, sans-serif);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .ew-copy-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .ew-copy-btn.copied {
+    border-color: rgba(52, 211, 119, 0.4);
+    background: rgba(52, 211, 119, 0.1);
+  }
+
+  @media (max-width: 640px) {
+    .embed-widget-wrapper {
+      padding: 1.25rem;
+      border-radius: 12px;
+    }
+    .ew-header {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .ew-icon-box {
+      width: 40px;
+      height: 40px;
+    }
+    .ew-textarea {
+      height: 120px;
+    }
+  }
+</style>
