@@ -7,7 +7,7 @@ category: "inventory"
 badge: "Complete Guide"
 badgeType: "new"
 readTime: 18
-canonical: "https://stackarchitect.xyz/blog/the-ultimate-guide-to-shopify-inventory-management/"
+canonical: "https://stackarchitect.xyz/stocky-swap/"
 faqs:
   - question: "What is the best free Shopify inventory management system in 2026?"
     answer: "The best free Shopify inventory management system in 2026 is a Make.com webhook connected to Google Sheets. Every order automatically logs to a sheet you own — product, quantity, variant, customer, and fulfilment status — in real time. This replaces Stocky (shutting down August 31, 2026) and every paid inventory app at zero cost."
@@ -199,7 +199,11 @@ Below these thresholds, the Make.com and Google Sheets system is genuinely equiv
 
 ## Deploying Your Free Inventory System Today
 
-The fastest path from zero to a working inventory system:
+The average store is paying anywhere from $29 to $500 a month for inventory management.
+
+> [!TIP]
+> **Don't want to build this yourself?** I've already built this exact system. It's called Stocky Swap. It's free, it runs on Make.com, and you can deploy it to your store in 4 minutes.  
+> 👉 [Get Stocky Swap for free here](/stocky-swap/).
 
 1. **Deploy Stocky Swap now** — [4-minute setup](/stocky-swap/). This gets order logging running immediately.
 2. **Set up the sheet structure** — use the three-sheet layout above. Copy the SUMIF formulas into Sheet 2.

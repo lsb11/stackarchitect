@@ -7,7 +7,7 @@ category: "tracking"
 badge: "Free Fix"
 badgeType: "new"
 readTime: 10
-canonical: "https://stackarchitect.xyz/blog/recover-lost-shopify-conversions-capi-shield/"
+canonical: "https://stackarchitect.xyz/capi-shield/"
 faqs:
   - question: "How many Shopify conversions am I losing to iOS tracking restrictions?"
     answer: "Most Shopify stores are losing 30–60% of their conversion events to iOS restrictions, ad blockers, and browser privacy settings. The exact number depends on your traffic mix — stores with high iOS traffic from Instagram and email campaigns are most affected. You can calculate your specific gap by comparing Shopify order count against Meta Ads Manager reported purchases for the same 30-day period."
@@ -42,6 +42,10 @@ relatedGuides:
 Your Shopify dashboard shows 200 orders this month. Meta Ads Manager shows 80 purchases. The 120-order gap is not a reporting anomaly — it represents real sales that Meta's algorithm never learned from. Every budget decision, every audience adjustment, every bid strategy is built on 40% of your actual data.
 
 CAPI Shield recovers the recoverable portion of that gap — typically 20–40% of total orders — by sending purchase events server-to-server, bypassing every browser-based restriction that causes the gap in the first place.
+
+> [!TIP]
+> **Want to recover your lost conversions right now?** I've built the complete CAPI Shield system for you. It's free, it runs on Make.com, and it sends your Shopify data directly to Meta and Google servers.  
+> 👉 [Get CAPI Shield for free here](/capi-shield/).
 
 ## Why Shopify Conversions Go Missing
 
