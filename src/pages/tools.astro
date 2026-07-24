@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
+import AuthorCard from '../components/AuthorCard.astro';
 import Footer from '../components/Footer.astro';
 // Inline cumulative-cost chart (raw SVG → DOM-level, Google-Images indexable + accessible)
 import costChartSvg from '../assets/diagrams/paid-vs-free-stack-cost-12-months.svg?raw';
@@ -65,6 +66,7 @@ const schemas = [
     ]
   }
 ];
+import TableOfContents from '../components/TableOfContents.astro';
 ---
 
 <div id="reading-progress" style="position:fixed;top:0;left:0;width:0;height:2px;background:#34d377;z-index:9999;transition:width .1s;"></div>
@@ -223,6 +225,9 @@ const schemas = [
         <div class="hub-hero-inner">
           <span class="hub-tag">Live_Tool_Suite // 21_Free_Tools</span>
           <h1 class="hub-h1">Free Shopify<br><span class="g">Tools &amp; Calculators</span></h1>
+
+  <TableOfContents />
+
           <p class="hub-sub">Six free automation tools that replace paid apps — plus 9 free diagnostic calculators. Run the numbers first, then deploy the fix. Everything costs $0, forever.</p>
           <div class="hero-pills">
             <div class="hero-pill"><span class="pill-dot"></span><strong>6</strong>&nbsp;Automation tools</div>
@@ -637,7 +642,10 @@ const schemas = [
     </div>
   </main>
 
-  <Footer />
+  <div style="max-width:860px;margin:0 auto;padding:0 24px;margin-bottom:60px;">
+    <AuthorCard />
+  </div>
+<Footer />
 </Base>
 
 <script>

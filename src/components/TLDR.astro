@@ -1,0 +1,20 @@
+---
+// TLDR.astro
+export interface Props {
+  title?: string;
+  points: string[];
+}
+const { title = "Quick Answer", points } = Astro.props;
+---
+<div style="max-width:860px;margin:0 auto 2.5rem;padding:0 24px;">
+  <div style="background:rgba(52,211,119,0.05);border:1px solid rgba(52,211,119,0.3);border-radius:12px;padding:1.5rem;position:relative;">
+    <div style="position:absolute;top:-12px;left:1.5rem;background:#0c0f0d;padding:0 8px;color:#34d377;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;border:1px solid rgba(52,211,119,0.3);border-radius:99px;">
+      {title}
+    </div>
+    <ul style="margin:0;padding-left:1.2rem;color:#e5e7eb;font-size:1rem;line-height:1.6;">
+      {points.map((point) => (
+        <li style="margin-bottom:0.5rem;list-style-type:disc;">{point}</li>
+      ))}
+    </ul>
+  </div>
+</div>
