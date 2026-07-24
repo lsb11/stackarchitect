@@ -1,0 +1,36 @@
+---
+// src/components/FactTable.astro
+export interface Props {
+  appName: string;
+  category: string;
+  monthlyCost: string;
+  replacement: string;
+  savings: string;
+}
+const { appName, category, monthlyCost, replacement, savings } = Astro.props;
+---
+<div class="mb-8 overflow-hidden rounded-lg border border-[#222825] bg-[#0c0f0d]">
+  <div class="bg-[#121614] px-4 py-3 border-b border-[#222825]">
+    <h3 class="text-sm font-bold text-white font-mono uppercase tracking-wider">{appName} Fact Sheet</h3>
+  </div>
+  <table class="w-full text-sm text-left">
+    <tbody class="divide-y divide-[#222825]">
+      <tr>
+        <th scope="row" class="px-4 py-3 font-medium text-[#9ca3af] bg-[#0a0c0b] w-1/3">Category</th>
+        <td class="px-4 py-3 text-white">{category}</td>
+      </tr>
+      <tr>
+        <th scope="row" class="px-4 py-3 font-medium text-[#9ca3af] bg-[#0a0c0b]">Typical Monthly Cost</th>
+        <td class="px-4 py-3 text-white">{monthlyCost}</td>
+      </tr>
+      <tr>
+        <th scope="row" class="px-4 py-3 font-medium text-[#34d377] bg-[#0a0c0b]">Free Alternative</th>
+        <td class="px-4 py-3 font-bold text-[#34d377]">{replacement}</td>
+      </tr>
+      <tr>
+        <th scope="row" class="px-4 py-3 font-medium text-[#34d377] bg-[#0a0c0b]">Annual Savings</th>
+        <td class="px-4 py-3 font-bold text-[#34d377]">{savings}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

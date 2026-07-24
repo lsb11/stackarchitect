@@ -1,0 +1,116 @@
+---
+// src/pages/apps/[app].astro
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import AuthorCard from '../../components/AuthorCard.astro';
+import FactTable from '../../components/FactTable.astro';
+import TLDR from '../../components/TLDR.astro';
+import appsData from '../../data/apps.json';
+
+export async function getStaticPaths() {
+  return appsData.map((app) => ({
+    params: { app: app.id },
+    props: { app },
+  }));
+}
+
+const { app } = Astro.props;
+const title = `${app.name} Pricing & Free Alternatives for Shopify 2026`;
+const description = `Stop paying ${app.monthlyCost} for ${app.name}. Discover how to replace it with ${app.replacement} and save ${app.savings} on your Shopify store.`;
+const canonicalUrl = `https://stackarchitect.xyz/apps/${app.id}/`;
+
+// FAQ Schema for GEO (Generative Engine Optimization)
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: `What is the best free alternative to ${app.name} for Shopify?`,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: `The best alternative is ${app.replacement}, which saves Shopify merchants approximately ${app.savings} annually compared to the standard ${app.name} pricing of ${app.monthlyCost}.`,
+      },
+    },
+    {
+      '@type': 'Question',
+      name: `How much does ${app.name} cost?`,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: `${app.name} typically costs ${app.monthlyCost} depending on your Shopify store's volume, whereas the ${app.replacement} method is functionally free.`,
+      },
+    }
+  ],
+};
+
+const schemas = [faqSchema];
+---
+
+<Base
+  title={title}
+  description={description}
+  canonical={canonicalUrl}
+  schema={schemas}
+  pageType="article"
+>
+  <Nav slot="header" />
+
+  <main class="flex-1 max-w-3xl mx-auto px-4 py-12 w-full">
+    <div class="mb-10 text-center">
+      <span class="inline-block px-3 py-1 mb-4 text-xs font-mono font-bold tracking-widest text-[#34d377] border border-[#34d377] rounded-full uppercase bg-[#34d377]/10">
+        App Alternatives Guide
+      </span>
+      <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6">
+        {app.name} Pricing & Alternatives
+      </h1>
+      <p class="text-lg text-gray-400 font-mono">
+        Stop paying <span class="text-white">{app.monthlyCost}</span>. Here is how to replace {app.name} with <a href={app.stackarchitectAlternativeLink} class="text-[#34d377] hover:underline">{app.replacement}</a>.
+      </p>
+    </div>
+
+    <TLDR 
+      title={`Quick Answer: ${app.name} Alternative`}
+      points={[
+        `${app.name} is a popular ${app.category} app costing ${app.monthlyCost}.`,
+        `You can completely replace it using ${app.replacement}.`,
+        `This switch saves the average Shopify store ${app.savings}.`
+      ]}
+    />
+
+    <FactTable 
+      appName={app.name}
+      category={app.category}
+      monthlyCost={app.monthlyCost}
+      replacement={app.replacement}
+      savings={app.savings}
+    />
+
+    <article class="prose-stack mt-12 mb-16">
+      <h2>Why consider a {app.name} alternative?</h2>
+      <p>
+        {app.description} While {app.name} is a robust solution for many e-commerce brands, the recurring subscription fee of {app.monthlyCost} can severely impact your profit margins as you scale. 
+      </p>
+      <p>
+        In 2026, many Shopify merchants are shifting toward owned-data infrastructure. By utilizing <a href={app.stackarchitectAlternativeLink}>{app.replacement}</a>, you maintain full control over your data while retaining the exact same functionality—without the monthly overhead.
+      </p>
+
+      <h2>How to migrate to {app.replacement}</h2>
+      <p>
+        Replacing {app.name} doesn't require complex coding. Our pre-built automation architectures allow you to set up {app.replacement} in a matter of minutes.
+      </p>
+      <ul>
+        <li>No recurring app fees.</li>
+        <li>100% data ownership.</li>
+        <li>Native Shopify integration.</li>
+      </ul>
+      <p>
+        Ready to make the switch? Check out the complete <a href={app.stackarchitectAlternativeLink}>{app.replacement} setup guide</a>.
+      </p>
+    </article>
+
+    <AuthorCard />
+  </main>
+
+  <Footer />
+</Base>
