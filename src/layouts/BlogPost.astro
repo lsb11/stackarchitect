@@ -50,6 +50,10 @@ const articleSchema = {
     url: 'https://stackarchitect.xyz',
   },
   mainEntityOfPage: canonicalUrl,
+  speakable: {
+    '@type': 'SpeakableSpecification',
+    cssSelector: ['h1', 'h2', '.speakable']
+  }
 };
 
 // BreadcrumbList JSON-LD
@@ -98,17 +102,9 @@ const faqSchema =
       }
     : null;
 
-// SpeakableSpecification JSON-LD
-const speakableSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'SpeakableSpecification',
-  cssSelector: ['h1', 'h2', '.speakable'],
-};
-
 const schemas = [
   articleSchema,
   breadcrumbSchema,
-  speakableSchema,
   ...(faqSchema ? [faqSchema] : []),
 ];
 

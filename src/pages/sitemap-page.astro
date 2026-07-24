@@ -1,5 +1,32 @@
 ---
 import Footer from '../components/Footer.astro';
+import appsData from '../data/apps.json';
+import { getCollection } from 'astro:content';
+
+const allBlogs = await getCollection('blog');
+
+const categories = {
+  'ai': 'Blog — AI & Agentic Commerce',
+  'support': 'Blog — AI Customer Support',
+  'tracking': 'Blog — Ad tracking & ROAS',
+  'inventory': 'Blog — Inventory & Analytics',
+  'email': 'Blog — Email & P&L',
+  'automation': 'Blog — Make.com & Automation',
+  'workflow': 'Blog — Workflow & stability'
+};
+
+const groupedBlogs = {};
+Object.keys(categories).forEach(key => groupedBlogs[key] = []);
+
+allBlogs.forEach(post => {
+  const cat = post.data.category || 'automation';
+  if (groupedBlogs[cat]) {
+    groupedBlogs[cat].push(post);
+  } else {
+    if (!groupedBlogs['other']) groupedBlogs['other'] = [];
+    groupedBlogs['other'].push(post);
+  }
+});
 // sitemap.astro — self-contained, no layout dependency
 ---
 <!doctype html>
@@ -105,8 +132,8 @@ footer a{color:var(--dim)}
       </div>
     </div>
     <div class="sitemap-meta">
-      Last updated: April 2026<br>
-      77 pages indexed
+      Last updated: July 2026<br>
+      140+ pages indexed
     </div>
   </div>
 
@@ -146,10 +173,27 @@ footer a{color:var(--dim)}
   <div class="section">
     <div class="section-label">Pricing pages <span class="section-count">3 pages</span></div>
     <div class="grid">
+      <div class="item"><div class="item-main"><a href="/shopify-tracking-tools-pricing/">Shopify Tracking Tools Pricing Index<span class="item-path">/shopify-tracking-tools-pricing</span></a></div></div>
+      <div class="item"><div class="item-main"><a href="/shopify-app-pricing-index/">Shopify App Pricing Index<span class="item-path">/shopify-app-pricing-index</span></a></div></div>
+      <div class="item"><div class="item-main"><a href="/best-free-shopify-apps-2026/">Best Free Shopify Apps 2026<span class="item-path">/best-free-shopify-apps-2026</span></a></div></div>
+    </div>
   </div>
 
   <div class="section">
-    <div class="section-label">FAQ pages <span class="section-count">11 pages</span></div>
+    <div class="section-label">App Alternatives Directory <span class="section-count">{appsData.length} apps</span></div>
+    <div class="grid">
+      {appsData.map(app => (
+        <div class="item">
+          <div class="item-main">
+            <a href={`/apps/${app.id}/`}>{app.name} Alternatives & Pricing<span class="item-path">/apps/{app.id}/</span></a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">FAQ pages <span class="section-count">5 pages</span></div>
     <div class="grid">
       <div class="item"><div class="item-main"><a href="/triple-whale-alternative/">How Much Does Triple Whale Cost? Full Plan Breakdown<span class="item-path">/how-much-does-triple-whale-cost</span></a></div></div>
       <div class="item"><div class="item-main"><a href="/blog/shopify-server-side-tracking-complete-setup-guide/">What Is Server-Side Tracking? Explained Simply<span class="item-path">/what-is-server-side-tracking-for-shopify</span></a></div></div>
@@ -160,90 +204,41 @@ footer a{color:var(--dim)}
   </div>
 
   <div class="section">
-    <div class="section-label">Free calculator tools <span class="section-count">15 tools</span></div>
+    <div class="section-label">Free calculator tools <span class="section-count">8 tools</span></div>
     <div class="grid">
+      <div class="item"><div class="item-main"><a href="/shopify-app-cost-calculator/">Shopify App Cost Calculator<span class="item-path">/shopify-app-cost-calculator/</span></a></div></div>
+      <div class="item"><div class="item-main"><a href="/meta-emq-score-estimator/">Meta EMQ Score Estimator<span class="item-path">/meta-emq-score-estimator/</span></a></div></div>
+      <div class="item"><div class="item-main"><a href="/shopify-vs-meta-attribution-gap-calculator/">Shopify vs Meta Attribution Gap Calculator<span class="item-path">/shopify-vs-meta-attribution-gap-calculator/</span></a></div></div>
+      <div class="item"><div class="item-main"><a href="/klaviyo-to-systeme-migration-savings-calculator/">Klaviyo Migration Savings Calculator<span class="item-path">/klaviyo-to-systeme-migration-savings-calculator/</span></a></div></div>
+      <div class="item"><div class="item-main"><a href="/stocky-migration-risk-scorer/">Stocky Migration Risk Scorer<span class="item-path">/stocky-migration-risk-scorer/</span></a></div></div>
+      <div class="item"><div class="item-main"><a href="/make-vs-zapier-cost-calculator/">Make vs Zapier Cost Calculator<span class="item-path">/make-vs-zapier-cost-calculator/</span></a></div></div>
+      <div class="item"><div class="item-main"><a href="/shopify-app-stack-kill-or-keep-auditor/">Shopify App Stack Kill or Keep Auditor<span class="item-path">/shopify-app-stack-kill-or-keep-auditor/</span></a></div></div>
+      <div class="item"><div class="item-main"><a href="/app-audit/">AI App Audit<span class="item-path">/app-audit/</span></a></div></div>
     </div>
   </div>
 
-  <div class="section">
-    <div class="section-label">Blog — AI &amp; Agentic Commerce <span class="section-count">4 posts</span></div>
-    <div class="grid">
-      <div class="item"><div class="item-main"><a href="/blog/shopify-ai-playbook-2026/">The Complete Shopify AI Playbook 2026<span class="item-path">/blog/shopify-ai-playbook-2026</span></a></div><span class="badge bn">NEW</span></div>
-      <div class="item"><div class="item-main"><a href="/blog/shopify-agentic-storefronts-setup-guide-2026/">Shopify Agentic Storefronts 2026 — Sell on ChatGPT &amp; Google AI Mode<span class="item-path">/blog/shopify-agentic-storefronts-setup-guide-2026</span></a></div><span class="badge bn">NEW</span></div>
-      <div class="item"><div class="item-main"><a href="/best-free-shopify-apps-2026/">Best Free Shopify Apps 2026 — 40+ Tools Ranked (Save $700+/Month)<span class="item-path">/best-free-shopify-apps-2026</span></a></div><span class="badge bn">NEW</span></div>
-      <div class="item"><div class="item-main"><a href="/blog/free-shopify-apps-replace-paid-2026/">Best Free Shopify Apps to Replace Paid Ones 2026<span class="item-path">/blog/free-shopify-apps-replace-paid-2026</span></a></div><span class="badge bn">NEW</span></div>
-      <div class="item"><div class="item-main"><a href="/blog/klaviyo-vs-getresponse-shopify-2026/">Klaviyo vs GetResponse for Shopify 2026<span class="item-path">/blog/klaviyo-vs-getresponse-shopify-2026</span></a></div><span class="badge bn">NEW</span></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">Blog — AI Customer Support <span class="section-count">3 posts</span></div>
-    <div class="grid">
-      <div class="item"><div class="item-main"><a href="/blog/tidio-for-shopify-complete-setup-guide/">Tidio for Shopify: Complete Setup Guide 2026<span class="item-path">/blog/tidio-for-shopify-complete-setup-guide</span></a></div><span class="badge bn">NEW</span></div>
-      <div class="item"><div class="item-main"><a href="/blog/tidio-vs-gorgias-shopify/">Tidio vs Gorgias for Shopify 2026<span class="item-path">/blog/tidio-vs-gorgias-shopify</span></a></div><span class="badge bn">NEW</span></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">Blog — Ad tracking &amp; ROAS <span class="section-count">10 posts</span></div>
-    <div class="grid">
-      <div class="item"><div class="item-main"><a href="/blog/shopify-meta-roas-dropped-2026-fix/">Shopify Meta ROAS Dropped in 2026? Here's the Free Fix<span class="item-path">/blog/shopify-meta-roas-dropped-2026-fix</span></a></div><span class="badge bu">URGENT</span></div>
-      <div class="item"><div class="item-main"><a href="/blog/shopify-server-side-tracking-complete-setup-guide/">Shopify Server-Side Tracking: Complete Setup Guide 2026<span class="item-path">/blog/shopify-server-side-tracking-complete-setup-guide</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/">How to Fix Shopify Conversion Tracking After iOS Updates<span class="item-path">/blog/how-to-fix-shopify-conversion-tracking-after-ios-14</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/">Fix Shopify Conversion Tracking After iOS Updates 2026<span class="item-path">/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates</span></a></div><span class="badge bn">NEW</span></div>
-      <div class="item"><div class="item-main"><a href="/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026/">Fix Shopify Google Ads Conversion Tracking 2026 — Free<span class="item-path">/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026</span></a></div><span class="badge bn">NEW</span></div>
-      <div class="item"><div class="item-main"><a href="/blog/recover-lost-shopify-conversions-capi-shield/">Recover Lost Shopify Conversions with CAPI Shield<span class="item-path">/blog/recover-lost-shopify-conversions-with-capi-shield</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/blog/recover-lost-shopify-conversions-capi-shield/">How CAPI Shield Stops You Losing Up to 40% of Sales<span class="item-path">/blog/recover-lost-shopify-conversions-capi-shield</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/blog/shopify-meta-roas-dropped-2026-fix/">Why Meta Ads Show Fewer Purchases Than Shopify<span class="item-path">/blog/why-meta-ads-show-fewer-purchases-than-shopify</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/">How to Bypass iOS Privacy Restrictions in Shopify Ads<span class="item-path">/blog/how-to-bypass-ios-privacy-restrictions-in-shopify-ads</span></a></div></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">Blog — Inventory &amp; Analytics <span class="section-count">8 posts</span></div>
-    <div class="grid">
-      <div class="item"><div class="item-main"><a href="/blog/shopify-stocky-data-export-before-shutdown/">Shopify Stocky Data Export — Save Before Aug 2026 Shutdown<span class="item-path">/blog/shopify-stocky-data-export-before-shutdown</span></a></div><span class="badge bn">NEW</span></div>
-      <div class="item"><div class="item-main"><a href="/blog/shopify-google-analytics-4-setup-free-2026/">Set Up Google Analytics 4 on Shopify Free 2026 — No Code<span class="item-path">/blog/shopify-google-analytics-4-setup-free-2026</span></a></div><span class="badge bn">NEW</span></div>
-      <div class="item"><div class="item-main"><a href="/blog/the-ultimate-guide-to-shopify-inventory-management/">The Ultimate Guide to Shopify Inventory Management<span class="item-path">/blog/the-ultimate-guide-to-shopify-inventory-management</span></a></div></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">Blog — Email &amp; P&amp;L <span class="section-count">4 posts</span></div>
-    <div class="grid">
-      <div class="item"><div class="item-main"><a href="/blog/klaviyo-pricing-uk-2026/">Klaviyo Pricing UK 2026 — Exact £ Costs + Free Alternatives<span class="item-path">/blog/klaviyo-pricing-uk-2026</span></a></div><span class="badge bn">NEW</span></div>
-      <div class="item"><div class="item-main"><a href="/blog/free-klaviyo-alternative-shopify-2026/">The Only Truly Free Klaviyo Alternative for Shopify 2026<span class="item-path">/blog/free-klaviyo-alternative-shopify-2026</span></a></div><span class="badge bn">NEW</span></div>
-      <div class="item"><div class="item-main"><a href="/blog/shopify-bfcm-automation-checklist-2026/">Shopify BFCM Automation Checklist 2026 — 14 Things Before Black Friday<span class="item-path">/blog/shopify-bfcm-automation-checklist-2026</span></a></div><span class="badge bn">NEW</span></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">Blog — Make.com &amp; Automation <span class="section-count">11 posts</span></div>
-    <div class="grid">
-      <div class="item"><div class="item-main"><a href="/blog/make-com-shopify-automation-guide/">Make.com for Shopify: Complete Beginner's Guide 2026<span class="item-path">/blog/make-com-shopify-automation-guide</span></a></div><span class="badge bn">NEW</span></div>
-      <div class="item"><div class="item-main"><a href="/blog/when-to-upgrade-free-make-google-workspace/">When to Upgrade from Free Make.com to Google Workspace<span class="item-path">/blog/when-to-upgrade-free-make-google-workspace</span></a></div><span class="badge bn">NEW</span></div>
-      <div class="item"><div class="item-main"><a href="/blog/zapier-vs-shopify-flow-vs-make/">Zapier vs Make vs Shopify Flow 2026<span class="item-path">/blog/zapier-vs-shopify-flow-vs-make</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/blog/shopify-automation-stack-for-small-stores/">Shopify Automation Stack for Small Stores<span class="item-path">/blog/shopify-automation-stack-for-small-stores</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/blog/the-lean-shopify-tech-stack-2026/">The Lean Shopify Tech Stack 2026<span class="item-path">/blog/the-lean-shopify-tech-stack-2026</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/blog/zapier-vs-shopify-flow-vs-make/">Best Alternatives to Zapier for Shopify<span class="item-path">/blog/best-alternatives-to-zapier-for-shopify</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/blog/shopify-apps-that-are-a-waste-of-money/">Shopify Apps That Are a Waste of Money<span class="item-path">/blog/shopify-apps-that-are-a-waste-of-money</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/blog/how-much-shopify-apps-really-cost-and-how-to-cut-your-app-bill-in-half/">How Much Shopify Apps Really Cost — And How to Cut the Bill in Half<span class="item-path">/blog/how-much-shopify-apps-really-cost-...</span></a></div></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">Blog — Workflow &amp; stability <span class="section-count">6 posts</span></div>
-    <div class="grid">
-      <div class="item"><div class="item-main"><a href="/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script/">Fix Autocrat Quota Errors — Stop "Service Invoked Too Many Times"<span class="item-path">/blog/fix-autocrat-quota-errors-...</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script/">How to Fix "Service Invoked Too Many Times" in Google Apps Script<span class="item-path">/blog/how-to-fix-service-invoked-...</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/blog/the-complete-guide-to-reliable-shopify-automations/">The Complete Guide to Reliable Shopify Automations<span class="item-path">/blog/the-complete-guide-to-reliable-shopify-automations</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/">Google Apps Script Quotas Explained — Avoid Limits at Scale<span class="item-path">/blog/google-apps-script-quotas-explained-...</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/blog/scalable-google-sheets-automation-for-high-volume-workflows/">Scalable Google Sheets Automation for High-Volume Workflows<span class="item-path">/blog/scalable-google-sheets-automation-...</span></a></div></div>
-    </div>
-  </div>
+  {Object.keys(categories).map(catKey => {
+    const posts = groupedBlogs[catKey] || [];
+    if (posts.length === 0) return null;
+    return (
+      <div class="section">
+        <div class="section-label">{categories[catKey]} <span class="section-count">{posts.length} posts</span></div>
+        <div class="grid">
+          {posts.map(post => (
+            <div class="item">
+              <div class="item-main">
+                <a href={`/blog/${post.slug}/`}>{post.data.title}<span class="item-path">/blog/{post.slug}</span></a>
+              </div>
+              {post.data.badge && <span class={`badge ${post.data.badgeType === 'new' ? 'bn' : (post.data.badgeType === 'urgent' ? 'bu' : 'bt')}`}>{post.data.badge}</span>}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  })}
 
   <div class="sitemap-foot">
-    <span>SITEMAP_LAST_UPDATED: 2026.04.21 · 77 pages indexed</span>
+    <span>SITEMAP_LAST_UPDATED: 2026.07.24 · 140+ pages indexed</span>
     <a href="/" style="color:var(--muted)">← Return to Stack Architect</a>
   </div>
 </div>
