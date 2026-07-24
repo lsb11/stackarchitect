@@ -4,6 +4,7 @@
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
+import AuthorCard from "../components/AuthorCard.astro";
 ---
 <Base
   title="How We Test & Verify Every Claim — Stack Architect Methodology"
@@ -16,41 +17,65 @@ import Footer from "../components/Footer.astro";
   <main class="flex-1">
     <article style="max-width:760px;margin:0 auto;padding:48px 20px;line-height:1.75;">
 
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#34d377;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;">
+        Site Methodology &amp; Sourcing Standards
+      </div>
 
-  <h1>How we test and verify every claim</h1>
-  <p><em>Last updated: 15 July 2026 · Maintained by Luke Sandelands</em></p>
+      <h1 style="font-size:clamp(32px,4.5vw,48px);font-weight:800;color:#f2f5f3;line-height:1.1;letter-spacing:-.03em;margin-bottom:12px;">
+        How We Test and Verify Every Claim
+      </h1>
+      <p style="font-size:0.9rem;color:#6b7671;margin-bottom:2rem;font-family:'JetBrains Mono',monospace;">
+        Last updated: 24 July 2026 · Maintained by <a href="/about/" style="color:#34d377;text-decoration:underline;">Luke Sandelands</a>
+      </p>
 
-  <p>Stack Architect exists because most Shopify automation advice is either vendor marketing or untested rehash. So every factual claim on this site follows one rule: <strong>if we can't source it or reproduce it, we don't publish it.</strong> This page documents exactly what that means.</p>
+      <p style="font-size:1.05rem;color:#c9cec9;margin-bottom:1.75rem;line-height:1.75;">
+        Stack Architect exists because most Shopify automation advice is either vendor marketing or untested rehash. So every factual claim on this site follows one rule: <strong>if we can't source it or reproduce it, we don't publish it.</strong> This page documents exactly what that means.
+      </p>
 
-  <h2>Where our numbers come from</h2>
-  <p>In order of preference:</p>
-  <ol>
-    <li><strong>Vendor pricing pages and official documentation.</strong> Make.com's plan limits come from make.com/en/pricing. Meta CAPI behaviour comes from Meta's developer documentation and Events Manager. Competitor prices (Elevar, Triple Whale, Klaviyo, Stape, Littledata) come from their own pricing pages, checked on the date shown beside each figure.</li>
-    <li><strong>Working configurations, built as published.</strong> Every guide is written by building the setup it documents, step by step, and publishing the steps that worked — not by summarising vendor docs. Where a page shows a specific measured outcome (an Event Match Quality score, a deduplication result, an execution log), that figure is tied to a dated configuration; where a figure is an industry estimate rather than our measurement, the page says so and gives a range.</li>
-    <li><strong>Platform announcements with dates.</strong> Deadline claims (Stocky's 31 August 2026 shutdown, Meta's 15 April 2026 one-click CAPI release, Klaviyo's February 2025 billing change) cite the announcement, not commentary about it.</li>
-  </ol>
-  <p>We do not use: other blogs' figures, AI-generated statistics, or vendor claims we can't check against a pricing page or changelog.</p>
+      <h2 style="font-size:1.6rem;color:#fff;font-weight:700;margin-top:2.5rem;margin-bottom:1rem;">Where Our Numbers Come From</h2>
+      <p style="color:#c9cec9;margin-bottom:1rem;">In order of preference:</p>
+      <ol style="color:#c9cec9;line-height:1.8;margin-bottom:2rem;padding-left:1.25rem;">
+        <li style="margin-bottom:10px;">
+          <strong>Vendor pricing pages and official documentation.</strong> Make.com's plan limits come from <a href="https://www.make.com/en/pricing" target="_blank" rel="noopener sponsored" style="color:#34d377;text-decoration:underline;">Make.com official pricing</a>. Meta CAPI behaviour comes from <a href="https://developers.facebook.com/docs/marketing-api/conversions-api/" target="_blank" rel="noopener" style="color:#34d377;text-decoration:underline;">Meta Conversions API documentation</a> and Events Manager. Competitor prices (Elevar, Triple Whale, Klaviyo, Stape, Littledata) come from their own verified pricing indices, as detailed in our <a href="/shopify-app-pricing-index/" style="color:#34d377;text-decoration:underline;">Shopify App Pricing Index</a>.
+        </li>
+        <li style="margin-bottom:10px;">
+          <strong>Working configurations, built as published.</strong> Core solutions like <a href="/capi-shield/" style="color:#34d377;text-decoration:underline;">CAPI Shield</a>, <a href="/stocky-swap/" style="color:#34d377;text-decoration:underline;">Stocky Swap</a>, and <a href="/shopify-profit-loss-automation/" style="color:#34d377;text-decoration:underline;">Live P&amp;L Automation</a> are written by building the setup step by step and publishing the exact steps that worked — not by summarising vendor docs.
+        </li>
+        <li style="margin-bottom:10px;">
+          <strong>Platform announcements with dates.</strong> Deadline claims (such as Shopify Stocky's shutdown, Meta's one-click CAPI updates, and Klaviyo billing changes) cite official announcements directly. Learn how to replace Klaviyo for free in our <a href="/replace-klaviyo-free/" style="color:#34d377;text-decoration:underline;">Free Klaviyo Replacement Guide</a>.
+        </li>
+      </ol>
 
-  <h2>How often figures are re-verified</h2>
-  <p>Every pricing and plan-limit figure is re-checked <strong>quarterly</strong>, and immediately whenever a vendor announces a pricing change. When Make.com switched its billing unit from operations to credits in August 2025, and when its Core pricing changed, we updated every affected page from a single canonical facts file — so the same figure appears identically everywhere on the site. Comparison tables carry a "verified" date; if that date is more than a quarter old, tell us.</p>
+      <p style="color:#c9cec9;margin-bottom:2rem;">We do not use: other blogs' figures, AI-generated statistics, or vendor claims we can't check against a pricing page or changelog.</p>
 
-  <h2>What our "tested" badges mean</h2>
-  <p>A badge like "iOS 26 tested" means the documented setup was confirmed working under that environment on the date shown — not tested once and assumed fine since. This is the standard every badge on this site is held to: at each quarterly review, any badge that can no longer be re-confirmed is updated or removed. Where a claim is an estimate rather than a measurement (for example, typical recovery ranges like "20&ndash;40% of lost conversions"), we say so and give the range, not a single flattering number.</p>
+      <h2 style="font-size:1.6rem;color:#fff;font-weight:700;margin-top:2.5rem;margin-bottom:1rem;">How Often Figures Are Re-Verified</h2>
+      <p style="color:#c9cec9;margin-bottom:2rem;line-height:1.75;">
+        Every pricing and plan-limit figure is re-checked <strong>quarterly</strong>, and immediately whenever a vendor announces a pricing change. When Make.com updated its pricing structure, we updated every affected page across our <a href="/best-free-shopify-apps-2026/" style="color:#34d377;text-decoration:underline;">Best Free Shopify Apps 2026 Directory</a>. Comparison tables carry a "verified" date; if that date is more than a quarter old, tell us.
+      </p>
 
-  <h2>How this site makes money — and what that buys</h2>
-  <p>Stack Architect is funded two ways, both disclosed:</p>
-  <ul>
-    <li><strong>Affiliate links.</strong> Some links to tools we recommend (marked <code>rel="sponsored"</code> in the page code) pay us a commission at no cost to you. This never changes a recommendation: our core recommendation on most pages is the <em>free</em> tier of a tool, which typically pays little or nothing. Where a paid tool is genuinely better for a use case, we say so even when we have no affiliate relationship with it.</li>
-    <li><strong>The Complete Kit ($29 one-time).</strong> Pre-built versions of the same automations the free guides teach. The free guides are complete on their own — the kit buys time, not access.</li>
-  </ul>
-  <p>We do not accept payment for placement, reviews, or rankings, and no vendor sees our content before publication.</p>
+      <h2 style="font-size:1.6rem;color:#fff;font-weight:700;margin-top:2.5rem;margin-bottom:1rem;">What Our "Tested" Badges Mean</h2>
+      <p style="color:#c9cec9;margin-bottom:2rem;line-height:1.75;">
+        A badge like "iOS tested" means the documented setup was confirmed working under that environment on the date shown — not tested once and assumed fine since. Check our benchmark methodology in the <a href="/shopify-ios-attribution-gap-benchmark/" style="color:#34d377;text-decoration:underline;">Shopify iOS Attribution Gap Benchmark</a>.
+      </p>
 
-  <h2>Corrections</h2>
-  <p>When we get something wrong, we fix the page, update its "last updated" date, and note material corrections in the text. If you spot an error — a stale price, a changed limit, a claim that didn't hold up in your setup — email <a href="mailto:support@stackarchitect.xyz"><strong>support@stackarchitect.xyz</strong></a> and we'll verify and correct it, usually within a week.</p>
+      <h2 style="font-size:1.6rem;color:#fff;font-weight:700;margin-top:2.5rem;margin-bottom:1rem;">How This Site Makes Money — And What That Buys</h2>
+      <p style="color:#c9cec9;margin-bottom:1rem;">Stack Architect is funded two ways, both disclosed:</p>
+      <ul style="color:#c9cec9;line-height:1.8;margin-bottom:2rem;padding-left:1.25rem;">
+        <li style="margin-bottom:10px;">
+          <strong>Affiliate links.</strong> Some links to tools we recommend (marked <code>rel="sponsored"</code> in the page code) pay us a commission at no cost to you. This never changes a recommendation: our core recommendation on most pages is the <em>free</em> tier of a tool, which typically pays little or nothing.
+        </li>
+        <li style="margin-bottom:10px;">
+          <strong><a href="/pro/" style="color:#34d377;text-decoration:underline;">The Complete Kit ($29 one-time)</a>.</strong> Pre-built versions of the same automations the free guides teach. The free guides are complete on their own — the kit buys time, not access.
+        </li>
+      </ul>
 
-  <h2>Why this page exists</h2>
-  <p>Search engines and AI answer engines increasingly reward sources that show their work; readers always have. Everything above is checkable: click any vendor price we cite and compare it to their pricing page today. If it doesn't match, that's a correction we owe you.</p>
+      <h2 style="font-size:1.6rem;color:#fff;font-weight:700;margin-top:2.5rem;margin-bottom:1rem;">Corrections &amp; Feedback</h2>
+      <p style="color:#c9cec9;margin-bottom:2rem;line-height:1.75;">
+        When we get something wrong, we fix the page, update its "last updated" date, and note material corrections in the text. If you spot an error — a stale price, a changed limit, a claim that didn't hold up in your setup — email <a href="mailto:support@stackarchitect.xyz" style="color:#34d377;text-decoration:underline;"><strong>support@stackarchitect.xyz</strong></a> or read more <a href="/about/" style="color:#34d377;text-decoration:underline;">about our team and mission</a>.
+      </p>
 
+      <AuthorCard />
+    </article>
   </main>
 
   <Footer />
