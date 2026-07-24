@@ -57,7 +57,33 @@ const softwareSchema = {
   }
 };
 
-const schemas = [faqSchema, softwareSchema];
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description: description,
+  author: {
+    '@type': 'Person',
+    name: 'Luke',
+    url: 'https://stackarchitect.xyz/about'
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Stack Architect',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://stackarchitect.xyz/logo.png'
+    }
+  },
+  datePublished: new Date().toISOString(),
+  dateModified: new Date().toISOString(),
+  speakable: {
+    '@type': 'SpeakableSpecification',
+    cssSelector: ['.speakable-summary']
+  }
+};
+
+const schemas = [faqSchema, softwareSchema, articleSchema];
 ---
 
 <Base
@@ -69,10 +95,10 @@ const schemas = [faqSchema, softwareSchema];
 >
   <Nav slot="header" />
 
-  <main class="flex-1 max-w-3xl mx-auto px-4 py-12 w-full">
+  <main class="flex-1 max-w-4xl mx-auto px-4 py-12 w-full">
     <div class="mb-10 text-center">
       <span class="inline-block px-3 py-1 mb-4 text-xs font-mono font-bold tracking-widest text-[#34d377] border border-[#34d377] rounded-full uppercase bg-[#34d377]/10">
-        App Alternatives Guide
+        {app.category} App Alternatives
       </span>
       <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6">
         {app.name} Pricing & Alternatives
@@ -82,14 +108,17 @@ const schemas = [faqSchema, softwareSchema];
       </p>
     </div>
 
-    <TLDR 
-      title={`Quick Answer: ${app.name} Alternative`}
-      points={[
-        `${app.name} is a popular ${app.category} app costing ${app.monthlyCost}.`,
-        `You can completely replace it using ${app.replacement}.`,
-        `This switch saves the average Shopify store ${app.savings}.`
-      ]}
-    />
+    <!-- The speakable-summary class is targeted by the Speakable Schema for Voice Assistants -->
+    <div class="speakable-summary mb-8">
+      <TLDR 
+        title={`Quick Answer: ${app.name} Alternative`}
+        points={[
+          `${app.name} is a popular ${app.category} app costing ${app.monthlyCost}.`,
+          `You can completely replace it using ${app.replacement}.`,
+          `This switch saves the average Shopify store ${app.savings}.`
+        ]}
+      />
+    </div>
 
     <FactTable 
       appName={app.name}
@@ -99,36 +128,110 @@ const schemas = [faqSchema, softwareSchema];
       savings={app.savings}
     />
 
-    <article class="prose-stack mt-12 mb-16">
-      <h2>Why consider a {app.name} alternative?</h2>
-      <p>
-        {app.description} While {app.name} is a robust solution for many e-commerce brands, the recurring subscription fee of {app.monthlyCost} can severely impact your profit margins as you scale. 
-      </p>
-      <p>
-        In 2026, many Shopify merchants are shifting toward owned-data infrastructure. By utilizing <a href={app.stackarchitectAlternativeLink}>{app.replacement}</a>, you maintain full control over your data while retaining the exact same functionality—without the monthly overhead.
-      </p>
+    <article class="mt-16 mb-16 w-full">
+      
+      <!-- Key Features Section -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-bold text-white mb-6">What does {app.name} do?</h2>
+        <p class="text-gray-400 mb-6 leading-relaxed">
+          {app.description} As a leading solution in the {app.category} space for Shopify, it typically provides the following core capabilities:
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {app.keyFeatures && app.keyFeatures.map((feature) => (
+            <div class="flex items-start bg-[#111311] p-4 rounded-xl border border-gray-800">
+              <svg class="w-5 h-5 text-[#34d377] mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span class="text-gray-300">{feature}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Pros and Cons Section -->
+      <section class="mb-16">
+        <h2 class="text-2xl font-bold text-white mb-6">Pros & Cons of {app.name}</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- Pros Card -->
+          <div class="bg-[#0f1711] border border-[#34d377]/20 rounded-2xl p-6 shadow-lg shadow-[#34d377]/5">
+            <div class="flex items-center mb-4">
+              <div class="w-8 h-8 rounded-full bg-[#34d377]/20 flex items-center justify-center mr-3">
+                <svg class="w-4 h-4 text-[#34d377]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              </div>
+              <h3 class="text-xl font-bold text-white">What it gets right</h3>
+            </div>
+            <ul class="space-y-3">
+              {app.pros && app.pros.map((pro) => (
+                <li class="flex items-start text-gray-300 text-sm">
+                  <span class="text-[#34d377] mr-2 mt-0.5">•</span> {pro}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Cons Card -->
+          <div class="bg-[#1a0f0f] border border-red-500/20 rounded-2xl p-6 shadow-lg shadow-red-500/5">
+            <div class="flex items-center mb-4">
+              <div class="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center mr-3">
+                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+              </div>
+              <h3 class="text-xl font-bold text-white">Where it falls short</h3>
+            </div>
+            <ul class="space-y-3">
+              {app.cons && app.cons.map((con) => (
+                <li class="flex items-start text-gray-300 text-sm">
+                  <span class="text-red-500 mr-2 mt-0.5">•</span> {con}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- The Pricing Problem -->
+      <section class="mb-16">
+        <h2 class="text-2xl font-bold text-white mb-6">The Pricing Trap: How {app.name} Scales</h2>
+        <div class="bg-[#111311] border-l-4 border-yellow-500 p-6 rounded-r-2xl">
+          <p class="text-gray-300 leading-relaxed font-medium">
+            "{app.pricingScaling}"
+          </p>
+          <p class="text-gray-400 mt-4 text-sm">
+            While {app.name} is a robust solution for many e-commerce brands, the recurring subscription fee of {app.monthlyCost} can severely impact your profit margins as you scale. In 2026, many Shopify merchants are shifting toward owned-data infrastructure to escape these variable pricing models.
+          </p>
+        </div>
+      </section>
 
       <div class="my-12 p-6 md:p-8 bg-[#0c0f0d] border border-[#34d377]/20 rounded-2xl text-center shadow-[0_0_40px_rgba(52,211,119,0.05)]">
         <h3 class="text-xl md:text-2xl font-bold text-white mb-2 !mt-0">See exactly how much you can save</h3>
-        <p class="text-sm text-gray-400 mb-6">Adjust the sliders below to calculate your instant savings by switching to {app.replacement}.</p>
+        <p class="text-sm text-gray-400 mb-6">Adjust the sliders below to calculate your instant savings by migrating away from {app.name}.</p>
         <iframe src="/embed/app-cost-calculator/" width="100%" height="480" frameborder="0" scrolling="no" style="max-width: 420px; margin: 0 auto; display: block; border: none; overflow: hidden; border-radius: 16px;"></iframe>
       </div>
 
-      <h2>How to migrate to {app.replacement}</h2>
-      <p>
-        Replacing {app.name} doesn't require complex coding. Our pre-built automation architectures allow you to set up {app.replacement} in a matter of minutes.
-      </p>
-      <ul>
-        <li>No recurring app fees.</li>
-        <li>100% data ownership.</li>
-        <li>Native Shopify integration.</li>
-      </ul>
-      <p>
-        Ready to make the switch? Check out the complete <a href={app.stackarchitectAlternativeLink}>{app.replacement} setup guide</a>.
-      </p>
+      <!-- Migration Path -->
+      <section>
+        <h2 class="text-2xl font-bold text-white mb-6">How to migrate to {app.replacement}</h2>
+        <p class="text-gray-400 leading-relaxed mb-6">
+          Replacing {app.name} doesn't require complex coding. Our pre-built automation architectures allow you to set up {app.replacement} in a matter of minutes, giving you:
+        </p>
+        <ul class="space-y-3 text-gray-300 font-mono text-sm bg-[#111311] p-6 rounded-xl border border-gray-800 mb-8 inline-block shadow-lg">
+          <li class="flex items-center"><svg class="w-5 h-5 text-[#34d377] mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> $0 recurring app fees</li>
+          <li class="flex items-center"><svg class="w-5 h-5 text-[#34d377] mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> 100% data ownership</li>
+          <li class="flex items-center"><svg class="w-5 h-5 text-[#34d377] mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Native Shopify integration</li>
+        </ul>
+        <div class="mt-4">
+          <a href={app.stackarchitectAlternativeLink} class="inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-bold rounded-full text-black bg-[#34d377] hover:bg-[#2db666] transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(52,211,119,0.3)] font-mono uppercase tracking-wider">
+            View {app.replacement} Setup Guide
+          </a>
+        </div>
+      </section>
+
     </article>
 
-    <AuthorCard />
+    <div class="border-t border-gray-800 pt-12 mt-12">
+      <AuthorCard />
+    </div>
   </main>
 
   <Footer />
