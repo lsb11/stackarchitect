@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import { ClientRouter } from 'astro:transitions';
 
 interface BreadcrumbItem {
   label: string;
@@ -227,6 +228,19 @@ if (!alreadyHasBreadcrumbSchema && !noindex && canonicalPath !== '/') {
   };
 }
 
+const articleSchema = pageType === 'article' ? {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  'headline': title.split('—')[0].split('|')[0].trim(),
+  'description': description,
+  'image': ogImage ? (ogImage.startsWith('http') ? ogImage : 'https://stackarchitect.xyz' + ogImage) : 'https://stackarchitect.xyz/og/og-home.png',
+  'datePublished': publishDate || updatedDate || new Date().toISOString(),
+  'dateModified': updatedDate || publishDate || new Date().toISOString(),
+  'author': { '@id': 'https://stackarchitect.xyz/#luke' },
+  'publisher': { '@id': 'https://stackarchitect.xyz/#org' },
+  'mainEntityOfPage': { '@type': 'WebPage', '@id': canonical }
+} : null;
+
 const allSchemas = [
   ...schemaArray,
   siteNavSchema,
@@ -234,6 +248,7 @@ const allSchemas = [
   personSchema,
   ...(alreadyHasWebSiteSchema ? [] : [webSiteSchema]),
   ...(autoBreadcrumbSchema ? [autoBreadcrumbSchema] : []),
+  ...(articleSchema ? [articleSchema] : []),
 ];
 
 const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
@@ -248,6 +263,7 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
     <!-- Primary SEO -->
     <title>{title}</title>
     <meta name="description" content={description} />
+    <ClientRouter fallback="swap" />
     <link rel="canonical" href={canonical} />
 
     <!-- Feed discovery: Googlebot, Bingbot and AI crawlers poll RSS for new URLs -->

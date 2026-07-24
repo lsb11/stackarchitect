@@ -27,35 +27,6 @@ const {
 const rawCanonical = canonical ?? `https://stackarchitect.xyz/blog/${entry.slug}/`;
 const canonicalUrl = rawCanonical.endsWith('/') ? rawCanonical : rawCanonical + '/';
 
-// Article JSON-LD
-const articleSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: title,
-  description: description,
-  datePublished: publishDate,
-  dateModified: updatedDate ?? publishDate,
-  author: {
-    '@type': 'Person',
-    '@id': 'https://stackarchitect.xyz/#luke',
-    name: 'Luke',
-    jobTitle: 'Shopify Automation Specialist',
-    url: 'https://stackarchitect.xyz/about',
-    sameAs: ['https://www.linkedin.com/in/luke-stackarchitect'],
-    worksFor: { '@type': 'Organization', name: 'Stack Architect', url: 'https://stackarchitect.xyz' },
-  },
-  publisher: {
-    '@type': 'Organization',
-    name: 'Stack Architect',
-    url: 'https://stackarchitect.xyz',
-  },
-  mainEntityOfPage: canonicalUrl,
-  speakable: {
-    '@type': 'SpeakableSpecification',
-    cssSelector: ['h1', 'h2', '.speakable']
-  }
-};
-
 // BreadcrumbList JSON-LD
 const categoryLabels: Record<string, string> = {
   tracking: 'Ad Tracking',
@@ -103,7 +74,6 @@ const faqSchema =
     : null;
 
 const schemas = [
-  articleSchema,
   breadcrumbSchema,
   ...(faqSchema ? [faqSchema] : []),
 ];
@@ -140,7 +110,7 @@ const displayDate = (d: string) =>
   updatedDate={updatedDate}
   breadcrumb={breadcrumb}
 >
-  <Nav slot="header" />
+
 
   <main class="flex-1 max-w-3xl mx-auto px-4 py-10 w-full">
     <!-- Post metadata bar -->
