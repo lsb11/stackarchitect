@@ -10,6 +10,46 @@ const breadcrumb = [
   { label: 'Meta EMQ Score Estimator — Free Meta Event Match Quality Calculator' },
 ];
 import TableOfContents from '../components/TableOfContents.astro';
+
+const tocHeadings = [
+  {
+    "id": "what-is-meta-event-match-quality-emq",
+    "text": "What Is Meta Event Match Quality (EMQ)?"
+  },
+  {
+    "id": "how-emq-score-is-calculated",
+    "text": "How EMQ Score Is Calculated"
+  },
+  {
+    "id": "why-low-emq-scores-directly-cost-you-money",
+    "text": "Why Low EMQ Scores Directly Cost You Money"
+  },
+  {
+    "id": "how-to-fix-low-meta-emq-on-shopify-free-method",
+    "text": "How to Fix Low Meta EMQ on Shopify \u2014 Free Method"
+  },
+  {
+    "id": "emq-score-bands-what-each-range-actually-means",
+    "text": "EMQ score bands \u2014 what each range actually means"
+  },
+  {
+    "id": "which-signals-move-the-score-and-by-how-much",
+    "text": "Which signals move the score \u2014 and by how much"
+  },
+  {
+    "id": "event-specific-benchmarks-why-one-number-is-misleading",
+    "text": "Event-specific benchmarks \u2014 why one number is misleading"
+  },
+  {
+    "id": "common-questions",
+    "text": "COMMON_QUESTIONS"
+  },
+  {
+    "id": "fix-your-emq-score-free-setup-guide",
+    "text": "Fix Your EMQ Score \u2014 Free Setup Guide"
+  }
+];
+
 ---
 
 <Base
@@ -118,7 +158,7 @@ import TableOfContents from '../components/TableOfContents.astro';
       <div class="tool-badge"><span class="dot"></span>FREE TOOL // Meta Attribution</div>
       <h1>Meta <span class="green">EMQ Score</span> Estimator</h1>
 
-  <TableOfContents />
+  <TableOfContents headings={tocHeadings} />
 
       <p class="tool-hero-desc">Estimate your Meta Event Match Quality score and discover exactly which data signals are costing you attributed conversions. Fix low EMQ with server-side tracking — free, no code required.</p>
       <div class="tool-trust">
@@ -247,11 +287,11 @@ import TableOfContents from '../components/TableOfContents.astro';
 
   <section class="editorial">
     <div class="editorial-inner">
-      <h2>What Is Meta Event Match Quality (EMQ)?</h2>
+      <h2 id="what-is-meta-event-match-quality-emq">What Is Meta Event Match Quality (EMQ)?</h2>
       <p>Meta Event Match Quality is a score from 0–10 that measures how accurately your conversion events are being matched back to Meta user profiles. A high EMQ score means Meta can reliably attribute purchases, add-to-carts, and other events to specific ad clicks — which directly determines how accurately your ROAS is reported and how well Meta's algorithm can optimise your campaigns.</p>
       <p><strong>The core problem: browser-only tracking is broken.</strong> Apple's iOS App Tracking Transparency, Safari's ITP, and widespread use of ad blockers all interfere with the Meta Pixel's ability to fire accurately. When a customer uses iOS Safari, your pixel may miss 20–40% of conversions entirely. Those conversions still happen — they just become invisible to Meta.</p>
 
-      <h2>How EMQ Score Is Calculated</h2>
+      <h2 id="how-emq-score-is-calculated">How EMQ Score Is Calculated</h2>
       <p>Meta calculates EMQ based on which customer data signals are present in your event payload and how accurately they can be matched to a Meta user profile. The most valuable signals are:</p>
       <ul>
         <li><strong>Email address</strong> — highest individual impact. Must be SHA256 hashed before sending.</li>
@@ -262,17 +302,17 @@ import TableOfContents from '../components/TableOfContents.astro';
       </ul>
       <p>Sending events server-side (via the Events API) is the single biggest improvement available because it ensures events fire regardless of browser restrictions, ad blockers, or iOS settings. Server-side signals are more reliable, arrive faster, and can carry more data than browser pixel events.</p>
 
-      <h2>Why Low EMQ Scores Directly Cost You Money</h2>
+      <h2 id="why-low-emq-scores-directly-cost-you-money">Why Low EMQ Scores Directly Cost You Money</h2>
       <p><strong>Reporting accuracy:</strong> If Meta can only match 60% of your conversions back to ad clicks, your reported ROAS is based on 60% of actual revenue. You may be cutting campaigns that are actually profitable, or scaling campaigns that look strong but have inflated numbers.</p>
       <p><strong>Algorithm optimisation:</strong> Meta's Advantage+ campaigns and automated bidding use conversion signals to find buyers. Low-quality signals mean the algorithm is learning from incomplete data — it optimises toward the 60% of conversions it can see, not the 100% that are happening.</p>
       <p><strong>Attribution windows:</strong> Meta's default attribution window is 7-day click, 1-day view. With low EMQ, conversions that happen 2–3 days after a Meta ad click may never be matched, artificially compressing your measured attribution window.</p>
 
-      <h2>How to Fix Low Meta EMQ on Shopify — Free Method</h2>
+      <h2 id="how-to-fix-low-meta-emq-on-shopify-free-method">How to Fix Low Meta EMQ on Shopify — Free Method</h2>
       <p>The fastest way to improve EMQ on Shopify is to implement server-side tracking via the <a href="/capi-shield/">Meta Conversions API using Make.com</a>. When a Shopify order is placed, a Make.com webhook fires immediately and sends a Purchase event directly to Meta's server — with hashed email, phone, external_id, and IP address all included in the payload. This bypasses every browser-level restriction and typically moves EMQ scores from 4–5 range to 6–8+ range.</p>
       <p>The full setup takes approximately 6 minutes on Make.com's free tier (1,000 credits/month). No code, no developer, no ongoing subscription. The guide at <a href="/capi-shield/">stackarchitect.xyz/capi-shield</a> covers every step.</p>
       <p>Low EMQ is one visible symptom of a wider measurement gap. For how much purchase signal the typical Shopify store loses to iOS — a sourced 20–40% — see the <a href="/shopify-ios-attribution-gap-benchmark/">iOS attribution gap benchmark</a>.</p>
 
-      <h2>EMQ score bands — what each range actually means</h2>
+      <h2 id="emq-score-bands-what-each-range-actually-means">EMQ score bands — what each range actually means</h2>
       <p>Meta scores every web event from 0–10 on a rolling 48-hour window. The bands below are the working interpretation used across Shopify tracking practice in 2026 — what each range tells you to do next, not just a colour.</p>
 
       <div class="emq-table-wrap">
@@ -289,7 +329,7 @@ import TableOfContents from '../components/TableOfContents.astro';
         </table>
       </div>
 
-      <h2>Which signals move the score — and by how much</h2>
+      <h2 id="which-signals-move-the-score-and-by-how-much">Which signals move the score — and by how much</h2>
       <p>EMQ is cumulative: it rewards parameter <em>depth</em> on every event, not one perfect identifier. Hashed identifiers are matched deterministically; the browser and click IDs (fbc, fbp) carry the probabilistic load for anonymous visitors. <strong>Critical detail most setups get wrong:</strong> email, phone, external_id, names and address are SHA-256 hashed before sending — but <strong>fbc and fbp must never be hashed.</strong></p>
 
       <div class="emq-table-wrap">
@@ -309,7 +349,7 @@ import TableOfContents from '../components/TableOfContents.astro';
         </table>
       </div>
 
-      <h2>Event-specific benchmarks — why one number is misleading</h2>
+      <h2 id="event-specific-benchmarks-why-one-number-is-misleading">Event-specific benchmarks — why one number is misleading</h2>
       <p>A single store-wide EMQ figure hides the real picture, because different event types <em>structurally</em> score differently. Purchase events fire at checkout where email, phone and address all exist, so they score high. PageView and Add to Cart events fire before the visitor has typed anything — and fbc only exists if they arrived from a Meta ad — so they score lower by design. Judge each event against its own benchmark, not against Purchase.</p>
 
       <div class="emq-table-wrap">
@@ -333,7 +373,7 @@ import TableOfContents from '../components/TableOfContents.astro';
   
   <section class="faq-section">
     <div class="faq-inner">
-      <h2 class="faq-heading">COMMON_QUESTIONS</h2>
+      <h2 id="common-questions" class="faq-heading">COMMON_QUESTIONS</h2>
       
     <details class="faq-item">
       <summary><span>What is a good Meta EMQ score?</span><span class="faq-arrow">▼</span></summary>
@@ -369,7 +409,7 @@ import TableOfContents from '../components/TableOfContents.astro';
   </section>
 
   <section class="cta-strip-tool">
-    <h2>Fix Your EMQ Score — Free Setup Guide</h2>
+    <h2 id="fix-your-emq-score-free-setup-guide">Fix Your EMQ Score — Free Setup Guide</h2>
     <p>Server-side Meta Conversions API setup. 6 minutes. $0 forever.</p>
     <a href="/capi-shield/">Deploy CAPI Shield Free →</a>
   </section>

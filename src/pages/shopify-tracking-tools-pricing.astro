@@ -82,6 +82,38 @@ const tools = [
 
 const lastReviewISO = dateModified;
 import TableOfContents from '../components/TableOfContents.astro';
+
+const tocHeadings = [
+  {
+    "id": "what-each-tool-costs-right-now",
+    "text": "What each tool costs right now"
+  },
+  {
+    "id": "every-tier-and-where-paid-actually-wins",
+    "text": "Every tier, and where paid actually wins"
+  },
+  {
+    "id": "the-free-build-that-replaces-the-entry-tier",
+    "text": "The free build that replaces the entry tier"
+  },
+  {
+    "id": "how-this-page-is-maintained",
+    "text": "How this page is maintained"
+  },
+  {
+    "id": "common-questions",
+    "text": "Common questions"
+  },
+  {
+    "id": "related-pricing-breakdowns",
+    "text": "Related pricing breakdowns"
+  },
+  {
+    "id": "related-app-alternatives",
+    "text": "Related App Alternatives"
+  }
+];
+
 ---
 <Base title={title} description="The maintained, dated price comparison for Shopify server-side tracking and attribution tools: Elevar, Triple Whale, Analyzify, Northbeam. Current monthly cost per tier, what">
 <Fragment slot="head">
@@ -139,7 +171,7 @@ import TableOfContents from '../components/TableOfContents.astro';
 
       <h1>Shopify Tracking Tools<br><span class="green">Live Pricing</span><br><span class="dim">2026, Updated Monthly.</span></h1>
 
-  <TableOfContents />
+  <TableOfContents headings={tocHeadings} />
 
       <p class="hero-sub">One maintained, dated reference for what every server-side tracking and attribution tool actually costs this month — Elevar, Triple Whale, Analyzify, Northbeam. Current price per tier, what's included, and an honest note on where each paid tool genuinely beats the free build. Verified against vendor pricing pages; re-checked monthly.</p>
 
@@ -162,7 +194,7 @@ import TableOfContents from '../components/TableOfContents.astro';
     <div class="inner">
       <div class="sec-head">
         <span class="tag tag-dim" style="margin-bottom:14px;display:inline-flex;">current monthly pricing · verified {verified}</span>
-        <h2>What each tool costs right now</h2>
+        <h2 id="what-each-tool-costs-right-now">What each tool costs right now</h2>
         <p>Entry price is the cheapest tier that includes real server-side Conversions API tracking — not a browser-only free plan.</p>
       </div>
 
@@ -203,7 +235,7 @@ import TableOfContents from '../components/TableOfContents.astro';
     <div class="inner">
       <div class="sec-head">
         <span class="tag tag-dim" style="margin-bottom:14px;display:inline-flex;">tier-by-tier</span>
-        <h2>Every tier, and where paid actually wins</h2>
+        <h2 id="every-tier-and-where-paid-actually-wins">Every tier, and where paid actually wins</h2>
         <p>The honest part most comparison pages skip: each of these tools does something the free build genuinely cannot.</p>
         <p>Before paying for any of them, it's worth knowing how big your actual gap is: the <a href="/shopify-ios-attribution-gap-benchmark/">iOS attribution gap benchmark</a> shows the sourced 20–40% of conversion signal the typical Shopify store loses — the problem all of these tools are priced against.</p>
       </div>
@@ -243,7 +275,7 @@ import TableOfContents from '../components/TableOfContents.astro';
     <div class="inner-sm">
       <div class="sec-head">
         <span class="tag tag-dim" style="margin-bottom:14px;display:inline-flex;">the $0 route</span>
-        <h2>The free build that replaces the entry tier</h2>
+        <h2 id="the-free-build-that-replaces-the-entry-tier">The free build that replaces the entry tier</h2>
         <p>For Meta + Google server-side tracking — the one feature most stores actually need — you don't need any of the tools above.</p>
       </div>
       <div style="border:2px solid var(--g-border);border-radius:12px;padding:26px;background:var(--g-bg);">
@@ -262,7 +294,7 @@ import TableOfContents from '../components/TableOfContents.astro';
     <div class="inner-sm">
       <div class="sec-head">
         <span class="tag tag-dim" style="margin-bottom:14px;display:inline-flex;">how this stays current</span>
-        <h2>How this page is maintained</h2>
+        <h2 id="how-this-page-is-maintained">How this page is maintained</h2>
       </div>
       <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:12px;max-width:680px;">
         <li style="display:flex;gap:10px;align-items:baseline;font-size:14px;color:var(--text-2);line-height:1.6;"><span style="color:var(--g);flex-shrink:0;">→</span>Every figure is checked against the vendor's own published pricing page and our dedicated breakdown for that tool.</li>
@@ -290,7 +322,7 @@ import TableOfContents from '../components/TableOfContents.astro';
     <div class="inner-sm">
       <div class="sec-head">
         <span class="tag tag-dim" style="margin-bottom:14px;display:inline-flex;">FAQ</span>
-        <h2>Common questions</h2>
+        <h2 id="common-questions">Common questions</h2>
       </div>
       <div style="display:flex;flex-direction:column;gap:14px;">
         <details style="border:1px solid var(--border);border-radius:8px;padding:16px 18px;background:var(--bg-2);">
@@ -312,7 +344,7 @@ import TableOfContents from '../components/TableOfContents.astro';
   <!-- RELATED -->
   <section class="section-alt" id="related">
     <div class="inner">
-      <div class="sec-head"><h2 style="font-size:20px;">Related pricing breakdowns</h2></div>
+      <div class="sec-head"><h2 id="related-pricing-breakdowns" style="font-size:20px;">Related pricing breakdowns</h2></div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
         <a href="/elevar-alternative/" class="btn-outline">Elevar Pricing 2026</a>
         <a href="/analyzify-alternative/" class="btn-outline">Analyzify Pricing 2026</a>
@@ -327,7 +359,7 @@ import TableOfContents from '../components/TableOfContents.astro';
 <div style="max-width:860px;margin:0 auto;padding:0 24px;margin-bottom:60px;">
     
 <div style="max-width:860px;margin:2rem auto;padding:0 24px;">
-  <h2 style="font-size:1.5rem;font-weight:bold;margin-bottom:1rem;color:white;">Related App Alternatives</h2>
+  <h2 id="related-app-alternatives" style="font-size:1.5rem;font-weight:bold;margin-bottom:1rem;color:white;">Related App Alternatives</h2>
   <ul style="list-style:disc;padding-left:1.5rem;color:#9ca3af;">
     <li><a href="/apps/elevar/" style="color:#34d377;text-decoration:none;hover:underline;">Elevar Pricing & Alternatives</a></li>
     <li><a href="/apps/triple-whale/" style="color:#34d377;text-decoration:none;hover:underline;">Triple Whale Pricing & Alternatives</a></li>

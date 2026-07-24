@@ -11,6 +11,34 @@ const breadcrumb = [
   { label: 'Stocky Migration Risk Scorer — Free Shopify Inventory Migration Calculator' },
 ];
 import TableOfContents from '../components/TableOfContents.astro';
+
+const tocHeadings = [
+  {
+    "id": "why-you-cannot-wait-until-july-2026",
+    "text": "Why You Cannot Wait Until July 2026"
+  },
+  {
+    "id": "what-stocky-swap-replaces",
+    "text": "What Stocky Swap Replaces"
+  },
+  {
+    "id": "migration-risk-factors-explained",
+    "text": "Migration Risk Factors Explained"
+  },
+  {
+    "id": "common-questions",
+    "text": "COMMON_QUESTIONS"
+  },
+  {
+    "id": "deploy-stocky-swap-before-the-deadline",
+    "text": "Deploy Stocky Swap Before the Deadline"
+  },
+  {
+    "id": "related-app-alternatives",
+    "text": "Related App Alternatives"
+  }
+];
+
 ---
 
 <Base
@@ -109,7 +137,7 @@ import TableOfContents from '../components/TableOfContents.astro';
       <div class="tool-badge"><span class="dot"></span>FREE TOOL // Stocky Shutdown — Aug 2026</div>
       <h1>Stocky Migration <span class="green">Risk Scorer</span></h1>
 
-  <TableOfContents />
+  <TableOfContents headings={tocHeadings} />
 
       <p class="tool-hero-desc">Assess your migration risk from Shopify Stocky and get a personalised timeline before the August 2026 shutdown. Understand your complexity, urgency, and exactly what to do first.</p>
       <div class="tool-trust">
@@ -220,11 +248,11 @@ import TableOfContents from '../components/TableOfContents.astro';
 
   <section class="editorial">
     <div class="editorial-inner">
-      <h2>Why You Cannot Wait Until July 2026</h2>
+      <h2 id="why-you-cannot-wait-until-july-2026">Why You Cannot Wait Until July 2026</h2>
       <p>Shopify announced the Stocky shutdown with a specific deletion date: <strong>31 August 2026</strong>. All purchase orders, inventory history, supplier data, and stock levels stored in Stocky will be permanently deleted after this date with no recovery option. The practical consequence is that stores with complex inventory data need to export everything before migration — not after. For the complete deadline breakdown and what gets deleted, see the <a href="/stocky-shutdown/">full Stocky shutdown timeline</a>.</p>
       <p>The migration risk is not just technical. Stores that migrate under time pressure are more likely to make configuration errors, skip data validation, or go live without adequate testing. Starting at least 60–90 days before the deadline gives you time to run the new system in parallel with Stocky before switching over completely.</p>
 
-      <h2>What Stocky Swap Replaces</h2>
+      <h2 id="what-stocky-swap-replaces">What Stocky Swap Replaces</h2>
       <p>The free <a href="/stocky-swap/">Stocky Swap</a> replacement covers the core inventory functions most Shopify stores use daily:</p>
       <ul>
         <li>Real-time order logging to Google Sheets via Make.com webhook</li>
@@ -235,7 +263,7 @@ import TableOfContents from '../components/TableOfContents.astro';
       </ul>
       <p>What it does not replicate: Stocky's purchase order creation interface. If your team relies heavily on raising POs directly within Stocky, you will need to either use Shopify's native purchase orders feature (available on all plans) or evaluate a paid inventory solution for that specific workflow. We rank every option side by side in our <a href="/stocky-alternative/">full comparison of Stocky alternatives</a>.</p>
 
-      <h2>Migration Risk Factors Explained</h2>
+      <h2 id="migration-risk-factors-explained">Migration Risk Factors Explained</h2>
       <p><strong>Order volume</strong> is the primary driver of migration complexity. Stores processing over 1,000 orders per month need to ensure their Google Sheets formula performance is optimised and that Make.com's free tier (1,000 credits/month) covers their volume — or upgrade to Make.com's Core plan ($12/month) for unlimited operations.</p>
       <p><strong>SKU count</strong> affects how long the initial data mapping takes. Each SKU needs to be mapped to a corresponding row in your Sheets inventory template. Under 200 SKUs, this is a 30-minute task. Over 500 SKUs, plan for a half day of data work.</p>
       <p><strong>Google Workspace</strong> is recommended for stores processing over 500 orders per month. The free Google Sheets tier has API rate limits that can cause webhook delays during high-volume periods. <a href="/go/workspace" target="_blank" rel="noopener sponsored">Google Workspace</a> removes these limits entirely.</p>
@@ -245,7 +273,7 @@ import TableOfContents from '../components/TableOfContents.astro';
   
   <section class="faq-section">
     <div class="faq-inner">
-      <h2 class="faq-heading">COMMON_QUESTIONS</h2>
+      <h2 id="common-questions" class="faq-heading">COMMON_QUESTIONS</h2>
       
     <details class="faq-item">
       <summary><span>When is Shopify Stocky shutting down?</span><span class="faq-arrow">▼</span></summary>
@@ -281,7 +309,7 @@ import TableOfContents from '../components/TableOfContents.astro';
   </section>
 
   <section class="cta-strip-tool">
-    <h2>Deploy Stocky Swap Before the Deadline</h2>
+    <h2 id="deploy-stocky-swap-before-the-deadline">Deploy Stocky Swap Before the Deadline</h2>
     <p>Free replacement. 4-minute setup. No subscription.</p>
     <a href="/stocky-swap/">Start Stocky Swap Free →</a>
   </section>
@@ -292,7 +320,7 @@ import TableOfContents from '../components/TableOfContents.astro';
 <div style="max-width:860px;margin:0 auto;padding:0 24px;margin-bottom:60px;">
     
 <div style="max-width:860px;margin:2rem auto;padding:0 24px;">
-  <h2 style="font-size:1.5rem;font-weight:bold;margin-bottom:1rem;color:white;">Related App Alternatives</h2>
+  <h2 id="related-app-alternatives" style="font-size:1.5rem;font-weight:bold;margin-bottom:1rem;color:white;">Related App Alternatives</h2>
   <ul style="list-style:disc;padding-left:1.5rem;color:#9ca3af;">
     <li><a href="/apps/stocky/" style="color:#34d377;text-decoration:none;hover:underline;">Stocky Pricing & Alternatives</a></li>
   </ul>

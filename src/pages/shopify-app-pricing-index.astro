@@ -53,12 +53,32 @@ const ld = {
   ]
 };
 import TableOfContents from '../components/TableOfContents.astro';
+
+const tocHeadings = [
+  {
+    "id": "how-this-index-is-maintained",
+    "text": "How this index is maintained"
+  },
+  {
+    "id": "faq",
+    "text": "FAQ"
+  },
+  {
+    "id": "related-on-stack-architect",
+    "text": "Related on Stack Architect"
+  },
+  {
+    "id": "complete-shopify-app-alternatives-directory",
+    "text": "Complete Shopify App Alternatives Directory"
+  }
+];
+
 ---
 <Base title="Shopify App Pricing Index 2026 — 12 Popular Apps, Real Costs, Free Replacements" description="What Shopify apps actually cost in 2026: Klaviyo, Triple Whale, Elevar, Analyzify, Gorgias, Tidio, Inventory Planner and more — every price verified against official pricing pages, with the free replacement for each. Last verified July 2026.">
 <main>
   <h1>Shopify App Pricing Index <span style="opacity:.6">2026</span></h1>
 
-  <TableOfContents />
+  <TableOfContents headings={tocHeadings} />
 
   <p class="lede">One maintained table of what 12 widely-used Shopify apps actually cost per month — every figure verified against the vendor's <em>official</em> pricing page — and the free replacement for each where one genuinely exists.</p>
   <p class="meta">Last verified: <strong>3 July 2026</strong> · Prices are publicly listed monthly rates; contact- and usage-based plans shown as ranges · Data licensed CC-BY-4.0 — cite as <em>“Stack Architect, Shopify App Pricing Index 2026”</em></p>
@@ -86,15 +106,15 @@ import TableOfContents from '../components/TableOfContents.astro';
     <br /><a class="cta" href="/shopify-app-cost-calculator/">Calculate your own app bill →</a>
   </div>
 
-  <h2>How this index is maintained</h2>
+  <h2 id="how-this-index-is-maintained">How this index is maintained</h2>
   <p class="lede">Each row links the vendor's official pricing page — that page is always authoritative. Figures are re-verified when vendors change plans (Klaviyo's February 2025 move to active-profile billing is the canonical example of why the date above matters). No affiliate relationship changes a listed price: several apps in this table pay us nothing, and the free replacements we recommend are free regardless.</p>
 
-  <h2>FAQ</h2>
+  <h2 id="faq">FAQ</h2>
   <div class="faq">
     {faqs.map(f => (<div><h3 style="margin:.8rem 0 .2rem;font-size:1.02rem">{f.q}</h3><p>{f.a}</p></div>))}
   </div>
 
-  <h2>Related on Stack Architect</h2>
+  <h2 id="related-on-stack-architect">Related on Stack Architect</h2>
   <p class="lede">
     <a href="/shopify-tracking-tools-pricing/" style="color:#59c9ff">Tracking-tools pricing deep dive</a> ·
     <a href="/blog/how-much-shopify-apps-really-cost-and-how-to-cut-your-app-bill-in-half/" style="color:#59c9ff">How to cut your app bill in half</a> ·
@@ -105,7 +125,7 @@ import TableOfContents from '../components/TableOfContents.astro';
 <div style="max-width:860px;margin:0 auto;padding:0 24px;margin-bottom:60px;">
     
 <div style="max-width:860px;margin:2rem auto;padding:0 24px;">
-  <h2 style="font-size:1.5rem;font-weight:bold;margin-bottom:1rem;color:white;">Complete Shopify App Alternatives Directory</h2>
+  <h2 id="complete-shopify-app-alternatives-directory" style="font-size:1.5rem;font-weight:bold;margin-bottom:1rem;color:white;">Complete Shopify App Alternatives Directory</h2>
   <ul style="list-style:disc;padding-left:1.5rem;color:#9ca3af;column-count:2;column-gap:2rem;">
     {appsData.map(app => (
       <li><a href={`/apps/${app.id}/`} style="color:#34d377;text-decoration:none;hover:underline;">{app.name} Pricing & Alternatives</a></li>

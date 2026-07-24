@@ -1,38 +1,134 @@
 ---
 // TableOfContents.astro
+export interface Props {
+  headings?: { id: string; text: string }[];
+}
+const { headings = [] } = Astro.props;
 ---
-<div id="toc-container" style="max-width:860px;margin:0 auto 2rem;padding:0 24px;"></div>
-<script>
-  const main = document.querySelector('main') || document.body;
-  const tocContainer = document.getElementById('toc-container');
-  if (main && tocContainer) {
-    // Exclude h2s inside the toc itself or footer
-    const h2s = Array.from(main.querySelectorAll('h2')).filter(h2 => !h2.closest('#toc-container'));
-    if (h2s.length >= 2) {
-      h2s.forEach((h, i) => {
-        if (!h.id) h.id = `section-${i}-${(h.textContent||'').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`;
-      });
-      const toc = document.createElement('nav');
-      toc.setAttribute('aria-label', 'Table of contents');
-      toc.style.cssText = 'border:1px solid #222825;background:#0c0f0d;padding:16px;font-family:"JetBrains Mono",monospace;';
-      toc.innerHTML = '<div style="font-size:12px;color:#6b7671;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;">CONTENTS //</div>';
-      
-      const ul = document.createElement('ul');
-      ul.style.cssText = 'list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px;';
-      
-      h2s.forEach(h => {
-        const li = document.createElement('li');
-        const a = document.createElement('a');
-        a.href = `#${h.id}`;
-        a.innerHTML = `<span style="color:#262c29;margin-right:8px;">→</span>${h.textContent}`;
-        a.style.cssText = 'font-size:12px;color:#9ca3af;text-decoration:none;display:flex;align-items:center;transition:color 0.2s;';
-        a.addEventListener('mouseover', () => a.style.color = '#34d377');
-        a.addEventListener('mouseout', () => a.style.color = '#9ca3af');
-        li.appendChild(a);
-        ul.appendChild(li);
-      });
-      toc.appendChild(ul);
-      tocContainer.appendChild(toc);
-    }
+
+{headings.length > 0 && (
+  <nav 
+    class="toc-premium" 
+    aria-label="Table of contents"
+  >
+    <div class="toc-header">CONTENTS //</div>
+    <ul class="toc-list">
+      {headings.map((h) => (
+        <li>
+          <a href={`#${h.id}`}>
+            <span class="toc-arrow">&rarr;</span>
+            <span class="toc-text">{h.text.replace(/&amp;/g, '&')}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}
+
+<style>
+  .toc-premium {
+    max-width: 760px;
+    margin: 2rem auto 3rem;
+    padding: 1.5rem 1.75rem;
+    border-radius: 12px;
+    background: rgba(12, 15, 13, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 
+      0 4px 30px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05),
+      inset 0 0 20px rgba(52, 211, 119, 0.02);
   }
+
+  .toc-header {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.75rem;
+    color: #6b7671;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .toc-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(107, 118, 113, 0.2), transparent);
+    margin-left: 12px;
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .toc-list li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-list a {
+    display: flex;
+    align-items: flex-start;
+    text-decoration: none;
+    color: #9ca3af;
+    font-family: "Inter", -apple-system, sans-serif;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0.25rem 0;
+  }
+
+  .toc-arrow {
+    color: #4b5563;
+    margin-right: 12px;
+    font-family: monospace;
+    transition: color 0.2s ease, transform 0.2s ease;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .toc-list a:hover {
+    color: #fff;
+  }
+
+  .toc-list a:hover .toc-arrow {
+    color: #34d377;
+    transform: translateX(4px);
+  }
+</style>
+
+<script>
+  // Progressive enhancement: smooth scroll to anchor links
+  document.querySelectorAll('.toc-premium a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const href = this.getAttribute('href');
+      if (!href) return;
+      const target = document.querySelector(href);
+      if (target) {
+        // Scroll to the target with some top offset for stick headers
+        const offset = 80;
+        const bodyRect = document.body.getBoundingClientRect().top;
+        const elementRect = target.getBoundingClientRect().top;
+        const elementPosition = elementRect - bodyRect;
+        const offsetPosition = elementPosition - offset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+        
+        // Update URL hash without jumping
+        history.pushState(null, '', href);
+      }
+    });
+  });
 </script>
