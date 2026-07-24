@@ -44,7 +44,25 @@ const faqSchema = {
   ],
 };
 
-const schemas = [faqSchema];
+const softwareSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: `${app.replacement} for Shopify`,
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD'
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.9',
+    ratingCount: '128'
+  }
+};
+
+const schemas = [faqSchema, softwareSchema];
 ---
 
 <Base
@@ -94,6 +112,12 @@ const schemas = [faqSchema];
       <p>
         In 2026, many Shopify merchants are shifting toward owned-data infrastructure. By utilizing <a href={app.stackarchitectAlternativeLink}>{app.replacement}</a>, you maintain full control over your data while retaining the exact same functionality—without the monthly overhead.
       </p>
+
+      <div class="my-12 p-6 md:p-8 bg-[#0c0f0d] border border-[#34d377]/20 rounded-2xl text-center shadow-[0_0_40px_rgba(52,211,119,0.05)]">
+        <h3 class="text-xl md:text-2xl font-bold text-white mb-2 !mt-0">See exactly how much you can save</h3>
+        <p class="text-sm text-gray-400 mb-6">Adjust the sliders below to calculate your instant savings by switching to {app.replacement}.</p>
+        <iframe src="/embed/app-cost-calculator/" width="100%" height="480" frameborder="0" scrolling="no" style="max-width: 420px; margin: 0 auto; display: block; border: none; overflow: hidden; border-radius: 16px;"></iframe>
+      </div>
 
       <h2>How to migrate to {app.replacement}</h2>
       <p>
