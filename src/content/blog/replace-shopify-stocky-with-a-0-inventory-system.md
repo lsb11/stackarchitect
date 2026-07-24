@@ -126,3 +126,7 @@ The framing that keeps you out of trouble: **don't buy capability you won't use,
 Stocky's shutdown on August 31, 2026 is a firm deadline, not an emergency — *if* you act on the data export now. Get your records out, recreate your suppliers by hand, and then make a clear-eyed call: native tools if your needs are basic, a free DIY ledger if you need a live stock count without the fee, and a paid platform only if you genuinely depend on forecasting or manufacturing features. The worst outcome here isn't picking the wrong replacement — it's losing your history because you waited too long to export it.
 
 When you're ready to see the free build in detail, including an honest account of where it falls short, that's documented on the [Stocky Swap page](/stocky-swap/).
+
+
+## Related App Alternatives
+- [Stocky Pricing & Alternatives](/apps/stocky/)

@@ -153,3 +153,24 @@ The [Shopify automation stack for small stores](/blog/shopify-automation-stack-f
 The Complete Kit is the lean stack in file form — four Make.com JSON blueprints covering tracking (CAPI Shield + Google Ads), inventory (Stocky Swap), and P&L (P&L Auto), plus two pre-configured Google Sheets templates. $29 one-time, 10 minutes to deploy.
 
 **[Get the Complete Kit — $29 →](/pro/)**
+
+
+## Related App Alternatives
+- [Elevar Pricing & Alternatives](/apps/elevar/)
+- [Triple Whale Pricing & Alternatives](/apps/triple-whale/)
+- [Klaviyo Pricing & Alternatives](/apps/klaviyo/)
+- [Stocky Pricing & Alternatives](/apps/stocky/)
+- [Inventory Planner Pricing & Alternatives](/apps/inventory-planner/)
+- [Omnisend Pricing & Alternatives](/apps/omnisend/)
+- [Northbeam Pricing & Alternatives](/apps/northbeam/)
+- [Analyzify Pricing & Alternatives](/apps/analyzify/)
+- [Gorgias Pricing & Alternatives](/apps/gorgias/)
+- [Zendesk Pricing & Alternatives](/apps/zendesk/)
+- [Okendo Pricing & Alternatives](/apps/okendo/)
+- [Loox Pricing & Alternatives](/apps/loox/)
+- [Recharge Pricing & Alternatives](/apps/recharge/)
+- [Bold Subscriptions Pricing & Alternatives](/apps/bold-subscriptions/)
+- [Zapier Pricing & Alternatives](/apps/zapier/)
+- [Skubana Pricing & Alternatives](/apps/skubana/)
+- [Linnworks Pricing & Alternatives](/apps/linnworks/)
+- [AfterShip Returns Pricing & Alternatives](/apps/aftership-returns/)

@@ -1,0 +1,98 @@
+---
+// src/pages/shopify-tracking-hub.astro
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import AuthorCard from '../components/AuthorCard.astro';
+import TLDR from '../components/TLDR.astro';
+
+const title = "The Ultimate Shopify Tracking Hub (CAPI, GA4, Server-Side)";
+const description = "Everything you need to know about Shopify server-side tracking, Meta Conversions API (CAPI), GA4, and bypassing iOS 14.5 attribution loss in 2026.";
+const canonicalUrl = "https://stackarchitect.xyz/shopify-tracking-hub/";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": title,
+  "description": description,
+  "url": canonicalUrl
+};
+---
+
+<Base
+  title={title}
+  description={description}
+  canonical={canonicalUrl}
+  schema={schema}
+>
+  <Nav slot="header" />
+
+  <main class="flex-1 max-w-3xl mx-auto px-4 py-12 w-full">
+    <div class="mb-10 text-center">
+      <span class="inline-block px-3 py-1 mb-4 text-xs font-mono font-bold tracking-widest text-[#34d377] border border-[#34d377] rounded-full uppercase bg-[#34d377]/10">
+        Topic Hub: Server-Side Tracking
+      </span>
+      <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6">
+        The Ultimate Shopify Tracking & CAPI Hub
+      </h1>
+      <p class="text-lg text-gray-400 font-mono">
+        Stop relying on the browser pixel. Here is the definitive directory for setting up server-side infrastructure, bypassing ad blockers, and recovering lost attribution.
+      </p>
+    </div>
+
+    <TLDR 
+      title="Why Server-Side Tracking Matters in 2026"
+      points={[
+        "iOS updates and ad blockers block up to 30% of browser pixel events.",
+        "Meta CAPI (Conversions API) pushes data directly from your server to Facebook.",
+        "Accurate tracking lowers your CPA and feeds the algorithms better data."
+      ]}
+    />
+
+    <article class="prose-stack mt-12 mb-16">
+      <h2>The Core Fundamentals</h2>
+      <p>Before diving into specific setups, you must understand why traditional browser pixels (like the standard Meta Pixel or GA4 tag) fail in modern e-commerce. Safari's ITP (Intelligent Tracking Prevention) restricts cookie lifespans, meaning return purchases are often misattributed.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <a href="/blog/shopify-server-side-tracking-complete-setup-guide/" class="block p-4 border border-[#222825] rounded-lg hover:border-[#34d377] transition-colors bg-[#0c0f0d]">
+          <h3 class="text-lg font-bold text-white m-0">Server-Side Tracking 101</h3>
+          <p class="text-sm text-gray-400 mt-2 mb-0">The complete foundational guide to why client-side tracking is dying.</p>
+        </a>
+        <a href="/shopify-ios-attribution-gap-benchmark/" class="block p-4 border border-[#222825] rounded-lg hover:border-[#34d377] transition-colors bg-[#0c0f0d]">
+          <h3 class="text-lg font-bold text-white m-0">The iOS Attribution Gap</h3>
+          <p class="text-sm text-gray-400 mt-2 mb-0">Check the latest benchmarks on exactly how much data iOS is blocking.</p>
+        </a>
+      </div>
+
+      <h2>Meta Conversions API (CAPI)</h2>
+      <p>Meta's algorithm runs on data. If you only send browser events, you are starving your own ads. CAPI ensures 100% of your purchases reach Meta's servers.</p>
+
+      <ul class="list-disc pl-6 space-y-2 mb-8">
+        <li><a href="/blog/meta-one-click-conversions-api-shopify/">How to Setup Meta CAPI on Shopify</a></li>
+        <li><a href="/blog/shopify-meta-roas-dropped-2026-fix/">Why Your Shopify Meta ROAS Dropped (And How to Fix It)</a></li>
+        <li><a href="/capi-shield/">CAPI Shield: The Advanced Tracking Architecture</a></li>
+      </ul>
+
+      <h2>Google Analytics 4 & Google Ads</h2>
+      <p>GA4 relies heavily on modeled data to fill in the gaps left by cookie blockers, but it requires a perfectly configured foundation to work.</p>
+      
+      <ul class="list-disc pl-6 space-y-2 mb-8">
+        <li><a href="/blog/shopify-google-analytics-4-setup-free-2026/">The Ultimate GA4 Shopify Setup Guide</a></li>
+        <li><a href="/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026/">Fixing Google Ads Conversion Tracking</a></li>
+      </ul>
+
+      <h2>Advanced Solutions & Alternatives</h2>
+      <p>Don't want to pay $300/mo for a tracking app like Triple Whale or Elevar? You don't have to.</p>
+
+      <ul class="list-disc pl-6 space-y-2 mb-8">
+        <li><a href="/triple-whale-alternative/">Triple Whale Free Alternative</a></li>
+        <li><a href="/elevar-alternative/">Elevar Free Alternative</a></li>
+        <li><a href="/analyzify-alternative/">Analyzify Free Alternative</a></li>
+      </ul>
+    </article>
+
+    <AuthorCard />
+  </main>
+
+  <Footer />
+</Base>

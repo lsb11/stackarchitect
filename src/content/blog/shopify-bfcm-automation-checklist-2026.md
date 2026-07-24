@@ -225,3 +225,8 @@ Deploy all four automations today. Run the test order checklist in October. Ente
 | Add Make.com error notifications | October | Medium |
 | Upgrade Make.com to Core tier | October | Medium |
 | Run full end-to-end test order | October | Critical |
+
+
+## Related App Alternatives
+- [Klaviyo Pricing & Alternatives](/apps/klaviyo/)
+- [Stocky Pricing & Alternatives](/apps/stocky/)

@@ -34,6 +34,9 @@ relatedGuides:
   - title: "Make.com for Shopify — Complete Beginner's Guide"
     href: "/blog/make-com-shopify-automation-guide"
 ---
+> [!NOTE]
+> **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-tracking-hub/).
+
 
 # How to Set Up Google Analytics 4 on Shopify Free in 2026 — No Apps, No Code
 
@@ -288,3 +291,7 @@ GA4 is now your analytics foundation. Every traffic decision, every product deci
 GA4 handles analytics. For ad attribution and conversion recovery, add CAPI Shield (server-side Meta + Google) and Google Enhanced Conversions — both included in the Complete Kit as ready-to-import Make.com JSON blueprints. $29 one-time, deploys in 10 minutes.
 
 **[Get the Complete Kit — $29 →](/pro/)**
+
+
+## Related App Alternatives
+- [Stocky Pricing & Alternatives](/apps/stocky/)

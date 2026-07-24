@@ -71,3 +71,9 @@ Once your history is exported, you need a way to *create* POs going forward:
 **Free tracking for everything else:** if POs were the only Stocky feature you needed and the rest was just order/stock tracking, handle tracking with the free [Stocky Swap](/stocky-swap/) and create the occasional PO directly in Shopify Admin. No subscription required.
 
 Whatever you choose for going forward, the irreversible task is the export. Do it this week — work through the [migration checklist](/stocky-migration-checklist/) to make sure nothing else is left behind.
+
+
+## Related App Alternatives
+- [Stocky Pricing & Alternatives](/apps/stocky/)
+- [Inventory Planner Pricing & Alternatives](/apps/inventory-planner/)
+- [Prediko Pricing & Alternatives](/apps/prediko/)

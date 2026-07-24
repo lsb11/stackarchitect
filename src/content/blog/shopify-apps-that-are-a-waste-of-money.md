@@ -130,3 +130,16 @@ The [full cost analysis](/blog/how-much-shopify-apps-really-cost-and-how-to-cut-
 The Complete Kit gives you four pre-built Make.com JSON blueprints — server-side tracking (replaces Elevar/Triple Whale), TikTok CAPI (replaces WeltPixel), Stocky Swap (replaces Stocky before August shutdown), and P&L Auto (replaces TrueProfit/BeProfit). $29 one-time, saves $700+/month.
 
 **[Get the Complete Kit — $29 →](/pro/)**
+
+
+## Related App Alternatives
+- [Elevar Pricing & Alternatives](/apps/elevar/)
+- [Triple Whale Pricing & Alternatives](/apps/triple-whale/)
+- [Klaviyo Pricing & Alternatives](/apps/klaviyo/)
+- [Stocky Pricing & Alternatives](/apps/stocky/)
+- [Lifetimely Pricing & Alternatives](/apps/lifetimely/)
+- [Okendo Pricing & Alternatives](/apps/okendo/)
+- [Loox Pricing & Alternatives](/apps/loox/)
+- [Recharge Pricing & Alternatives](/apps/recharge/)
+- [Zapier Pricing & Alternatives](/apps/zapier/)
+- [AfterShip Returns Pricing & Alternatives](/apps/aftership-returns/)

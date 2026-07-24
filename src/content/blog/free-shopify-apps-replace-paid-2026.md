@@ -137,3 +137,17 @@ For Shopify store owners publishing a newsletter alongside their store, Beehiiv'
 The free guides above show you how to build each automation from scratch. If your time is worth more than the 8 hours it takes, the [Complete Kit](/pro/) gives you four ready-to-import Make.com JSON blueprint files — CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto — plus two pre-configured Google Sheets templates. Import and deploy in 10 minutes instead of 8 hours. $29 one-time. No subscription.
 
 [Get the Complete Kit — $29 →](/pro/)
+
+
+## Related App Alternatives
+- [Elevar Pricing & Alternatives](/apps/elevar/)
+- [Triple Whale Pricing & Alternatives](/apps/triple-whale/)
+- [Klaviyo Pricing & Alternatives](/apps/klaviyo/)
+- [Stocky Pricing & Alternatives](/apps/stocky/)
+- [Inventory Planner Pricing & Alternatives](/apps/inventory-planner/)
+- [Mailchimp Pricing & Alternatives](/apps/mailchimp/)
+- [Analyzify Pricing & Alternatives](/apps/analyzify/)
+- [Gorgias Pricing & Alternatives](/apps/gorgias/)
+- [Zapier Pricing & Alternatives](/apps/zapier/)
+- [Skubana Pricing & Alternatives](/apps/skubana/)
+- [Linnworks Pricing & Alternatives](/apps/linnworks/)

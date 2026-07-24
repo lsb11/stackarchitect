@@ -38,6 +38,9 @@ relatedGuides:
   - title: "TikTok Events API — Free Server-Side Setup"
     href: "/tiktok-events-api-shopify"
 ---
+> [!NOTE]
+> **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-tracking-hub/).
+
 
 # How to Fix Shopify Conversion Tracking After iOS Updates 2026
 
@@ -206,3 +209,7 @@ The Complete Kit includes the CAPI Shield Make.com JSON blueprint — import it 
 > **Ready for the full cross-platform fix?**
 >
 > This guide covers the iOS attribution gap. The pillar setup guide walks through [all three platforms (Meta + Google + TikTok) in one setup](/blog/shopify-server-side-tracking-complete-setup-guide/) — one Make.com scenario, 18 minutes, zero monthly cost.
+
+
+## Related App Alternatives
+- [Stocky Pricing & Alternatives](/apps/stocky/)

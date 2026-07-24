@@ -187,3 +187,10 @@ While Make.com + Systeme.io handles abandoned cart recovery, the Complete Kit ad
 The Make.com scenarios for abandoned cart recovery, CAPI Shield, Stocky Swap, and P&L Auto are all available pre-built in the [Complete Kit](/pro/). Every field pre-mapped, every API connected. Import in 10 minutes instead of building from scratch. One payment, no subscription, 30-day money-back guarantee.
 
 [Get the Complete Kit — $29 →](/pro/)
+
+
+## Related App Alternatives
+- [Elevar Pricing & Alternatives](/apps/elevar/)
+- [Klaviyo Pricing & Alternatives](/apps/klaviyo/)
+- [Stocky Pricing & Alternatives](/apps/stocky/)
+- [Omnisend Pricing & Alternatives](/apps/omnisend/)

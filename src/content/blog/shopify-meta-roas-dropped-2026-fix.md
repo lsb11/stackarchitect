@@ -34,6 +34,9 @@ relatedGuides:
   - title: "The Ultimate Shopify Automation Guide"
     href: "/ultimate-shopify-automation-guide"
 ---
+> [!NOTE]
+> **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-tracking-hub/).
+
 
 # Shopify Meta ROAS Dropped in 2026? Here's Exactly Why — and the Free Fix
 
@@ -173,3 +176,7 @@ The [CAPI Shield setup guide](/capi-shield/) covers every step of the full CAPI 
 The Complete Kit includes the CAPI Shield Make.com JSON blueprint — the fastest path to recovering your Meta ROAS. Import in 60 seconds, add one webhook, and server-side purchase events start flowing immediately. Also includes TikTok CAPI, Stocky Swap, and P&L Auto. $29 one-time.
 
 **[Get the Complete Kit — $29 →](/pro/)**
+
+
+## Related App Alternatives
+- [Stocky Pricing & Alternatives](/apps/stocky/)

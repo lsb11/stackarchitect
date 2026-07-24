@@ -35,6 +35,9 @@ relatedGuides:
   - title: "How to Fix Shopify Conversion Tracking After iOS Updates"
     href: "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates"
 ---
+> [!NOTE]
+> **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-tracking-hub/).
+
 
 # How to Fix Shopify Google Ads Conversion Tracking in 2026 — Free Server-Side Setup (No GTM Required)
 
@@ -232,3 +235,9 @@ The Complete Kit includes a ready-to-import Make.com JSON blueprint for Google E
 > **Also running Meta or TikTok ads?**
 >
 > This guide covers Google Enhanced Conversions only. The full setup guide covers [free server-side tracking via webhook for Shopify](/blog/shopify-server-side-tracking-complete-setup-guide/) across Meta CAPI, Google Enhanced Conversions, and TikTok Events API — all in one scenario.
+
+
+## Related App Alternatives
+- [Stocky Pricing & Alternatives](/apps/stocky/)
+- [Littledata Pricing & Alternatives](/apps/littledata/)
+- [Analyzify Pricing & Alternatives](/apps/analyzify/)

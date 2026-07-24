@@ -138,3 +138,8 @@ Start with Make.com free. Upgrade to Core at $12/month when you exceed 200 order
 If Make.com is the right platform for your Shopify store, the Complete Kit eliminates the setup time — four production-ready JSON blueprints for tracking, inventory, and P&L reporting. Import in 60 seconds each, live in 10 minutes total. $29 one-time.
 
 **[Get the Complete Kit — $29 →](/pro/)**
+
+
+## Related App Alternatives
+- [Stocky Pricing & Alternatives](/apps/stocky/)
+- [Zapier Pricing & Alternatives](/apps/zapier/)

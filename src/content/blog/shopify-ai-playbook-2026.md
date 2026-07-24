@@ -157,3 +157,8 @@ The [best AI tools for Shopify 2026](/best-ai-tools-shopify/) page ranks 9 speci
 Before AI can optimise your store, your tracking, inventory, and P&L data need to be accurate. The Complete Kit deploys server-side tracking (CAPI Shield), Stocky Swap (Stocky replacement), and P&L Auto via four pre-built Make.com JSON blueprints. $29 one-time.
 
 **[Get the Complete Kit — $29 →](/pro/)**
+
+
+## Related App Alternatives
+- [Klaviyo Pricing & Alternatives](/apps/klaviyo/)
+- [Stocky Pricing & Alternatives](/apps/stocky/)

@@ -161,3 +161,20 @@ The [Shopify apps that are a waste of money](/blog/shopify-apps-that-are-a-waste
 If you're cutting your app bill, the fastest route is the Complete Kit — four pre-configured Make.com JSON blueprints for server-side tracking (Meta + Google), TikTok CAPI, inventory management (Stocky replacement), and live P&L reporting. Replace $700+/month of paid apps. $29 one-time, files yours to keep.
 
 **[Get the Complete Kit — $29 →](/pro/)**
+
+
+## Related App Alternatives
+- [Elevar Pricing & Alternatives](/apps/elevar/)
+- [Triple Whale Pricing & Alternatives](/apps/triple-whale/)
+- [Klaviyo Pricing & Alternatives](/apps/klaviyo/)
+- [Stocky Pricing & Alternatives](/apps/stocky/)
+- [Inventory Planner Pricing & Alternatives](/apps/inventory-planner/)
+- [Omnisend Pricing & Alternatives](/apps/omnisend/)
+- [Northbeam Pricing & Alternatives](/apps/northbeam/)
+- [Analyzify Pricing & Alternatives](/apps/analyzify/)
+- [Lifetimely Pricing & Alternatives](/apps/lifetimely/)
+- [Gorgias Pricing & Alternatives](/apps/gorgias/)
+- [Zendesk Pricing & Alternatives](/apps/zendesk/)
+- [Zapier Pricing & Alternatives](/apps/zapier/)
+- [Skubana Pricing & Alternatives](/apps/skubana/)
+- [Linnworks Pricing & Alternatives](/apps/linnworks/)

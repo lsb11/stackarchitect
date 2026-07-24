@@ -169,3 +169,7 @@ The [Make.com beginner's guide](/blog/make-com-shopify-automation-guide/) covers
 The Complete Kit includes Make.com JSON blueprints with deduplication, error handling, and retry logic already built in — CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto. $29 one-time.
 
 **[Get the Complete Kit — $29 →](/pro/)**
+
+
+## Related App Alternatives
+- [Stocky Pricing & Alternatives](/apps/stocky/)

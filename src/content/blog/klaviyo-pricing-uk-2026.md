@@ -133,3 +133,9 @@ Full migration typically takes 30–60 minutes for a standard Shopify email setu
 The Complete Kit gives you four Make.com JSON blueprints — CAPI Shield (server-side tracking), TikTok CAPI, Stocky Swap (Stocky replacement before August shutdown), and P&L Auto — plus two Google Sheets templates. Deploy your entire free Shopify backend in 10 minutes. $29 one-time, no subscription.
 
 **[Get the Complete Kit — $29 →](/pro/)**
+
+
+## Related App Alternatives
+- [Klaviyo Pricing & Alternatives](/apps/klaviyo/)
+- [Stocky Pricing & Alternatives](/apps/stocky/)
+- [Mailchimp Pricing & Alternatives](/apps/mailchimp/)

@@ -28,6 +28,9 @@ relatedGuides:
     href: "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates"
     badge: "iOS"
 ---
+> [!NOTE]
+> **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-tracking-hub/).
+
 
 # Meta One-Click Conversions API for Shopify: What It Fixes — and the Two Gaps It Leaves
 

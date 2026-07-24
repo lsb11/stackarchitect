@@ -160,3 +160,10 @@ The one area where Klaviyo genuinely outperforms is deep ecommerce event segment
 If you're switching from Klaviyo, the Complete Kit includes the pre-configured Make.com scenarios for your entire Shopify backend — CAPI Shield (tracking), Stocky Swap (inventory), and P&L Auto (profit reporting) — so you can replace the rest of your paid stack at the same time. $29 one-time, no subscription.
 
 **[Get the Complete Kit — $29 →](/pro/)**
+
+
+## Related App Alternatives
+- [Klaviyo Pricing & Alternatives](/apps/klaviyo/)
+- [Stocky Pricing & Alternatives](/apps/stocky/)
+- [Omnisend Pricing & Alternatives](/apps/omnisend/)
+- [Mailchimp Pricing & Alternatives](/apps/mailchimp/)

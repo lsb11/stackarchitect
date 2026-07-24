@@ -176,3 +176,9 @@ The [Tidio vs Gorgias full comparison](/blog/tidio-vs-gorgias-shopify/) covers t
 While Tidio handles customer support, the Complete Kit covers tracking (CAPI Shield), inventory (Stocky Swap — replace Stocky before August shutdown), and P&L reporting. Four pre-built Make.com JSON blueprints, $29 one-time.
 
 **[Get the Complete Kit — $29 →](/pro/)**
+
+
+## Related App Alternatives
+- [Stocky Pricing & Alternatives](/apps/stocky/)
+- [Gorgias Pricing & Alternatives](/apps/gorgias/)
+- [Zendesk Pricing & Alternatives](/apps/zendesk/)

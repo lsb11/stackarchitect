@@ -153,3 +153,11 @@ Once you cross 300 tickets/month or hit Tidio's seat cap, [upgrade to Gorgias �
 The Complete Kit handles the rest of your automation — server-side tracking (replaces Elevar/Triple Whale), Stocky replacement (before August 31 shutdown), and live P&L reporting. Four pre-built Make.com JSON blueprints. $29 one-time, $0/month ongoing.
 
 **[Get the Complete Kit — $29 →](https://stackarchitect.xyz/pro)**
+
+
+## Related App Alternatives
+- [Elevar Pricing & Alternatives](/apps/elevar/)
+- [Triple Whale Pricing & Alternatives](/apps/triple-whale/)
+- [Stocky Pricing & Alternatives](/apps/stocky/)
+- [Gorgias Pricing & Alternatives](/apps/gorgias/)
+- [Zendesk Pricing & Alternatives](/apps/zendesk/)

@@ -33,6 +33,9 @@ relatedGuides:
   - title: "Shopify Server-Side Tracking — Complete Setup Guide"
     href: "/blog/shopify-server-side-tracking-complete-setup-guide"
 ---
+> [!NOTE]
+> **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-tracking-hub/).
+
 
 # Recover Lost Shopify Conversions with CAPI Shield — Free Server-Side Fix 2026
 
@@ -131,3 +134,8 @@ The Complete Kit includes the CAPI Shield Make.com JSON blueprint — import it 
 > **See the full server-side setup**
 >
 > This guide covers the CAPI Shield implementation for Meta. For the [complete Shopify server-side tracking guide for 2026](/blog/shopify-server-side-tracking-complete-setup-guide/) — including Google Enhanced Conversions and TikTok Events API in the same Make.com scenario — see the full setup guide.
+
+
+## Related App Alternatives
+- [Stocky Pricing & Alternatives](/apps/stocky/)
+- [Mechanic Pricing & Alternatives](/apps/mechanic/)

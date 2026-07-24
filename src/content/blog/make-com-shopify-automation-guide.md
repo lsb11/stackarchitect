@@ -158,3 +158,8 @@ The entire stack runs free for most Shopify stores. The [Zapier vs Make comparis
 The Complete Kit gives you four production-ready Make.com JSON blueprints for Shopify: CAPI Shield (server-side tracking), TikTok CAPI, Stocky Swap (inventory), and P&L Auto. Import each in 60 seconds instead of building from scratch. $29 one-time.
 
 **[Get the Complete Kit — $29 →](/pro/)**
+
+
+## Related App Alternatives
+- [Stocky Pricing & Alternatives](/apps/stocky/)
+- [Zapier Pricing & Alternatives](/apps/zapier/)

@@ -154,3 +154,7 @@ Before optimising your conversion rate, ensure your tracking is accurate. If you
 **[Get the Complete Kit — $29 →](/pro/)**
 
 
+
+
+## Related App Alternatives
+- [Stocky Pricing & Alternatives](/apps/stocky/)
