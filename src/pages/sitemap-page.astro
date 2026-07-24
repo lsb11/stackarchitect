@@ -1,4 +1,5 @@
 ---
+import Base from '../layouts/Base.astro';
 import Footer from '../components/Footer.astro';
 import appsData from '../data/apps.json';
 import { getCollection } from 'astro:content';
@@ -29,29 +30,9 @@ allBlogs.forEach(post => {
 });
 // sitemap.astro — self-contained, no layout dependency
 ---
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sitemap — Stack Architect | Free Shopify Automation Tools</title>
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Stack Architect">
-  <meta property="og:title" content="Site Map — Stack Architect">
-  <meta property="og:description" content="Every free tool, guide, and comparison on Stack Architect.">
-  <meta property="og:url" content="https://stackarchitect.xyz/sitemap-page/">
-  <meta property="og:image" content="https://stackarchitect.xyz/og.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Site Map — Stack Architect">
-  <meta name="twitter:description" content="Every free tool, guide, and comparison on Stack Architect.">
-  <meta name="twitter:image" content="https://stackarchitect.xyz/og.png">
-
-<meta name="description" content="Complete sitemap of all Stack Architect pages — free Shopify tools, automation guides, blog posts, and product pages.">
-<meta name="robots" content="noindex, follow">
-<link rel="canonical" href="https://stackarchitect.xyz/sitemap-page/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<Base title="Sitemap — Stack Architect | Free Shopify Automation Tools" description="Complete sitemap of all Stack Architect pages — free Shopify tools, automation guides, blog posts, and product pages.">
+<Fragment slot="head">
+<script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps \u2014 server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--green:#00C896;--dark:#0d0d1a;--dark2:#1a1a2e;--border:#2a2a42;--text:#e8e8f0;--muted:#8888aa;--dim:#555570;--radius:8px;--font:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono','Fira Code',monospace}
@@ -96,20 +77,7 @@ footer a{color:var(--dim)}
 .back:hover{color:var(--green);text-decoration:none}
 @media(max-width:600px){.grid{grid-template-columns:1fr}.sitemap-meta{margin-left:0}.header-nav{display:none}}
 </style>
-  <!-- GA4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TE6Z6CW514"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-TE6Z6CW514');
-  </script>
-
-    <!-- Feed discovery -->
-    <link rel="alternate" type="application/rss+xml" title="Stack Architect — Shopify Automation Guides" href="/rss.xml" />
-    <script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps \u2014 server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
-  </head>
-<body>
+</Fragment>
 
 <header class="site-header">
   <a class="brand" href="/">Stack Architect</a>
@@ -242,8 +210,4 @@ footer a{color:var(--dim)}
     <a href="/" style="color:var(--muted)">← Return to Stack Architect</a>
   </div>
 </div>
-
-<Footer />
-
-</body>
-</html>
+</Base>
