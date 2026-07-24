@@ -1,7 +1,5 @@
 ---
 import Base from './Base.astro';
-import Nav from '../components/Nav.astro';
-import Footer from '../components/Footer.astro';
 import FAQSection from '../components/FAQSection.astro';
 import RelatedGuides from '../components/RelatedGuides.astro';
 import AuthorCard from '../components/AuthorCard.astro';
@@ -96,9 +94,6 @@ const displayDate = (d: string) =>
   });
 ---
 
-<!-- Reading progress bar element -->
-<div id="reading-progress"></div>
-
 <Base
   ogImage={entry.data.ogImage}
   title={`${title} | Stack Architect`}
@@ -111,6 +106,8 @@ const displayDate = (d: string) =>
   breadcrumb={breadcrumb}
 >
 
+  <!-- Reading progress bar element -->
+  <div id="reading-progress"></div>
 
   <main class="flex-1 max-w-3xl mx-auto px-4 py-10 w-full">
     <!-- Post metadata bar -->
@@ -138,7 +135,6 @@ const displayDate = (d: string) =>
     {relatedGuides && relatedGuides.length > 0 && <RelatedGuides guides={relatedGuides} />}
   </main>
 
-  <Footer />
 </Base>
 
 <!-- Reading progress bar script -->
