@@ -7,35 +7,62 @@ const { headings = [] } = Astro.props;
 ---
 
 {headings.length > 0 && (
-  <nav class="toc-premium" aria-label="Table of contents">
-    <div class="toc-header">
-      <div class="toc-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
-        CONTENTS
+  <div class="toc-wrapper">
+    <!-- Inline, compact ToC for the top of the page -->
+    <nav class="toc-inline" aria-label="Table of contents">
+      <div class="toc-header">
+        <div class="toc-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+          CONTENTS
+        </div>
       </div>
+      <div class="toc-body">
+        <ul class="toc-list">
+          {headings.map((h) => (
+            <li>
+              <a href={`#${h.id}`}>
+                <span class="toc-text">{h.text.replace(/&amp;/g, '&')}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Floating Widget for scrolling (Desktop & Mobile) -->
+    <div class="toc-floating-widget" id="toc-widget">
+      <button class="toc-fab" id="toc-fab" aria-label="Toggle Table of Contents" title="Table of Contents">
+        <svg class="icon-menu" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+        <svg class="icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <nav class="toc-floating-panel" id="toc-panel" aria-label="Floating Table of contents">
+        <div class="toc-header">
+          <div class="toc-title">CONTENTS</div>
+        </div>
+        <div class="toc-body">
+          <ul class="toc-list">
+            {headings.map((h) => (
+              <li>
+                <a href={`#${h.id}`}>
+                  <span class="toc-text">{h.text.replace(/&amp;/g, '&')}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </nav>
     </div>
-    <div class="toc-body">
-      <ul class="toc-list">
-        {headings.map((h) => (
-          <li>
-            <a href={`#${h.id}`}>
-              <span class="toc-text">{h.text.replace(/&amp;/g, '&')}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </nav>
+  </div>
 )}
 
 <style>
   /* 
    * 2026 Premium Aesthetic:
-   * Desktop: Sticky glassmorphism sidebar floating on the right.
-   * Mobile: Sleek, compact inline block that doesn't push the hero out of view.
+   * 1. Compact inline ToC at the top for initial context.
+   * 2. Sleek Floating Action Button (FAB) + Popover for scrolling.
+   * This completely solves content overlap while maintaining maximum aesthetics.
    */
-  .toc-premium {
-    /* Mobile defaults (Inline, compact) */
+  .toc-inline {
     width: 100%;
     max-width: 760px;
     margin: 2rem auto 3rem;
@@ -46,9 +73,9 @@ const { headings = [] } = Astro.props;
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.05);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-    z-index: 50;
   }
 
+  /* Shared Styles */
   .toc-header {
     display: flex;
     align-items: center;
@@ -76,10 +103,7 @@ const { headings = [] } = Astro.props;
     gap: 0.35rem;
   }
 
-  .toc-list li {
-    margin: 0;
-    padding: 0;
-  }
+  .toc-list li { margin: 0; padding: 0; }
 
   .toc-list a {
     display: block;
@@ -101,38 +125,153 @@ const { headings = [] } = Astro.props;
     transform: translateX(2px);
   }
 
-  /* DESKTOP FLOATING SIDEBAR (1280px and up) */
-  @media (min-width: 1280px) {
-    .toc-premium {
-      position: fixed;
-      top: 120px;
-      right: max(24px, calc(50vw - 580px)); /* Keeps it nicely bound to the right of centered content */
-      width: 260px;
-      max-height: calc(100vh - 160px);
-      margin: 0;
-      overflow-y: auto;
-      padding: 1.5rem;
-      /* Scrollbar styling for the sidebar */
-      scrollbar-width: thin;
-      scrollbar-color: rgba(52,211,119,0.3) transparent;
-    }
+  /* Floating Widget Styles */
+  .toc-floating-widget {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    pointer-events: none; /* Let clicks pass through widget container */
+  }
+
+  .toc-fab {
+    pointer-events: auto;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(12, 15, 13, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(52, 211, 119, 0.2);
+    color: #34d377;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(52, 211, 119, 0.05);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    opacity: 0;
+    transform: translateY(20px) scale(0.8);
+    visibility: hidden;
+  }
+
+  /* Show FAB only after scrolling past the inline ToC */
+  .toc-floating-widget.is-visible .toc-fab {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    visibility: visible;
+  }
+
+  .toc-fab:hover {
+    background: rgba(52, 211, 119, 0.1);
+    border-color: rgba(52, 211, 119, 0.4);
+    transform: translateY(-2px) scale(1.05);
+  }
+
+  .toc-fab .icon-close { display: none; }
+  .toc-floating-widget.is-open .toc-fab .icon-menu { display: none; }
+  .toc-floating-widget.is-open .toc-fab .icon-close { display: block; }
+  .toc-floating-widget.is-open .toc-fab {
+    background: #34d377;
+    color: #0c0f0d;
+  }
+
+  .toc-floating-panel {
+    pointer-events: auto;
+    position: absolute;
+    bottom: 64px;
+    right: 0;
+    width: 280px;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    padding: 1.5rem;
+    border-radius: 16px;
+    background: rgba(12, 15, 13, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     
-    .toc-premium::-webkit-scrollbar { width: 4px; }
-    .toc-premium::-webkit-scrollbar-track { background: transparent; }
-    .toc-premium::-webkit-scrollbar-thumb { background: rgba(52,211,119,0.3); border-radius: 4px; }
+    /* Animation state */
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    transform-origin: bottom right;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    
+    scrollbar-width: thin;
+    scrollbar-color: rgba(52,211,119,0.3) transparent;
+  }
+
+  .toc-floating-panel::-webkit-scrollbar { width: 4px; }
+  .toc-floating-panel::-webkit-scrollbar-track { background: transparent; }
+  .toc-floating-panel::-webkit-scrollbar-thumb { background: rgba(52,211,119,0.3); border-radius: 4px; }
+
+  .toc-floating-widget.is-open .toc-floating-panel {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    visibility: visible;
+  }
+
+  @media (max-width: 640px) {
+    .toc-floating-panel {
+      width: calc(100vw - 48px);
+    }
   }
 </style>
 
 <script>
-  // Smooth scroll and active state intersection observer
   document.addEventListener('DOMContentLoaded', () => {
-    const links = document.querySelectorAll('.toc-premium a[href^="#"]');
+    // 1. FAB Toggle Logic
+    const widget = document.getElementById('toc-widget');
+    const fab = document.getElementById('toc-fab');
+    const inlineToc = document.querySelector('.toc-inline');
+    
+    if (fab && widget) {
+      fab.addEventListener('click', () => {
+        widget.classList.toggle('is-open');
+      });
+
+      // Close panel when clicking outside
+      document.addEventListener('click', (e) => {
+        if (widget.classList.contains('is-open') && !widget.contains(e.target)) {
+          widget.classList.remove('is-open');
+        }
+      });
+    }
+
+    // 2. Show/Hide FAB based on scroll position (show after passing inline ToC)
+    if (widget && inlineToc) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          // If inline TOC is completely out of view above, show the FAB
+          if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
+            widget.classList.add('is-visible');
+          } else {
+            widget.classList.remove('is-visible');
+            widget.classList.remove('is-open'); // close panel if scrolled back up
+          }
+        });
+      }, { rootMargin: '0px', threshold: 0 });
+      observer.observe(inlineToc);
+    } else if (widget) {
+      // Fallback if no inline TOC (shouldn't happen based on structure, but safe)
+      widget.classList.add('is-visible');
+    }
+
+    // 3. Smooth scroll and active state logic for BOTH navs
+    const links = document.querySelectorAll('.toc-wrapper a[href^="#"]');
     const sections = Array.from(links).map(link => {
       const id = link.getAttribute('href');
       return id ? document.querySelector(id) : null;
     }).filter(Boolean);
 
-    // Smooth scroll logic
+    // Filter to unique sections to avoid double-observing
+    const uniqueSections = [...new Set(sections)];
+
     links.forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -148,23 +287,28 @@ const { headings = [] } = Astro.props;
             behavior: 'smooth'
           });
           history.pushState(null, '', href);
+          
+          // Auto-close floating panel on mobile after click
+          if (window.innerWidth < 768 && widget) {
+            widget.classList.remove('is-open');
+          }
         }
       });
     });
 
-    // Active state observer
-    if (sections.length > 0) {
+    if (uniqueSections.length > 0) {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             links.forEach(link => link.classList.remove('active'));
-            const activeLink = document.querySelector(`.toc-premium a[href="#${entry.target.id}"]`);
-            if (activeLink) activeLink.classList.add('active');
+            // Highlight active link in both inline and floating panels
+            const activeLinks = document.querySelectorAll(`.toc-wrapper a[href="#${entry.target.id}"]`);
+            activeLinks.forEach(activeLink => activeLink.classList.add('active'));
           }
         });
       }, { rootMargin: '-120px 0px -60% 0px' });
 
-      sections.forEach(sec => observer.observe(sec));
+      uniqueSections.forEach(sec => observer.observe(sec));
     }
   });
 </script>
