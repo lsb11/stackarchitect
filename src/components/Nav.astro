@@ -359,87 +359,106 @@ const guides = [
   }
 </style>
 
-<script is:inline>
-document.addEventListener('DOMContentLoaded', function () {
-  var nav = document.getElementById('sa-nav-main');
-  window.addEventListener('scroll', function () {
-    if (nav) nav.classList.toggle('scrolled', window.scrollY > 24);
-  }, { passive: true });
+<script>
+  // ── Nav initialisation ────────────────────────────────────────────────
+  // Uses `astro:page-load` instead of `DOMContentLoaded` so that the
+  // dropdowns, hamburger, and scroll-state all reinitialise after every
+  // Astro View-Transition swap (ClientRouter).  `astro:page-load` fires
+  // on the initial load *and* on every subsequent client-side navigation.
 
-  var drops = document.querySelectorAll('.sa-drop');
-  function closeAll() {
-    drops.forEach(function (d) {
-      d.classList.remove('open');
-      var b = d.querySelector('.sa-drop-btn');
-      if (b) b.setAttribute('aria-expanded', 'false');
+  document.addEventListener('astro:page-load', function () {
+    var nav = document.getElementById('sa-nav-main');
+
+    // ── Scroll shadow ────────────────────────────────────────────────
+    if (nav) {
+      nav.classList.toggle('scrolled', window.scrollY > 24);
+    }
+    function onScroll() {
+      if (nav) nav.classList.toggle('scrolled', window.scrollY > 24);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // ── Desktop dropdowns ────────────────────────────────────────────
+    var drops = document.querySelectorAll('.sa-drop');
+    function closeAll() {
+      drops.forEach(function (d) {
+        d.classList.remove('open');
+        var b = d.querySelector('.sa-drop-btn');
+        if (b) b.setAttribute('aria-expanded', 'false');
+      });
+    }
+    drops.forEach(function (drop) {
+      var btn = drop.querySelector('.sa-drop-btn');
+      if (!btn) return;
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var wasOpen = drop.classList.contains('open');
+        closeAll();
+        if (!wasOpen) {
+          drop.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
     });
-  }
-  drops.forEach(function (drop) {
-    var btn = drop.querySelector('.sa-drop-btn');
-    if (!btn) return;
-    btn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var wasOpen = drop.classList.contains('open');
-      closeAll();
-      if (!wasOpen) {
-        drop.classList.add('open');
-        btn.setAttribute('aria-expanded', 'true');
-      }
-    });
-  });
-  document.addEventListener('click', closeAll);
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') closeAll();
-  });
-
-  var hamburger = document.getElementById('sa-hamburger');
-  var mobileMenu = document.getElementById('sa-mobile-menu');
-
-  // Measure the real header height (announcement bar may be present/absent,
-  // nav height changes at the 480px breakpoint) so the fixed menu panel sits
-  // flush under it and its scroll area is exactly the space that remains.
-  function setHeaderHeight() {
-    if (!nav) return;
-    // The announcement bar sits above the sticky nav and scrolls away with the
-    // page. Anchor the fixed panel to the nav's current bottom edge, so the
-    // menu is always flush under whatever header is actually on screen.
-    var rect = nav.getBoundingClientRect();
-    var headerBottom = rect.top + rect.height;
-    document.documentElement.style.setProperty('--sa-header-h', Math.max(0, Math.round(headerBottom)) + 'px');
-  }
-
-  function setMenu(open) {
-    hamburger.classList.toggle('open', open);
-    mobileMenu.classList.toggle('open', open);
-    mobileMenu.setAttribute('aria-hidden', String(!open));
-    hamburger.setAttribute('aria-expanded', String(open));
-    hamburger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    document.body.classList.toggle('sa-menu-open', open);
-    closeAll();
-  }
-
-  if (hamburger && mobileMenu) {
-    hamburger.addEventListener('click', function () {
-      var willOpen = !hamburger.classList.contains('open');
-      if (willOpen) setHeaderHeight();
-      setMenu(willOpen);
-    });
-
-    // Close on link tap (menu is fixed, so navigation should release the lock)
-    mobileMenu.addEventListener('click', function (e) {
-      if (e.target.closest('a')) setMenu(false);
-    });
-
-    // Escape closes the mobile menu too
+    document.addEventListener('click', closeAll);
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && hamburger.classList.contains('open')) setMenu(false);
+      if (e.key === 'Escape') closeAll();
     });
 
-    // Keep the panel correctly sized through rotation, resize, and the iOS
-    // URL-bar collapse. Only recompute while open to avoid needless work.
-    window.addEventListener('resize', function () {
-      if (hamburger.classList.contains('open')) setHeaderHeight();
-    }, { passive: true });
-  }
-});
+    // ── Mobile hamburger menu ────────────────────────────────────────
+    var hamburger = document.getElementById('sa-hamburger');
+    var mobileMenu = document.getElementById('sa-mobile-menu');
+
+    function setHeaderHeight() {
+      if (!nav) return;
+      var rect = nav.getBoundingClientRect();
+      var headerBottom = rect.top + rect.height;
+      document.documentElement.style.setProperty('--sa-header-h', Math.max(0, Math.round(headerBottom)) + 'px');
+    }
+
+    function setMenu(open) {
+      if (!hamburger || !mobileMenu) return;
+      hamburger.classList.toggle('open', open);
+      mobileMenu.classList.toggle('open', open);
+      mobileMenu.setAttribute('aria-hidden', String(!open));
+      hamburger.setAttribute('aria-expanded', String(open));
+      hamburger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      document.body.classList.toggle('sa-menu-open', open);
+      closeAll();
+    }
+
+    if (hamburger && mobileMenu) {
+      hamburger.addEventListener('click', function () {
+        var willOpen = !hamburger.classList.contains('open');
+        if (willOpen) setHeaderHeight();
+        setMenu(willOpen);
+      });
+
+      mobileMenu.addEventListener('click', function (e) {
+        if (e.target.closest('a')) setMenu(false);
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && hamburger.classList.contains('open')) setMenu(false);
+      });
+
+      window.addEventListener('resize', function () {
+        if (hamburger.classList.contains('open')) setHeaderHeight();
+      }, { passive: true });
+    }
+  });
+
+  // ── Clean up stale state before swap ────────────────────────────────
+  // If the user navigates while the mobile menu is open, reset it so the
+  // next page doesn't inherit `sa-menu-open` on <body> or open panels.
+  document.addEventListener('astro:before-swap', function () {
+    document.body.classList.remove('sa-menu-open');
+    document.querySelectorAll('.sa-drop.open').forEach(function (d) {
+      d.classList.remove('open');
+    });
+    var mobileMenu = document.getElementById('sa-mobile-menu');
+    if (mobileMenu) mobileMenu.classList.remove('open');
+    var hamburger = document.getElementById('sa-hamburger');
+    if (hamburger) hamburger.classList.remove('open');
+  });
 </script>
