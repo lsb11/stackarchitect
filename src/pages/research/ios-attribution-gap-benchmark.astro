@@ -1,0 +1,225 @@
+---
+import Base from '../../layouts/Base.astro';
+import AuthorCard from '../../components/AuthorCard.astro';
+import CalculatorEmbedWidget from '../../components/CalculatorEmbedWidget.astro';
+import { dataPoints, benchmarkMeta } from '../../data/attributionGap.js';
+
+const title = "iOS Attribution Gap Benchmark 2026 | Stack Architect Data";
+const description = "Explore the definitive data on Shopify's iOS attribution gap. See the exact percentage of conversions lost to ATT and Safari ITP.";
+const canonical = "https://stackarchitect.xyz/research/ios-attribution-gap-benchmark/";
+const dateModified = "2026-07-25";
+
+const breadcrumb = [
+  { label: 'Research', href: '/research/' },
+  { label: 'iOS Attribution Gap Benchmark' }
+];
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": benchmarkMeta.name,
+  "description": benchmarkMeta.headline,
+  "url": canonical,
+  "license": benchmarkMeta.license,
+  "creator": {
+    "@type": "Organization",
+    "name": "Stack Architect"
+  },
+  "distribution": [
+    {
+      "@type": "DataDownload",
+      "encodingFormat": "CSV",
+      "contentUrl": "https://stackarchitect.xyz/downloads/ios-attribution-gap-benchmark.csv"
+    },
+    {
+      "@type": "DataDownload",
+      "encodingFormat": "JSON",
+      "contentUrl": "https://stackarchitect.xyz/downloads/ios-attribution-gap-benchmark.json"
+    }
+  ]
+};
+---
+
+<Base 
+  title={title} 
+  description={description} 
+  canonical={canonical}
+  schema={schema}
+  pageType="article"
+  updatedDate={dateModified}
+  breadcrumb={breadcrumb}
+>
+  <style>
+    .research-hero {
+      padding: 80px 24px 60px 24px;
+      text-align: center;
+      background: radial-gradient(circle at top, rgba(52, 211, 119, 0.1) 0%, transparent 50%);
+    }
+    .research-hero h1 {
+      font-size: 3rem;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      background: linear-gradient(to right, #fff, #a0a5a2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .research-hero p {
+      font-size: 1.2rem;
+      color: #a0a5a2;
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .data-dashboard {
+      max-width: 1200px;
+      margin: -20px auto 80px auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .data-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 32px;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .data-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(52, 211, 119, 0.3);
+      box-shadow: 0 10px 40px rgba(52, 211, 119, 0.05);
+    }
+    .data-value {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: #34d377;
+      line-height: 1;
+      margin-bottom: 16px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .data-metric {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+    .data-detail {
+      font-size: 0.95rem;
+      color: #88908b;
+      line-height: 1.5;
+      margin-bottom: 24px;
+      flex-grow: 1;
+    }
+    .data-source {
+      font-size: 0.85rem;
+      color: #666;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .data-source a {
+      color: #34d377;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .data-source a:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+    }
+
+    .download-section {
+      max-width: 960px;
+      margin: 0 auto 80px auto;
+      padding: 40px;
+      background: rgba(52, 211, 119, 0.05);
+      border: 1px solid rgba(52, 211, 119, 0.1);
+      border-radius: 16px;
+      text-align: center;
+    }
+    .download-section h3 {
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+      color: #fff;
+    }
+    .download-section p {
+      color: #a0a5a2;
+      margin-bottom: 32px;
+    }
+    .download-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-download {
+      display: inline-block;
+      padding: 12px 24px;
+      background: #34d377;
+      color: #000;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: opacity 0.2s;
+    }
+    .btn-download:hover {
+      opacity: 0.9;
+    }
+    .btn-download.secondary {
+      background: transparent;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .btn-download.secondary:hover {
+      border-color: #34d377;
+      color: #34d377;
+    }
+  </style>
+
+  <section class="research-hero">
+    <h1>iOS Attribution Gap Benchmark Data</h1>
+    <p>{benchmarkMeta.headline}</p>
+  </section>
+
+  <section class="data-dashboard">
+    {dataPoints.map((point) => (
+      <div class="data-card">
+        <div class="data-value">{point.value}</div>
+        <div class="data-metric">{point.metric}</div>
+        <div class="data-detail">{point.detail}</div>
+        <div class="data-source">
+          <span>Source: <a href={point.sourceUrl} target="_blank" rel="noopener nofollow">{point.source}</a></span>
+          <span>{point.sourceDate}</span>
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <section class="download-section">
+    <h3>Cite This Data</h3>
+    <p>We provide this data under a {benchmarkMeta.licenseName} license. You are free to use it in your reporting, articles, or presentations, provided you link back to this page as the source.</p>
+    
+    <div style="margin: 0 auto 32px auto; max-width: 600px; text-align: left;">
+      <CalculatorEmbedWidget embedPath="/research/ios-attribution-gap-benchmark/" title="iOS Attribution Gap Data" />
+    </div>
+
+    <div class="download-buttons">
+      <a href="/downloads/ios-attribution-gap-benchmark.csv" class="btn-download" download>Download CSV</a>
+      <a href="/downloads/ios-attribution-gap-benchmark.json" class="btn-download secondary" download>Download JSON API</a>
+    </div>
+  </section>
+
+  <div class="inner" style="max-width: 960px; margin: 0 auto 80px auto;">
+    <AuthorCard />
+  </div>
+
+</Base>
