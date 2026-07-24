@@ -1,0 +1,297 @@
+---
+// /embed/app-cost-calculator/ — iframe-able LIVE widget for the Shopify App Waste Calculator.
+// Designed to be embedded on agency websites and partner blogs to drive DR 70+ backlinks.
+import EmbedLayout from '../../layouts/EmbedLayout.astro';
+---
+
+<EmbedLayout
+  title="Shopify App Waste Calculator — Stack Architect"
+  canonical="https://stackarchitect.xyz/shopify-app-cost-calculator/"
+>
+  <div class="scw">
+    <div class="scw-head">
+      <span class="scw-live"><span class="scw-dot"></span>LIVE DIAGNOSTIC</span>
+      <span class="scw-title">Shopify App Waste Calculator</span>
+    </div>
+    
+    <div class="scw-body">
+      <div class="scw-sliders">
+        <!-- Marketing Apps -->
+        <div class="scw-slider-group">
+          <div class="scw-slider-header">
+            <span class="scw-slider-label">Marketing & Email</span>
+            <span class="scw-slider-val">$<span id="val-mkt">450</span>/mo</span>
+          </div>
+          <input type="range" id="range-mkt" class="scw-range" min="0" max="1500" step="50" value="450" aria-label="Marketing apps spend">
+        </div>
+        
+        <!-- Tracking Apps -->
+        <div class="scw-slider-group">
+          <div class="scw-slider-header">
+            <span class="scw-slider-label">Tracking & Analytics</span>
+            <span class="scw-slider-val">$<span id="val-trk">200</span>/mo</span>
+          </div>
+          <input type="range" id="range-trk" class="scw-range" min="0" max="1500" step="50" value="200" aria-label="Tracking apps spend">
+        </div>
+
+        <!-- Inventory Apps -->
+        <div class="scw-slider-group">
+          <div class="scw-slider-header">
+            <span class="scw-slider-label">Inventory & Sync</span>
+            <span class="scw-slider-val">$<span id="val-inv">150</span>/mo</span>
+          </div>
+          <input type="range" id="range-inv" class="scw-range" min="0" max="1000" step="50" value="150" aria-label="Inventory apps spend">
+        </div>
+      </div>
+
+      <div class="scw-result-box">
+        <div class="scw-result-label">Your Annual App Waste</div>
+        <div class="scw-num">$<span id="scw-total">8,160</span></div>
+        <div class="scw-sub">Recoverable for $0 using server-side automation.</div>
+      </div>
+    </div>
+    
+    <!-- The high-leverage dofollow link -->
+    <a class="scw-credit" href="https://stackarchitect.xyz/shopify-app-cost-calculator/" target="_blank" rel="noopener">
+      Powered by Stack Architect → <span>Get your free recovery plan</span>
+    </a>
+  </div>
+
+  <style>
+    /* Premium Widget Aesthetics */
+    .scw {
+      font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+      background: rgba(11, 15, 20, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      color: #e8eef4;
+      border: 1px solid rgba(52, 211, 119, 0.2);
+      border-radius: 16px;
+      padding: 1.5rem;
+      max-width: 420px;
+      margin: 0 auto;
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+    
+    .scw-head {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    
+    .scw-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #34d377;
+      font-weight: 700;
+      background: rgba(52, 211, 119, 0.1);
+      padding: 0.3rem 0.6rem;
+      border-radius: 100px;
+    }
+    
+    .scw-dot {
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 50%;
+      background: #34d377;
+      box-shadow: 0 0 8px #34d377;
+      animation: scwpulse 2s infinite;
+    }
+    
+    @keyframes scwpulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(52, 211, 119, 0.6); }
+      50% { opacity: 0.4; box-shadow: 0 0 0 6px rgba(52, 211, 119, 0); }
+    }
+    
+    .scw-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: #ffffff;
+    }
+    
+    .scw-body {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 12px;
+      padding: 1.25rem;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    
+    .scw-sliders {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .scw-slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .scw-slider-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .scw-slider-label {
+      font-size: 0.75rem;
+      color: #93a09a;
+      font-weight: 500;
+    }
+    
+    .scw-slider-val {
+      font-size: 0.85rem;
+      font-family: ui-monospace, monospace;
+      font-weight: 700;
+      color: #e8eef4;
+    }
+    
+    /* Range Slider Styling */
+    .scw-range {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      outline: none;
+      transition: background 0.2s;
+    }
+    .scw-range:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .scw-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #34d377;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(52, 211, 119, 0.5);
+      transition: transform 0.1s;
+    }
+    .scw-range::-webkit-slider-thumb:active {
+      transform: scale(1.2);
+    }
+    .scw-range::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #34d377;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 0 10px rgba(52, 211, 119, 0.5);
+    }
+    
+    .scw-result-box {
+      text-align: center;
+      background: rgba(52, 211, 119, 0.05);
+      border: 1px solid rgba(52, 211, 119, 0.2);
+      border-radius: 10px;
+      padding: 1.25rem 1rem;
+    }
+    
+    .scw-result-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #93a09a;
+      margin-bottom: 0.2rem;
+    }
+    
+    .scw-num {
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin: 0.2rem 0;
+      background: linear-gradient(90deg, #34d377, #59c9ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-family: ui-monospace, monospace;
+      letter-spacing: -0.04em;
+    }
+    
+    .scw-sub {
+      font-size: 0.75rem;
+      color: #93a09a;
+      margin-top: 0.4rem;
+    }
+    
+    .scw-credit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 1.25rem;
+      font-size: 0.75rem;
+      color: #59c9ff;
+      text-decoration: none;
+      opacity: 0.9;
+      transition: opacity 0.2s;
+    }
+    
+    .scw-credit span {
+      font-weight: 600;
+      color: #34d377;
+      margin-top: 0.2rem;
+    }
+    
+    .scw-credit:hover {
+      opacity: 1;
+    }
+    .scw-credit:hover span {
+      text-decoration: underline;
+    }
+  </style>
+
+  <script>
+    // Pure Vanilla JS for fast, dependency-free execution inside the iframe
+    document.addEventListener('DOMContentLoaded', function() {
+      var inputs = ['mkt', 'trk', 'inv'];
+      var ranges = {};
+      var values = {};
+      var totalEl = document.getElementById('scw-total');
+      
+      // Calculate Waste (assuming 85% is recoverable, as per canonical calculator)
+      function updateCalculation() {
+        var totalMonthly = 0;
+        inputs.forEach(function(key) {
+          var val = parseInt(ranges[key].value, 10) || 0;
+          values[key].textContent = val.toLocaleString();
+          totalMonthly += val;
+        });
+        
+        var annualWaste = totalMonthly * 12;
+        var recoverable = Math.round(annualWaste * 0.85); // 85% average recovery
+        
+        // Animate the number slightly
+        totalEl.style.opacity = '0.5';
+        setTimeout(function() {
+          totalEl.textContent = recoverable.toLocaleString();
+          totalEl.style.opacity = '1';
+        }, 50);
+      }
+      
+      inputs.forEach(function(key) {
+        ranges[key] = document.getElementById('range-' + key);
+        values[key] = document.getElementById('val-' + key);
+        
+        ranges[key].addEventListener('input', updateCalculation);
+      });
+      
+      // Initial calculation
+      updateCalculation();
+    });
+  </script>
+</EmbedLayout>
