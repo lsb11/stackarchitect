@@ -7,57 +7,64 @@ const { headings = [] } = Astro.props;
 ---
 
 {headings.length > 0 && (
-  <nav 
-    class="toc-premium" 
-    aria-label="Table of contents"
-  >
-    <div class="toc-header">CONTENTS //</div>
-    <ul class="toc-list">
-      {headings.map((h) => (
-        <li>
-          <a href={`#${h.id}`}>
-            <span class="toc-arrow">&rarr;</span>
-            <span class="toc-text">{h.text.replace(/&amp;/g, '&')}</span>
-          </a>
-        </li>
-      ))}
-    </ul>
+  <nav class="toc-premium" aria-label="Table of contents">
+    <div class="toc-header">
+      <div class="toc-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+        CONTENTS
+      </div>
+    </div>
+    <div class="toc-body">
+      <ul class="toc-list">
+        {headings.map((h) => (
+          <li>
+            <a href={`#${h.id}`}>
+              <span class="toc-text">{h.text.replace(/&amp;/g, '&')}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   </nav>
 )}
 
 <style>
+  /* 
+   * 2026 Premium Aesthetic:
+   * Desktop: Sticky glassmorphism sidebar floating on the right.
+   * Mobile: Sleek, compact inline block that doesn't push the hero out of view.
+   */
   .toc-premium {
+    /* Mobile defaults (Inline, compact) */
+    width: 100%;
     max-width: 760px;
     margin: 2rem auto 3rem;
-    padding: 1.5rem 1.75rem;
+    padding: 1.25rem;
     border-radius: 12px;
-    background: rgba(12, 15, 13, 0.6);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(12, 15, 13, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 
-      0 4px 30px rgba(0, 0, 0, 0.5),
-      inset 0 1px 0 rgba(255, 255, 255, 0.05),
-      inset 0 0 20px rgba(52, 211, 119, 0.02);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    z-index: 50;
   }
 
   .toc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  
+  .toc-title {
     font-family: "JetBrains Mono", monospace;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: #6b7671;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    margin-bottom: 1.25rem;
     display: flex;
     align-items: center;
-  }
-  
-  .toc-header::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(107, 118, 113, 0.2), transparent);
-    margin-left: 12px;
+    gap: 8px;
   }
 
   .toc-list {
@@ -66,7 +73,7 @@ const { headings = [] } = Astro.props;
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.35rem;
   }
 
   .toc-list li {
@@ -75,60 +82,89 @@ const { headings = [] } = Astro.props;
   }
 
   .toc-list a {
-    display: flex;
-    align-items: flex-start;
+    display: block;
     text-decoration: none;
-    color: #9ca3af;
+    color: #8c9691;
     font-family: "Inter", -apple-system, sans-serif;
-    font-size: 0.875rem;
-    line-height: 1.5;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: 0.25rem 0;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    border-left: 2px solid transparent;
   }
 
-  .toc-arrow {
-    color: #4b5563;
-    margin-right: 12px;
-    font-family: monospace;
-    transition: color 0.2s ease, transform 0.2s ease;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-
-  .toc-list a:hover {
+  .toc-list a:hover, .toc-list a.active {
     color: #fff;
+    background: rgba(255,255,255,0.03);
+    border-left-color: #34d377;
+    transform: translateX(2px);
   }
 
-  .toc-list a:hover .toc-arrow {
-    color: #34d377;
-    transform: translateX(4px);
+  /* DESKTOP FLOATING SIDEBAR (1280px and up) */
+  @media (min-width: 1280px) {
+    .toc-premium {
+      position: fixed;
+      top: 120px;
+      right: max(24px, calc(50vw - 580px)); /* Keeps it nicely bound to the right of centered content */
+      width: 260px;
+      max-height: calc(100vh - 160px);
+      margin: 0;
+      overflow-y: auto;
+      padding: 1.5rem;
+      /* Scrollbar styling for the sidebar */
+      scrollbar-width: thin;
+      scrollbar-color: rgba(52,211,119,0.3) transparent;
+    }
+    
+    .toc-premium::-webkit-scrollbar { width: 4px; }
+    .toc-premium::-webkit-scrollbar-track { background: transparent; }
+    .toc-premium::-webkit-scrollbar-thumb { background: rgba(52,211,119,0.3); border-radius: 4px; }
   }
 </style>
 
 <script>
-  // Progressive enhancement: smooth scroll to anchor links
-  document.querySelectorAll('.toc-premium a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      e.preventDefault();
-      const href = this.getAttribute('href');
-      if (!href) return;
-      const target = document.querySelector(href);
-      if (target) {
-        // Scroll to the target with some top offset for stick headers
-        const offset = 80;
-        const bodyRect = document.body.getBoundingClientRect().top;
-        const elementRect = target.getBoundingClientRect().top;
-        const elementPosition = elementRect - bodyRect;
-        const offsetPosition = elementPosition - offset;
+  // Smooth scroll and active state intersection observer
+  document.addEventListener('DOMContentLoaded', () => {
+    const links = document.querySelectorAll('.toc-premium a[href^="#"]');
+    const sections = Array.from(links).map(link => {
+      const id = link.getAttribute('href');
+      return id ? document.querySelector(id) : null;
+    }).filter(Boolean);
 
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-        
-        // Update URL hash without jumping
-        history.pushState(null, '', href);
-      }
+    // Smooth scroll logic
+    links.forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const href = this.getAttribute('href');
+        if (!href) return;
+        const target = document.querySelector(href);
+        if (target) {
+          const offset = 100;
+          const bodyRect = document.body.getBoundingClientRect().top;
+          const elementRect = target.getBoundingClientRect().top;
+          window.scrollTo({
+            top: (elementRect - bodyRect) - offset,
+            behavior: 'smooth'
+          });
+          history.pushState(null, '', href);
+        }
+      });
     });
+
+    // Active state observer
+    if (sections.length > 0) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            links.forEach(link => link.classList.remove('active'));
+            const activeLink = document.querySelector(`.toc-premium a[href="#${entry.target.id}"]`);
+            if (activeLink) activeLink.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-120px 0px -60% 0px' });
+
+      sections.forEach(sec => observer.observe(sec));
+    }
   });
 </script>
