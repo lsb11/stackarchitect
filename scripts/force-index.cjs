@@ -15,13 +15,14 @@ async function getJwtClient() {
   }
 
   const key = require(SERVICE_ACCOUNT_FILE);
-  const jwtClient = new google.auth.JWT(
-    key.client_email,
-    null,
-    key.private_key,
-    ['https://www.googleapis.com/auth/indexing'],
-    null
-  );
+  console.log('Loaded key email:', key.client_email);
+  console.log('Loaded key private key length:', key.private_key ? key.private_key.length : 0);
+  
+  const jwtClient = new google.auth.JWT({
+    email: key.client_email,
+    key: key.private_key,
+    scopes: ['https://www.googleapis.com/auth/indexing']
+  });
 
   return new Promise((resolve, reject) => {
     jwtClient.authorize((err, tokens) => {
