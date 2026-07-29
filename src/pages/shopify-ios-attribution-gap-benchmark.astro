@@ -409,7 +409,7 @@ const tocHeadings = [
   </script>
 
   <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('astro:page-load', () => {
     const els = {
       count: document.getElementById('gap-meter-count'),
       note: document.getElementById('gap-meter-note'),
@@ -427,7 +427,7 @@ const tocHeadings = [
     if (!els.count) return; // Guard clause just in case
 
     // 1. Fetch current stats
-    fetch('/api/gap-stats')
+    fetch('/api/gap-stats/')
       .then(res => res.json())
       .then(data => {
         if (data.ready) {
@@ -476,7 +476,7 @@ const tocHeadings = [
       els.btn.style.pointerEvents = 'none';
 
       try {
-        const res = await fetch('/api/submit-gap', {
+        const res = await fetch('/api/submit-gap/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
