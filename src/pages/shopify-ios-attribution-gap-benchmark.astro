@@ -408,8 +408,126 @@ const tocHeadings = [
     });})();
   </script>
 
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const els = {
+      count: document.getElementById('gap-meter-count'),
+      note: document.getElementById('gap-meter-note'),
+      fill: document.getElementById('gap-meter-fill'),
+      btn: document.getElementById('f-submit'),
+      reported: document.getElementById('f-reported'),
+      actual: document.getElementById('f-actual'),
+      platform: document.getElementById('f-platform'),
+      thanks: document.getElementById('contrib-thanks'),
+      result: document.getElementById('contrib-result'),
+      resultGap: document.getElementById('result-gap'),
+      resultMsg: document.getElementById('result-msg')
+    };
 
-</Base>
+    if (!els.count) return; // Guard clause just in case
+
+    // 1. Fetch current stats
+    fetch('/api/gap-stats')
+      .then(res => res.json())
+      .then(data => {
+        if (data.ready) {
+          els.count.textContent = data.n;
+          els.note.innerHTML = `Live benchmark ready. Median gap: <strong>${data.median_gap_pct}%</strong>.`;
+          els.fill.style.width = '100%';
+          document.getElementById('gap-meter-goal').textContent = 'contributions so far';
+        } else if (data.n !== undefined) {
+          els.count.textContent = data.n;
+          els.note.textContent = data.message;
+          els.fill.style.width = Math.min(100, (data.n / data.min_n) * 100) + '%';
+        }
+      })
+      .catch(err => {
+        console.error('Failed to load gap stats:', err);
+        els.note.textContent = "Could not load current count. Please try again later.";
+      });
+
+    // 2. Handle form submission
+    els.btn.addEventListener('click', async () => {
+      const reported = parseInt(els.reported.value, 10);
+      const actual = parseInt(els.actual.value, 10);
+      
+      // Reset previous errors
+      els.reported.style.borderColor = 'var(--border-2)';
+      els.actual.style.borderColor = 'var(--border-2)';
+
+      if (isNaN(reported) || reported < 0) {
+        els.reported.style.borderColor = '#ef4444';
+        return els.reported.focus();
+      }
+      if (isNaN(actual) || actual < 20) {
+        els.actual.style.borderColor = '#ef4444';
+        alert('Actual orders must be at least 20 for a meaningful sample.');
+        return els.actual.focus();
+      }
+      if (reported > actual) {
+        els.reported.style.borderColor = '#ef4444';
+        alert('Reported conversions cannot exceed actual orders.');
+        return els.reported.focus();
+      }
+
+      const originalText = els.btn.innerHTML;
+      els.btn.innerHTML = 'Submitting...';
+      els.btn.style.opacity = '0.7';
+      els.btn.style.pointerEvents = 'none';
+
+      try {
+        const res = await fetch('/api/submit-gap', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            meta_reported: reported,
+            actual_orders: actual,
+            window_days: 30, // implied by "last month" label
+            platform_note: els.platform.value
+          })
+        });
+        
+        const data = await res.json();
+        
+        if (!res.ok) {
+          throw new Error(data.error || 'Submission failed');
+        }
+
+        // Success Display
+        const gapPct = Math.round(((actual - reported) / actual) * 100);
+        els.thanks.style.display = 'block';
+        els.thanks.textContent = data.message;
+        
+        els.result.style.display = 'block';
+        els.resultGap.textContent = gapPct + '%';
+        
+        if (gapPct >= 15) {
+          els.resultMsg.innerHTML = `You are losing approximately <strong>${gapPct}%</strong> of your purchase conversions. This is severely artificially deflating your ROAS and causing ad platforms to misallocate your budget.`;
+        } else if (gapPct > 0) {
+          els.resultMsg.innerHTML = `You are losing approximately <strong>${gapPct}%</strong> of your purchase conversions. While lower than average, this still degrades ROAS accuracy over time.`;
+        } else {
+          els.resultMsg.innerHTML = `Perfect matching. You are losing <strong>0%</strong> of your conversions. Your tracking is fully intact.`;
+        }
+        
+        els.btn.innerHTML = 'Submitted ✓';
+        els.btn.classList.remove('pulse');
+        els.btn.style.background = 'var(--bg-3)';
+        els.btn.style.color = 'var(--text-4)';
+        
+        // Lock inputs
+        els.reported.disabled = true;
+        els.actual.disabled = true;
+        els.platform.disabled = true;
+        
+      } catch (err) {
+        alert('Error: ' + err.message);
+        els.btn.innerHTML = originalText;
+        els.btn.style.opacity = '1';
+        els.btn.style.pointerEvents = 'auto';
+      }
+    });
+  });
+  </script></Base>
 
 <style is:global>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
