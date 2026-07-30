@@ -2,6 +2,7 @@
 // seo-audit.mjs — machine-check every built page in dist/.
 // Run after `npm run build`. Exits 1 if any ERROR found (CI-safe).
 import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
+import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 const DIST = 'dist';
@@ -68,9 +69,9 @@ const titles = new Map();
 const descs = new Map();
 const NOINDEX_OK = [/^\/404(\.html)?\/?$/, /^\/sitemap-page\/$/, /^\/embed\//];
 
-for (const f of htmlFiles) {
+await Promise.all(htmlFiles.map(async (f) => {
   const page = f.slice(DIST.length).replace(/index\.html$/, '') || '/';
-  const html = readFileSync(f, 'utf8');
+  const html = await readFile(f, 'utf8');
   const isNoindexOk = NOINDEX_OK.some((r) => r.test(page)) || page === '/404.html/';
 
   // canonical
@@ -132,7 +133,7 @@ for (const f of htmlFiles) {
     else if (r === 'needs-slash') warn(`${page} — link ${h} missing trailing slash (301 hop)`);
     else if (r === 'redirect' && !h.startsWith('/go/')) warn(`${page} — link ${h} goes through a 301 (point it at the target directly)`);
   }
-}
+}));
 
 // duplicates
 for (const [t, pages] of titles) if (pages.length > 1) warn(`DUPLICATE TITLE on ${pages.join(' , ')} :: "${t.slice(0, 70)}"`);
