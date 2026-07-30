@@ -389,18 +389,45 @@ const tocHeadings = [
     document.getElementById('app-free').textContent = '£' + freeTotal.toLocaleString() + '/mo';
     document.getElementById('app-annual').textContent = '£' + (freeTotal * 12).toLocaleString() + '/yr';
 
-    let killHTML = '';
+    const killListContainer = document.getElementById('app-kill-list');
+    killListContainer.textContent = '';
+
     if (killItems.length) {
-      killHTML = '<div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#6b7671;margin-bottom:12px;">YOUR_KILL_LIST</div>';
+      const header = document.createElement('div');
+      header.setAttribute('style', 'font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#6b7671;margin-bottom:12px;');
+      header.textContent = 'YOUR_KILL_LIST';
+      killListContainer.appendChild(header);
+
       killItems.forEach(item => {
-        killHTML += '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border:1px solid rgba(52,211,119,.2);background:rgba(52,211,119,.04);margin-bottom:6px;gap:12px;">';
-        killHTML += '<div><div style="font-size:11px;font-weight:700;color:#fff;">' + item.name.split('(')[0].trim() + '</div>';
-        killHTML += '<div style="font-size:10px;color:#6b7671;">Replace with: ' + item.replace + '</div></div>';
-        if (item.link) killHTML += '<a href="' + item.link + '" style="font-size:10px;font-weight:700;letter-spacing:.08em;color:#34d377;text-decoration:none;white-space:nowrap;border:1px solid rgba(52,211,119,.3);padding:6px 12px;">SET UP FREE →</a>';
-        killHTML += '</div>';
+        const itemContainer = document.createElement('div');
+        itemContainer.setAttribute('style', 'display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border:1px solid rgba(52,211,119,.2);background:rgba(52,211,119,.04);margin-bottom:6px;gap:12px;');
+
+        const textWrapper = document.createElement('div');
+
+        const titleDiv = document.createElement('div');
+        titleDiv.setAttribute('style', 'font-size:11px;font-weight:700;color:#fff;');
+        titleDiv.textContent = item.name.split('(')[0].trim();
+
+        const replaceDiv = document.createElement('div');
+        replaceDiv.setAttribute('style', 'font-size:10px;color:#6b7671;');
+        replaceDiv.textContent = 'Replace with: ' + item.replace;
+
+        textWrapper.appendChild(titleDiv);
+        textWrapper.appendChild(replaceDiv);
+        itemContainer.appendChild(textWrapper);
+
+        if (item.link) {
+          const linkEl = document.createElement('a');
+          linkEl.setAttribute('href', item.link);
+          linkEl.setAttribute('style', 'font-size:10px;font-weight:700;letter-spacing:.08em;color:#34d377;text-decoration:none;white-space:nowrap;border:1px solid rgba(52,211,119,.3);padding:6px 12px;');
+          linkEl.textContent = 'SET UP FREE →';
+          itemContainer.appendChild(linkEl);
+        }
+
+        killListContainer.appendChild(itemContainer);
       });
     }
-    document.getElementById('app-kill-list').innerHTML = killHTML;
+
     document.getElementById('app-result').classList.add('show');
   }
   
