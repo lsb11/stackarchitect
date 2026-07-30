@@ -690,9 +690,26 @@ function addRow(name, cost) {
   if (!list) return;
   var row = document.createElement('div');
   row.className = 'arow'; row.id = 'row-' + id;
-  row.innerHTML = '<input class="ainp" type="text" placeholder="App name" value="' + h(String(name||'')) + '" oninput="recalc()" autocomplete="off"/>' +
-    '<div class="cwrap"><input class="ainp" type="number" placeholder="0" value="' + (cost||'') + '" min="0" step="1" oninput="recalc()"/></div>' +
-    '<button class="rmbtn" type="button" onclick="removeRow(' + id + ')">&times;</button>';
+
+  var nameInp = document.createElement('input');
+  nameInp.className = 'ainp'; nameInp.type = 'text'; nameInp.placeholder = 'App name';
+  nameInp.value = String(name || ''); nameInp.oninput = recalc; nameInp.autocomplete = 'off';
+  row.appendChild(nameInp);
+
+  var cwrap = document.createElement('div');
+  cwrap.className = 'cwrap';
+  var costInp = document.createElement('input');
+  costInp.className = 'ainp'; costInp.type = 'number'; costInp.placeholder = '0';
+  costInp.value = String(cost || ''); costInp.min = '0'; costInp.step = '1'; costInp.oninput = recalc;
+  cwrap.appendChild(costInp);
+  row.appendChild(cwrap);
+
+  var rmBtn = document.createElement('button');
+  rmBtn.className = 'rmbtn'; rmBtn.type = 'button';
+  rmBtn.onclick = function() { removeRow(id); };
+  rmBtn.innerHTML = '&times;';
+  row.appendChild(rmBtn);
+
   list.appendChild(row); recalc();
 }
 function removeRow(id) { var e = document.getElementById('row-' + id); if (e) e.remove(); recalc(); }
