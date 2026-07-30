@@ -247,8 +247,6 @@ export default defineConfig({
       },
     }),
     mdx(),
-    indexnow({
-      key: 'b953b757ff91da6971c05ff7f7e39668',
-    }),
+    ...(process.env.INDEXNOW_KEY ? [indexnow({ key: process.env.INDEXNOW_KEY })] : []),
   ],
 });
