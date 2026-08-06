@@ -11,11 +11,20 @@ Built and maintained by Luke (UK).
 
 ## What's here
 
-- **Automation tools** — e.g. [Stocky Swap](https://stackarchitect.xyz/stocky-swap/) (logs orders to Google Sheets via Make.com), [CAPI Shield](https://stackarchitect.xyz/capi-shield/), [P&L Automation](https://stackarchitect.xyz/shopify-profit-loss-automation/).
-- **Free calculators & diagnostics** — app-cost, break-even, attribution-gap, EMQ-score and more (see [`/tools`](https://stackarchitect.xyz/tools/)).
-- **Guides & comparisons** — long-form Shopify automation and migration content under [`/shopify-automation-guides`](https://stackarchitect.xyz/shopify-automation-guides/).
+**Core Shopify Automation Tools:**
+- **[Stocky Swap](https://stackarchitect.xyz/stocky-swap/)** — Replace Shopify Stocky with Google Sheets inventory management.
+- **[CAPI Shield](https://stackarchitect.xyz/capi-shield/)** — Server-side Meta Conversions API to fix iOS attribution loss.
+- **[Google Ads Conversion Tracking](https://stackarchitect.xyz/shopify-google-ads-conversion-tracking/)** — Server-side Google Enhanced Conversions via Make.com.
+- **[TikTok Events API](https://stackarchitect.xyz/tiktok-events-api-shopify/)** — Server-side TikTok pixel events for Shopify.
+- **[P&L Automation](https://stackarchitect.xyz/shopify-profit-loss-automation/)** — Live profit and loss reporting without paid BI tools.
+- **[Autocrat Quota Fix](https://stackarchitect.xyz/autocrat-quota-fix/)** — Fix Google Apps Script "service invoked too many times" errors.
+- **[Free Klaviyo Alternative](https://stackarchitect.xyz/replace-klaviyo-free/)** — Replace Klaviyo with Systeme.io for $0/month.
 
-Each tool is honest about scope — what it does *and* what it doesn't — so merchants can pick the right fit.
+**Resources & Diagnostics:**
+- **[Free Shopify Calculators](https://stackarchitect.xyz/tools/)** — App-cost, break-even, attribution-gap, and EMQ-score calculators.
+- **[Automation Guides](https://stackarchitect.xyz/shopify-automation-guides/)** — Long-form Shopify automation, tracking, and migration guides.
+
+Each tool is honest about its scope — what it does *and* what it doesn't — so merchants can pick the right fit.
 
 ## Tech stack
 
