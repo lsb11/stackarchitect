@@ -4,6 +4,7 @@ import Base from '../../layouts/Base.astro';
 import AuthorCard from '../../components/AuthorCard.astro';
 import FactTable from '../../components/FactTable.astro';
 import TLDR from '../../components/TLDR.astro';
+import CrossLinkCallout from '../../components/CrossLinkCallout.astro';
 import appsData from '../../data/apps.json';
 
 export async function getStaticPaths() {
@@ -17,6 +18,10 @@ const { app } = Astro.props;
 const title = `${app.name} Pricing & Free Alternatives for Shopify 2026`;
 const description = `Stop paying ${app.monthlyCost} for ${app.name}. Discover how to replace it with ${app.replacement} and save ${app.savings} on your Shopify store.`;
 const canonicalUrl = `https://stackarchitect.xyz/apps/${app.id}/`;
+
+// Cross-linking logic
+const alternativePages = import.meta.glob('/src/pages/*-alternative.astro');
+const hasAlternativePage = `/src/pages/${app.id}-alternative.astro` in alternativePages;
 
 // Structural TLDR Spintax
 const hash = app.name.length + app.category.length;
@@ -260,6 +265,10 @@ const schemas = [faqSchema, softwareSchema, articleSchema];
       </section>
 
     </article>
+
+    {hasAlternativePage && (
+      <CrossLinkCallout type="alternative" appSlug={app.id} appName={app.name} />
+    )}
 
     <div class="border-t border-gray-800 pt-12 mt-12">
       <AuthorCard />

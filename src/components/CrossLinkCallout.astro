@@ -1,0 +1,39 @@
+---
+interface Props {
+  type: 'alternative' | 'review';
+  appSlug: string;
+  appName: string;
+}
+
+const { type, appSlug, appName } = Astro.props;
+
+const isAlternative = type === 'alternative';
+const targetUrl = isAlternative ? `/${appSlug}-alternative/` : `/apps/${appSlug}/`;
+---
+
+<aside class="bg-gray-800 border border-gray-700 rounded-xl p-6 my-8">
+  <div class="flex items-center gap-4">
+    <div class="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-gray-900 border border-gray-700">
+      <svg class="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    </div>
+    <div class="flex-grow">
+      {isAlternative ? (
+        <p class="text-gray-300 m-0 leading-relaxed text-sm sm:text-base">
+          <strong class="text-white block mb-1">Looking for a free alternative?</strong>
+          <a href={targetUrl} class="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors underline decoration-emerald-400/30 underline-offset-4">
+            Read our full {appName} Alternative & Migration Guide &rarr;
+          </a>
+        </p>
+      ) : (
+        <p class="text-gray-300 m-0 leading-relaxed text-sm sm:text-base">
+          <strong class="text-white block mb-1">Deep Dive Integration</strong>
+          <a href={targetUrl} class="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors underline decoration-emerald-400/30 underline-offset-4">
+            View full pricing breakdown and technical verdict for {appName} &rarr;
+          </a>
+        </p>
+      )}
+    </div>
+  </div>
+</aside>

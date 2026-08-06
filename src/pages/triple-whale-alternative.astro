@@ -6,6 +6,12 @@ const description = "The best free Triple Whale alternative for Shopify is CAPI 
 const canonical = "https://stackarchitect.xyz/triple-whale-alternative/";
 const dateModified = "2026-07-16";
 import TableOfContents from '../components/TableOfContents.astro';
+import appsData from '../data/apps.json';
+import CrossLinkCallout from '../components/CrossLinkCallout.astro';
+
+const appSlug = 'triple-whale';
+const appName = 'Triple Whale';
+const parentExists = appsData.some(app => app.id === appSlug);
 
 const tocHeadings = [
   {
@@ -200,6 +206,12 @@ const tocHeadings = [
       <p style="font-size:15px;color:var(--text-3);line-height:1.8;margin-bottom:16px;">The best free Triple Whale alternative for Shopify is <strong style="color:var(--text);">CAPI Shield</strong> — a free server-side tracking setup using Make.com that sends Shopify purchase events directly to Meta Conversions API and Google Enhanced Conversions. It costs $0, requires no code, and deploys in approximately 6 minutes.</p>
       <p style="font-size:15px;color:var(--text-3);line-height:1.8;margin-bottom:16px;">Triple Whale's primary value proposition is recovering attribution data lost to iOS privacy changes and ad blockers. CAPI Shield achieves this by routing order data server-to-server — bypassing the browser entirely — so iOS restrictions cannot intercept the signal. Stores typically recover 20–40% of conversion events that were previously invisible to their ad platforms.</p>
       <p style="font-size:15px;color:var(--text-3);line-height:1.8;">Triple Whale adds dashboards, cohort analysis, and creative analytics on top. If those features are essential to your workflow, the paid tool is justified. If your primary goal is accurate ROAS attribution in Meta and Google Ads, CAPI Shield delivers that outcome at $0.</p>
+      
+      {parentExists && (
+        <div style="margin-top: 32px;">
+          <CrossLinkCallout type="review" appSlug={appSlug} appName={appName} />
+        </div>
+      )}
     </div>
   </section>
 

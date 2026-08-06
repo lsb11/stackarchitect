@@ -6,6 +6,12 @@ import AuthorCard from '../components/AuthorCard.astro';
 // stackarchitect.xyz/stocky-alternative
 // Comparison: Stocky (shutting down Aug 2026) vs free alternatives — verdict → Stocky Swap
 import TableOfContents from '../components/TableOfContents.astro';
+import appsData from '../data/apps.json';
+import CrossLinkCallout from '../components/CrossLinkCallout.astro';
+
+const appSlug = 'stocky';
+const appName = 'Stocky';
+const parentExists = appsData.some(app => app.id === appSlug);
 
 const tocHeadings = [
   {
@@ -237,6 +243,12 @@ const tocHeadings = [
     <a href="https://stackarchitect.xyz/stocky-swap/" class="btn pulse">Deploy Stocky Swap Free — 4 Minutes →</a>
   </div>
 </div>
+
+{parentExists && (
+  <div style="max-width:860px;margin:32px auto 0;padding: 0 24px;">
+    <CrossLinkCallout type="review" appSlug={appSlug} appName={appName} />
+  </div>
+)}
 
 <!-- ═══ WHAT IS STOCKY ═══ -->
 <section class="section" aria-labelledby="what-h">

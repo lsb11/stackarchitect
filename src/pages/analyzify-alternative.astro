@@ -6,6 +6,12 @@ const description = "The best free Analyzify alternative for Shopify: CAPI Shiel
 const canonical = "https://stackarchitect.xyz/analyzify-alternative/";
 const dateModified = "2026-07-16";
 import TableOfContents from '../components/TableOfContents.astro';
+import appsData from '../data/apps.json';
+import CrossLinkCallout from '../components/CrossLinkCallout.astro';
+
+const appSlug = 'analyzify';
+const appName = 'Analyzify';
+const parentExists = appsData.some(app => app.id === appSlug);
 
 const tocHeadings = [
   {
@@ -178,6 +184,12 @@ const tocHeadings = [
       <p style="font-size:15px;color:var(--text-3);line-height:1.8;margin-bottom:16px;">The best free Analyzify alternative is a two-tool combination: <strong style="color:var(--text);">CAPI Shield</strong> for Meta and Google server-side tracking, and the <strong style="color:var(--text);">free TikTok Events API setup</strong> for TikTok — both running via Make.com at $0. Together they cover the same three platforms Analyzify charges $145–$375/month to configure.</p>
       <p style="font-size:15px;color:var(--text-3);line-height:1.8;margin-bottom:16px;">Analyzify's primary value is removing the technical complexity of setting up accurate tracking across GA4, Meta CAPI, and TikTok CAPI for Shopify. It charges a recurring subscription to maintain those configurations. The Make.com approach routes Shopify order webhooks to each platform's API directly — a one-time setup that runs without maintenance or monthly fees.</p>
       <p style="font-size:15px;color:var(--text-3);line-height:1.8;">GA4 tracking itself is free via Shopify's native Google Sales Channel. Pair that with CAPI Shield and TikTok Events API and you have complete tracking coverage across all three platforms at $0.</p>
+      
+      {parentExists && (
+        <div style="margin-top: 32px;">
+          <CrossLinkCallout type="review" appSlug={appSlug} appName={appName} />
+        </div>
+      )}
     </div>
   </section>
 
