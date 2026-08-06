@@ -13,25 +13,25 @@ interface Props {
 
 const { app } = Astro.props;
 ---
-<article class="relative flex flex-col h-full bg-[#0c0f0d] border border-[#222825] p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#34d377]/30 group rounded-lg focus-within:ring-2 focus-within:ring-[#34d377] focus-within:ring-offset-2 focus-within:ring-offset-[#0c0f0d]">
-  <div class="text-xs text-[#6b7671] uppercase tracking-widest mb-2 flex justify-between items-start">
+<article class="bg-gray-800 rounded-xl p-6 border border-gray-700 relative overflow-hidden group transition-all duration-200 hover:-translate-y-1 hover:border-[#34d377]/50 focus-within:ring-2 focus-within:ring-[#34d377] flex flex-col h-full">
+  <div class="text-xs text-gray-400 uppercase tracking-widest mb-3 flex justify-between items-start">
     <span>{app.category}</span>
-    <span class="text-red-400/90 font-bold bg-red-900/20 px-2 py-0.5 rounded border border-red-900/30 whitespace-nowrap">{app.monthlyCost}</span>
+    <span class="text-red-400 font-bold bg-red-900/30 px-2 py-0.5 rounded border border-red-800/50 whitespace-nowrap">{app.monthlyCost}</span>
   </div>
   
-  <h2 class="text-lg font-bold text-white mb-2 group-hover:text-[#34d377] transition-colors pr-10">
-    <a href={`/apps/${app.id}/`} class="outline-none focus:outline-none after:absolute after:inset-0 after:z-10 focus-visible:ring-0">
+  <h2 class="text-xl font-bold text-white mb-2 pr-10">
+    <a href={`/apps/${app.id}/`} class="outline-none focus:outline-none after:absolute after:inset-0 after:z-10 focus-visible:ring-0 group-hover:text-[#34d377] transition-colors">
       {app.name}
     </a>
   </h2>
   
-  <p class="text-sm text-gray-400 mb-5 flex-grow leading-relaxed">{app.description}</p>
+  <p class="text-sm text-gray-400 mb-6 flex-grow leading-relaxed">{app.description}</p>
   
-  <div class="border-t border-[#222825] pt-4 mt-auto">
-    <div class="text-[10px] text-[#6b7671] uppercase tracking-wider mb-1">Replaced by</div>
-    <div class="text-sm text-white font-semibold flex flex-col sm:flex-row sm:justify-between sm:items-end gap-2">
-      <span class="text-gray-200">{app.replacement}</span>
-      <span class="text-[#34d377] font-bold whitespace-nowrap">Save {app.savings}</span>
+  <div class="border-t border-gray-700 pt-4 mt-auto">
+    <div class="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Replaced by</div>
+    <div class="text-sm text-gray-300 font-semibold flex flex-col sm:flex-row sm:justify-between sm:items-end gap-2">
+      <span>{app.replacement}</span>
+      <span class="text-emerald-400 font-bold whitespace-nowrap">Save {app.savings}</span>
     </div>
   </div>
 </article>
