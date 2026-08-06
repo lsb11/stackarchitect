@@ -2,7 +2,6 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
-import indexnow from 'astro-indexnow';
 import { execSync } from 'node:child_process';
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { join, relative } from 'node:path';
@@ -247,8 +246,5 @@ export default defineConfig({
       },
     }),
     mdx(),
-    indexnow({
-      key: 'b953b757ff91da6971c05ff7f7e39668',
-    }),
   ],
 });
