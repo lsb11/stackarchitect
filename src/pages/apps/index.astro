@@ -1,0 +1,42 @@
+---
+import Base from "../../layouts/Base.astro";
+import AppCard from "../../components/AppCard.astro";
+import appsData from "../../data/apps.json";
+
+// Define the interface to match our AppCard requirements
+interface AppProfile {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  monthlyCost: string;
+  replacement: string;
+  savings: string;
+}
+
+// Cast the imported JSON to our strongly typed interface
+const apps = appsData as AppProfile[];
+---
+
+<Base 
+  title="Shopify App Alternatives & Migration Guides (2026)" 
+  description="A curated directory of 53 expensive Shopify apps, featuring free alternatives, transparent pricing breakdowns, and technical teardowns to cut your monthly bill."
+  canonical="https://stackarchitect.xyz/apps/"
+>
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+    <div class="mb-16 text-center max-w-3xl mx-auto">
+      <h1 class="text-4xl sm:text-5xl font-bold text-white mb-6">Shopify App Alternatives & Migration Guides</h1>
+      <p class="text-lg text-gray-400 leading-relaxed">
+        A curated directory of expensive Shopify apps, featuring free alternatives, transparent pricing breakdowns, and technical teardowns to help you cut your monthly bill without sacrificing functionality.
+      </p>
+    </div>
+
+    <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {apps.map((app) => (
+        <li>
+          <AppCard app={app} />
+        </li>
+      ))}
+    </ul>
+  </main>
+</Base>
