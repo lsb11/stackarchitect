@@ -286,6 +286,11 @@ import Base from '../../layouts/Base.astro';
     <figcaption style="padding:12px 18px;font-size:13px;color:var(--soft);border-top:1px solid var(--border);">The official 2026 quota ceilings at a glance. Note the per-execution 6-minute wall is identical on both account types — only the <em>daily</em> quotas scale with Workspace.</figcaption>
   </figure>
 
+  <div class="callout">
+    <span class="label">The architectural point</span>
+    <p>Apps Script quotas are set per Google account and enforced at Google&apos;s infrastructure level &mdash; no request, payment, or setting raises them. Batching, backoff, and staggered triggers (covered below) reduce how often you hit the ceiling; they do not move it. The structural fix is running the work somewhere the ceiling doesn&apos;t apply. The <a href="https://stackarchitect.xyz/make-com-shopify/" style="color:var(--accent);">Make.com guide for scaling Shopify automation past Apps Script&apos;s quota limits</a> covers the same pattern used in the Autocrat fix below, applied to order sync, inventory, and email workflows.</p>
+  </div>
+
   <h2 id="why-break">Why Quota Limits Break Your Automations</h2>
   <p>Quota failures are rarely random. They follow predictable patterns based on four root causes:</p>
   <ul>

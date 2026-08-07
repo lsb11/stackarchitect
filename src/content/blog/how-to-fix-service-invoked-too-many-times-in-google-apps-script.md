@@ -49,6 +49,9 @@ Common rate limits (consumer accounts):
 - UrlFetch calls: 20,000 per day (daily quota)
 - Workspace Studio add-ons (Google Gemini Alpha program): 2-minute execution timeout, tighter than the standard 6 minutes — relevant if you build automations into Google's newer AI surfaces
 
+> [!TIP]
+> **The architectural point:** these limits are set per Google account and enforced at Google's infrastructure level — there's no request, payment, or setting that raises them. The fixes below reduce how often you hit the ceiling; they don't move it. For Shopify workflows that keep hitting it regardless, moving the automation to Make.com [scales past Apps Script's quota limits](/make-com-shopify/) entirely, since the work no longer runs inside Google's shared execution pool.
+
 ## The Root Cause in 95% of Cases: Row-by-Row Processing
 
 The most common cause is a script that processes data one row at a time, calling a service method on each iteration:
