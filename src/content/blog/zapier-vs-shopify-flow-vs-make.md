@@ -1,5 +1,5 @@
 ---
-title: "Zapier vs Make vs Shopify Flow 2026 — Honest Comparison"
+title: "Zapier vs Make vs Shopify Flow 2026"
 description: "Make.com wins for Shopify — 10x more free operations than Zapier, webhooks on the free plan, Shopify Flow is Plus-only. Full comparison with proof."
 publishDate: "2026-03-15"
 updatedDate: "2026-04-14"

@@ -22,7 +22,7 @@ const blog = defineCollection({
     badge: z.string().optional(),
     badgeType: z.enum(['urgent', 'new', 'comparison', 'hot', 'default']).default('default'),
     readTime: z.number(),
-    canonical: z.string(),
+    canonical: z.string().optional(),
     ogTitle: z.string().optional(),
     ogDescription: z.string().optional(),
     noindex: z.boolean().default(false),

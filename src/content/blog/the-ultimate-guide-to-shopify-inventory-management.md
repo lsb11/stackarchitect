@@ -1,13 +1,12 @@
 ---
-title: "Shopify Inventory in Google Sheets — Free 2026 System (Replaces Stocky)"
-description: "Send Shopify inventory to Google Sheets free in 2026: real-time order logging via Make.com, stock alerts, supplier tracking, and a Stocky replacement before the Aug 31 shutdown."
+title: "Shopify Inventory in Google Sheets 2026"
+description: "Send Shopify inventory to Google Sheets free in 2026: real-time order logging, stock alerts, supplier tracking — a Stocky replacement before Aug 31."
 publishDate: "2026-03-28"
 updatedDate: "2026-07-17"
 category: "inventory"
 badge: "Complete Guide"
 badgeType: "new"
 readTime: 18
-canonical: "https://stackarchitect.xyz/stocky-swap/"
 faqs:
   - question: "What is the best free Shopify inventory management system in 2026?"
     answer: "The best free Shopify inventory management system in 2026 is a Make.com webhook connected to Google Sheets. Every order automatically logs to a sheet you own — product, quantity, variant, customer, and fulfilment status — in real time. This replaces Stocky (shutting down August 31, 2026) and every paid inventory app at zero cost."
@@ -38,6 +37,10 @@ relatedGuides:
 Most Shopify inventory management guides end with a recommendation to pay $29–$199/month for an app. This one doesn't. Every system described here costs $0 and runs on tools you likely already have access to.
 
 This guide covers the complete inventory management layer for Shopify stores — from basic order logging through supplier management, stock alerts, velocity analysis, and multi-location tracking. It also covers the urgent situation every Shopify merchant faces in 2026: **Shopify Stocky shuts down permanently on August 31.**
+
+> [!TIP]
+> **Don't want to build this yourself?** I've already built this exact system. It's called Stocky Swap. It's free, it runs on Make.com, and you can deploy it to your store in 4 minutes.  
+> 👉 [Get Stocky Swap for free here](/stocky-swap/).
 
 ## What Shopify's Built-In Inventory Actually Covers
 
