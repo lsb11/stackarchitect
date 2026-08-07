@@ -38,8 +38,8 @@ import Base from '../../layouts/Base.astro';
         "description": "Complete step-by-step guide to enabling Shopify Agentic Storefronts for ChatGPT, Google AI Mode, and Microsoft Copilot.",
         "totalTime": "PT45M",
         "step": [
-          {"@type": "HowToStep", "position": 1, "name": "Check Eligibility", "text": "Go to Shopify Admin → Settings → Apps and sales channels. Look for an Agentic Storefronts section. If visible, your store is eligible. Currently requires a US-based store selling to US customers."},
-          {"@type": "HowToStep", "position": 2, "name": "Add Store Policies", "text": "Ensure your store has Terms of Service, Privacy Policy, and Refund Policy added. Go to Settings → Policies. These are required before you can activate Agentic Storefronts."},
+          {"@type": "HowToStep", "position": 1, "name": "Check Eligibility", "text": "Go to Shopify Admin → Settings → Apps and sales channels. Look for an Agentic Storefronts section. If visible, your store is eligible. US availability is channel-specific: ChatGPT and Microsoft Copilot accept any store location selling to US buyers; Google AI Mode and Gemini require a US-based store."},
+          {"@type": "HowToStep", "position": 2, "name": "Add Store Policies", "text": "Publish a Terms of Service, Privacy Policy, and Refund Policy in Settings → Policies. Good practice regardless of eligibility, though Shopify's current documentation doesn't confirm these as a hard requirement for Agentic Storefronts."},
           {"@type": "HowToStep", "position": 3, "name": "Install the Knowledge Base App", "text": "Search 'Knowledge Base' in the Shopify App Store. Free for Shopify Plus. $50/month for standard plans. Activate and create your first knowledge base with FAQs, return policies, and brand voice guidelines."},
           {"@type": "HowToStep", "position": 4, "name": "Optimise Your Product Catalog", "text": "Ensure every product has a complete title, detailed description, all variants defined, accurate pricing, current inventory, and high-quality images. Add relevant metafields."},
           {"@type": "HowToStep", "position": 5, "name": "Enable Agentic Storefront Channels", "text": "Go to Settings → Apps and sales channels → Agentic Storefronts. Agree to Supplemental Terms. Toggle on each AI channel: ChatGPT, Google AI Mode and Gemini, Microsoft Copilot."},
@@ -57,7 +57,7 @@ import Base from '../../layouts/Base.astro';
           {
             "@type": "Question",
             "name": "Who is eligible for Shopify Agentic Storefronts?",
-            "acceptedAnswer": {"@type": "Answer", "text": "As of March 2026, Agentic Storefronts are in early access and require: (1) A US-based store selling to US customers; (2) Store policies including Terms of Service; (3) Guest checkout enabled; (4) Agreement to the Shopify Agentic Storefronts Supplemental Terms of Service. Sign up for early access at shopify.com/chatgpt."}
+            "acceptedAnswer": {"@type": "Answer", "text": "US availability is channel-specific, not one blanket rule: ChatGPT and Microsoft Copilot are open to any store location selling to US buyers, while Google AI Mode and Gemini require a US-based store selling to US buyers (source: Shopify, \"How Agentic Commerce Works\"). Confirmed requirements are products eligible for Shopify Catalog and agreement to the Shopify Agentic Storefronts Supplemental Terms of Service. A Starter-plan exclusion, a published-policies requirement, and mandatory guest checkout appeared in earlier guidance but could not be confirmed in Shopify's current documentation, so we've removed them pending verification."}
           },
           {
             "@type": "Question",
@@ -72,7 +72,7 @@ import Base from '../../layouts/Base.astro';
           {
             "@type": "Question",
             "name": "What are the limitations of Shopify Agentic Storefronts?",
-            "acceptedAnswer": {"@type": "Answer", "text": "Key limitations as of March 2026: (1) US-only; (2) No Google Analytics or custom pixel tracking in agentic checkout — only server-side pixels fire; (3) Subscriptions and product bundles are not supported; (4) Discount codes may not work; (5) Some checkout blocks do not display; (6) Local delivery and store pickup are not available."}
+            "acceptedAnswer": {"@type": "Answer", "text": "Key limitations as of March 2026: (1) US availability is channel-specific — ChatGPT and Microsoft Copilot accept any store location selling to US buyers, Google AI Mode and Gemini require a US-based store; (2) No Google Analytics or custom pixel tracking in agentic checkout — only server-side pixels fire; (3) Subscriptions and product bundles are not supported; (4) Discount codes may not work; (5) Some checkout blocks do not display; (6) Local delivery and store pickup are not available."}
           },
           {
             "@type": "Question",
@@ -119,7 +119,10 @@ import Base from '../../layouts/Base.astro';
   <!-- CHANGELOG -->
   <div class="callout sky" id="changelog" style="margin:24px 0 0;">
     <span class="callout-label">Updated 7 August 2026</span>
-    <p style="margin:8px 0 0;">Checked against Shopify's current documentation — Shopify's own requirements page no longer lists the specific eligibility criteria below (geography, plan tier, catalog fields); treat those details as unverified until re-confirmed.</p>
+    <ul style="margin:8px 0 0;padding-left:18px;">
+      <li>Corrected the US-availability rule from one blanket requirement to the channel-specific version (ChatGPT/Copilot vs. Google AI Mode/Gemini).</li>
+      <li>Removed eligibility criteria (Starter-plan exclusion, published-policies requirement, mandatory guest checkout) that couldn't be sourced in Shopify's current documentation.</li>
+    </ul>
     <details style="margin-top:10px;">
       <summary style="cursor:pointer;font-size:12px;color:var(--text-4);">Earlier updates</summary>
       <p style="margin:8px 0 0;font-size:13px;color:var(--text-3);">No changelog entries recorded before this one.</p>
@@ -196,8 +199,8 @@ import Base from '../../layouts/Base.astro';
   </div>
 
   <div class="callout amber">
-    <span class="callout-label">&#9888; Still in early access &mdash; US only</span>
-    <p>As of March 2026, Agentic Storefronts are in early access and <strong>currently only available for US-based stores selling to US customers.</strong> International stores are not yet eligible for direct AI checkout &mdash; though your products are still discoverable by AI platforms via web crawling and Shopify Catalog. The preparation steps in this guide apply to all stores regardless of eligibility. Section 9 covers exactly what to do if you can&apos;t enable it yet.</p>
+    <span class="callout-label">&#9888; Still in early access &mdash; US availability varies by channel</span>
+    <p>As of March 2026, Agentic Storefronts are in early access. <strong>US availability is channel-specific:</strong> ChatGPT and Microsoft Copilot are open to any store location selling to US buyers; Google AI Mode and Gemini require a US-based store. Non-qualifying stores aren&apos;t yet eligible for direct AI checkout &mdash; though your products are still discoverable by AI platforms via web crawling and Shopify Catalog. The preparation steps in this guide apply to all stores regardless of eligibility. Section 9 covers exactly what to do if you can&apos;t enable it yet.</p>
   </div>
 
   <!-- SECTION 1: WHAT IS -->
@@ -223,32 +226,35 @@ import Base from '../../layouts/Base.astro';
     <p>Eligibility check takes 60 seconds: go to <strong>Shopify Admin &rarr; Settings &rarr; Apps and sales channels</strong>. If you see an &ldquo;Agentic Storefronts&rdquo; section, your store is eligible. If not, review the requirements below.</p>
   </div>
 
+  <div class="vbox">
+    <strong>US availability is channel-specific, not one blanket rule:</strong> <strong>ChatGPT and Microsoft Copilot</strong> are open to any merchant in Shopify Catalog selling to US buyers &mdash; your store can be based anywhere. <strong>Google AI Mode and Gemini</strong> are more restrictive: only select US-based shops selling to US buyers. (Source: <a href="https://www.shopify.com/blog/how-agentic-commerce-works" target="_blank" rel="noopener">Shopify, &ldquo;How Agentic Commerce Works&rdquo;</a>.)
+  </div>
+
   <div class="elig-grid">
     <div class="elig-card yes">
       <div class="elig-title">Required to be eligible</div>
       <ul class="elig-list">
-        <li>US-based store selling to US customers</li>
-        <li>Terms of Service added to your store (Settings &rarr; Policies)</li>
-        <li>Privacy Policy added to your store</li>
-        <li>Refund Policy added to your store</li>
-        <li>Guest checkout enabled (customers cannot be required to log in)</li>
+        <li>Products eligible for Shopify Catalog</li>
+        <li>Selling to US-based buyers (see channel breakdown above)</li>
         <li>Agreement to Shopify&apos;s Agentic Storefronts Supplemental ToS</li>
       </ul>
     </div>
     <div class="elig-card no">
       <div class="elig-title">Not yet supported</div>
       <ul class="elig-list">
-        <li>Non-US stores (international rollout in progress)</li>
-        <li>Stores requiring mandatory customer login before checkout</li>
-        <li>Stores without published policies</li>
+        <li>Google AI Mode &amp; Gemini, for stores not based in the US</li>
         <li>Subscription-only product catalogs</li>
-        <li>Stores on Shopify Starter plan</li>
       </ul>
     </div>
   </div>
 
+  <div class="callout sky">
+    <span class="callout-label">Worth checking, not confirmed as hard requirements</span>
+    <p>Earlier versions of this guide listed a Shopify Starter-plan exclusion, a requirement to have Terms of Service, Privacy, and Refund policies published, and mandatory guest checkout as eligibility criteria. We could not find these stated in Shopify&apos;s current documentation or Supplemental Terms &mdash; that doesn&apos;t confirm they no longer apply, only that we can&apos;t source them right now. If you&apos;re on the Starter plan, have unpublished policies, or require account login at checkout, it&apos;s still worth sorting those out before you check eligibility.</p>
+  </div>
+
   <div class="vbox amber">
-    <strong>Not eligible yet?</strong> Sign up at <a href="https://shopify.com/chatgpt" target="_blank" rel="noopener">shopify.com/chatgpt</a> to be notified when your store becomes eligible. Shopify is rolling out eligibility in stages through 2026. International stores are expected in H2 2026.
+    <strong>Not eligible yet?</strong> Sign up at <a href="https://shopify.com/chatgpt" target="_blank" rel="noopener">shopify.com/chatgpt</a> to be notified when your store becomes eligible. These rules are still evolving &mdash; <a href="https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts/requirements" target="_blank" rel="noopener">Shopify&apos;s own requirements page</a> is the authoritative source; check it directly before relying on anything stated here.
   </div>
 
   <!-- SECTION 3: CHANNELS -->
@@ -302,8 +308,8 @@ import Base from '../../layouts/Base.astro';
     <div class="step-item">
       <div class="step-num-col"><span class="step-n">2</span></div>
       <div class="step-body">
-        <div class="step-title">Add Store Policies <span class="step-req-tag sr-req">required</span></div>
-        <div class="step-desc">Go to <strong>Shopify Admin &rarr; Settings &rarr; Policies</strong>. Ensure you have a Terms of Service, Privacy Policy, and Refund Policy published. These must be live before you can activate Agentic Storefronts. Shopify&apos;s policy generator can create compliant templates if you don&apos;t have them.</div>
+        <div class="step-title">Add Store Policies <span class="step-req-tag sr-rec">recommended</span></div>
+        <div class="step-desc">Go to <strong>Shopify Admin &rarr; Settings &rarr; Policies</strong> and publish a Terms of Service, Privacy Policy, and Refund Policy. Good practice regardless of eligibility &mdash; though Shopify&apos;s current documentation doesn&apos;t confirm these as a hard requirement for Agentic Storefronts specifically. Shopify&apos;s policy generator can create compliant templates if you don&apos;t have them.</div>
         <span class="step-time">&#9203; 5&ndash;10 minutes</span>
       </div>
     </div>
@@ -438,11 +444,6 @@ import Base from '../../layouts/Base.astro';
           <td class="col-impact">MED &mdash; affects local-first stores</td>
           <td class="col-fix">Ensure standard shipping is enabled for all eligible products</td>
         </tr>
-        <tr>
-          <td class="col-lim">Guest checkout mandatory</td>
-          <td class="col-impact">LOW &mdash; minor friction reduction</td>
-          <td class="col-fix">Accounts can still be created post-purchase via email prompt</td>
-        </tr>
       </tbody>
     </table>
   </div>
@@ -504,7 +505,7 @@ import Base from '../../layouts/Base.astro';
     <div class="prep-card">
       <span class="prep-icon">step 05</span>
       <div class="prep-title">Sign up for early access</div>
-      <div class="prep-body">Register at <a href="https://shopify.com/chatgpt" target="_blank" rel="noopener">shopify.com/chatgpt</a> to be notified when your store becomes eligible. Shopify is rolling out eligibility in stages. International stores are expected in H2 2026. Being on the waitlist ensures you&apos;re notified at the earliest opportunity.</div>
+      <div class="prep-body">Register at <a href="https://shopify.com/chatgpt" target="_blank" rel="noopener">shopify.com/chatgpt</a> to be notified when your store becomes eligible. Shopify is rolling out eligibility in stages, and US availability already varies by channel &mdash; see the eligibility section above. Being on the waitlist ensures you&apos;re notified at the earliest opportunity.</div>
     </div>
     <div class="prep-card">
       <span class="prep-icon">bonus</span>
@@ -538,7 +539,7 @@ import Base from '../../layouts/Base.astro';
     <details class="faq-item">
       <summary>Who is eligible for Shopify Agentic Storefronts? <span class="faq-ico"></span></summary>
       <div class="faq-ans">
-        As of March 2026, Agentic Storefronts are in early access and require: <strong>(1)</strong> A US-based store selling to US customers; <strong>(2)</strong> Store policies including Terms of Service published; <strong>(3)</strong> Guest checkout enabled &mdash; customers cannot be required to log in before checkout; <strong>(4)</strong> Agreement to the Shopify Agentic Storefronts Supplemental Terms of Service. Shopify is rolling out eligibility in stages through 2026. Sign up at <a href="https://shopify.com/chatgpt" target="_blank" rel="noopener">shopify.com/chatgpt</a> for early access notification.
+        US availability is channel-specific, not one blanket rule: <strong>ChatGPT and Microsoft Copilot</strong> are open to any store location selling to US buyers, while <strong>Google AI Mode and Gemini</strong> require a US-based store selling to US buyers (source: Shopify, &ldquo;How Agentic Commerce Works&rdquo;). Confirmed requirements are products eligible for Shopify Catalog and agreement to the Shopify Agentic Storefronts Supplemental Terms of Service. A Starter-plan exclusion, a published-policies requirement, and mandatory guest checkout appeared in earlier guidance but could not be confirmed in Shopify&apos;s current documentation, so we&apos;ve removed them pending verification. Sign up at <a href="https://shopify.com/chatgpt" target="_blank" rel="noopener">shopify.com/chatgpt</a> for early access notification.
       </div>
     </details>
     <details class="faq-item">
@@ -556,7 +557,7 @@ import Base from '../../layouts/Base.astro';
     <details class="faq-item">
       <summary>What are the key limitations of Shopify Agentic Storefronts? <span class="faq-ico"></span></summary>
       <div class="faq-ans">
-        Key limitations as of March 2026: <strong>(1)</strong> US-only &mdash; only available for US stores selling to US customers; <strong>(2)</strong> No Google Analytics or browser pixel tracking in agentic checkout &mdash; only server-side pixels fire; <strong>(3)</strong> Subscriptions and product bundles are not supported; <strong>(4)</strong> Discount codes may not work depending on the AI channel&apos;s checkout interface; <strong>(5)</strong> Some checkout blocks and customisations do not display; <strong>(6)</strong> Local delivery, store pickup, and pickup points are not available as delivery options.
+        Key limitations as of March 2026: <strong>(1)</strong> US availability is channel-specific &mdash; ChatGPT and Microsoft Copilot accept any store location selling to US buyers, Google AI Mode and Gemini require a US-based store; <strong>(2)</strong> No Google Analytics or browser pixel tracking in agentic checkout &mdash; only server-side pixels fire; <strong>(3)</strong> Subscriptions and product bundles are not supported; <strong>(4)</strong> Discount codes may not work depending on the AI channel&apos;s checkout interface; <strong>(5)</strong> Some checkout blocks and customisations do not display; <strong>(6)</strong> Local delivery, store pickup, and pickup points are not available as delivery options.
       </div>
     </details>
     <details class="faq-item">
