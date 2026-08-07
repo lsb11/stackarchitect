@@ -345,24 +345,29 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
       function gtag(){window.dataLayer.push(arguments);}
       window.gtag = gtag;
       gtag('js', new Date());
-      gtag('config', 'G-TE6Z6CW514');
 
-      // AttributionTracker — inlined directly to bypass Astro module bundling.
-      // Captures landing/UTM, fires affiliate_click + kit_click GA4 events,
-      // sets sa_attr cookie, stamps Stripe URLs with client_reference_id.
-      (function() {
+      // send_page_view:false — we fire page_view manually on astro:page-load
+      // so that view-transition navigations are counted correctly.
+      gtag('config', 'G-TE6Z6CW514', {
+        send_page_view: false,
+        // Keeps UTM/referrer attribution intact across the SPA-style router.
+        ignore_referrer: false
+      });
+
+      (function () {
         'use strict';
         try {
           var LANDING_KEY = 'sa_landing';
           var ATTR_COOKIE = 'sa_attr';
+          var BOUND_FLAG  = '__saTrackerBound';
           var NOW = Date.now();
 
-          if (!sessionStorage.getItem(LANDING_KEY)) {
+          // ---------- landing / attribution capture ----------
+          function captureLanding() {
+            if (sessionStorage.getItem(LANDING_KEY)) return;
             var url = new URL(window.location.href);
             var refHost = 'direct';
-            try {
-              if (document.referrer) refHost = new URL(document.referrer).hostname;
-            } catch (e) {}
+            try { if (document.referrer) refHost = new URL(document.referrer).hostname; } catch (e) {}
             sessionStorage.setItem(LANDING_KEY, JSON.stringify({
               path:       url.pathname,
               ref:        refHost,
@@ -374,13 +379,12 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
               ts:         NOW
             }));
           }
-
           function getLanding() {
             try { return JSON.parse(sessionStorage.getItem(LANDING_KEY) || '{}'); }
             catch (e) { return {}; }
           }
           function setAttrCookie(payload) {
-            var expires = new Date(NOW + 30 * 24 * 60 * 60 * 1000).toUTCString();
+            var expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString();
             document.cookie = ATTR_COOKIE + '=' + encodeURIComponent(JSON.stringify(payload)) +
               '; path=/; expires=' + expires + '; SameSite=Lax; Secure';
           }
@@ -388,58 +392,159 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
             return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
           }
 
-          document.addEventListener('click', function(e) {
-            var a = e.target.closest('a');
-            if (!a || !a.href) return;
-            var href = a.getAttribute('href') || '';
-            var absHref = a.href;
+          captureLanding();
 
-            var isAffiliate = href.indexOf('/go/') === 0;
-            var isKitPage   = (href === '/pro/' || href === '/pro/' || href.indexOf('/pro#') === 0);
-            var isStripe    = absHref.indexOf('buy.stripe.com') > -1;
-
-            if (!isAffiliate && !isKitPage && !isStripe) return;
-
+          // ---------- page_view (fires on first load AND every swap) ----------
+          var lastPageViewPath = null;
+          function sendPageView() {
+            var path = window.location.pathname + window.location.search;
+            if (path === lastPageViewPath) return;   // guard double-fire
+            lastPageViewPath = path;
             var landing = getLanding();
-            var sourcePage = window.location.pathname;
-
-            setAttrCookie({
-              s:   sourcePage,
-              d:   isAffiliate ? href : (isStripe ? 'kit-stripe' : 'kit-page'),
-              l:   landing.path || '',
-              ref: landing.ref  || 'direct',
-              src: landing.utm_source || '',
-              cmp: landing.utm_camp   || '',
-              ts:  NOW
+            gtag('event', 'page_view', {
+              page_title:    document.title,
+              page_location: window.location.href,
+              page_path:     window.location.pathname,
+              page_referrer: document.referrer || undefined,
+              landing_path:  landing.path || '',
+              utm_source:    landing.utm_source || '',
+              utm_campaign:  landing.utm_camp || ''
             });
+          }
 
-            if (typeof window.gtag === 'function') {
-              window.gtag('event', isAffiliate ? 'affiliate_click' : 'kit_click', {
+          // Initial load. astro:page-load also fires on first load with
+          // ClientRouter, but we guard with lastPageViewPath so it is safe
+          // either way (and still works if ClientRouter is ever removed).
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', sendPageView, { once: true });
+          } else {
+            sendPageView();
+          }
+          document.addEventListener('astro:page-load', sendPageView);
+
+          // ---------- scroll depth (reset per page) ----------
+          var scrollMarks = {};
+          function resetScroll() { scrollMarks = {}; }
+          document.addEventListener('astro:page-load', resetScroll);
+
+          var scrollTick = false;
+          window.addEventListener('scroll', function () {
+            if (scrollTick) return;
+            scrollTick = true;
+            window.requestAnimationFrame(function () {
+              scrollTick = false;
+              var docH = document.documentElement.scrollHeight - window.innerHeight;
+              if (docH <= 0) return;
+              var pct = Math.round((window.scrollY / docH) * 100);
+              [25, 50, 75, 90].forEach(function (mark) {
+                if (pct >= mark && !scrollMarks[mark]) {
+                  scrollMarks[mark] = true;
+                  gtag('event', 'scroll_depth', {
+                    percent_scrolled: mark,
+                    page_path: window.location.pathname
+                  });
+                }
+              });
+            });
+          }, { passive: true });
+
+          // ---------- click tracking (bound once, survives swaps) ----------
+          if (!window[BOUND_FLAG]) {
+            window[BOUND_FLAG] = true;
+
+            document.addEventListener('click', function (e) {
+              var a = e.target.closest && e.target.closest('a');
+              if (!a || !a.href) return;
+
+              var href    = a.getAttribute('href') || '';
+              var absHref = a.href;
+              var landing = getLanding();
+              var sourcePage = window.location.pathname;
+
+              var isAffiliate = href.indexOf('/go/') === 0;
+              var isKitPage   = (href === '/pro/' || href.indexOf('/pro#') === 0 || href.indexOf('/pro/#') === 0);
+              var isStripe    = absHref.indexOf('buy.stripe.com') > -1;
+
+              // --- outbound (non-affiliate external) — useful for GEO/referral insight
+              if (!isAffiliate && !isKitPage && !isStripe) {
+                var isExternal = false;
+                try { isExternal = new URL(absHref).hostname !== window.location.hostname; } catch (err) {}
+                if (isExternal) {
+                  gtag('event', 'outbound_click', {
+                    link_url: absHref,
+                    link_domain: (function () { try { return new URL(absHref).hostname; } catch (err) { return ''; } })(),
+                    source_page: sourcePage
+                  });
+                }
+                return;
+              }
+
+              // --- revenue-relevant clicks
+              setAttrCookie({
+                s:   sourcePage,
+                d:   isAffiliate ? href : (isStripe ? 'kit-stripe' : 'kit-page'),
+                l:   landing.path || '',
+                ref: landing.ref  || 'direct',
+                src: landing.utm_source || '',
+                cmp: landing.utm_camp   || '',
+                ts:  Date.now()
+              });
+
+              var partner = isAffiliate ? href.replace(/^\/go\//, '').replace(/\/$/, '') : '';
+
+              gtag('event', isAffiliate ? 'affiliate_click' : 'kit_click', {
                 source_page:  sourcePage,
                 destination:  href,
+                partner:      partner,
                 landing_path: landing.path || '',
                 referrer:     landing.ref || 'direct',
                 utm_source:   landing.utm_source || '',
                 utm_campaign: landing.utm_camp || ''
               });
-            }
 
-            if (isStripe) {
-              try {
-                var stripeUrl = new URL(absHref);
-                var payload = b64url(JSON.stringify({
-                  s:   sourcePage.slice(0, 40),
-                  l:   (landing.path || '').slice(0, 40),
-                  ref: (landing.ref  || '').slice(0, 30),
-                  src: (landing.utm_source || '').slice(0, 20),
-                  cmp: (landing.utm_camp   || '').slice(0, 20),
-                  ts:  NOW
-                }));
-                stripeUrl.searchParams.set('client_reference_id', payload);
-                a.href = stripeUrl.toString();
-              } catch (err) {}
-            }
-          }, true);
+              if (isStripe) {
+                try {
+                  var stripeUrl = new URL(absHref);
+                  var payload = b64url(JSON.stringify({
+                    s:   sourcePage.slice(0, 40),
+                    l:   (landing.path || '').slice(0, 40),
+                    ref: (landing.ref  || '').slice(0, 30),
+                    src: (landing.utm_source || '').slice(0, 20),
+                    cmp: (landing.utm_camp   || '').slice(0, 20),
+                    ts:  Date.now()
+                  }));
+                  stripeUrl.searchParams.set('client_reference_id', payload);
+                  a.href = stripeUrl.toString();
+                } catch (err) {}
+              }
+            }, true);
+
+            // ---------- email signup + calculator use ----------
+            document.addEventListener('submit', function (e) {
+              var form = e.target;
+              if (!form || form.tagName !== 'FORM') return;
+              var hasEmail = form.querySelector('input[type="email"]');
+              if (hasEmail) {
+                gtag('event', 'email_signup', {
+                  source_page: window.location.pathname,
+                  form_id: form.id || form.getAttribute('name') || 'unnamed'
+                });
+              }
+            }, true);
+
+            // Fires once per page when a visitor interacts with any calculator
+            // or diagnostic input — your tools are the top-of-funnel for the kit.
+            var toolFired = {};
+            document.addEventListener('change', function (e) {
+              var el = e.target;
+              if (!el || !el.matches) return;
+              if (!el.matches('input[type="number"], input[type="range"], input[type="checkbox"], select')) return;
+              var p = window.location.pathname;
+              if (toolFired[p]) return;
+              toolFired[p] = true;
+              gtag('event', 'tool_use', { tool_path: p, tool_name: document.title });
+            }, true);
+          }
         } catch (err) {}
       })();
     </script>
