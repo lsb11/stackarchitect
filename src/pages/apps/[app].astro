@@ -133,6 +133,16 @@ const schemas = [faqSchema, softwareSchema, articleSchema];
       <p class="text-lg text-gray-300 font-mono">
         Stop paying <span class="text-white">{app.monthlyCost}</span>. Here is how to replace {app.name} with <a href={app.stackarchitectAlternativeLink} class="text-[#34d377] hover:underline">{app.replacement}</a>.
       </p>
+      {app.priceVerifiedDate && (
+        <p class="text-xs text-gray-500 font-mono mt-2">
+          Pricing verified: {app.priceVerifiedDate}
+          {app.priceSourceUrl && (
+            <>
+              {' '}&middot; <a href={app.priceSourceUrl} class="text-[#34d377] hover:underline" rel="noopener" target="_blank">source</a>
+            </>
+          )}
+        </p>
+      )}
     </div>
 
     <!-- The speakable-summary class is targeted by the Speakable Schema for Voice Assistants -->

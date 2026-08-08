@@ -20,9 +20,9 @@
  *     of the current content schema, so this will be NEVER until someone
  *     adds one by hand — see src/layouts/Base.astro and
  *     src/content.config.ts).
- *   - apps.json: always NEVER. Entries are shared data rendered across many
- *     generated /apps/[app]/ pages with no per-page verifiedDate of their
- *     own to check.
+ *   - apps.json: each entry's own `priceVerifiedDate` field, resolved by
+ *     the enclosing entry's `id` as the line scan passes through it. Entries
+ *     with priceVerifiedDate still null report NEVER, same as everywhere else.
  *
  * Output contract:
  *   - stdout is PURE CSV: file,line,claim,verifiedDate — safe to redirect
@@ -137,15 +137,25 @@ for (const f of walk(BLOG_DIR, ['.md', '.mdx'])) {
 // apps.json — narrow scan: monthlyCost / savings fields only, not free text
 {
   const src = readFileSync(APPS_JSON, 'utf8');
+  const appsData = JSON.parse(src);
+  const verifiedRawById = new Map(appsData.map((a) => [a.id, a.priceVerifiedDate]));
+
   const lines = src.split('\n');
+  let currentId = null;
   lines.forEach((line, i) => {
+    const idMatch = line.match(/"id"\s*:\s*"([^"]+)"/);
+    if (idMatch) currentId = idMatch[1];
+
+    const entryVerifiedRaw = currentId ? verifiedRawById.get(currentId) : null;
+    const entryVerifiedDate = toValidDate(entryVerifiedRaw);
+
     const mc = line.match(/"monthlyCost"\s*:\s*"([^"]*)"/);
     if (mc && mc[1]) {
-      rows.push({ file: APPS_JSON, line: i + 1, claim: mc[1], verifiedRaw: null, verifiedDate: null });
+      rows.push({ file: APPS_JSON, line: i + 1, claim: mc[1], verifiedRaw: entryVerifiedDate ? entryVerifiedRaw : null, verifiedDate: entryVerifiedDate });
     }
     const sv = line.match(/"savings"\s*:\s*"([^"]*)"/);
     if (sv && sv[1]) {
-      rows.push({ file: APPS_JSON, line: i + 1, claim: sv[1], verifiedRaw: null, verifiedDate: null });
+      rows.push({ file: APPS_JSON, line: i + 1, claim: sv[1], verifiedRaw: entryVerifiedDate ? entryVerifiedRaw : null, verifiedDate: entryVerifiedDate });
     }
   });
 }
