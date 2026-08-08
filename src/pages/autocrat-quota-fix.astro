@@ -10,7 +10,10 @@ const SITE = "https://stackarchitect.xyz";
 const PAGE = `${SITE}/autocrat-quota-fix/`;
 const OG_IMAGE = "https://stackarchitect.xyz/og/og-autocrat-quota-fix.png";
 const DATE_PUBLISHED = "2025-01-01";
-const DATE_MODIFIED = '2026-05-18';
+const DATE_MODIFIED = '2026-08-08';
+// Visible byline is derived from DATE_MODIFIED — never hardcode it, or the
+// rendered date drifts away from the schema dateModified.
+const UPDATED_LABEL = new Date(DATE_MODIFIED).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
 
 // ── Affiliate links ──────────────────────────────────────────
 const AFF = {
@@ -363,7 +366,9 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--text-3);line-
 .hero h1{font-size:clamp(38px,6.5vw,76px);font-weight:700;color:var(--text);line-height:.96;letter-spacing:-.04em;margin:0 auto 24px;max-width:820px;}
 .hero h1 .green{color:var(--g);}
 .hero h1 .dim{color:var(--text-4);}
-.hero-sub{font-size:clamp(16px,2.2vw,20px);color:var(--text-3);max-width:600px;margin:0 auto 32px;line-height:1.7;}
+.hero-sub{font-size:clamp(16px,2.2vw,20px);color:var(--text-3);max-width:600px;margin:0 auto 32px;line-height:1.7;text-align:left;}
+/* Paragraph-length copy reads left-aligned; the hero stays centred for headings and badges. */
+#answer{max-width:640px;margin:0 auto 24px;line-height:1.7;text-align:left;}
 .hero-sub strong{color:var(--text-2);font-weight:600;}
 .error-pill{display:inline-block;background:var(--red-bg);border:1px solid var(--red-border);border-radius:8px;padding:14px 22px;margin-bottom:36px;max-width:560px;text-align:left;}
 .error-label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--red);margin-bottom:6px;}
@@ -545,12 +550,12 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
 <div class="hero-inner">
 
   <div class="expert-byline" role="doc-subtitle">
-    <span>By <strong>Stack Architect</strong> · <time datetime={DATE_MODIFIED}>Updated April 2026</time> · ~10 min read</span>
+    <span>By <strong>Stack Architect</strong> · <time datetime={DATE_MODIFIED}>Updated {UPDATED_LABEL}</time> · ~10 min read</span>
   </div>
 
   <div class="hero-proof">
     <span class="dot"></span>
-    <span class="hero-proof-txt">Bypasses the 6-min execution ceiling · no document-create cap · free forever</span>
+    <span class="hero-proof-txt">Bypasses the 6-min execution ceiling · no document-create cap · free tier covers most stores</span>
   </div>
 
   <h1 id="hero-headline">
@@ -565,8 +570,8 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
 
 
   <p class="hero-sub">
-    Google Apps Script quota limits are silently killing your Autocrat workflows mid-batch.
-    <strong>Autocrat Quota Fix routes your document generation through Make.com — no 6-minute execution ceiling, no document-create cap, free for most stores.</strong>
+    You do not find out when it happens.
+    <strong>A stalled job creates nothing, logs nothing, and retries nothing</strong> — the gap surfaces days later, when a customer asks where their invoice went.
   </p>
 
   <div class="error-pill" role="alert" aria-label="The exact error this page fixes">

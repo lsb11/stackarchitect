@@ -5,7 +5,10 @@ import AuthorCard from '../components/AuthorCard.astro';
 const SITE     = "https://stackarchitect.xyz";
 const CANON    = `${SITE}/best-free-shopify-apps-2026/`;
 const OG       = `${SITE}/og.png`;
-const UPDATED  = "2026-04-21";
+const UPDATED  = "2026-08-08";
+// Visible dateline is derived from UPDATED — never hardcode it, or the
+// rendered date drifts away from the schema dateModified.
+const UPDATED_LABEL = new Date(UPDATED).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
 
 // ── Affiliate URLs (via /go/ redirects) ──────────────────────
 const AFF = {
@@ -698,7 +701,7 @@ const tocHeadings = [
   <div class="hero-inner">
     <div class="hero-dateline">
       <span class="dot"></span>
-      Updated July 2026 · 40+ free tools · Verified vendor pricing · 10 categories
+      Updated {UPDATED_LABEL} · 40+ free tools · Verified vendor pricing · 10 categories
     </div>
 
     <h1>
@@ -712,7 +715,7 @@ const tocHeadings = [
 
 
     <p class="hero-sub">
-      The definitive list of genuinely free Shopify apps across 10 categories — tracking, email, inventory, automation, reviews, SEO, and more. <strong>Every recommendation cross-referenced against the vendor pricing pages linked throughout this guide.</strong> The free tools here replace $700+/month of paid apps.
+      A zero-dollar plan on the marketplace usually means zero-dollar until you matter. <strong>The tier that covered you at 200 orders quietly stops covering you at 2,000, and the migration you avoided at the outset becomes the one you cannot afford to run mid-season.</strong> Everything below was picked for where its ceiling sits, not where its pricing begins.
     </p>
 
     <div class="stat-strip">
@@ -1088,6 +1091,8 @@ const tocHeadings = [
     /* HERO */
     .hero{padding:72px 24px 60px;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(52,211,119,.07) 0%,transparent 60%)}
     .hero-inner{max-width:900px;margin:0 auto;text-align:center}
+/* Paragraph-length copy reads left-aligned; the hero stays centred for headings, badges and CTAs. */
+#answer{max-width:640px;margin:0 auto 24px;line-height:1.7;text-align:left}
     .hero-dateline{font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:8px}
     .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--g);animation:dotPing 2.2s ease-in-out infinite;flex-shrink:0}
     @keyframes dotPing{0%,100%{box-shadow:0 0 0 0 rgba(52,211,119,.4)}70%{box-shadow:0 0 0 8px rgba(52,211,119,0)}}

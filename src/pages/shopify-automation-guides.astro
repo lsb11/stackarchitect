@@ -9,10 +9,17 @@ const SITE_URL = "https://stackarchitect.xyz";
 const PAGE_PATH = "/shopify-automation-guides/";
 const CANONICAL = `${SITE_URL}${PAGE_PATH}`;
 
+// Single source of truth for the modified date. The schema dateModified, the
+// meta description and the visible hero tag all derive from this — never
+// hardcode any of them, or the three drift apart (they previously read
+// 2026-07-17, "July 2026" and "2026.06.20" respectively).
+const DATE_MODIFIED = "2026-08-08";
+const UPDATED_LABEL = new Date(DATE_MODIFIED).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+
 const seo = {
   title: "Free Shopify Automation & AI Guides 2026 — 40+ Guides, Replace $700+/Month of Apps",
   description:
-    "40+ free Shopify automation guides — fix Meta ROAS, server-side tracking, Google Ads Enhanced Conversions, TikTok CAPI, replace Klaviyo, email marketing, abandoned cart recovery, CRO, AI tools, inventory, P&L. $0 to implement, no code required. Updated July 2026.",
+    `40+ free Shopify automation guides — fix Meta ROAS, server-side tracking, Google Ads Enhanced Conversions, TikTok CAPI, replace Klaviyo, email marketing, abandoned cart recovery, CRO, AI tools, inventory, P&L. $0 to implement, no code required. Updated ${UPDATED_LABEL}.`,
   ogImage: "https://stackarchitect.xyz/og.png",
   author: "Stack Architect",
   keywords:
@@ -182,7 +189,7 @@ const schemaWebPage = {
   "url": CANONICAL,
   "author": { "@type": "Organization", "name": "Stack Architect", "url": SITE_URL },
   "publisher": { "@type": "Organization", "name": "Stack Architect", "url": SITE_URL },
-  "dateModified": "2026-07-17",
+  "dateModified": DATE_MODIFIED,
   "inLanguage": "en-GB",
   "isPartOf": { "@type": "WebSite", "url": SITE_URL, "name": "Stack Architect" }
 };
@@ -298,7 +305,7 @@ const tocHeadings = [
 
   <!-- ══ HERO ══ -->
   <section class="gp-hero">
-    <span class="gp-hero-tag">Guide_Library · Automation + AI · Updated 2026.06.20</span>
+    <span class="gp-hero-tag">Guide_Library · Automation + AI · Updated {UPDATED_LABEL}</span>
     <h1>
       Free Shopify Automation <em>&amp; AI</em> Guides (2026)
       <small>Fix Meta ROAS · Google Ads · Replace $700/month of apps · AI tools, tracking, email, support, inventory — $0, no code</small>
@@ -309,9 +316,9 @@ const tocHeadings = [
   <TableOfContents headings={tocHeadings} />
 
     <p class="gp-hero-sub">
-      40+ step-by-step guides covering every operational layer of a Shopify store.
-      <strong>Server-side tracking, Meta ROAS recovery, Google Ads Enhanced Conversions, TikTok CAPI, AI customer support, Klaviyo replacement, Make.com automation, inventory, P&amp;L, and agentic storefronts.</strong>
-      Every system costs $0 to deploy.
+      Most operators do not overspend by choosing badly. They overspend by never revisiting a decision made in year one.
+      <strong>A subscription added to solve a problem you no longer have renews quietly, every billing cycle, until someone goes looking.</strong>
+      These guides are written for that audit — start anywhere, in any order.
     </p>
     <div class="gp-stats" role="list" aria-label="Key statistics">
       <div class="gp-stat" role="listitem"><span class="gs-val">40+</span><span class="gs-label">Live guides</span></div>
@@ -1268,6 +1275,10 @@ document.getElementById('guides-submit')?.addEventListener('click', function () 
     .gp-hero {
       padding: 88px 24px 72px; text-align: center; position: relative;
       overflow: hidden; border-bottom: 1px solid var(--border);
+    }
+    /* Paragraph-length copy reads left-aligned; the hero stays centred for headings, badges and CTAs. */
+    #answer {
+      max-width: 640px; margin: 0 auto 24px; line-height: 1.7; text-align: left;
     }
     .gp-hero::before {
       content: ''; position: absolute; inset: 0;

@@ -11,7 +11,10 @@ const SITE = "https://stackarchitect.xyz";
 const PAGE = `${SITE}/shopify-profit-loss-automation/`;
 const OG_IMAGE = "https://stackarchitect.xyz/og/og-profit-loss-automation.png";
 const DATE_PUBLISHED = "2026-01-01";
-const DATE_MODIFIED = '2026-05-18';
+const DATE_MODIFIED = '2026-08-08';
+// Visible byline is derived from DATE_MODIFIED — never hardcode it, or the
+// rendered date drifts away from the schema dateModified.
+const UPDATED_LABEL = new Date(DATE_MODIFIED).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
 
 // ── Affiliate links ──────────────────────────────────────────
 const AFF = {
@@ -346,6 +349,8 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--text-3);line-
 }
 /* Hero */
 .hero{padding:96px 24px 88px;text-align:center;position:relative;overflow:hidden;}
+/* Paragraph-length copy reads left-aligned; the hero stays centred for headings, badges and CTAs. */
+#answer{max-width:640px;margin:0 auto 24px;line-height:1.7;text-align:left;}
 .hero-inner{max-width:900px;margin:0 auto;position:relative;}
 .hero-proof{display:inline-flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid var(--border-2);border-radius:100px;padding:9px 22px;margin-bottom:40px;flex-wrap:wrap;justify-content:center;}
 .hero-proof-stars{color:var(--amber);font-size:14px;letter-spacing:2px;}
@@ -537,7 +542,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
 <div class="hero-inner">
 
   <div class="expert-byline" role="doc-subtitle">
-    <span>By <strong>Stack Architect</strong> · <time datetime={DATE_MODIFIED}>Updated July 2026</time> · ~12 min read</span>
+    <span>By <strong>Stack Architect</strong> · <time datetime={DATE_MODIFIED}>Updated {UPDATED_LABEL}</time> · ~12 min read</span>
   </div>
 
   <div class="hero-proof">
@@ -557,8 +562,8 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
 
 
   <p class="hero-sub">
-    Every Shopify order automatically writes revenue, fees, and margin data to a live Google Sheets P&amp;L.
-    <strong>Make.com webhooks replace manual exports — your profit and loss updates in real time, costs nothing, requires no code.</strong>
+    Most stores find out they sold at a loss weeks after the money left.
+    <strong>By the time the spreadsheet is reconciled, the discount that ate the margin has already run for a full campaign</strong> — and the product you thought was your bestseller turns out to have been your most expensive mistake.
   </p>
 
   <div class="pain-row" role="list">

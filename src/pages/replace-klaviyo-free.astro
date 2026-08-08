@@ -31,6 +31,12 @@ const SITE      = "https://stackarchitect.xyz";
 const CANONICAL = `${SITE}/replace-klaviyo-free/`;
 const OG_IMAGE  = "https://stackarchitect.xyz/og/og-replace-klaviyo-free.png";
 
+// Single source of truth for the modified date. Both the schema dateModified
+// and the visible dateline derive from this — never hardcode either, or the
+// rendered date drifts away from what crawlers are told.
+const DATE_MODIFIED = "2026-08-08";
+const UPDATED_LABEL = new Date(DATE_MODIFIED).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+
 // ─── Affiliate / external URLs ────────────────────────────────────────────────
 const SYSTEME_URL     = "/go/systeme";
 const MAKE_URL        = "/go/make";
@@ -172,7 +178,7 @@ const schemaGraph = {
       "url": CANONICAL,
       "name": "Replace Klaviyo Free in 2026 — Best Free Klaviyo Alternative for Shopify",
       "description": "Replace Klaviyo with Systeme.io free — 2,000 contacts, unlimited email sends, full automations, CRM, and sales funnels at $0/month. Migrate in 30 minutes.",
-      "dateModified": "2026-07-17",
+      "dateModified": DATE_MODIFIED,
       "breadcrumb": {
         "@type": "BreadcrumbList",
         "itemListElement": [
@@ -228,7 +234,7 @@ const schemaGraph = {
       "author":    { "@type": "Organization", "name": "Stack Architect", "url": SITE },
       "publisher": { "@type": "Organization", "name": "Stack Architect", "url": SITE },
       "datePublished": "2025-01-01",
-      "dateModified": "2026-07-17",
+      "dateModified": DATE_MODIFIED,
       "inLanguage": "en-GB",
       "url": CANONICAL,
       "image": OG_IMAGE
@@ -332,7 +338,7 @@ const tocHeadings = [
   <div class="hero-inner">
 
     <div style="font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;opacity:.6;">
-      Updated April 2026 · Free forever · No code required
+      Updated {UPDATED_LABEL} · Free plan covers 2,000 contacts · No code required
     </div>
 
     <div class="hero-proof">
@@ -352,8 +358,8 @@ const tocHeadings = [
 
 
     <p class="hero-sub">
-      Klaviyo just changed how it bills — you now pay for every contact whether you email them or not.
-      <strong>Systeme.io replaces Klaviyo entirely — unlimited emails, automations, funnels, and CRM — at $0/month forever.</strong>
+      The bill grows with your audience, not with what your audience earns you.
+      <strong>Every dormant subscriber, every duplicate, every address that has not opened anything in two years is charged at the same rate as your best buyer.</strong> Most operators discover this only when a seasonal signup spike lands on the invoice.
     </p>
 
     <!-- ── CALCULATOR ── -->
@@ -997,6 +1003,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text-3);line-heigh
 .dropdown-desc{display:block;font-family:var(--sans);font-size:9px;font-weight:400;color:#5d6862;letter-spacing:0;text-transform:none;margin-top:2px;line-height:1.4;}
 @media(min-width:851px){.dropdown:hover .dropdown-menu{display:flex;}}
 .hero{padding:96px 24px 88px;text-align:center;position:relative;overflow:hidden;}
+/* Paragraph-length copy reads left-aligned; the hero stays centred for headings, badges and CTAs. */
+#answer{max-width:640px;margin:0 auto 24px;line-height:1.7;text-align:left;}
 .hero-inner{max-width:900px;margin:0 auto;position:relative;}
 .hero-proof{display:inline-flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid var(--border-2);border-radius:100px;padding:9px 22px;margin-bottom:40px;flex-wrap:wrap;justify-content:center;}
 .hero-proof-stars{color:var(--amber);font-size:14px;letter-spacing:2px;}

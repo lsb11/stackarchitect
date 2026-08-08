@@ -29,6 +29,12 @@ const SITE      = "https://stackarchitect.xyz";
 const CANONICAL = `${SITE}/tiktok-events-api-shopify/`;
 const OG_IMAGE  = "https://stackarchitect.xyz/og/og-tiktok-events-api.png";
 
+// Single source of truth for the modified date. Both the schema dateModified
+// and the visible dateline derive from this — never hardcode either, or the
+// rendered date drifts away from what crawlers are told.
+const DATE_MODIFIED = "2026-08-08";
+const UPDATED_LABEL = new Date(DATE_MODIFIED).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+
 // ─── Affiliate / external URLs ────────────────────────────────────────────────
 const MAKE_URL      = "/go/make";
 const SYSTEME_URL   = "/go/systeme";
@@ -163,7 +169,7 @@ const schemaGraph = {
       "url": CANONICAL,
       "name": "TikTok Events API for Shopify — Free Server-Side Setup 2026",
       "description": "Free TikTok server-side tracking for Shopify. Recover 20–40% of lost purchase events by sending CompletePayment events directly to TikTok Events API via Make.com, bypassing iOS restrictions and ad blockers.",
-      "dateModified": "2026-07-17",
+      "dateModified": DATE_MODIFIED,
       "breadcrumb": {
         "@type": "BreadcrumbList",
         "itemListElement": [
@@ -227,7 +233,7 @@ const schemaGraph = {
       "author":    { "@type": "Organization", "name": "Stack Architect", "url": SITE },
       "publisher": { "@type": "Organization", "name": "Stack Architect", "url": SITE },
       "datePublished": "2025-01-01",
-      "dateModified": "2026-07-17",
+      "dateModified": DATE_MODIFIED,
       "inLanguage": "en-GB",
       "url": CANONICAL,
       "image": [OG_IMAGE, "https://stackarchitect.xyz/diagrams/tiktok-events-api-shopify-flow-2026.svg"]
@@ -341,7 +347,7 @@ const tocHeadings = [
   <div class="hero-inner">
 
     <div style="font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;opacity:.6;">
-      Updated April 2026 · Free TikTok server-side tracking · ~10 min read
+      Updated {UPDATED_LABEL} · Free TikTok server-side tracking · ~10 min read
     </div>
 
     <div class="hero-proof">
@@ -361,8 +367,8 @@ const tocHeadings = [
 
 
     <p class="hero-sub">
-      iOS restrictions and ad blockers silently erase TikTok purchase events before they reach your ad account.
-      <strong>TikTok Events API sends CompletePayment events server-side via Make.com — free, no code, 6 minutes.</strong>
+      The damage is not the missing rows in your dashboard — it is what the algorithm does with them.
+      <strong>Every sale it never learns about is a lookalike audience built on partial data, and budget pushed toward the wrong creative.</strong> You are not just reporting badly; you are optimising against yourself.
     </p>
 
     <div class="loss-row" aria-label="What you are losing without TikTok server-side tracking">
@@ -980,6 +986,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text-3);line-heigh
 
 /* ── Hero ── */
 .hero{padding:96px 24px 88px;text-align:center;position:relative;overflow:hidden;}
+/* Paragraph-length copy reads left-aligned; the hero stays centred for headings, badges and CTAs. */
+#answer{max-width:640px;margin:0 auto 24px;line-height:1.7;text-align:left;}
 .hero-inner{max-width:900px;margin:0 auto;position:relative;}
 .hero-proof{display:inline-flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid var(--border-2);border-radius:100px;padding:9px 22px;margin-bottom:40px;flex-wrap:wrap;justify-content:center;}
 .hero-proof-stars{color:var(--amber);font-size:14px;letter-spacing:2px;}
