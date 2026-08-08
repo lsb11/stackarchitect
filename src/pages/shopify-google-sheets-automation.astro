@@ -1,125 +1,879 @@
 ---
 import Base from '../layouts/Base.astro';
 import AuthorCard from '../components/AuthorCard.astro';
-
-const title = "Shopify to Google Sheets Automation — Export Orders & Sync Inventory Free 2026 | Stack Architect";
-const description = "Export Shopify orders to Google Sheets free using Google Apps Script and Make.com. Sync inventory, automate P&L reports, and eliminate spreadsheet app fees.";
-const canonical = "https://stackarchitect.xyz/shopify-google-sheets-automation/";
-const dateModified = "2026-07-23";
 import TableOfContents from '../components/TableOfContents.astro';
+// src/pages/shopify-google-sheets-automation.astro
+// Stack Architect — Shopify to Google Sheets Automation
+
+const SITE = "https://stackarchitect.xyz";
+const PAGE = `${SITE}/shopify-google-sheets-automation/`;
+const DATE_PUBLISHED = "2026-07-23";
+const DATE_MODIFIED = "2026-08-08";
+const DATE_VERIFIED = "2026-08-08";
+
+const AFF = {
+  make: "/go/make",
+  workspace: "/go/workspace",
+};
+
+const QUOTAS_GUIDE = "/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/";
+
+// ── Structured data ──────────────────────────────────────────
+const schema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": `${PAGE}#webpage`,
+      "url": PAGE,
+      "name": "Shopify to Google Sheets Automation Free (2026) — Orders, Inventory & Sync",
+      "description": "Free Shopify to Google Sheets automation via Make.com and Google Apps Script. Export orders, sync inventory levels, and choose real-time vs scheduled sync — with the exact scenario structure and where Apps Script and Sheets API quotas actually break.",
+      "datePublished": DATE_PUBLISHED,
+      "dateModified": DATE_MODIFIED,
+      "inLanguage": "en-GB",
+      "isPartOf": { "@id": `${SITE}/#website` },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": `${SITE}/` },
+          { "@type": "ListItem", "position": 2, "name": "Shopify to Google Sheets Automation", "item": PAGE }
+        ]
+      },
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": ["#hero-headline", "#export-h", "#faq-h"]
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE}/#website`,
+      "url": SITE,
+      "name": "Stack Architect",
+      "description": "Free automation tools for Shopify operators — $0 stack replacing paid apps.",
+      "publisher": { "@id": `${SITE}/#org` },
+    },
+    {
+      "@type": "Organization",
+      "@id": `${SITE}/#org`,
+      "name": "Stack Architect",
+      "url": SITE,
+      "logo": { "@type": "ImageObject", "url": `${SITE}/favicon.svg` },
+      "sameAs": [SITE],
+      "knowsAbout": [
+        "Shopify automation", "Google Sheets automation", "Make.com Shopify webhooks",
+        "Google Apps Script quotas", "Google Sheets API limits", "Shopify inventory sync",
+        "Shopify order export"
+      ],
+      "contactPoint": { "@type": "ContactPoint", "email": "support@stackarchitect.xyz", "contactType": "customer support" }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": `${PAGE}#software`,
+      "name": "Shopify to Google Sheets Sync",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "url": PAGE,
+      "description": "Free Shopify order and inventory sync to Google Sheets via Make.com webhooks or Google Apps Script — no paid CSV export app required.",
+      "featureList": [
+        "Real-time order export via Shopify webhook",
+        "Scheduled/batch sync for reconciliation",
+        "Inventory level sync per SKU and location",
+        "Make.com scenario with Iterator for multi-line-item orders",
+        "Google Apps Script alternative with zero monthly cost",
+        "Free via Make.com (1,000 credits/month)",
+        "No code required",
+        "Your data in your own Google account"
+      ],
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
+      "author": { "@id": `${SITE}/#org` },
+      "isRelatedTo": [
+        { "@type": "SoftwareApplication", "name": "Make.com", "url": "https://www.make.com" },
+        { "@type": "SoftwareApplication", "name": "Google Sheets", "url": "https://sheets.google.com" },
+        { "@type": "SoftwareApplication", "name": "Google Apps Script", "url": "https://script.google.com" },
+        { "@type": "SoftwareApplication", "name": "Shopify", "url": "https://www.shopify.com" }
+      ]
+    },
+    {
+      "@type": ["Article", "TechArticle"],
+      "@id": `${PAGE}#article`,
+      "headline": "Shopify to Google Sheets Automation Free (2026) — Orders, Inventory & Sync Strategy",
+      "description": "How to export Shopify orders and sync inventory to Google Sheets for free using Make.com and Google Apps Script — including when to use real-time webhooks vs scheduled sync, the actual Make.com scenario structure, where Apps Script quotas and Google Sheets API limits break, and when to outgrow Sheets entirely.",
+      "author": { "@id": `${SITE}/#org` },
+      "publisher": { "@id": `${SITE}/#org` },
+      "datePublished": DATE_PUBLISHED,
+      "dateModified": DATE_MODIFIED,
+      "inLanguage": "en-GB",
+      "url": PAGE,
+      "wordCount": 3400,
+      "timeRequired": "PT11M",
+      "mainEntityOfPage": { "@id": `${PAGE}#webpage` },
+      "about": [
+        { "@type": "Thing", "name": "Google Sheets automation", "sameAs": "https://workspace.google.com/products/sheets/" },
+        { "@type": "Thing", "name": "Make.com automation platform", "sameAs": "https://www.make.com" },
+        { "@type": "Thing", "name": "Google Apps Script", "sameAs": "https://developers.google.com/apps-script" },
+        { "@type": "Thing", "name": "Google Sheets API", "sameAs": "https://developers.google.com/workspace/sheets/api" }
+      ],
+      "mentions": [
+        { "@type": "SoftwareApplication", "name": "Make.com" },
+        { "@type": "SoftwareApplication", "name": "Google Sheets" },
+        { "@type": "SoftwareApplication", "name": "Google Apps Script" },
+        { "@type": "SoftwareApplication", "name": "Shopify" }
+      ],
+      "educationalLevel": "beginner",
+      "proficiencyLevel": "Beginner"
+    },
+    {
+      "@type": "HowTo",
+      "@id": `${PAGE}#howto`,
+      "name": "How to sync Shopify orders and inventory to Google Sheets for free",
+      "description": "Build a free Shopify-to-Google-Sheets sync covering orders and inventory using Make.com webhooks. No code, deploys in about 15 minutes.",
+      "totalTime": "PT15M",
+      "estimatedCost": { "@type": "MonetaryAmount", "currency": "USD", "value": "0" },
+      "tool": [
+        { "@type": "HowToTool", "name": "Make.com (free tier)" },
+        { "@type": "HowToTool", "name": "Google Sheets" },
+        { "@type": "HowToTool", "name": "Shopify Webhooks" }
+      ],
+      "step": [
+        { "@type": "HowToStep", "position": 1, "name": "Create your Google Sheet",
+          "text": "Create a Google Sheet with two tabs: Orders and Inventory. In Orders add columns: Order_ID, Date, Customer_Email, SKU, Product_Title, Quantity, Line_Price, Order_Total, Fulfilment_Status. In Inventory add: SKU, Product_Title, Location, Available_Qty, Last_Updated." },
+        { "@type": "HowToStep", "position": 2, "name": "Activate Make.com free",
+          "text": "Sign up for Make.com free tier — 1,000 credits/month at no cost. Create a new scenario with a Webhooks module as the trigger.", "url": AFF.make },
+        { "@type": "HowToStep", "position": 3, "name": "Add the Shopify order payment webhook",
+          "text": "In Shopify Admin go to Settings → Notifications → Webhooks. Create a webhook for Order payment pointing at your Make.com webhook URL, format JSON." },
+        { "@type": "HowToStep", "position": 4, "name": "Add an Iterator and write order rows",
+          "text": "Add an Iterator module on order.line_items so multi-item orders write one row per SKU, not one row per order. Add a Google Sheets — Add a Row module after it, mapped to your Orders tab." },
+        { "@type": "HowToStep", "position": 5, "name": "Add the inventory levels webhook",
+          "text": "Create a second Shopify webhook for Inventory levels update. Build a second Make.com scenario that uses Google Sheets — Update a Row (Search Column) keyed on SKU + Location, so each SKU has one live row instead of an endless append log." },
+        { "@type": "HowToStep", "position": 6, "name": "Test and verify both scenarios",
+          "text": "Place a test order with two different products and confirm two rows land in Orders. Adjust stock on one variant in Shopify Admin and confirm the matching Inventory row updates in place rather than duplicating." }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${PAGE}#faq`,
+      "mainEntity": [
+        { "@type": "Question", "name": "Can I export Shopify orders to Google Sheets for free?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. A Shopify Order payment webhook connected to a Make.com scenario writes every order to a Google Sheet automatically, free on Make.com's tier covering 1,000 credits/month. Google Apps Script is a second free route that runs entirely inside the Sheet itself with no external tool, at the cost of the quota limits Apps Script imposes at higher volume." } },
+        { "@type": "Question", "name": "Should I use real-time webhooks or a scheduled sync for Shopify to Sheets?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Use real-time webhooks for anything where staleness has a cost — inventory levels, live P&L, fulfilment dashboards. Use a scheduled pull for bulk backfills, low-urgency reporting, and as a reconciliation safety net, since Shopify webhook delivery is not 100% guaranteed and a periodic catch-up pass catches anything a webhook missed. Most reliable setups run both: webhooks for speed, a daily scheduled reconciliation for correctness." } },
+        { "@type": "Question", "name": "How do I sync Shopify inventory levels to Google Sheets?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Subscribe to the Shopify Inventory levels update webhook, which fires per SKU per location — a single multi-item order can trigger several separate inventory events, not one. The payload contains inventory_item_id and location_id, not the product title, so you need a mapping step (via the Shopify API or a lookup tab) to resolve those IDs to a readable SKU. Write with an update-in-place module keyed on SKU + location rather than appending, or the sheet fills with duplicate rows instead of current stock levels." } },
+        { "@type": "Question", "name": "Why does my Google Apps Script Shopify sync stop working at volume?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Apps Script cap depends on which sync method you use. A webhook-triggered doPost() web app hits the 30-concurrent-execution ceiling and Sheets service call rate limits first, surfacing as 'Service invoked too many times' during order bursts. A time-driven scheduled pull instead runs into the 90-minute daily trigger runtime cap on consumer accounts once order volume grows. Neither limit can be raised by upgrading — see the full breakdown in the Google Apps Script quotas guide." } },
+        { "@type": "Question", "name": "Does Make.com also have rate limits when writing to Google Sheets?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Make.com writes through the Google Sheets API, which enforces its own quota independent of Apps Script: 300 read requests and 300 write requests per minute per project, with a 60-per-minute cap per user, and no daily limit, per Google's published Sheets API usage limits. A single high-volume order burst is unlikely to hit this on a typical store, but a scenario writing one row per line item on large multi-item orders, or an Iterator misconfigured to fire far more calls than expected, can." } },
+        { "@type": "Question", "name": "What is the actual Make.com scenario structure for syncing Shopify to Sheets?",
+          "acceptedAnswer": { "@type": "Answer", "text": "One scenario per webhook topic. Orders: Webhooks trigger → Iterator over line_items → Google Sheets Add a Row per item, mapped to an Orders tab. Inventory: a separate Webhooks trigger on Inventory levels update → Google Sheets Update a Row (Search Column) keyed on SKU and location, so stock stays a single current row instead of an endless log. Both scenarios share the same Google Sheets connection but write to different tabs with different write patterns — append for orders, update-in-place for inventory." } },
+        { "@type": "Question", "name": "How many Shopify orders can Google Sheets handle before I need a database?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Google Sheets caps a spreadsheet at 10 million cells total across all tabs (a beta doubling this to 20 million was announced in April 2026). For a 9-column Orders tab that's roughly 1.1 million rows before hitting the ceiling, but formula recalculation across SUMIF and VLOOKUP ranges slows well before that — most operators notice lag in the low hundreds of thousands of rows. At that point BigQuery, a hosted Postgres/Airtable base, or a purpose-built reporting layer replaces Sheets as the system of record, with Sheets kept only as a lightweight view on top." } },
+        { "@type": "Question", "name": "Do I need Google Workspace for Shopify to Google Sheets automation?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. Free Gmail accounts work for most stores. Google Workspace raises the daily Apps Script trigger-runtime ceiling from 90 minutes to 6 hours and UrlFetch calls from 20,000 to 100,000 per day — relevant only if you're running the Apps Script route at high volume, not the Google Sheets API limits Make.com uses, which are the same regardless of account type." } }
+      ]
+    }
+  ]
+});
 
 const tocHeadings = [
-  {
-    "id": "connecting-shopify-to-google-sheets",
-    "text": "Connecting Shopify to Google Sheets"
-  },
-  {
-    "id": "method-1-make-com-1-click-webhook-route-0-mo",
-    "text": "Method 1: Make.com 1-Click Webhook Route ($0/mo)"
-  },
-  {
-    "id": "method-2-google-apps-script-zero-operational-limits",
-    "text": "Method 2: Google Apps Script (Zero Operational Limits)"
-  },
-  {
-    "id": "related-app-alternatives",
-    "text": "Related App Alternatives"
-  }
+  { "id": "export-h", "text": "Exporting Shopify orders to Google Sheets" },
+  { "id": "sync-h", "text": "Real-time vs scheduled sync — and when each is appropriate" },
+  { "id": "inventory-h", "text": "Syncing inventory levels to Sheets" },
+  { "id": "quotas-h", "text": "Why Apps Script hits quota walls at volume" },
+  { "id": "sheets-limits-h", "text": "Google Sheets API limits you'll hit even with Make.com" },
+  { "id": "make-h", "text": "The Make.com approach — the actual scenario structure" },
+  { "id": "structure-h", "text": "The Google Sheet structure to build" },
+  { "id": "setup-h", "text": "Deploy it — step by step" },
+  { "id": "outgrown-h", "text": "When you've outgrown Sheets entirely" },
+  { "id": "faq-h", "text": "Frequently asked questions" },
+  { "id": "related-h", "text": "Related guides" }
 ];
-
 ---
-<Base title={title} description="Export Shopify orders to Google Sheets free using Google Apps Script and Make.com. Sync inventory, automate P&L reports, and eliminate spreadsheet app fees.">
+<Base title="Shopify to Google Sheets — Orders &amp; Inventory Free 2026" description="Export Shopify orders and sync inventory to Google Sheets free via Make.com or Apps Script. Real-time vs scheduled sync, the actual scenario structure, and where quotas break." verifiedDate={DATE_VERIFIED}>
+<Fragment slot="head">
+<script type="application/ld+json" set:html={schema} />
 
-<nav aria-label="Breadcrumb" style="background:#0f1311;border-bottom:1px solid #222825;padding:10px 24px;">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" />
+  <link rel="dns-prefetch" href="https://www.make.com" />
+
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{overflow-x:hidden;}
+::selection{background:rgba(52,211,119,.2);color:#f2f5f3;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:#0c0f0d;}
+::-webkit-scrollbar-thumb{background:rgba(52,211,119,.3);border-radius:2px;}
+:root{
+  --g:#34d377;--g-dim:#15803d;--g-bg:rgba(52,211,119,.08);--g-border:rgba(52,211,119,.2);
+  --bg:#0c0f0d;--bg-2:#0f1311;--bg-3:#121614;--bg-4:#171c19;
+  --border:#222825;--border-2:#2f3733;
+  --text:#f2f5f3;--text-2:#b6c0ba;--text-3:#93a09a;--text-4:#6b7671;--text-inv:#0c0f0d;
+  --red:#f08a8a;--red-bg:rgba(240,138,138,.07);--red-border:rgba(240,138,138,.18);
+  --sky:#8ccfe8;--sky-bg:rgba(140,207,232,.07);--sky-border:rgba(140,207,232,.18);
+  --vio:#c3b8ef;--vio-bg:rgba(195,184,239,.07);--vio-border:rgba(195,184,239,.18);
+  --amber:#f5b64d;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+}
+html,body{font-family:var(--sans);background:var(--bg);color:var(--text-3);line-height:1.75;-webkit-font-smoothing:antialiased;}
+.tag{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 12px;border-radius:3px;background:var(--g-bg);border:1px solid var(--g-border);color:var(--g);}
+.tag-dim{background:rgba(255,255,255,.03);border-color:var(--border-2);color:var(--text-4);}
+.tag-sky{background:var(--sky-bg);border-color:var(--sky-border);color:var(--sky);}
+.tag-vio{background:var(--vio-bg);border-color:var(--vio-border);color:var(--vio);}
+.tag-amber{background:rgba(245,182,77,.08);border-color:rgba(245,182,77,.2);color:var(--amber);}
+.dot{display:inline-block;width:7px;height:7px;min-width:7px;border-radius:50%;background:var(--g);animation:dotPing 2.2s cubic-bezier(.4,0,.6,1) infinite;}
+@keyframes dotPing{0%{box-shadow:0 0 0 0 rgba(52,211,119,.5);}70%{box-shadow:0 0 0 8px rgba(52,211,119,0);}100%{box-shadow:0 0 0 0 rgba(52,211,119,0);}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--sans);font-size:16px;font-weight:700;text-decoration:none;letter-spacing:-.01em;padding:16px 32px;border-radius:6px;border:none;cursor:pointer;white-space:nowrap;background:var(--g);color:var(--text-inv);transition:background .2s,transform .15s,box-shadow .2s;min-height:52px;}
+.btn:hover{background:#45e28a;transform:translateY(-2px);box-shadow:0 8px 28px rgba(52,211,119,.3);}
+.btn.pulse{animation:btnGlow 2.8s ease-in-out infinite;}
+@keyframes btnGlow{0%,100%{box-shadow:0 0 16px rgba(52,211,119,.1);}50%{box-shadow:0 0 28px rgba(52,211,119,.28);}}
+.btn.pulse:hover{animation:none;}
+.btn-sm{font-size:14px;padding:12px 22px;min-height:44px;}
+.btn-outline{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--sans);font-size:15px;font-weight:600;text-decoration:none;letter-spacing:-.01em;padding:15px 28px;border-radius:6px;border:1.5px solid var(--border-2);cursor:pointer;white-space:nowrap;background:transparent;color:var(--text-2);transition:border-color .2s,color .2s,background .2s;min-height:52px;}
+.btn-outline:hover{border-color:var(--g);color:var(--g);background:var(--g-bg);}
+.section{padding:100px 24px;}.section-alt{padding:100px 24px;background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.inner{max-width:1000px;margin:0 auto;}.inner-sm{max-width:720px;margin:0 auto;}.inner-md{max-width:860px;margin:0 auto;}
+.sec-head{text-align:center;margin-bottom:56px;}
+.sec-head h2{font-family:var(--sans);font-weight:700;font-size:clamp(24px,4vw,38px);letter-spacing:-.03em;color:var(--text);line-height:1.1;margin-bottom:10px;}
+.sec-head p{font-size:15px;color:var(--text-3);max-width:520px;margin:14px auto 0;line-height:1.75;}
+.bg-grid{background-color:var(--bg);background-image:radial-gradient(ellipse 80% 40% at 50% 0%,rgba(52,211,119,.06) 0%,transparent 60%),radial-gradient(circle,var(--border) 1px,transparent 1px);background-size:100% 100%,44px 44px;}
+.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);background:var(--border);gap:1px;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.stat-cell{background:var(--bg);padding:20px 12px;text-align:center;}
+.stat-v{font-family:var(--mono);font-size:20px;font-weight:700;color:var(--g);line-height:1;}
+.stat-l{font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.1em;margin-top:6px;font-family:var(--mono);}
+.divider{height:1px;background:var(--border);margin:0;}
+.hero{padding:96px 24px 80px;text-align:center;position:relative;overflow:hidden;}
+.hero-inner{max-width:900px;margin:0 auto;position:relative;}
+.hero-proof{display:inline-flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid var(--border-2);border-radius:100px;padding:9px 22px;margin-bottom:36px;flex-wrap:wrap;justify-content:center;}
+.hero-proof-txt{font-family:var(--mono);font-size:11px;color:var(--text-4);letter-spacing:.08em;}
+.hero h1{font-size:clamp(34px,6vw,64px);font-weight:700;color:var(--text);line-height:1.02;letter-spacing:-.04em;margin:0 auto 22px;max-width:820px;}
+.hero h1 .green{color:var(--g);}
+.hero h1 .dim{color:var(--text-4);}
+.hero-sub{font-size:clamp(15px,2vw,18px);color:var(--text-3);max-width:600px;margin:0 auto 30px;line-height:1.7;}
+.hero-sub strong{color:var(--text-2);font-weight:600;}
+.trust-row{display:flex;flex-wrap:wrap;justify-content:center;gap:22px;margin-bottom:36px;}
+.trust-item{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--text-3);}
+.hero-ctas{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;margin-bottom:14px;}
+.hero-cta-note{font-size:13px;color:var(--text-4);line-height:1.6;}
+.hero-cta-note a{color:rgba(52,211,119,.7);text-decoration:underline;}
+.expert-byline{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:8px;padding:12px 18px;max-width:fit-content;margin:0 auto 20px;}
+.expert-byline span{font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.08em;}
+.expert-byline strong{color:var(--text-3);}
+.sheet-preview{background:#0a0e1a;border:1px solid var(--border-2);border-radius:12px;overflow:hidden;margin:20px 0;}
+.sheet-header{background:rgba(255,255,255,.03);border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;gap:10px;}
+.sheet-tab{font-family:var(--mono);font-size:11px;padding:5px 14px;border-radius:4px 4px 0 0;cursor:default;}
+.sheet-tab.active{background:var(--bg-3);color:var(--g);border:1px solid var(--border-2);border-bottom:1px solid var(--bg-3);margin-bottom:-1px;}
+.sheet-tab.inactive{color:var(--text-4);}
+.sheet-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12px;}
+.sheet-table th{background:rgba(255,255,255,.04);color:var(--text-4);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);border-right:1px solid var(--border);font-weight:700;letter-spacing:.08em;font-size:10px;text-transform:uppercase;white-space:nowrap;}
+.sheet-table td{padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.03);border-right:1px solid rgba(255,255,255,.02);color:var(--text-3);white-space:nowrap;}
+.sheet-table td.green{color:var(--g);}
+.sheet-table td.formula{color:var(--sky);font-style:italic;}
+.sheet-table td.bold{color:var(--text);font-weight:700;}
+.sheet-table tr:last-child td{border-bottom:none;}
+.flow-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:32px;}
+.flow-step{background:var(--bg);padding:30px 24px;}
+.flow-num{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.18em;color:var(--g);margin-bottom:14px;text-transform:uppercase;}
+.flow-title{font-weight:700;font-size:15px;color:var(--text);margin-bottom:8px;line-height:1.3;}
+.flow-desc{font-size:13px;color:var(--text-3);line-height:1.65;}
+.flow-tool{font-family:var(--mono);font-size:10px;color:var(--text-4);background:rgba(255,255,255,.03);border:1px solid var(--border);padding:3px 8px;border-radius:3px;display:inline-block;margin-top:10px;}
+@media(max-width:700px){.flow-grid-3{grid-template-columns:1fr;}}
+.step-cards{display:flex;flex-direction:column;gap:12px;margin:20px 0;}
+.step-card{background:var(--bg-3);border:1px solid var(--border);border-radius:10px;padding:20px 20px 20px 24px;display:flex;gap:16px;align-items:flex-start;}
+.step-num{width:28px;height:28px;min-width:28px;border-radius:50%;background:rgba(52,211,119,.1);border:1px solid rgba(52,211,119,.25);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--g);flex-shrink:0;}
+.step-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;line-height:1.3;}
+.step-desc{font-size:13px;color:var(--text-3);line-height:1.65;}
+.step-tool{font-family:var(--mono);font-size:10px;color:var(--text-4);background:rgba(255,255,255,.03);border:1px solid var(--border);padding:3px 8px;border-radius:3px;display:inline-block;margin-top:7px;}
+.callout{background:var(--bg-3);border:1px solid var(--border-2);border-radius:10px;padding:22px 22px 22px 26px;margin:24px 0;border-left:3px solid var(--g);text-align:left;}
+.callout.warn{border-left-color:var(--amber);background:rgba(245,182,77,.04);}
+.callout.info{border-left-color:var(--sky);background:rgba(140,207,232,.04);}
+.callout.vio{border-left-color:var(--vio);background:rgba(195,184,239,.04);}
+.callout-label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--g);margin-bottom:6px;}
+.callout.warn .callout-label{color:var(--amber);}
+.callout.info .callout-label{color:var(--sky);}
+.callout.vio .callout-label{color:var(--vio);}
+.callout p{font-size:14px;color:var(--text-2);line-height:1.7;margin:0;}
+.callout p strong{color:var(--text);}
+.callout p a{color:var(--g);text-decoration:underline;}
+.stat-callout{background:rgba(52,211,119,.06);border:1.5px solid rgba(52,211,119,.2);border-radius:10px;padding:24px;margin:24px 0;display:flex;align-items:flex-start;gap:20px;text-align:left;}
+.sc-val{font-family:var(--mono);font-size:32px;font-weight:700;color:var(--g);line-height:1;flex-shrink:0;}
+.sc-body p{font-size:14px;color:var(--text-3);line-height:1.65;margin:0;}
+.sc-body p strong{color:var(--text-2);}
+@media(max-width:500px){.stat-callout{flex-direction:column;gap:10px;}}
+.section-cta{background:rgba(52,211,119,.06);border:1.5px solid rgba(52,211,119,.2);border-radius:10px;padding:24px 28px;margin:32px 0;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+.section-cta-left h4{font-weight:700;font-size:16px;color:var(--text);margin-bottom:4px;line-height:1.3;}
+.section-cta-left p{font-size:13px;color:var(--text-3);margin:0;}
+@media(max-width:600px){.section-cta{flex-direction:column;}.section-cta .btn,.section-cta .btn-sm{width:100%;justify-content:center;}}
+.body-text{max-width:780px;margin:0 auto;}
+.body-text p{font-size:15px;color:var(--text-3);line-height:1.8;margin-bottom:18px;text-align:left;}
+.body-text p strong{color:var(--text-2);font-weight:600;}
+.body-text p a{color:var(--g);text-decoration:underline;}
+.body-text h3{font-weight:700;font-size:clamp(17px,2.4vw,20px);color:var(--text-2);letter-spacing:-.02em;line-height:1.2;margin:30px 0 12px;text-align:left;}
+.body-text ul{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
+.body-text li{display:flex;align-items:flex-start;gap:10px;font-size:15px;color:var(--text-3);line-height:1.65;text-align:left;}
+.body-text li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--g);flex-shrink:0;margin-top:9px;}
+.body-text li strong{color:var(--text-2);font-weight:600;}
+.crosslink-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px;}
+.crosslink-card{background:var(--bg-3);border:1.5px solid var(--border);border-radius:12px;padding:26px;text-decoration:none;display:flex;flex-direction:column;transition:border-color .2s,transform .2s;}
+.crosslink-card:hover{border-color:var(--g-border);transform:translateY(-4px);}
+.crosslink-card.sky:hover{border-color:var(--sky-border);}
+.crosslink-card.vio:hover{border-color:var(--vio-border);}
+.crosslink-name{font-weight:700;font-size:19px;color:var(--text);letter-spacing:-.02em;margin:10px 0 6px;}
+.crosslink-desc{font-size:13px;color:var(--text-3);line-height:1.6;margin-bottom:14px;flex:1;}
+.crosslink-save{font-family:var(--mono);font-size:12px;font-weight:700;}
+@media(max-width:600px){.crosslink-grid{grid-template-columns:1fr;}}
+.faq-list-gs{display:flex;flex-direction:column;gap:8px;margin-top:36px;}
+details.faq-item-gs{border-radius:10px;border:1.5px solid var(--border);background:rgba(255,255,255,.02);transition:border-color .2s;}
+details.faq-item-gs[open]{border-color:rgba(52,211,119,.25);background:rgba(52,211,119,.025);}
+details.faq-item-gs summary{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;cursor:pointer;list-style:none;min-height:58px;font-size:15px;font-weight:600;color:var(--text-3);}
+details.faq-item-gs summary::-webkit-details-marker{display:none;}
+details.faq-item-gs[open] summary{color:var(--text);}
+.faq-ico{width:16px;height:16px;min-width:16px;display:inline-block;flex-shrink:0;position:relative;opacity:.4;}
+.faq-ico::before{content:'';position:absolute;top:3px;left:2px;width:10px;height:10px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);transition:transform .25s;}
+details.faq-item-gs[open] summary .faq-ico{opacity:1;color:var(--g);}
+details.faq-item-gs[open] summary .faq-ico::before{transform:rotate(225deg);top:6px;}
+.faq-ans-gs{padding:0 22px 20px;font-size:14px;color:var(--text-3);line-height:1.75;border-top:1px solid var(--border);padding-top:14px;text-align:left;}
+.faq-ans-gs a{color:var(--g);text-decoration:underline;}
+code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);padding:2px 6px;border-radius:3px;color:var(--sky);}
+pre{font-family:var(--mono);font-size:12.5px;line-height:1.65;color:var(--g);background:#0a0e0c;border:1px solid var(--border);border-radius:8px;padding:16px;overflow-x:auto;margin:16px 0;}
+pre code{background:none;padding:0;color:inherit;}
+@media(max-width:640px){
+  .hero{padding:72px 20px 60px;}
+  .hero-ctas{flex-direction:column;align-items:stretch;max-width:340px;margin-left:auto;margin-right:auto;}
+  .btn,.btn-outline{width:100%;justify-content:center;}
+  .stat-strip{grid-template-columns:repeat(2,1fr);}
+}
+  </style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","@id":"https://stackarchitect.xyz/#luke","name":"Luke","jobTitle":"Shopify Automation Specialist","url":"https://stackarchitect.xyz/about/","sameAs":["https://www.linkedin.com/in/luke-stackarchitect","https://www.linkedin.com/company/stack-architect-xyz/","https://github.com/lsb11","https://github.com/lsb11/shopify-capi-validator"],"worksFor":{"@type":"Organization","@id":"https://stackarchitect.xyz/#org"},"knowsAbout":["Shopify automation","Google Sheets automation","Make.com","Google Apps Script","Shopify inventory management"]}</script>
+</Fragment>
+
+<!-- ══ BREADCRUMB ══ -->
+<nav aria-label="Breadcrumb" style="background:var(--bg-2);border-bottom:1px solid var(--border);padding:10px 24px;">
   <div style="max-width:1100px;margin:0 auto;">
-    <ol style="display:flex;align-items:center;gap:8px;list-style:none;font-family:'JetBrains Mono',monospace;font-size:10px;color:#6b7671;text-transform:uppercase;letter-spacing:.08em;">
-      <li><a href="https://stackarchitect.xyz/" style="color:#6b7671;text-decoration:none;">Home</a></li>
-      <li style="opacity:.4;">/</li>
-      <li><span style="color:#34d377;">Shopify to Google Sheets</span></li>
+    <ol style="display:flex;align-items:center;gap:8px;list-style:none;font-family:var(--mono);font-size:10px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;" itemscope itemtype="https://schema.org/BreadcrumbList">
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a href="https://stackarchitect.xyz/" itemprop="item" style="color:var(--text-4);text-decoration:none;"><span itemprop="name">Home</span></a>
+        <meta itemprop="position" content="1" />
+      </li>
+      <li style="opacity:.4;" aria-hidden="true">/</li>
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span itemprop="name" style="color:var(--g);">Shopify to Google Sheets Automation</span>
+        <meta itemprop="position" content="2" />
+      </li>
     </ol>
   </div>
 </nav>
 
-<main class="container" style="max-width:960px;margin:2rem auto;padding:0 1.5rem;">
-  <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#34d377;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;opacity:.9;">
-    Verified Tutorial · Updated July 2026 · ~7 min read
+<main id="main-content">
+
+<!-- ══ HERO ══ -->
+<section class="hero bg-grid" aria-labelledby="hero-headline">
+<div class="hero-inner">
+
+  <div class="expert-byline" role="doc-subtitle">
+    <span>By <strong>Stack Architect</strong> · <time datetime={DATE_MODIFIED}>Updated August 2026</time> · ~11 min read</span>
   </div>
 
-  <h1 style="font-size:clamp(32px, 5vw, 56px);font-weight:800;color:#f2f5f3;line-height:1.05;letter-spacing:-.03em;margin-bottom:16px;">
-    Shopify to Google Sheets Automation: <span style="color:#34d377;">Export Orders &amp; Sync Inventory Free</span>
+  <div class="hero-proof">
+    <span class="dot"></span>
+    <span class="hero-proof-txt">Orders + inventory · Free via Make.com or Apps Script · No paid CSV app</span>
+  </div>
+
+  <h1 id="hero-headline">
+    Shopify to Google Sheets —<br />
+    <span class="green">orders, inventory, and</span><br />
+    <span class="dim">the limits nobody mentions.</span>
   </h1>
-  <p class="subtitle" style="font-size:1.15rem;color:#b6c0ba;margin-bottom:2.5rem;line-height:1.6;">
-    Learn how to automatically stream Shopify orders, inventory deltas, and revenue data directly into Google Sheets without paying $29–$99/mo for CSV export apps.
-  </p>
 
   <TableOfContents headings={tocHeadings} />
 
-
-  <!-- AI Answer Engine Direct Summary Box -->
-  <div style="background:linear-gradient(135deg, rgba(52,211,119,.1), rgba(15,19,17,.95));border:1px solid rgba(52,211,119,.3);border-radius:12px;padding:1.75rem;margin-bottom:3rem;box-shadow:0 8px 24px rgba(0,0,0,.4);">
-    <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#34d377;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">
-      <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#34d377;"></span> AI Direct Extraction Summary
-    </div>
-    <h2 id="connecting-shopify-to-google-sheets" style="font-size:1.2rem;color:#fff;margin-top:0;margin-bottom:10px;font-weight:700;">Connecting Shopify to Google Sheets</h2>
-    <p style="margin:0;font-size:0.98rem;color:#c9cec9;line-height:1.65;">
-      Connecting Shopify to Google Sheets requires a webhook trigger point. When a customer completes checkout, Shopify sends an <code>orders/paid</code> JSON payload. Using Make.com's free tier (1,000 operations/mo) or Google Apps Script, you can append order rows, calculate profit margins, and manage inventory logs at $0/month.
-    </p>
-  </div>
-
-  <h2 id="method-1-make-com-1-click-webhook-route-0-mo" style="font-size:1.8rem;color:#fff;font-weight:700;margin-bottom:1.2rem;">Method 1: Make.com 1-Click Webhook Route ($0/mo)</h2>
-  <p style="color:#c9cec9;line-height:1.75;font-size:1.02rem;margin-bottom:1.25rem;">
-    The fastest zero-code method is setting up a Webhooks trigger in Make.com that posts directly to a Google Sheets document:
-  </p>
-  <ol style="line-height:1.85;color:#c9cec9;margin-bottom:2.5rem;padding-left:1.5rem;font-size:1.02rem;">
-    <li style="margin-bottom:8px;">Create a free account on <a href="/go/make" target="_blank" rel="noopener sponsored" style="color:#34d377;font-weight:600;">Make.com</a>.</li>
-    <li style="margin-bottom:8px;">Add a <strong>Custom Webhook</strong> module as the trigger and copy the generated Webhook URL.</li>
-    <li style="margin-bottom:8px;">In <strong>Shopify Admin → Settings → Notifications → Webhooks</strong>, create a webhook for <code>Order payment</code> and paste the Make.com URL.</li>
-    <li style="margin-bottom:8px;">Add a <strong>Google Sheets → Add a Row</strong> module in Make.com, select your spreadsheet, and map order fields (Order ID, Total Price, Line Items, Date).</li>
-  </ol>
-
-  <h2 id="method-2-google-apps-script-zero-operational-limits" style="font-size:1.8rem;color:#fff;font-weight:700;margin-bottom:1.2rem;">Method 2: Google Apps Script (Zero Operational Limits)</h2>
-  <p style="color:#c9cec9;line-height:1.75;font-size:1.02rem;margin-bottom:1.25rem;">
-    For stores processing 500+ orders per month, Google Apps Script runs directly inside your Google Sheet for free with zero operation caps.
+  <p class="hero-sub">
+    Export Shopify orders and sync inventory to Google Sheets for free using Make.com or Google Apps Script.
+    <strong>This guide covers the parts most tutorials skip: when to sync in real time versus on a schedule, the actual scenario structure, and exactly where Apps Script and the Google Sheets API stop scaling.</strong>
   </p>
 
-  <div style="background:#0f1311;border:1px solid #222825;border-radius:10px;padding:1.4rem;margin-bottom:3rem;overflow-x:auto;box-shadow:0 6px 20px rgba(0,0,0,.3);">
-    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#6b7671;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Google Apps Script Webhook Listener (shopify-connector.gs)</div>
-    <pre style="font-family:'JetBrains Mono',monospace;font-size:0.88rem;color:#34d377;margin:0;line-height:1.6;"><code>function doPost(e) &#123;
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  var data = JSON.parse(e.postData.contents);
-  
-  sheet.appendRow([
-    new Date(),
-    data.name,
-    data.total_price,
-    data.currency,
-    data.customer ? data.customer.email : ''
-  ]);
-  
-  return ContentService.createTextOutput("SUCCESS").setMimeType(ContentService.MimeType.TEXT);
-&#125;</code></pre>
+  <div class="trust-row">
+    <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Orders and inventory covered separately</span>
+    <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Real Make.com module structure, not a diagram</span>
+    <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Sourced Apps Script and Sheets API limits</span>
   </div>
 
-  <div style="max-width:860px;margin:0 auto;padding:0 24px;">
-    
-<div style="max-width:860px;margin:2rem auto;padding:0 24px;">
-  <h2 id="related-app-alternatives" style="font-size:1.5rem;font-weight:bold;margin-bottom:1rem;color:white;">Related App Alternatives</h2>
-  <ul style="list-style:disc;padding-left:1.5rem;color:#9ca3af;">
-    <li><a href="/apps/stocky/" style="color:#34d377;text-decoration:none;hover:underline;">Stocky Pricing & Alternatives</a></li>
-  </ul>
+  <div class="hero-ctas">
+    <a href="#setup-h" class="btn-outline" onclick="event.preventDefault();document.getElementById('setup-h').scrollIntoView({behavior:'smooth'})" aria-label="Jump to setup steps">
+      Jump to setup
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+    </a>
+    <a href={AFF.make} target="_blank" rel="noopener sponsored" class="btn pulse" aria-label="Start free on Make.com">
+      Start free on Make.com
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+  <p class="hero-cta-note">
+    Powered by <a href={AFF.make} target="_blank" rel="noopener sponsored">Make.com</a> — free up to 1,000 credits/month. For a full P&amp;L layer on top of the same data, see <a href="/shopify-profit-loss-automation/">Shopify P&amp;L Automation</a>.
+  </p>
+
 </div>
-<AuthorCard />
-  </div>
-  </div>
+</section>
 
-  <div style="text-align:center;padding:2.5rem 2rem;background:linear-gradient(180deg, #0f1311, #0c0f0d);border:1px solid #222825;border-radius:14px;margin-bottom:3.5rem;">
-    <h3 style="color:#fff;margin-top:0;font-size:1.5rem;">Need Pre-Built Automated Spreadsheets?</h3>
-    <p style="color:#a7ada7;margin-bottom:1.75rem;max-width:560px;margin-left:auto;margin-right:auto;">Download our free Live P&amp;L Automation and Stocky Swap inventory templates ready for Google Sheets.</p>
-    <div style="display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;">
-      <a href="/shopify-profit-loss-automation/" class="btn" style="background:#34d377;color:#0c0f0d;font-weight:700;padding:14px 28px;border-radius:6px;text-decoration:none;">Live P&amp;L Automation →</a>
-      <a href="/stocky-swap/" class="btn-outline" style="border:1px solid #34d377;color:#34d377;font-weight:600;padding:14px 28px;border-radius:6px;text-decoration:none;">Stocky Swap Template →</a>
+<div style="background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:0 24px;" role="region" aria-label="Key metrics">
+  <div class="stat-strip" style="max-width:860px;margin:0 auto;border-radius:0;border:none;" role="list">
+    <div class="stat-cell" role="listitem"><div class="stat-v">$0</div><div class="stat-l">Both methods</div></div>
+    <div class="stat-cell" role="listitem"><div class="stat-v">2 webhooks</div><div class="stat-l">Orders + inventory</div></div>
+    <div class="stat-cell" role="listitem"><div class="stat-v">10M cells</div><div class="stat-l">Sheet ceiling</div></div>
+    <div class="stat-cell" role="listitem"><div class="stat-v">15 min</div><div class="stat-l">Full deployment</div></div>
+  </div>
+</div>
+
+<!-- ══ 1. EXPORT ══ -->
+<section class="section" aria-labelledby="export-h">
+<div class="inner">
+  <div class="sec-head">
+    <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">The base case</span>
+    <h2 id="export-h">Exporting Shopify orders to Google Sheets</h2>
+    <p>Every method below starts from the same trigger: a webhook firing the instant an order is paid.</p>
+  </div>
+  <div class="body-text">
+    <p>When a customer completes checkout, Shopify can fire an <code>orders/paid</code> webhook — a JSON payload containing the order ID, line items, customer details, totals, discounts, and fulfilment status — to any URL you configure in <strong>Settings → Notifications → Webhooks</strong>. Everything downstream depends on that one event.</p>
+    <p>There are two free ways to turn that payload into rows in a spreadsheet:</p>
+    <h3>Route 1 — Make.com (no code)</h3>
+    <p>A Webhooks module receives the payload, a Google Sheets <strong>Add a Row</strong> module writes it. This is the fastest route to something working, and it's what the rest of this guide builds on — see <a href="#make-h">the actual scenario structure</a> below.</p>
+    <h3>Route 2 — Google Apps Script (zero external tools)</h3>
+    <p>A Web App deployed from inside the Sheet itself, listening for the same webhook via <code>doPost(e)</code>. No Make.com account needed, but subject to Apps Script's own execution limits — covered in full in <a href="#quotas-h">why Apps Script hits quota walls at volume</a>.</p>
+    <pre><code>function doPost(e) &#123;
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Orders');
+  var data = JSON.parse(e.postData.contents);
+
+  data.line_items.forEach(function(item) &#123;
+    sheet.appendRow([
+      data.id,
+      data.created_at,
+      data.email,
+      item.sku,
+      item.title,
+      item.quantity,
+      item.price,
+      data.total_price,
+      data.fulfillment_status || 'unfulfilled'
+    ]);
+  &#125;);
+
+  return ContentService.createTextOutput('SUCCESS').setMimeType(ContentService.MimeType.TEXT);
+&#125;</code></pre>
+    <p>Note the <code>forEach</code> over <code>line_items</code> — a three-item order should produce three rows, one per SKU, not one row per order. Most CSV export apps flatten this into a single row per order and lose per-product detail. Either free route above beats a $29–$99/month export app on cost; which one you pick depends on volume and whether you want a Make.com account in the loop at all.</p>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ 2. SYNC TIMING ══ -->
+<section class="section-alt" aria-labelledby="sync-h">
+<div class="inner">
+  <div class="sec-head">
+    <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Sync strategy</span>
+    <h2 id="sync-h">Real-time vs scheduled sync — and when each is appropriate</h2>
+    <p>Not every sheet needs a webhook. Some need a nightly pull instead.</p>
+  </div>
+  <div class="flow-grid-3" role="list">
+    <div class="flow-step" role="listitem">
+      <div class="flow-num">Real-time</div>
+      <div class="flow-title">Webhook-triggered</div>
+      <div class="flow-desc">Shopify fires the moment an event happens. The sheet updates within seconds. Appropriate when staleness has a real cost: live inventory, fulfilment dashboards, a P&amp;L you check daily.</div>
+      <span class="flow-tool">Shopify webhook → Make.com / Apps Script</span>
+    </div>
+    <div class="flow-step" role="listitem">
+      <div class="flow-num" style="color:var(--sky);">Scheduled</div>
+      <div class="flow-title">Polling / batch pull</div>
+      <div class="flow-desc">A time-driven trigger calls the Shopify Admin API on an interval and pulls everything since the last run. Higher latency, but far fewer calls, and the natural safety net for anything a webhook missed.</div>
+      <span class="flow-tool">Apps Script time trigger / Make.com scheduled scenario</span>
+    </div>
+    <div class="flow-step" role="listitem">
+      <div class="flow-num" style="color:var(--g);">Hybrid — recommended</div>
+      <div class="flow-title">Both, together</div>
+      <div class="flow-desc">Webhooks for speed, plus a daily scheduled reconciliation pull that catches anything missed. This is the pattern this guide's setup steps build.</div>
+      <span class="flow-tool">Two triggers, one sheet</span>
     </div>
   </div>
-</main>
-</Base>
+  <div class="callout warn">
+    <div class="callout-label">Why a reconciliation pass matters</div>
+    <p>Shopify's webhook delivery is <strong>not guaranteed</strong> — a brief outage on your endpoint, a Make.com scenario error, or an Apps Script quota rejection during a burst can silently drop an event. A webhook-only setup has no way to notice this happened. A nightly scheduled pull comparing order counts against Shopify's own count is the cheap fix, and it's the single most commonly skipped step in DIY Shopify-to-Sheets builds.</p>
+  </div>
+</div>
+</section>
 
+<div class="divider"></div>
+
+<!-- ══ 3. INVENTORY ══ -->
+<section class="section" aria-labelledby="inventory-h">
+<div class="inner">
+  <div class="sec-head">
+    <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Inventory</span>
+    <h2 id="inventory-h">Syncing inventory levels to Sheets</h2>
+    <p>A different webhook, a different write pattern, and a lookup problem orders don't have.</p>
+  </div>
+  <div class="body-text">
+    <p>Inventory sync is not the same problem as order export, for three specific reasons:</p>
+    <ul>
+      <li><strong>Different trigger.</strong> Stock changes fire the <code>inventory_levels/update</code> webhook, not <code>orders/paid</code> — and it fires per SKU per location. One order touching three variants across two locations can trigger up to six separate inventory events.</li>
+      <li><strong>The payload doesn't include a product name.</strong> It carries <code>inventory_item_id</code> and <code>location_id</code>, both opaque numeric IDs. You need a lookup — either a cached mapping tab you build once via the Shopify API, or a live API call per event — to turn that into a readable SKU.</li>
+      <li><strong>You want one row per SKU, not an endless log.</strong> Appending a new row on every stock change (the same pattern that's correct for orders) turns an Inventory tab into an unreadable history instead of a current-state view. Inventory needs an <em>update</em>, keyed on SKU + location, not an append.</li>
+    </ul>
+    <div class="callout info">
+      <div class="callout-label">This is what replaces Stocky</div>
+      <p>A webhook-driven, update-in-place inventory tab is exactly the mechanism behind <a href="/stocky-swap/">Stocky Swap</a>, built for the same August 2026 Stocky shutdown this pattern is a free replacement for. If inventory tracking is your primary goal rather than a side effect of order export, that guide covers the dedicated build in more depth.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ 4. APPS SCRIPT QUOTAS ══ -->
+<section class="section-alt" aria-labelledby="quotas-h">
+<div class="inner">
+  <div class="sec-head">
+    <span class="tag tag-amber" style="margin-bottom:16px;display:inline-flex;">Where Apps Script breaks</span>
+    <h2 id="quotas-h">Why Apps Script hits quota walls at volume</h2>
+    <p>The specific limit you hit depends on which sync method — real-time or scheduled — you're running.</p>
+  </div>
+  <div class="body-text">
+    <p>Apps Script's limits are fixed at the infrastructure level and cannot be raised by upgrading — Google Workspace raises some daily ceilings, not the core ones. Two different limits bite depending on the sync pattern from <a href="#sync-h">the section above</a>:</p>
+    <h3>Webhook listener (real-time route)</h3>
+    <p>A <code>doPost()</code> web app is capped at <strong>30 concurrent executions</strong> and the underlying Sheets service call rate limit. A flash sale generating several orders within the same second causes competing executions to queue or fail — surfacing as <strong>"Service invoked too many times."</strong> The 6-minute single-execution ceiling rarely matters here since one order write is fast; concurrency is the real constraint.</p>
+    <h3>Scheduled pull (batch route)</h3>
+    <p>A time-driven trigger is bound by the <strong>90-minute daily trigger runtime</strong> cap on consumer accounts (6 hours on Workspace). A growing store's nightly reconciliation pull can eat into this budget as order volume climbs, especially if it re-fetches more history than necessary on each run.</p>
+    <div class="stat-callout" role="note">
+      <div class="sc-val">90 min</div>
+      <div class="sc-body">
+        <p><strong>Daily trigger runtime ceiling</strong> on free Google accounts — the number that actually matters for a scheduled Shopify sync, as distinct from the better-known 6-minute per-execution limit. Full breakdown of every quota, error message, and the structural fix: <a href={QUOTAS_GUIDE}>Google Apps Script Quotas Explained</a>.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ 5. SHEETS API LIMITS ══ -->
+<section class="section" aria-labelledby="sheets-limits-h">
+<div class="inner">
+  <div class="sec-head">
+    <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">A separate ceiling</span>
+    <h2 id="sheets-limits-h">Google Sheets API limits you'll hit even with Make.com</h2>
+    <p>Moving off Apps Script doesn't remove every limit — it removes a different one.</p>
+  </div>
+  <div class="body-text">
+    <p>Make.com doesn't run inside Apps Script's execution environment, so the Apps Script quotas above don't apply to it. But every write it makes still goes through the <strong>Google Sheets API</strong>, which enforces its own independent quota. Per <a href="https://developers.google.com/workspace/sheets/api/limits" target="_blank" rel="noopener">Google's published Sheets API usage limits</a>: <strong>300 read requests and 300 write requests per minute per project</strong>, with a <strong>60-per-minute cap per user</strong>, and no daily limit.</p>
+    <p>A typical store's order volume is nowhere near this. It becomes relevant in two specific cases: a scenario writing one API call per line item on large multi-item orders during a traffic spike, or an Iterator module (see <a href="#make-h">the scenario structure below</a>) misconfigured to make far more calls than the order data actually requires. Hitting it returns a <code>429: Too many requests</code> — Make.com's built-in retry with backoff handles this automatically, but it's worth knowing the ceiling exists independently of anything Apps Script imposes.</p>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ 6. MAKE.COM SCENARIO STRUCTURE ══ -->
+<section class="section-alt" id="how-it-works" aria-labelledby="make-h">
+<div class="inner">
+  <div class="sec-head">
+    <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">The actual build</span>
+    <h2 id="make-h">The Make.com approach — the actual scenario structure</h2>
+    <p>Two scenarios, not one — orders and inventory write differently, so they don't share a module chain.</p>
+  </div>
+  <div class="body-text">
+    <h3>Scenario 1 — Orders (append)</h3>
+    <p><strong>Webhooks (Custom webhook)</strong> → <strong>Iterator</strong> on <code>order.line_items</code> → <strong>Google Sheets: Add a Row</strong>, mapped to the Orders tab. The Iterator is the part most tutorials skip — without it, a Google Sheets module fed the raw payload writes one flattened row per order, discarding per-SKU detail. With it, a three-item order correctly produces three rows.</p>
+    <h3>Scenario 2 — Inventory (update-in-place)</h3>
+    <p>A separate <strong>Webhooks</strong> trigger on <code>inventory_levels/update</code> → <strong>Google Sheets: Update a Row (Search Column)</strong>, keyed on SKU + Location rather than appended. This is a different module than Scenario 1 uses — "Add a Row" is wrong here; it would turn every stock change into a new row instead of updating the current one.</p>
+    <h3>Scenario 3 — Scheduled reconciliation (optional but recommended)</h3>
+    <p>A <strong>Scheduler</strong> trigger, once daily → an HTTP call to the Shopify Admin API for the last 24 hours of orders → a <strong>Filter</strong> comparing against what's already in the sheet → <strong>Add a Row</strong> for anything missing. This is the safety net from <a href="#sync-h">the sync-timing section</a> — cheap to build, and the only thing that catches a webhook Shopify sent but your endpoint never received.</p>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ 7. SHEET STRUCTURE ══ -->
+<section class="section" aria-labelledby="structure-h">
+<div class="inner">
+  <div class="sec-head">
+    <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Sheet structure</span>
+    <h2 id="structure-h">The Google Sheet structure to build</h2>
+    <p>Two tabs, two different write patterns — this is the layout the scenarios above assume.</p>
+  </div>
+  <div class="body-text">
+    <h3>Tab 1 — Orders (append-only, one row per SKU)</h3>
+    <div class="sheet-preview">
+      <div class="sheet-header">
+        <span class="sheet-tab active" aria-current="true">Orders</span>
+        <span class="sheet-tab inactive" style="margin-left:4px;">Inventory</span>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="sheet-table" aria-label="Orders tab column structure">
+          <thead><tr><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th><th scope="col">D</th><th scope="col">E</th><th scope="col">F</th><th scope="col">G</th><th scope="col">H</th><th scope="col">I</th></tr></thead>
+          <tbody>
+            <tr><td class="bold">Order_ID</td><td class="bold">Date</td><td class="bold">Customer_Email</td><td class="bold">SKU</td><td class="bold">Product_Title</td><td class="bold">Quantity</td><td class="bold">Line_Price</td><td class="bold">Order_Total</td><td class="bold">Fulfil_Status</td></tr>
+            <tr><td class="formula">webhook</td><td class="formula">webhook</td><td class="formula">webhook</td><td class="formula">iterator</td><td class="formula">iterator</td><td class="formula">iterator</td><td class="formula">iterator</td><td class="formula">webhook</td><td class="formula">webhook</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <h3>Tab 2 — Inventory (update-in-place, one row per SKU + location)</h3>
+    <div class="sheet-preview">
+      <div class="sheet-header">
+        <span class="sheet-tab inactive">Orders</span>
+        <span class="sheet-tab active" style="margin-left:4px;" aria-current="true">Inventory</span>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="sheet-table" aria-label="Inventory tab column structure">
+          <thead><tr><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th><th scope="col">D</th><th scope="col">E</th></tr></thead>
+          <tbody>
+            <tr><td class="bold">SKU</td><td class="bold">Product_Title</td><td class="bold">Location</td><td class="bold">Available_Qty</td><td class="bold">Last_Updated</td></tr>
+            <tr><td class="formula">key</td><td class="formula">lookup</td><td class="formula">key</td><td class="formula">webhook</td><td class="formula">webhook</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p>Columns A and C in Inventory together form the search key Make.com's "Update a Row (Search Column)" module matches against — the same SKU at two locations needs two rows, not one.</p>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ 8. SETUP ══ -->
+<section class="section-alt" id="setup" aria-labelledby="setup-h">
+<div class="inner">
+  <div class="sec-head">
+    <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Setup guide</span>
+    <h2 id="setup-h">Deploy it — step by step</h2>
+    <p>Roughly 15 minutes for both scenarios. No developer required.</p>
+  </div>
+  <div class="step-cards" itemscope itemtype="https://schema.org/HowTo">
+    <meta itemprop="name" content="How to sync Shopify orders and inventory to Google Sheets for free" />
+    <meta itemprop="totalTime" content="PT15M" />
+
+    <div class="step-card" itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
+      <div class="step-num" itemprop="position">1</div>
+      <div>
+        <div class="step-title" itemprop="name">Create your Google Sheet</div>
+        <div class="step-desc" itemprop="text">Create a Google Sheet with two tabs: Orders and Inventory, using the column structure above. In Orders: Order_ID, Date, Customer_Email, SKU, Product_Title, Quantity, Line_Price, Order_Total, Fulfil_Status. In Inventory: SKU, Product_Title, Location, Available_Qty, Last_Updated.</div>
+        <span class="step-tool">sheets.google.com — new sheet, 2 tabs</span>
+      </div>
+    </div>
+
+    <div class="step-card" itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
+      <div class="step-num" itemprop="position">2</div>
+      <div>
+        <div class="step-title" itemprop="name">Activate Make.com free</div>
+        <div class="step-desc" itemprop="text">Sign up for Make.com free — 1,000 credits/month at no cost, no credit card required.</div>
+        <span class="step-tool"><a href={AFF.make} target="_blank" rel="noopener sponsored" style="color:inherit;">make.com/en/register</a></span>
+      </div>
+    </div>
+
+    <div class="step-card" itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
+      <div class="step-num" itemprop="position">3</div>
+      <div>
+        <div class="step-title" itemprop="name">Add the order payment webhook and Iterator</div>
+        <div class="step-desc" itemprop="text">In Shopify Admin → Settings → Notifications → Webhooks, create a webhook for Order payment pointing at your Make.com scenario's webhook URL. In Make.com, add an Iterator module on order.line_items, then a Google Sheets — Add a Row module mapped to your Orders tab.</div>
+        <span class="step-tool">Shopify Admin → Webhooks → Order payment</span>
+      </div>
+    </div>
+
+    <div class="step-card" itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
+      <div class="step-num" itemprop="position">4</div>
+      <div>
+        <div class="step-title" itemprop="name">Add the inventory levels webhook</div>
+        <div class="step-desc" itemprop="text">Create a second Shopify webhook for Inventory levels update. Build a second Make.com scenario: Webhooks trigger → Google Sheets — Update a Row (Search Column), searching on SKU and Location together, writing to your Inventory tab.</div>
+        <span class="step-tool">Shopify Admin → Webhooks → Inventory levels update</span>
+      </div>
+    </div>
+
+    <div class="step-card" itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
+      <div class="step-num" itemprop="position">5</div>
+      <div>
+        <div class="step-title" itemprop="name">Add a scheduled reconciliation pull (optional)</div>
+        <div class="step-desc" itemprop="text">Add a third scenario on a daily Scheduler trigger that calls the Shopify Admin API for the last 24 hours of orders, filters against what's already in the sheet, and adds any rows that are missing. This catches anything the webhook missed.</div>
+        <span class="step-tool">Make.com Scheduler — daily</span>
+      </div>
+    </div>
+
+    <div class="step-card" itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
+      <div class="step-num" itemprop="position">6</div>
+      <div>
+        <div class="step-title" itemprop="name">Test and verify</div>
+        <div class="step-desc" itemprop="text">Place a test order with two different products — confirm two rows land in Orders, not one. Adjust stock on a variant in Shopify Admin — confirm the matching Inventory row updates in place rather than adding a duplicate.</div>
+        <span class="step-tool">Test order + manual stock edit</span>
+      </div>
+    </div>
+
+  </div>
+  <div style="text-align:center;margin-top:32px;">
+    <a href={AFF.make} target="_blank" rel="noopener sponsored" class="btn pulse" style="display:inline-flex;">Start building free →</a>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ 9. OUTGROWN ══ -->
+<section class="section" aria-labelledby="outgrown-h">
+<div class="inner">
+  <div class="sec-head">
+    <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">The ceiling</span>
+    <h2 id="outgrown-h">When you've outgrown Sheets entirely</h2>
+    <p>Three real signals, not a vague "eventually."</p>
+  </div>
+  <div class="body-text">
+    <ul>
+      <li><strong>Approaching the cell ceiling.</strong> Google Sheets caps a spreadsheet at 10 million cells total across every tab (Google announced a 20-million-cell beta in April 2026, but 10M is the standing limit). A 9-column Orders tab hits that around 1.1 million rows.</li>
+      <li><strong>Formula slowdown, well before the cell ceiling.</strong> SUMIF and VLOOKUP ranges recalculating across tens of thousands of rows visibly lag in the UI long before you're anywhere near 10 million cells — this is usually the first real symptom, not the row count itself.</li>
+      <li><strong>Concurrent-write friction.</strong> Sheets was not built for high-frequency transactional writes from multiple sources. A busy store running order writes, inventory updates, and a reconciliation pass through the same spreadsheet can start to see write conflicts or queuing under sustained load.</li>
+    </ul>
+    <p>When any of these show up consistently, the fix isn't a bigger spreadsheet — it's moving the system of record off Sheets. BigQuery is the natural next step if you're already in the Google ecosystem; a hosted Postgres instance or Airtable base works too. Keep Sheets as a lightweight view or export target on top, rather than the primary store, if you still want the formula-based reporting this guide is built around.</p>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ CROSS-LINKS ══ -->
+<section class="section-alt" aria-labelledby="stack-h">
+<div class="inner">
+  <div class="sec-head">
+    <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Complete the stack</span>
+    <h2 id="stack-h">Sync is solved. Here's what runs on the same data.</h2>
+  </div>
+  <div class="crosslink-grid">
+    <a href="/shopify-profit-loss-automation/" class="crosslink-card" aria-label="Shopify P&L Automation — live profit and loss on top of the same order data">
+      <span class="tag" style="display:inline-flex;margin-bottom:10px;">Financial reporting</span>
+      <div class="crosslink-name">Shopify P&amp;L Automation</div>
+      <div class="crosslink-desc">The same order webhook, with a formula layer that turns raw rows into a live profit and loss statement — revenue, COGS, fees, net margin.</div>
+      <span class="crosslink-save" style="color:var(--g);">Free · same webhook</span>
+    </a>
+    <a href="/stocky-swap/" class="crosslink-card sky" aria-label="Stocky Swap — the dedicated inventory build before the Aug 2026 Stocky shutdown">
+      <span class="tag tag-sky" style="display:inline-flex;margin-bottom:10px;">Inventory ⚠ Aug 2026</span>
+      <div class="crosslink-name">Stocky Swap</div>
+      <div class="crosslink-desc">If inventory tracking is the primary goal rather than a side effect of order export, this is the dedicated build — and the free replacement before Stocky shuts down.</div>
+      <span class="crosslink-save" style="color:var(--sky);">Saves $29–$199/mo</span>
+    </a>
+    <a href={QUOTAS_GUIDE} class="crosslink-card vio" aria-label="Google Apps Script Quotas Explained — every limit and error code">
+      <span class="tag tag-vio" style="display:inline-flex;margin-bottom:10px;">Reference</span>
+      <div class="crosslink-name">Apps Script Quotas Explained</div>
+      <div class="crosslink-desc">Every Apps Script limit, every error message it produces, and the structural fix for each — the full version of the quota section above.</div>
+      <span class="crosslink-save" style="color:var(--vio);">Free reference</span>
+    </a>
+    <a href="/autocrat-quota-fix/" class="crosslink-card" aria-label="Autocrat Quota Fix — the same off-Apps-Script pattern applied to document generation">
+      <span class="tag" style="display:inline-flex;margin-bottom:10px;">Related fix</span>
+      <div class="crosslink-name">Autocrat Quota Fix</div>
+      <div class="crosslink-desc">The same "move it off Apps Script" pattern this guide applies to Sheets sync, applied instead to Google Docs generation that hits the same quota walls.</div>
+      <span class="crosslink-save" style="color:var(--g);">Saves $49–$99/mo</span>
+    </a>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ FAQ ══ -->
+<section class="section" id="faq" aria-labelledby="faq-h">
+<div class="inner-sm">
+  <div class="sec-head">
+    <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Common questions</span>
+    <h2 id="faq-h">Frequently asked questions</h2>
+  </div>
+  <div class="faq-list-gs">
+
+    <details class="faq-item-gs">
+      <summary><span>Can I export Shopify orders to Google Sheets for free?</span><span class="faq-ico" aria-hidden="true"></span></summary>
+      <div class="faq-ans-gs"><p>Yes. A Shopify Order payment webhook connected to a Make.com scenario writes every order to a Google Sheet automatically, free on Make.com's tier covering 1,000 credits/month. Google Apps Script is a second free route that runs entirely inside the Sheet itself, at the cost of the quota limits Apps Script imposes at higher volume.</p></div>
+    </details>
+
+    <details class="faq-item-gs">
+      <summary><span>Should I use real-time webhooks or a scheduled sync?</span><span class="faq-ico" aria-hidden="true"></span></summary>
+      <div class="faq-ans-gs"><p>Use real-time webhooks for anything where staleness has a cost — inventory levels, live P&amp;L, fulfilment dashboards. Use a scheduled pull for bulk backfills and as a reconciliation safety net, since Shopify webhook delivery is not guaranteed. Most reliable setups run both.</p></div>
+    </details>
+
+    <details class="faq-item-gs">
+      <summary><span>How do I sync Shopify inventory levels to Google Sheets?</span><span class="faq-ico" aria-hidden="true"></span></summary>
+      <div class="faq-ans-gs"><p>Subscribe to the Inventory levels update webhook, which fires per SKU per location. The payload contains inventory_item_id and location_id rather than a product name, so you need a lookup step. Write with an update-in-place module keyed on SKU + location rather than appending, or the sheet fills with duplicate rows instead of current stock.</p></div>
+    </details>
+
+    <details class="faq-item-gs">
+      <summary><span>Why does my Google Apps Script Shopify sync stop working at volume?</span><span class="faq-ico" aria-hidden="true"></span></summary>
+      <div class="faq-ans-gs"><p>Depends on the sync method. A webhook-triggered web app hits the 30-concurrent-execution ceiling first, surfacing as "Service invoked too many times" during order bursts. A scheduled pull instead runs into the 90-minute daily trigger runtime cap as volume grows. Neither can be raised by upgrading — see the <a href={QUOTAS_GUIDE}>full quotas guide</a>.</p></div>
+    </details>
+
+    <details class="faq-item-gs">
+      <summary><span>Does Make.com also have rate limits when writing to Google Sheets?</span><span class="faq-ico" aria-hidden="true"></span></summary>
+      <div class="faq-ans-gs"><p>Yes — the Google Sheets API itself, independent of Apps Script: 300 read and 300 write requests per minute per project, 60 per minute per user, per <a href="https://developers.google.com/workspace/sheets/api/limits" target="_blank" rel="noopener">Google's published limits</a>. Unlikely on typical order volume, but a misconfigured Iterator can reach it.</p></div>
+    </details>
+
+    <details class="faq-item-gs">
+      <summary><span>What's the actual Make.com scenario structure for this?</span><span class="faq-ico" aria-hidden="true"></span></summary>
+      <div class="faq-ans-gs"><p>One scenario per webhook topic. Orders: Webhooks → Iterator on line_items → Add a Row, one row per SKU. Inventory: a separate Webhooks trigger → Update a Row (Search Column) keyed on SKU + location. Append for orders, update-in-place for inventory — different modules, different write patterns.</p></div>
+    </details>
+
+    <details class="faq-item-gs">
+      <summary><span>How many orders can Google Sheets handle before I need a database?</span><span class="faq-ico" aria-hidden="true"></span></summary>
+      <div class="faq-ans-gs"><p>Sheets caps a spreadsheet at 10 million cells total (a 20-million-cell beta was announced in April 2026). A 9-column Orders tab hits that around 1.1 million rows, but formula recalculation lag usually shows up in the low hundreds of thousands of rows, well before the cell ceiling. At that point BigQuery or a hosted database replaces Sheets as the system of record.</p></div>
+    </details>
+
+    <details class="faq-item-gs">
+      <summary><span>Do I need Google Workspace for this?</span><span class="faq-ico" aria-hidden="true"></span></summary>
+      <div class="faq-ans-gs"><p>No. Free Gmail works for most stores. Google Workspace raises the Apps Script daily trigger-runtime ceiling and UrlFetch call limits — relevant only if you're running the Apps Script route at high volume. The Google Sheets API limits Make.com uses are the same regardless of account type.</p></div>
+    </details>
+
+  </div>
+</div>
+</section>
+
+<!-- ══ RELATED GUIDES ══ -->
+<section style="padding:64px 24px;background:var(--bg-2);border-top:1px solid var(--border);" aria-labelledby="related-h">
+<div style="max-width:860px;margin:0 auto;">
+  <h2 id="related-h" style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--text-4);margin-bottom:16px;">Related guides</h2>
+  <nav aria-label="Related guides">
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <a href="/shopify-profit-loss-automation/" style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-3);border:1px solid var(--border);border-radius:8px;text-decoration:none;">
+        <span style="font-size:14px;font-weight:600;color:var(--text-2);">Shopify P&amp;L Automation — live profit and loss in Google Sheets</span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);" aria-hidden="true">→</span>
+      </a>
+      <a href="/stocky-swap/" style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-3);border:1px solid var(--border);border-radius:8px;text-decoration:none;">
+        <span style="font-size:14px;font-weight:600;color:var(--text-2);">Stocky Swap — free Shopify inventory automation</span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);" aria-hidden="true">→</span>
+      </a>
+      <a href={QUOTAS_GUIDE} style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-3);border:1px solid var(--border);border-radius:8px;text-decoration:none;">
+        <span style="font-size:14px;font-weight:600;color:var(--text-2);">Google Apps Script Quotas Explained — every limit, every fix</span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);" aria-hidden="true">→</span>
+      </a>
+      <a href="/ultimate-shopify-automation-guide/" style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-3);border:1px solid var(--border);border-radius:8px;text-decoration:none;">
+        <span style="font-size:14px;font-weight:600;color:var(--text-2);">The complete Shopify automation guide (2026)</span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </nav>
+</div>
+</section>
+
+</main>
+
+<div style="max-width:860px;margin:0 auto;padding:0 24px;">
+  <div style="max-width:860px;margin:2rem auto;padding:0 24px;">
+    <h2 style="font-size:1.2rem;font-weight:bold;margin-bottom:1rem;color:white;">Related App Alternatives</h2>
+    <ul style="list-style:disc;padding-left:1.5rem;color:#9ca3af;">
+      <li><a href="/apps/stocky/" style="color:#34d377;text-decoration:none;">Stocky Pricing &amp; Alternatives</a></li>
+    </ul>
+  </div>
+  <AuthorCard />
+</div>
+
+<script>
+(function(){
+  var cr = document.getElementById('gs-copyright');
+  if (cr) cr.textContent = '© ' + new Date().getFullYear() + ' STACK_ARCHITECT // SHEETS_SYNC';
+})();
+</script>
+</Base>

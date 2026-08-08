@@ -1,0 +1,680 @@
+---
+import Base from '../layouts/Base.astro';
+import AuthorCard from '../components/AuthorCard.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+// src/pages/shopify-app-development-cost.astro
+// Stack Architect — What custom Shopify app development actually costs
+
+const SITE = "https://stackarchitect.xyz";
+const PAGE = `${SITE}/shopify-app-development-cost/`;
+const DATE_PUBLISHED = "2026-08-08";
+const DATE_MODIFIED = "2026-08-08";
+const DATE_VERIFIED = "2026-08-08";
+
+const CALCULATOR = "/shopify-app-cost-calculator/";
+const STACK = "/stack/";
+const MAKE_GUIDE = "/make-com-shopify/";
+const AFF_MAKE = "/go/make";
+
+// ── Structured data ──────────────────────────────────────────
+const schema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": `${PAGE}#webpage`,
+      "url": PAGE,
+      "name": "What a Custom Shopify App Actually Costs in 2026",
+      "description": "Real cost ranges for custom Shopify app development — agency, freelance, and in-house — with sources. The ongoing costs people forget, when custom development is genuinely the right call, and when a free Make.com composition does the same job.",
+      "datePublished": DATE_PUBLISHED,
+      "dateModified": DATE_MODIFIED,
+      "inLanguage": "en-GB",
+      "isPartOf": { "@id": `${SITE}/#website` },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": `${SITE}/` },
+          { "@type": "ListItem", "position": 2, "name": "Shopify App Development Cost", "item": PAGE }
+        ]
+      },
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": ["#hero-headline", "#costs-h", "#faq-h"]
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE}/#website`,
+      "url": SITE,
+      "name": "Stack Architect",
+      "description": "Free automation tools for Shopify operators — $0 stack replacing paid apps.",
+      "publisher": { "@id": `${SITE}/#org` },
+    },
+    {
+      "@type": "Organization",
+      "@id": `${SITE}/#org`,
+      "name": "Stack Architect",
+      "url": SITE,
+      "logo": { "@type": "ImageObject", "url": `${SITE}/favicon.svg` },
+      "sameAs": [SITE],
+      "knowsAbout": [
+        "Shopify app development cost", "Shopify API versioning", "Shopify App Store review",
+        "Make.com Shopify automation", "Software maintenance cost", "Shopify custom integrations"
+      ],
+      "contactPoint": { "@type": "ContactPoint", "email": "support@stackarchitect.xyz", "contactType": "customer support" }
+    },
+    {
+      "@type": ["Article", "TechArticle"],
+      "@id": `${PAGE}#article`,
+      "headline": "What a Custom Shopify App Actually Costs — and When Composing Free Tools Is the Better Answer",
+      "description": "Real cost ranges for custom Shopify app development with sources, the ongoing costs people forget, when custom development is genuinely the right call, and concrete examples of Make.com compositions doing the same job for $0.",
+      "author": { "@id": `${SITE}/#org` },
+      "publisher": { "@id": `${SITE}/#org` },
+      "datePublished": DATE_PUBLISHED,
+      "dateModified": DATE_MODIFIED,
+      "inLanguage": "en-GB",
+      "url": PAGE,
+      "wordCount": 3200,
+      "timeRequired": "PT10M",
+      "mainEntityOfPage": { "@id": `${PAGE}#webpage` },
+      "about": [
+        { "@type": "Thing", "name": "Shopify app development", "sameAs": "https://shopify.dev/docs/apps" },
+        { "@type": "Thing", "name": "Make.com automation platform", "sameAs": "https://www.make.com" },
+        { "@type": "Thing", "name": "Shopify API versioning", "sameAs": "https://shopify.dev/docs/api/usage/versioning" }
+      ],
+      "mentions": [
+        { "@type": "SoftwareApplication", "name": "Make.com" },
+        { "@type": "SoftwareApplication", "name": "Shopify" }
+      ],
+      "educationalLevel": "beginner",
+      "proficiencyLevel": "Beginner"
+    },
+    {
+      "@type": "HowTo",
+      "@id": `${PAGE}#howto`,
+      "name": "How to decide between custom Shopify app development and a Make.com composition",
+      "description": "A five-question decision framework for choosing between building a custom Shopify app and composing existing free automation tools.",
+      "step": [
+        { "@type": "HowToStep", "position": 1, "name": "Check if an existing tool already does 90% of it",
+          "text": "Search for an existing Shopify app, Shopify Flow, or Make.com scenario that covers most of what you need. If one exists, compose it — don't commission a custom build for something already solved." },
+        { "@type": "HowToStep", "position": 2, "name": "Identify whether the logic is genuinely proprietary",
+          "text": "If the requirement is business logic unique to your operation, or true bidirectional real-time sync with an internal system that has no accessible API, that's a real signal for custom development." },
+        { "@type": "HowToStep", "position": 3, "name": "Determine if you're building a product, not a fix",
+          "text": "If the app is meant to be sold on the Shopify App Store to other merchants, this is a product decision, not a cost-avoidance one — the calculation below doesn't apply." },
+        { "@type": "HowToStep", "position": 4, "name": "Price the full three-year cost, not the initial quote",
+          "text": "Add first-year maintenance, API version migration time, and — for public apps — App Store review and any ongoing retainer, to the build quote before comparing it to anything." },
+        { "@type": "HowToStep", "position": 5, "name": "Prototype in Make.com first, even if you plan to rebuild",
+          "text": "Building the workflow in Make.com first is free and fast, and tells you exactly what a custom version needs to do — turning a vague spec into a precise one before anyone gets paid to build it." }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${PAGE}#faq`,
+      "mainEntity": [
+        { "@type": "Question", "name": "How much does a custom Shopify app cost in 2026?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A simple private app (single internal tool, e.g. a webhook receiver) runs roughly $5,000–$15,000. A substantial private app with multiple features and integrations runs $15,000–$60,000. A public App Store app MVP runs $30,000–$150,000 to build, plus $20,000–$50,000 in first-year operations. Figures vary widely by developer location and experience — see the sourced breakdown above." } },
+        { "@type": "Question", "name": "What's the cost difference between a private app and a public app?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A private app only needs to work for your own store, so it skips Shopify's App Store review process, public-app security requirements, and multi-tenant architecture — which is most of why private apps cost a fraction of public ones. A public app also carries an ongoing retainer, commonly $5,000–$40,000/month depending on complexity, because it has to keep working for every merchant who installs it, not just you." } },
+        { "@type": "Question", "name": "What ongoing costs does a custom Shopify app have beyond the initial build?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Four recurring costs people underbudget: maintenance (commonly quoted as 20–30% of build cost per year, or a $2,000–$10,000+/month retainer for an active store), Shopify API version migrations (mandatory testing work roughly every quarter), App Store re-review for public apps when functionality changes, and hosting for the backend server and database the app runs on." } },
+        { "@type": "Question", "name": "How often does Shopify's API change, and does that affect a custom app?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Shopify ships a new API version every three months. Each stable version is supported for a minimum of 12 months with at least nine months of overlap between versions, so nothing breaks overnight — but a custom app that never gets touched will eventually stop working once its version's support window closes. That's recurring engineering time a workflow-automation platform absorbs on your behalf, since Make.com maintains its own Shopify connector." } },
+        { "@type": "Question", "name": "How long does Shopify App Store review take?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Shopify's own guidance and community reports put the initial review at roughly 4–10 business days. If the reviewer requests changes — common on a first submission — the app moves to a Paused status until you resubmit, and the full process commonly stretches to 2–4 weeks. This only applies to public apps; private apps for your own store skip review entirely." } },
+        { "@type": "Question", "name": "When should I build a custom Shopify app instead of using Make.com?",
+          "acceptedAnswer": { "@type": "Answer", "text": "When the logic is genuinely proprietary and unique to your operation, when you need true real-time bidirectional sync with an internal system that has no accessible API, when you're building the app to sell on the App Store as a product, or when your scale exceeds what a workflow-automation platform's rate limits can sustain. Outside those cases, an existing free tool or a Make.com scenario usually gets there faster and cheaper." } },
+        { "@type": "Question", "name": "Can Make.com really replace a custom-built Shopify integration?",
+          "acceptedAnswer": { "@type": "Answer", "text": "For the common case — receive a Shopify webhook, transform the data, send it somewhere else — yes. That pattern is exactly what CAPI Shield, Stocky Swap, Shopify P&L Automation, and Autocrat Quota Fix do, each replacing what would otherwise be a small custom backend service, at $0 instead of a $5,000–$15,000+ build. It doesn't replace custom development for logic a workflow tool genuinely can't express." } },
+        { "@type": "Question", "name": "Is a free Make.com scenario really equivalent to a paid custom app?",
+          "acceptedAnswer": { "@type": "Answer", "text": "For webhook-in, transform, API-out workflows, functionally yes — the underlying mechanism (a server receiving an event and calling an API) is identical to what a custom backend would do. What you give up is full control over the code, and you take on a dependency on Make.com's platform instead of your own infrastructure. For most Shopify operators that trade-off favours the free composition; for a small number of genuinely custom requirements, it doesn't." } }
+      ]
+    }
+  ]
+});
+
+const tocHeadings = [
+  { "id": "costs-h", "text": "What custom Shopify app development actually costs" },
+  { "id": "ongoing-h", "text": "The ongoing costs people forget" },
+  { "id": "when-custom-h", "text": "When custom development is genuinely the right call" },
+  { "id": "when-compose-h", "text": "When a Make.com composition does the same job" },
+  { "id": "framework-h", "text": "Decision framework" },
+  { "id": "faq-h", "text": "Frequently asked questions" },
+  { "id": "related-h", "text": "Related guides" }
+];
+---
+<Base title="Shopify App Development Cost 2026 — Build vs Compose" description="Real cost ranges for custom Shopify app development, the ongoing costs people forget, when custom is the right call, and when free Make.com tools do the same job." verifiedDate={DATE_VERIFIED}>
+<Fragment slot="head">
+<script type="application/ld+json" set:html={schema} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" />
+  <link rel="dns-prefetch" href="https://www.make.com" />
+
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{overflow-x:hidden;}
+::selection{background:rgba(52,211,119,.2);color:#f2f5f3;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:#0c0f0d;}
+::-webkit-scrollbar-thumb{background:rgba(52,211,119,.3);border-radius:2px;}
+:root{
+  --g:#34d377;--g-dim:#15803d;--g-bg:rgba(52,211,119,.08);--g-border:rgba(52,211,119,.2);
+  --bg:#0c0f0d;--bg-2:#0f1311;--bg-3:#121614;--bg-4:#171c19;
+  --border:#222825;--border-2:#2f3733;
+  --text:#f2f5f3;--text-2:#b6c0ba;--text-3:#93a09a;--text-4:#6b7671;--text-inv:#0c0f0d;
+  --red:#f08a8a;--red-bg:rgba(240,138,138,.07);--red-border:rgba(240,138,138,.18);
+  --sky:#8ccfe8;--sky-bg:rgba(140,207,232,.07);--sky-border:rgba(140,207,232,.18);
+  --vio:#c3b8ef;--vio-bg:rgba(195,184,239,.07);--vio-border:rgba(195,184,239,.18);
+  --amber:#f5b64d;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+}
+html,body{font-family:var(--sans);background:var(--bg);color:var(--text-3);line-height:1.75;-webkit-font-smoothing:antialiased;}
+.tag{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 12px;border-radius:3px;background:var(--g-bg);border:1px solid var(--g-border);color:var(--g);}
+.tag-dim{background:rgba(255,255,255,.03);border-color:var(--border-2);color:var(--text-4);}
+.tag-sky{background:var(--sky-bg);border-color:var(--sky-border);color:var(--sky);}
+.tag-vio{background:var(--vio-bg);border-color:var(--vio-border);color:var(--vio);}
+.tag-amber{background:rgba(245,182,77,.08);border-color:rgba(245,182,77,.2);color:var(--amber);}
+.dot{display:inline-block;width:7px;height:7px;min-width:7px;border-radius:50%;background:var(--g);animation:dotPing 2.2s cubic-bezier(.4,0,.6,1) infinite;}
+@keyframes dotPing{0%{box-shadow:0 0 0 0 rgba(52,211,119,.5);}70%{box-shadow:0 0 0 8px rgba(52,211,119,0);}100%{box-shadow:0 0 0 0 rgba(52,211,119,0);}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--sans);font-size:16px;font-weight:700;text-decoration:none;letter-spacing:-.01em;padding:16px 32px;border-radius:6px;border:none;cursor:pointer;white-space:nowrap;background:var(--g);color:var(--text-inv);transition:background .2s,transform .15s,box-shadow .2s;min-height:52px;}
+.btn:hover{background:#45e28a;transform:translateY(-2px);box-shadow:0 8px 28px rgba(52,211,119,.3);}
+.btn.pulse{animation:btnGlow 2.8s ease-in-out infinite;}
+@keyframes btnGlow{0%,100%{box-shadow:0 0 16px rgba(52,211,119,.1);}50%{box-shadow:0 0 28px rgba(52,211,119,.28);}}
+.btn.pulse:hover{animation:none;}
+.btn-sm{font-size:14px;padding:12px 22px;min-height:44px;}
+.btn-outline{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--sans);font-size:15px;font-weight:600;text-decoration:none;letter-spacing:-.01em;padding:15px 28px;border-radius:6px;border:1.5px solid var(--border-2);cursor:pointer;white-space:nowrap;background:transparent;color:var(--text-2);transition:border-color .2s,color .2s,background .2s;min-height:52px;}
+.btn-outline:hover{border-color:var(--g);color:var(--g);background:var(--g-bg);}
+.section{padding:100px 24px;}.section-alt{padding:100px 24px;background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.inner{max-width:1000px;margin:0 auto;}.inner-sm{max-width:720px;margin:0 auto;}.inner-md{max-width:860px;margin:0 auto;}
+.sec-head{text-align:center;margin-bottom:56px;}
+.sec-head h2{font-family:var(--sans);font-weight:700;font-size:clamp(24px,4vw,38px);letter-spacing:-.03em;color:var(--text);line-height:1.1;margin-bottom:10px;}
+.sec-head p{font-size:15px;color:var(--text-3);max-width:540px;margin:14px auto 0;line-height:1.75;}
+.bg-grid{background-color:var(--bg);background-image:radial-gradient(ellipse 80% 40% at 50% 0%,rgba(52,211,119,.06) 0%,transparent 60%),radial-gradient(circle,var(--border) 1px,transparent 1px);background-size:100% 100%,44px 44px;}
+.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);background:var(--border);gap:1px;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.stat-cell{background:var(--bg);padding:20px 12px;text-align:center;}
+.stat-v{font-family:var(--mono);font-size:19px;font-weight:700;color:var(--g);line-height:1;}
+.stat-l{font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.1em;margin-top:6px;font-family:var(--mono);}
+.divider{height:1px;background:var(--border);margin:0;}
+.hero{padding:96px 24px 80px;text-align:center;position:relative;overflow:hidden;}
+.hero-inner{max-width:900px;margin:0 auto;position:relative;}
+.hero-proof{display:inline-flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid var(--border-2);border-radius:100px;padding:9px 22px;margin-bottom:36px;flex-wrap:wrap;justify-content:center;}
+.hero-proof-txt{font-family:var(--mono);font-size:11px;color:var(--text-4);letter-spacing:.08em;}
+.hero h1{font-size:clamp(32px,5.6vw,58px);font-weight:700;color:var(--text);line-height:1.05;letter-spacing:-.04em;margin:0 auto 22px;max-width:840px;}
+.hero h1 .green{color:var(--g);}
+.hero h1 .dim{color:var(--text-4);}
+.hero-sub{font-size:clamp(15px,2vw,18px);color:var(--text-3);max-width:620px;margin:0 auto 30px;line-height:1.7;}
+.hero-sub strong{color:var(--text-2);font-weight:600;}
+.trust-row{display:flex;flex-wrap:wrap;justify-content:center;gap:22px;margin-bottom:36px;}
+.trust-item{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--text-3);}
+.hero-ctas{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;margin-bottom:14px;}
+.hero-cta-note{font-size:13px;color:var(--text-4);line-height:1.6;}
+.hero-cta-note a{color:rgba(52,211,119,.7);text-decoration:underline;}
+.expert-byline{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:8px;padding:12px 18px;max-width:fit-content;margin:0 auto 20px;}
+.expert-byline span{font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.08em;}
+.expert-byline strong{color:var(--text-3);}
+.comp-wrap{overflow-x:auto;margin:24px 0;}
+.comp-table{width:100%;border-collapse:collapse;min-width:640px;font-size:13.5px;}
+.comp-table th{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-4);padding:12px 16px;text-align:left;background:rgba(255,255,255,.025);border-bottom:1px solid var(--border);}
+.comp-table td{color:var(--text-3);padding:12px 16px;border-bottom:1px solid var(--border);vertical-align:top;}
+.comp-table tr:last-child td{border-bottom:none;}
+.comp-table td.bold{color:var(--text);font-weight:700;}
+.comp-table td.green{color:var(--g);}
+.comp-table tr:hover td{background:rgba(255,255,255,.02);}
+.step-cards{display:flex;flex-direction:column;gap:12px;margin:20px 0;}
+.step-card{background:var(--bg-3);border:1px solid var(--border);border-radius:10px;padding:20px 20px 20px 24px;display:flex;gap:16px;align-items:flex-start;}
+.step-num{width:28px;height:28px;min-width:28px;border-radius:50%;background:rgba(52,211,119,.1);border:1px solid rgba(52,211,119,.25);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--g);flex-shrink:0;}
+.step-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;line-height:1.3;}
+.step-desc{font-size:13px;color:var(--text-3);line-height:1.65;}
+.callout{background:var(--bg-3);border:1px solid var(--border-2);border-radius:10px;padding:22px 22px 22px 26px;margin:24px 0;border-left:3px solid var(--g);text-align:left;}
+.callout.warn{border-left-color:var(--amber);background:rgba(245,182,77,.04);}
+.callout.info{border-left-color:var(--sky);background:rgba(140,207,232,.04);}
+.callout.vio{border-left-color:var(--vio);background:rgba(195,184,239,.04);}
+.callout-label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--g);margin-bottom:6px;}
+.callout.warn .callout-label{color:var(--amber);}
+.callout.info .callout-label{color:var(--sky);}
+.callout.vio .callout-label{color:var(--vio);}
+.callout p{font-size:14px;color:var(--text-2);line-height:1.7;margin:0;}
+.callout p strong{color:var(--text);}
+.callout p a{color:var(--g);text-decoration:underline;}
+.stat-callout{background:rgba(52,211,119,.06);border:1.5px solid rgba(52,211,119,.2);border-radius:10px;padding:24px;margin:24px 0;display:flex;align-items:flex-start;gap:20px;text-align:left;}
+.sc-val{font-family:var(--mono);font-size:30px;font-weight:700;color:var(--g);line-height:1;flex-shrink:0;}
+.sc-body p{font-size:14px;color:var(--text-3);line-height:1.65;margin:0;}
+.sc-body p strong{color:var(--text-2);}
+@media(max-width:500px){.stat-callout{flex-direction:column;gap:10px;}}
+.body-text{max-width:780px;margin:0 auto;}
+.body-text p{font-size:15px;color:var(--text-3);line-height:1.8;margin-bottom:18px;text-align:left;}
+.body-text p strong{color:var(--text-2);font-weight:600;}
+.body-text p a{color:var(--g);text-decoration:underline;}
+.body-text h3{font-weight:700;font-size:clamp(17px,2.4vw,20px);color:var(--text-2);letter-spacing:-.02em;line-height:1.2;margin:30px 0 12px;text-align:left;}
+.body-text ul{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
+.body-text li{display:flex;align-items:flex-start;gap:10px;font-size:15px;color:var(--text-3);line-height:1.65;text-align:left;}
+.body-text li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--g);flex-shrink:0;margin-top:9px;}
+.body-text li strong{color:var(--text-2);font-weight:600;}
+.crosslink-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px;}
+.crosslink-card{background:var(--bg-3);border:1.5px solid var(--border);border-radius:12px;padding:26px;text-decoration:none;display:flex;flex-direction:column;transition:border-color .2s,transform .2s;}
+.crosslink-card:hover{border-color:var(--g-border);transform:translateY(-4px);}
+.crosslink-card.sky:hover{border-color:var(--sky-border);}
+.crosslink-card.vio:hover{border-color:var(--vio-border);}
+.crosslink-name{font-weight:700;font-size:19px;color:var(--text);letter-spacing:-.02em;margin:10px 0 6px;}
+.crosslink-desc{font-size:13px;color:var(--text-3);line-height:1.6;margin-bottom:14px;flex:1;}
+.crosslink-save{font-family:var(--mono);font-size:12px;font-weight:700;}
+@media(max-width:600px){.crosslink-grid{grid-template-columns:1fr;}}
+.faq-list-adc{display:flex;flex-direction:column;gap:8px;margin-top:36px;}
+details.faq-item-adc{border-radius:10px;border:1.5px solid var(--border);background:rgba(255,255,255,.02);transition:border-color .2s;}
+details.faq-item-adc[open]{border-color:rgba(52,211,119,.25);background:rgba(52,211,119,.025);}
+details.faq-item-adc summary{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;cursor:pointer;list-style:none;min-height:58px;font-size:15px;font-weight:600;color:var(--text-3);}
+details.faq-item-adc summary::-webkit-details-marker{display:none;}
+details.faq-item-adc[open] summary{color:var(--text);}
+.faq-ico{width:16px;height:16px;min-width:16px;display:inline-block;flex-shrink:0;position:relative;opacity:.4;}
+.faq-ico::before{content:'';position:absolute;top:3px;left:2px;width:10px;height:10px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);transition:transform .25s;}
+details.faq-item-adc[open] summary .faq-ico{opacity:1;color:var(--g);}
+details.faq-item-adc[open] summary .faq-ico::before{transform:rotate(225deg);top:6px;}
+.faq-ans-adc{padding:0 22px 20px;font-size:14px;color:var(--text-3);line-height:1.75;border-top:1px solid var(--border);padding-top:14px;text-align:left;}
+.faq-ans-adc a{color:var(--g);text-decoration:underline;}
+code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);padding:2px 6px;border-radius:3px;color:var(--sky);}
+@media(max-width:640px){
+  .hero{padding:72px 20px 60px;}
+  .hero-ctas{flex-direction:column;align-items:stretch;max-width:340px;margin-left:auto;margin-right:auto;}
+  .btn,.btn-outline{width:100%;justify-content:center;}
+  .stat-strip{grid-template-columns:repeat(2,1fr);}
+}
+  </style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","@id":"https://stackarchitect.xyz/#luke","name":"Luke","jobTitle":"Shopify Automation Specialist","url":"https://stackarchitect.xyz/about/","sameAs":["https://www.linkedin.com/in/luke-stackarchitect","https://www.linkedin.com/company/stack-architect-xyz/","https://github.com/lsb11","https://github.com/lsb11/shopify-capi-validator"],"worksFor":{"@type":"Organization","@id":"https://stackarchitect.xyz/#org"},"knowsAbout":["Shopify automation","Shopify app development","Make.com","Google Sheets automation","Shopify app cost reduction"]}</script>
+</Fragment>
+
+<!-- ══ BREADCRUMB ══ -->
+<nav aria-label="Breadcrumb" style="background:var(--bg-2);border-bottom:1px solid var(--border);padding:10px 24px;">
+  <div style="max-width:1100px;margin:0 auto;">
+    <ol style="display:flex;align-items:center;gap:8px;list-style:none;font-family:var(--mono);font-size:10px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;" itemscope itemtype="https://schema.org/BreadcrumbList">
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a href="https://stackarchitect.xyz/" itemprop="item" style="color:var(--text-4);text-decoration:none;"><span itemprop="name">Home</span></a>
+        <meta itemprop="position" content="1" />
+      </li>
+      <li style="opacity:.4;" aria-hidden="true">/</li>
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span itemprop="name" style="color:var(--g);">Shopify App Development Cost</span>
+        <meta itemprop="position" content="2" />
+      </li>
+    </ol>
+  </div>
+</nav>
+
+<main id="main-content">
+
+<!-- ══ HERO ══ -->
+<section class="hero bg-grid" aria-labelledby="hero-headline">
+<div class="hero-inner">
+
+  <div class="expert-byline" role="doc-subtitle">
+    <span>By <strong>Stack Architect</strong> · <time datetime={DATE_MODIFIED}>Updated August 2026</time> · ~10 min read</span>
+  </div>
+
+  <div class="hero-proof">
+    <span class="dot"></span>
+    <span class="hero-proof-txt">Sourced cost ranges · Fair on when custom is right · Not a hit piece</span>
+  </div>
+
+  <h1 id="hero-headline">
+    What a custom Shopify app<br />
+    <span class="green">actually costs</span> —<br />
+    <span class="dim">and when it isn't the answer.</span>
+  </h1>
+
+  <TableOfContents headings={tocHeadings} />
+
+  <p class="hero-sub">
+    Real cost ranges for custom Shopify app development, sourced. The ongoing costs people forget to budget.
+    <strong>And an honest look at when a custom build is genuinely the right call — versus when a free Make.com composition already does the job.</strong>
+  </p>
+
+  <div class="trust-row">
+    <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Costs sourced from published pricing guides</span>
+    <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>API and App Store facts from shopify.dev</span>
+    <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Concrete examples, not a generic "it depends"</span>
+  </div>
+
+  <div class="hero-ctas">
+    <a href="#framework-h" class="btn-outline" onclick="event.preventDefault();document.getElementById('framework-h').scrollIntoView({behavior:'smooth'})" aria-label="Jump to the decision framework">
+      Jump to the decision framework
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+    </a>
+    <a href={CALCULATOR} class="btn pulse" aria-label="Calculate your current Shopify app costs">
+      Calculate your app costs
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+  <p class="hero-cta-note">
+    Already know you want the free route? See <a href={STACK}>the recommended stack</a> or the <a href={MAKE_GUIDE}>Make.com for Shopify setup guide</a>.
+  </p>
+
+</div>
+</section>
+
+<div style="background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:0 24px;" role="region" aria-label="Key figures">
+  <div class="stat-strip" style="max-width:860px;margin:0 auto;border-radius:0;border:none;" role="list">
+    <div class="stat-cell" role="listitem"><div class="stat-v">$5k–$200k+</div><div class="stat-l">Full build cost range</div></div>
+    <div class="stat-cell" role="listitem"><div class="stat-v">20–30%/yr</div><div class="stat-l">Typical maintenance</div></div>
+    <div class="stat-cell" role="listitem"><div class="stat-v">Every 3 mo</div><div class="stat-l">Shopify API versions</div></div>
+    <div class="stat-cell" role="listitem"><div class="stat-v">$0</div><div class="stat-l">The Make.com route</div></div>
+  </div>
+</div>
+
+<!-- ══ 1. REAL COSTS ══ -->
+<section class="section" aria-labelledby="costs-h">
+<div class="inner">
+  <div class="sec-head">
+    <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Sourced ranges</span>
+    <h2 id="costs-h">What custom Shopify app development actually costs</h2>
+    <p>Prices vary hugely by scope and who builds it. Here's the actual range, not a single misleading number.</p>
+  </div>
+  <div class="body-text">
+    <p>"How much does a Shopify app cost" doesn't have one answer, because a private single-store tool and a public App Store product are different projects with different requirements. The ranges below come from published 2026 Shopify development pricing guides — treat them as market estimates, not fixed prices; agency day rates in particular vary by region and specialism.</p>
+    <div class="comp-wrap">
+      <table class="comp-table" aria-label="Custom Shopify app development cost ranges by project type">
+        <thead>
+          <tr><th>Project type</th><th>Build cost</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="bold">Simple private app</td><td class="green">$5,000–$15,000</td><td>Single-store internal tool — a webhook receiver, a basic admin extension.</td></tr>
+          <tr><td class="bold">Substantial private app</td><td class="green">$15,000–$60,000</td><td>Multiple features, several API integrations, a real admin UI, data storage.</td></tr>
+          <tr><td class="bold">Public App Store MVP</td><td class="green">$30,000–$150,000</td><td>Plus $20,000–$50,000 in first-year operations — review, support, hosting.</td></tr>
+          <tr><td class="bold">Large public app</td><td class="green">$80,000–$200,000+</td><td>Plus $50,000–$150,000 first-year operations at that scale.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Freelance vs agency rates</h3>
+    <p>Freelance Shopify developers commonly charge <strong>$25–$200/hour</strong>, with experienced US/Canada-based Shopify Plus specialists toward the top of that range and offshore developers toward the bottom. Agencies run considerably higher: boutique shops around <strong>$150–$350/hour</strong>, established Shopify Plus agencies <strong>$250–$500/hour</strong>, and enterprise consultancies <strong>$400–$800+/hour</strong>. A freelancer and an agency building the identical spec can land 3–5x apart purely on who you hire, before scope even changes.</p>
+    <h3>In-house</h3>
+    <p>Hiring a developer directly avoids per-project markup but carries its own math: a mid-level Shopify developer salary plus employer costs typically lands in a similar or higher annual range than commissioning 2–3 substantial private-app projects from an agency — the trade-off is ongoing capacity versus one-off delivery, not a cheaper unit cost.</p>
+    <div class="callout info">
+      <div class="callout-label">Sources</div>
+      <p>Cost ranges above are drawn from <a href="https://shopexperts.com/help/pricing/shopify-app-development-cost" target="_blank" rel="noopener">Shop Experts' 2026 Shopify App Development Cost guide</a> and <a href="https://cartcoders.com/blog/shopify-development/shopify-developer-cost-hourly-project-retainer/" target="_blank" rel="noopener">CartCoders' Shopify Developer Cost breakdown</a>. Both are third-party agency pricing guides, not Shopify's own pricing — treat the figures as directional market ranges rather than quotes.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ 2. ONGOING COSTS ══ -->
+<section class="section-alt" aria-labelledby="ongoing-h">
+<div class="inner">
+  <div class="sec-head">
+    <span class="tag tag-amber" style="margin-bottom:16px;display:inline-flex;">Easy to underbudget</span>
+    <h2 id="ongoing-h">The ongoing costs people forget</h2>
+    <p>The build quote is rarely the full cost. Four recurring line items most quotes don't surface upfront.</p>
+  </div>
+  <div class="body-text">
+    <h3>Maintenance</h3>
+    <p>Industry guidance commonly puts ongoing maintenance at <strong>20–30% of the initial build cost per year</strong>, or as a flat retainer — light upkeep for a private app runs roughly $3,000–$15,000/year, while an actively-developed store's retainer commonly runs <strong>$2,000–$10,000+/month</strong>. A public app retainer runs higher still, commonly $5,000–$40,000/month, because it has to keep working across every merchant who installed it, not just one store.</p>
+
+    <h3>Shopify API version migrations</h3>
+    <p>Shopify ships a new API version <a href="https://shopify.dev/docs/api/usage/versioning" target="_blank" rel="noopener">every three months</a>. Each stable version stays supported for a minimum of 12 months, with at least nine months of overlap before the previous version is retired — so nothing breaks without warning, but a custom app that nobody revisits will eventually stop working once its version's support window closes. That's recurring engineering time baked into owning custom code, not a one-time cost.</p>
+
+    <div class="stat-callout" role="note">
+      <div class="sc-val">9 mo</div>
+      <div class="sc-body">
+        <p><strong>Minimum overlap window</strong> between Shopify API versions before the old one is retired — the real deadline for migration work on a custom app, per <a href="https://shopify.dev/docs/api/usage/versioning" target="_blank" rel="noopener">Shopify's own versioning documentation</a>.</p>
+      </div>
+    </div>
+
+    <h3>App Store review (public apps only)</h3>
+    <p>A public app moves through Draft → Submitted → Reviewed → Published. Shopify's guidance and community reports put the <a href="https://shopify.dev/docs/apps/launch/app-store-review/review-process" target="_blank" rel="noopener">initial review at roughly 4–10 business days</a>; if the reviewer requests changes — common on a first submission — the app is Paused until resubmission, and the full process commonly stretches to 2–4 weeks. Any meaningful functionality change can trigger re-review, which is real calendar time on top of the build.</p>
+
+    <h3>Hosting</h3>
+    <p>A Shopify app needs somewhere to run — a backend server handling OAuth and webhooks, plus a database. For a low-traffic private app this is modest, often a small managed instance. For a public app serving many stores, hosting cost scales with install volume and becomes a genuine line item, not an afterthought.</p>
+
+    <div class="callout warn">
+      <div class="callout-label">Why this matters for the build-vs-compose decision</div>
+      <p>A $15,000 build quote that omits maintenance, migrations, and hosting isn't really a $15,000 decision — published guidance suggests adding <strong>50–100% on top across three years</strong> is typical once those costs are included. Compare the full three-year number, not the initial quote, against the alternative.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ 3. WHEN CUSTOM IS RIGHT ══ -->
+<section class="section" aria-labelledby="when-custom-h">
+<div class="inner">
+  <div class="sec-head">
+    <span class="tag" style="margin-bottom:16px;display:inline-flex;">Genuinely fair</span>
+    <h2 id="when-custom-h">When custom development is genuinely the right call</h2>
+    <p>This isn't a case against custom apps. Some requirements need one — here's how to recognise them honestly.</p>
+  </div>
+  <div class="body-text">
+    <ul>
+      <li><strong>Proprietary business logic.</strong> A custom pricing engine, a bespoke allocation algorithm, anything unique to how your business actually operates that no existing app or automation module was built to express.</li>
+      <li><strong>Deep integration with a system that has no accessible API.</strong> True real-time, bidirectional sync with an internal ERP or warehouse system that a workflow tool like Make.com simply cannot reach.</li>
+      <li><strong>You're building a product, not a fix.</strong> If the plan is to list the app on the Shopify App Store and sell it to other merchants, the whole cost calculation in this guide doesn't apply — it's not overhead to minimise, it's the business.</li>
+      <li><strong>Scale beyond what automation platforms sustain.</strong> A very large store with sub-second performance requirements or event volume that would exceed a workflow tool's rate limits genuinely needs dedicated infrastructure.</li>
+      <li><strong>Data residency or compliance requirements</strong> that rule out routing data through a third-party automation platform, common in regulated industries.</li>
+    </ul>
+    <p>If your situation matches one of these, the sourced cost ranges above are the right way to budget the project — and the ongoing-costs section is the right way to make sure the quote you accept reflects the real three-year number.</p>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ 4. WHEN COMPOSE IS RIGHT ══ -->
+<section class="section-alt" aria-labelledby="when-compose-h">
+<div class="inner">
+  <div class="sec-head">
+    <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">The other case</span>
+    <h2 id="when-compose-h">When a Make.com composition does the same job</h2>
+    <p>Most Shopify integration requests reduce to one pattern: receive a webhook, transform the data, call an API. That's exactly what these free builds do.</p>
+  </div>
+  <div class="body-text">
+    <p>A large share of what gets commissioned as a "custom Shopify app" is really a small backend service: listen for a Shopify webhook, reshape the payload, send it to another system. That is precisely what Make.com's Webhooks + transform + HTTP-request module chain does — hosted, maintained, and running on Make.com's infrastructure instead of a bill you pay a developer to build and someone to keep alive.</p>
+    <div class="comp-wrap">
+      <table class="comp-table" aria-label="Make.com compositions replacing what would otherwise be custom backend services">
+        <thead>
+          <tr><th>What it does</th><th>The custom-build equivalent</th><th>The free composition</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="bold">Server-side conversion tracking</td><td>A backend service receiving order webhooks and POSTing to Meta/Google Conversions APIs — typically $5,000–$15,000+ to build</td><td><a href="/capi-shield/">CAPI Shield</a> — $0, deploys in 6 minutes</td></tr>
+          <tr><td class="bold">Inventory sync to a ledger</td><td>A custom order-webhook-to-database sync service</td><td><a href="/stocky-swap/">Stocky Swap</a> — $0, deploys in 60 seconds</td></tr>
+          <tr><td class="bold">Live profit &amp; loss reporting</td><td>A custom reporting/BI backend aggregating order data</td><td><a href="/shopify-profit-loss-automation/">Shopify P&amp;L Automation</a> — $0</td></tr>
+          <tr><td class="bold">Document generation at volume</td><td>A custom document-generation microservice replacing Apps Script</td><td><a href="/autocrat-quota-fix/">Autocrat Quota Fix</a> — $0</td></tr>
+          <tr><td class="bold">TikTok server-side events</td><td>A backend service POSTing to TikTok's Events API</td><td><a href="/tiktok-events-api-shopify/">TikTok Events API</a> — $0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The pattern across all five: none of them required a developer, a hosting bill, or App Store review, because they're private automations running on Make.com's already-hosted, already-maintained platform — not public apps at all. What you give up is full control over the code and a dependency on Make.com's uptime instead of your own. For the webhook-transform-API pattern specifically, that trade-off is usually a clear win.</p>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ 5. DECISION FRAMEWORK ══ -->
+<section class="section" id="framework" aria-labelledby="framework-h">
+<div class="inner">
+  <div class="sec-head">
+    <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Decision framework</span>
+    <h2 id="framework-h">Decision framework</h2>
+    <p>Five questions, in order. Most decisions resolve by question two or three.</p>
+  </div>
+  <div class="step-cards" itemscope itemtype="https://schema.org/HowTo">
+    <meta itemprop="name" content="How to decide between custom Shopify app development and a Make.com composition" />
+
+    <div class="step-card" itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
+      <div class="step-num" itemprop="position">1</div>
+      <div>
+        <div class="step-title" itemprop="name">Does an existing tool already do 90% of it?</div>
+        <div class="step-desc" itemprop="text">Search for an existing Shopify app, a Shopify Flow, or a Make.com scenario that covers most of the requirement. If one exists, compose it — don't commission a custom build for something already solved.</div>
+      </div>
+    </div>
+
+    <div class="step-card" itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
+      <div class="step-num" itemprop="position">2</div>
+      <div>
+        <div class="step-title" itemprop="name">Is the logic genuinely proprietary?</div>
+        <div class="step-desc" itemprop="text">If the requirement is business logic unique to your operation, or true bidirectional real-time sync with an internal system that has no accessible API, that's a real signal for custom development.</div>
+      </div>
+    </div>
+
+    <div class="step-card" itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
+      <div class="step-num" itemprop="position">3</div>
+      <div>
+        <div class="step-title" itemprop="name">Are you building a product, not a fix?</div>
+        <div class="step-desc" itemprop="text">If the app is meant to be sold on the Shopify App Store to other merchants, this is a product decision, not a cost-avoidance one — build it.</div>
+      </div>
+    </div>
+
+    <div class="step-card" itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
+      <div class="step-num" itemprop="position">4</div>
+      <div>
+        <div class="step-title" itemprop="name">Have you priced the full three-year cost?</div>
+        <div class="step-desc" itemprop="text">Add first-year maintenance, API migration time, and — for public apps — App Store review and any retainer, to the build quote before comparing it to anything else.</div>
+      </div>
+    </div>
+
+    <div class="step-card" itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
+      <div class="step-num" itemprop="position">5</div>
+      <div>
+        <div class="step-title" itemprop="name">Prototype it in Make.com first — even if you'll rebuild custom</div>
+        <div class="step-desc" itemprop="text">Building the workflow in Make.com first is free and fast, and tells you exactly what a custom version needs to do — turning a vague spec into a precise one before anyone gets paid to build it blind.</div>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:32px;display:flex;flex-wrap:wrap;gap:14px;justify-content:center;">
+    <a href={MAKE_GUIDE} class="btn-outline">Read the Make.com setup guide</a>
+    <a href={AFF_MAKE} target="_blank" rel="noopener sponsored" class="btn pulse">Prototype it free on Make.com →</a>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ CROSS-LINKS ══ -->
+<section class="section-alt" aria-labelledby="stack-h">
+<div class="inner">
+  <div class="sec-head">
+    <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Where to go next</span>
+    <h2 id="stack-h">Decided against custom? Here's the free route.</h2>
+  </div>
+  <div class="crosslink-grid">
+    <a href={CALCULATOR} class="crosslink-card" aria-label="Shopify App Cost Calculator — see what you're already overpaying">
+      <span class="tag" style="display:inline-flex;margin-bottom:10px;">Free tool</span>
+      <div class="crosslink-name">App Cost Calculator</div>
+      <div class="crosslink-desc">Before commissioning anything new, see what your current app stack is already costing — most stores find real waste before they've spent a dollar on custom work.</div>
+      <span class="crosslink-save" style="color:var(--g);">Free — instant results</span>
+    </a>
+    <a href={STACK} class="crosslink-card sky" aria-label="The recommended free Shopify stack">
+      <span class="tag tag-sky" style="display:inline-flex;margin-bottom:10px;">Reference</span>
+      <div class="crosslink-name">The Recommended Stack</div>
+      <div class="crosslink-desc">Seven vetted free tools covering tracking, inventory, email, and reporting — the composition that replaces most "custom app" requests before they're commissioned.</div>
+      <span class="crosslink-save" style="color:var(--sky);">$0 total</span>
+    </a>
+    <a href={MAKE_GUIDE} class="crosslink-card vio" aria-label="Make.com for Shopify — complete setup guide">
+      <span class="tag tag-vio" style="display:inline-flex;margin-bottom:10px;">Setup guide</span>
+      <div class="crosslink-name">Make.com for Shopify</div>
+      <div class="crosslink-desc">The platform underneath every composition in this guide. Complete beginner's setup — connect Shopify, build your first scenario.</div>
+      <span class="crosslink-save" style="color:var(--vio);">Free tier available</span>
+    </a>
+    <a href="/shopify-google-sheets-automation/" class="crosslink-card" aria-label="Shopify to Google Sheets automation — a worked example of the webhook pattern">
+      <span class="tag" style="display:inline-flex;margin-bottom:10px;">Worked example</span>
+      <div class="crosslink-name">Google Sheets Automation</div>
+      <div class="crosslink-desc">A full worked example of the exact webhook-transform-write pattern this guide describes — orders and inventory, real scenario structure, no code.</div>
+      <span class="crosslink-save" style="color:var(--g);">Free</span>
+    </a>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ FAQ ══ -->
+<section class="section" id="faq" aria-labelledby="faq-h">
+<div class="inner-sm">
+  <div class="sec-head">
+    <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Common questions</span>
+    <h2 id="faq-h">Frequently asked questions</h2>
+  </div>
+  <div class="faq-list-adc">
+
+    <details class="faq-item-adc">
+      <summary><span>How much does a custom Shopify app cost in 2026?</span><span class="faq-ico" aria-hidden="true"></span></summary>
+      <div class="faq-ans-adc"><p>A simple private app (single internal tool) runs roughly $5,000–$15,000. A substantial private app with multiple integrations runs $15,000–$60,000. A public App Store app MVP runs $30,000–$150,000 to build, plus $20,000–$50,000 in first-year operations. See the sourced breakdown above for the full range by project type.</p></div>
+    </details>
+
+    <details class="faq-item-adc">
+      <summary><span>What's the cost difference between a private app and a public app?</span><span class="faq-ico" aria-hidden="true"></span></summary>
+      <div class="faq-ans-adc"><p>A private app only needs to work for your own store, so it skips App Store review, public-app security requirements, and multi-tenant architecture — most of why private apps cost a fraction of public ones. A public app also carries an ongoing retainer, commonly $5,000–$40,000/month, because it has to keep working for every merchant who installs it.</p></div>
+    </details>
+
+    <details class="faq-item-adc">
+      <summary><span>What ongoing costs does a custom Shopify app have beyond the build?</span><span class="faq-ico" aria-hidden="true"></span></summary>
+      <div class="faq-ans-adc"><p>Four recurring costs people underbudget: maintenance (commonly 20–30% of build cost per year, or a $2,000–$10,000+/month retainer), Shopify API version migrations (mandatory testing roughly every quarter), App Store re-review for public apps when functionality changes, and hosting for the backend server and database.</p></div>
+    </details>
+
+    <details class="faq-item-adc">
+      <summary><span>How often does Shopify's API change, and does that affect a custom app?</span><span class="faq-ico" aria-hidden="true"></span></summary>
+      <div class="faq-ans-adc"><p>Shopify ships a new API version every three months, with each stable version supported for a minimum of 12 months and at least nine months of overlap — so nothing breaks overnight, but an untouched custom app eventually stops working once its version's support window closes. See <a href="https://shopify.dev/docs/api/usage/versioning" target="_blank" rel="noopener">Shopify's versioning docs</a>.</p></div>
+    </details>
+
+    <details class="faq-item-adc">
+      <summary><span>How long does Shopify App Store review take?</span><span class="faq-ico" aria-hidden="true"></span></summary>
+      <div class="faq-ans-adc"><p>Roughly 4–10 business days for the initial review. If changes are requested — common on a first submission — the full process commonly stretches to 2–4 weeks. This only applies to public apps; private apps for your own store skip review entirely.</p></div>
+    </details>
+
+    <details class="faq-item-adc">
+      <summary><span>When should I build a custom app instead of using Make.com?</span><span class="faq-ico" aria-hidden="true"></span></summary>
+      <div class="faq-ans-adc"><p>When the logic is genuinely proprietary, when you need true real-time bidirectional sync with a system that has no accessible API, when you're building the app to sell as a product, or when your scale exceeds what a workflow platform's rate limits can sustain. Outside those cases, an existing tool or a Make.com scenario usually gets there faster and cheaper.</p></div>
+    </details>
+
+    <details class="faq-item-adc">
+      <summary><span>Can Make.com really replace a custom-built Shopify integration?</span><span class="faq-ico" aria-hidden="true"></span></summary>
+      <div class="faq-ans-adc"><p>For the common case — receive a webhook, transform the data, send it somewhere else — yes. That's exactly what <a href="/capi-shield/">CAPI Shield</a>, <a href="/stocky-swap/">Stocky Swap</a>, and <a href="/shopify-profit-loss-automation/">P&amp;L Automation</a> do, each replacing what would otherwise be a small custom backend, at $0. It doesn't replace custom development for logic a workflow tool genuinely can't express.</p></div>
+    </details>
+
+    <details class="faq-item-adc">
+      <summary><span>Is a free Make.com scenario really equivalent to a paid custom app?</span><span class="faq-ico" aria-hidden="true"></span></summary>
+      <div class="faq-ans-adc"><p>For webhook-in, transform, API-out workflows, functionally yes — the underlying mechanism is identical to what custom backend code would do. What you give up is full control over the code, trading it for a dependency on Make.com's platform instead of your own infrastructure. For most Shopify operators that trade-off favours the free composition.</p></div>
+    </details>
+
+  </div>
+</div>
+</section>
+
+<!-- ══ RELATED GUIDES ══ -->
+<section style="padding:64px 24px;background:var(--bg-2);border-top:1px solid var(--border);" aria-labelledby="related-h">
+<div style="max-width:860px;margin:0 auto;">
+  <h2 id="related-h" style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--text-4);margin-bottom:16px;">Related guides</h2>
+  <nav aria-label="Related guides">
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <a href={CALCULATOR} style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-3);border:1px solid var(--border);border-radius:8px;text-decoration:none;">
+        <span style="font-size:14px;font-weight:600;color:var(--text-2);">Shopify App Cost Calculator — see your current overpay</span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);" aria-hidden="true">→</span>
+      </a>
+      <a href={STACK} style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-3);border:1px solid var(--border);border-radius:8px;text-decoration:none;">
+        <span style="font-size:14px;font-weight:600;color:var(--text-2);">The Recommended Stack — 7 free tools, vetted and ranked</span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);" aria-hidden="true">→</span>
+      </a>
+      <a href={MAKE_GUIDE} style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-3);border:1px solid var(--border);border-radius:8px;text-decoration:none;">
+        <span style="font-size:14px;font-weight:600;color:var(--text-2);">Make.com for Shopify — complete free setup guide</span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);" aria-hidden="true">→</span>
+      </a>
+      <a href="/ultimate-shopify-automation-guide/" style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-3);border:1px solid var(--border);border-radius:8px;text-decoration:none;">
+        <span style="font-size:14px;font-weight:600;color:var(--text-2);">The complete Shopify automation guide (2026)</span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </nav>
+</div>
+</section>
+
+</main>
+
+<div style="max-width:860px;margin:0 auto;padding:0 24px;">
+  <AuthorCard />
+</div>
+
+</Base>

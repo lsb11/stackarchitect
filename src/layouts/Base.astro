@@ -21,6 +21,7 @@ interface Props {
   pageType?: 'website' | 'article' | 'product';
   updatedDate?: string;
   publishDate?: string;
+  verifiedDate?: string;
   breadcrumb?: BreadcrumbItem[];
 }
 
@@ -36,8 +37,27 @@ const {
   pageType = 'website',
   updatedDate,
   publishDate,
+  verifiedDate,
   breadcrumb,
 } = Astro.props;
+
+// verifiedDate marks when a human last checked the page's factual claims
+// (pricing, limits, eligibility rules) against their live source — distinct
+// from updatedDate, which just means the page content changed. When it's
+// the more recent of the two, it's the more honest "last confirmed accurate"
+// signal, so it wins for dateModified.
+function parseDate(d?: string): Date | null {
+  if (!d) return null;
+  const dt = new Date(d);
+  return Number.isNaN(dt.getTime()) ? null : dt;
+}
+const updatedDt = parseDate(updatedDate);
+const verifiedDt = parseDate(verifiedDate);
+const verifiedIsNewer = verifiedDt !== null && (updatedDt === null || verifiedDt > updatedDt);
+const bestModifiedDate = verifiedIsNewer ? verifiedDate : (updatedDate || publishDate || undefined);
+const verifiedDateDisplay = verifiedDt
+  ? verifiedDt.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+  : null;
 
 // Always force canonical to the primary non-www domain.
 // Matches astro.config.mjs `trailingSlash: 'always'` — every canonical
@@ -240,7 +260,7 @@ const articleSchema = pageType === 'article' ? {
   'description': description,
   'image': computedOgImage,
   'datePublished': publishDate || updatedDate || new Date().toISOString(),
-  'dateModified': updatedDate || publishDate || new Date().toISOString(),
+  'dateModified': bestModifiedDate || new Date().toISOString(),
   'author': { '@id': 'https://stackarchitect.xyz/#luke' },
   'publisher': { '@id': 'https://stackarchitect.xyz/#org' },
   'mainEntityOfPage': { '@type': 'WebPage', '@id': canonical }
@@ -307,8 +327,8 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
     <!-- Article modified time — only when a real date is known.
          (Previously fell back to build time, which claimed every page was
          modified on every deploy — a fake-freshness footprint.) -->
-    {(updatedDate ?? publishDate) && (
-      <meta property="article:modified_time" content={updatedDate ?? publishDate} />
+    {bestModifiedDate && (
+      <meta property="article:modified_time" content={bestModifiedDate} />
     )}
 
     <!-- Open Graph -->
@@ -562,6 +582,13 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
   <body class="bg-black text-white font-sans min-h-screen flex flex-col">
     <!-- Named slot so child layouts can position Nav before breadcrumb -->
     <Nav />
+
+    {verifiedDateDisplay && (
+      <div class="verified-date-bar" style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;color:#6b7671;letter-spacing:.04em;padding:8px 16px;border-bottom:1px solid #222825;background:#0c0f0d;">
+        Pricing verified: {verifiedDateDisplay}
+      </div>
+    )}
+
     <slot name="header" />
 
     {hasBreadcrumb && (
