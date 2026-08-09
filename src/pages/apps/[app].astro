@@ -153,7 +153,16 @@ const schemas = [faqSchema, softwareSchema, articleSchema];
       />
     </div>
 
-    <FactTable 
+    {app.brandChange && (
+      <aside style="background:#1a1410;border:1px solid #5a3a1a;border-radius:12px;padding:1rem 1.25rem;margin:1.5rem 0;">
+        <p style="margin:0;font-size:14px;color:#b6c0ba;line-height:1.7;">
+          <strong style="color:#fff;">Brand change:</strong> {app.brandChange.note}{' '}
+          <a href={app.brandChange.href} style="color:#34d377;text-decoration:underline">{app.brandChange.linkText}</a>.
+        </p>
+      </aside>
+    )}
+
+    <FactTable
       appName={app.name}
       category={app.category}
       monthlyCost={app.monthlyCost}

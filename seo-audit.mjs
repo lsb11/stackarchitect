@@ -257,6 +257,9 @@ export function auditPrices({ appsPath = APPS_JSON, pagesDir = PAGES_DIR } = {})
     // A plan table legitimately lists every tier; only its entry tier is
     // comparable to apps.json's single floor value.
     if (c.kind === 'tier') { buckets.incomparable++; continue; }
+    // apps.json monthlyCost is monthly by definition. An annual figure
+    // ("Annual cost $2,700+") is a different unit, not a contradiction of it.
+    if (c.shape.period === 'yr') { buckets.incomparable++; continue; }
     const rec = byName.get(c.app);
     const canon = priceFloor(rec.monthlyCost);
     if (c.floor == null || canon == null) { buckets.incomparable++; continue; }
