@@ -1,6 +1,6 @@
 ---
 title: "Fix Shopify Google Ads Conversion Tracking 2026 — Free"
-description: "Google Enhanced Conversions for Shopify via Make.com — no GTM, no paid app, no code. Recovers 20–40% of missing purchase events. Free setup in 6 minutes."
+description: "Google Enhanced Conversions for Shopify via Make.com — no GTM, no paid app, no code. Covers the estimated 20–40% that browser tracking loses. Free setup in 6 minutes."
 publishDate: "2026-04-16"
 updatedDate: "2026-04-16"
 category: "tracking"
@@ -35,7 +35,6 @@ relatedGuides:
   - title: "How to Fix Shopify Conversion Tracking After iOS Updates"
     href: "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates"
 ---
-> [!NOTE]
 > **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-tracking-hub/).
 
 

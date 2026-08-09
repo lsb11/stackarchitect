@@ -1,6 +1,6 @@
 ---
-title: "CAPI Shield Results — Real Stores Recover 20–40% Lost Conversions"
-description: "How CAPI Shield uses server-side tracking to recover Shopify conversion data lost to iOS, Safari ITP, and ad blockers. Mechanics, EMQ scores, and step-by-step setup context."
+title: "CAPI Shield: Closing the Conversion Tracking Gap"
+description: "How CAPI Shield sends Shopify purchase events server-side, past iOS, Safari ITP and ad blockers — and how to measure what it adds in Meta Events Manager."
 publishDate: "2026-03-10"
 updatedDate: "2026-04-16"
 category: "tracking"
@@ -12,11 +12,11 @@ faqs:
     answer: "Most Shopify stores are losing 30–60% of their conversion events to iOS restrictions, ad blockers, and browser privacy settings. The exact number depends on your traffic mix — stores with high iOS traffic from Instagram and email campaigns are most affected. You can calculate your specific gap by comparing Shopify order count against Meta Ads Manager reported purchases for the same 30-day period."
   - question: "What is CAPI Shield and how does it work?"
     answer: "CAPI Shield is a free Make.com scenario that receives a Shopify Order Payment webhook and forwards a formatted purchase event directly to Meta's Conversions API and Google's Enhanced Conversions endpoint. Because the event travels server-to-server, iOS restrictions, Safari ITP, and ad blockers cannot interfere. The result is that purchase events reach Meta and Google regardless of what browser or device the customer used."
-  - question: "How much does it cost to recover lost Shopify conversions with CAPI Shield?"
+  - question: "How much does CAPI Shield cost?"
     answer: "CAPI Shield is free. It runs on Make.com's free plan which includes 1,000 credits per month — sufficient for most stores under 500 orders per month given that server-side tracking uses approximately 2 operations per order. The only potential cost is a Google Tag Manager server-side container for advanced configurations, which runs approximately $10–30 per month — though the basic CAPI Shield setup does not require this."
   - question: "Will CAPI Shield double-count my conversions?"
     answer: "No, when properly configured with deduplication. CAPI Shield includes an event_id that matches the event_id sent by the browser pixel. Meta and Google use this matching ID to identify that the pixel event and the CAPI event represent the same purchase and count it once. The CAPI Shield setup guide covers deduplication configuration in detail."
-  - question: "How long does it take to see recovered conversions after implementing CAPI Shield?"
+  - question: "How long before CAPI Shield shows an effect?"
     answer: "The CAPI events start flowing immediately after setup. However, the impact on reported ROAS and campaign performance typically becomes visible 7–14 days after implementation, as Meta's and Google's algorithms adjust their optimisation models based on the more complete conversion data."
 relatedGuides:
   - title: "Meta One-Click Conversions API for Shopify — What It Fixes"
@@ -32,18 +32,16 @@ relatedGuides:
   - title: "Shopify Server-Side Tracking — Complete Setup Guide"
     href: "/blog/shopify-server-side-tracking-complete-setup-guide"
 ---
-> [!NOTE]
 > **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-tracking-hub/).
 
 
-# Real Results: How Shopify Stores Recover 20–40% of Lost Conversions with CAPI Shield
+# How CAPI Shield Closes the Shopify Conversion Tracking Gap
 
 Your Shopify dashboard shows 200 orders this month. Meta Ads Manager shows 80 purchases. The 120-order gap is not a reporting anomaly — it represents real sales that Meta's algorithm never learned from. Every budget decision, every audience adjustment, every bid strategy is built on 40% of your actual data.
 
-CAPI Shield recovers the recoverable portion of that gap — typically 20–40% of total orders — by sending purchase events server-to-server, bypassing every browser-based restriction that causes the gap in the first place. Here's what that recovery looks like in practice, and the exact setup behind it.
+CAPI Shield sends purchase events server-to-server, bypassing every browser-based restriction that causes the gap in the first place. We do not publish a recovery percentage — we have no first-party measurement of one, and the honest answer is that it depends on your traffic mix. What we can show you is the mechanism, and exactly how to measure the result on your own store.
 
-> [!TIP]
-> **Want to recover your lost conversions right now?** Follow the [Shopify server-side tracking setup guide](/capi-shield/) — free, runs on Make.com, deploys in 6 minutes.
+> **Want to close the gap on your own store?** Follow the [Shopify server-side tracking setup guide](/capi-shield/) — free, runs on Make.com, deploys in 6 minutes.
 
 ## Why Shopify Conversions Go Missing
 
@@ -82,17 +80,17 @@ The browser pixel and CAPI event carry matching `event_id` values. Meta deduplic
 - Customers who opted out of all tracking under GDPR/CCPA and provided no customer data — CAPI uses hashed data for matching; if no data is available, no match is possible
 - View-through attribution gaps — different issue from click tracking loss
 
-The typical recovery rate after full CAPI implementation is 20–40% of total orders — meaning if you were seeing 80 purchases reported for 200 orders, CAPI Shield typically brings this to 120–130 reported purchases. The residual gap (70–80 purchases) represents genuinely non-attributable conversions.
+How much of your own gap closes depends on how much of it is browser-side loss rather than genuinely non-attributable conversion. Those proportions differ by store, and we have not measured them across a sample, so we do not publish a figure. Meta does measure it per-advertiser: see *Measuring the result* below.
 
-## What Changes After Recovery
+## What Changes When the Gap Closes
 
-Two immediate effects follow from recovered conversion data:
+Two effects follow from more complete conversion data:
 
 **Reported ROAS increases.** More purchases appearing in Meta Ads Manager means higher reported ROAS for the same ad spend. Campaigns that appeared to be breaking even or underperforming may reveal themselves as genuinely profitable when the full conversion picture is visible.
 
 **Algorithm performance improves.** Meta's Advantage+ and Google's Performance Max both use conversion data to optimise targeting, bidding, and delivery. When these algorithms train on 40% of your actual conversions, they make poorer decisions — showing your ads to people less likely to buy, bidding inefficiently, delivering to lower-intent audiences. More complete conversion data means better algorithmic decisions over the following 2–4 weeks.
 
-This second effect is often more valuable than the reporting improvement. Recovering conversions does not just fix your dashboards — it improves the actual performance of your campaigns.
+This second effect is often more valuable than the reporting improvement. More complete conversion data does not just fix your dashboards — it changes what the algorithm learns from.
 
 ## Deploying CAPI Shield
 
@@ -109,16 +107,16 @@ The full step-by-step setup is at [CAPI Shield](/capi-shield/). The overview:
 
 After 7 days, check your Event Match Quality score in Meta Events Manager — target 6 or above. Check deduplication overlap — a healthy setup shows 80–95% overlap between pixel and CAPI events.
 
-## Measuring Your Recovery
+## Measuring the Result
 
 **Before CAPI Shield:** run a 30-day baseline. Record Shopify orders vs Meta reported purchases. Note the gap percentage.
 
-**After CAPI Shield (wait 14 days for data to stabilise):** run the same 30-day comparison. The gap should have narrowed by 20–40 percentage points.
+**After CAPI Shield (wait 14 days for data to stabilise):** run the same 30-day comparison and read Meta's own metric for this. Meta reports **Additional Conversions Reported (ACR)** — how many conversions the Conversions API added on top of the Pixel — in Events Manager, and exposes it programmatically through the [Dataset Quality API](https://developers.facebook.com/docs/marketing-api/conversions-api/dataset-quality-api/). That number is measured on your data by Meta, not estimated by us.
 
 **Also check:**
 - Event Match Quality score: should move from below 5 to 6–8+
 - CAPI events visible in Meta Events Manager: should show alongside Pixel events with 80–95% deduplication overlap
-- Campaign ROAS: typically improves 15–30% over 2–4 weeks as the algorithm adjusts
+- Campaign ROAS: watch it over 2–4 weeks as the algorithm adjusts to more complete data. We publish no expected percentage — this depends on your spend, creative and audience, and we have not measured it across a sample
 
 For the full diagnosis of your specific tracking situation — including which iOS change is causing the largest gap for your store — see the [iOS conversion tracking fix guide](/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/).
 

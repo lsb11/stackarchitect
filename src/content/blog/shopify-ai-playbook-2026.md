@@ -87,7 +87,7 @@ Meta's Advantage+ AI, Google's Performance Max, and TikTok's Smart Campaigns all
 
 **The fix is server-side tracking:** sending purchase events directly from Shopify's server to Meta, Google, and TikTok via their Conversions APIs. This bypasses browsers entirely. Meta's [Conversions API](https://developers.facebook.com/docs/marketing-api/conversions-api) and Google's [Enhanced Conversions](https://support.google.com/google-ads/answer/9888656) both support server-side event submission with hashed first-party data — the mechanism that makes tracking reliable regardless of browser privacy settings.
 
-**Free approach:** [CAPI Shield](/capi-shield/) — Make.com scenario that handles Meta CAPI, Google Enhanced Conversions, and TikTok Events API in one setup. Recovers 20–40% of missing purchase events. Deploys in under an hour. $0/month.
+**Free approach:** [CAPI Shield](/capi-shield/) — Make.com scenario that handles Meta CAPI, Google Enhanced Conversions, and TikTok Events API in one setup. Covers the estimated 20–40% of purchase events browser tracking loses. Deploys in under an hour. $0/month.
 
 This is the AI-adjacent investment with the clearest ROI on this list. Better purchase data → better AI ad optimisation → better ROAS.
 
@@ -125,7 +125,7 @@ This is the newest layer and the one most Shopify content sites have not yet ada
 
 2. **Write direct, factual answers** — not marketing copy. AI engines cite content that directly answers questions. "Systeme.io gives 2,000 contacts and unlimited sends free" is citable. "Supercharge your email marketing" is not.
 
-3. **Use specific numbers and data.** "Recovers 20–40% of lost purchase events" is more citable than "improves tracking". Precision signals authority.
+3. **Use specific numbers and data.** "Browser-only tracking loses an estimated 20–40% of purchase events" is more citable than "improves tracking". Precision signals authority.
 
 4. **Install the Shopify Knowledge Base App.** AI crawlers access your knowledge base even before you enable Agentic Storefronts. Populate it with FAQ content, product details, and return policies.
 

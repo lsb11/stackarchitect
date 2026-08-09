@@ -104,7 +104,7 @@ const compRows = [
 // ─── Cross-links ──────────────────────────────────────────────────────────────
 const crosslinks = [
   { href: "/stocky-swap/",                    hoverClass: "sky",    tag: "Inventory ⚠ Aug 2026", tagClass: "tag-sky",    name: "Stocky Swap",       desc: "Replace Stocky before the August 2026 shutdown. Every Shopify order logged to Google Sheets in real time — live stock tracking at $0/month forever.", save: "Saves $29–$199/mo",  saveColor: "var(--sky)"    },
-  { href: "/tiktok-events-api-shopify/",      hoverClass: "tiktok", tag: "TikTok tracking",       tagClass: "tag-tiktok", name: "TikTok Events API", desc: "The same Make.com webhook branches to TikTok's Events API simultaneously. Free CompletePayment events server-side — recovers 20–40% of TikTok conversions lost to iOS.", save: "Saves $39–$299/mo",  saveColor: "var(--tiktok)" },
+  { href: "/tiktok-events-api-shopify/",      hoverClass: "tiktok", tag: "TikTok tracking",       tagClass: "tag-tiktok", name: "TikTok Events API", desc: "The same Make.com webhook branches to TikTok's Events API simultaneously. Free CompletePayment events server-side — sends TikTok events server-side, where iOS cannot strip them.", save: "Saves $39–$299/mo",  saveColor: "var(--tiktok)" },
   { href: "/replace-klaviyo-free/",           hoverClass: "",       tag: "Email marketing",       tagClass: "",           name: "Replace Klaviyo",   desc: "Systeme.io replaces Klaviyo entirely — unlimited emails, automations, and CRM on the free plan. 2,000 contacts, unlimited sends, $0.", save: "Saves $150–$400/mo", saveColor: "var(--g)"      },
   { href: "/shopify-profit-loss-automation/", hoverClass: "sky",    tag: "P&L reporting",         tagClass: "tag-sky",    name: "P&L Auto",          desc: "The same webhook that powers CAPI Shield branches to a live P&L Google Sheets dashboard. Revenue, COGS, ad spend, and net profit updated on every order at $0.", save: "Saves $19–$299/mo",  saveColor: "var(--sky)"    },
   { href: "/autocrat-quota-fix/",             hoverClass: "vio",    tag: "Stability",             tagClass: "tag-vio",    name: "Autocrat Quota Fix",desc: "Stop Google Apps Script quota errors from breaking your automation workflows. Handles 10,000+ rows per day at $0 — keeps the entire stack running reliably.", save: "Saves $49–$99/mo",   saveColor: "var(--vio)"    },
@@ -113,7 +113,7 @@ const crosslinks = [
 
 // ─── FAQs ─────────────────────────────────────────────────────────────────────
 const faqs = [
-  { q: "What is the Shopify CAPI?", a: "The Shopify CAPI refers to server-side Conversions API implementation for Shopify \u2014 sending purchase events from Shopify's servers directly to Meta CAPI, Google Enhanced Conversions, or TikTok Events API. It bypasses iOS privacy restrictions and ad blockers that block browser pixel tracking, recovering 20\u201340% of conversions that would otherwise be missed." },
+  { q: "What is the Shopify CAPI?", a: "The Shopify CAPI refers to server-side Conversions API implementation for Shopify \u2014 sending purchase events from Shopify's servers directly to Meta CAPI, Google Enhanced Conversions, or TikTok Events API. It bypasses iOS privacy restrictions and ad blockers that block browser pixel tracking, covering purchase events that would otherwise be missed." },
   { q: "What is Shopify server-side tracking?",                          a: "Server-side tracking sends Shopify conversion events directly from your server to ad platforms, bypassing the browser entirely. iOS restrictions, ad blockers, and cookie expiry cannot interfere. CAPI Shield implements this free via Make.com webhooks — the webhook fires from Shopify's backend the moment an order is paid, completely independent of browser behaviour." },
   { q: "How to set up Shopify server-side tracking free?",               a: "Use CAPI Shield — a free Make.com scenario that routes Shopify order webhooks to Meta Conversions API and Google Enhanced Conversions simultaneously. Sign up for Make.com free, create a scenario with a Webhooks trigger, add the Meta Conversions API module and Google Ads Enhanced Conversions module, create a Shopify Order Payment webhook pointing to your Make.com URL, and test with a sample order. Takes 6 minutes, no code required, free forever on Make.com's free tier." },
   { q: "What is Google Enhanced Conversions and how does it work with Shopify?", a: "Google Enhanced Conversions is Google's server-side conversion tracking system. It supplements your standard Google Ads conversion tags by sending hashed first-party customer data — email, phone, name — alongside each conversion event. Google uses this to match conversions to Google accounts with greater accuracy, improving Smart Bidding and Performance Max optimisation even when cookies and pixels are blocked by iOS or ad blockers. CAPI Shield sets this up free alongside Meta CAPI in the same Make.com scenario — one setup recovers both platforms." },
@@ -146,7 +146,7 @@ const schemaGraph = {
       "@type": "WebPage",
       "url": CANONICAL,
       "name": "CAPI Shield — Free Meta CAPI & Google Tracking for Shopify 2026",
-      "description": "Free server-side conversion tracking for Shopify. Recover 20–40% of lost purchase events by sending data directly to Meta CAPI and Google Enhanced Conversions, bypassing iOS restrictions and ad blockers.",
+      "description": "Free server-side conversion tracking for Shopify. Browser-only tracking loses an estimated 20–40% of purchase events; this sends them directly to Meta CAPI and Google Enhanced Conversions, bypassing iOS restrictions and ad blockers.",
       "dateModified": "2026-07-17",
       "breadcrumb": {
         "@type": "BreadcrumbList",
@@ -269,7 +269,7 @@ const tocHeadings = [
 ];
 
 ---
-<Base title="Shopify Server-Side Tracking — CAPI Shield, Free Setup" description="Shopify server-side tracking recovers 20–40% of lost conversions free with CAPI Shield — Meta CAPI + Google, no code, 6 min.">
+<Base title="Shopify Server-Side Tracking — CAPI Shield, Free Setup" description="Browser-only tracking loses an estimated 20–40% of purchase events. CAPI Shield sends them server-side to Meta CAPI + Google free — no code, 6 min.">
 <Fragment slot="head">
 <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
 
@@ -327,7 +327,7 @@ const tocHeadings = [
 
     <div class="hero-proof">
       <span class="dot"></span>
-      <span class="hero-proof-txt">Recovers 20–40% of lost iOS conversions · Runs on Make.com's free tier · No monthly fee</span>
+      <span class="hero-proof-txt">Closes the browser tracking gap · Runs on Make.com's free tier · No monthly fee</span>
     </div>
 
     <h1>
@@ -555,7 +555,7 @@ const tocHeadings = [
     <div class="section-cta">
       <div class="section-cta-left">
         <h4>Set up Meta CAPI and Google Enhanced Conversions free</h4>
-        <p>Both platforms · One setup · Takes 6 minutes · Recovers 20–40% of lost conversions</p>
+        <p>Both platforms · One setup · Takes 6 minutes · Free on Make.com</p>
       </div>
       <a href={MAKE_URL} target="_blank" rel="noopener sponsored" class="btn btn-sm pulse">Deploy both free →</a>
     </div>

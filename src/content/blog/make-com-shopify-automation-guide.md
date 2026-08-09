@@ -75,7 +75,7 @@ In Make.com, click **Run once** to enter listening mode. Place a test order in S
 
 ### Scenario 1 — CAPI Shield (Meta + Google server-side tracking)
 
-Routes order data to Meta Conversions API and Google Enhanced Conversions server-to-server, bypassing browsers and iOS restrictions. Recovers 20–40% of lost purchase events your browser pixel misses.
+Routes order data to Meta Conversions API and Google Enhanced Conversions server-to-server, bypassing browsers and iOS restrictions. Covers the estimated 20–40% of purchase events your browser pixel misses.
 
 If you run Meta or Google Ads without server-side events, your ROAS data is incomplete and your campaigns are optimising blind. This is the highest-ROI automation on the list.
 

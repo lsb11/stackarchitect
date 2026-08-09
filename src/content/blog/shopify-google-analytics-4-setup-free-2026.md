@@ -34,7 +34,6 @@ relatedGuides:
   - title: "Make.com for Shopify — Complete Beginner's Guide"
     href: "/blog/make-com-shopify-automation-guide"
 ---
-> [!NOTE]
 > **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-tracking-hub/).
 
 

@@ -38,7 +38,6 @@ Most Shopify inventory management guides end with a recommendation to pay $29–
 
 This guide covers the complete inventory management layer for Shopify stores — from basic order logging through supplier management, stock alerts, velocity analysis, and multi-location tracking. It also covers the urgent situation every Shopify merchant faces in 2026: **Shopify Stocky shuts down permanently on August 31.**
 
-> [!TIP]
 > **Don't want to build this yourself?** I've already built this exact system. It's called Stocky Swap. It's free, it runs on Make.com, and you can deploy it to your store in 4 minutes.  
 > 👉 [Get Stocky Swap for free here](/stocky-swap/).
 
@@ -204,7 +203,6 @@ Below these thresholds, the Make.com and Google Sheets system is genuinely equiv
 
 The average store is paying anywhere from $29 to $500 a month for inventory management.
 
-> [!TIP]
 > **Don't want to build this yourself?** I've already built this exact system. It's called Stocky Swap. It's free, it runs on Make.com, and you can deploy it to your store in 4 minutes.  
 > 👉 [Get Stocky Swap for free here](/stocky-swap/).
 

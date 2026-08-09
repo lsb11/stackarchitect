@@ -12,13 +12,13 @@ faqs:
   - question: "Why does Shopify show more sales than Meta Ads Manager in 2026?"
     answer: "Three changes converged: iOS 26's Link Tracking Protection strips Meta's fbclid click identifier in Private Browsing, Mail, and Messages; Shopify changed its App Pixel default to Optimized mode on January 13, 2026, which throttles data sent to Meta when no attribution signals are detected; and Meta's shift toward Advantage+ campaigns reduced targeting control. Meta's pixel receives incomplete conversion data, so Ads Manager underreports purchases while Shopify records every order regardless of source."
   - question: "What is the free fix for Meta ROAS dropping on Shopify?"
-    answer: "The free fix is implementing Meta Conversions API (CAPI) — server-side tracking that sends conversion events directly from your server to Meta, bypassing browser restrictions entirely. The quickest partial fix (5 minutes) is switching your App Pixel from Optimized to Always on mode. Full server-side CAPI implementation takes 2–3 hours and recovers 20–40% of invisible conversions."
+    answer: "The free fix is implementing Meta Conversions API (CAPI) — server-side tracking that sends conversion events directly from your server to Meta, bypassing browser restrictions entirely. The quickest partial fix (5 minutes) is switching your App Pixel from Optimized to Always on mode. Full server-side CAPI implementation takes 2–3 hours and covers the estimated 20–40% of purchase events browser tracking loses."
   - question: "Does iOS 26 strip fbclid from all Safari browsing?"
     answer: "Not from all browsing. iOS 26's Link Tracking Protection strips fbclid primarily when links are opened from Private Browsing mode, Mail, and Messages — not from standard Safari browsing sessions. For stores with significant iOS traffic from Instagram or email campaigns, this represents a meaningful attribution gap."
   - question: "What is the Shopify App Pixel Optimized mode change?"
     answer: "On January 13, 2026, Shopify changed the default data sharing setting for all App Pixels from Always on to Optimized. In Optimized mode, Shopify monitors whether a pixel is generating attribution signals. If no signals are detected — which happens when iOS strips click IDs — Shopify may throttle or pause data sharing to that pixel. The fix is switching back to Always on in Settings → Customer Events → App Pixels tab."
-  - question: "How much ROAS can I recover by fixing Shopify Meta tracking?"
-    answer: "Most stores implementing full server-side CAPI recover 20–40% of previously invisible conversions. Two effects follow: reported ROAS increases as more purchases appear in Ads Manager, and Meta's algorithm improves its targeting and bidding decisions because it now has more complete purchase data to learn from."
+  - question: "What happens to reported ROAS after fixing Shopify Meta tracking?"
+    answer: "Browser-only tracking loses an estimated 20–40% of purchase events; server-side CAPI is not subject to that loss. Measure what it adds as Additional Conversions Reported in Meta Events Manager. Two effects follow: reported ROAS increases as more purchases appear in Ads Manager, and Meta's algorithm improves its targeting and bidding decisions because it now has more complete purchase data to learn from."
 relatedGuides:
   - title: "Meta One-Click Conversions API for Shopify — What It Fixes"
     href: "/blog/meta-one-click-conversions-api-shopify"
@@ -34,7 +34,6 @@ relatedGuides:
   - title: "The Ultimate Shopify Automation Guide"
     href: "/ultimate-shopify-automation-guide"
 ---
-> [!NOTE]
 > **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-tracking-hub/).
 
 
@@ -42,7 +41,7 @@ relatedGuides:
 
 Three converging changes in Q1 2026 are causing Shopify stores to lose 40–60% of Meta conversion data. The result: Meta's algorithm optimises on incomplete data, ROAS reported in Ads Manager drops, and budgets get cut from campaigns that are actually working.
 
-**40–60%** of conversions invisible to Meta · **3** converging causes · **20–40%** ROAS recoverable free · **2–3 hours** fix time
+**40–60%** of conversions invisible to Meta · **3** converging causes · **20–40%** signal lost to browser tracking (est.) · **2–3 hours** fix time
 
 ## Why Shopify Shows More Sales Than Meta
 
@@ -164,7 +163,7 @@ This uses ground-truth revenue data from Shopify — which counts every order re
 | Pixel mode | Optimized (throttled) | Always on |
 | CAPI events | Not visible | Visible alongside pixel |
 
-**Timeline:** Steps 1–3 show impact in 24–72 hours. Full CAPI shows full impact 7–14 days after implementation. Expected ROAS improvement: 20–40%.
+**Timeline:** Steps 1–3 show impact in 24–72 hours. Full CAPI shows full impact 7–14 days after implementation. We publish no expected ROAS improvement — it depends on your spend, creative and audience, and we have not measured it across a sample. Measure your own result as Additional Conversions Reported in Meta Events Manager.
 
 The [CAPI Shield setup guide](/capi-shield/) covers every step of the full CAPI implementation including deduplication, event matching, and verification in Meta Events Manager.
 

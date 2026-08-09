@@ -38,7 +38,6 @@ relatedGuides:
   - title: "TikTok Events API — Free Server-Side Setup"
     href: "/tiktok-events-api-shopify"
 ---
-> [!NOTE]
 > **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-tracking-hub/).
 
 
@@ -129,7 +128,7 @@ Follow the DNS verification or meta tag verification steps. Once verified, go to
 
 ### Cause 3 — No Server-Side Conversions API
 
-**Fix time: 2–3 hours. Recovers 20–40% of invisible conversions.**
+**Fix time: 2–3 hours. Covers the estimated 20–40% of purchase events browser tracking loses.**
 
 This is the most impactful fix. The Conversions API (CAPI) sends purchase events directly from Shopify's server to Meta — bypassing the browser, iOS restrictions, ITP, ad blockers, and Shopify's pixel throttling entirely.
 
@@ -171,7 +170,7 @@ Go to: **Meta Events Manager → Aggregated Event Measurement → Configure Web 
 | Event Match Quality | Below 5 | 6–8+ |
 | CAPI events visible | No | Yes — alongside pixel |
 
-A residual 15–25% gap is expected and normal even with full server-side implementation. This represents orders from users who cannot be attributed due to complete ATT denial combined with no click ID — Meta genuinely cannot match these. The important thing is recovering the 20–40% that is recoverable via CAPI.
+A residual 15–25% gap is expected and normal even with full server-side implementation. This represents orders from users who cannot be attributed due to complete ATT denial combined with no click ID — Meta genuinely cannot match these. The important thing is that server-side delivery is not subject to the browser-side loss in the first place — measure what it adds as Additional Conversions Reported in Meta Events Manager.
 
 ## TikTok and Google — The Same Problem
 
