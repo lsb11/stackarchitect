@@ -21,6 +21,14 @@ const tocHeadings = [
     "text": "Make.com vs Zapier for Shopify"
   },
   {
+    "id": "flow-h",
+    "text": "Make.com vs Zapier vs Shopify Flow"
+  },
+  {
+    "id": "limits-h",
+    "text": "Free tier limits — and when to upgrade"
+  },
+  {
     "id": "make-com-shopify-common-questions",
     "text": "Make.com + Shopify \u2014 Common Questions"
   },
@@ -39,7 +47,7 @@ const tocHeadings = [
 ];
 
 ---
-<Base title="Make.com for Shopify — Free Automation Setup Guide 2026 | Stack Architect" description="Make.com connects to Shopify via webhook in 3 minutes. Run server-side tracking (Meta + Google), inventory management, TikTok CAPI, and P&L reporting — all free. Complete setup guide 2026.">
+<Base title="Make.com for Shopify — Free Automation Guide 2026" description="Connect Make.com to Shopify in 3 minutes. What the free tier covers, how it compares to Zapier and Shopify Flow, and when you actually need to upgrade.">
 <Fragment slot="head">
 <script type="application/ld+json">
   {
@@ -193,6 +201,8 @@ const tocHeadings = [
 
   <TableOfContents headings={tocHeadings} />
 
+      <p id="answer">Make.com is a no-code automation platform that connects to Shopify through a built-in order webhook, no app install required. One trigger fans out to Meta CAPI, Google Enhanced Conversions, TikTok Events API and Google Sheets at once. Its free tier gives 1,000 credits a month, covering roughly 200 orders on a full stack.</p>
+
       <p class="hero-sub speakable">Make.com connects to Shopify via webhook in 3 minutes. One free account powers server-side tracking for Meta and Google, live inventory management, TikTok Events API, and real-time P&L reporting — simultaneously, at $0.</p>
       <div class="hero-ctas">
         <a href="/pro/" class="btn-gold">Get the Pre-Built Kit — $29 →</a>
@@ -337,7 +347,7 @@ const tocHeadings = [
               ["Multi-step branching (free)", "✓", "Paid only"],
               ["Fan-out (1 trigger → many actions)", "✓ free", "Paid only"],
               ["Shopify integration", "Native", "Native"],
-              ["Paid plan (entry)", "$9/mo (10k ops)", "$20/mo (750 tasks)"],
+              ["Paid plan (entry)", "$12/mo (10k credits)", "$19.99/mo (750 tasks)"],
               ["Cost per operation (paid)", "~$0.0009", "~$0.027 (30× more)"],
               ["Visual scenario builder", "✓", "Limited"],
               ["HTTP / webhook modules (free)", "✓", "Paid only"],
@@ -352,9 +362,101 @@ const tocHeadings = [
         </table>
       </div>
       <p style="margin-top:16px;font-size:13px;color:var(--text-4);">For Shopify automation, Make.com is the clear choice at every tier. The free plan alone covers the entire Stack Architect toolset for most stores.</p>
+      <p style="margin-top:12px;font-size:13px;color:var(--text-4);">Those rows use a fixed example. To put your own order volume and branch count through it, the <a href="/make-vs-zapier-cost-calculator/" style="color:var(--g);text-decoration:underline;">Make vs Zapier cost calculator</a> returns the exact monthly and annual difference for your store.</p>
       <div style="margin-top:16px;">
         <a href="/go/make" target="_blank" rel="noopener sponsored" class="btn-green" style="font-size:14px;padding:12px 24px;">Start Free on Make.com →</a>
       </div>
+    </div>
+  </section>
+
+  <!-- SHOPIFY FLOW / THREE-WAY -->
+  <section class="alt-bg">
+    <div class="inner-sm">
+      <div class="tag">Three-way comparison</div>
+      <h2 id="flow-h">Make.com vs Zapier vs Shopify Flow</h2>
+      <p>Shopify Flow gets listed alongside the other two as though it is a third option. It is a different category of tool, and treating it as an alternative is the most common mistake in this decision.</p>
+
+      <div style="overflow-x:auto;border-radius:10px;border:1px solid var(--border);margin-top:24px;">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <thead>
+            <tr style="background:var(--bg-3);">
+              <th style="padding:12px 18px;text-align:left;color:var(--text-4);font-family:monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;border-bottom:1px solid var(--border);">On the free plan</th>
+              <th style="padding:12px 18px;text-align:center;color:var(--text-4);font-family:monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;border-bottom:1px solid var(--border);">Make.com</th>
+              <th style="padding:12px 18px;text-align:center;color:var(--text-4);font-family:monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;border-bottom:1px solid var(--border);">Zapier</th>
+              <th style="padding:12px 18px;text-align:center;color:var(--text-4);font-family:monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;border-bottom:1px solid var(--border);">Shopify Flow</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              ["Monthly operations", "1,000 credits", "100 tasks", "Unlimited — Shopify-internal only"],
+              ["Multi-step automation", "✓", "Paid only", "✓ — Shopify-internal only"],
+              ["Webhook triggers", "✓", "Paid only", "✗"],
+              ["HTTP / API modules", "✓", "Paid only", "✗"],
+              ["Send data outside Shopify", "✓", "Limited", "✗ without a paid connector"],
+              ["Plan requirement", "Any Shopify plan", "Any Shopify plan", "Shopify, Advanced or Plus — not Basic"],
+            ].map((row, i) => (
+              <tr style={`border-bottom:1px solid var(--border);background:${i%2===0?'transparent':'rgba(255,255,255,.015)'};`}>
+                <td style="padding:11px 18px;color:var(--text-3);">{row[0]}</td>
+                <td style="padding:11px 18px;text-align:center;color:var(--g);font-weight:600;">{row[1]}</td>
+                <td style="padding:11px 18px;text-align:center;color:var(--text-4);">{row[2]}</td>
+                <td style="padding:11px 18px;text-align:center;color:var(--text-4);">{row[3]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="margin-top:32px;">What Shopify Flow actually is</h3>
+      <p>Flow triggers on Shopify-internal events — order created, order paid, order cancelled, customer created, product added, inventory level changed — and performs Shopify-internal actions: add tags, cancel orders, send internal notifications, update metafields. Within that boundary it is genuinely useful and genuinely free.</p>
+      <p>What it cannot do without paid third-party connectors is leave Shopify. It cannot write to Google Sheets, call the Meta Conversions API, post to Slack, or hit any external HTTP endpoint. <strong>Every automation on this page involves sending data outside Shopify, so none of them are buildable in Flow.</strong> It is also gated to the Shopify, Advanced and Plus plans — a Basic store does not have it at all.</p>
+      <p>The practical split: use Flow for internal store logic — auto-tagging high-value customers, hiding out-of-stock products, internal low-stock notifications. Use Make.com for anything that crosses the boundary. They are complements, not competitors, and a store on Advanced or Plus can reasonably run both.</p>
+
+      <h3 style="margin-top:32px;">Why the webhook difference decides it against Zapier</h3>
+      <p>Every automation described here starts with a Shopify Order Payment webhook. <strong>Zapier's free plan does not support webhook triggers</strong>, which means this stack cannot be built on free Zapier in any combination of Zaps — the blocker is structural, not a question of volume.</p>
+      <p>The fan-out compounds it. One Make.com scenario takes a single order webhook and branches in parallel to Meta CAPI, Google Enhanced Conversions, TikTok Events API, a Google Sheets inventory row and a Google Sheets P&amp;L row — five destinations, one trigger, roughly five operations. The same work in Zapier is five separate Zaps, each metering its own tasks, all requiring a paid tier for webhook support.</p>
+      <p>Legitimate reasons to pick Zapier anyway: you need a connector in Zapier's larger library that Make.com lacks, your team's existing Zapier fluency outweighs the price gap, or you depend on Zapier Tables or Interfaces, which have no Make.com equivalent. For the standard Shopify jobs — tracking, inventory, email, P&amp;L — none of those apply.</p>
+    </div>
+  </section>
+
+  <!-- LIMITS & UPGRADE -->
+  <section>
+    <div class="inner-sm">
+      <div class="tag">Capacity planning</div>
+      <h2 id="limits-h">Free tier limits — and when to upgrade</h2>
+      <p>The free plan is 1,000 credits a month with no time limit. What matters is how fast your stack consumes them, and that is a function of branches per order, not orders alone.</p>
+
+      <div style="overflow-x:auto;border-radius:10px;border:1px solid var(--border);margin-top:24px;">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <thead>
+            <tr style="background:var(--bg-3);">
+              <th style="padding:12px 18px;text-align:left;color:var(--text-4);font-family:monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;border-bottom:1px solid var(--border);">Orders/month</th>
+              <th style="padding:12px 18px;text-align:left;color:var(--text-4);font-family:monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;border-bottom:1px solid var(--border);">Credits used</th>
+              <th style="padding:12px 18px;text-align:left;color:var(--text-4);font-family:monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;border-bottom:1px solid var(--border);">Plan needed</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              ["Under 200", "~1,000", "Free — $0/month"],
+              ["200 – 2,000", "~10,000", "Core — $12/month"],
+              ["2,000 – 10,000", "~60,000", "Pro — $16/month"],
+            ].map((row, i) => (
+              <tr style={`border-bottom:1px solid var(--border);background:${i%2===0?'transparent':'rgba(255,255,255,.015)'};`}>
+                <td style="padding:11px 18px;color:var(--text-3);">{row[0]}</td>
+                <td style="padding:11px 18px;color:var(--text-3);font-family:monospace;">{row[1]}</td>
+                <td style="padding:11px 18px;color:var(--g);font-weight:600;">{row[2]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p style="margin-top:20px;">The arithmetic behind it: a four-branch scenario costs roughly five to six operations per order, so 1,000 credits carries about 160–200 orders a month on the full stack. Running only CAPI Shield — a much lighter scenario — stretches the same allowance considerably further. <strong>Count your branches before you count your orders.</strong></p>
+
+      <h3 style="margin-top:32px;">The three upgrade triggers</h3>
+      <p><strong>You are consistently hitting the credit ceiling before month end.</strong> This is the honest one. Scenarios stop running when credits are exhausted, and a tracking scenario that silently stops mid-month costs more in lost attribution than the $12 would have.</p>
+      <p><strong>You need more than two active scenarios.</strong> The free plan caps active scenarios, which is why the recommended architecture is one scenario with a router rather than several small ones. If your logic genuinely will not consolidate, that is a real reason to move up.</p>
+      <p><strong>You need scheduling tighter than the free interval.</strong> Webhook-triggered scenarios fire instantly on any plan, so this only bites for polling scenarios — reports, reconciliation, scheduled syncs — not for the order-driven automations on this page.</p>
+      <p>Everything else is premature. Most Shopify stores under 200 orders a month run the complete stack on the free tier indefinitely, and the correct move at 250 orders is to consolidate branches into one router before paying for headroom you have not earned.</p>
     </div>
   </section>
 

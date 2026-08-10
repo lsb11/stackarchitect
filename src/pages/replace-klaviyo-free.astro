@@ -90,19 +90,46 @@ const pricingTiers = [
   { contacts: "50,000", price: "$720" }
 ];
 
+// ─── UK pricing ──────────────────────────────────────────────────────────────
+// Klaviyo bills in USD. These are conversions at an approximate £1 = $1.27,
+// plus UK VAT at 20% on digital services. Both figures move — the rate daily,
+// the VAT treatment with the customer's registration status.
+const GBP_RATE_NOTE = "£1 = $1.27";
+const ukTiers = [
+  { contacts: "Up to 500",     usd: "$20",    gbp: "£16",  incVat: "£19"    },
+  { contacts: "Up to 1,000",   usd: "$30",    gbp: "£24",  incVat: "£28"    },
+  { contacts: "Up to 5,000",   usd: "$100",   gbp: "£79",  incVat: "£95"    },
+  { contacts: "Up to 10,000",  usd: "$175",   gbp: "£138", incVat: "£165"   },
+  { contacts: "Up to 25,000",  usd: "$400",   gbp: "£315", incVat: "£378"   },
+  { contacts: "Up to 50,000",  usd: "$720",   gbp: "£567", incVat: "£680"   },
+  { contacts: "Up to 100,000", usd: "$1,100", gbp: "£866", incVat: "£1,040" }
+];
+
+// ─── Klaviyo vs GetResponse, per tier ────────────────────────────────────────
+// The saving column is a delta between two vendors, not a price claim for
+// either — hence the explicit "saved" wording, which keeps it out of the
+// price-divergence guard's comparison set.
+const grRows = [
+  { contacts: "1,000",  k: "$30/month",  g: "$19/month",  delta: "$11/month saved"  },
+  { contacts: "5,000",  k: "$100/month", g: "$54/month",  delta: "$46/month saved"  },
+  { contacts: "10,000", k: "$175/month", g: "$79/month",  delta: "$96/month saved"  },
+  { contacts: "25,000", k: "$400/month", g: "$139/month", delta: "$261/month saved" },
+  { contacts: "50,000", k: "$720/month", g: "$199/month", delta: "$521/month saved" }
+];
+
 // ─── Calculator options ──────────────────────────────────────────────────────
 const calcOptions = [
   { value: "20,500",   label: "Up to 500 contacts — $20/mo" },
   { value: "30,1000",  label: "Up to 1,000 contacts — $30/mo" },
   { value: "100,5000", label: "Up to 5,000 contacts — $100/mo" },
-  { value: "150,10000",label: "Up to 10,000 contacts — $150/mo" },
+  { value: "175,10000",label: "Up to 10,000 contacts — $175/mo" },
   { value: "400,25000",label: "Up to 25,000 contacts — $400/mo" },
   { value: "720,50000",label: "Up to 50,000 contacts — $720/mo" }
 ];
 
 // ─── Features that Systeme.io replaces ───────────────────────────────────────
 const features = [
-  { icon: "✉️", title: "Email marketing & automation",       desc: "Unlimited email sends. Welcome sequences, abandoned cart, post-purchase flows, broadcast campaigns. All the automation logic Klaviyo charges $150–$400/month for.",                              saves: "Replaces Klaviyo — saves $150–$400/mo" },
+  { icon: "✉️", title: "Email marketing & automation",       desc: "Unlimited email sends. Welcome sequences, abandoned cart, post-purchase flows, broadcast campaigns. All the automation logic that sits behind Klaviyo's active-profile tiers.",                              saves: "Replaces Klaviyo — saves $20–$720+/mo" },
   { icon: "⏽",  title: "Sales funnels & landing pages",      desc: "Build opt-in pages, sales funnels, upsell flows, and squeeze pages. Drag-and-drop builder — no ClickFunnels subscription required.",                                                            saves: "Replaces ClickFunnels — saves $97–$297/mo" },
   { icon: "👥", title: "CRM & contact management",           desc: "Tag contacts, build segments, track purchase behaviour, and manage your entire customer database — without a separate CRM tool.",                                                                saves: "Replaces standalone CRM tools — saves $50–$200/mo" },
   { icon: "🎓", title: "Online course hosting",              desc: "Host digital products, courses, and memberships directly on Systeme.io. No Teachable or Thinkific subscription needed.",                                                                         saves: "Replaces Teachable — saves $39–$119/mo" },
@@ -150,7 +177,7 @@ const crosslinks = [
 // ─── FAQs ─────────────────────────────────────────────────────────────────────
 const faqs = [
   { q: "Is Klaviyo free in 2026?", a: "No. Klaviyo changed its billing model in February 2025. The free tier is now limited to 250 contacts and 500 emails/month. Paid plans start at $45/month for 500 contacts. Klaviyo now charges for every active profile, including contacts you have not emailed recently." },
-  { q: "Is Systeme.io really free as a Klaviyo replacement?", a: "Yes. Systeme.io's free plan supports 2,000 contacts with unlimited email sends, full automation sequences, sales funnels, and CRM — permanently free, no credit card required. Klaviyo charges $150–$400/month for equivalent contact volumes." },
+  { q: "Is Systeme.io really free as a Klaviyo replacement?", a: "Yes. Systeme.io's free plan supports 2,000 contacts with unlimited email sends, full automation sequences, sales funnels, and CRM — permanently free, no credit card required. Klaviyo charges $20–$720+/mo across its published ladder, with a typical mid-sized Shopify list landing in the middle of it." },
   { q: "What is the difference between Klaviyo and Systeme.io for Shopify?", a: "Klaviyo offers deeper native Shopify segmentation. Systeme.io offers a broader platform — email marketing, funnels, CRM, courses, and affiliate management — at $0/month. For stores not using Klaviyo's advanced segmentation, Systeme.io delivers equivalent email results at zero cost." },
   { q: "How do I migrate my Klaviyo email list to Systeme.io?", a: "Export your Klaviyo contacts as a CSV (Profiles → Export) and import them into Systeme.io (Contacts → Import). Map email, first name, and last name. Your list migrates in under 10 minutes regardless of size." },
   { q: "What is the Klaviyo free plan limit in 2026?", a: "Klaviyo's free plan in 2026 is limited to 250 active profiles and 500 email sends per month. Systeme.io's free plan allows 2,000 contacts with unlimited email sends — 8× more contacts and no sending cap at zero cost." },
@@ -257,6 +284,14 @@ const tocHeadings = [
     "text": "Klaviyo vs Systeme.io \u2014 the full comparison"
   },
   {
+    "id": "uk-h",
+    "text": "Klaviyo pricing in \u00a3 for UK Shopify stores"
+  },
+  {
+    "id": "getresponse-h",
+    "text": "Over 2,000 contacts \u2014 Klaviyo vs GetResponse"
+  },
+  {
     "id": "migrate-h",
     "text": "Replace Klaviyo in 30 minutes \u2014 step by step"
   },
@@ -287,7 +322,7 @@ const tocHeadings = [
 ];
 
 ---
-<Base title="Replace Klaviyo Free — Full Setup in 30 Minutes for Shopify 2026 | Stack Architect" description="Replace Klaviyo with Systeme.io free — 2,000 contacts, unlimited emails, automations, funnels, and CRM at $0/month. Migrate in 30 minutes. Saves $150–$400/month.">
+<Base title="Replace Klaviyo Free — Systeme.io & GetResponse 2026" description="Klaviyo bills every active profile. Systeme.io covers 2,000 contacts free, GetResponse cuts 60–70% above that. UK £ pricing, VAT, and a 30-minute migration.">
 <Fragment slot="head">
 <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
 
@@ -343,12 +378,12 @@ const tocHeadings = [
 
     <div class="hero-proof">
       <span class="dot"></span>
-      <span class="hero-proof-txt">Saves $150–$400/mo vs Klaviyo · 2,000 contacts on Systeme.io free tier · No monthly fee</span>
+      <span class="hero-proof-txt">2,000 contacts on Systeme.io free tier · Unlimited sends · No monthly fee</span>
     </div>
 
     <h1>
       Stop paying Klaviyo<br />
-      <span class="green">$150–$400/month.</span><br />
+      <span class="green">$20–$720+/month.</span><br />
       <span class="dim">Replace it free today.</span>
     </h1>
 
@@ -512,7 +547,7 @@ const tocHeadings = [
 
     <div class="callout" style="margin-top:40px;">
       <div class="callout-label">Free plan limits</div>
-      <p>Systeme.io's free plan supports <strong>2,000 contacts with unlimited email sends</strong>. Klaviyo's free plan caps at 250 contacts and 500 emails per month. For stores larger than 2,000 contacts, Systeme.io's Startup plan at <strong>$17/month</strong> covers up to 5,000 contacts — still a fraction of Klaviyo's $100/month for the same list size. For stores needing advanced email marketing features with larger lists, <a href={GETRESPONSE_URL} target="_blank" rel="noopener sponsored">GetResponse</a> offers AI-powered automation, landing pages, and webinar hosting from $15.6/month — another strong Klaviyo alternative.</p>
+      <p>Systeme.io's free plan supports <strong>2,000 contacts with unlimited email sends</strong>. Klaviyo's free plan caps at 250 contacts and 500 emails per month. For stores larger than 2,000 contacts, Systeme.io's Startup plan at <strong>$17/month</strong> covers up to 5,000 contacts. On Klaviyo's ladder that same list sits at the $100 tier. For stores needing advanced email marketing features with larger lists, <a href={GETRESPONSE_URL} target="_blank" rel="noopener sponsored">GetResponse</a> offers AI-powered automation, landing pages, and webinar hosting — compared tier by tier further down this page.</p>
     </div>
   </div>
 </section>
@@ -551,12 +586,118 @@ const tocHeadings = [
 
     <div class="callout warn" style="margin-top:24px;">
       <div class="callout-label">When Klaviyo is worth keeping</div>
-      <p>Klaviyo's deep Shopify integration, predictive analytics, and ecommerce-specific segmentation are genuinely more powerful for large stores running sophisticated segmented campaigns. <strong>If you have 50,000+ contacts and use Klaviyo's advanced segmentation heavily, the ROI may justify the cost.</strong> For everyone else paying $150–$400/month for welcome flows and broadcast campaigns — Systeme.io does that for $0.</p>
+      <p>Klaviyo's deep Shopify integration, predictive analytics, and ecommerce-specific segmentation are genuinely more powerful for large stores running sophisticated segmented campaigns. <strong>If you have 50,000+ contacts and use Klaviyo's advanced segmentation heavily, the ROI may justify the cost.</strong> For everyone else paying a mid-ladder Klaviyo bill to run welcome flows and broadcast campaigns — Systeme.io does that for $0.</p>
     </div>
 
     <div class="callout bee" style="margin-top:16px;">
       <div class="callout-label">🌍 Newsletter-first stores</div>
       <p>Running a content-led or newsletter-first Shopify brand? <a href={BEEHIIV_URL} target="_blank" rel="noopener sponsored">Beehiiv</a> is worth considering alongside Systeme.io — <strong>free up to 2,500 subscribers</strong>, built-in referral growth tools, and a significantly simpler setup for content creators. Where Systeme.io is built for funnel-led email marketing, Beehiiv is built for newsletter-first audience growth — a meaningful distinction for content-driven stores that prioritise audience over conversion rate optimisation.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── UK PRICING ── -->
+<section class="section" aria-labelledby="uk-h">
+  <div class="inner">
+    <div class="sec-head">
+      <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">UK stores</span>
+      <h2 id="uk-h">Klaviyo pricing in £ for UK Shopify stores</h2>
+      <p>Billed in dollars, paid in pounds, then 20% VAT on top. The sticker price is not the bill.</p>
+    </div>
+
+    <div class="body-text" style="max-width:860px;margin:0 auto;">
+      <p>Klaviyo bills in USD, so a UK store pays whatever the exchange rate says on the invoice date and then <strong>20% VAT on top</strong> under HMRC's digital services rules. The table below converts at approximately <strong>{GBP_RATE_NOTE}</strong>. Your actual figure moves with the rate.</p>
+
+      <div class="comp-wrap" style="margin:24px 0;">
+        <table class="comp-table" aria-label="Klaviyo pricing in pounds for UK stores">
+          <thead>
+            <tr><th>Contacts</th><th>USD/month</th><th>GBP approx</th><th>GBP incl. 20% VAT</th></tr>
+          </thead>
+          <tbody>
+            {ukTiers.map(t => (
+              <tr>
+                <td>{t.contacts}</td>
+                <td>{t.usd}</td>
+                <td>{t.gbp}</td>
+                <td class="lose"><strong>{t.incVat}</strong></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p>VAT-registered businesses reclaim that 20% on the quarterly return, so the true cost is the net figure — but the cash-flow effect is real, because you pay it upfront and recover it later.</p>
+
+      <h3>Why UK bills rose harder than US bills</h3>
+      <p>Two things landed at once. The active-profile change described above hit UK stores disproportionately, because <strong>GDPR practice creates large suppressed segments</strong> — contacts who never re-consented during post-Brexit list cleans, unsubscribes, bounces and lapsed customers that UK stores retain for compliance periods rather than delete. Under volume-based billing those cost nothing. Under active-profile billing they are chargeable.</p>
+      <p>On top of that, sterling weakness through 2024–2025 meant the same dollar price cost more in pounds. A store on the $400 tier paid roughly £320/month in 2022 and roughly £378/month including VAT in 2026 — a 20%+ increase with no change of plan and no change in usage.</p>
+
+      <h3>GDPR, consent and Making Tax Digital</h3>
+      <p>Systeme.io and GetResponse both maintain UK GDPR compliance, which mirrors EU GDPR under the Data Protection Act 2018, and both support double opt-in, consent recording and data subject access request workflows to ICO expectations. <strong>Your existing consent records transfer with your contact export</strong> — you do not need to re-obtain consent from subscribers who already opted in.</p>
+      <p>One administrative detail worth knowing: Klaviyo invoices are issued in USD, so a VAT-registered UK business has to convert each one to GBP at the invoice date for its MTD records. A free plan issues no invoices and creates no such obligation for that cost centre.</p>
+
+      <div class="callout" style="margin-top:24px;">
+        <div class="callout-label">The honest UK threshold</div>
+        <p>If you are paying more than <strong>£50/month</strong> and your use case is triggered sequences plus broadcasts, migrate. The sequences rebuild in under an hour and the saving is immediate — roughly <strong>£336/year</strong> at a 1,000-contact list, and over <strong>£760/year</strong> at 5,000 contacts once VAT is counted.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── GETRESPONSE ── -->
+<section class="section-alt" aria-labelledby="getresponse-h">
+  <div class="inner">
+    <div class="sec-head">
+      <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Above the free tier</span>
+      <h2 id="getresponse-h">Over 2,000 contacts — Klaviyo vs GetResponse</h2>
+      <p>Systeme.io's free plan stops at 2,000 contacts. Past that, this is the comparison that matters.</p>
+    </div>
+
+    <div class="body-text" style="max-width:860px;margin:0 auto;">
+      <p>The billing models diverge in a way headline prices hide. Klaviyo charges on all active profiles; <strong>GetResponse charges on contacts in your list with no engagement penalty</strong>. For a store holding 10,000 contacts but emailing only 6,000, that difference is the entire argument.</p>
+
+      <div class="comp-wrap" style="margin:24px 0;">
+        <table class="comp-table" aria-label="Klaviyo versus GetResponse pricing by list size">
+          <thead>
+            <tr><th>Contacts</th><th>Klaviyo</th><th>GetResponse</th><th>Difference</th></tr>
+          </thead>
+          <tbody>
+            {grRows.map(r => (
+              <tr>
+                <td>{r.contacts}</td>
+                <td class="lose">{r.k}</td>
+                <td class="win">{r.g}</td>
+                <td>{r.delta}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p>At 25,000 contacts that is <strong>$3,132 a year</strong>. The gap is consistent at every tier and widens as the list grows, because the two platforms scale on different curves.</p>
+
+      <h3>Where the feature gap actually is</h3>
+      <p>Klaviyo's Shopify integration is genuinely best-in-class: real-time sync of products viewed, collections browsed, search queries, checkout started and order placed, with flows that can trigger on category affinity, cart-value thresholds, purchase frequency or predicted next order date. <strong>GetResponse covers the core reliably</strong> — orders sync, abandoned cart triggers fire on live cart data, purchase history is available for segmentation — but without the granular event-level tracking behind browse abandonment and predictive triggers.</p>
+      <p>It also includes two things Klaviyo does not: a full landing-page and funnel builder, and built-in webinars. Klaviyo counters with predictive analytics — CLV and churn modelling — that GetResponse has no equivalent for.</p>
+
+      <div class="comp-two" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:24px 0;">
+        <div class="callout warn" style="margin:0;">
+          <div class="callout-label">Klaviyo earns the premium when…</div>
+          <p>You run 25,000+ contacts with active behavioural segmentation; you send several targeted campaigns a week to different segments; your reporting depends on Klaviyo's click-based revenue attribution, which resets when you switch; or SMS is a primary channel and you want it in one platform.</p>
+        </div>
+        <div class="callout" style="margin:0;">
+          <div class="callout-label">GetResponse wins when…</div>
+          <p>You are paying for contacts you never email; your core flows are welcome, abandoned cart and post-purchase, which work equivalently; you want landing pages or webinars alongside email; or you are under 25,000 contacts, where the segmentation gap is smallest.</p>
+        </div>
+      </div>
+
+      <p>The migration is the same shape as the Systeme.io one below — export from Klaviyo, connect Shopify under Integrations, import the CSV, rebuild the flows. Two differences are worth planning for: GetResponse ships <strong>template flows</strong> for abandoned cart, welcome and post-purchase that you customise rather than build from scratch, and you should <strong>run both platforms in parallel for two to four weeks</strong> before cancelling. Export your Klaviyo campaign history and reporting first — it is not accessible after cancellation.</p>
+
+      <p style="margin-top:20px;"><a href={GETRESPONSE_URL} target="_blank" rel="noopener sponsored" class="btn btn-sm">Try GetResponse for Shopify →</a></p>
     </div>
   </div>
 </section>

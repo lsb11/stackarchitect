@@ -1,0 +1,710 @@
+---
+import Base from '../layouts/Base.astro';
+import AuthorCard from '../components/AuthorCard.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import appsData from '../data/apps.json';
+
+const SITE = "https://stackarchitect.xyz";
+const canonical = `${SITE}/shopify-attribution-tools-compared/`;
+
+const title = "Shopify Attribution Tools Compared — 4 Pricing Models";
+const description =
+  "Elevar, Triple Whale, Northbeam and Analyzify each price on a different axis, so one store gets four wildly different quotes. Worked example inside.";
+
+const dateModified = "2026-08-10";
+
+// ── vendor records ──────────────────────────────────────────────────────────
+// Only apps.json figures carry a verification date and a vendor-page source.
+// Everything else on this page is third-party reported and marked as such.
+interface AppProfile {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  monthlyCost: string;
+  priceVerifiedDate: string | null;
+  priceSourceUrl: string | null;
+}
+const byId = new Map((appsData as AppProfile[]).map((a) => [a.id, a]));
+const ids = ["elevar", "triple-whale", "northbeam", "analyzify"];
+const records = ids.map((id) => byId.get(id)!).filter(Boolean);
+
+// Offer is emitted only where BOTH priceVerifiedDate and priceSourceUrl exist.
+// Currently that gate passes for Elevar, Northbeam and Analyzify; Triple Whale
+// has neither, so its SoftwareApplication node carries no Offer at all. No
+// figure from the research brief is admitted here — structured data carries
+// only what was read from the vendor's own page and recorded in apps.json.
+function offerFor(app: AppProfile) {
+  if (!app.priceVerifiedDate || !app.priceSourceUrl) return null;
+  const s = String(app.monthlyCost).replace(/,/g, "");
+  const nums = [...s.matchAll(/\$\s*([0-9]+(?:\.[0-9]+)?)/g)].map((m) => parseFloat(m[1]));
+  if (!nums.length) return null;
+  const openEnded = s.includes("+");
+  const base = {
+    priceCurrency: "USD",
+    availability: "https://schema.org/InStock",
+    url: app.priceSourceUrl,
+  };
+  if (nums.length === 1 && !openEnded) return { "@type": "Offer", ...base, price: String(nums[0]) };
+  const agg: Record<string, unknown> = { "@type": "AggregateOffer", ...base, lowPrice: String(nums[0]) };
+  if (nums.length > 1) agg.highPrice = String(nums[nums.length - 1]);
+  return agg;
+}
+
+const latestVerified =
+  records.map((a) => a.priceVerifiedDate).filter(Boolean).sort().pop() ?? undefined;
+
+// ── the spine: four vendors, four pricing axes ──────────────────────────────
+const axes = [
+  {
+    brand: "Elevar",
+    axis: "Monthly order volume × number of destinations",
+    entry: "~$225/mo reported",
+    lever: "Crossing an order tier, or adding one more ad platform",
+  },
+  {
+    brand: "Triple Whale",
+    axis: "Store GMV",
+    entry: "~$129/mo reported",
+    lever: "Revenue growth, and unlocking the features the entry tier excludes",
+  },
+  {
+    brand: "Northbeam",
+    axis: "Traffic and data volume — pageviews, not revenue",
+    entry: "~$1,500/mo reported",
+    lever: "Sessions and events ingested, regardless of what they earn",
+  },
+  {
+    brand: "Analyzify",
+    axis: "Flat annual fee, capped by order volume",
+    entry: "~$749/yr reported",
+    lever: "Passing the order cap on your tier",
+  },
+];
+
+// Elevar's published plan ladder, as reported by a third party.
+const elevarTiers = [
+  { plan: "Core",     billed: "$225/month",        orders: "Up to 2,000 orders/mo",  dest: "2 destinations" },
+  { plan: "Advanced", billed: "$650/month",        orders: "Up to 10,000 orders/mo", dest: "4 destinations" },
+  { plan: "Premium",  billed: "$1,250/month",      orders: "Up to 30,000 orders/mo", dest: "10 destinations" },
+  { plan: "Elite",    billed: "From $3,000/month", orders: "Higher volumes",         dest: "Contact sales" },
+];
+
+const tocHeadings = [
+  { id: "answer-h",     text: "Shopify Attribution Tools Compared" },
+  { id: "axes-h",       text: "Four Tools, Four Different Pricing Axes" },
+  { id: "example-h",    text: "One Store, Four Very Different Quotes" },
+  { id: "conflicts-h",  text: "Three Open Price Conflicts" },
+  { id: "elevar-h",     text: "Elevar — The Tracking Pipeline" },
+  { id: "whale-h",      text: "Triple Whale — The Operator Dashboard" },
+  { id: "northbeam-h",  text: "Northbeam — The Measurement Layer" },
+  { id: "analyzify-h",  text: "Analyzify — GA4, Done For You" },
+  { id: "table-h",      text: "The Four Side By Side" },
+  { id: "capi-h",       text: "When the Free CAPI Shield Route Is Better" },
+  { id: "faq-h",        text: "Common Questions" },
+];
+
+const faqs = [
+  {
+    q: "Which Shopify attribution tool is cheapest?",
+    a: "There is no single answer, because the four do not price on the same thing. Elevar prices on order volume multiplied by the number of destinations you send events to. Triple Whale prices on store GMV. Northbeam prices on traffic and data volume. Analyzify charges a flat annual fee capped by order count. The cheapest tool is whichever axis your store happens to sit low on."
+  },
+  {
+    q: "Why do two similar stores get completely different quotes?",
+    a: "Because the axis, not the store size, sets the price. A high-traffic, low-average-order-value store is penalised by Northbeam's traffic-based pricing while barely registering on Triple Whale's GMV tiers. A low-traffic, high-average-order-value store is the reverse. A store sending events to six ad platforms is penalised by Elevar's destination count no matter how few orders it takes."
+  },
+  {
+    q: "Do Northbeam and Triple Whale compete with a free server-side setup?",
+    a: "Not directly. Northbeam and Triple Whale are measurement and reporting layers — they exist to tell you what worked. A free server-side event pipeline exists to get events delivered to the ad platforms. Elevar and Analyzify are the two of the four that genuinely overlap with it, because both are fundamentally about event delivery and configuration."
+  },
+  {
+    q: "Is Analyzify's 99% purchase-tracking accuracy claim reliable?",
+    a: "The figure measures capture rate, not data quality. It describes the share of purchase events captured, not whether the contents of those events are trustworthy. Bot purchases, synthetic sessions and proxy traffic are captured at the same rate as real ones. The number is accurate about what it measures and misleading about what most merchants assume it means."
+  },
+  {
+    q: "Are the prices on this page verified?",
+    a: "Partly. Three figures — the entry prices tracked for Elevar, Northbeam and Analyzify — were read from each vendor's own pricing page and carry a verification date and source link. Every other figure on this page is third-party reported, pending verification against the vendor's own page, and is labelled as such wherever it appears."
+  },
+];
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": `${canonical}#collection`,
+      url: canonical,
+      name: title,
+      description,
+      inLanguage: "en-GB",
+      dateModified,
+      isPartOf: { "@id": `${SITE}/#website` },
+      about: { "@id": `${SITE}/#org` },
+      author: { "@id": `${SITE}/#luke` },
+      publisher: { "@id": `${SITE}/#org` },
+      mainEntity: { "@id": `${canonical}#itemlist` },
+    },
+    {
+      "@type": "ItemList",
+      "@id": `${canonical}#itemlist`,
+      name: "Shopify attribution and tracking tools compared",
+      numberOfItems: records.length,
+      itemListOrder: "https://schema.org/ItemListUnordered",
+      itemListElement: records.map((app, i) => {
+        const offers = offerFor(app);
+        return {
+          "@type": "ListItem",
+          position: i + 1,
+          item: {
+            "@type": "SoftwareApplication",
+            "@id": `${SITE}/apps/${app.id}/#app`,
+            name: app.name,
+            applicationCategory: app.category,
+            operatingSystem: "Shopify",
+            description: app.description,
+            ...(offers ? { offers } : {}),
+          },
+        };
+      }),
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${canonical}#faq`,
+      isPartOf: { "@id": `${canonical}#collection` },
+      mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    },
+  ],
+};
+---
+
+<Base
+  title={title}
+  description={description}
+  canonical={canonical}
+  schema={schema}
+  updatedDate={dateModified}
+  verifiedDate={latestVerified}
+  breadcrumb={[{ label: "Home", href: "/" }, { label: "Attribution Tools Compared" }]}
+>
+<main class="max-w-4xl mx-auto px-4 py-12">
+
+  <h1 id="answer-h" class="text-4xl md:text-5xl font-bold text-white mb-6" style="text-align:left;">
+    Shopify Attribution Tools,<br><span class="green">Compared.</span>
+  </h1>
+
+  <p id="answer" style="text-align:left;">Elevar, Triple Whale, Northbeam and Analyzify each price on a different axis: order volume times destinations, store GMV, traffic volume, and a flat annual fee. The same Shopify store therefore receives quotes an order of magnitude apart. Which tool is cheapest depends on which axis your store happens to sit high on.</p>
+
+  <TableOfContents headings={tocHeadings} />
+
+  <p class="text-xl text-gray-300 leading-relaxed mb-8" style="margin-top:2rem;">
+    Almost every comparison of these four tools is a feature grid. Feature grids are close to useless here, because all
+    four will happily tell you they do server-side tracking, multi-touch attribution and Meta Conversions API delivery.
+    What actually separates them — and what determines whether you pay a few hundred dollars a year or twenty thousand —
+    is the unit each one meters.
+  </p>
+
+  <div style="background:#1a1410;border:1px solid #5a3a1a;border-radius:12px;padding:1.25rem 1.5rem;margin:1.5rem 0;">
+    <p class="text-gray-300" style="margin:0;">
+      <strong class="text-white">Read the price labels before the prices.</strong> Most figures on this page are
+      <strong>third-party reported and pending verification</strong> — they come from comparison sources, not from the
+      vendors' own pricing pages, which is exactly the sourcing standard
+      <a href="/how-we-test/" style="color:var(--g);text-decoration:underline">our testing policy</a> says this site
+      does not accept as final. Three entry prices have been read from the vendor's own page and carry a date and a
+      source link; those are labelled <em>verified</em>. Everything else is labelled <em>reported</em>. Three figures
+      are actively in conflict between sources, and those conflicts are set out in full rather than resolved by
+      picking a favourite.
+    </p>
+  </div>
+
+  <!-- ── the spine ──────────────────────────────────────────────── -->
+  <h2 id="axes-h" class="text-2xl font-bold text-white mb-4" style="margin-top:3rem;">Four Tools, Four Different Pricing Axes</h2>
+  <p class="text-gray-300 leading-relaxed mb-4">
+    This is the single most important thing to understand before you request a quote from any of them. The four tools
+    do not merely charge different amounts. They charge for different <em>things</em>. One meters orders, one meters
+    revenue, one meters traffic, and one meters nothing month to month and simply invoices once a year.
+  </p>
+
+  <div style="overflow-x:auto;margin:1.5rem 0;">
+    <table style="width:100%;border-collapse:collapse;font-size:.95rem;">
+      <thead>
+        <tr style="border-bottom:1px solid var(--border);">
+          <th style="text-align:left;padding:10px 12px;color:var(--text-3);font-weight:600;">Tool</th>
+          <th style="text-align:left;padding:10px 12px;color:var(--text-3);font-weight:600;">Meters</th>
+          <th style="text-align:left;padding:10px 12px;color:var(--text-3);font-weight:600;">Entry point</th>
+          <th style="text-align:left;padding:10px 12px;color:var(--text-3);font-weight:600;">What pushes the bill up</th>
+        </tr>
+      </thead>
+      <tbody>
+        {axes.map((a) => (
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:10px 12px;color:#fff;font-weight:600;">{a.brand}</td>
+            <td style="padding:10px 12px;color:var(--text-3);">{a.axis}</td>
+            <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">{a.entry}</td>
+            <td style="padding:10px 12px;color:var(--text-3);">{a.lever}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p class="text-gray-400" style="font-size:.85rem;margin-top:-0.5rem;">
+    Entry points above are third-party reported and pending verification against each vendor's own pricing page.
+  </p>
+
+  <p class="text-gray-300 leading-relaxed mb-4" style="margin-top:1.5rem;">
+    The consequence is the useful part. Two stores with <strong>identical ad spend</strong> can receive quotes an order
+    of magnitude apart, purely because of which axis they happen to sit high on. A high-traffic, low-average-order-value
+    store — think a fast-moving consumables brand with a lot of browsing and a small basket — is punished hard by
+    traffic-based pricing, because it generates enormous event volume for modest revenue. Flip it around: a low-traffic,
+    high-average-order-value store, the sort selling a small number of expensive items to a narrow audience, is punished
+    by GMV-based pricing, because it books a lot of revenue on very few sessions. And a store that sends its events to
+    six or seven ad platforms is punished by destination-count pricing regardless of how many orders it takes, because
+    the destination list is a second meter running alongside the first.
+  </p>
+  <p class="text-gray-300 leading-relaxed mb-4">
+    None of this shows up on a feature comparison. It only shows up when the quotes arrive and they are four figures
+    apart for no reason anyone can immediately explain.
+  </p>
+
+  <!-- ── worked example ─────────────────────────────────────────── -->
+  <h2 id="example-h" class="text-2xl font-bold text-white mb-4" style="margin-top:3rem;">One Store, Four Very Different Quotes</h2>
+  <p class="text-gray-300 leading-relaxed mb-4">
+    Take a single hypothetical store and price it four ways. Assume <strong>5,000 orders a month</strong> and
+    <strong>roughly $500,000 in monthly GMV</strong> — an average order value around $100, which is an ordinary shape
+    for a mid-sized direct-to-consumer brand. It is one store. Here is what it costs, using the reported figures:
+  </p>
+
+  <div style="overflow-x:auto;margin:1.5rem 0;">
+    <table style="width:100%;border-collapse:collapse;font-size:.95rem;">
+      <thead>
+        <tr style="border-bottom:1px solid var(--border);">
+          <th style="text-align:left;padding:10px 12px;color:var(--text-3);font-weight:600;">Tool</th>
+          <th style="text-align:left;padding:10px 12px;color:var(--text-3);font-weight:600;">Reported cost for this store</th>
+          <th style="text-align:left;padding:10px 12px;color:var(--text-3);font-weight:600;">Why it lands there</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px;color:#fff;font-weight:600;">Elevar</td>
+          <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">~$650/mo</td>
+          <td style="padding:10px 12px;color:var(--text-3);">5,000 orders lands in the 10,000-order tier, with 4 destinations included</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px;color:#fff;font-weight:600;">Triple Whale</td>
+          <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">~$129–$749/mo</td>
+          <td style="padding:10px 12px;color:var(--text-3);">Depends entirely on which features it actually needs — a six-fold spread</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px;color:#fff;font-weight:600;">Northbeam</td>
+          <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">~$1,500/mo</td>
+          <td style="padding:10px 12px;color:var(--text-3);">And that is the bottom of the range, not a mid-point</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px;color:#fff;font-weight:600;">Analyzify</td>
+          <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">~$62–$79/mo equivalent</td>
+          <td style="padding:10px 12px;color:var(--text-3);">Flat annual fee spread across twelve months; 5,000 orders sits inside the cap</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="text-gray-400" style="font-size:.85rem;margin-top:-0.5rem;">
+    All four figures in this table are third-party reported and pending verification. They are illustrative of the
+    <em>shape</em> of the difference, not quotes.
+  </p>
+
+  <p class="text-gray-300 leading-relaxed mb-4" style="margin-top:1.5rem;">
+    The spread across that table is roughly twenty-four to one, top to bottom, for one store on one day. That is not a
+    quality gradient. It is four companies metering four different quantities and one store that happens to sit
+    differently on each meter. Before you compare features, work out which meter you are expensive on — it will tell
+    you more about your eventual bill than any capability list will.
+  </p>
+
+  <!-- ── conflicts ──────────────────────────────────────────────── -->
+  <h2 id="conflicts-h" class="text-2xl font-bold text-white mb-4" style="margin-top:3rem;">Three Open Price Conflicts</h2>
+  <p class="text-gray-300 leading-relaxed mb-4">
+    Three of the figures used on this page are contradicted by another source. Rather than pick the number that reads
+    best and present it as fact, all three are set out here so you know precisely where the ground is soft. Each is
+    pending resolution against the vendor's own pricing page.
+  </p>
+  <ol class="space-y-3 my-6" style="padding-left:1.25rem;">
+    <li class="text-gray-300">
+      <strong class="text-white">Elevar's plan structure — two incompatible descriptions.</strong> One source reports a
+      ladder of named tiers priced on orders and destinations. A separate source, published three months earlier,
+      reports an entirely different structure: $200 at 1,000 orders, $450 at 10,000 and $950 at 50,000, with per-order
+      overages of $0.15, $0.04 and $0.03 respectively. These are not two readings of the same price list; they are two
+      different price lists. Only one can be current.
+    </li>
+    <li class="text-gray-300">
+      <strong class="text-white">Northbeam's floor — $1,500 or $1,000.</strong> The tracked record on this site puts the
+      floor at the higher of the two, verified against the vendor's own pricing page. A third-party source puts it a
+      third lower. That gap is large enough to change whether the tool is even in consideration for a store at the
+      margin.
+    </li>
+    <li class="text-gray-300">
+      <strong class="text-white">Analyzify's billing basis — annual or monthly.</strong> This is the messiest of the
+      three. A reported annual fee and the monthly figure carried in this site's own app records do not reconcile as
+      the same plan. Both may well be true — vendors routinely sell a monthly plan and a discounted annual plan side by
+      side — but until it is confirmed, any comparison that mixes the two is comparing different products. Wherever
+      this page quotes a figure for that vendor, it states the billing basis explicitly.
+    </li>
+  </ol>
+
+  <!-- ── ELEVAR ─────────────────────────────────────────────────── -->
+  <h2 id="elevar-h" class="text-2xl font-bold text-white mb-4" style="margin-top:3.5rem;">Elevar — The Tracking Pipeline</h2>
+
+  <p class="text-gray-300 leading-relaxed mb-4">
+    <strong class="text-white">First, a corporate note that matters.</strong> Elevar has been sold through Audiense
+    since July 2025, and the Shopify App Store listing now reads "Elevar by Audiense". If you are searching for
+    documentation, pricing or support and finding two brand names, that is why. The product name has been retained as a
+    sub-brand rather than retired, so both names appear across the vendor's own material. Anyone renewing a contract
+    should confirm which entity they are contracting with.
+  </p>
+
+  <p class="text-gray-300 leading-relaxed mb-4">
+    <strong class="text-white">How the pricing works.</strong> Two meters run at once: how many orders you process, and
+    how many destinations you send events to. Destinations means ad platforms and analytics endpoints — Meta, Google,
+    TikTok, Pinterest, a warehouse, and so on. Adding a channel can move you up a tier even if your order count has not
+    moved an inch. This is unusual, and it is the single most common way people are caught out, because nobody expects
+    switching on one more ad platform to change their subscription price.
+  </p>
+
+  <div style="overflow-x:auto;margin:1.5rem 0;">
+    <table style="width:100%;border-collapse:collapse;font-size:.95rem;">
+      <thead>
+        <tr style="border-bottom:1px solid var(--border);">
+          <th style="text-align:left;padding:10px 12px;color:var(--text-3);font-weight:600;">Plan</th>
+          <th style="text-align:left;padding:10px 12px;color:var(--text-3);font-weight:600;">Reported price</th>
+          <th style="text-align:left;padding:10px 12px;color:var(--text-3);font-weight:600;">Order allowance</th>
+          <th style="text-align:left;padding:10px 12px;color:var(--text-3);font-weight:600;">Destinations</th>
+        </tr>
+      </thead>
+      <tbody>
+        {elevarTiers.map((t) => (
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:10px 12px;color:#fff;font-weight:600;">{t.plan}</td>
+            <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">{t.billed}</td>
+            <td style="padding:10px 12px;color:var(--text-3);">{t.orders}</td>
+            <td style="padding:10px 12px;color:var(--text-3);">{t.dest}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p class="text-gray-400" style="font-size:.85rem;margin-top:-0.5rem;">
+    Ladder as third-party reported, pending verification — and directly contradicted by a second source, as set out in
+    the conflicts section above. The entry price tracked in this site's
+    <a href="/apps/elevar/" style="color:var(--g);text-decoration:underline">app record</a> was verified against the
+    vendor's own pricing page and carries a source link.
+  </p>
+
+  <h3 class="text-xl font-bold text-white mb-3" style="margin-top:2rem;">What only this tool does</h3>
+  <p class="text-gray-300 leading-relaxed mb-4">
+    <strong class="text-white">Session Enrichment.</strong> This is the genuine differentiator, and none of the other
+    three offer an equivalent. It stitches events, sessions and channel attribution together so that a returning
+    anonymous visitor can be recognised across separate visits, and their behaviour connected into a single thread
+    rather than three unrelated ones. For a store with a long consideration cycle — where somebody browses on Tuesday,
+    reads reviews on Thursday and buys the following week — that stitching is the difference between three orphaned
+    sessions and one attributable journey.
+  </p>
+  <p class="text-gray-300 leading-relaxed mb-4">
+    Two supporting capabilities are worth naming. The first is a <strong>managed server-side GTM container</strong>:
+    the tagging infrastructure is provisioned and maintained as part of the product rather than left as an exercise for
+    you. The second is a <strong>Chrome-extension event builder</strong>, which lets you define custom events by
+    clicking elements on your storefront instead of editing theme code — genuinely useful if the person defining events
+    is a marketer rather than a developer.
+  </p>
+  <p class="text-gray-300 leading-relaxed mb-4">
+    On positioning: it is a Shopify preferred partner for checkout extensibility, is reported to power tracking for
+    over 6,500 direct-to-consumer brands, and holds a 4.6 rating from 138 App Store reviews. That is a real install
+    base, not a startup.
+  </p>
+
+  <h3 class="text-xl font-bold text-white mb-3" style="margin-top:2rem;">Where it concretely falls short</h3>
+  <ul class="space-y-3 my-6">
+    <li class="text-gray-300"><strong class="text-white">There is infrastructure to run.</strong> Because it is built on server-side GTM, there is a Google Cloud tagging server in your stack to provision, monitor and pay for. That is a real operational surface, and it is the only one of these four that adds one.</li>
+    <li class="text-gray-300"><strong class="text-white">Advanced configuration needs real GTM knowledge.</strong> The out-of-the-box container covers standard events well. Anything bespoke requires someone who genuinely understands tag manager, or paying for setup services on top of the subscription.</li>
+    <li class="text-gray-300"><strong class="text-white">Destination count is a pricing lever.</strong> Worth repeating because it is so unusual: adding an ad platform can raise your bill. Budget for the destinations you will want in twelve months, not the ones you have now.</li>
+    <li class="text-gray-300"><strong class="text-white">Communication around breaking changes.</strong> There are reported gaps in advance notice when tracking behaviour changes — which, for a component sitting in the path of your revenue data, is a meaningful risk to plan around.</li>
+  </ul>
+
+  <p class="text-gray-300 leading-relaxed mb-4">
+    <strong class="text-white">Who it genuinely suits:</strong> stores where the tracking <em>pipeline itself</em> is
+    the problem — events arriving late, incompletely or not at all — with in-house or agency GTM capability to exploit
+    it, and roughly $5,000 a month or more in ad spend to justify the line item. If your problem is that you cannot
+    read your data, this is the wrong tool; it moves data, it does not interpret it.
+  </p>
+
+  <!-- ── TRIPLE WHALE ───────────────────────────────────────────── -->
+  <h2 id="whale-h" class="text-2xl font-bold text-white mb-4" style="margin-top:3.5rem;">Triple Whale — The Operator Dashboard</h2>
+
+  <p class="text-gray-300 leading-relaxed mb-4">
+    <strong class="text-white">How the pricing works.</strong> Tiers are set by store GMV, so the bill tracks revenue.
+    The reported entry tier begins around $129 a month, and a separate source cites a figure closer to $179 a month on
+    annual billing for the dashboard tier — a minor discrepancy, but note it. The tier that matters is the
+    Professional plan, reported at $749 a month, which is where full media mix modelling and the advanced BI features
+    unlock. No figure in this paragraph has yet been verified against the vendor's own page.
+  </p>
+  <p class="text-gray-300 leading-relaxed mb-4">
+    <strong class="text-white">The single most useful warning on this page:</strong> the entry tier excludes creative
+    analytics, customer journey reporting and the survey-based features. Those are, for most buyers, the actual reasons
+    to buy the product. It is entirely possible to sign up at the advertised entry price, discover that none of the
+    things you wanted are included, and end up on a plan roughly six times more expensive. Price the tier that contains
+    the features you came for, not the tier on the pricing page headline.
+  </p>
+
+  <h3 class="text-xl font-bold text-white mb-3" style="margin-top:2rem;">What only this tool does</h3>
+  <p class="text-gray-300 leading-relaxed mb-4">
+    A Shopify-native first-party pixel combined with <strong>post-purchase surveys</strong>. The surveys are the
+    distinctive part: at checkout, the customer is asked directly where they heard about you, and that self-reported
+    answer is blended with the pixel data. It is the only one of the four that collects a signal the ad platforms
+    cannot see at all, because it comes from the customer's mouth rather than from a cookie. For channels that are
+    structurally invisible to click-based attribution — podcast reads, influencer mentions, word of mouth — it is often
+    the only evidence you will ever get.
+  </p>
+  <p class="text-gray-300 leading-relaxed mb-4">
+    The right mental model: this is an ecommerce operating dashboard with attribution inside it, not a tracking
+    pipeline. People open it every morning. That is a different product category from the other three, and it is why
+    comparing it feature-for-feature against a data-delivery tool produces nonsense.
+  </p>
+
+  <h3 class="text-xl font-bold text-white mb-3" style="margin-top:2rem;">Where it concretely falls short</h3>
+  <ul class="space-y-3 my-6">
+    <li class="text-gray-300"><strong class="text-white">The entry tier is hollowed out.</strong> As above — creative analytics, journey reporting and surveys all sit above it. This is the most consequential thing to know before buying.</li>
+    <li class="text-gray-300"><strong class="text-white">The "Total Impact" model has been criticised for over-counting.</strong> A customer who clicks a Meta ad and then a Google search ad can have both channels credited in certain views. The result is a report where the channel contributions sum to more than the revenue actually earned, which produces confidence that is not warranted by the data.</li>
+    <li class="text-gray-300"><strong class="text-white">Blended CAC, not per-channel CAC.</strong> You get a customer acquisition cost for the business, not a defensible one per channel. If your question is "should I move budget from Meta to TikTok", a blended number cannot answer it. This is a real and specific limitation against Northbeam.</li>
+  </ul>
+
+  <p class="text-gray-300 leading-relaxed mb-4">
+    <strong class="text-white">Who it genuinely suits:</strong> Shopify-first direct-to-consumer operators who want one
+    dashboard to open each morning and a number to run the day from. Below roughly $30,000 a month in paid media, the
+    honest recommendation is the free plan — the paid tiers are priced for stores whose media decisions are large
+    enough that a percentage point of improvement covers the subscription.
+  </p>
+
+  <!-- ── NORTHBEAM ──────────────────────────────────────────────── -->
+  <h2 id="northbeam-h" class="text-2xl font-bold text-white mb-4" style="margin-top:3.5rem;">Northbeam — The Measurement Layer</h2>
+
+  <p class="text-gray-300 leading-relaxed mb-4">
+    <strong class="text-white">How the pricing works.</strong> This is the one that is priced on traffic and data
+    volume rather than on revenue, which catches people out in the opposite direction from everything else here. Two
+    stores earning identical revenue can be quoted very differently if one of them generates three times the pageviews.
+    Contracts are annual. The reported starter floor sits around $1,500 a month, scaling to roughly $2,500 for the
+    starter band, and the vendor generally does not sell below approximately $500,000 in monthly GMV. As flagged
+    earlier, one source disputes that floor and puts it a third lower.
+  </p>
+
+  <h3 class="text-xl font-bold text-white mb-3" style="margin-top:2rem;">What only this tool does</h3>
+  <p class="text-gray-300 leading-relaxed mb-4">
+    The <strong>Clicks + Deterministic Views</strong> model. Server-side ingestion feeds a multi-touch attribution
+    engine that credits view-through conversions <em>deterministically</em> rather than inferring them — which is the
+    substantive distinction, because view-through is where most attribution tooling quietly resorts to modelling and
+    hopes nobody asks. Media mix modelling is available on the upper tiers for the channels that have no click at all.
+  </p>
+  <p class="text-gray-300 leading-relaxed mb-4">
+    It also reports <strong>per-channel customer acquisition cost</strong>. That sounds mundane until you try to make a
+    budget reallocation decision with a blended figure and find you cannot. Per-channel CAC is precisely what Triple
+    Whale does not give you, and it is the clearest functional line between the two.
+  </p>
+
+  <h3 class="text-xl font-bold text-white mb-3" style="margin-top:2rem;">Where it concretely falls short</h3>
+  <ul class="space-y-3 my-6">
+    <li class="text-gray-300"><strong class="text-white">The price floor excludes most Shopify stores outright.</strong> This is not a criticism of the product so much as a statement of who it is for. For the large majority of stores, the conversation ends at the first number.</li>
+    <li class="text-gray-300"><strong class="text-white">It is analyst-led.</strong> The models need somebody whose actual job is to use them. Bought by a lean team with no analyst, the depth is dead weight — an expensive dashboard nobody has time to interrogate.</li>
+    <li class="text-gray-300"><strong class="text-white">Annual contracts, no monthly escape.</strong> If it turns out to be wrong for you in month three, you are still paying in month eleven.</li>
+    <li class="text-gray-300"><strong class="text-white">It does not work as a Shopify-only stack.</strong> The other three are comfortable being the whole of a Shopify store's tracking setup. This one assumes a multi-channel media mix around it, and delivers proportionally less value without one.</li>
+  </ul>
+
+  <p class="text-gray-300 leading-relaxed mb-4">
+    <strong class="text-white">Who it genuinely suits:</strong> brands north of $10 million in annual revenue running
+    multi-channel mixes that include TV, podcast or influencer spend, with an analyst on staff. If you buy media across
+    channels that do not produce clicks, this is the category of tool built for that problem.
+  </p>
+
+  <!-- ── ANALYZIFY ──────────────────────────────────────────────── -->
+  <h2 id="analyzify-h" class="text-2xl font-bold text-white mb-4" style="margin-top:3.5rem;">Analyzify — GA4, Done For You</h2>
+
+  <p class="text-gray-300 leading-relaxed mb-4">
+    <strong class="text-white">How the pricing works.</strong> Uniquely among the four, the headline figure is annual
+    rather than monthly, reported at $749 to $945 per year with caps set by order volume; the top reported tier covers
+    up to 10,000 orders a month. Spread across twelve months that is roughly $62 to $79 — an order of magnitude below
+    everything else on this page. Note the conflict flagged earlier: this site's own app record carries a monthly
+    figure that does not reconcile with the annual one, and until that is resolved you should confirm the billing basis
+    before comparing it to anything.
+  </p>
+
+  <h3 class="text-xl font-bold text-white mb-3" style="margin-top:2rem;">What only this tool does</h3>
+  <p class="text-gray-300 leading-relaxed mb-4">
+    <strong class="text-white">Done-for-you setup, included at no extra cost.</strong> Managed onboarding, migration
+    and professional implementation are bundled into the fee rather than sold as a services add-on. That is the actual
+    product. It is a service wrapped in an app, and the fee is best understood as buying an implementation, not a
+    subscription. Every other tool here sells you software and leaves the configuration to you or your agency.
+  </p>
+  <p class="text-gray-300 leading-relaxed mb-4">
+    Technically, it adds more than ten events and parameters that GA4 does not capture natively on Shopify — collection
+    views, coupon codes, variant IDs — which are exactly the dimensions you find yourself missing the first time you
+    try to answer a real merchandising question in GA4.
+  </p>
+
+  <h3 class="text-xl font-bold text-white mb-3" style="margin-top:2rem;">Where it concretely falls short</h3>
+  <p class="text-gray-300 leading-relaxed mb-4">
+    <strong class="text-white">The 99% purchase-tracking accuracy claim measures capture rate, not data quality.</strong>
+    This deserves unpacking, because it is the most quietly misleading number in this whole category. The claim is that
+    99% of purchase events are captured. That is a statement about <em>delivery</em>. It says nothing whatsoever about
+    what those events contain. Bot purchases are captured at 99% accuracy. Synthetic sessions are captured at 99%
+    accuracy. Proxy traffic is captured at 99% accuracy. The figure is entirely accurate about what it measures, and
+    entirely misleading about what most merchants assume it means — which is "99% of my analytics data is correct". A
+    high capture rate on dirty input produces a high-fidelity record of dirty input.
+  </p>
+  <ul class="space-y-3 my-6">
+    <li class="text-gray-300"><strong class="text-white">It is GA4-centric.</strong> The value proposition is a correctly configured GA4. If GA4 is not your reporting layer — if you live in a BI tool or in the ad platforms — most of that value evaporates.</li>
+    <li class="text-gray-300"><strong class="text-white">The true cost is often higher than the fee.</strong> It is commonly paired with Stape hosting for the server-side container, which can push genuine annual cost past $3,000. The headline annual figure is the software, not the setup.</li>
+    <li class="text-gray-300"><strong class="text-white">The reviewer base skews small-business.</strong> Worth weighing when reading ratings: the population rating it is not the population running complex multi-channel measurement.</li>
+  </ul>
+
+  <p class="text-gray-300 leading-relaxed mb-4">
+    <strong class="text-white">Who it genuinely suits:</strong> teams with no in-house analytics capability who want
+    GA4 configured properly once and then left alone. If the honest description of your situation is "we know our
+    tracking is wrong and nobody here can fix it", the bundled implementation is worth more than any feature on the
+    list.
+  </p>
+
+  <!-- ── comparison table ───────────────────────────────────────── -->
+  <h2 id="table-h" class="text-2xl font-bold text-white mb-4" style="margin-top:3.5rem;">The Four Side By Side</h2>
+  <div style="overflow-x:auto;margin:1.5rem 0;">
+    <table style="width:100%;border-collapse:collapse;font-size:.9rem;">
+      <thead>
+        <tr style="border-bottom:1px solid var(--border);">
+          <th style="text-align:left;padding:10px 12px;color:var(--text-3);font-weight:600;"></th>
+          <th style="text-align:left;padding:10px 12px;color:#fff;font-weight:600;">Elevar</th>
+          <th style="text-align:left;padding:10px 12px;color:#fff;font-weight:600;">Triple Whale</th>
+          <th style="text-align:left;padding:10px 12px;color:#fff;font-weight:600;">Northbeam</th>
+          <th style="text-align:left;padding:10px 12px;color:#fff;font-weight:600;">Analyzify</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px;color:var(--text-3);font-weight:600;">Priced on</td>
+          <td style="padding:10px 12px;color:var(--text-3);">Orders × destinations</td>
+          <td style="padding:10px 12px;color:var(--text-3);">GMV</td>
+          <td style="padding:10px 12px;color:var(--text-3);">Traffic volume</td>
+          <td style="padding:10px 12px;color:var(--text-3);">Flat annual, order-capped</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px;color:var(--text-3);font-weight:600;">Entry (reported)</td>
+          <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">~$225/mo</td>
+          <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">~$129/mo</td>
+          <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">~$1,500/mo</td>
+          <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">~$749/yr</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px;color:var(--text-3);font-weight:600;">Core job</td>
+          <td style="padding:10px 12px;color:var(--text-3);">Tracking pipeline</td>
+          <td style="padding:10px 12px;color:var(--text-3);">Operator dashboard</td>
+          <td style="padding:10px 12px;color:var(--text-3);">Measurement &amp; modelling</td>
+          <td style="padding:10px 12px;color:var(--text-3);">Done-for-you GA4</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px;color:var(--text-3);font-weight:600;">Unique capability</td>
+          <td style="padding:10px 12px;color:var(--text-3);">Session Enrichment</td>
+          <td style="padding:10px 12px;color:var(--text-3);">Post-purchase surveys</td>
+          <td style="padding:10px 12px;color:var(--text-3);">Deterministic views + per-channel CAC</td>
+          <td style="padding:10px 12px;color:var(--text-3);">Implementation included</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px;color:var(--text-3);font-weight:600;">CAC granularity</td>
+          <td style="padding:10px 12px;color:var(--text-3);">n/a — not a reporting tool</td>
+          <td style="padding:10px 12px;color:var(--text-3);">Blended only</td>
+          <td style="padding:10px 12px;color:var(--text-3);">Per-channel</td>
+          <td style="padding:10px 12px;color:var(--text-3);">n/a</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px;color:var(--text-3);font-weight:600;">Infrastructure burden</td>
+          <td style="padding:10px 12px;color:var(--text-3);">sGTM container to maintain</td>
+          <td style="padding:10px 12px;color:var(--text-3);">None</td>
+          <td style="padding:10px 12px;color:var(--text-3);">None</td>
+          <td style="padding:10px 12px;color:var(--text-3);">None, though often paired with Stape</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 12px;color:var(--text-3);font-weight:600;">Practical floor</td>
+          <td style="padding:10px 12px;color:var(--text-3);">~$5k/mo ad spend</td>
+          <td style="padding:10px 12px;color:var(--text-3);">Free plan under ~$30k/mo spend</td>
+          <td style="padding:10px 12px;color:var(--text-3);">~$500k/mo GMV</td>
+          <td style="padding:10px 12px;color:var(--text-3);">Any size</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="text-gray-400" style="font-size:.85rem;margin-top:-0.5rem;">
+    Entry row: third-party reported, pending verification. Three of these vendors have a verified entry price recorded
+    in the <a href="/apps/" style="color:var(--g);text-decoration:underline">app pricing index</a>, each with its own
+    source link and date.
+  </p>
+
+  <!-- ── CAPI SHIELD ────────────────────────────────────────────── -->
+  <h2 id="capi-h" class="text-2xl font-bold text-white mb-4" style="margin-top:3.5rem;">When the Free CAPI Shield Route Is Better</h2>
+
+  <p class="text-gray-300 leading-relaxed mb-4">
+    The honest framing is that <strong>three of these four are not really competing with CAPI Shield at all</strong>,
+    and pretending otherwise would be the easiest way to make this page untrustworthy.
+  </p>
+  <p class="text-gray-300 leading-relaxed mb-4">
+    Northbeam and Triple Whale are <strong>measurement and reporting layers</strong>. They exist to tell you what
+    worked — to model, attribute and display. A free event-delivery pipeline does not do that and never will. If what
+    you need is a daily operating dashboard, buy the dashboard. If what you need is a media mix model with per-channel
+    CAC and deterministic view-through, buy the measurement platform. Neither of those problems is solved by getting
+    events to Meta more reliably, and anyone telling you otherwise is selling something.
+  </p>
+  <p class="text-gray-300 leading-relaxed mb-4">
+    <strong class="text-white">The overlap is with the other two.</strong> Elevar and Analyzify are both, at bottom,
+    about getting events reliably to Meta Conversions API, GA4 and the rest of the destination list. That is exactly
+    what <a href="/capi-shield/" style="color:var(--g);text-decoration:underline">CAPI Shield</a> does, at $0 a month,
+    using Make.com's free tier and no code. The platform endpoints themselves — Meta Conversions API, Google Enhanced
+    Conversions, the <a href="/tiktok-events-api-shopify/" style="color:var(--g);text-decoration:underline">TikTok
+    Events API</a> — are free to call. Nobody sells privileged access to them. What the paid tools sell around those
+    endpoints is the configuration interface, the monitoring, the onboarding and somebody to call.
+  </p>
+  <p class="text-gray-300 leading-relaxed mb-4">
+    So the trade is specific and worth stating plainly. The free route costs you setup time and ongoing ownership: you
+    build the connection, you watch it, and when a payload shape changes you are the one who notices. The paid route
+    costs money and buys convenience, monitoring and support — plus, in Elevar's case, Session Enrichment, which the
+    free route genuinely does not replicate, and in Analyzify's case, somebody else doing the implementation.
+  </p>
+  <p class="text-gray-300 leading-relaxed mb-4">
+    A reasonable decision rule: if your events are not arriving and you have the capacity to own a small integration,
+    start free and see whether the delivery problem was the whole problem. If it was, you have solved it for nothing.
+    If it was not — if the real problem turns out to be that you cannot tell which channel earned the sale — then you
+    were shopping in the wrong category anyway, and Northbeam or Triple Whale is where that conversation belongs.
+  </p>
+  <ul class="space-y-2 my-6">
+    <li class="text-gray-300">→ <a href="/capi-shield/" style="color:var(--g);text-decoration:underline">CAPI Shield</a> — free Meta and Google server-side tracking via Make.com, no code.</li>
+    <li class="text-gray-300">→ <a href="/shopify-vs-meta-attribution-gap-calculator/" style="color:var(--g);text-decoration:underline">Attribution gap calculator</a> — size the discrepancy before you buy anything to fix it.</li>
+    <li class="text-gray-300">→ <a href="/meta-emq-score-estimator/" style="color:var(--g);text-decoration:underline">Meta EMQ score estimator</a> — check event match quality first; poor matching is often the real fault.</li>
+    <li class="text-gray-300">→ <a href="/apps/" style="color:var(--g);text-decoration:underline">App pricing index</a> — the tracked price record for each vendor, with source and date.</li>
+  </ul>
+
+  <!-- ── faq ────────────────────────────────────────────────────── -->
+  <h2 id="faq-h" class="text-2xl font-bold text-white mb-4" style="margin-top:3.5rem;">Common Questions</h2>
+  {faqs.map((f) => (
+    <details class="sa-faq" style="border-bottom:1px solid var(--border);padding:12px 0;">
+      <summary style="cursor:pointer;color:#fff;font-weight:600;">{f.q}</summary>
+      <div class="faq-body"><p class="text-gray-300 leading-relaxed" style="margin-top:.5rem;">{f.a}</p></div>
+    </details>
+  ))}
+
+  <p class="text-gray-300" style="margin-top:2.5rem;font-size:.9rem;border-top:1px solid var(--border);padding-top:1rem;">
+    <strong class="text-white">Verification status:</strong> figures on this page marked <em>reported</em> come from
+    third-party comparison sources and have not yet been confirmed against the vendors' own pricing pages. They are
+    published as reported claims, not as fact. Three entry prices — recorded in the
+    <a href="/apps/" style="color:var(--g);text-decoration:underline">app pricing index</a> with a verification date
+    and a source link — were read from the vendor's own page and are the only figures on this page carried into
+    structured data. Three price conflicts remain open and are set out above rather than resolved silently. Our
+    sourcing standard is described in <a href="/how-we-test/" style="color:var(--g);text-decoration:underline">how we
+    test</a>. Vendors change prices without notice — re-check before making a purchasing decision.
+  </p>
+
+  <AuthorCard />
+</main>
+</Base>
