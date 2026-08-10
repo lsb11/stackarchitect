@@ -62,13 +62,10 @@ const schema = {
       operatingSystem: 'Web',
       url: 'https://www.tidio.com',
       description: 'Live chat, chatbot, and AI customer service platform with strong Shopify integration. Conversation-based pricing rather than per-agent. Includes Lyro AI agent and Flows automation builder.',
-      offers: {
-        '@type': 'AggregateOffer',
-        priceCurrency: 'USD',
-        lowPrice: '0',
-        highPrice: '2999',
-        offerCount: 5,
-      },
+      // No `offers`. Tidio pricing is unverified in src/data/apps.json (no
+      // priceVerifiedDate, no priceSourceUrl), and CLAUDE.md forbids asserting
+      // a vendor price in structured data without both. The lowPrice of 0 was
+      // also misleading on its own: the free tier is conversation-capped.
     },
     {
       '@type': 'Review',
