@@ -35,7 +35,7 @@ relatedGuides:
   - title: "How to Fix Shopify Conversion Tracking After iOS Updates"
     href: "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates"
 ---
-> **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-tracking-hub/).
+> **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-attribution-tools-compared/).
 
 
 # How to Fix Shopify Google Ads Conversion Tracking in 2026 — Free Server-Side Setup (No GTM Required)

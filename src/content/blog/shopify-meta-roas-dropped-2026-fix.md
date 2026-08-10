@@ -34,7 +34,7 @@ relatedGuides:
   - title: "The Ultimate Shopify Automation Guide"
     href: "/ultimate-shopify-automation-guide"
 ---
-> **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-tracking-hub/).
+> **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-attribution-tools-compared/).
 
 
 # Shopify Meta ROAS Dropped in 2026? Here's Exactly Why — and the Free Fix

@@ -21,11 +21,11 @@ faqs:
     answer: "Upgrade Make.com when you consistently hit the 1,000 credits/month limit. Signs include: scenarios failing with 'operations limit exceeded' errors, having to disable some automation branches to stay within the limit, or processing more than 160-200 orders per month on the full automation stack."
 relatedGuides:
   - title: "Make.com for Shopify — Complete beginner's guide"
-    href: "/blog/make-com-shopify-automation-guide"
+    href: "/make-com-shopify/"
   - title: "Google Apps Script quotas explained 2026"
     href: "/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations"
   - title: "Zapier vs Make vs Shopify Flow — Honest comparison"
-    href: "/blog/zapier-vs-shopify-flow-vs-make"
+    href: "/make-com-shopify/"
   - title: "Stocky Swap — Free inventory automation"
     href: "/stocky-swap"
 ---
@@ -148,7 +148,7 @@ The full migration takes 2–4 hours of active work and causes zero downtime if 
 
 ## The Bottom Line
 
-Stay on the free stack until one of the 7 signals appears. When it does, the $15/month upgrade (Make.com Core + Google Workspace) is straightforward to justify. The [Make.com beginner's guide](/blog/make-com-shopify-automation-guide/) covers the initial setup, and the [Google Apps Script quota guide](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/) covers the specific limits you'll hit as volume grows.
+Stay on the free stack until one of the 7 signals appears. When it does, the $15/month upgrade (Make.com Core + Google Workspace) is straightforward to justify. The [Make.com beginner's guide](/make-com-shopify/) covers the initial setup, and the [Google Apps Script quota guide](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/) covers the specific limits you'll hit as volume grows.
 
 
 ---

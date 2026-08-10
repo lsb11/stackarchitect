@@ -25,7 +25,7 @@ relatedGuides:
   - title: "Replace Klaviyo Free — Systeme.io Migration Guide"
     href: "/replace-klaviyo-free"
   - title: "Make.com for Shopify: Complete Beginner's Guide"
-    href: "/blog/make-com-shopify-automation-guide"
+    href: "/make-com-shopify/"
   - title: "CAPI Shield — Free Meta + Google Server-Side Tracking"
     href: "/capi-shield"
   - title: "The Complete Free Shopify Automation Stack"

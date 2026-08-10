@@ -25,9 +25,9 @@ relatedGuides:
   - title: "Shopify Abandoned Cart Recovery Free 2026"
     href: "/blog/shopify-abandoned-cart-recovery-free-2026"
   - title: "Klaviyo Pricing UK 2026 — Exact Costs"
-    href: "/blog/klaviyo-pricing-uk-2026"
+    href: "/replace-klaviyo-free/"
   - title: "Klaviyo vs GetResponse for Shopify 2026"
-    href: "/blog/klaviyo-vs-getresponse-shopify-2026"
+    href: "/replace-klaviyo-free/"
 ---
 
 # Shopify Email Marketing Free 2026 — The Complete Free Setup
@@ -45,7 +45,7 @@ Three genuine free options exist for Shopify stores in 2026:
 - Full automation sequences with conditional logic
 - Sales funnels, CRM, affiliate management included
 - Shopify native integration + Make.com webhook support
-- [Klaviyo comparison →](/klaviyo-vs-systeme-io/)
+- [Klaviyo comparison →](/replace-klaviyo-free/)
 
 **Shopify Email (best for simplicity)**
 - First 10,000 emails/month free, then $1/1,000

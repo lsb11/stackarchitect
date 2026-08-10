@@ -26,7 +26,7 @@ relatedGuides:
   - title: "Replace Klaviyo Free — Systeme.io Setup Guide"
     href: "/replace-klaviyo-free"
   - title: "Shopify Apps That Are a Waste of Money"
-    href: "/blog/shopify-apps-that-are-a-waste-of-money"
+    href: "/best-free-shopify-apps-2026/"
 ---
 
 # The Lean Shopify Tech Stack 2026 — Replace $700/Month of Apps for Free

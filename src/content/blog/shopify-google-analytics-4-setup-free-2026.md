@@ -32,9 +32,9 @@ relatedGuides:
   - title: "Shopify P&L Automation — Live Profit in Google Sheets Free"
     href: "/shopify-profit-loss-automation"
   - title: "Make.com for Shopify — Complete Beginner's Guide"
-    href: "/blog/make-com-shopify-automation-guide"
+    href: "/make-com-shopify/"
 ---
-> **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-tracking-hub/).
+> **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-attribution-tools-compared/).
 
 
 # How to Set Up Google Analytics 4 on Shopify Free in 2026 — No Apps, No Code
@@ -186,7 +186,7 @@ The server-side fix: Make.com receives the Shopify Order Payment webhook and sen
 
 **Setting up the Make.com scenario:**
 
-If you already have a Make.com scenario running (CAPI Shield, Stocky Swap, or P&L Auto), add a new branch to your existing scenario. If starting fresh, set up the Shopify webhook first following the [Make.com beginner's guide](/blog/make-com-shopify-automation-guide/).
+If you already have a Make.com scenario running (CAPI Shield, Stocky Swap, or P&L Auto), add a new branch to your existing scenario. If starting fresh, set up the Shopify webhook first following the [Make.com beginner's guide](/make-com-shopify/).
 
 **Add an HTTP module for GA4 Measurement Protocol:**
 

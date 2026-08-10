@@ -28,7 +28,7 @@ relatedGuides:
   - title: "The Ultimate Guide to Shopify Inventory Management 2026"
     href: "/blog/the-ultimate-guide-to-shopify-inventory-management"
   - title: "Make.com for Shopify — Complete Beginner's Guide"
-    href: "/blog/make-com-shopify-automation-guide"
+    href: "/make-com-shopify/"
   - title: "Shopify Automation Stack for Small Stores"
     href: "/blog/shopify-automation-stack-for-small-stores"
 ---

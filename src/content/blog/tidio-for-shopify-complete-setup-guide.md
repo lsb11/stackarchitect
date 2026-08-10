@@ -27,7 +27,7 @@ relatedGuides:
   - title: "The $0 automation stack — all free tools"
     href: "/"
   - title: "Make.com for Shopify — Free automation guide"
-    href: "/blog/make-com-shopify-automation-guide"
+    href: "/make-com-shopify/"
 ---
 
 # Tidio for Shopify: Complete Setup Guide 2026 — Free AI Live Chat That Resolves 70% of Queries

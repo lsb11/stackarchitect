@@ -19,7 +19,7 @@ faqs:
     answer: "No. A standard free Google account works for all the automations described here. Google Workspace becomes beneficial when Google Apps Script execution time limits start causing failures — typically at 500+ orders per month with complex per-order processing. For the basic small store stack described in this guide, a free Google account is sufficient."
 relatedGuides:
   - title: "Make.com for Shopify — Complete Beginner's Guide"
-    href: "/blog/make-com-shopify-automation-guide"
+    href: "/make-com-shopify/"
     badge: "Start Here"
   - title: "CAPI Shield — Free Server-Side Tracking"
     href: "/capi-shield"
@@ -141,7 +141,7 @@ As your store grows, add complexity in this order:
 
 **At $100,000+/month GMV:** the [lean stack guide](/blog/the-lean-shopify-tech-stack-2026/) covers the full optimised setup for larger stores including TikTok Events API, more sophisticated inventory management, and the decision points for paid tools.
 
-The [Make.com beginner's guide](/blog/make-com-shopify-automation-guide/) covers the full scenario setup with screenshots if you are new to Make.com.
+The [Make.com beginner's guide](/make-com-shopify/) covers the full scenario setup with screenshots if you are new to Make.com.
 
 
 ---

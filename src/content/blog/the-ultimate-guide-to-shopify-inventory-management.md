@@ -25,7 +25,7 @@ relatedGuides:
     href: "/stocky-swap"
     badge: "Urgent — Aug 31"
   - title: "Make.com for Shopify — Complete Beginner's Guide"
-    href: "/blog/make-com-shopify-automation-guide"
+    href: "/make-com-shopify/"
   - title: "Shopify P&L Automation — Live Profit Reporting Free"
     href: "/shopify-profit-loss-automation"
   - title: "Shopify Automation Stack for Small Stores"

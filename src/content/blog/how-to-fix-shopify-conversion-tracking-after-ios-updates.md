@@ -38,7 +38,7 @@ relatedGuides:
   - title: "TikTok Events API — Free Server-Side Setup"
     href: "/tiktok-events-api-shopify"
 ---
-> **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-tracking-hub/).
+> **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-attribution-tools-compared/).
 
 
 # How to Fix Shopify Conversion Tracking After iOS Updates 2026

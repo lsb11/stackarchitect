@@ -32,7 +32,7 @@ relatedGuides:
   - title: "Shopify Server-Side Tracking — Complete Setup Guide"
     href: "/blog/shopify-server-side-tracking-complete-setup-guide"
 ---
-> **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-tracking-hub/).
+> **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-attribution-tools-compared/).
 
 
 # How CAPI Shield Closes the Shopify Conversion Tracking Gap

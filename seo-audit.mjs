@@ -444,7 +444,12 @@ for (const f of htmlFiles) {
     const r = resolvesInternally(h.startsWith('https://stackarchitect.xyz') ? h.slice(SITE.length) : h);
     if (r === false) err(`${page} — BROKEN internal link ${h}`);
     else if (r === 'needs-slash') warn(`${page} — link ${h} missing trailing slash (301 hop)`);
-    else if (r === 'redirect' && !h.startsWith('/go/')) warn(`${page} — link ${h} goes through a 301 (point it at the target directly)`);
+    // ERROR, not warn, since consolidation v1 (2026-08-10). Sitewide internal
+    // links into redirected URLs waste every crawl of the redirected path and
+    // dilute the signal the consolidation exists to concentrate. Runbook §2.4
+    // requires zero of these, and a warn cannot enforce that. /go/* is exempt:
+    // those are deliberately cloaked affiliate hops, not internal navigation.
+    else if (r === 'redirect' && !h.startsWith('/go/')) err(`${page} — link ${h} points at a path on the LEFT-HAND SIDE of public/_redirects (point it at the target directly)`);
   }
 }
 

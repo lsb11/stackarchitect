@@ -21,7 +21,7 @@ faqs:
     answer: "Three levels of monitoring cover most scenarios: Make.com's built-in execution history shows every scenario run with success/failure status; a logging Google Sheet that records each order processed with timestamp and status lets you verify completeness; and Make.com email alerts notify you immediately when a scenario fails. For critical workflows, add a daily count check — if yesterday's Google Sheets order count doesn't match Shopify's order count for the same day, something was missed."
 relatedGuides:
   - title: "Make.com for Shopify — Complete Beginner's Guide"
-    href: "/blog/make-com-shopify-automation-guide"
+    href: "/make-com-shopify/"
   - title: "Scalable Google Sheets Automation for High Volume"
     href: "/blog/scalable-google-sheets-automation-for-high-volume-workflows"
   - title: "Google Apps Script Quotas — All Limits 2026"
@@ -159,7 +159,7 @@ Apply these to every Shopify automation scenario before treating it as productio
 - [ ] Test with a real order after building — not just Make.com's test data
 - [ ] Run scenario manually after any Shopify plan change or API version update
 
-The [Make.com beginner's guide](/blog/make-com-shopify-automation-guide/) covers the initial scenario setup. The [scalable Sheets architecture guide](/blog/scalable-google-sheets-automation-for-high-volume-workflows/) covers the Google Sheets patterns that support reliable data writing at volume. The [Google Apps Script quotas guide](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/) covers the Apps Script limits that affect any workflow using scheduled scripts alongside Make.com.
+The [Make.com beginner's guide](/make-com-shopify/) covers the initial scenario setup. The [scalable Sheets architecture guide](/blog/scalable-google-sheets-automation-for-high-volume-workflows/) covers the Google Sheets patterns that support reliable data writing at volume. The [Google Apps Script quotas guide](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/) covers the Apps Script limits that affect any workflow using scheduled scripts alongside Make.com.
 
 
 ---
