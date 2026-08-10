@@ -39,16 +39,24 @@ function parseCost(raw: string) {
 }
 
 function offerFor(app: AppProfile) {
+  // GATE (runbook §5, CLAUDE.md hard rule): never assert a machine-readable
+  // price we have not verified against the vendor's own pricing page on a
+  // recorded date. Both fields or no Offer at all — an unverified price in
+  // structured data is a claim a model can check and find us overstating.
+  // Today that is Elevar, Northbeam and Analyzify; the other 50 emit a
+  // SoftwareApplication node with no offers property.
+  if (!app.priceVerifiedDate || !app.priceSourceUrl) return null;
+
   const { nums, openEnded, isFree } = parseCost(app.monthlyCost);
-  // `url` is only emitted when we hold a real vendor source. Pointing it at
-  // /apps/<slug>/ would both cite a page we noindex and imply a provenance we
-  // don't have — the unverified state is carried honestly by its absence.
   const base: Record<string, unknown> = {
     priceCurrency: "USD",
     availability: "https://schema.org/InStock",
-    ...(app.priceSourceUrl ? { url: app.priceSourceUrl } : {}),
+    url: app.priceSourceUrl,
+    priceVerifiedDate: app.priceVerifiedDate,
   };
 
+  // price "0" is only truthful for an app that is actually free. A parse that
+  // yields no figure is not evidence of $0 — it is evidence of nothing.
   if (isFree) return { "@type": "Offer", ...base, price: "0" };
   if (!nums.length) return null; // nothing numeric to assert
   if (nums.length === 1 && !openEnded) {

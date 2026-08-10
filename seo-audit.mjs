@@ -345,6 +345,15 @@ for (const line of readFileSync('public/_redirects', 'utf8').split('\n')) {
 }
 const functionRoutes = ['/api/'];
 
+// Normalise an href to a site-internal path, or null if it is not ours.
+// Handles both relative ("/x/") and same-origin absolute ("https://…/x/") forms.
+function toInternalPath(href) {
+  let p = href.trim();
+  if (p.startsWith(SITE)) p = p.slice(SITE.length) || '/';
+  if (!p.startsWith('/') || p.startsWith('//')) return null; // external, mailto:, #frag, etc.
+  return p;
+}
+
 function resolvesInternally(path) {
   const clean = path.split(/[?#]/)[0];
   if (builtPaths.has(clean)) return true;
@@ -432,16 +441,38 @@ for (const f of htmlFiles) {
   // JSON-LD validity
   const ldBlocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
   for (const [, body] of ldBlocks) {
-    try { JSON.parse(body); } catch (e) { err(`${page} — INVALID JSON-LD: ${e.message} :: ${body.slice(0, 90)}…`); }
+    let parsed;
+    try { parsed = JSON.parse(body); } catch (e) { err(`${page} — INVALID JSON-LD: ${e.message} :: ${body.slice(0, 90)}…`); continue; }
+    // A redirected URL asserted in structured data is the same defect as an <a>
+    // pointing at one: it tells a machine the URL is canonical when it 301s.
+    // Runbook §2.4. Only url/@id/item/sameAs-style string values are checked.
+    (function walkLd(node) {
+      if (Array.isArray(node)) return node.forEach(walkLd);
+      if (!node || typeof node !== 'object') return;
+      for (const [k, v] of Object.entries(node)) {
+        if (typeof v === 'string' && /^(url|@id|item|mainEntityOfPage|contentUrl|target)$/.test(k)) {
+          const p = toInternalPath(v);
+          if (p && !p.startsWith('/go/') && resolvesInternally(p.split('#')[0]) === 'redirect')
+            err(`${page} — JSON-LD ${k} "${v}" points at a path on the LEFT-HAND SIDE of public/_redirects`);
+        } else walkLd(v);
+      }
+    })(parsed);
   }
 
   // internal links
+  //
+  // NOTE (2026-08-10): the previous version `continue`d on any href not starting
+  // with "/" BEFORE stripping the origin, which made the absolute-URL branch
+  // below unreachable. Every link written as https://stackarchitect.xyz/... —
+  // including 15 pointing at consolidated URLs — slipped past unchecked. Strip
+  // same-origin absolute URLs to a path FIRST, then classify.
   const hrefs = [...html.matchAll(/<a[^>]+href="([^"]+)"/g)].map((m) => m[1]);
   for (const h of hrefs) {
     if (h.startsWith('http://')) err(`${page} — insecure link ${h}`);
     if (h.startsWith('https://www.stackarchitect.xyz')) err(`${page} — www internal link ${h}`);
-    if (!h.startsWith('/') || h.startsWith('//')) continue;
-    const r = resolvesInternally(h.startsWith('https://stackarchitect.xyz') ? h.slice(SITE.length) : h);
+    const p = toInternalPath(h);
+    if (p === null) continue;
+    const r = resolvesInternally(p);
     if (r === false) err(`${page} — BROKEN internal link ${h}`);
     else if (r === 'needs-slash') warn(`${page} — link ${h} missing trailing slash (301 hop)`);
     // ERROR, not warn, since consolidation v1 (2026-08-10). Sitewide internal
@@ -449,7 +480,7 @@ for (const f of htmlFiles) {
     // dilute the signal the consolidation exists to concentrate. Runbook §2.4
     // requires zero of these, and a warn cannot enforce that. /go/* is exempt:
     // those are deliberately cloaked affiliate hops, not internal navigation.
-    else if (r === 'redirect' && !h.startsWith('/go/')) err(`${page} — link ${h} points at a path on the LEFT-HAND SIDE of public/_redirects (point it at the target directly)`);
+    else if (r === 'redirect' && !p.startsWith('/go/')) err(`${page} — link ${h} points at a path on the LEFT-HAND SIDE of public/_redirects (point it at the target directly)`);
   }
 }
 

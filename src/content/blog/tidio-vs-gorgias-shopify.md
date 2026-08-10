@@ -143,7 +143,7 @@ For most $500k+ Shopify stores, **Gorgias Pro or Advanced** is still the right a
 
 **For most Shopify stores, Tidio is the right starting point.** The free plan is genuinely functional. Lyro AI reduces human support time meaningfully when properly configured. The $29–$59/month paid plans extend this for growing stores at a fraction of Gorgias's cost.
 
-Start with [Tidio free](https://stackarchitect.xyz/go/tidio). The [Tidio honest review](https://stackarchitect.xyz/tidio-shopify-guide/) covers when the free plan is enough and when it isn't. The [Tidio setup guide](https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide) covers the full configuration including the Lyro knowledge base structure.
+Start with [Tidio free](https://stackarchitect.xyz/go/tidio). The [Tidio honest review](https://stackarchitect.xyz/tidio-shopify-guide/) covers when the free plan is enough and when it isn't. The [Tidio setup guide](https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide/) covers the full configuration including the Lyro knowledge base structure.
 
 Once you cross 300 tickets/month or hit Tidio's seat cap, [upgrade to Gorgias →](https://stackarchitect.xyz/go/gorgias). The [Gorgias review for $50k+ stores](https://stackarchitect.xyz/gorgias-shopify-guide/) covers the upgrade decision and which Gorgias tier matches your ticket volume.
 
@@ -153,7 +153,7 @@ Once you cross 300 tickets/month or hit Tidio's seat cap, [upgrade to Gorgias �
 
 The Complete Kit handles the rest of your automation — server-side tracking (replaces Elevar/Triple Whale), Stocky replacement (before August 31 shutdown), and live P&L reporting. Four pre-built Make.com JSON blueprints. $29 one-time, $0/month ongoing.
 
-**[Get the Complete Kit — $29 →](https://stackarchitect.xyz/pro)**
+**[Get the Complete Kit — $29 →](https://stackarchitect.xyz/pro/)**
 
 
 ## Related App Alternatives

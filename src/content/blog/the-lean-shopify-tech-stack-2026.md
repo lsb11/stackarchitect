@@ -11,7 +11,7 @@ readTime: 12
 canonical: "https://stackarchitect.xyz/blog/the-lean-shopify-tech-stack-2026/"
 faqs:
   - question: "What apps can I replace for free on Shopify in 2026?"
-    answer: "In 2026, Shopify stores can replace: Elevar or Triple Whale (server-side tracking, $149–$950/month) with CAPI Shield free; Shopify Stocky (inventory, shutting down August 2026) with Stocky Swap free; Klaviyo (email, $150-400/month) with Systeme.io free; TikTok tracking apps like WeltPixel ($39-99/month) with TikTok Events API via Make.com free; P&L reporting apps ($25-299/month) with Shopify P&L Auto free; and Autocrat document automation with a Make.com-based replacement free."
+    answer: "In 2026, Shopify stores can replace: Elevar or Triple Whale (server-side tracking, from $225/month) with CAPI Shield free; Shopify Stocky (inventory, shutting down August 2026) with Stocky Swap free; Klaviyo (email, $150-400/month) with Systeme.io free; TikTok tracking apps like WeltPixel ($39-99/month) with TikTok Events API via Make.com free; P&L reporting apps ($25-299/month) with Shopify P&L Auto free; and Autocrat document automation with a Make.com-based replacement free."
   - question: "What is a lean Shopify tech stack?"
     answer: "A lean Shopify tech stack uses the minimum number of apps and tools to run a store effectively — prioritising free alternatives over paid subscriptions wherever the functionality is equivalent. The core principle is that most Shopify operational layers (tracking, inventory, email, P&L, workflow automation) can be covered by Make.com webhooks, Google Sheets, and free SaaS platforms — without installing apps that add monthly costs, slow your store, or create vendor dependency."
   - question: "How much can I save by switching to the free Shopify stack?"
@@ -55,7 +55,7 @@ The result: lower monthly costs, faster store performance (fewer app scripts loa
 
 **Free replacement:** [CAPI Shield](/capi-shield/) — a Make.com scenario that receives a Shopify Order Payment webhook and sends purchase events directly to Meta's Conversions API and Google's Enhanced Conversions. Same server-side result. Zero monthly cost.
 
-The only ongoing cost is Make.com's free plan (sufficient for most stores) or Core plan at $12/month for higher volumes. Versus $199/month for Elevar — the saving is $190/month minimum.
+The only ongoing cost is Make.com's free plan (sufficient for most stores) or Core plan at $12/month for higher volumes. Versus $225/month for Elevar Core — the saving is $213/month minimum.
 
 **Also handles:** TikTok Events API via an additional branch on the same Make.com scenario. Replaces WeltPixel and similar TikTok tracking apps ($39–$99/month). See [TikTok Events API setup](/tiktok-events-api-shopify/).
 

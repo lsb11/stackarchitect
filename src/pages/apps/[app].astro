@@ -72,17 +72,19 @@ const faqSchema = {
   ],
 };
 
+// No `offers` property. This node describes the free replacement, not the paid
+// app, so "price: 0" was not the false vendor claim it looked like — but the
+// replacement is not always ours and not always unconditionally free (Shopify
+// Flow needs a qualifying plan, Tidio's free tier is capped), and an Offer
+// carrying neither priceVerifiedDate nor priceSourceUrl breaches the rule in
+// CLAUDE.md regardless. The prose on each page states the $0 route in context;
+// structured data asserts only what we can stand behind.
 const softwareSchema = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
   name: `${app.replacement} for Shopify`,
   applicationCategory: 'BusinessApplication',
-  operatingSystem: 'Web',
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'USD'
-  }
+  operatingSystem: 'Web'
 };
 
 const articleSchema = {
@@ -93,7 +95,7 @@ const articleSchema = {
   author: {
     '@type': 'Person',
     name: 'Luke Sandelands', alternateName: 'Luke',
-    url: 'https://stackarchitect.xyz/about'
+    url: 'https://stackarchitect.xyz/about/'
   },
   publisher: {
     '@type': 'Organization',
