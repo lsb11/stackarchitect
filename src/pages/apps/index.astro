@@ -1,42 +1,303 @@
 ---
 import Base from "../../layouts/Base.astro";
-import AppCard from "../../components/AppCard.astro";
 import appsData from "../../data/apps.json";
 
-// Define the interface to match our AppCard requirements
 interface AppProfile {
   id: string;
   name: string;
   category: string;
   description: string;
   monthlyCost: string;
+  priceVerifiedDate: string | null;
+  priceSourceUrl: string | null;
   replacement: string;
   savings: string;
+  stackarchitectAlternativeLink: string;
 }
 
-// Cast the imported JSON to our strongly typed interface
-const apps = appsData as AppProfile[];
+const apps = (appsData as AppProfile[]).slice().sort((a, b) => a.name.localeCompare(b.name));
+
+const SITE = "https://stackarchitect.xyz";
+const canonical = `${SITE}/apps/`;
+
+// ── price parsing ───────────────────────────────────────────────────────────
+// monthlyCost is authored as display text ("$145–$275", "$45+", "Free").
+// Schema.org needs numbers, so parse rather than guess: a bare figure is an
+// Offer, a range or an open-ended "+" is an AggregateOffer.
+function parseCost(raw: string) {
+  const s = String(raw).replace(/,/g, "");
+  const nums = [...s.matchAll(/\$\s*([0-9]+(?:\.[0-9]+)?)/g)].map((m) => parseFloat(m[1]));
+  const openEnded = s.includes("+");
+  const isFree = nums.length === 0 && /free/i.test(s);
+  return {
+    nums,
+    openEnded,
+    isFree,
+    // numeric key for sorting; free sorts to 0, unparseable to Infinity so it lands last
+    sortValue: isFree ? 0 : nums.length ? nums[0] : Number.POSITIVE_INFINITY,
+  };
+}
+
+function offerFor(app: AppProfile) {
+  const { nums, openEnded, isFree } = parseCost(app.monthlyCost);
+  // `url` is only emitted when we hold a real vendor source. Pointing it at
+  // /apps/<slug>/ would both cite a page we noindex and imply a provenance we
+  // don't have — the unverified state is carried honestly by its absence.
+  const base: Record<string, unknown> = {
+    priceCurrency: "USD",
+    availability: "https://schema.org/InStock",
+    ...(app.priceSourceUrl ? { url: app.priceSourceUrl } : {}),
+  };
+
+  if (isFree) return { "@type": "Offer", ...base, price: "0" };
+  if (!nums.length) return null; // nothing numeric to assert
+  if (nums.length === 1 && !openEnded) {
+    return { "@type": "Offer", ...base, price: String(nums[0]) };
+  }
+  // "$45+" -> floor only. No offerCount: the number of tiers behind a "+" is
+  // exactly what we don't know, and asserting 1 would be a guess.
+  const agg: Record<string, unknown> = { "@type": "AggregateOffer", ...base, lowPrice: String(nums[0]) };
+  if (nums.length > 1) agg.highPrice = String(nums[nums.length - 1]);
+  return agg;
+}
+
+const verifiedCount = apps.filter((a) => a.priceVerifiedDate).length;
+const categories = [...new Set(apps.map((a) => a.category))].sort();
+
+// Page freshness follows the most recent price verification.
+const latestVerified =
+  apps.map((a) => a.priceVerifiedDate).filter(Boolean).sort().pop() ?? null;
+
+const title = "Shopify App Pricing Comparison — 53 Apps & Free Alternatives";
+const description =
+  "Compare 53 paid Shopify apps by monthly cost, category and free replacement. Prices verified against vendor pricing pages, each with its source and date.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": `${canonical}#collection`,
+      url: canonical,
+      name: title,
+      description,
+      inLanguage: "en-GB",
+      isPartOf: { "@id": `${SITE}/#website` },
+      ...(latestVerified ? { dateModified: latestVerified } : {}),
+      mainEntity: { "@id": `${canonical}#itemlist` },
+    },
+    {
+      "@type": "ItemList",
+      "@id": `${canonical}#itemlist`,
+      name: "Paid Shopify apps and their free alternatives",
+      numberOfItems: apps.length,
+      itemListOrder: "https://schema.org/ItemListOrderAscending",
+      itemListElement: apps.map((app, i) => {
+        const offers = offerFor(app);
+        return {
+          "@type": "ListItem",
+          position: i + 1,
+          item: {
+            "@type": "SoftwareApplication",
+            "@id": `${SITE}/apps/${app.id}/#app`,
+            name: app.name,
+            applicationCategory: app.category,
+            operatingSystem: "Shopify",
+            description: app.description,
+            ...(offers ? { offers } : {}),
+          },
+        };
+      }),
+    },
+  ],
+};
 ---
 
-<Base 
-  title="Shopify App Alternatives & Migration Guides (2026)" 
-  description="A curated directory of 53 expensive Shopify apps, featuring free alternatives, transparent pricing breakdowns, and technical teardowns to cut your monthly bill."
-  canonical="https://stackarchitect.xyz/apps/"
+<Base
+  title={title}
+  description={description}
+  canonical={canonical}
+  schema={schema}
+  verifiedDate={latestVerified ?? undefined}
 >
-  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 bg-gray-900 font-sans">
-    <div class="mb-16 text-center max-w-3xl mx-auto">
-      <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">Shopify App Alternatives & Migration Guides</h1>
-      <p class="text-lg text-gray-300 leading-relaxed">
-        A curated directory of expensive Shopify apps, featuring free alternatives, transparent pricing breakdowns, and technical teardowns to help you cut your monthly bill without sacrificing functionality.
-      </p>
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <nav aria-label="Breadcrumb" style="margin-bottom:16px;">
+      <ol style="display:flex;align-items:center;gap:8px;list-style:none;padding:0;margin:0;font-family:var(--mono);font-size:11px;color:var(--text-4);">
+        <li><a href="/" style="color:var(--text-4);text-decoration:none;">Home</a></li>
+        <li aria-hidden="true" style="color:var(--border);">/</li>
+        <li style="color:var(--text-3);">App Pricing</li>
+      </ol>
+    </nav>
+
+    <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">
+      Shopify App Pricing —<br /><span class="green">53 Apps Compared</span>
+    </h1>
+
+    <p id="answer">Fifty-three paid Shopify apps, their published monthly cost, and the free replacement for each. Prices are read from vendor pricing pages rather than comparison sites; {verifiedCount} of 53 currently carry a verification date and a source link, and the rest are marked unverified.</p>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 my-8">
+      <div style="background:#0f1311;border:1px solid #222825;border-radius:12px;padding:16px;">
+        <div class="text-sm text-gray-400 mb-1">Apps tracked</div>
+        <div class="text-xl font-bold text-white">{apps.length}</div>
+      </div>
+      <div style="background:#0f1311;border:1px solid #222825;border-radius:12px;padding:16px;">
+        <div class="text-sm text-gray-400 mb-1">Categories</div>
+        <div class="text-xl font-bold text-white">{categories.length}</div>
+      </div>
+      <div style="background:#0f1311;border:1px solid #222825;border-radius:12px;padding:16px;">
+        <div class="text-sm text-gray-400 mb-1">Price verified</div>
+        <div class="text-xl font-bold text-emerald-400">{verifiedCount}</div>
+      </div>
+      <div style="background:#0f1311;border:1px solid #222825;border-radius:12px;padding:16px;">
+        <div class="text-sm text-gray-400 mb-1">Free replacement</div>
+        <div class="text-xl font-bold text-emerald-400">Every app</div>
+      </div>
     </div>
 
-    <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 list-none p-0 m-0">
-      {apps.map((app) => (
-        <li class="p-0 m-0">
-          <AppCard app={app} />
-        </li>
-      ))}
-    </ul>
+    <div class="flex flex-wrap gap-3 items-center my-6">
+      <label for="cat-filter" class="text-sm text-gray-400">Filter by category</label>
+      <select
+        id="cat-filter"
+        style="background:#0f1311;border:1px solid #222825;border-radius:8px;color:#fff;padding:8px 12px;font-size:14px;"
+      >
+        <option value="">All categories ({apps.length})</option>
+        {categories.map((c) => (
+          <option value={c}>{c} ({apps.filter((a) => a.category === c).length})</option>
+        ))}
+      </select>
+      <span id="row-count" class="text-sm text-gray-400" aria-live="polite"></span>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table id="apps-table" style="width:100%;border-collapse:collapse;font-size:14px;">
+        <caption class="text-sm text-gray-400" style="caption-side:top;text-align:left;padding-bottom:8px;">
+          Click any column heading to sort.
+        </caption>
+        <thead>
+          <tr style="border-bottom:1px solid var(--border);">
+            <th data-sort="name" aria-sort="ascending" style="text-align:left;padding:10px 12px;color:var(--text-3);cursor:pointer;user-select:none;">App <span class="sort-ind">▲</span></th>
+            <th data-sort="category" style="text-align:left;padding:10px 12px;color:var(--text-3);cursor:pointer;user-select:none;">Category <span class="sort-ind"></span></th>
+            <th data-sort="cost" style="text-align:left;padding:10px 12px;color:var(--text-3);cursor:pointer;user-select:none;">Monthly cost <span class="sort-ind"></span></th>
+            <th data-sort="verified" style="text-align:left;padding:10px 12px;color:var(--text-3);cursor:pointer;user-select:none;">Price verified <span class="sort-ind"></span></th>
+            <th style="text-align:left;padding:10px 12px;color:var(--text-3);">Free replacement</th>
+          </tr>
+        </thead>
+        <tbody>
+          {apps.map((app) => {
+            const cost = parseCost(app.monthlyCost);
+            return (
+              <tr
+                data-name={app.name.toLowerCase()}
+                data-category={app.category}
+                data-cost={String(cost.sortValue)}
+                data-verified={app.priceVerifiedDate ?? ""}
+                style="border-bottom:1px solid var(--border);"
+              >
+                <td style="padding:10px 12px;">
+                  <a href={`/apps/${app.id}/`} style="color:#fff;font-weight:600;text-decoration:none;">{app.name}</a>
+                </td>
+                <td style="padding:10px 12px;color:var(--text-3);">{app.category}</td>
+                <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">{app.monthlyCost}</td>
+                <td style="padding:10px 12px;font-family:var(--mono);font-size:13px;">
+                  {app.priceVerifiedDate && app.priceSourceUrl ? (
+                    <a
+                      href={app.priceSourceUrl}
+                      rel="nofollow noopener"
+                      target="_blank"
+                      style="color:#34d377;text-decoration:underline;"
+                      title="Vendor pricing page this figure was read from"
+                    >
+                      {app.priceVerifiedDate}
+                    </a>
+                  ) : (
+                    <span style="color:var(--text-4);">unverified</span>
+                  )}
+                </td>
+                <td style="padding:10px 12px;">
+                  <a href={app.stackarchitectAlternativeLink} style="color:#34d377;text-decoration:underline;">
+                    {app.replacement}
+                  </a>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+
+    <p class="text-gray-300" style="margin-top:2rem;font-size:.9rem;border-top:1px solid var(--border);padding-top:1rem;">
+      <strong class="text-white">On these figures:</strong> a date in the “Price verified” column links to the
+      vendor pricing page the figure was read from on that date. Rows marked <em>unverified</em> have not yet been
+      checked against a live vendor page and may be stale — treat them as indicative. Vendors change prices without
+      notice; re-check before making a purchasing decision. Our sourcing rules are on
+      <a href="/how-we-test/" style="color:#34d377;text-decoration:underline;">how we test</a>.
+    </p>
   </main>
+
+  <script is:inline>
+    (() => {
+      const table = document.getElementById('apps-table');
+      if (!table) return;
+      const tbody = table.querySelector('tbody');
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+      const countEl = document.getElementById('row-count');
+      const filter = document.getElementById('cat-filter');
+      let sortKey = 'name';
+      let asc = true;
+
+      const value = (row, key) => {
+        const raw = row.getAttribute('data-' + key) || '';
+        if (key === 'cost') {
+          const n = parseFloat(raw);
+          return Number.isFinite(n) ? n : Number.POSITIVE_INFINITY;
+        }
+        // empty verification dates sort last in both directions
+        if (key === 'verified' && raw === '') return asc ? '￿' : '';
+        return raw;
+      };
+
+      const render = () => {
+        const cat = filter ? filter.value : '';
+        const visible = rows.filter((r) => !cat || r.getAttribute('data-category') === cat);
+        visible.sort((a, b) => {
+          const av = value(a, sortKey);
+          const bv = value(b, sortKey);
+          if (av < bv) return asc ? -1 : 1;
+          if (av > bv) return asc ? 1 : -1;
+          return a.getAttribute('data-name').localeCompare(b.getAttribute('data-name'));
+        });
+        rows.forEach((r) => r.remove());
+        visible.forEach((r) => tbody.appendChild(r));
+        if (countEl) {
+          countEl.textContent = visible.length === rows.length
+            ? ''
+            : `Showing ${visible.length} of ${rows.length}`;
+        }
+      };
+
+      table.querySelectorAll('th[data-sort]').forEach((th) => {
+        th.setAttribute('tabindex', '0');
+        const activate = () => {
+          const key = th.getAttribute('data-sort');
+          asc = key === sortKey ? !asc : true;
+          sortKey = key;
+          table.querySelectorAll('th[data-sort]').forEach((o) => {
+            o.removeAttribute('aria-sort');
+            const ind = o.querySelector('.sort-ind');
+            if (ind) ind.textContent = '';
+          });
+          th.setAttribute('aria-sort', asc ? 'ascending' : 'descending');
+          const ind = th.querySelector('.sort-ind');
+          if (ind) ind.textContent = asc ? '▲' : '▼';
+          render();
+        };
+        th.addEventListener('click', activate);
+        th.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+        });
+      });
+
+      if (filter) filter.addEventListener('change', render);
+    })();
+  </script>
 </Base>

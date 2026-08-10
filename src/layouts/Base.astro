@@ -148,7 +148,7 @@ const personSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   '@id': 'https://stackarchitect.xyz/#luke',
-  'name': 'Luke',
+  'name': 'Luke Sandelands', 'alternateName': 'Luke',
   'jobTitle': 'Shopify Automation Specialist',
   'url': 'https://stackarchitect.xyz/about/',
   'sameAs': [
@@ -313,7 +313,10 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
     <meta
       name="robots"
       content={noindex
-        ? 'noindex, nofollow'
+        // `follow`, not `nofollow` (runbook §1.5): these pages stay reachable
+        // and their outbound equity should still reach the survivors. nofollow
+        // would strand every link on the 53 /apps/* pages and the legal pages.
+        ? 'noindex, follow'
         : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1'}
     />
 

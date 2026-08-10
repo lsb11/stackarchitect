@@ -207,8 +207,26 @@ export default defineConfig({
   integrations: [
     sitemap({
       filter: (page) => {
-        // Exclude utility/embed pages from sitemap
-        return !page.includes('/sitemap-page') && !page.includes('/embed/');
+        // `page` is an absolute URL — compare on pathname so a stray match in
+        // the origin can never change the decision.
+        let path;
+        try {
+          path = new URL(page).pathname;
+        } catch {
+          path = page;
+        }
+
+        // Utility/embed pages
+        if (path.startsWith('/sitemap-page') || path.startsWith('/embed/')) return false;
+
+        // Per-app detail pages are noindexed (near-duplicate template output);
+        // /apps/ itself is the canonical comparison hub and stays in.
+        if (/^\/apps\/[^/]+\/?$/.test(path)) return false;
+
+        // Legal pages: indexable, but no value as sitemap entries.
+        if (['/privacy/', '/terms/', '/refund-policy/'].includes(path)) return false;
+
+        return true;
       },
       serialize(item) {
         // Look up real lastmod from cache; fall back to build time as last resort.

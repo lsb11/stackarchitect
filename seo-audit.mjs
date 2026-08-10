@@ -362,7 +362,25 @@ function resolvesInternally(path) {
 // ---- per-page checks -------------------------------------------------------
 const titles = new Map();
 const descs = new Map();
-const NOINDEX_OK = [/^\/404(\.html)?\/?$/, /^\/sitemap-page\/$/, /^\/embed\//];
+// /apps/<slug>/ detail pages are deliberately noindexed — near-duplicate
+// template output whose canonical surface is the /apps/ hub. The hub itself
+// must NOT match here, so the slug segment is required.
+const NOINDEX_OK = [
+  /^\/404(\.html)?\/?$/,
+  /^\/sitemap-page\/$/,
+  /^\/embed\//,
+  /^\/apps\/[^/]+\/$/,
+  // Legal pages: reachable and still useful as trust signals, but they consume
+  // crawl assessment for zero possible search value. noindex, follow.
+  /^\/privacy\/$/,
+  /^\/terms\/$/,
+  /^\/refund-policy\/$/,
+];
+
+// Pages deliberately absent from the sitemap. Distinct from NOINDEX_OK: a page
+// can be indexable yet not worth a sitemap entry, and this list keeps the
+// "missing from sitemap" warning meaningful instead of permanently noisy.
+const SITEMAP_OPTIONAL = [/^\/privacy\/$/, /^\/terms\/$/, /^\/refund-policy\/$/];
 
 for (const f of htmlFiles) {
   const page = f.slice(DIST.length).replace(/index\.html$/, '') || '/';
@@ -459,6 +477,7 @@ else {
   const smPaths = new Set(smUrls.map((u) => new URL(u).pathname));
   for (const p of builtPaths) {
     if (NOINDEX_OK.some((r) => r.test(p)) || p.endsWith('.html')) continue;
+    if (SITEMAP_OPTIONAL.some((r) => r.test(p))) continue;
     if (!smPaths.has(p)) warn(`built page missing from sitemap: ${p}`);
   }
   console.log(`sitemap URLs: ${smUrls.length}, built pages: ${builtPaths.size}`);
