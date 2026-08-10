@@ -132,7 +132,7 @@ import FeaturedIn from '../components/FeaturedIn.astro';
         { "@type": "Question", "name": "Why is my Shopify Google Ads conversion tracking showing wrong numbers?", "acceptedAnswer": { "@type": "Answer", "text": "Shopify Google Ads conversion tracking shows wrong numbers because iOS Link Tracking Protection strips the Google Click ID (gclid) from ad URLs before customers open them in Safari, Mail, or Messages. Without gclid, Google cannot attribute the purchase to the ad. Safari ITP also clears attribution cookies within 24 hours. The fix is Google Enhanced Conversions — a server-side signal that sends hashed customer email to Google Ads directly from Shopify's server, bypassing browser restrictions entirely. Stack Architect provides a free Make.com setup that deploys in 6 minutes and recovers 15–40% of lost conversions at $0/month, replacing Stape ($29+/month) and Littledata ($99+/month)." } },
         { "@type": "Question", "name": "How do I prepare my Shopify store for AI shopping and ChatGPT citations?", "acceptedAnswer": { "@type": "Answer", "text": "Three requirements for AI-discoverable Shopify stores in 2026: (1) structured data — Product, Offer, Organization, and FAQPage schema on every page; (2) server-side tracking for accurate conversion signals back to ad platforms; (3) an llms.txt file at your domain root describing your product catalogue for AI crawlers. Stack Architect's Agentic Storefronts setup guide includes a 12-point readiness checklist covering all three." } },
         { "@type": "Question", "name": "What's the difference between Make.com and Zapier for Shopify automation?", "acceptedAnswer": { "@type": "Answer", "text": "Make.com's free tier includes 1,000 credits/month (formerly called operations). Zapier's free tier includes 100 tasks per month — 10x fewer. Make.com is also more flexible for multi-step branching workflows (routing one Shopify order event to Meta CAPI, Google Ads, TikTok Events API, and Google Sheets simultaneously) because operations are counted per module, not per multi-step zap. For Shopify stores with more than 100 orders per month, Make.com is usually 3–5x cheaper than Zapier at equivalent volume." } },
-        { "@type": "Question", "name": "What happens to my Stocky data when Shopify shuts it down on August 31, 2026?", "acceptedAnswer": { "@type": "Answer", "text": "All Stocky data — purchase orders, stocktakes, transfers, supplier records, demand forecasts, and SKU history — will be permanently deleted after August 31, 2026 per Shopify's official shutdown notice. There is no migration path provided by Shopify. Store owners must export data and migrate to a replacement before the deadline. Stocky Swap by Stack Architect is a free replacement that logs orders to Google Sheets via Make.com and can be deployed in 4 minutes." } },
+        { "@type": "Question", "name": "What happens to my Stocky data after the 31 August 2026 shutdown?", "acceptedAnswer": { "@type": "Answer", "text": "All Stocky data — purchase orders, stocktakes, transfers, supplier records, demand forecasts, and SKU history — will be permanently deleted after August 31, 2026 per Shopify's official shutdown notice. There is no migration path provided by Shopify. Store owners must export data and migrate to a replacement before the deadline. Stocky Swap by Stack Architect is a free replacement that logs orders to Google Sheets via Make.com and can be deployed in 4 minutes." } },
         { "@type": "Question", "name": "How much does a typical Shopify store save with the free automation stack?", "acceptedAnswer": { "@type": "Answer", "text": "Typical savings range from $400 to $1,800 per month depending on which apps are being replaced. Example stack: Klaviyo ($20–$720+/mo) + Triple Whale or Elevar ($225–$1,250/mo) + Stocky or Inventory Planner ($29–$500/mo) + Zapier ($79–$200/mo) + TrueProfit or BeProfit ($19–$99/mo) = $426–$1,848/month replaced. The $29 Complete Kit pays for itself in less than one week for most stores." } },
         { "@type": "Question", "name": "Does Shopify officially support replacing its Stocky app with third-party tools?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Shopify's own shutdown notice directs merchants to the Shopify App Store and third-party inventory management tools. Shopify does not provide a first-party migration path — the Stocky database will be deleted after August 31, 2026. Any tool that can ingest Shopify order webhooks can replace Stocky's core inventory tracking functionality, including free webhook-to-Sheets workflows like Stocky Swap." } },
         { "@type": "Question", "name": "Why is Stack Architect free and how does it make money?", "acceptedAnswer": { "@type": "Answer", "text": "Stack Architect's free tools, guides, and calculators are funded by two revenue streams: (1) affiliate commissions from tools we use and recommend (Make.com, Systeme.io, GetResponse, Beehiiv, Tidio, Gorgias, Google Workspace) — these cost you nothing extra; (2) the optional $29 Complete Kit for store owners who want pre-built Make.com blueprints rather than building from free guides. No subscriptions, no upsells, no hidden fees." } }
@@ -372,7 +372,7 @@ import FeaturedIn from '../components/FeaturedIn.astro';
           </div>
         </div>
         <div class="sol-urgent-right">
-          <div class="countdown-box">
+          <div class="countdown-box" id="cd-box">
             <div class="countdown-label">Stocky shuts down in</div>
             <div class="countdown-nums">
               <div class="cd-unit"><div class="cd-val" id="cd-d">--</div><div class="cd-l">Days</div></div>
@@ -382,7 +382,11 @@ import FeaturedIn from '../components/FeaturedIn.astro';
               <div class="cd-unit"><div class="cd-val" id="cd-m">--</div><div class="cd-l">Min</div></div>
             </div>
           </div>
-          <div style="font-family:var(--mono);font-size:10px;color:var(--text-4);text-align:center;line-height:1.5;max-width:180px;">Free replacement ready now — don't wait until August</div>
+          <div class="countdown-box" id="cd-box-post" hidden>
+            <div class="countdown-label">Stocky — end of service</div>
+            <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--amber);text-align:center;">31 Aug 2026</div>
+          </div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--text-4);text-align:center;line-height:1.5;max-width:180px;">Free replacement — deploys in 4 minutes</div>
         </div>
       </div>
     </article>
@@ -1252,12 +1256,20 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
   var el = document.getElementById('footer-copyright');
   if (el) el.textContent = '© ' + new Date().getFullYear() + ' STACK_ARCHITECT // CORE_DEPLOYMENT';
 
-  // Stocky countdown
+  // Stocky countdown. Past the deadline it must not render "0 Days : 00 Hrs"
+  // under a "shuts down in" label — it swaps to a plain statement of the date
+  // so the page reads correctly on 1 September with no edit.
   function updateCountdown() {
     var target = new Date('2026-08-31T23:59:59Z');
     var now = new Date();
     var diff = target - now;
-    if (diff <= 0) { ['cd-d','cd-h','cd-m'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent='0';}); return; }
+    if (diff <= 0) {
+      var box = document.getElementById('cd-box');
+      var post = document.getElementById('cd-box-post');
+      if (box) box.hidden = true;
+      if (post) post.hidden = false;
+      return;
+    }
     var days = Math.floor(diff / 86400000);
     var hours = Math.floor((diff % 86400000) / 3600000);
     var mins = Math.floor((diff % 3600000) / 60000);
@@ -1390,7 +1402,7 @@ window.gfGet = function() {
     { q: "Why is my Shopify Google Ads conversion tracking showing wrong numbers?", a: "iOS Link Tracking Protection strips the gclid from ad URLs in Safari, Mail, and Messages. Without gclid, Google can't attribute the purchase. The fix is <a href='/shopify-google-ads-conversion-tracking/'>Google Enhanced Conversions via Make.com</a> — free, 6 minutes, recovers 15–40% of lost conversions." },
     { q: "How do I prepare my Shopify store for AI shopping and ChatGPT citations?", a: "Three requirements: structured data (Product, Offer, FAQPage schema), server-side tracking for accurate signals, and an llms.txt file at your domain root. The <a href='/blog/shopify-agentic-storefronts-setup-guide-2026/'>Agentic Storefronts guide</a> includes a 12-point readiness checklist." },
     { q: "What's the difference between Make.com and Zapier for Shopify automation?", a: "Make.com's free tier: 1,000 credits/month. Zapier's free tier: 100 tasks/month — 10x fewer. Make.com counts per module, not per multi-step zap, making branching workflows much cheaper. For Shopify stores over 100 orders/month, Make.com is typically 3–5x cheaper. Compare exactly with the <a href='/make-vs-zapier-cost-calculator/'>Make vs Zapier Calculator</a>." },
-    { q: "What happens to my Stocky data when Shopify shuts it down on August 31, 2026?", a: "All Stocky data — purchase orders, stocktakes, transfers, supplier records, demand forecasts, SKU history — is permanently deleted after August 31, 2026 per Shopify's official shutdown notice. No migration path provided. <a href='/stocky-swap/'>Stocky Swap</a> replaces it free in 4 minutes. Score your migration risk with the <a href='/stocky-migration-risk-scorer/'>Stocky Migration Risk Scorer</a>." },
+    { q: "What happens to my Stocky data after the 31 August 2026 shutdown?", a: "All Stocky data — purchase orders, stocktakes, transfers, supplier records, demand forecasts, SKU history — is permanently deleted after August 31, 2026 per Shopify's official shutdown notice. No migration path provided. <a href='/stocky-swap/'>Stocky Swap</a> replaces it free in 4 minutes. Score your migration risk with the <a href='/stocky-migration-risk-scorer/'>Stocky Migration Risk Scorer</a>." },
     { q: "How much does a typical Shopify store save with the free automation stack?", a: "Typical savings: $400–$1,800/month. Example stack: Klaviyo ($20–$720+/mo) + Triple Whale or Elevar ($225–$1,250) + Stocky ($29–$199) + Zapier ($79–$200) + TrueProfit ($19–$99) = $426–$1,848/month replaced. The $29 Complete Kit pays for itself in under a week. Calculate your exact figure with the <a href='/shopify-app-cost-calculator/'>App Cost Calculator</a>." },
     { q: "Why is Stack Architect free and how does it make money?", a: "Two revenue streams: (1) affiliate commissions from tools we use and recommend — Make.com, Systeme.io, GetResponse, Beehiiv, Tidio, Gorgias, Google Workspace — these cost you nothing extra; (2) the optional $29 Complete Kit. No subscriptions, no upsells, no data sold." }
   ];

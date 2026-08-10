@@ -21,7 +21,7 @@ faqs:
 relatedGuides:
   - title: "CAPI Shield — Free Shopify Server-Side Tracking"
     href: "/capi-shield"
-  - title: "Stocky Swap — Free Inventory Before Aug 31, 2026"
+  - title: "Stocky Swap — Free Inventory After the Stocky Shutdown"
     href: "/stocky-swap"
     badge: "Urgent"
   - title: "Replace Klaviyo Free — Systeme.io Setup Guide"
@@ -138,7 +138,7 @@ The Make.com Core plan at $12/month becomes necessary above approximately 160 or
 The recommended deployment order:
 
 1. **CAPI Shield first** — highest ROI, fixes tracking data that powers your ad campaigns
-2. **Stocky Swap** — urgent before August 31, 2026
+2. **Stocky Swap** — Stocky's end of service was 31 August 2026
 3. **Systeme.io** — replace Klaviyo, takes 30 minutes to migrate
 4. **P&L Auto** — add as a branch to your existing Make.com scenario (under 3 minutes if CAPI is running)
 5. **Tidio** — install and configure Lyro AI, 30 minutes

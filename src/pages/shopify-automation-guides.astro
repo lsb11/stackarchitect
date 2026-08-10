@@ -366,7 +366,7 @@ const tocHeadings = [
         <div class="gpu-icon" aria-hidden="true">⚠️</div>
         <div>
           <div class="gpu-title">Shopify Stocky shuts down August 31, 2026 — 200,000+ merchants affected</div>
-          <div class="gpu-desc">The free replacement deploys in 4 minutes. Don't wait until August.</div>
+          <div class="gpu-desc">The free replacement deploys in 4 minutes, before or after the date.</div>
         </div>
       </div>
       <div class="gpu-cd" aria-label="Countdown to shutdown">
@@ -1003,7 +1003,19 @@ const tocHeadings = [
     const cdH = document.getElementById('cd-h');
     const cdM = document.getElementById('cd-m');
     if (!cdD) return;
-    if (t <= 0) { cdD.textContent = '0'; cdH.textContent = '00'; cdM.textContent = '00'; return; }
+    // Past the deadline, replace the whole countdown block with the date
+    // rather than showing zeros beneath "Countdown to shutdown".
+    if (t <= 0) {
+      const wrap = document.querySelector('.gpu-cd');
+      if (wrap && !wrap.dataset.ended) {
+        wrap.dataset.ended = '1';
+        wrap.setAttribute('aria-label', 'Stocky end of service');
+        wrap.innerHTML =
+          '<div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--amber);">Ended 31 Aug 2026</div>' +
+          '<a href="https://stackarchitect.xyz/stocky-alternative/" class="btn-g" style="margin-left:14px;background:var(--amber);color:#000;">What to do now →</a>';
+      }
+      return;
+    }
     cdD.textContent = Math.floor(t / 864e5);
     cdH.textContent = String(Math.floor(t % 864e5 / 36e5)).padStart(2, '0');
     cdM.textContent = String(Math.floor(t % 36e5 / 6e4)).padStart(2, '0');

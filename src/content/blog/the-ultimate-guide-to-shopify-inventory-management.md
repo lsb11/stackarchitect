@@ -1,6 +1,6 @@
 ---
 title: "Shopify Inventory in Google Sheets 2026"
-description: "Send Shopify inventory to Google Sheets free in 2026: real-time order logging, stock alerts, supplier tracking — a Stocky replacement before Aug 31."
+description: "Send Shopify inventory to Google Sheets free in 2026: real-time order logging, stock alerts, supplier tracking — a replacement for the retired Stocky app."
 answer: "Shopify inventory management runs free by sending every order webhook into Google Sheets, which gives real-time order logging, stock levels, supplier tracking and low-stock alerts without an app. This matters urgently in 2026 because Shopify Stocky shuts down permanently on 31 August and paid replacements start around $29 a month."
 publishDate: "2026-03-28"
 updatedDate: "2026-07-17"
@@ -84,7 +84,7 @@ The foundation of free Shopify inventory management is a single Make.com scenari
 5. Map the fields: order ID, date, product title, variant, SKU, quantity, price, fulfilment status, customer name
 6. Activate the scenario
 
-From this point forward, every paid order in Shopify writes a new row to your sheet within seconds. This is the equivalent of what Stocky Swap does — and it is what you need deployed before August 31, 2026.
+From this point forward, every paid order in Shopify writes a new row to your sheet within seconds. This is the equivalent of what Stocky Swap does — and it is what replaces Stocky, whose end of service was 31 August 2026.
 
 ## The Google Sheets Inventory Ledger Structure
 
@@ -178,7 +178,7 @@ Shopify removed Stocky from the App Store on February 2, 2026. On August 31, 202
 **If you are currently using Stocky:**
 
 1. Export all data now — do not wait. In Stocky, export your full purchase order history and stocktake records as CSV. Store these files in Google Drive immediately.
-2. Deploy Stocky Swap before August 31 — the [Stocky Swap setup](/stocky-swap/) takes 4 minutes and ensures no gap in order tracking.
+2. Deploy Stocky Swap — the [Stocky Swap setup](/stocky-swap/) takes 4 minutes and ensures no gap in order tracking.
 3. Rebuild any supplier management workflows you relied on in Stocky using Sheet 3 above.
 
 **If you are not using Stocky:** you still need a real-time order logging system. The Make.com and Google Sheets approach is the standard free replacement regardless of whether Stocky was part of your previous workflow.
@@ -210,7 +210,7 @@ The average store is paying anywhere from $29 to $500 a month for inventory mana
 1. **Deploy Stocky Swap now** — [4-minute setup](/stocky-swap/). This gets order logging running immediately.
 2. **Set up the sheet structure** — use the three-sheet layout above. Copy the SUMIF formulas into Sheet 2.
 3. **Add stock alert notifications** — add a second Make.com branch for email alerts on low stock.
-4. **Export Stocky data** if applicable — do this before August 31, 2026.
+4. **Export Stocky data** if Stocky still opens in your admin — its end of service was 31 August 2026, and there is no export route afterwards.
 5. **Add P&L tracking** — a third branch on the same scenario, no additional setup cost.
 
 Every step above is free. The only ongoing cost is Make.com's Core plan at $12/month if your order volume exceeds 160 orders per month on the free plan — still 90–97% cheaper than any dedicated inventory app.
@@ -218,7 +218,7 @@ Every step above is free. The only ongoing cost is Make.com's Core plan at $12/m
 
 ---
 
-## Get the Stocky Swap files before August 31
+## Get the Stocky Swap files
 
 The Complete Kit includes the Stocky Swap Make.com JSON blueprint — deploys in 60 seconds and starts capturing live inventory data immediately. Also includes CAPI Shield (tracking), TikTok CAPI, and P&L Auto. $29 one-time. Deploy before the Stocky shutdown deadline.
 

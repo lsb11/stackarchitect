@@ -6,17 +6,23 @@ import "@fontsource/jetbrains-mono/500.css";
 // Changes vs previous version:
 //  • Fake status ticker ("PRODUCT_NODES // ACCESS_OPEN") replaced with ONE
 //    honest, dated announcement: the Stocky shutdown. Real deadline, real link.
-//    DELETE the announcement bar after 31 Aug 2026.
 //  • [Brackets], ▾ carets, SNAKE_CASE labels removed.
 //  • Dropdowns trimmed to the post-prune URL set (see 01-PRUNE-MAP.md).
 //  • ONE CTA in the nav: the kit. Everything else is navigation.
 //  • Same JS behaviour (scroll state, dropdowns, hamburger) — Escape,
 //    outside-click and aria states preserved.
 //
-// AFTER 31 AUGUST 2026: swap /stocky-shutdown/ for /stocky-alternative/ in the
-// guides array and in the announcement bar above. The shutdown page goes
-// retrospective on 1 September; the alternative page stays evergreen. Deleting
-// the announcement bar entirely is the other half of that change.
+// STOCKY, POST-31-AUGUST-2026 (done — no further edit needed):
+// Primary nav points at /stocky-alternative/, which is written to read
+// correctly on both sides of the shutdown date. /stocky-shutdown/ stays live
+// and indexed and is still linked from /stocky-alternative/, the export guide
+// and the footer — it is simply no longer a primary-nav destination, because
+// it becomes a retrospective record on 1 September while the alternative page
+// stays evergreen.
+//
+// The announcement bar states the date as a fact rather than as a countdown,
+// so it does not need deleting on 1 September. Retire it when the shutdown
+// stops being the most useful thing to tell a first-time visitor.
 
 interface Props {
   showAnnouncement?: boolean;
@@ -43,7 +49,7 @@ const tools = [
   { href: '/shopify-app-stack-kill-or-keep-auditor/', title: 'App Stack Auditor', desc: 'Find which apps you can replace for $0' },
   { href: '/shopify-app-cost-calculator/', title: 'App Cost Calculator', desc: 'Your exact monthly app bill' },
   { href: '/make-vs-zapier-cost-calculator/', title: 'Make vs Zapier', desc: 'Compare automation platform costs' },
-  { href: '/stocky-migration-risk-scorer/', title: 'Stocky Risk Scorer', desc: 'Score your migration risk before Aug 31' },
+  { href: '/stocky-migration-risk-scorer/', title: 'Stocky Risk Scorer', desc: 'Score how exposed your store is to the Stocky shutdown' },
   { href: '/shopify-ios-attribution-gap-benchmark/', title: 'iOS Attribution Gap Benchmark', desc: 'Real store data on lost ad conversion signals' },
 ];
 
@@ -53,7 +59,7 @@ const guides = [
   { href: '/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/', title: 'Apps Script quotas', desc: 'Limits explained, with workarounds' },
   { href: '/shopify-google-sheets-automation/', title: 'Google Sheets automation', desc: 'Export orders and sync inventory, free' },
   { href: '/shopify-app-development-cost/', title: 'Custom Shopify app costs', desc: 'Real prices, and when free tools beat building' },
-  { href: '/stocky-shutdown/', title: 'Stocky shutdown — Aug 31', desc: 'What happens and what data is deleted' },
+  { href: '/stocky-alternative/', title: 'Stocky alternative', desc: 'Replace Stocky for $0 — export, recover, rebuild' },
   { href: '/best-free-shopify-apps-2026/', title: 'Best free Shopify apps 2026', desc: 'Every category, ranked' },
   { href: '/apps/', title: 'App pricing index', desc: 'Every tracked app price, with source and date' },
 ];
@@ -63,9 +69,9 @@ const guides = [
 
 {showAnnouncement && (
   <div class="sa-announce" role="region" aria-label="Announcement">
-    <a href="/stocky-shutdown/">
+    <a href="/stocky-alternative/">
       <span class="sa-announce-dot" aria-hidden="true"></span>
-      Shopify Stocky shuts down <strong class="figure">31 Aug 2026</strong> — export your data and migrate free
+      Shopify Stocky — end of service <strong class="figure">31 Aug 2026</strong>. Export, recover and replace it free
       <span class="sa-announce-arrow" aria-hidden="true">→</span>
     </a>
   </div>

@@ -1,11 +1,11 @@
 ---
 title: "Shopify Stocky Data Export Before the Shutdown"
-description: "Shopify Stocky deletes all data on August 31, 2026. Covers what Stocky holds, how to export everything before the deadline, and what to do after."
-answer: "Shopify Stocky stops working permanently on 31 August 2026, and every purchase order, stocktake, transfer and supplier record held inside it is deleted. Your Shopify inventory levels are safe, because they live in Shopify Admin rather than in Stocky. Everything Stocky owns must be exported manually before the date."
+description: "Shopify Stocky's end of service was 31 August 2026. What Stocky holds, how to export it while the app still opens, and what is recoverable if it does not."
+answer: "Shopify set 31 August 2026 as Stocky's end of service. Every purchase order, stocktake, transfer and supplier record held inside the app is deleted rather than migrated. Your Shopify inventory levels are safe, because they live in Shopify Admin rather than in Stocky. Anything Stocky owns has to be exported by hand while the app still opens."
 publishDate: "2026-04-16"
 updatedDate: "2026-04-16"
 category: "inventory"
-badge: "Urgent — Aug 31"
+badge: "Stocky — Aug 31 2026"
 badgeType: "urgent"
 readTime: 10
 canonical: "https://stackarchitect.xyz/blog/shopify-stocky-data-export-before-shutdown/"
@@ -25,7 +25,7 @@ faqs:
 relatedGuides:
   - title: "Stocky Swap — Free Shopify Stocky Replacement (Deploy in 4 Minutes)"
     href: "/stocky-swap"
-    badge: "Urgent — Aug 31"
+    badge: "Free replacement"
   - title: "The Ultimate Guide to Shopify Inventory Management 2026"
     href: "/blog/the-ultimate-guide-to-shopify-inventory-management"
   - title: "Make.com for Shopify — Complete Beginner's Guide"
@@ -36,9 +36,9 @@ relatedGuides:
 
 # Shopify Stocky Data Export — What to Save Before the August 31, 2026 Shutdown
 
-Shopify Stocky stops functioning permanently on August 31, 2026. Every purchase order, stocktake record, transfer history, and supplier detail stored in Stocky will be permanently and irreversibly deleted on that date. [Shopify removed Stocky from the App Store on February 2, 2026](https://apps.shopify.com/stocky) — the August 31 shutdown date is confirmed and official.
+Shopify set August 31, 2026 as Stocky's end of service. Every purchase order, stocktake record, transfer history and supplier detail stored in Stocky is permanently and irreversibly deleted rather than migrated to Shopify Admin. [Shopify removed Stocky from the App Store on February 2, 2026](https://apps.shopify.com/stocky) — the August 31 shutdown date is confirmed and official.
 
-Your Shopify inventory levels are safe — they live in Shopify Admin, not in Stocky. But years of purchase order history, stocktake records, supplier contacts, and demand data exist only inside Stocky. Once the shutdown happens, there is no recovery.
+Your Shopify inventory levels are safe — they live in Shopify Admin, not in Stocky. But years of purchase order history, stocktake records, supplier contacts and demand data exist only inside Stocky, and once the app stops there is no recovery route back into it.
 
 This guide tells you exactly what to export, how to export it, and what to do with the data afterwards.
 
@@ -63,7 +63,7 @@ First, understand the distinction between Shopify-owned data and Stocky-owned da
 
 ## How to Export Your Stocky Data — Step by Step
 
-Do this now. Do not wait until July or August — Shopify may restrict functionality before the official shutdown date, and export features may become unavailable earlier.
+Do this in the session you are reading this, if Stocky still opens for you. Shopify restricted functionality in stages ahead of the end-of-service date, so export features can become unavailable before the app itself does.
 
 ### Export 1 — Purchase Orders
 
@@ -172,24 +172,26 @@ Stocky Swap covers the core use case: every order automatically logged to a Goog
 
 For stores where these advanced features are essential, paid alternatives worth evaluating include Prediko ($49+/month) and Inventory Planner ($99+/month). Both are significantly more capable than Stocky was in its final form. But for the majority of Shopify stores that primarily used Stocky to track order history and stock levels — Stocky Swap does that free, permanently, with no shutdown date.
 
-## The August 31 Countdown
+## If you only do one thing
 
-As of publication today (April 16, 2026), there are **137 days until the Shopify Stocky shutdown.**
+Shopify set **31 August 2026** as Stocky's end of service. The test that matters is not what today's date is — it is whether Stocky still opens in your admin, because stores that uninstalled after the 2 February 2026 delisting could not reinstall it and were on the far side of this months early.
 
-If you do nothing else from this guide today, do this:
+**If Stocky still opens, do this now:**
 
 1. Open Stocky
 2. Export your Purchase Orders as CSV
 3. Save the file to Google Drive
 
-That single action preserves your most valuable Stocky data. Everything else — deploying a replacement, importing historical data, setting up your new workflow — can follow. But the data export has a hard deadline and no recovery path if you miss it.
+That single action preserves your most valuable Stocky data. Everything else — deploying a replacement, importing historical data, setting up your new workflow — can follow. The export is the only step with no recovery path.
+
+**If Stocky no longer opens,** rather more is reconstructible than most people assume: current stock levels, order history, products and customers all live in Shopify and were never at risk. The [Stocky recovery path](/stocky-alternative/) covers what survives, what is permanently gone, and the order to rebuild it in.
 
 [Deploy Stocky Swap in 4 minutes →](/stocky-swap/)
 
 
 ---
 
-## Replace Stocky before August 31 in 60 seconds
+## Replace Stocky in 60 seconds
 
 After you export your data, deploy Stocky Swap to start capturing live inventory data immediately — no manual migration, no data loss. The Complete Kit includes the Stocky Swap Make.com JSON blueprint plus CAPI Shield, TikTok CAPI, and P&L Auto. $29 one-time.
 

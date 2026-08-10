@@ -66,7 +66,7 @@ import AttributionTracker from '../components/AttributionTracker.astro';
           "All Shopify plans supported",
           "CAPI Shield — Meta Conversions API (Graph API v19.0) + Google Ads Enhanced Conversions, server-side",
           "TikTok CAPI — TikTok Events API v1.3 CompletePayment server-side events",
-          "Stocky Swap — live inventory to Google Sheets, replaces Shopify Stocky before August 2026 shutdown",
+          "Stocky Swap — live inventory to Google Sheets, replaces the retired Shopify Stocky app",
           "P&L Auto — live profit and loss reporting to Google Sheets",
           "Two pre-configured Google Sheets templates",
           "PDF setup guide and README",
@@ -236,9 +236,9 @@ import AttributionTracker from '../components/AttributionTracker.astro';
     <div style="max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
       <div>
         <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--red);letter-spacing:.12em;margin-bottom:6px;">⚠ TIME-SENSITIVE // SHOPIFY STOCKY SHUTDOWN — AUGUST 31, 2026</div>
-        <p style="font-size:13px;color:var(--text-3);line-height:1.65;max-width:560px;">Shopify is permanently closing Stocky on August 31, 2026 — all data is deleted after that date. The <strong style="color:var(--text-2);">Stocky Swap scenario</strong> in this kit imports in 60 seconds and starts capturing live inventory data immediately — no data loss, no manual migration.</p>
+        <p style="font-size:13px;color:var(--text-3);line-height:1.65;max-width:560px;">Shopify set August 31, 2026 as Stocky's end of service — its data is deleted rather than migrated to Shopify Admin. The <strong style="color:var(--text-2);">Stocky Swap scenario</strong> in this kit imports in 60 seconds and starts capturing live inventory data immediately — no data loss, no manual migration.</p>
       </div>
-      <div class="countdown-box" style="min-width:190px;">
+      <div class="countdown-box" id="cd-box" style="min-width:190px;">
         <div class="countdown-label">Stocky shuts down in</div>
         <div class="countdown-nums">
           <div class="cd-unit"><span class="cd-val" id="cd-d">--</span><div class="cd-l">Days</div></div>
@@ -247,6 +247,10 @@ import AttributionTracker from '../components/AttributionTracker.astro';
           <div class="cd-sep">:</div>
           <div class="cd-unit"><span class="cd-val" id="cd-m">--</span><div class="cd-l">Min</div></div>
         </div>
+      </div>
+      <div class="countdown-box" id="cd-box-post" style="min-width:190px;" hidden>
+        <div class="countdown-label">Stocky — end of service</div>
+        <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--red);text-align:center;">31 Aug 2026</div>
       </div>
     </div>
   </div>
@@ -279,7 +283,7 @@ import AttributionTracker from '../components/AttributionTracker.astro';
         <div class="sol-urgent-bar"></div>
         <div class="sol-urgent-inner">
           <div style="flex:1;min-width:240px;">
-            <div class="sol-urgent-badge">⚠ Blueprint 03 // MAKE.COM JSON — DEPLOY BEFORE AUGUST 31, 2026</div>
+            <div class="sol-urgent-badge">⚠ Blueprint 03 // MAKE.COM JSON — STOCKY END OF SERVICE 31 AUG 2026</div>
             <span class="tag tag-sky" style="margin-bottom:10px;display:inline-flex;">Inventory Management</span>
             <div class="sol-urgent-name">Stocky Swap Scenario</div>
             <div class="sol-urgent-hl">Live inventory to Google Sheets — replaces Shopify Stocky before shutdown</div>
@@ -634,7 +638,7 @@ import AttributionTracker from '../components/AttributionTracker.astro';
           <div class="for-item"><span class="for-dot y">✓</span><span>You're currently paying for tracking, inventory, or P&amp;L apps and want to eliminate that cost</span></div>
           <div class="for-item"><span class="for-dot y">✓</span><span>Your time is worth more than the 8 hours it takes to build from the free guides</span></div>
           <div class="for-item"><span class="for-dot y">✓</span><span>You use or plan to use Meta Ads, Google Ads, or TikTok Ads and want accurate attribution</span></div>
-          <div class="for-item"><span class="for-dot y">✓</span><span>You're using Shopify Stocky and need a replacement before the August 2026 shutdown</span></div>
+          <div class="for-item"><span class="for-dot y">✓</span><span>You used Shopify Stocky and need a replacement after the August 2026 shutdown</span></div>
           <div class="for-item"><span class="for-dot y">✓</span><span>You want no platform lock-in — everything runs in your own Google and Make.com accounts</span></div>
           <div class="for-item"><span class="for-dot y">✓</span><span>You process up to 300 orders/month (Make.com free tier) or are happy to pay $12/mo for Core</span></div>
         </div>
@@ -826,10 +830,13 @@ import AttributionTracker from '../components/AttributionTracker.astro';
       var dEls = document.querySelectorAll('#cd-d');
       var hEls = document.querySelectorAll('#cd-h');
       var mEls = document.querySelectorAll('#cd-m');
+      // Past the deadline, swap the countdown for a plain statement of the
+      // date rather than rendering zeros under a "shuts down in" label.
       if (diff <= 0) {
-        dEls.forEach(function(e){e.textContent='0'});
-        hEls.forEach(function(e){e.textContent='0'});
-        mEls.forEach(function(e){e.textContent='0'});
+        var box = document.getElementById('cd-box');
+        var post = document.getElementById('cd-box-post');
+        if (box) box.hidden = true;
+        if (post) post.hidden = false;
         return;
       }
       var days = Math.floor(diff / (1000 * 60 * 60 * 24));

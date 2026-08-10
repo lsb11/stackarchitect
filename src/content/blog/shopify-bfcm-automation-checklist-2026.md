@@ -88,7 +88,7 @@ BFCM is when attribution window mismatches cause the most confusion. Check:
 
 ## Part 2 — Inventory (Complete Before October)
 
-### ✅ 5. Deploy Stocky Swap before the August 31 shutdown
+### ✅ 5. Deploy Stocky Swap to replace the retired Stocky app
 
 **Deadline: August 31, 2026 — this is a hard deadline**
 

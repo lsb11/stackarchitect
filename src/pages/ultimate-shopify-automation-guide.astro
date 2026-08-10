@@ -67,10 +67,10 @@ const howToTrackingSchema = {
 const howToInventorySchema = {
   "@context":"https://schema.org","@type":"HowTo",
   "name":"How to replace Shopify Stocky with a free Google Sheets inventory system",
-  "description":"Free Stocky replacement before August 31 2026. Uses Make.com webhook to log every Shopify order to Google Sheets in real time. 4 minutes, no code.",
+  "description":"Free replacement for the retired Shopify Stocky app. Uses Make.com webhook to log every Shopify order to Google Sheets in real time. 4 minutes, no code.",
   "totalTime":"PT4M","estimatedCost":{"@type":"MonetaryAmount","currency":"USD","value":"0"},
   "step":[
-    {"@type":"HowToStep","position":1,"name":"Export Stocky data","text":"Export all inventory data via Stocky → Settings → Export before the August 31 2026 deadline."},
+    {"@type":"HowToStep","position":1,"name":"Export Stocky data","text":"If Stocky still opens in your admin, export all inventory data via Stocky → Settings → Export. Stocky's end of service was 31 August 2026; if it no longer opens, see the Stocky recovery path instead."},
     {"@type":"HowToStep","position":2,"name":"Create inventory Google Sheet","text":"Create a Google Sheet with columns: Order ID, Date, SKU, Product Name, Variant, Quantity, Location ID, Fulfilment Status, Order Value."},
     {"@type":"HowToStep","position":3,"name":"Create Make.com webhook scenario","text":"New scenario → Webhooks trigger → Google Sheets Add a Row action. Map Shopify order payload fields to sheet columns."},
     {"@type":"HowToStep","position":4,"name":"Add Shopify webhooks","text":"Add webhooks for Order paid, Order fulfilled, and Refund created events — all pointing to the Make.com webhook URL."},
@@ -420,7 +420,7 @@ const tocHeadings = [
           <h3>Setting Up Stocky Swap — The Complete Process</h3>
           <div class="step-cards">
             {[
-              { n:1, title:"Export your Stocky data first (before August 31 2026)", desc:"If you currently use Stocky, export all inventory data via Stocky → Settings → Export before the retirement deadline. Do this now — do not wait until August.", tool:"Shopify Admin → Apps → Stocky → Export" },
+              { n:1, title:"Export your Stocky data first, if Stocky still opens", desc:"Stocky's end of service was 31 August 2026. If the app still opens in your admin, export all inventory data via Stocky → Settings → Export in this session — this is the only irreversible step. If it no longer opens, see the recovery path. Do not wait until August.", tool:"Shopify Admin → Apps → Stocky → Export" },
               { n:2, title:"Create your inventory Google Sheet", desc:'Create a new Google Sheet with columns: Order ID, Date, SKU, Product Name, Variant, Quantity, Location ID, Fulfilment Status, Order Value. Name the sheet "Inventory Ledger".', tool:"sheets.google.com → New Sheet" },
               { n:3, title:"Create the Make.com webhook scenario", desc:'New scenario → Webhooks trigger → Google Sheets "Add a Row" action. Map the Shopify order payload fields to your sheet columns. Key mapping: order.id → Order ID, line_items[].sku → SKU, line_items[].quantity → Quantity.', tool:"Make.com → New Scenario" },
               { n:4, title:"Add Shopify webhooks", desc:'In Shopify Admin → Settings → Notifications, create webhooks for three events: "Order paid", "Order fulfilled", and "Refund created". All three point to the same Make.com webhook URL.', tool:"Shopify Admin → Settings → Notifications" },
@@ -441,7 +441,7 @@ const tocHeadings = [
 
           <div class="section-cta">
             <div class="section-cta-left">
-              <h4>Deploy Stocky Swap before August 31 2026</h4>
+              <h4>Deploy Stocky Swap</h4>
               <p>Free replacement for Stocky · 4 minutes to deploy · Data stays in your Google Sheet forever</p>
             </div>
             <a href={`${SITE}/stocky-swap/`} class="btn btn-sm" aria-label="Deploy Stocky Swap free inventory management">Deploy Stocky Swap Free →</a>
