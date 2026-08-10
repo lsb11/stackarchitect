@@ -1,6 +1,7 @@
 ---
-title: "When to Upgrade Free Make.com to Google Workspace — Shopify"
+title: "When to Upgrade Free Make.com to Google Workspace"
 description: "7 signals it's time to upgrade from free Make.com to Google Workspace for Shopify automation. The $21/month cost calculation and zero-downtime migration."
+answer: "Upgrade from the free Shopify automation stack when you hit a real ceiling, not on principle. The three signals are Make.com credits exhausted before month end, Apps Script runs exceeding six minutes, and daily trigger runtime running out. Make.com Core plus Google Workspace costs about $21 a month combined."
 publishDate: "2026-03-25"
 updatedDate: "2026-04-14"
 category: "automation"

@@ -13,6 +13,7 @@ const { entry } = Astro.props;
 const {
   title,
   description,
+  answer,
   canonical,
   publishDate,
   updatedDate,
@@ -92,11 +93,17 @@ const displayDate = (d: string) =>
     month: 'long',
     year: 'numeric',
   });
+
+// Runbook §3.2: titles ≤60 chars. The " | Stack Architect" suffix costs 18
+// characters, and brand recognition at DR 0 is worth nothing next to a
+// truncated headline — so it is dropped whenever it would push past 60.
+const SUFFIX = ' | Stack Architect';
+const pageTitle = (title + SUFFIX).length <= 60 ? title + SUFFIX : title;
 ---
 
 <Base
   ogImage={entry.data.ogImage}
-  title={`${title} | Stack Architect`}
+  title={pageTitle}
   description={description}
   canonical={canonicalUrl}
   schema={schemas}
@@ -120,6 +127,9 @@ const displayDate = (d: string) =>
       <span>· {categoryLabels[category] ?? category}</span>
     </div>
 
+    <!-- Direct answer — the quotable unit. Runbook §3.1. -->
+    {answer && <p id="answer" class="sa-answer">{answer}</p>}
+
     <!-- Table of contents — injected by inline script if ≥3 H2s -->
     <div id="toc-container"></div>
 
@@ -136,6 +146,19 @@ const displayDate = (d: string) =>
   </main>
 
 </Base>
+
+<style>
+  .sa-answer {
+    margin: 0 0 28px;
+    padding: 18px 20px;
+    border-left: 3px solid #34d377;
+    background: rgba(52, 211, 119, 0.05);
+    border-radius: 0 8px 8px 0;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #d6ded9;
+  }
+</style>
 
 <!-- Reading progress bar script -->
 <script>

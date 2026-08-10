@@ -36,10 +36,30 @@ const tocHeadings = [
   }
 ];
 
+// Runbook §3.4: this page substantiates every pricing claim on the site, so it
+// needs its own WebPage node with `about` pointing at the Organization.
+const schemas = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": "https://stackarchitect.xyz/how-we-test/#webpage",
+    "url": "https://stackarchitect.xyz/how-we-test/",
+    "name": "How We Test and Verify Every Claim",
+    "description": "Every price and limit on Stack Architect is sourced from vendor pricing pages, dated, re-verified quarterly, and corrected publicly when wrong.",
+    "inLanguage": "en-GB",
+    "isPartOf": { "@id": "https://stackarchitect.xyz/#website" },
+    "about": { "@id": "https://stackarchitect.xyz/#org" },
+    "publisher": { "@id": "https://stackarchitect.xyz/#org" },
+    "author": { "@id": "https://stackarchitect.xyz/#luke" },
+    "mainEntity": { "@id": "https://stackarchitect.xyz/#org" }
+  }
+];
+
 ---
 <Base
-  title="How We Test & Verify Every Claim — Stack Architect Methodology"
-  description="Every price, limit, and performance figure on Stack Architect is sourced from vendor pricing pages and platform documentation, dated, re-verified quarterly, and corrected publicly when wrong. Here's the exact process."
+  schema={schemas}
+  title="How We Test and Verify Every Claim"
+  description="Every price and limit on Stack Architect is sourced from vendor pricing pages, dated, re-verified quarterly, and corrected publicly when wrong."
   ogImage="https://stackarchitect.xyz/og/og-how-we-test.png"
   canonical="https://stackarchitect.xyz/how-we-test/">
 
@@ -55,6 +75,8 @@ const tocHeadings = [
         How We Test and Verify Every Claim
       </h1>
 
+    <p id="answer">Every price, limit and performance figure on Stack Architect is taken from the vendor's own pricing page or platform documentation, recorded with the date it was checked, re-verified quarterly, and corrected publicly when it turns out to be wrong. Figures that cannot be verified are labelled as unverified rather than quietly estimated.</p>
+
   <TableOfContents headings={tocHeadings} />
 
       <p style="font-size:0.9rem;color:#6b7671;margin-bottom:2rem;font-family:'JetBrains Mono',monospace;">
@@ -69,7 +91,7 @@ const tocHeadings = [
       <p style="color:#c9cec9;margin-bottom:1rem;">In order of preference:</p>
       <ol style="color:#c9cec9;line-height:1.8;margin-bottom:2rem;padding-left:1.25rem;">
         <li style="margin-bottom:10px;">
-          <strong>Vendor pricing pages and official documentation.</strong> Make.com's plan limits come from <a href="https://www.make.com/en/pricing" target="_blank" rel="noopener sponsored" style="color:#34d377;text-decoration:underline;">Make.com official pricing</a>. Meta CAPI behaviour comes from <a href="https://developers.facebook.com/docs/marketing-api/conversions-api/" target="_blank" rel="noopener" style="color:#34d377;text-decoration:underline;">Meta Conversions API documentation</a> and Events Manager. Competitor prices (Elevar, Triple Whale, Klaviyo, Stape, Littledata) come from their own verified pricing indices, as detailed in our <a href="/apps/" style="color:#34d377;text-decoration:underline;">Shopify App Pricing Index</a>.
+          <strong>Vendor pricing pages and official documentation.</strong> Make.com's plan limits come from <a href="https://www.make.com/en/pricing" target="_blank" rel="noopener sponsored" style="color:#34d377;text-decoration:underline;">Make.com official pricing</a>. Meta CAPI behaviour comes from <a href="https://developers.facebook.com/docs/marketing-api/conversions-api/" target="_blank" rel="noopener" style="color:#34d377;text-decoration:underline;">Meta Conversions API documentation</a> and Events Manager. Competitor prices (Elevar, Triple Whale, Klaviyo, Stape, Littledata) are read from each vendor's own published pricing page. Each record carries the date it was checked and a link to the page it came from where that verification has been done; the rest are shown as unverified. The current state of every record is in our <a href="/apps/" style="color:#34d377;text-decoration:underline;">Shopify App Pricing Index</a>.
         </li>
         <li style="margin-bottom:10px;">
           <strong>Working configurations, built as published.</strong> Core solutions like <a href="/capi-shield/" style="color:#34d377;text-decoration:underline;">CAPI Shield</a>, <a href="/stocky-swap/" style="color:#34d377;text-decoration:underline;">Stocky Swap</a>, and <a href="/shopify-profit-loss-automation/" style="color:#34d377;text-decoration:underline;">Live P&amp;L Automation</a> are written by building the setup step by step and publishing the exact steps that worked — not by summarising vendor docs.
@@ -103,6 +125,16 @@ const tocHeadings = [
         place and flagged it here rather than quietly adjusting a number we cannot re-measure.
       </p>
       <p style="color:#c9cec9;margin-bottom:2rem;">
+        <strong>Annual savings figures are arithmetic, not findings.</strong> Where this site
+        shows a yearly saving against a paid app, that number is the vendor's monthly list price
+        multiplied by twelve. It is not a measured outcome, it does not account for annual-billing
+        discounts, negotiated or grandfathered rates, or the tier you would actually land on, and it
+        assumes you replace the tool outright rather than partially. Treat it as the size of the
+        question, not the answer. The per-app monthly prices behind those figures are the sourced
+        part; the multiplication is ours.
+      </p>
+
+      <p style="margin-bottom:1.25rem;">
         <strong>We publish no recovery percentage.</strong> You will not find a claim on this site that CAPI Shield
         or any other tool recovers a specific share of lost conversions, because we have no first-party recovery
         measurement — no store sample, no before/after study. A loss estimate is not a recovery rate, and treating

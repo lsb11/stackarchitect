@@ -1,6 +1,7 @@
 ---
-title: "Scalable Google Sheets Automation 2026 — Past Apps Script Limits"
-description: "Outgrown Google Apps Script quota limits? The free architecture that scales Google Sheets automation to thousands of Shopify orders — batching, checkpoints, and the hybrid Make.com method that bypasses execution limits entirely."
+title: "Scalable Google Sheets Automation for Shopify 2026"
+description: "Apps Script caps runs at 6 minutes and 90 minutes of daily trigger time. The batching, checkpoint and Make.com patterns that scale past both, for free."
+answer: "Google Sheets automation for Shopify hits two Apps Script walls: a six-minute ceiling on any single execution, and 90 minutes of trigger-driven runtime per day on consumer accounts. Batching writes and checkpointing progress pushes both further out. Moving the trigger to Make.com removes the execution ceiling altogether."
 publishDate: "2026-03-20"
 updatedDate: "2026-04-16"
 category: "workflow"

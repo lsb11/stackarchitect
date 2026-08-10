@@ -1,6 +1,7 @@
 ---
-title: "Shopify Abandoned Cart Recovery Free 2026 — Make.com + Systeme.io"
-description: "Recover Shopify abandoned carts for free in 2026. Make.com webhook + Systeme.io email automation: no app required, no monthly fees. Recovers 5–15% of abandoned checkouts."
+title: "Shopify Abandoned Cart Recovery Free 2026"
+description: "Recover Shopify abandoned carts free: a Make.com webhook on checkouts/create feeding a Systeme.io email sequence. No app, no monthly fee, 30-minute setup."
+answer: "Shopify abandoned cart recovery runs free by catching the native checkouts/create webhook in Make.com and routing it into a Systeme.io email sequence. There is no app to install and no monthly fee, on any Shopify plan. Stores abandon 70-80% of checkouts, and a three-email sequence typically recovers 5-15% of them."
 publishDate: "2026-04-21"
 updatedDate: "2026-04-21"
 category: "email"

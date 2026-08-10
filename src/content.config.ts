@@ -6,6 +6,10 @@ const blog = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
+    // Self-contained 40–60 word answer to the post's target question, rendered
+    // as <p id="answer"> above the body. Must read correctly quoted in
+    // isolation — it is the unit an LLM lifts verbatim. Runbook §3.1.
+    answer: z.string().optional(),
     ogImage: z.string().optional(),
     publishDate: z.string(),
     updatedDate: z.string().optional(),

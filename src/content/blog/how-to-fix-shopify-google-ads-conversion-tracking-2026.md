@@ -1,6 +1,7 @@
 ---
 title: "Fix Shopify Google Ads Conversion Tracking 2026 — Free"
-description: "Google Enhanced Conversions for Shopify via Make.com — no GTM, no paid app, no code. Covers the estimated 20–40% that browser tracking loses. Free setup in 6 minutes."
+description: "Google Ads misses an estimated 20-40% of Shopify purchases. Free server-side Enhanced Conversions via Make.com — no GTM, no paid app, no code, 6 minutes."
+answer: "Google Ads reports fewer purchases than Shopify because browser conversion pixels miss an estimated 20-40% of real orders. The free fix has two layers: Shopify's native Google and YouTube channel for baseline tracking, then server-side Enhanced Conversions sent through a Make.com webhook. No Google Tag Manager, no paid app, no code."
 publishDate: "2026-04-16"
 updatedDate: "2026-04-16"
 category: "tracking"

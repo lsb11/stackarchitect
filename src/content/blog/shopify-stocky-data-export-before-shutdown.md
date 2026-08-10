@@ -1,6 +1,7 @@
 ---
-title: "Shopify Stocky Data Export — Save Before Aug 2026 Shutdown"
+title: "Shopify Stocky Data Export Before the Shutdown"
 description: "Shopify Stocky deletes all data on August 31, 2026. Covers what Stocky holds, how to export everything before the deadline, and what to do after."
+answer: "Shopify Stocky stops working permanently on 31 August 2026, and every purchase order, stocktake, transfer and supplier record held inside it is deleted. Your Shopify inventory levels are safe, because they live in Shopify Admin rather than in Stocky. Everything Stocky owns must be exported manually before the date."
 publishDate: "2026-04-16"
 updatedDate: "2026-04-16"
 category: "inventory"

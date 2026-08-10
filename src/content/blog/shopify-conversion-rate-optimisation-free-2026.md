@@ -1,6 +1,7 @@
 ---
-title: "Shopify Conversion Rate Optimisation Free 2026 — 12 Free CRO Tools"
-description: "12 free Shopify CRO tools and tactics for 2026. Fix tracking gaps, recover abandoned carts, add social proof, and optimise checkout — without paying for expensive CRO apps."
+title: "Shopify CRO Free 2026 — 12 Tools That Cost Nothing"
+description: "12 free Shopify CRO tools and tactics, in order. Fix the 20-40% tracking gap first, because every decision made on incomplete conversion data is wrong."
+answer: "Shopify conversion rate optimisation should begin with measurement, not apps. Browser tracking misses an estimated 20-40% of purchases, so a store's reported conversion rate reads artificially low and every decision built on it is wrong. Fix tracking first, then checkout friction, then retention flows. Twelve free tools cover all three."
 publishDate: "2026-04-21"
 updatedDate: "2026-04-21"
 category: "automation"

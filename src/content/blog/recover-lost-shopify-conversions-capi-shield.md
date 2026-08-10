@@ -1,6 +1,7 @@
 ---
 title: "CAPI Shield: Closing the Conversion Tracking Gap"
 description: "How CAPI Shield sends Shopify purchase events server-side, past iOS, Safari ITP and ad blockers — and how to measure what it adds in Meta Events Manager."
+answer: "CAPI Shield sends Shopify purchase events server-to-server to Meta's Conversions API, bypassing the browser so iOS restrictions, Safari ITP and ad blockers cannot intercept them. It publishes no recovery percentage, because the figure depends on your traffic mix. You measure your own result as Additional Conversions Reported in Meta Events Manager."
 publishDate: "2026-03-10"
 updatedDate: "2026-04-16"
 category: "tracking"

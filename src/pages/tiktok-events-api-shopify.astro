@@ -121,7 +121,7 @@ const faqs = [
   { q: "How to set up TikTok Events API for Shopify free?",               a: "Sign up for Make.com free, import the pre-built TikTok Events API scenario with one click, add a Shopify Order Payment webhook pointing to your Make.com URL, enter your Pixel ID and Access Token in the HTTP module, then test with a sample order. Takes 6 minutes, no code, free forever on Make.com's free tier." },
   { q: "What is the TikTok purchase event name?",                          a: "TikTok uses CompletePayment as the purchase event name — not Purchase like Meta and Google. Using the wrong event name will result in events not contributing to campaign optimisation. Always use CompletePayment for TikTok purchase tracking." },
   { q: "Can I run TikTok Events API alongside my existing TikTok Pixel?",  a: "Yes — TikTok officially recommends running Events API alongside the browser Pixel, not instead of it. The Pixel captures upper-funnel events (ViewContent, AddToCart). Events API adds server-side CompletePayment on top. Set a matching event_id in Make.com to match the browser Pixel event_id so TikTok deduplicates automatically and you do not double-count conversions." },
-  { q: "Does this replace WeltPixel or Analyzify?",                        a: "Yes. WeltPixel charges $39–$99/month and Analyzify charges $145–$375/month for TikTok server-side tracking. The Make.com webhook approach achieves the same CompletePayment server-side delivery at $0/month on Make.com's free tier. The data flows through your own Make.com workspace rather than a third-party's servers." },
+  { q: "Does this replace WeltPixel or Analyzify?",                        a: "Yes. WeltPixel charges $39–$99/month and Analyzify charges $145–$275/month for TikTok server-side tracking. The Make.com webhook approach achieves the same CompletePayment server-side delivery at $0/month on Make.com's free tier. The data flows through your own Make.com workspace rather than a third-party's servers." },
   { q: "What is TikTok Advanced Matching?",                                a: "TikTok Advanced Matching sends hashed customer data — email, phone number, IP address, and user agent — alongside purchase events to improve event matching accuracy and EMQ scores. The Make.com setup hashes all available Shopify order fields with SHA-256 before transmission, as required by TikTok's API specification." },
   { q: "What EMQ score will I achieve?",                                   a: "Most Shopify stores achieve EMQ scores of 6–8 with this setup. EMQ measures how well TikTok can match server-side events to TikTok user accounts. Scores of 6 and above are considered strong by TikTok's own guidelines. Including hashed email, phone, IP, and user agent from the Shopify order webhook maximises your score." },
   { q: "Can I set up TikTok and Meta CAPI from the same Make.com scenario?", a: "Yes. Add a Router module to the same scenario and branch to Meta Conversions API and Google Enhanced Conversions simultaneously. One Shopify Order Payment webhook feeds all three platforms — still within Make.com's free tier for most stores." }
@@ -294,7 +294,7 @@ const tocHeadings = [
 ];
 
 ---
-<Base title="TikTok Events API for Shopify — Free Server-Side Setup 2026" description="Browser-only tracking loses an estimated 20–40% of TikTok purchase events. Send CompletePayment events server-side via Make.com — past iOS and ad blockers. Free, 6 min.">
+<Base title="TikTok Events API for Shopify — Free Server-Side Setup 2026" description="Browser tracking loses an estimated 20-40% of TikTok purchase events. Send CompletePayment server-side via Make.com, past iOS and ad blockers. Free.">
 <Fragment slot="head">
 <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
 
@@ -408,7 +408,7 @@ const tocHeadings = [
 
     <p class="hero-cta-note">
       Powered by <a href={MAKE_URL} target="_blank" rel="noopener sponsored">Make.com</a>
-      — free up to 1,000 credits/month. Replaces WeltPixel ($39/mo) and Analyzify ($145+/mo) TikTok tracking at $0.
+      — free up to 1,000 credits/month. Replaces WeltPixel ($39/mo) and Analyzify ($145–$275/mo) TikTok tracking at $0.
     </p>
 
     <p class="hero-cta-note">

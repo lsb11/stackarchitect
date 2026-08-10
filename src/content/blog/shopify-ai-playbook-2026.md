@@ -1,6 +1,7 @@
 ---
 title: "The Complete Shopify AI Playbook 2026"
 description: "AI across 7 Shopify stages: product research, ad creative, email, server-side tracking, customer support, GEO, and agentic storefronts. Free tools first."
+answer: "The practical AI stack for a Shopify store spans seven stages: product research, ad creative, email, server-side tracking, customer support, generative-engine optimisation and agentic storefronts. Most stages have a free route that matches a paid tool at small scale, so the useful question is which stage is actually costing your store money."
 publishDate: "2026-03-01"
 updatedDate: "2026-04-14"
 category: "ai"
