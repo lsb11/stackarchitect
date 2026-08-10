@@ -1,14 +1,18 @@
-import { describe, it, expect } from 'vitest';
+// Converted from vitest to node:test so `npm test` (bare `node --test`) covers
+// the whole suite with one runner. Nothing vitest-specific was in use here —
+// the mock context is a hand-rolled stub, not a spy.
+import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
 import { buildBadge, onRequestGet } from './gap-badge.js';
 
 describe('gap-badge', () => {
   describe('buildBadge', () => {
     it('generates valid SVG string', () => {
       const svg = buildBadge('label', 'value', '#000');
-      expect(svg).toContain('<svg');
-      expect(svg).toContain('label');
-      expect(svg).toContain('value');
-      expect(svg).toContain('#000');
+      assert.ok(svg.includes('<svg'), 'expected an <svg> element');
+      assert.ok(svg.includes('label'));
+      assert.ok(svg.includes('value'));
+      assert.ok(svg.includes('#000'));
     });
   });
 
@@ -32,11 +36,11 @@ describe('gap-badge', () => {
       const context = createMockContext(new Error('DB error'));
       const response = await onRequestGet(context);
 
-      expect(response.status).toBe(200);
-      expect(response.headers.get('Content-Type')).toBe('image/svg+xml; charset=utf-8');
+      assert.equal(response.status, 200);
+      assert.equal(response.headers.get('Content-Type'), 'image/svg+xml; charset=utf-8');
 
       const text = await response.text();
-      expect(text).toContain('20\u201340% est.');
+      assert.ok(text.includes('20–40% est.'));
     });
 
     it('returns synthesis value when there are fewer than 10 rows', async () => {
@@ -45,7 +49,7 @@ describe('gap-badge', () => {
       const response = await onRequestGet(context);
 
       const text = await response.text();
-      expect(text).toContain('20\u201340% est.');
+      assert.ok(text.includes('20–40% est.'));
     });
 
     it('returns median for odd number of rows >= 10', async () => {
@@ -56,7 +60,7 @@ describe('gap-badge', () => {
       const response = await onRequestGet(context);
 
       const text = await response.text();
-      expect(text).toContain('60.0% median (N=11)');
+      assert.ok(text.includes('60.0% median (N=11)'));
     });
 
     it('returns median for even number of rows >= 10', async () => {
@@ -67,7 +71,7 @@ describe('gap-badge', () => {
       const response = await onRequestGet(context);
 
       const text = await response.text();
-      expect(text).toContain('55.0% median (N=10)');
+      assert.ok(text.includes('55.0% median (N=10)'));
     });
   });
 });

@@ -1,4 +1,9 @@
-import { describe, it, expect, vi } from 'vitest';
+// Converted from vitest to node:test so `npm test` (bare `node --test`) covers
+// the whole suite with one runner. The vi.fn() calls here were used only as
+// stub factories — no call counts or arguments were ever asserted — so plain
+// functions are an exact replacement.
+import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
 import { onRequestGet } from './gap-stats.js';
 
 describe('gap-stats API', () => {
@@ -6,8 +11,8 @@ describe('gap-stats API', () => {
     return {
       env: {
         DB: {
-          prepare: vi.fn().mockReturnValue({
-            all: vi.fn().mockResolvedValue({ results })
+          prepare: () => ({
+            all: async () => ({ results })
           })
         }
       }
@@ -18,8 +23,8 @@ describe('gap-stats API', () => {
     return {
       env: {
         DB: {
-          prepare: vi.fn().mockReturnValue({
-            all: vi.fn().mockRejectedValue(new Error('DB Error'))
+          prepare: () => ({
+            all: async () => { throw new Error('DB Error'); }
           })
         }
       }
@@ -35,13 +40,13 @@ describe('gap-stats API', () => {
     const context = createMockContext(results);
 
     const response = await onRequestGet(context);
-    expect(response.status).toBe(200);
+    assert.equal(response.status, 200);
 
     const data = await response.json();
-    expect(data.ready).toBe(false);
-    expect(data.n).toBe(3);
-    expect(data.min_n).toBe(10);
-    expect(data.message).toContain('3 of 10 needed');
+    assert.equal(data.ready, false);
+    assert.equal(data.n, 3);
+    assert.equal(data.min_n, 10);
+    assert.ok(data.message.includes('3 of 10 needed'));
   });
 
   it('calculates mean and median correctly for an odd number of items (N >= 10)', async () => {
@@ -55,21 +60,19 @@ describe('gap-stats API', () => {
     const context = createMockContext(results);
 
     const response = await onRequestGet(context);
-    expect(response.status).toBe(200);
-    expect(response.headers.get('Cache-Control')).toBe('public, max-age=3600');
-    expect(response.headers.get('Content-Type')).toBe('application/json');
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get('Cache-Control'), 'public, max-age=3600');
+    assert.equal(response.headers.get('Content-Type'), 'application/json');
 
     const data = await response.json();
-    expect(data.ready).toBe(true);
-    expect(data.n).toBe(11);
+    assert.equal(data.ready, true);
+    assert.equal(data.n, 11);
 
-    // Mean = sum / 11 = 1.1 / 11 = 0.1
-    // mean_gap_pct = round1(0.1 * 100) = 10
-    expect(data.mean_gap_pct).toBe(10);
+    // Mean = sum / 11 = 1.1 / 11 = 0.1 -> round1(0.1 * 100) = 10
+    assert.equal(data.mean_gap_pct, 10);
 
-    // Median = 0.10
-    // median_gap_pct = round1(0.10 * 100) = 10
-    expect(data.median_gap_pct).toBe(10);
+    // Median = 0.10 -> round1(0.10 * 100) = 10
+    assert.equal(data.median_gap_pct, 10);
   });
 
   it('calculates mean and median correctly for an even number of items (N >= 10)', async () => {
@@ -83,25 +86,22 @@ describe('gap-stats API', () => {
     const context = createMockContext(results);
 
     const response = await onRequestGet(context);
-    expect(response.status).toBe(200);
+    assert.equal(response.status, 200);
 
     const data = await response.json();
-    expect(data.ready).toBe(true);
-    expect(data.n).toBe(10);
+    assert.equal(data.ready, true);
+    assert.equal(data.n, 10);
 
-    // Mean = 1.0 / 10 = 0.10
-    // mean_gap_pct = 10
-    expect(data.mean_gap_pct).toBe(10);
+    // Mean = 1.0 / 10 = 0.10 -> 10
+    assert.equal(data.mean_gap_pct, 10);
 
-    // Median = 0.10
-    // median_gap_pct = 10
-    expect(data.median_gap_pct).toBe(10);
+    // Median = 0.10 -> 10
+    assert.equal(data.median_gap_pct, 10);
   });
 
   it('rounds values to 1 decimal place', async () => {
-    // Create 10 items to get past MIN_N
-    // We want median to be 0.0555 (5.55%) -> rounded to 5.6
-    // We want mean to be something with decimals too.
+    // 10 items to get past MIN_N.
+    // Median targets 0.0555 (5.55%) -> rounds to 5.6
     const gaps = [
       0.01, 0.01, 0.01, 0.01,
       0.0512, 0.0598, // median = (0.0512 + 0.0598) / 2 = 0.0555 -> 5.55%
@@ -114,19 +114,19 @@ describe('gap-stats API', () => {
     const data = await response.json();
 
     // median_gap_pct = round1(0.0555 * 100) = round1(5.55) = 5.6
-    expect(data.median_gap_pct).toBe(5.6);
+    assert.equal(data.median_gap_pct, 5.6);
 
-    // mean = 0.551 / 10 = 0.0551 -> 5.51% -> rounded to 5.5
-    expect(data.mean_gap_pct).toBe(5.5);
+    // mean = 0.551 / 10 = 0.0551 -> 5.51% -> 5.5
+    assert.equal(data.mean_gap_pct, 5.5);
   });
 
   it('handles DB errors by returning 500 status code', async () => {
     const context = createMockErrorContext();
     const response = await onRequestGet(context);
 
-    expect(response.status).toBe(500);
+    assert.equal(response.status, 500);
 
     const data = await response.json();
-    expect(data.error).toBe('Could not compute stats');
+    assert.equal(data.error, 'Could not compute stats');
   });
 });

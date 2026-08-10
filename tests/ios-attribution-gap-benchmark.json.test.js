@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { GET } from './ios-attribution-gap-benchmark.json.js';
-import { dataPoints, benchmarkMeta } from '../../data/attributionGap.js';
+import { GET } from '../src/pages/downloads/ios-attribution-gap-benchmark.json.js';
+import { dataPoints, benchmarkMeta } from '../src/data/attributionGap.js';
 
 test('JSON export endpoint returns valid JSON with correct structure', async () => {
   const response = GET();

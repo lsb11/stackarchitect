@@ -1,7 +1,7 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
-import { GET } from './ios-attribution-gap-benchmark.csv.js';
-import { benchmarkMeta, dataPoints } from '../../data/attributionGap.js';
+import { GET } from '../src/pages/downloads/ios-attribution-gap-benchmark.csv.js';
+import { benchmarkMeta, dataPoints } from '../src/data/attributionGap.js';
 
 describe('ios-attribution-gap-benchmark.csv GET endpoint', () => {
   test('returns a valid Response object', () => {
