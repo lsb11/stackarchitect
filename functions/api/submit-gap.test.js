@@ -17,8 +17,21 @@ import { onRequestPost, onRequestOptions } from './submit-gap.js';
 
 // ── harness ────────────────────────────────────────────────────────────────
 // Records every bind() so tests can assert exactly what would be persisted.
-function createContext({ body, raw, headers = {}, dbError = null } = {}) {
+//
+// The endpoint issues two statements: a SELECT ... .first() dedupe probe, then
+// an INSERT ... .run(). `recentRow` is what the probe returns (null = no prior
+// submission in the window), `dbError` fails the INSERT, `probeError` fails the
+// probe.
+function createContext({
+  body,
+  raw,
+  headers = {},
+  dbError = null,
+  probeError = null,
+  recentRow = null,
+} = {}) {
   const inserts = [];
+  const probes = [];
   const request = {
     headers: {
       get: (k) => headers[k] ?? headers[k.toLowerCase()] ?? null,
@@ -32,6 +45,11 @@ function createContext({ body, raw, headers = {}, dbError = null } = {}) {
     DB: {
       prepare: (sql) => ({
         bind: (...args) => ({
+          first: async () => {
+            if (probeError) throw probeError;
+            probes.push({ sql, args });
+            return recentRow;
+          },
           run: async () => {
             if (dbError) throw dbError;
             inserts.push({ sql, args });
@@ -41,7 +59,7 @@ function createContext({ body, raw, headers = {}, dbError = null } = {}) {
       }),
     },
   };
-  return { context: { request, env }, inserts };
+  return { context: { request, env }, inserts, probes };
 }
 
 const valid = { meta_reported: 60, actual_orders: 100, window_days: 30 };
@@ -165,22 +183,31 @@ describe('submit-gap — malformed payloads are rejected, not stored', () => {
     assert.equal(inserts.length, 0);
   });
 
-  it('never stores anything when the body is JSON null', async () => {
-    // INVARIANT, not an endorsement of the current shape: a null body must not
-    // reach the INSERT. Today the endpoint throws a TypeError reading
-    // body.meta_reported (the try/catch wraps only request.json()), which the
-    // Pages runtime surfaces as a 500. That fails closed, but ungracefully —
-    // it should be a 400 like every other malformed payload. This assertion
-    // holds either way, so hardening it will not break the test.
+  it('rejects a JSON null body with an explicit 400', async () => {
+    // Previously this threw a TypeError on body.meta_reported — the try/catch
+    // wraps only request.json() — which surfaced as an opaque 500. It failed
+    // closed, but a malformed payload gets the same explicit 400 as any other.
     const { context, inserts } = createContext({ raw: 'null' });
-    let stored = true;
-    try {
-      const res = await onRequestPost(context);
-      stored = res.status === 200;
-    } catch {
-      stored = false; // threw before reaching the DB
-    }
-    assert.equal(stored, false, 'a null body must never be persisted');
+    const res = await onRequestPost(context);
+
+    assert.equal(res.status, 400);
+    assert.equal((await res.json()).error, 'Body must be a JSON object');
+    assert.equal(inserts.length, 0);
+  });
+
+  it('rejects a JSON array body with 400', async () => {
+    const { context, inserts } = createContext({ raw: '[1,2,3]' });
+    const res = await onRequestPost(context);
+
+    assert.equal(res.status, 400);
+    assert.equal(inserts.length, 0);
+  });
+
+  it('rejects a non-string platform_note rather than stringifying it', async () => {
+    const { context, inserts } = createContext({ body: { ...valid, platform_note: { a: 1 } } });
+    const res = await onRequestPost(context);
+
+    assert.equal(res.status, 400);
     assert.equal(inserts.length, 0);
   });
 });
@@ -228,43 +255,72 @@ describe('submit-gap — out-of-range and non-numeric values are rejected', () =
     }
   });
 
-  it('DOCUMENTS A DEFECT: empty meta_reported coerces to 0 and stores a 100% gap', async () => {
+  it('rejects empty values that would coerce to 0 and store a 100% gap', async () => {
     // Number(null) === Number(false) === Number('') === Number([]) === 0, and 0
-    // is a legitimate meta_reported ("Meta attributed nothing"), so the
-    // Number.isInteger(meta) && meta >= 0 guard passes. A submission that simply
-    // OMITS the field is therefore stored as the maximum possible gap — 1.0 —
-    // which is the exact headline figure the benchmark publishes.
-    //
-    // This is the highest-impact finding in this file: it does not require a
-    // hostile client, only a form field that failed to populate, and it skews
-    // the dataset in one direction. Left unfixed here because this task was
-    // scoped to test coverage; the fix is to require own-property presence and
-    // reject non-number types before coercing.
-    //
-    // When that lands, this test should be inverted to expect 400.
+    // is a legitimate meta_reported ("Meta attributed nothing"), so coercing
+    // before type-checking made "field missing" indistinguishable from it —
+    // storing gap 1.0, the maximum possible value and the exact headline figure
+    // this dataset publishes. Type is now checked first, so all of these 400.
     for (const empty of [null, false, '', [], '  ']) {
       const { context, inserts } = createContext({
         body: { ...valid, meta_reported: empty },
       });
       const res = await onRequestPost(context);
 
-      assert.equal(res.status, 200, `${JSON.stringify(empty)} is currently accepted`);
-      assert.equal(inserts[0].args[3], 1, 'stored as a 100% gap');
+      assert.equal(res.status, 400, `${JSON.stringify(empty)} must be rejected`);
+      assert.equal(inserts.length, 0, 'must not reach the DB');
     }
   });
 
-  it('DOCUMENTS A DEFECT: loose string forms are accepted as numbers', async () => {
-    // Number() accepts hex and exponent notation, so "0x10" -> 16 and
-    // "1e2" -> 100 pass the integer guard. Lower impact than the empty-value
-    // case, but the same root cause: coercing before type-checking.
-    for (const [input, expectedGap] of [['0x10', 0.84], ['1e2', 0], [true, 0.99]]) {
+  it('rejects an omitted numeric field rather than defaulting it to 0', async () => {
+    for (const key of ['meta_reported', 'actual_orders', 'window_days']) {
+      const body = { ...valid };
+      delete body[key];
+      const { context, inserts } = createContext({ body });
+      const res = await onRequestPost(context);
+
+      assert.equal(res.status, 400, `omitted ${key} must be rejected`);
+      assert.equal(inserts.length, 0);
+    }
+  });
+
+  it('rejects loose string forms that Number() would accept', async () => {
+    // Hex and exponent notation are refused; ordinary decimal form input is not.
+    for (const input of ['0x10', '1e2', '1e-2', '0b11', '  ', '12abc', true, false]) {
       const { context, inserts } = createContext({
         body: { ...valid, meta_reported: input },
       });
       const res = await onRequestPost(context);
 
-      assert.equal(res.status, 200);
-      assert.equal(inserts[0].args[3], expectedGap);
+      assert.equal(res.status, 400, `${JSON.stringify(input)} must be rejected`);
+      assert.equal(inserts.length, 0);
+    }
+  });
+
+  it('applies the same strict guard to every numeric field, not just meta_reported', async () => {
+    for (const key of ['meta_reported', 'actual_orders', 'window_days']) {
+      for (const bad of [null, false, true, '', [], {}, '0x10', '1e2']) {
+        const { context, inserts } = createContext({ body: { ...valid, [key]: bad } });
+        const res = await onRequestPost(context);
+
+        assert.equal(res.status, 400, `${key}=${JSON.stringify(bad)} must be rejected`);
+        assert.equal(inserts.length, 0);
+      }
+    }
+  });
+
+  it('still accepts 0 as an explicit meta_reported', async () => {
+    // "Meta attributed nothing" is a real submission and must survive the
+    // stricter parsing — both as a number and as a decimal string.
+    for (const zero of [0, '0']) {
+      const { context, inserts } = createContext({
+        body: { ...valid, meta_reported: zero },
+      });
+      const res = await onRequestPost(context);
+
+      assert.equal(res.status, 200, `meta_reported ${JSON.stringify(zero)} must be accepted`);
+      assert.equal(inserts[0].args[0], 0);
+      assert.equal(inserts[0].args[3], 1, 'a genuine 100% gap');
     }
   });
 
@@ -309,35 +365,73 @@ describe('submit-gap — fails closed on a D1 error', () => {
 
 // ── duplicate / replay ─────────────────────────────────────────────────────
 describe('submit-gap — duplicate and replay submissions', () => {
-  it('DOCUMENTS A GAP: identical replays are stored twice, not deduped', async () => {
-    // The endpoint computes ip_hash and its comment says "dedupe/abuse only",
-    // but nothing ever reads it back, and schema/schema.sql has no UNIQUE
-    // constraint (only idx_status and idx_created). So the same payload from
-    // the same IP inserts a second row.
-    //
-    // This test pins the CURRENT behaviour so the gap is visible in CI rather
-    // than implied by a comment. When dedupe is implemented, this test should
-    // be inverted to assert one row — that edit is the signal the fix landed.
-    const headers = { 'CF-Connecting-IP': '203.0.113.42' };
-    const first = createContext({ body: valid, headers });
-    const second = createContext({ body: valid, headers });
+  const headers = { 'CF-Connecting-IP': '203.0.113.42' };
 
-    const r1 = await onRequestPost(first.context);
-    const r2 = await onRequestPost(second.context);
+  it('accepts the first submission from a network', async () => {
+    const { context, inserts, probes } = createContext({ body: valid, headers, recentRow: null });
+    const res = await onRequestPost(context);
 
-    assert.equal(r1.status, 200);
-    assert.equal(r2.status, 200);
-    assert.equal(first.inserts.length, 1);
-    assert.equal(second.inserts.length, 1, 'no dedupe today — replay is accepted');
+    assert.equal(res.status, 200);
+    assert.equal(inserts.length, 1);
+    assert.equal(probes.length, 1, 'expected a dedupe probe before the insert');
+  });
 
-    // Both carry the same ip_hash, so dedupe is implementable without schema
-    // change: the value needed is already being written.
-    assert.equal(first.inserts[0].args[5], second.inserts[0].args[5]);
+  it('refuses a replay within the window with 409 and stores nothing', async () => {
+    const { context, inserts } = createContext({
+      body: valid,
+      headers,
+      recentRow: { id: 1 }, // a prior submission exists inside the window
+    });
+    const res = await onRequestPost(context);
+
+    assert.equal(res.status, 409);
+    assert.equal(inserts.length, 0, 'a replay must not count twice');
+    assert.match((await res.json()).error, /already recorded/i);
+  });
+
+  it('probes on ip_hash over a 30-day rolling window', async () => {
+    const { context, probes } = createContext({ body: valid, headers });
+    await onRequestPost(context);
+
+    const [sql, args] = [probes[0].sql, probes[0].args];
+    assert.match(sql, /SELECT id FROM submissions/i);
+    assert.match(sql, /ip_hash = \?/i);
+    assert.match(sql, /created_at > datetime\('now', \?\)/i);
+    assert.match(args[0], /^[0-9a-f]{64}$/, 'probes by hash, never raw IP');
+    assert.equal(args[1], '-30 days');
+  });
+
+  it('scopes dedupe to the network, so a different IP is unaffected', async () => {
+    // recentRow is keyed by the probe result, so a distinct IP that has no
+    // prior row still gets through.
+    const { context, inserts } = createContext({
+      body: valid,
+      headers: { 'CF-Connecting-IP': '198.51.100.7' },
+      recentRow: null,
+    });
+    const res = await onRequestPost(context);
+
+    assert.equal(res.status, 200);
+    assert.equal(inserts.length, 1);
+  });
+
+  it('fails CLOSED when the dedupe probe itself errors', async () => {
+    // If we cannot prove this is not a duplicate, we must not write.
+    const { context, inserts } = createContext({
+      body: valid,
+      headers,
+      probeError: new Error('D1 unavailable'),
+    });
+    const res = await onRequestPost(context);
+
+    assert.equal(res.status, 500);
+    assert.equal(inserts.length, 0, 'must not insert when dedupe cannot be verified');
+    assert.notEqual((await res.json()).ok, true);
   });
 
   it('fails closed if the DB rejects a duplicate via a constraint', async () => {
-    // If a UNIQUE constraint is added later, the insert throws and the endpoint
-    // must not report success.
+    // Defence in depth: if a UNIQUE index is added later, the insert throws and
+    // the endpoint must still not report success.
     const { context } = createContext({
       body: valid,
       dbError: new Error('UNIQUE constraint failed: submissions.ip_hash'),
@@ -347,6 +441,7 @@ describe('submit-gap — duplicate and replay submissions', () => {
     assert.equal(res.status, 500);
     assert.notEqual((await res.json()).ok, true);
   });
+
 });
 
 // ── CORS preflight ─────────────────────────────────────────────────────────

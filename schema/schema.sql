@@ -20,3 +20,11 @@ CREATE TABLE IF NOT EXISTS submissions (
 
 CREATE INDEX IF NOT EXISTS idx_status  ON submissions(status);
 CREATE INDEX IF NOT EXISTS idx_created ON submissions(created_at);
+
+-- Supports the per-network dedupe lookup in functions/api/submit-gap.js:
+--   SELECT id FROM submissions WHERE ip_hash = ? AND created_at > datetime(...)
+-- Deliberately NOT UNIQUE. A unique index on ip_hash would (a) fail to create
+-- if the live table already holds duplicate rows, and (b) block a network from
+-- ever contributing a second measurement period. The 30-day window is enforced
+-- in the application so it can be a rolling window rather than a permanent one.
+CREATE INDEX IF NOT EXISTS idx_ip_recent ON submissions(ip_hash, created_at);
