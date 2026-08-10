@@ -29,6 +29,10 @@ const tocHeadings = [
     "text": "Free tier limits — and when to upgrade"
   },
   {
+    "id": "mistakes-h",
+    "text": "Three mistakes that break a Shopify scenario quietly"
+  },
+  {
     "id": "make-com-shopify-common-questions",
     "text": "Make.com + Shopify \u2014 Common Questions"
   },
@@ -207,7 +211,7 @@ const tocHeadings = [
       <div class="hero-ctas">
         <a href="/pro/" class="btn-gold">Get the Pre-Built Kit — $29 →</a>
         <a href="/go/make" target="_blank" rel="noopener sponsored" class="btn-green">Start Free on Make.com →</a>
-        <a href="/blog/make-com-shopify-automation-guide/" class="btn-outline">Read the Full Guide →</a>
+        <a href="#connect" class="btn-outline">Read the Full Setup →</a>
       </div>
       <p style="font-size:12px;color:var(--text-4);margin:0;">Free plan: 1,000 credits/month · No credit card · Webhook triggers included</p>
       <div class="stats">
@@ -252,7 +256,7 @@ const tocHeadings = [
           <div class="tool-card-tag">Scenario 03 · TikTok Tracking</div>
           <h3>TikTok Events API</h3>
           <p>Sends CompletePayment events server-side to TikTok's Events API v1.3 via Make.com. Covers the estimated 20–40% of TikTok conversions iOS ITP strips from browser tracking. EMQ scores of 6–8 in most deployments.</p>
-          <div class="tool-card-saves">Replaces WeltPixel ($39/mo) · Analyzify ($145+/mo)</div>
+          <div class="tool-card-saves">Replaces WeltPixel ($39/mo) · Analyzify ($145–$275/mo)</div>
         </a>
         <a href="/shopify-profit-loss-automation/" class="tool-card">
           <div class="tool-card-tag">Scenario 04 · P&L Reporting</div>
@@ -264,13 +268,13 @@ const tocHeadings = [
           <div class="tool-card-tag">Bonus · Email Automation</div>
           <h3>Abandoned Cart + Email</h3>
           <p>Make.com routes Shopify checkout abandonment webhooks to Systeme.io, triggering a 3-email abandoned cart sequence. Recovers 5–15% of abandoned checkouts at $0/mo.</p>
-          <div class="tool-card-saves">Replaces Klaviyo ($150–$400/mo) · Systeme.io is free to 2,000 contacts</div>
+          <div class="tool-card-saves">Replaces Klaviyo ($20–$720+/mo) · Systeme.io is free to 2,000 contacts</div>
         </a>
         <a href="/shopify-google-ads-conversion-tracking/" class="tool-card">
           <div class="tool-card-tag">Bonus · Google Ads</div>
           <h3>Google Enhanced Conversions</h3>
           <p>SHA-256 hashes customer email from Shopify orders and uploads it server-side via the Google Ads Conversions API (Enhanced Conversions for click conversions). Recovers 15–35% of missed Google Ads conversions.</p>
-          <div class="tool-card-saves">Replaces Stape ($29/mo) · Littledata ($99/mo) · In CAPI Shield</div>
+          <div class="tool-card-saves">Replaces Stape ($29/mo) · Littledata ($129+/mo) · In CAPI Shield</div>
         </a>
       </div>
     </div>
@@ -302,6 +306,13 @@ const tocHeadings = [
           <div class="step-body">
             <h3>Add the webhook in Shopify Admin</h3>
             <p>In Shopify Admin: <strong>Settings → Notifications → Webhooks → Create webhook</strong>. Select <strong>Order payment</strong> as the event. Paste your Make.com URL. Set format to <code>JSON</code>. Save.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-num"></div>
+          <div class="step-body">
+            <h3>Capture a real order payload first</h3>
+            <p>Before adding any destination, click <strong>Run once</strong> in Make.com to put the scenario into listening mode, then place a test order in Shopify using a 100% discount code. Make.com captures the payload and shows you every field Shopify actually sends. Those are the fields you map against — guessing field names is the most common reason a first scenario silently sends empty values.</p>
           </div>
         </li>
         <li>
@@ -457,6 +468,24 @@ const tocHeadings = [
       <p><strong>You need more than two active scenarios.</strong> The free plan caps active scenarios, which is why the recommended architecture is one scenario with a router rather than several small ones. If your logic genuinely will not consolidate, that is a real reason to move up.</p>
       <p><strong>You need scheduling tighter than the free interval.</strong> Webhook-triggered scenarios fire instantly on any plan, so this only bites for polling scenarios — reports, reconciliation, scheduled syncs — not for the order-driven automations on this page.</p>
       <p>Everything else is premature. Most Shopify stores under 200 orders a month run the complete stack on the free tier indefinitely, and the correct move at 250 orders is to consolidate branches into one router before paying for headroom you have not earned.</p>
+    </div>
+  </section>
+
+  <!-- MISTAKES -->
+  <section>
+    <div class="inner-sm">
+      <div class="tag">Failure modes</div>
+      <h2 id="mistakes-h">Three mistakes that break a Shopify scenario quietly</h2>
+      <p>None of these throw an error. Each one produces a scenario that runs green in Make.com while the data arriving at the other end is wrong.</p>
+
+      <h3 style="margin-top:28px;">Not de-duplicating against the browser pixel</h3>
+      <p>If you keep the Meta pixel on the storefront and add server-side events, both fire for the same purchase. Without a shared identifier, Meta counts two conversions and your reported ROAS inflates until you stop trusting it. Send the same <code>event_id</code> — the Shopify order ID works — on both the browser event and the server event, and the platform collapses them into one. This is the single most common way a first CAPI build makes attribution worse rather than better.</p>
+
+      <h3 style="margin-top:28px;">Using the wrong TikTok event name</h3>
+      <p>TikTok's purchase event is <code>CompletePayment</code>. Not <code>Purchase</code>, not <code>purchase</code>. The string is case-sensitive and TikTok accepts an unrecognised name without complaint — the events land in Events Manager under a category that no campaign is optimising against, so the scenario looks healthy and the ad account learns nothing.</p>
+
+      <h3 style="margin-top:28px;">Ignoring webhook retries</h3>
+      <p>Shopify retries a webhook when your endpoint does not acknowledge it quickly enough, which means the same order can arrive twice. For a tracking branch that is a duplicate conversion; for a Google Sheets inventory branch it is a duplicate row and a stock count that drifts. Key your Sheets writes on the order ID and check for an existing row before appending, rather than assuming each delivery is unique.</p>
     </div>
   </section>
 
