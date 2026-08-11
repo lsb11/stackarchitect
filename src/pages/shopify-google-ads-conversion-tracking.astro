@@ -62,7 +62,7 @@ const setupSteps = [
 ];
 
 const compRows = [
-  { feature: "Monthly cost",                          ga: "$0 forever",     stape: "$29+/mo",    little: "$99+/mo",  anal: "$145+/mo",  gaWin: true },
+  { feature: "Monthly cost",                          ga: "$0 forever",     stape: "$29+/mo",    little: "$99+/mo",  anal: "$145–$275/mo",  gaWin: true },
   { feature: "Google Enhanced Conversions",           ga: "Yes",            stape: "Yes",        little: "Yes",      anal: "Yes",       gaWin: true },
   { feature: "GCLID recovery",                        ga: "Yes",            stape: "Yes",        little: "Yes",      anal: "Partial",   gaWin: true },
   { feature: "Server-to-server (not browser)",        ga: "Yes",            stape: "Yes",        little: "Partial",  anal: "Partial",   gaWin: true },
@@ -83,7 +83,7 @@ const faqs = [
   { q: "How do I fix Google Ads showing fewer conversions than Shopify?",                 a: "If Google Ads reports significantly fewer conversions than Shopify shows orders for the same period, you are losing attribution due to iOS restrictions or ad blockers. The fix is server-side Google Enhanced Conversions via Make.com: create a Shopify Order payment webhook that sends purchase data — including hashed customer email and phone — directly to the Google Ads Conversions API from your server. This runs independently of browser behaviour and cannot be blocked by iOS or ad blockers." },
   { q: "Will server-side Google Ads tracking improve my Smart Bidding performance?",      a: "Yes. Smart Bidding, Target ROAS, and Performance Max all optimise based on the conversion signals Google receives. When 25–40% of real conversions are invisible due to browser-based tracking failures, the algorithm is bidding on incomplete data — underbidding on high-intent traffic and over-bidding on low-converting segments. Completing conversion data with server-side Enhanced Conversions typically improves Smart Bidding performance within 14–21 days as the model relearns with full data." },
   { q: "Does this work alongside my existing Google Ads conversion tag?",                 a: "Yes. Google Enhanced Conversions is designed to supplement — not replace — your existing conversion tags. The browser-side gTag continues to fire as normal. The server-side Enhanced Conversions layer adds hashed customer data on top. Google automatically deduplicates events using the order ID, so the same purchase is not counted twice. Running both layers together gives maximum conversion accuracy." },
-  { q: "How much does it cost to fix Google Ads conversion tracking on Shopify?",        a: "The complete free setup costs $0/month. The Make.com free plan (1,000 credits/month (formerly called operations)) covers Enhanced Conversions for stores processing under 500 orders per month. Above that, Make.com Core at $12/month covers 10,000 credits. Every paid alternative — Stape ($29+/month), Littledata ($99+/month), Analyzify ($145+/month) — charges a monthly subscription for the same server-side outcome Make.com delivers free." },
+  { q: "How much does it cost to fix Google Ads conversion tracking on Shopify?",        a: "The complete free setup costs $0/month. The Make.com free plan (1,000 credits/month (formerly called operations)) covers Enhanced Conversions for stores processing under 500 orders per month. Above that, Make.com Core at $12/month covers 10,000 credits. Every paid alternative — Stape ($29+/month), Littledata ($159+/month), Analyzify ($145–$275/month) — charges a monthly subscription for the same server-side outcome Make.com delivers free." },
   { q: "Is this GDPR compliant?",                                                        a: "All customer PII — email, phone, name — is hashed with SHA-256 inside Make.com before transmission to Google, as required by Google's Enhanced Conversions specification. The hashed data flows through your own Make.com workspace. Ensure your privacy policy discloses that hashed customer data is shared with Google for conversion matching purposes." }
 ];
 
@@ -92,7 +92,7 @@ const crosslinks = [
   { href: "/tiktok-events-api-shopify/",      tag: "TikTok tracking",         tagClass: "tag-tiktok", name: "TikTok Events API",     desc: "Add TikTok as a third branch to the same Make.com scenario. Server-side CompletePayment events to TikTok's Events API — no additional Shopify webhook needed.", save: "Saves $39–$299/mo",  saveColor: "var(--tiktok)" },
   { href: "/stocky-swap/",                    tag: "Inventory ⚠ Aug 2026",    tagClass: "tag-sky",    name: "Stocky Swap",           desc: "Shopify closes Stocky on August 31, 2026. Stocky Swap logs every order to Google Sheets in real time via the same webhook infrastructure — free inventory management before the shutdown.", save: "Saves $29–$199/mo",  saveColor: "var(--sky)"    },
   { href: "/shopify-profit-loss-automation/", tag: "P&L reporting",           tagClass: "tag-sky",    name: "P&L Auto",              desc: "The same Shopify webhook branches to a live P&L Google Sheets dashboard. Revenue, COGS, ad spend, and net profit updated on every order at $0/month.", save: "Saves $19–$299/mo",  saveColor: "var(--sky)"    },
-  { href: "/replace-klaviyo-free/",           tag: "Email marketing",         tagClass: "",           name: "Replace Klaviyo Free",  desc: "Systeme.io replaces Klaviyo entirely — 2,000 contacts, unlimited emails, automations, and CRM on the free plan. $0 vs $150–$400/month.", save: "Saves $150–$400/mo", saveColor: "var(--g)"      },
+  { href: "/replace-klaviyo-free/",           tag: "Email marketing",         tagClass: "",           name: "Replace Klaviyo Free",  desc: "Systeme.io replaces Klaviyo entirely — 2,000 contacts, unlimited emails, automations, and CRM on the free plan. $0 vs $20+/month.", save: "Saves $20+/mo", saveColor: "var(--g)"      },
   { href: "/pro/",                            tag: "Complete Kit",            tagClass: "tag-amber",  name: "Get all 4 automations — $29", desc: "Get the pre-built Make.com JSON blueprints for Google Ads tracking, Meta CAPI, Stocky Swap, and P&L Auto. Import and deploy all four in 10 minutes instead of building from scratch.", save: "$29 one-time",       saveColor: "var(--amber)"  }
 ];
 
@@ -690,8 +690,8 @@ const tocHeadings = [
     </a>
     <a href="/shopify-attribution-tools-compared/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
       <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Elevar Alternative — Full Comparison
-            CAPI Shield + Google Ads tracking vs Elevar: full feature breakdown at $0 vs $225+/mo</span></span>
-      <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">vs $225–$1,250/mo</span>
+            CAPI Shield + Google Ads tracking vs Elevar: full feature breakdown at $0 vs $225/mo</span></span>
+      <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">vs $225/mo</span>
     </a>
     <a href="/pro/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
       <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Complete Kit — Google Ads Tracking Pre-Built ($29)

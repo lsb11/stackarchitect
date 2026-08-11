@@ -27,21 +27,23 @@ export function walk(dir) {
 // objects), so this guard reads source rather than dist/ — source is the
 // superset, and it's where a dev applies the fix.
 //
-// When true, findings count toward the exit code:
+// When true, findings count toward the exit code. Every class is an ERROR:
 //   ERROR — a page contradicts a price-verified apps.json record
-//   WARN  — a page contradicts an unverified apps.json record
-//   WARN  — one page prices one app two incompatible ways   (see below)
+//   ERROR — a page publishes a price for a record that is not verified at all
+//   ERROR — one page prices one app two incompatible ways   (see below)
+//   ERROR — two indexable pages price one app two incompatible ways
+//
+// The second class is what closes the backlog: a price on the site with no
+// priceVerifiedDate + priceSourceUrl behind it now fails the build, so an
+// unsourced figure cannot be reintroduced. An app the vendor genuinely does not
+// price publicly carries a non-numeric monthlyCost ("Not publicly listed") and
+// no page may attach a figure to it.
 export const PRICE_GUARD_ENFORCE = true;
 
-// TEMPORARY. Self-contradiction is a genuine error class — one page cannot hold
-// two prices for one app — but the ~16 existing instances predate this guard and
-// cannot be resolved by picking a value, because no apps.json record is
-// price-verified yet. Demoting to WARN keeps CI green while the real prices are
-// sourced from vendor pricing pages.
-//
-// RESTORE TO 'error' once the outstanding self-contradictions are resolved.
-// Leaving this at 'warn' permanently makes the check decorative.
-const SELF_CONTRADICTION_LEVEL = 'warn';
+// Self-contradiction is a genuine error class — one page cannot hold two prices
+// for one app. Held at 'warn' while the records were unverified; the outstanding
+// instances are resolved, so it is enforced.
+const SELF_CONTRADICTION_LEVEL = 'error';
 
 const APPS_JSON = 'src/data/apps.json';
 const PAGES_DIR = 'src/pages';
@@ -68,13 +70,25 @@ const SAVINGS_PHRASE = /\bsav(?:e[ds]?|ings?)\b/i;
 export function claimShape(raw) {
   const s = String(raw).replace(/,/g, '').toLowerCase();
   const amounts = [...s.matchAll(/\$\s*([0-9]+(?:\.[0-9]+)?)/g)].map((m) => parseFloat(m[1]));
-  const openEnded = /\+/.test(s);
+  // "+" and "from $19.99" make the same claim: this is a floor, not the price.
+  // Treating them as different shapes would force awkward copy ("From $19.99+")
+  // to satisfy the guard, which is the guard bending the prose rather than
+  // catching an error.
+  const openEnded = /\+/.test(s) || /\b(?:from|starts? at|starting at|as low as)\s*\$/.test(s);
   // An omitted period ("$150–$400" in a column already headed /mo) is a
   // wildcard: it contradicts nothing. Only two *stated*, different periods do.
   const period = /(?:\/\s*|\bper\s+)(?:mo|month)|\bmonthly\b/.test(s) ? 'mo'
     : /(?:\/\s*|\bper\s+)(?:yr|year)|\bannually\b/.test(s) ? 'yr'
       : null;
   return { amounts, openEnded, period, key: amounts.join('–') + (openEnded ? '+' : '') };
+}
+
+// Human-readable rendering of a shape, for messages that must make the
+// difference between "$145" and "$145–$375" visible at a glance.
+export function shapeLabel(s) {
+  if (!s.amounts.length) return 'no figure';
+  const body = s.amounts.map((n) => '$' + n).join('–') + (s.openEnded ? '+' : '');
+  return body + (s.period ? '/' + s.period : '');
 }
 
 // Two claims for one app on one page conflict when they name different amounts
@@ -242,10 +256,23 @@ export function extractPriceClaims(byName, dir = PAGES_DIR) {
   return claims;
 }
 
-export function auditPrices({ appsPath = APPS_JSON, pagesDir = PAGES_DIR } = {}) {
+// src/pages/foo.astro -> /foo/ ; src/pages/blog/bar.astro -> /blog/bar/ ;
+// src/pages/index.astro -> / . Used to test a claim's page against the sitemap.
+export function pageUrlFor(file) {
+  let p = file.replace(/\\/g, '/').replace(/^src\/pages/, '').replace(/\.(astro|md|mdx)$/, '');
+  p = p.replace(/\/index$/, '/');
+  if (!p.startsWith('/')) p = '/' + p;
+  if (!p.endsWith('/')) p += '/';
+  return p;
+}
+
+export function auditPrices({ appsPath = APPS_JSON, pagesDir = PAGES_DIR, indexablePaths = null } = {}) {
   const { arr, byName } = loadApps(appsPath);
   const claims = extractPriceClaims(byName, pagesDir);
   const priceErrors = [], priceWarns = [];
+  // When the sitemap is available, cross-page consistency is judged only across
+  // pages that are actually indexable. Without it, every scanned page counts.
+  const isIndexable = (file) => indexablePaths == null || indexablePaths.has(pageUrlFor(file));
 
   const verified = arr.filter((a) => a.priceVerifiedDate != null).length;
 
@@ -261,22 +288,61 @@ export function auditPrices({ appsPath = APPS_JSON, pagesDir = PAGES_DIR } = {})
     // ("Annual cost $2,700+") is a different unit, not a contradiction of it.
     if (c.shape.period === 'yr') { buckets.incomparable++; continue; }
     const rec = byName.get(c.app);
-    const canon = priceFloor(rec.monthlyCost);
-    if (c.floor == null || canon == null) { buckets.incomparable++; continue; }
-    comparable++;
-    const diff = Math.abs(c.floor - canon);
-    if (diff < 0.01) { buckets.exact++; agree++; continue; }
+    const where = `${c.file.replace('src/pages/', '')}:${c.line}`;
+    const canonShape = claimShape(rec.monthlyCost);
 
+    // A record with no numeric monthlyCost makes no price claim at all. A page
+    // that attaches a figure to it is publishing an unsourced number.
+    if (!canonShape.amounts.length) {
+      buckets.incomparable++;
+      if (c.shape.amounts.length) {
+        priceErrors.push(
+          `UNSOURCED PRICE PUBLISHED :: ${where} — ${rec.name} priced ${c.raw} but apps.json ` +
+          `records no public price (monthlyCost "${rec.monthlyCost}"). The vendor does not publish ` +
+          `this figure; remove the number or verify it against the vendor's own pricing page.`
+        );
+      }
+      continue;
+    }
+    if (c.floor == null) { buckets.incomparable++; continue; }
+    comparable++;
+
+    // Compare the WHOLE claim, not just its floor: "$145–$375/mo" and "$145/mo"
+    // share a floor and are different claims. claimsConflict compares the full
+    // amount list plus open-endedness, and abstains across differing periods.
+    const conflict = claimsConflict(c.shape, canonShape);
+
+    // Magnitude buckets stay floor-based — they measure how far apart two
+    // numbers are, which is a question about the floors specifically.
+    const canon = priceFloor(rec.monthlyCost);
+    const diff = Math.abs(c.floor - canon);
+    if (!conflict) { buckets.exact++; agree++; continue; }
     const rel = canon === 0 ? Infinity : diff / canon;
-    if (rel < 0.10) buckets.lt10++;
+    if (diff < 0.01) buckets.exact++;
+    else if (rel < 0.10) buckets.lt10++;
     else if (rel < 0.50) buckets.lt50++;
     else if (rel < 1.00) buckets.lt100++;
     else buckets.over2x++;
 
-    const where = `${c.file.replace('src/pages/', '')}:${c.line}`;
-    const msg = `${where} — ${rec.name} priced ${c.raw} (floor $${c.floor}) but apps.json says ${rec.monthlyCost} (floor $${canon})`;
+    const msg = `${where} — ${rec.name} priced ${c.raw} (${shapeLabel(c.shape)}) but apps.json says ` +
+                `${rec.monthlyCost} (${shapeLabel(canonShape)})`;
     if (rec.priceVerifiedDate != null) priceErrors.push(`VERIFIED RECORD CONTRADICTED :: ${msg} [verified ${rec.priceVerifiedDate}]`);
-    else priceWarns.push(`unverified record :: ${msg}`);
+    else priceErrors.push(`UNVERIFIED RECORD CONTRADICTED :: ${msg} — verify against the vendor's own pricing page`);
+  }
+
+  // 2b: a figure published for a record that carries no verification at all.
+  // Matching an unverified record is not a defence — the number is still
+  // unsourced. This is the check that keeps the backlog closed.
+  for (const c of claims) {
+    if (c.shape.period === 'yr' || !c.shape.amounts.length) continue;
+    const rec = byName.get(c.app);
+    if (rec.priceVerifiedDate != null && rec.priceSourceUrl != null) continue;
+    if (!claimShape(rec.monthlyCost).amounts.length) continue; // already reported above
+    const where = `${c.file.replace('src/pages/', '')}:${c.line}`;
+    priceErrors.push(
+      `UNVERIFIED PRICE PUBLISHED :: ${where} — ${rec.name} priced ${c.raw} but apps.json has ` +
+      `${rec.priceVerifiedDate == null ? 'no priceVerifiedDate' : 'no priceSourceUrl'}`
+    );
   }
 
   // 3: same app, different prices, same page — self-contradiction.
@@ -306,6 +372,39 @@ export function auditPrices({ appsPath = APPS_JSON, pagesDir = PAGES_DIR } = {})
     );
   }
 
+  // 4: same app, different claims, two different indexable pages. Page-scoped
+  // consistency is not enough — a reader (or a model) comparing two of our own
+  // pages must not find two prices for one product.
+  const crossPage = [];
+  const byApp = new Map();
+  for (const c of claims) {
+    if (c.kind === 'tier' || c.kind === 'tier-entry') continue;
+    if (c.shape.period === 'yr' || !c.shape.amounts.length) continue;
+    if (!isIndexable(c.file)) continue;
+    if (!byApp.has(c.app)) byApp.set(c.app, []);
+    byApp.get(c.app).push(c);
+  }
+  for (const [app, list] of byApp) {
+    const byShape = new Map();
+    for (const c of list) {
+      const k = c.shape.key + (c.shape.period ? '/' + c.shape.period : '');
+      if (!byShape.has(k)) byShape.set(k, []);
+      byShape.get(k).push(c);
+    }
+    if (byShape.size < 2) continue;
+    // Differing periods are not a contradiction (monthly vs annual figures).
+    const conflicting = [...byShape.entries()].filter(([, cs]) =>
+      cs.some((a) => list.some((b) => b.file !== a.file && claimsConflict(a.shape, b.shape))));
+    if (conflicting.length < 2) continue;
+    const files = [...new Set(list.map((c) => c.file.replace('src/pages/', '')))];
+    if (files.length < 2) continue;
+    crossPage.push(
+      `CROSS-PAGE DIVERGENCE :: ${byName.get(app).name} is priced ${conflicting.length} incompatible ways ` +
+      `across ${files.length} indexable pages: ` +
+      conflicting.map(([k, cs]) => `${k} (${cs.map((c) => c.file.replace('src/pages/', '') + ':' + c.line).join(', ')})`).join(' / ')
+    );
+  }
+
   return {
     stats: {
       records: arr.length, verified, unverified: arr.length - verified,
@@ -314,7 +413,7 @@ export function auditPrices({ appsPath = APPS_JSON, pagesDir = PAGES_DIR } = {})
       byKind: claims.reduce((o, c) => ((o[c.kind] = (o[c.kind] || 0) + 1), o), {}),
       comparable, agree, buckets,
     },
-    priceErrors, priceWarns, selfContra,
+    priceErrors, priceWarns, selfContra, crossPage,
   };
 }
 
@@ -488,6 +587,7 @@ for (const f of htmlFiles) {
 for (const [t, pages] of titles) if (pages.length > 1) warn(`DUPLICATE TITLE on ${pages.join(' , ')} :: "${t.slice(0, 70)}"`);
 for (const [d, pages] of descs) if (pages.length > 1) warn(`DUPLICATE DESCRIPTION on ${pages.join(' , ')}`);
 
+let indexablePaths = null;
 const smIndex = join(DIST, 'sitemap-index.xml');
 if (!existsSync(smIndex)) err('sitemap-index.xml missing from dist');
 
@@ -516,12 +616,13 @@ else {
     if (SITEMAP_OPTIONAL.some((r) => r.test(p))) continue;
     if (!smPaths.has(p)) warn(`built page missing from sitemap: ${p}`);
   }
+  indexablePaths = smPaths;
   console.log(`sitemap URLs: ${smUrls.length}, built pages: ${builtPaths.size}`);
 }
 
 // ---- price guard report ----------------------------------------------------
 {
-  const { stats: s, priceErrors, priceWarns, selfContra } = auditPrices();
+  const { stats: s, priceErrors, priceWarns, selfContra, crossPage } = auditPrices({ indexablePaths });
   const pct = (n, d) => (d ? Math.round((n / d) * 100) : 0);
   const mode = PRICE_GUARD_ENFORCE ? 'ENFORCED' : 'REPORT-ONLY — not counted toward exit code';
 
@@ -540,15 +641,18 @@ else {
   console.log(`  50–100%          : ${s.buckets.lt100}`);
   console.log(`  2x or more       : ${s.buckets.over2x}   <- substantive`);
 
-  console.log(`\nwould-be ERRORS   (verified record contradicted) : ${priceErrors.length}`);
-  console.log(`${SELF_CONTRADICTION_LEVEL === 'error' ? 'would-be ERRORS  ' : 'would-be WARNINGS'} (self-contradiction, same page) : ${selfContra.length}`);
-  console.log(`would-be WARNINGS (unverified record contradicted): ${priceWarns.length}`);
+  console.log(`\nERRORS (record contradicted / price unsourced) : ${priceErrors.length}`);
+  console.log(`${SELF_CONTRADICTION_LEVEL === 'error' ? 'ERRORS' : 'WARNINGS'} (self-contradiction, same page)      : ${selfContra.length}`);
+  console.log(`ERRORS (cross-page divergence)                 : ${crossPage.length}`);
+  console.log(`WARNINGS                                       : ${priceWarns.length}`);
 
   if (selfContra.length) { console.log(''); selfContra.forEach((m) => console.log('  ' + m)); }
+  if (crossPage.length) { console.log(''); crossPage.forEach((m) => console.log('  ' + m)); }
   if (priceErrors.length) { console.log(''); priceErrors.forEach((m) => console.log('  ' + m)); }
 
   if (PRICE_GUARD_ENFORCE) {
     priceErrors.forEach(err);
+    crossPage.forEach(err);
     selfContra.forEach(SELF_CONTRADICTION_LEVEL === 'error' ? err : warn);
     priceWarns.forEach(warn);
   }

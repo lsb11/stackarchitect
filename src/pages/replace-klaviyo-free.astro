@@ -69,7 +69,7 @@ const guides = [
 
 // ─── Stats ────────────────────────────────────────────────────────────────────
 const heroStats = [
-  { value: "$20–$720+/mo", label: "Klaviyo charges" },
+  { value: "$20+/mo", label: "Klaviyo charges" },
   { value: "Active profiles", label: "Billed whether emailed or not" },
   { value: "Auto-upgrades", label: "Moves you up tiers silently" },
   { value: "$0/mo", label: "Systeme.io costs", isGreen: true }
@@ -82,6 +82,16 @@ const stripStats = [
 ];
 
 // ─── Klaviyo pricing tiers ───────────────────────────────────────────────────
+// SOURCING: Klaviyo publishes only its free tier and its entry paid tiers as
+// fixed figures on klaviyo.com/pricing (verified 2026-08-11: $0 for up to 250
+// active profiles; $20/mo Email and $35/mo Email+SMS for 251–500). Every tier
+// above 500 profiles is behind an account-gated estimator and is NOT published
+// by the vendor. The rows below 500 are vendor-verified; the rest are
+// merchant-reported estimates and are labelled as such wherever they render.
+const TIER_SOURCE_NOTE =
+  "Verified against klaviyo.com/pricing on 11 August 2026: free up to 250 active " +
+  "profiles, $20/month from 251. Klaviyo does not publish its higher tiers — the " +
+  "figures above 500 profiles are merchant-reported estimates, not vendor-verified.";
 const pricingTiers = [
   { contacts: "500",    price: "$20" },
   { contacts: "5,000",  price: "$100" },
@@ -129,7 +139,7 @@ const calcOptions = [
 
 // ─── Features that Systeme.io replaces ───────────────────────────────────────
 const features = [
-  { icon: "✉️", title: "Email marketing & automation",       desc: "Unlimited email sends. Welcome sequences, abandoned cart, post-purchase flows, broadcast campaigns. All the automation logic that sits behind Klaviyo's active-profile tiers.",                              saves: "Replaces Klaviyo — saves $20–$720+/mo" },
+  { icon: "✉️", title: "Email marketing & automation",       desc: "Unlimited email sends. Welcome sequences, abandoned cart, post-purchase flows, broadcast campaigns. All the automation logic that sits behind Klaviyo's active-profile tiers.",                              saves: "Replaces Klaviyo — saves $20+/mo" },
   { icon: "⏽",  title: "Sales funnels & landing pages",      desc: "Build opt-in pages, sales funnels, upsell flows, and squeeze pages. Drag-and-drop builder — no ClickFunnels subscription required.",                                                            saves: "Replaces ClickFunnels — saves $97–$297/mo" },
   { icon: "👥", title: "CRM & contact management",           desc: "Tag contacts, build segments, track purchase behaviour, and manage your entire customer database — without a separate CRM tool.",                                                                saves: "Replaces standalone CRM tools — saves $50–$200/mo" },
   { icon: "🎓", title: "Online course hosting",              desc: "Host digital products, courses, and memberships directly on Systeme.io. No Teachable or Thinkific subscription needed.",                                                                         saves: "Replaces Teachable — saves $39–$119/mo" },
@@ -139,7 +149,7 @@ const features = [
 
 // ─── Comparison table ─────────────────────────────────────────────────────────
 const compRows = [
-  { feature: "Monthly cost",             klaviyo: "$20–$720+/mo",                           systeme: "$0 forever",                    kClass: "lose", sClass: "win" },
+  { feature: "Monthly cost",             klaviyo: "$20+/mo",                           systeme: "$0 forever",                    kClass: "lose", sClass: "win" },
   { feature: "Free contacts",            klaviyo: "250 (500 emails/mo cap)",                 systeme: "2,000 (unlimited sends)",       kClass: "lose", sClass: "win" },
   { feature: "Email automations",        klaviyo: "Advanced",                                systeme: "Full sequences included",       kClass: "win",  sClass: "win" },
   { feature: "Billing model",            klaviyo: "All active profiles (incl. unengaged)",   systeme: "Contact count only",            kClass: "lose", sClass: "win" },
@@ -177,7 +187,7 @@ const crosslinks = [
 // ─── FAQs ─────────────────────────────────────────────────────────────────────
 const faqs = [
   { q: "Is Klaviyo free in 2026?", a: "No. Klaviyo changed its billing model in February 2025. The free tier is now limited to 250 contacts and 500 emails/month. Paid plans start at $20/month for 500 contacts. Klaviyo now charges for every active profile, including contacts you have not emailed recently." },
-  { q: "Is Systeme.io really free as a Klaviyo replacement?", a: "Yes. Systeme.io's free plan supports 2,000 contacts with unlimited email sends, full automation sequences, sales funnels, and CRM — permanently free, no credit card required. Klaviyo charges $20–$720+/mo across its published ladder, with a typical mid-sized Shopify list landing in the middle of it." },
+  { q: "Is Systeme.io really free as a Klaviyo replacement?", a: "Yes. Systeme.io's free plan supports 2,000 contacts with unlimited email sends, full automation sequences, sales funnels, and CRM — permanently free, no credit card required. Klaviyo charges $20+/mo across its published ladder, with a typical mid-sized Shopify list landing in the middle of it." },
   { q: "What is the difference between Klaviyo and Systeme.io for Shopify?", a: "Klaviyo offers deeper native Shopify segmentation. Systeme.io offers a broader platform — email marketing, funnels, CRM, courses, and affiliate management — at $0/month. For stores not using Klaviyo's advanced segmentation, Systeme.io delivers equivalent email results at zero cost." },
   { q: "How do I migrate my Klaviyo email list to Systeme.io?", a: "Export your Klaviyo contacts as a CSV (Profiles → Export) and import them into Systeme.io (Contacts → Import). Map email, first name, and last name. Your list migrates in under 10 minutes regardless of size." },
   { q: "What is the Klaviyo free plan limit in 2026?", a: "Klaviyo's free plan in 2026 is limited to 250 active profiles and 500 email sends per month. Systeme.io's free plan allows 2,000 contacts with unlimited email sends — 8× more contacts and no sending cap at zero cost." },
@@ -257,7 +267,7 @@ const schemaGraph = {
       "@type": "Article",
       "@id": `${CANONICAL}#article`,
       "headline": "Replace Klaviyo Free in 2026 — Best Free Klaviyo Alternative for Shopify",
-      "description": "The complete guide to replacing Klaviyo with Systeme.io free. Migrate your email marketing, automations, and CRM in 30 minutes. Cut a $20–$720+/month bill to $0.",
+      "description": "The complete guide to replacing Klaviyo with Systeme.io free. Migrate your email marketing, automations, and CRM in 30 minutes. Cut a $20+/month bill to $0.",
       "author":    { "@type": "Organization", "name": "Stack Architect", "url": SITE },
       "publisher": { "@type": "Organization", "name": "Stack Architect", "url": SITE },
       "datePublished": "2025-01-01",
@@ -383,7 +393,7 @@ const tocHeadings = [
 
     <h1>
       Stop paying Klaviyo<br />
-      <span class="green">$20–$720+/month.</span><br />
+      <span class="green">$20+/month.</span><br />
       <span class="dim">Replace it free today.</span>
     </h1>
 
@@ -407,6 +417,7 @@ const tocHeadings = [
           <option value={o.value}>{o.label}</option>
         ))}
       </select>
+      <p style="font-size:12px;color:var(--text-4);line-height:1.6;margin:12px 0 0;">{TIER_SOURCE_NOTE}</p>
       <div class="calc-result" id="calc-result" style="display:none;" aria-live="polite">
         <div class="calc-saving" id="calc-saving">$0</div>
         <div class="calc-context" id="calc-context"></div>
@@ -510,6 +521,7 @@ const tocHeadings = [
             </div>
           ))}
         </div>
+        <p style="font-size:12px;color:var(--text-4);line-height:1.6;margin:12px 0 0;">{TIER_SOURCE_NOTE}</p>
       </div>
 
       <p>The compounding effect is brutal. As you run ads, collect email addresses at checkout, and grow your list through popups and campaigns, your Klaviyo bill climbs automatically — even when your revenue doesn't.</p>
@@ -627,6 +639,7 @@ const tocHeadings = [
           </tbody>
         </table>
       </div>
+      <p style="font-size:12px;color:var(--text-4);line-height:1.6;margin:12px 0 0;">{TIER_SOURCE_NOTE}</p>
 
       <p>VAT-registered businesses reclaim that 20% on the quarterly return, so the true cost is the net figure — but the cash-flow effect is real, because you pay it upfront and recover it later.</p>
 
@@ -677,6 +690,7 @@ const tocHeadings = [
           </tbody>
         </table>
       </div>
+      <p style="font-size:12px;color:var(--text-4);line-height:1.6;margin:12px 0 0;">{TIER_SOURCE_NOTE}</p>
 
       <p>At 25,000 contacts that is <strong>$3,132 a year</strong>. The gap is consistent at every tier and widens as the list grows, because the two platforms scale on different curves.</p>
 

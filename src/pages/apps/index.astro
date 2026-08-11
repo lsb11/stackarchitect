@@ -43,7 +43,10 @@ function offerFor(app: AppProfile) {
   // price we have not verified against the vendor's own pricing page on a
   // recorded date. Both fields or no Offer at all — an unverified price in
   // structured data is a claim a model can check and find us overstating.
-  // Today that is Elevar, Northbeam and Analyzify; the other 50 emit a
+  // The gate is data-driven, so an app starts emitting an Offer the moment its
+  // record gains both fields — nothing here needs editing per app. Apps whose
+  // vendor publishes no price carry a non-numeric monthlyCost ("Not publicly
+  // listed"), fall through parseCost with no figure, and emit a
   // SoftwareApplication node with no offers property.
   if (!app.priceVerifiedDate || !app.priceSourceUrl) return null;
 

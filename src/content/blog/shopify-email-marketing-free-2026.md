@@ -33,7 +33,7 @@ relatedGuides:
 
 # Shopify Email Marketing Free 2026 — The Complete Free Setup
 
-Email marketing generates more revenue per pound spent than any other channel for Shopify stores — typically £3–£6 back for every £1 of platform cost. But that equation only holds if the platform cost is justified. Klaviyo's February 2025 billing change pushed most stores to £100–£400/month. Systeme.io's permanently free plan covers the same core workflows at $0.
+Email marketing generates more revenue per pound spent than any other channel for Shopify stores — typically £3–£6 back for every £1 of platform cost. But that equation only holds if the platform cost is justified. Klaviyo's February 2025 billing change made every active profile chargeable, so bills now climb with list size from a $20/month entry plan. Systeme.io's permanently free plan covers the same core workflows at $0.
 
 This guide covers the complete free Shopify email setup: platform choice, Shopify connection, the four essential automations, and campaign structure.
 

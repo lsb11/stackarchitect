@@ -11,11 +11,11 @@ readTime: 12
 canonical: "https://stackarchitect.xyz/blog/the-lean-shopify-tech-stack-2026/"
 faqs:
   - question: "What apps can I replace for free on Shopify in 2026?"
-    answer: "In 2026, Shopify stores can replace: Elevar or Triple Whale (server-side tracking, from $225/month) with CAPI Shield free; Shopify Stocky (inventory, shutting down August 2026) with Stocky Swap free; Klaviyo (email, $150-400/month) with Systeme.io free; TikTok tracking apps like WeltPixel ($39-99/month) with TikTok Events API via Make.com free; P&L reporting apps ($25-299/month) with Shopify P&L Auto free; and Autocrat document automation with a Make.com-based replacement free."
+    answer: "In 2026, Shopify stores can replace: Elevar or Triple Whale (server-side tracking, from $225/month) with CAPI Shield free; Shopify Stocky (inventory, shutting down August 2026) with Stocky Swap free; Klaviyo (email, $20+/month) with Systeme.io free; TikTok tracking apps like WeltPixel ($39-99/month) with TikTok Events API via Make.com free; P&L reporting apps ($25-299/month) with Shopify P&L Auto free; and Autocrat document automation with a Make.com-based replacement free."
   - question: "What is a lean Shopify tech stack?"
     answer: "A lean Shopify tech stack uses the minimum number of apps and tools to run a store effectively — prioritising free alternatives over paid subscriptions wherever the functionality is equivalent. The core principle is that most Shopify operational layers (tracking, inventory, email, P&L, workflow automation) can be covered by Make.com webhooks, Google Sheets, and free SaaS platforms — without installing apps that add monthly costs, slow your store, or create vendor dependency."
   - question: "How much can I save by switching to the free Shopify stack?"
-    answer: "The typical saving is $400–$700 per month depending on which paid apps you currently use. The most common replacements: server-side tracking ($150–$299/month saved), Klaviyo ($150–$400/month saved), inventory app ($29–$199/month saved), TikTok tracking ($39–$99/month saved), and P&L reporting ($25–$299/month saved). Combined, these represent $393–$1,296/month in potential savings."
+    answer: "The typical saving is $400–$700 per month depending on which paid apps you currently use. The most common replacements: server-side tracking ($150–$299/month saved), Klaviyo ($20+/month saved), inventory app ($29–$199/month saved), TikTok tracking ($39–$99/month saved), and P&L reporting ($25–$299/month saved). Combined, these represent $393–$1,296/month in potential savings."
   - question: "Does removing Shopify apps improve store performance?"
     answer: "Yes. Every installed Shopify app adds JavaScript to your storefront — increasing page load time, reducing Lighthouse scores, and potentially impacting Core Web Vitals. Apps that run tracking pixels, chat widgets, and review systems are the heaviest. Replacing pixel-based tracking apps with server-side tracking removes the browser-side JavaScript entirely, which typically improves page speed scores."
 relatedGuides:
@@ -49,7 +49,7 @@ The result: lower monthly costs, faster store performance (fewer app scripts loa
 
 ## Layer 1 — Ad Tracking (Save $150–$299/Month)
 
-**What stores pay for:** Elevar ($225–$1,250/month), Triple Whale (GMV-based pricing), Northbeam ($300+/month), Analyzify ($145+/month)
+**What stores pay for:** Elevar ($225/month), Triple Whale (GMV-based pricing), Northbeam ($300+/month), Analyzify ($145–$275/month)
 
 **What these do:** send server-side conversion events to Meta and Google, providing more reliable attribution than browser pixels alone.
 
@@ -69,9 +69,9 @@ The only ongoing cost is Make.com's free plan (sufficient for most stores) or Co
 
 **Why this is urgent:** Shopify Stocky stops functioning entirely on August 31, 2026. Any store not yet using an alternative will lose inventory visibility on that date. Stocky Swap deploys in 4 minutes.
 
-## Layer 3 — Email Marketing (Save $150–$400/Month)
+## Layer 3 — Email Marketing (Save $20+/Month)
 
-**What stores pay for:** Klaviyo ($150–$720/month depending on list size), Omnisend, ActiveCampaign
+**What stores pay for:** Klaviyo ($20+/month depending on list size), Omnisend, ActiveCampaign
 
 **What these do:** send automated email sequences (welcome, abandoned cart, post-purchase) and broadcast campaigns.
 
@@ -99,7 +99,7 @@ The only ongoing cost is Make.com's free plan (sufficient for most stores) or Co
 
 ## Layer 6 — Customer Support (Save $60–$300/Month)
 
-**What stores pay for:** Gorgias ($60–$300/month), Zendesk ($55–$115/agent/month)
+**What stores pay for:** Gorgias ($40+/month), Zendesk ($55–$115/agent/month)
 
 **What these do:** manage customer support tickets, integrate with Shopify order data
 
@@ -124,7 +124,7 @@ Not everything has a free replacement that matches quality. These are worth keep
 | Ad tracking (Meta + Google) | Elevar | $225/month | CAPI Shield | $0 |
 | TikTok tracking | WeltPixel | $39/month | TikTok Events API | $0 |
 | Inventory | Inventory Planner | $99/month | Stocky Swap | $0 |
-| Email marketing | Klaviyo (5k contacts) | $100/month | Systeme.io | $0 |
+| Email marketing | Klaviyo (entry plan) | $20+/month | Systeme.io | $0 |
 | P&L reporting | BeProfit | $25/month | P&L Auto | $0 |
 | Document automation | Autocrat premium | $49/month | Autocrat Quota Fix | $0 |
 | Customer support | Gorgias Basic | $60/month | Tidio free | $0 |

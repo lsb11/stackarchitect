@@ -30,8 +30,8 @@ const ids = ["elevar", "triple-whale", "northbeam", "analyzify"];
 const records = ids.map((id) => byId.get(id)!).filter(Boolean);
 
 // Offer is emitted only where BOTH priceVerifiedDate and priceSourceUrl exist.
-// Currently that gate passes for Elevar, Northbeam and Analyzify; Triple Whale
-// has neither, so its SoftwareApplication node carries no Offer at all. No
+// That gate now passes for all four: Triple Whale was verified against
+// triplewhale.com/pricing on 11 August 2026 and carries an AggregateOffer. No
 // figure from the research brief is admitted here — structured data carries
 // only what was read from the vendor's own page and recorded in apps.json.
 function offerFor(app: AppProfile) {
@@ -71,7 +71,7 @@ const axes = [
   {
     brand: "Northbeam",
     axis: "Traffic and data volume — pageviews, not revenue",
-    entry: "~$1,500/mo reported",
+    entry: "~$1,500+/mo reported",
     lever: "Sessions and events ingested, regardless of what they earn",
   },
   {
@@ -294,12 +294,12 @@ const schema = {
         </tr>
         <tr style="border-bottom:1px solid var(--border);">
           <td style="padding:10px 12px;color:#fff;font-weight:600;">Triple Whale</td>
-          <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">~$129–$749/mo</td>
+          <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">$219–$749/mo</td>
           <td style="padding:10px 12px;color:var(--text-3);">Depends entirely on which features it actually needs — a six-fold spread</td>
         </tr>
         <tr style="border-bottom:1px solid var(--border);">
           <td style="padding:10px 12px;color:#fff;font-weight:600;">Northbeam</td>
-          <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">~$1,500/mo</td>
+          <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">~$1,500+/mo</td>
           <td style="padding:10px 12px;color:var(--text-3);">And that is the bottom of the range, not a mid-point</td>
         </tr>
         <tr style="border-bottom:1px solid var(--border);">
@@ -442,10 +442,11 @@ const schema = {
 
   <p class="text-gray-300 leading-relaxed mb-4">
     <strong class="text-white">How the pricing works.</strong> Tiers are set by store GMV, so the bill tracks revenue.
-    The reported entry tier begins around $129 a month, and a separate source cites a figure closer to $179 a month on
-    annual billing for the dashboard tier — a minor discrepancy, but note it. The tier that matters is the
-    Professional plan, reported at $749 a month, which is where full media mix modelling and the advanced BI features
-    unlock. No figure in this paragraph has yet been verified against the vendor's own page.
+    Triple Whale publishes three self-serve plans on its own pricing page: a free tier, Foundation at $219 a month,
+    and Automate at $749 a month, above which Enterprise is quote-only. Add-ons are priced separately — Retention at
+    $19 a month, Conversion at $79 a month. Because the page drives the figure from a GMV slider, the plan you are
+    shown at a given tier moves with your trailing twelve-month revenue. All figures verified against
+    triplewhale.com/pricing on 11 August 2026.
   </p>
   <p class="text-gray-300 leading-relaxed mb-4">
     <strong class="text-white">The single most useful warning on this page:</strong> the entry tier excludes creative
@@ -596,7 +597,7 @@ const schema = {
           <td style="padding:10px 12px;color:var(--text-3);font-weight:600;">Entry (reported)</td>
           <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">~$225/mo</td>
           <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">~$129/mo</td>
-          <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">~$1,500/mo</td>
+          <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">~$1,500+/mo</td>
           <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">~$749/yr</td>
         </tr>
         <tr style="border-bottom:1px solid var(--border);">

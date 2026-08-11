@@ -96,7 +96,7 @@ This is the AI-adjacent investment with the clearest ROI on this list. Better pu
 
 **What AI does well:** subject line optimisation, personalisation at scale, send time prediction, and flow content generation.
 
-**Free approach:** [Systeme.io](/go/systeme) includes AI-assisted email automation on the free plan — 2,000 contacts, unlimited sends, full automation sequences. Most stores paying $150–$400/month for Klaviyo do not use features beyond what Systeme.io provides free.
+**Free approach:** [Systeme.io](/go/systeme) includes AI-assisted email automation on the free plan — 2,000 contacts, unlimited sends, full automation sequences. Most stores paying $20+/month for Klaviyo do not use features beyond what Systeme.io provides free.
 
 **When AI email matters:** predictive send time optimisation and AI-generated personalisation become valuable at 10,000+ active subscribers where manual optimisation is not feasible. For smaller lists, a well-written sequence outperforms algorithmically optimised mediocre copy.
 
