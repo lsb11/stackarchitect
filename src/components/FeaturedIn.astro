@@ -1,38 +1,72 @@
 ---
+// `pressContext` gates the Leaders Perception pulled quote AND supplies the one
+// sentence of context rendered under it. Absent by default: on the homepage a
+// bordered blockquote under the hero competes with the primary CTA. /about/ is
+// the E-E-A-T anchor, so it is the only page that passes it.
+interface Props { pressContext?: string }
+const { pressContext } = Astro.props;
+
+const CITATION_URL = 'https://leadersperception.com/luke-sandelands-on-replacing-shopify-apps-with-server-side-pipelines/';
 ---
 <div class="featured-in-wrapper" aria-label="Press and recognition">
-  <p class="fi-label">Recognised & Featured By</p>
-  <div class="fi-logos">
-    <!-- Astro -->
-    <a href="https://astro.build/blog/whats-new-june-2026/" target="_blank" rel="nofollow noopener noreferrer" class="fi-logo-link" aria-label="Featured in Astro Showcase">
-      <svg class="fi-icon astro-icon" viewBox="0 0 256 256" fill="currentColor"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM99.12,189.65a28.06,28.06,0,0,1,16-24.89l10.23-4.88a18,18,0,0,0,9.92-12.75l6.47-34.18a38,38,0,0,1-30-22c-7.66-17.15-4-36,9.27-48a58,58,0,0,1,64.21-6.17l4.08,2.37a8,8,0,0,1-8.08,13.8l-4.08-2.37a42,42,0,0,0-46.52,4.47c-9.61,8.68-12.28,22.37-6.73,34.78a22,22,0,0,0,19.26,12.7h1.49a8,8,0,0,1,7.84,9.49l-6.47,34.18a33.91,33.91,0,0,1-18.73,24.08l-10.23,4.88a12,12,0,0,0-6.85,10.66,8,8,0,0,1-16,0Z"/></svg>
-      <span>Astro Showcase</span>
-    </a>
-
-    <!-- Connectively -->
-    <a href="https://www.connectively.us/publication-source/stackarchitectxyz" target="_blank" rel="nofollow noopener noreferrer" class="fi-logo-link" aria-label="Featured on Connectively">
-      <svg class="fi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-      <span>Connectively</span>
-    </a>
-
-    <!-- Trendshift -->
-    <a href="https://trendshift.io/repositories/66375" target="_blank" rel="nofollow noopener noreferrer" class="fi-logo-link" aria-label="Featured on Trendshift">
-      <svg class="fi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
-      <span>Trendshift</span>
-    </a>
-
-    <!-- eCommerce Manager -->
-    <a href="https://ecommercemanager.co/shopify/effective-shopify-pop-up-forms-tips-best-practices/" target="_blank" rel="nofollow noopener noreferrer" class="fi-logo-link" aria-label="Featured in eCommerce Manager">
-      <svg class="fi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-      <span>eCommerce Manager</span>
-    </a>
-
-    <!-- CTO Sync -->
-    <a href="https://ctosync.com/qa/deciding-when-engineering-teams-pay-down-technical-debt/" target="_blank" rel="nofollow noopener noreferrer" class="fi-logo-link" aria-label="Interviewed on CTO Sync">
-      <svg class="fi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="7.5 4.21 12 6.81 16.5 4.21"></polyline><polyline points="7.5 19.79 7.5 14.6 3 12"></polyline><polyline points="21 12 16.5 14.6 16.5 19.79"></polyline><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-      <span>CTO Sync</span>
-    </a>
+  <!-- Two labelled groups: a showcase listing and editorial coverage are
+       different kinds of evidence and should not sit in one undifferentiated row.
+       Connectively removed — it was a pitching platform (formerly HARO), never a
+       publisher, and Cision discontinued it on 9 December 2024.
+       Trendshift removed — it ranks trending GitHub repos and issues badges. It is
+       a directory listing, not coverage. -->
+  <div class="fi-group">
+    <p class="fi-label">Built with</p>
+    <div class="fi-logos">
+      <!-- Astro -->
+      <a href="https://astro.build/blog/whats-new-june-2026/" target="_blank" rel="nofollow noopener noreferrer" class="fi-logo-link" aria-label="Featured in Astro Showcase">
+        <svg class="fi-icon astro-icon" viewBox="0 0 256 256" fill="currentColor"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM99.12,189.65a28.06,28.06,0,0,1,16-24.89l10.23-4.88a18,18,0,0,0,9.92-12.75l6.47-34.18a38,38,0,0,1-30-22c-7.66-17.15-4-36,9.27-48a58,58,0,0,1,64.21-6.17l4.08,2.37a8,8,0,0,1-8.08,13.8l-4.08-2.37a42,42,0,0,0-46.52,4.47c-9.61,8.68-12.28,22.37-6.73,34.78a22,22,0,0,0,19.26,12.7h1.49a8,8,0,0,1,7.84,9.49l-6.47,34.18a33.91,33.91,0,0,1-18.73,24.08l-10.23,4.88a12,12,0,0,0-6.85,10.66,8,8,0,0,1-16,0Z"/></svg>
+        <span>Astro Showcase</span>
+      </a>
+    </div>
   </div>
+
+  <div class="fi-group">
+    <p class="fi-label">Press &amp; interviews</p>
+    <div class="fi-logos">
+      <!-- eCommerce Manager -->
+      <a href="https://ecommercemanager.co/shopify/effective-shopify-pop-up-forms-tips-best-practices/" target="_blank" rel="nofollow noopener noreferrer" class="fi-logo-link" aria-label="Featured in eCommerce Manager">
+        <svg class="fi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+        <span>eCommerce Manager</span>
+      </a>
+
+      <!-- CTO Sync -->
+      <a href="https://ctosync.com/qa/deciding-when-engineering-teams-pay-down-technical-debt/" target="_blank" rel="nofollow noopener noreferrer" class="fi-logo-link" aria-label="Interviewed on CTO Sync">
+        <svg class="fi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="7.5 4.21 12 6.81 16.5 4.21"></polyline><polyline points="7.5 19.79 7.5 14.6 3 12"></polyline><polyline points="21 12 16.5 14.6 16.5 19.79"></polyline><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+        <span>CTO Sync</span>
+      </a>
+
+      <!-- Leaders Perception. Dofollow: a genuine citation, nofollowing it would
+           look manipulative. -->
+      <a href={CITATION_URL} target="_blank" rel="noopener" class="fi-logo-link" aria-label="Interviewed by Leaders Perception">
+        <svg class="fi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"></path><path d="M18 14h-8"></path><path d="M15 18h-5"></path><path d="M10 6h8v4h-8V6Z"></path></svg>
+        <span>Leaders Perception</span>
+      </a>
+    </div>
+  </div>
+
+  {pressContext && (
+    <!-- A pulled quote, attributed and dated, is what corroborates the claim to a
+         reader and to a model — a bare logo corroborates nothing. -->
+    <figure class="fi-cite">
+      <p class="fi-cite-source">
+        <a href={CITATION_URL} target="_blank" rel="noopener">Leaders Perception</a>
+        <span class="fi-cite-date">· August 2026</span>
+      </p>
+      <blockquote class="fi-cite-quote">
+        “The customer browser has become a hostile environment that is filled with ad blockers and tracking prevention protocols.”
+      </blockquote>
+      <figcaption class="fi-cite-attr">
+        Luke Sandelands, <a href={CITATION_URL} target="_blank" rel="noopener">Leaders Perception</a>, August 2026
+      </figcaption>
+      <p class="fi-cite-context">{pressContext}</p>
+    </figure>
+  )}
 </div>
 
 <style>
@@ -62,6 +96,17 @@
     background: radial-gradient(circle at center, rgba(52, 211, 119, 0.05) 0%, transparent 50%);
     pointer-events: none;
     z-index: 0;
+  }
+
+  .fi-group {
+    position: relative;
+    z-index: 1;
+  }
+
+  .fi-group + .fi-group {
+    margin-top: 1.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(52, 211, 119, 0.12);
   }
 
   .fi-label {
@@ -120,6 +165,63 @@
   .astro-icon {
     width: 28px;
     height: 28px;
+  }
+
+  .fi-cite {
+    position: relative;
+    z-index: 1;
+    margin: 1.75rem auto 0;
+    padding-top: 1.5rem;
+    max-width: 680px;
+    border-top: 1px solid rgba(52, 211, 119, 0.15);
+  }
+
+  .fi-cite-source {
+    font-family: var(--mono, ui-monospace, monospace);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    margin-bottom: 0.85rem;
+  }
+
+  .fi-cite-source a {
+    color: #34d377;
+    text-decoration: none;
+  }
+
+  .fi-cite-source a:hover { text-decoration: underline; }
+
+  .fi-cite-date { color: #6b7671; }
+
+  .fi-cite-quote {
+    margin: 0;
+    font-family: var(--sans, system-ui, sans-serif);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: #e6ece9;
+    font-style: italic;
+  }
+
+  .fi-cite-attr {
+    margin-top: 0.85rem;
+    font-size: 0.85rem;
+    color: #a0aba5;
+  }
+
+  .fi-cite-attr a {
+    color: #a0aba5;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .fi-cite-attr a:hover { color: #ffffff; }
+
+  .fi-cite-context {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #a0aba5;
   }
 
   @media (max-width: 640px) {
