@@ -537,8 +537,51 @@ for (const f of htmlFiles) {
       err(`${page} — onclick handler ${fn}() has NO global definition (script bundled as module? use is:inline)`);
   }
 
-  // JSON-LD validity
   const ldBlocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+
+  // ── ENTITY SINGLETON GUARD ────────────────────────────────────────────────
+  // This defect has recurred three times: #organization vs #org, then three
+  // competing #luke Person nodes, then ten pages each declaring their own full
+  // Organization. One @id must have exactly one DEFINING node per page —
+  // multiple definitions under one @id let a consumer pick either, and an
+  // ours-named node with NO @id is a second, unlinkable copy of the entity.
+  //
+  // A DEFINING node carries properties beyond @type/@id/@context. A bare
+  // { "@id": … } or { "@type": …, "@id": … } is a reference and is expected
+  // everywhere — references are never counted.
+  const entityCounts = { '#org': 0, '#luke': 0 };
+  const anonEntities = [];
+  const OURS_NAME = /^(Stack Architect|Luke Sandelands|Luke)$/;
+  for (const [, body] of ldBlocks) {
+    let parsed;
+    try { parsed = JSON.parse(body); } catch { continue; } // reported below
+    (function walkEntities(node) {
+      if (Array.isArray(node)) return node.forEach(walkEntities);
+      if (!node || typeof node !== 'object') return;
+      const types = [].concat(node['@type'] ?? []);
+      const isOrg = types.includes('Organization');
+      const isPerson = types.includes('Person');
+      if (isOrg || isPerson) {
+        const props = Object.keys(node).filter((k) => !/^@(type|id|context)$/.test(k));
+        if (props.length > 0) {
+          const id = node['@id'];
+          if (id === `${SITE}/#org`) entityCounts['#org']++;
+          else if (id === `${SITE}/#luke`) entityCounts['#luke']++;
+          else if (!id && typeof node.name === 'string' && OURS_NAME.test(node.name.trim()))
+            anonEntities.push(`${types.join('/')} "${node.name}"`);
+        }
+      }
+      for (const v of Object.values(node)) walkEntities(v);
+    })(parsed);
+  }
+  for (const [id, n] of Object.entries(entityCounts)) {
+    if (n > 1) err(`${page} — ${n} DEFINING nodes carry @id ${id} (must be exactly 1; the canonical node lives in src/layouts/Base.astro, every other use must be { "@id": … })`);
+  }
+  for (const e of anonEntities) {
+    err(`${page} — ${e} declared with NO @id (duplicate entity; reference ${SITE}/#org or ${SITE}/#luke instead)`);
+  }
+
+  // JSON-LD validity
   for (const [, body] of ldBlocks) {
     let parsed;
     try { parsed = JSON.parse(body); } catch (e) { err(`${page} — INVALID JSON-LD: ${e.message} :: ${body.slice(0, 90)}…`); continue; }
