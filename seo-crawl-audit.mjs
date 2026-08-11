@@ -28,6 +28,14 @@ const norm = (href) => {
   return href;
 };
 
+const collectSchemaTypes = (node, acc) => {
+  if (!node || typeof node !== 'object') return acc;
+  if (Array.isArray(node)) { node.forEach((n) => collectSchemaTypes(n, acc)); return acc; }
+  if (node['@type']) acc.push(node['@type']);
+  Object.values(node).forEach((v) => collectSchemaTypes(v, acc));
+  return acc;
+};
+
 for (const f of files) {
   const rel = '/' + relative(DIST, f).replace(/index\.html$/, '').replace(/\.html$/, '/');
   const html = readFileSync(f, 'utf8');
@@ -40,14 +48,7 @@ for (const f of files) {
   const schemaTypes = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
     .flatMap((m) => {
       try {
-        const collect = (node, acc) => {
-          if (!node || typeof node !== 'object') return acc;
-          if (Array.isArray(node)) { node.forEach((n) => collect(n, acc)); return acc; }
-          if (node['@type']) acc.push(node['@type']);
-          Object.values(node).forEach((v) => collect(v, acc));
-          return acc;
-        };
-        return collect(JSON.parse(m[1]), []);
+        return collectSchemaTypes(JSON.parse(m[1]), []);
       } catch { return ['PARSE_ERROR']; }
     })
     .flat();
