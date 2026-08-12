@@ -1,0 +1,53 @@
+name: Redirect smoke test
+
+# WHY: public/_redirects has been silently truncated twice (2026-07-02,
+# 2026-07-17), 404ing every legacy URL for weeks with no signal until GSC
+# reported it months later. This catches that in CI and nightly.
+
+on:
+  pull_request:
+    paths:
+      - 'public/_redirects'
+      - 'functions/_middleware.js'
+      - 'scripts/redirect-smoke.mjs'
+  push:
+    branches: [main]
+    paths:
+      - 'public/_redirects'
+      - 'functions/_middleware.js'
+  schedule:
+    # 07:00 UTC daily — catches breakage introduced by a deploy that didn't
+    # touch _redirects (e.g. a middleware change swallowing static rules).
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: Static lint (no network)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      # Runs on PRs before merge. Catches truncation, chains, loops and
+      # conflicting rules without hitting the network.
+      - run: node scripts/redirect-smoke.mjs --parse-only
+
+  live:
+    name: Live assertions against production
+    runs-on: ubuntu-latest
+    # Don't run live checks on PRs from forks (no need, and avoids noise).
+    if: github.event_name != 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      # Cloudflare Pages deploys are near-instant but not atomic with the
+      # push event. Give the edge a moment to propagate before asserting.
+      - name: Wait for deploy propagation
+        if: github.event_name == 'push'
+        run: sleep 45
+      - name: Smoke test redirects
+        run: node scripts/redirect-smoke.mjs --concurrency 6
