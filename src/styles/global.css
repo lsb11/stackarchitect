@@ -584,3 +584,138 @@ body::after {
     padding-left: 14px;
   }
 }
+
+/* ── Mobile hardening ───────────────────────────────── */
+html { -webkit-text-size-adjust: 100%; }
+
+[style*="overflow-x"] {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+}
+[style*="overflow-x"]::-webkit-scrollbar { height: 6px; }
+[style*="overflow-x"]::-webkit-scrollbar-thumb {
+  background: var(--border, #2a2f2c);
+  border-radius: 3px;
+}
+
+@media (max-width: 700px) {
+  [style*="overflow-x"] > table { min-width: 36rem; }
+  [style*="overflow-x"] table th,
+  [style*="overflow-x"] table td { padding: 8px 10px !important; }
+  [style*="font-size:10px"] { font-size: 11px !important; }
+  [style*="minmax(280px"] > div { padding: 18px !important; }
+  details.sa-faq > summary {
+    padding: 6px 0;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+p, li, summary { overflow-wrap: break-word; }
+td, th { overflow-wrap: normal; }
+:where(h2, h3)[id] { scroll-margin-top: 5rem; }
+
+a:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--g, #34d377);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ══ Mobile hardening (2026) ═══════════════════════════ */
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* Safe-area insets for notched devices */
+body {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Typographic polish */
+h1, h2, h3 { text-wrap: balance; }
+p, li { text-wrap: pretty; }
+p, li, summary { overflow-wrap: break-word; }
+td, th { overflow-wrap: normal; }
+
+/* Fluid heading scale — no jump at breakpoints */
+h1 { font-size: clamp(1.85rem, 1.2rem + 2.8vw, 3rem); line-height: 1.12; }
+h2 { font-size: clamp(1.35rem, 1.05rem + 1.3vw, 1.75rem); line-height: 1.2; }
+h3 { font-size: clamp(1.1rem, .98rem + .55vw, 1.3rem); }
+
+/* Scroll containers: real scroll, native feel, visible affordance */
+[style*="overflow-x"] {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-2, #2f3733) transparent;
+}
+[style*="overflow-x"]::-webkit-scrollbar { height: 6px; }
+[style*="overflow-x"]::-webkit-scrollbar-thumb {
+  background: var(--border-2, #2f3733);
+  border-radius: 3px;
+}
+
+@media (max-width: 760px) {
+  /* Force overflow rather than column-squeeze */
+  [style*="overflow-x"] > table { min-width: 38rem; }
+
+  /* Anchor the label column while the data scrolls */
+  [style*="overflow-x"] table td:first-child,
+  [style*="overflow-x"] table th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: var(--bg, #0c0f0d);
+  }
+
+  [style*="overflow-x"] table th,
+  [style*="overflow-x"] table td { padding: 9px 11px !important; }
+
+  /* Sub-11px mono labels are unreadable on a phone */
+  [style*="font-size:10px"] { font-size: 11px !important; letter-spacing: .09em !important; }
+
+  /* 24px card padding is heavy at 343px usable width */
+  [style*="minmax(280px"] > div { padding: 18px !important; }
+
+  /* Comfortable measure and rhythm */
+  main p, main li { font-size: 1rem; line-height: 1.65; }
+
+  /* Ordered-list indents eat horizontal space */
+  main ol[style*="padding-left"] { padding-left: .95rem !important; }
+}
+
+/* WCAG 2.2 target size — applies at every width */
+details > summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 6px 0;
+  cursor: pointer;
+}
+nav a, footer a { padding-block: 2px; }
+
+/* Anchor targets clear the sticky header */
+:where(h1, h2, h3)[id] { scroll-margin-top: 5.5rem; }
+
+/* Visible keyboard focus */
+:is(a, button, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--g, #34d377);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* Never let media break the viewport */
+img, svg, video, canvas, iframe { max-width: 100%; height: auto; }
