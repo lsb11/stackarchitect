@@ -1068,18 +1068,10 @@ const tocHeadings = [
       }
       if (inp) inp.classList.remove('error');
 
-      // Beehiiv subscription (replace pub ID with yours)
-      fetch('https://api.beehiiv.com/v2/publications/pub_YOUR_PUBLICATION_ID/subscriptions', {
+      fetch('/api/capture-email/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: email,
-          reactivate_existing: true,
-          send_welcome_email: true,
-          utm_source: 'klaviyo-calculator',
-          utm_medium: 'website',
-          utm_campaign: 'klaviyo-migration-checklist'
-        })
+        body: JSON.stringify({ email: email, tag: 'klaviyo-calculator' })
       }).catch(function () {});
 
       document.getElementById('calc-capture-form').style.display = 'none';
