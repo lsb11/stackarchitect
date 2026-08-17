@@ -1308,7 +1308,11 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
     var e = (emailEl ? emailEl.value : '').trim();
     if (!e || !e.includes('@')) { if (emailEl) { emailEl.style.borderColor = 'var(--red)'; emailEl.focus(); } return; }
     if (emailEl) emailEl.style.borderColor = '';
-    window.open('https://stackarchitect.beehiiv.com/subscribe?email=' + encodeURIComponent(e), '_blank');
+    fetch('/api/capture-email/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: e, tag: 'scanner-plan' })
+    }).catch(function () {});
     var plan = document.getElementById('sc-plan'); if(plan) plan.style.display = 'none';
     var done = document.getElementById('sc-done'); if(done) done.style.display = 'block';
   };
@@ -1320,7 +1324,14 @@ window.gfGet = function() {
   var e = (emailEl ? emailEl.value : '').trim();
   if (!e || !e.includes('@')) { if (emailEl) { emailEl.style.borderColor = 'var(--red)'; emailEl.focus(); } return; }
   if (emailEl) emailEl.style.borderColor = '';
-  window.open('https://stackarchitect.beehiiv.com/subscribe?email=' + encodeURIComponent(e), '_blank');
+  fetch('/api/capture-email/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: e, tag: 'homepage-capture' })
+  }).catch(function () {});
+  // Single popup only — the PDF is the thing the visitor actually asked for, and
+  // one window.open per gesture survives mobile popup blocking. Signup is now
+  // handled by the fetch above rather than a second window.
   window.open('https://d1yei2z3i6k35z.cloudfront.net/16370908/69a2ac505857c_The_Master_Library.pdf', '_blank');
   var form = document.getElementById('gf-form'); if(form) form.style.display = 'none';
   var done = document.getElementById('gf-done'); if(done) done.style.display = 'block';

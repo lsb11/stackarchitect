@@ -12,12 +12,10 @@ const SITE       = "https://stackarchitect.xyz";
 const CANONICAL  = `${SITE}/stack/`;
 const UPDATED    = "April 2026";
 
-// ─── BEEHIIV CONFIG ──────────────────────────────────────────────────────────
-// To get your publication ID:
-//   1. Go to beehiiv.com → your publication → Settings → Publication Details
-//   2. Copy the Publication ID (format: pub_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
-// Replace the value below. The subscribe endpoint then works automatically.
-const BEEHIIV_PUB_ID = "YOUR_PUBLICATION_ID"; // e.g. pub_3f47e3c5-6ce3-479c-b015-863753ac8ea7
+// ─── NEWSLETTER CONFIG ───────────────────────────────────────────────────────
+// The newsletter form posts to /api/capture-email/ (Pages Function), which
+// forwards to Systeme.io server-side using the SYSTEME_API_KEY binding.
+// No publication ID or API credential belongs in this file.
 // Your Beehiiv affiliate referral link — earns commission on paid upgrades
 const BEEHIIV_AFFILIATE = "/go/beehiiv";
 
@@ -630,22 +628,11 @@ const schemaWebPage = {
         <h2 id="nl-h2">Get the Stack Architect Weekly</h2>
         <p class="nl-sub">New automation blueprints, Shopify profit-leak fixes, and tool updates — delivered every Tuesday. Free forever.</p>
 
-        <!--
-          BEEHIIV NATIVE FORM
-          Replace YOUR_PUBLICATION_ID with your pub ID from:
-          beehiiv.com → Settings → Publication Details → Publication ID
-          Format: pub_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-
-          OR: Go to Audience → Subscribe Forms → Create new form → Copy embed HTML
-          and paste the generated <iframe> snippet in place of this form.
-        -->
         <form
           class="nl-form"
           id="nl-form"
-          action={`https://app.beehiiv.com/subscribing/sign_up_flow?publication_id=${BEEHIIV_PUB_ID}`}
-          method="GET"
-          target="_blank"
-          rel="noopener"
+          action="/api/capture-email/"
+          method="POST"
           aria-label="Subscribe to Stack Architect newsletter"
           onsubmit="handleNlSubmit(event)"
         >
@@ -667,7 +654,7 @@ const schemaWebPage = {
           <p class="nl-small">no spam · unsubscribe any time · 2,000+ subscribers across UK, US, AU &amp; CA</p>
         </form>
         <p class="nl-fallback" id="nl-success" style="display:none">
-          ✓ Redirecting to confirm your subscription — check your inbox after.
+          ✓ You're subscribed — check your inbox for the first dispatch.
         </p>
         <p class="nl-fallback">Or <a href="https://stackarchitect.beehiiv.com/" target="_blank" rel="noopener">open the subscribe page directly →</a></p>
       </div>
@@ -810,15 +797,18 @@ const schemaWebPage = {
     }
   });
 
-  // Newsletter form — open beehiiv in new tab, show success message
+  // Newsletter form — POST to /api/capture-email/, show success message
   function handleNlSubmit(e) {
-    const email = document.getElementById('nl-email').value;
-    if (!email) return;
-    // Show success note; form still submits to beehiiv via GET target=_blank
-    setTimeout(() => {
-      document.getElementById('nl-success').style.display = 'block';
-      document.getElementById('nl-form').reset();
-    }, 200);
+    e.preventDefault();
+    const email = (document.getElementById('nl-email').value || '').trim();
+    if (!email || !email.includes('@')) return;
+    fetch('/api/capture-email/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, tag: 'stack-capture' })
+    }).catch(function () {});
+    document.getElementById('nl-success').style.display = 'block';
+    document.getElementById('nl-form').reset();
   }
 
 

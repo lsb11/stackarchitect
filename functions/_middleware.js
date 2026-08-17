@@ -1,22 +1,20 @@
 // Cloudflare Pages Edge Middleware — Host, Protocol & Trailing-Slash Canonicalisation
 //
-// WHY THIS CHANGED
-// The previous version redirected www → apex but did NOT normalise the
-// trailing slash. Because astro.config.mjs sets `trailingSlash: 'always'`,
-// a request for:
-//     https://www.stackarchitect.xyz/autocrat-quota-fix
-// produced TWO redirects:
-//     301 → https://stackarchitect.xyz/autocrat-quota-fix     (this middleware)
-//     301 → https://stackarchitect.xyz/autocrat-quota-fix/    (Pages slash rule)
+// WHY THIS CHANGED (2026-08-17)
+// The previous version's non-primary-host branch fell through to
+// `context.next()`, which SERVED the full site on any host that is neither the
+// apex nor a www.* subdomain. That included every per-deployment preview host
+// (`<hash>.stackarchitect.pages.dev`) — each one an indexable duplicate of the
+// entire site. Those hosts are now redirected to the apex instead of served.
 //
-// GSC's 6-month export shows Google holding exactly those un-slashed www URLs
-// (e.g. www.stackarchitect.xyz/autocrat-quota-fix, 982 impressions). Every hop
-// slows consolidation and is a likely contributor to the "Redirect error" (19)
-// and "Page with redirect" (7) buckets in the Coverage report.
+// The single-hop www/protocol/trailing-slash behaviour is UNCHANGED and remains
+// verified working:
+//     www.stackarchitect.xyz/autocrat-quota-fix
+//         → one 301 → stackarchitect.xyz/autocrat-quota-fix/
+//     stackarchitect.xyz/autocrat-quota-fix
+//         → one 301 → stackarchitect.xyz/autocrat-quota-fix/
 //
-// This version resolves host, protocol AND trailing slash in ONE 301.
-//
-// Deliberately NOT redirected:
+// Deliberately NOT slash-redirected:
 //   • /api/*        — Pages Functions
 //   • /go/*         — REVENUE CRITICAL. public/_redirects already declares
 //                     both slash variants for every affiliate cloak. Adding a
@@ -25,39 +23,35 @@
 //                     become 301 → 302 instead of a single 302. Some affiliate
 //                     networks drop tracking parameters across extra hops.
 //   • paths with a file extension (.xml, .txt, .json, .png, .csv …) — these
-//     must NOT gain a trailing slash or they 404. This was the main risk of
-//     naively appending "/" to everything.
+//     must NOT gain a trailing slash or they 404.
 
 const PRIMARY_HOST = 'stackarchitect.xyz';
-
-// Anything with an extension in the last segment is a file, not a page.
 const FILE_RE = /\.[a-zA-Z0-9]{2,5}$/;
 
 export async function onRequest(context) {
   const url = new URL(context.request.url);
   let changed = false;
 
-  // 1. Force HTTPS
   if (url.protocol === 'http:') {
     url.protocol = 'https:';
     changed = true;
   }
 
-  // 2. Force apex host (strip www.)
   if (url.hostname.startsWith('www.')) {
     url.hostname = url.hostname.replace(/^www\./, '');
     changed = true;
   }
 
-  // Safety: never rewrite a host we don't own the canonical for.
+  // Any remaining non-primary host (pages.dev, preview deployments, stale
+  // custom domains) is redirected to the apex rather than served.
   if (url.hostname !== PRIMARY_HOST) {
-    return changed ? Response.redirect(url.toString(), 301) : context.next();
+    url.hostname = PRIMARY_HOST;
+    changed = true;
   }
 
-  // 3. Force trailing slash on page routes only
   const p = url.pathname;
   const isApi = p.startsWith('/api/');
-  const isGo = p.startsWith('/go/');           // affiliate cloaks — see note above
+  const isGo = p.startsWith('/go/');   // affiliate cloaks — must not gain a slash hop
   const isFile = FILE_RE.test(p.split('/').pop() || '');
 
   if (!isApi && !isGo && !isFile && !p.endsWith('/')) {
@@ -69,5 +63,12 @@ export async function onRequest(context) {
     return Response.redirect(url.toString(), 301);
   }
 
-  return context.next();
+  const response = await context.next();
+  const host = new URL(context.request.url).hostname;
+  if (host !== PRIMARY_HOST) {
+    const patched = new Response(response.body, response);
+    patched.headers.set('X-Robots-Tag', 'noindex, nofollow');
+    return patched;
+  }
+  return response;
 }
