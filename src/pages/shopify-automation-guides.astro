@@ -1063,11 +1063,14 @@ document.getElementById('guides-submit')?.addEventListener('click', function () 
     const href = el.getAttribute('href') || '';
     const text = (el.innerText || '').trim().substring(0, 60);
 
-    affiliates.forEach(a => {
-      if (href.includes(a.pattern)) {
-        typeof gtag !== 'undefined' && gtag('event', 'affiliate_click', { event_category: 'affiliate', event_label: a.label, link_text: text, source_page: 'shopify-automation-guides' });
-      }
-    });
+    // NOTE: affiliate_click is NOT fired here.
+    // src/layouts/Base.astro carries a sitewide delegated listener that fires
+    // affiliate_click for every /go/* click on every page. This page previously
+    // fired its own as well, so every affiliate click here was counted TWICE in
+    // GA4 — making this page look roughly 2x better than reality against pages
+    // that only counted once. Every partner in the `affiliates` array above is a
+    // /go/* cloak, so the global listener covers all of them.
+    // The array is retained only for the guide_click logic below.
 
     if (href.includes('/blog/')) {
       const slug = href.split('/blog/')[1] || href;

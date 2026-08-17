@@ -617,10 +617,31 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
 
               var partner = isAffiliate ? href.replace(/^\/go\//, '').replace(/\/$/, '') : '';
 
+              // This is now the SINGLE source of affiliate_click for /go/* links.
+              // shopify-automation-guides, stocky-swap and best-ai-tools-shopify
+              // each fired their own as well, so those three pages double-counted
+              // (stocky-swap up to 4x) and looked like the strongest performers
+              // purely because they were instrumented more times.
+              //
+              // link_text and link_position are recorded so placement and wording
+              // can be compared: which anchor copy earns clicks, and whether
+              // above-the-fold CTAs beat in-body links. Without these, GA4 can say
+              // a page gets clicks but not which link or where on the page.
+              var linkText = '';
+              try { linkText = (a.innerText || a.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60); } catch (err) {}
+              var linkPosition = '';
+              try {
+                var docH = Math.max(1, document.documentElement.scrollHeight);
+                var absTop = a.getBoundingClientRect().top + window.scrollY;
+                linkPosition = String(Math.min(100, Math.max(0, Math.round(absTop / docH * 10) * 10)));
+              } catch (err) {}
+
               gtag('event', isAffiliate ? 'affiliate_click' : 'kit_click', {
                 source_page:  sourcePage,
                 destination:  href,
                 partner:      partner,
+                link_text:    linkText,
+                link_position: linkPosition,
                 landing_path: landing.path || '',
                 referrer:     landing.ref || 'direct',
                 utm_source:   landing.utm_source || '',

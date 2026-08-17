@@ -1649,19 +1649,27 @@ const tocHeadings = [
       });
     });
 
-    // Affiliate click tracking
+    // Affiliate click tracking for DIRECT (non-cloaked) partner links only.
+    //
+    // This block previously fired affiliate_click for /go/make, /go/getresponse
+    // and /go/systeme. src/layouts/Base.astro already fires affiliate_click for
+    // every /go/* click sitewide, so those three were counted TWICE — and the
+    // first condition matched both make.com and /go/make, so a cloaked Make click
+    // could be counted more than that. The built page carried four
+    // affiliate_click call sites against one on a normal page, which is why
+    // /stocky-swap/ looked like the site's strongest affiliate performer: it was
+    // largely an artefact of its own instrumentation.
+    //
+    // The /go/* cases are removed. The direct-link case stays and is guarded,
+    // because the global listener classifies a bare make.com URL as a generic
+    // outbound_click rather than an affiliate_click.
     document.addEventListener('click', function(e) {
       var el = e.target.closest('a[href]');
       if (!el || typeof gtag !== 'function') return;
       var href = el.getAttribute('href') || '';
-      if (href.indexOf('make.com') !== -1 || href.indexOf('/go/make') !== -1) {
-        gtag('event', 'affiliate_click', { event_category: 'affiliate', event_label: 'make_com_stocky_swap', link_url: href, post_url: window.location.pathname });
-      }
-      if (href.indexOf('/go/getresponse') !== -1) {
-        gtag('event', 'affiliate_click', { event_category: 'affiliate', event_label: 'getresponse_stocky_swap', link_url: href });
-      }
-      if (href.indexOf('/go/systeme') !== -1) {
-        gtag('event', 'affiliate_click', { event_category: 'affiliate', event_label: 'systeme_stocky_swap', link_url: href });
+      if (href.indexOf('/go/') === 0) return; // counted globally in Base.astro
+      if (href.indexOf('make.com') !== -1) {
+        gtag('event', 'affiliate_click', { event_category: 'affiliate', event_label: 'make_com_stocky_swap_direct', link_url: href, post_url: window.location.pathname });
       }
     });
 

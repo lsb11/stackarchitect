@@ -1044,6 +1044,14 @@ const tocHeadings = [
     if (!el) return;
     var href = el.getAttribute('href') || '';
     if (typeof gtag === 'undefined') return;
+    // /go/* cloaks are already counted by the sitewide listener in
+    // src/layouts/Base.astro. Without this guard they were counted twice here,
+    // inflating this page's affiliate_click total against pages that count once.
+    // The patterns below that are NOT /go/* (writesonic.com, adcreative.ai,
+    // workspace.google.com and similar direct links) are still tracked, because
+    // the global listener records those as generic outbound_click rather than
+    // affiliate_click — so this block is guarded, not removed.
+    if (href.indexOf('/go/') === 0) return;
     affiliatePatterns.forEach(function(a) {
       if (href.indexOf(a.pattern) !== -1) {
         gtag('event', 'affiliate_click', {
