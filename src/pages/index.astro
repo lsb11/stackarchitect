@@ -1308,7 +1308,7 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
     var e = (emailEl ? emailEl.value : '').trim();
     if (!e || !e.includes('@')) { if (emailEl) { emailEl.style.borderColor = 'var(--red)'; emailEl.focus(); } return; }
     if (emailEl) emailEl.style.borderColor = '';
-    fetch('/api/capture-email/', {
+    fetch('/api/capture-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: e, tag: 'scanner-plan' })
@@ -1324,7 +1324,7 @@ window.gfGet = function() {
   var e = (emailEl ? emailEl.value : '').trim();
   if (!e || !e.includes('@')) { if (emailEl) { emailEl.style.borderColor = 'var(--red)'; emailEl.focus(); } return; }
   if (emailEl) emailEl.style.borderColor = '';
-  fetch('/api/capture-email/', {
+  fetch('/api/capture-email', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email: e, tag: 'homepage-capture' })
