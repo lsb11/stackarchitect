@@ -1078,8 +1078,20 @@ const tocHeadings = [
       document.getElementById('calc-capture-done').style.display = 'block';
       document.getElementById('calc-affiliate-btn').style.display = 'inline-flex';
 
+      // ONE window.open only, and it is the affiliate link.
+      //
+      // This previously opened two windows 800ms apart. Browsers allow at most
+      // one popup per user gesture, and a delayed second call is outside the
+      // gesture window entirely — so the /go/systeme click, the only one that
+      // earns anything, was the one most likely to be blocked. Mobile is
+      // stricter still, and mobile is where this site's clickthrough actually
+      // is (4.29% mobile vs 0.03% desktop).
+      //
+      // The beehiiv popup is now redundant: the email is already captured
+      // server-side by the /api/capture-email POST above, tagged
+      // klaviyo-calculator. Removing it costs nothing and stops it competing
+      // with the affiliate link for the single available popup slot.
       setTimeout(function () {
-        window.open('https://stackarchitect.beehiiv.com/subscribe?email=' + encodeURIComponent(email), '_blank');
         window.open('/go/systeme', '_blank');
       }, 800);
     });

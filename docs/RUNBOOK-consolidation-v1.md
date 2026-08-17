@@ -1,6 +1,26 @@
+> ## ⚠️ STATUS: EXECUTED — this document is a RECORD, not a plan
+>
+> Verified against the build on **2026-08-17**: 59 indexable pages, 58 URLs in
+> `sitemap-0.xml`. The 88 → 58 target below has been **met**. Every cut,
+> redirect and consolidation described here has shipped.
+>
+> **Do not execute this runbook again.** Re-running the prompt pack in Appendix A
+> would cut pages that are already cut and create redirects that already exist.
+> Read it to understand *why* the current URL set looks the way it does.
+>
+> **The freeze is the live instruction.** No new pages, no new redirects, no
+> renamed routes until roughly 21 Oct 2026. See §7 and CLAUDE.md.
+>
+> One caveat on §8 ("What this release does not fix"): the assumption that thin
+> and near-duplicate content was the outstanding cause no longer holds. It was
+> measured on 2026-08-17 and only one indexable page falls under 800 words.
+> Google still indexes 1 page of 58 while Bing indexes the site normally, which
+> points at domain-level trust rather than page quality. Current analysis is in
+> the StackArchitect project doc `gsc-indexing-diagnosis.md`.
+
 # Consolidation Release v1 — "One Cut, Then Freeze"
-**Target:** 88 indexable URLs → **58**, shipped as a single atomic release
-**Then:** 60-day URL freeze. No new pages. No new redirects.
+**Target:** 88 indexable URLs → **58**, shipped as a single atomic release ✅ **DONE**
+**Then:** 60-day URL freeze. No new pages. No new redirects. ⏳ **IN FORCE**
 
 ---
 
