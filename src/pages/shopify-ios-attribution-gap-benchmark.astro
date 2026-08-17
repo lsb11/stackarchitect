@@ -66,14 +66,44 @@ const schemaGraph = {
       "name": "Shopify iOS Attribution Gap Benchmark",
       "description": `A maintained synthesis of published research on how much Shopify purchase-conversion signal is lost to iOS ATT and Safari ITP — an estimated ${HEADLINE_LOW}–${HEADLINE_HIGH}% for the typical store, up to ${HEADLINE_MOBILE_HIGH}% on mobile-heavy stores.`,
       "url": CANONICAL,
-      "keywords": ["iOS attribution gap","Shopify conversion tracking","ATT","Meta CAPI","server-side tracking","Enhanced Conversions"],
+      "keywords": ["iOS attribution gap","Shopify conversion tracking","ATT","App Tracking Transparency","Safari ITP","Meta CAPI","Conversions API","server-side tracking","Enhanced Conversions","ecommerce measurement"],
       "creator": { "@id": "https://stackarchitect.xyz/#luke" },
       "publisher": { "@id": "https://stackarchitect.xyz/#org" },
       "maintainer": { "@id": "https://stackarchitect.xyz/#luke" },
+      // ── Properties below are the ones Google Dataset Search actually reads.
+      // Dataset Search is a separate index from web search with its own,
+      // considerably lower, inclusion bar. Marking this up completely is the
+      // one route to Google surfacing this page that does not depend on
+      // domain-level trust.
+      "identifier": CANONICAL,
+      "version": dateModified,
+      "creativeWorkStatus": "Maintained",
+      "temporalCoverage": `${datePublished.slice(0,4) && "2021-04"}/${dateModified}`,
+      "spatialCoverage": { "@type": "Place", "name": "Worldwide" },
+      "measurementTechnique": "Structured synthesis of published third-party measurements. Each input figure is attributed to a named, dated and linked primary source; no proprietary primary data is claimed. Methodology is published in full on the page.",
+      "includedInDataCatalog": {
+        "@type": "DataCatalog",
+        "name": "Stack Architect Benchmarks",
+        "url": `${SITE}/shopify-ios-attribution-gap-benchmark/`
+      },
+      // One PropertyValue per row of the published table, generated from the
+      // same array that renders the table and the CSV/JSON downloads, so the
+      // markup can never drift from the data.
+      "variableMeasured": dataPoints.map(d => ({
+        "@type": "PropertyValue",
+        "name": d.metric,
+        "value": d.value,
+        "description": d.detail
+      })),
+      "isBasedOn": dataPoints.map(d => ({
+        "@type": "CreativeWork",
+        "name": d.source,
+        "url": d.sourceUrl
+      })),
       "citation": [
-        "https://developers.facebook.com/docs/marketing-api/conversions-api",
-        "https://webkit.org/tracking-prevention/",
-        "https://developer.apple.com/documentation/apptrackingtransparency"
+        { "@type": "CreativeWork", "name": "Meta — Conversions API documentation", "url": "https://developers.facebook.com/docs/marketing-api/conversions-api" },
+        { "@type": "CreativeWork", "name": "WebKit — Tracking Prevention", "url": "https://webkit.org/tracking-prevention/" },
+        { "@type": "CreativeWork", "name": "Apple — App Tracking Transparency", "url": "https://developer.apple.com/documentation/apptrackingtransparency" }
       ],
       "dateModified": dateModified,
       "datePublished": datePublished,
@@ -82,11 +112,15 @@ const schemaGraph = {
       "distribution": [
         {
           "@type": "DataDownload",
+          "name": "Shopify iOS Attribution Gap Benchmark (CSV)",
+          "description": "All benchmark rows with metric, value, detail, source name, source URL and source date.",
           "encodingFormat": "text/csv",
           "contentUrl": `${SITE}/downloads/ios-attribution-gap-benchmark.csv`
         },
         {
           "@type": "DataDownload",
+          "name": "Shopify iOS Attribution Gap Benchmark (JSON)",
+          "description": "Machine-readable form of the same benchmark rows, including licence and methodology metadata.",
           "encodingFormat": "application/json",
           "contentUrl": `${SITE}/downloads/ios-attribution-gap-benchmark.json`
         }
@@ -429,7 +463,10 @@ const tocHeadings = [
     if (!els.count) return; // Guard clause just in case
 
     // 1. Fetch current stats
-    fetch('/api/gap-stats/')
+    // No trailing slash: Cloudflare Pages routes functions/api/gap-stats.js to
+    // /api/gap-stats exactly. astro.config trailingSlash:'always' governs pages,
+    // not Functions, and the middleware exempts /api/* from slash-adding.
+    fetch('/api/gap-stats')
       .then(res => res.json())
       .then(data => {
         if (data.ready) {
@@ -478,7 +515,7 @@ const tocHeadings = [
       els.btn.style.pointerEvents = 'none';
 
       try {
-        const res = await fetch('/api/submit-gap/', {
+        const res = await fetch('/api/submit-gap', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
