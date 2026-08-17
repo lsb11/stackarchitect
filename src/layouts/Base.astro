@@ -629,12 +629,18 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
               // a page gets clicks but not which link or where on the page.
               var linkText = '';
               try { linkText = (a.innerText || a.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60); } catch (err) {}
-              var linkPosition = '';
-              try {
-                var docH = Math.max(1, document.documentElement.scrollHeight);
-                var absTop = a.getBoundingClientRect().top + window.scrollY;
-                linkPosition = String(Math.min(100, Math.max(0, Math.round(absTop / docH * 10) * 10)));
-              } catch (err) {}
+              // A fixed-position element (the sticky CTA) has no meaningful place
+              // in the document, so measuring one would report wherever the
+              // reader was scrolled and pollute the in-body placement figures it
+              // is meant to be compared against. Such links declare themselves.
+              var linkPosition = a.getAttribute('data-cta-position') || '';
+              if (!linkPosition) {
+                try {
+                  var docH = Math.max(1, document.documentElement.scrollHeight);
+                  var absTop = a.getBoundingClientRect().top + window.scrollY;
+                  linkPosition = String(Math.min(100, Math.max(0, Math.round(absTop / docH * 10) * 10)));
+                } catch (err) {}
+              }
 
               gtag('event', isAffiliate ? 'affiliate_click' : 'kit_click', {
                 source_page:  sourcePage,

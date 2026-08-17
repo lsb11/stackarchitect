@@ -1,0 +1,261 @@
+---
+/**
+ * StickyAffiliateCTA.astro
+ *
+ * A persistent, dismissible affiliate CTA for high-intent pages.
+ *
+ * WHY THIS EXISTS
+ * Affiliate links on these pages sit at one or two fixed scroll positions. A
+ * reader who forms intent at 70% depth has to scroll back to act, and most
+ * won't. This keeps the action reachable at every scroll position without
+ * adding a second in-body link.
+ *
+ * DESIGN CONSTRAINTS — all deliberate, do not "simplify" them away:
+ *
+ *  1. NOT shown on first paint. It appears only after `revealAt` (default 22%)
+ *     of the page has been scrolled. A bar that greets you before you have read
+ *     anything reads as an ad and gets dismissed reflexively.
+ *  2. HIDES while a primary in-page CTA is on screen. Two competing calls to
+ *     action at once split attention and make the page feel like a funnel. An
+ *     IntersectionObserver watches `.btn-g` elements and hides the bar while one
+ *     is visible.
+ *  3. DISMISSIBLE, and the dismissal sticks for the session. A bar you cannot
+ *     close is a mobile usability problem, and mobile is where this site's
+ *     clickthrough is (4.29% vs 0.03% desktop). sessionStorage, not localStorage:
+ *     a returning visitor on a later visit should see it again.
+ *  4. NO LAYOUT SHIFT. position:fixed with transform-based entry, so it cannot
+ *     contribute to CLS. Nothing reflows when it appears.
+ *  5. NO NEW URL. It links to an existing /go/* cloak, so it does not disturb
+ *     the 60-day URL freeze, and it adds exactly one affiliate link to the page
+ *     rather than a cluster.
+ *  6. Honest labelling. It carries a visible "affiliate" marker and
+ *     rel="noopener sponsored", consistent with the other 209 affiliate links on
+ *     the site. Disguising it would risk the whole domain for a few clicks.
+ *
+ * TRACKING
+ * No bespoke analytics here. The sitewide delegated listener in Base.astro fires
+ * affiliate_click for every /go/* click and now records link_text and
+ * link_position, so this bar is measurable against in-body links with no extra
+ * instrumentation — and, critically, without reintroducing the double-counting
+ * that made three pages look like top performers.
+ */
+
+interface Props {
+  /** Affiliate cloak path, e.g. "/go/make". Must already exist in public/_redirects. */
+  href: string;
+  /** Short action label. Lead with the verb. */
+  label: string;
+  /** One clause of context. Keep under ~60 chars — it is truncated on small screens. */
+  context: string;
+  /** Scroll depth (0–1) at which the bar appears. */
+  revealAt?: number;
+}
+
+const { href, label, context, revealAt = 0.22 } = Astro.props;
+
+if (!href.startsWith('/go/')) {
+  throw new Error(
+    `StickyAffiliateCTA: href must be a /go/* cloak so the link is tracked, ` +
+    `rel-tagged and redirect-managed in one place. Received: ${href}`
+  );
+}
+---
+
+<div
+  class="sa-sticky"
+  id="sa-sticky"
+  data-reveal-at={String(revealAt)}
+  hidden
+  role="complementary"
+  aria-label="Recommended tool"
+>
+  <div class="sa-sticky-inner">
+    <div class="sa-sticky-copy">
+      <span class="sa-sticky-tag" aria-hidden="true">affiliate</span>
+      <span class="sa-sticky-context">{context}</span>
+    </div>
+    <!--
+      data-cta-position tells the sitewide affiliate_click listener in
+      Base.astro to report "sticky" instead of computing a scroll offset.
+      This element is position:fixed, so its measured offset would just be
+      wherever the reader happened to be scrolled — which would silently
+      corrupt the in-body placement data this bar is meant to be compared against.
+    -->
+    <a class="sa-sticky-btn" href={href} data-cta-position="sticky" target="_blank" rel="noopener sponsored">{label}</a>
+    <button class="sa-sticky-x" type="button" aria-label="Dismiss this recommendation">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+</div>
+
+<style>
+  .sa-sticky {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    padding: 10px max(12px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+    background: rgba(12, 15, 13, 0.93);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid var(--g-border, rgba(52, 211, 119, 0.2));
+    transform: translateY(110%);
+    transition: transform 220ms ease;
+    will-change: transform;
+  }
+  .sa-sticky[data-shown='true'] { transform: translateY(0); }
+
+  .sa-sticky-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .sa-sticky-copy { display: flex; align-items: center; gap: 9px; min-width: 0; flex: 1; }
+
+  .sa-sticky-tag {
+    flex: none;
+    font-family: var(--mono, monospace);
+    font-size: 9.5px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-4, #6b7671);
+    border: 1px solid var(--border, #222825);
+    border-radius: 4px;
+    padding: 2px 6px;
+  }
+
+  .sa-sticky-context {
+    font-size: 13.5px;
+    line-height: 1.35;
+    color: var(--text-2, #b6c0ba);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .sa-sticky-btn {
+    flex: none;
+    font-family: var(--mono, monospace);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-inv, #0c0f0d);
+    background: var(--g, #34d377);
+    border-radius: 7px;
+    /* 44px min target: WCAG 2.2 target size, and this is a thumb-zone control. */
+    padding: 12px 18px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .sa-sticky-btn:hover { filter: brightness(1.08); }
+  .sa-sticky-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+  .sa-sticky-x {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--border, #222825);
+    border-radius: 7px;
+    color: var(--text-3, #93a09a);
+    cursor: pointer;
+  }
+  .sa-sticky-x:hover { color: var(--text, #f2f5f3); }
+  .sa-sticky-x:focus-visible { outline: 2px solid var(--g, #34d377); outline-offset: 2px; }
+
+  /* Narrow screens: the context line is the first thing to go, not the action. */
+  @media (max-width: 560px) {
+    .sa-sticky-tag { display: none; }
+    .sa-sticky-context { font-size: 12.5px; }
+    .sa-sticky-btn { padding: 12px 14px; font-size: 12.5px; }
+  }
+  @media (max-width: 380px) {
+    .sa-sticky-context { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sa-sticky { transition: none; }
+  }
+</style>
+
+<script>
+  (function () {
+    var bar = document.getElementById('sa-sticky');
+    if (!bar) return;
+
+    var KEY = 'sa-sticky-dismissed:' + window.location.pathname;
+    try { if (sessionStorage.getItem(KEY) === '1') return; } catch (e) {}
+
+    var revealAt = parseFloat(bar.getAttribute('data-reveal-at') || '0.22');
+    var dismissed = false;
+    var primaryCtaVisible = false;
+    var revealed = false;
+
+    bar.hidden = false;
+
+    // Hide the bar whenever an in-page primary CTA is on screen, so the reader
+    // is never shown two competing calls to action at once.
+    var primaries = document.querySelectorAll('main .btn-g, main .scan-cta');
+    if (primaries.length && 'IntersectionObserver' in window) {
+      var visible = 0;
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { visible += en.isIntersecting ? 1 : -1; });
+        primaryCtaVisible = visible > 0;
+        paint();
+      }, { rootMargin: '-10% 0px -10% 0px' });
+      primaries.forEach(function (el) { io.observe(el); });
+    }
+
+    function scrolledFraction() {
+      var docH = document.documentElement.scrollHeight - window.innerHeight;
+      if (docH <= 0) return 1;
+      return window.scrollY / docH;
+    }
+
+    function paint() {
+      var show = revealed && !dismissed && !primaryCtaVisible;
+      bar.setAttribute('data-shown', show ? 'true' : 'false');
+    }
+
+    var ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        if (!revealed && scrolledFraction() >= revealAt) revealed = true;
+        paint();
+        ticking = false;
+      });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    onScroll();
+
+    var closeBtn = bar.querySelector('.sa-sticky-x');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function () {
+        dismissed = true;
+        paint();
+        try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+      });
+    }
+
+    // Clicking through is intent satisfied — don't nag on the way back.
+    var cta = bar.querySelector('.sa-sticky-btn');
+    if (cta) {
+      cta.addEventListener('click', function () {
+        try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+      });
+    }
+  })();
+</script>
