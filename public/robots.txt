@@ -36,12 +36,21 @@ Allow: /
 Disallow: /go/
 Disallow: /embed/
 
-# Tracking parameters — preserve crawl budget
-Disallow: /*?*utm_*
-Disallow: /*?*fbclid=*
-Disallow: /*?*gclid=*
-Disallow: /*?*ref=*
-Disallow: /*?*tag=*
-Disallow: /*?*sort=*
+# Tracking parameters are deliberately NOT disallowed.
+#
+# WHY THIS CHANGED (2026-08-17)
+# These six Disallow rules were blocking parameterised URLs to "preserve crawl
+# budget". On a 58-page site crawl budget is not a constraint, and the rules were
+# doing real harm: GSC reported https://stackarchitect.xyz/?ref=producthunt in
+# "Blocked by robots.txt". That is an inbound Product Hunt link. Because robots.txt
+# forbade crawling it, Google could not read the page's rel=canonical and so could
+# not consolidate that link's equity onto the homepage. The same applied to any
+# inbound link carrying a utm_* parameter.
+#
+# Google's own guidance is to let parameterised URLs be crawled and to deduplicate
+# with rel=canonical, never to block them in robots.txt when the goal is
+# consolidation. Every indexable page here self-canonicalises correctly (verified
+# 2026-08-17, zero mismatches across 59 pages), so canonical handles duplication
+# and link equity now flows to the canonical URL.
 
 Sitemap: https://stackarchitect.xyz/sitemap-index.xml
