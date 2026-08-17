@@ -13,7 +13,7 @@ const CANONICAL  = `${SITE}/stack/`;
 const UPDATED    = "April 2026";
 
 // ─── NEWSLETTER CONFIG ───────────────────────────────────────────────────────
-// The newsletter form posts to /api/capture-email/ (Pages Function), which
+// The newsletter form posts to /api/capture-email (Pages Function), which
 // forwards to Systeme.io server-side using the SYSTEME_API_KEY binding.
 // No publication ID or API credential belongs in this file.
 // Your Beehiiv affiliate referral link — earns commission on paid upgrades
@@ -631,7 +631,7 @@ const schemaWebPage = {
         <form
           class="nl-form"
           id="nl-form"
-          action="/api/capture-email/"
+          action="/api/capture-email"
           method="POST"
           aria-label="Subscribe to Stack Architect newsletter"
           onsubmit="handleNlSubmit(event)"
@@ -797,12 +797,12 @@ const schemaWebPage = {
     }
   });
 
-  // Newsletter form — POST to /api/capture-email/, show success message
+  // Newsletter form — POST to /api/capture-email, show success message
   function handleNlSubmit(e) {
     e.preventDefault();
     const email = (document.getElementById('nl-email').value || '').trim();
     if (!email || !email.includes('@')) return;
-    fetch('/api/capture-email/', {
+    fetch('/api/capture-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email, tag: 'stack-capture' })
