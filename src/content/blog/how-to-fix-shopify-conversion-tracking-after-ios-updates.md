@@ -1,5 +1,6 @@
 ---
 title: "Fix Shopify Conversion Tracking After iOS Updates 2026"
+heading: "How to Fix Shopify Conversion Tracking After iOS Updates 2026"
 description: "iOS updates have broken Shopify conversion tracking for millions of stores. Diagnoses which iOS change broke yours and gives the free fix for each cause."
 answer: "Shopify conversion tracking breaks after iOS updates because browser pixels are blocked by App Tracking Transparency, Safari ITP cookie expiry and Link Tracking Protection. By 2026 most stores lose 30-60% of conversion data across Meta, Google and TikTok. The fix is sending purchase events server-side, where no browser restriction can intercept them."
 publishDate: "2026-03-15"
@@ -41,8 +42,6 @@ relatedGuides:
 ---
 > **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-attribution-tools-compared/).
 
-
-# How to Fix Shopify Conversion Tracking After iOS Updates 2026
 
 iOS updates have progressively degraded browser-based conversion tracking since 2021. By 2026, the cumulative effect of multiple iOS privacy changes means most Shopify stores are missing 30–60% of their conversion data in Meta Ads Manager, Google Ads, and TikTok Ads Manager.
 

@@ -1,5 +1,6 @@
 ---
 title: "Shopify Stocky Data Export Before the Shutdown"
+heading: "Shopify Stocky Data Export — What to Save Before the August 31, 2026 Shutdown"
 description: "Shopify Stocky's end of service was 31 August 2026. What Stocky holds, how to export it while the app still opens, and what is recoverable if it does not."
 answer: "Shopify set 31 August 2026 as Stocky's end of service. Every purchase order, stocktake, transfer and supplier record held inside the app is deleted rather than migrated. Your Shopify inventory levels are safe, because they live in Shopify Admin rather than in Stocky. Anything Stocky owns has to be exported by hand while the app still opens."
 publishDate: "2026-04-16"
@@ -33,8 +34,6 @@ relatedGuides:
   - title: "Shopify Automation Stack for Small Stores"
     href: "/blog/shopify-automation-stack-for-small-stores"
 ---
-
-# Shopify Stocky Data Export — What to Save Before the August 31, 2026 Shutdown
 
 Shopify set August 31, 2026 as Stocky's end of service. Every purchase order, stocktake record, transfer history and supplier detail stored in Stocky is permanently and irreversibly deleted rather than migrated to Shopify Admin. [Shopify removed Stocky from the App Store on February 2, 2026](https://apps.shopify.com/stocky) — the August 31 shutdown date is confirmed and official.
 

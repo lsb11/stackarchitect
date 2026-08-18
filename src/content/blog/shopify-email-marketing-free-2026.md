@@ -1,5 +1,6 @@
 ---
 title: "Shopify Email Marketing Free 2026 — Without Klaviyo"
+heading: "Shopify Email Marketing Free 2026 — The Complete Free Setup"
 description: "The complete free Shopify email setup: Systeme.io in place of Klaviyo, with welcome, abandoned cart and post-purchase flows. 2,000 contacts, unlimited sends."
 answer: "Shopify email marketing runs free on Systeme.io: 2,000 contacts with unlimited sends, covering the four automations that generate almost all email revenue — welcome, abandoned cart, post-purchase and broadcast campaigns. Klaviyo's February 2025 billing change pushed equivalent lists onto a paid tier, and those four flows do not require it."
 publishDate: "2026-04-21"
@@ -30,8 +31,6 @@ relatedGuides:
   - title: "Klaviyo vs GetResponse for Shopify 2026"
     href: "/replace-klaviyo-free/"
 ---
-
-# Shopify Email Marketing Free 2026 — The Complete Free Setup
 
 Email marketing generates more revenue per pound spent than any other channel for Shopify stores — typically £3–£6 back for every £1 of platform cost. But that equation only holds if the platform cost is justified. Klaviyo's February 2025 billing change made every active profile chargeable, so bills now climb with list size from a $20/month entry plan. Systeme.io's permanently free plan covers the same core workflows at $0.
 

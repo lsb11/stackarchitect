@@ -1,5 +1,6 @@
 ---
 title: "Reliable Shopify Automations 2026 — Architecture Guide"
+heading: "The Complete Guide to Reliable Shopify Automations 2026"
 description: "Build Shopify automations that run reliably at scale — error handling, monitoring, deduplication, fallback logic, and what separates stable from fragile."
 answer: "A Shopify automation is reliable when one failure cannot take down the rest of it. In practice that means an error handler on every external call so a dead API does not halt the other branches, deduplication keyed on order ID so webhook retries cannot double-count, and monitoring that tells you when a run fails."
 publishDate: "2026-03-25"
@@ -30,8 +31,6 @@ relatedGuides:
   - title: "CAPI Shield — Server-Side Tracking Setup"
     href: "/capi-shield"
 ---
-
-# The Complete Guide to Reliable Shopify Automations 2026
 
 Getting a Make.com scenario to run once is easy. Getting it to run correctly every time — handling API failures gracefully, recovering from missed events, processing concurrent orders without data corruption — requires deliberate architecture decisions.
 

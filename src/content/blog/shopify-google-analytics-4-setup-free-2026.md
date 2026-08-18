@@ -1,5 +1,6 @@
 ---
 title: "Set Up Google Analytics 4 on Shopify Free 2026 — No Code"
+heading: "How to Set Up Google Analytics 4 on Shopify Free in 2026 — No Apps, No Code"
 description: "Free GA4 setup for Shopify in 2026. Google & YouTube channel for basic tracking, Make.com server-side events for complete data. No apps, no GTM, no fees."
 answer: "Google Analytics 4 installs on Shopify free through the official Google and YouTube sales channel, which handles browser-side event tracking without code or Google Tag Manager. Because browser events are lost to iOS and ad blockers, a Make.com webhook sending purchase events server-side completes the picture. Total setup takes under 20 minutes."
 publishDate: "2026-04-16"
@@ -37,8 +38,6 @@ relatedGuides:
 ---
 > **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-attribution-tools-compared/).
 
-
-# How to Set Up Google Analytics 4 on Shopify Free in 2026 — No Apps, No Code
 
 Every Shopify store needs GA4. It tells you where your traffic comes from, which products get viewed most, where customers drop out of the checkout funnel, and what your actual conversion rate is. Without it, you're making every growth decision blind.
 

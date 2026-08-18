@@ -1,5 +1,6 @@
 ---
 title: "Shopify BFCM Automation Checklist 2026"
+heading: "Shopify BFCM Automation Checklist 2026 — 14 Things to Set Up Before Black Friday"
 description: "14 automation tasks to complete before Black Friday 2026, ordered by deadline. Tracking first: ad platforms need 60-90 days of clean data to calibrate."
 answer: "The BFCM automation work that matters happens months before November. Ad platforms need 60-90 days of clean conversion data to optimise, so server-side tracking has to be live by September. Inventory logging, email flows and a Make.com operations budget follow. Fourteen tasks, ordered by deadline rather than by effort."
 publishDate: "2026-04-21"
@@ -36,8 +37,6 @@ relatedGuides:
     href: "/pro"
     badge: "$29"
 ---
-
-# Shopify BFCM Automation Checklist 2026 — 14 Things to Set Up Before Black Friday
 
 Black Friday Cyber Monday 2026 starts in approximately 7 months. That sounds like plenty of time. It isn't — not if you want your tracking, inventory, email, and automation infrastructure to be fully calibrated before you start spending serious money on ads.
 

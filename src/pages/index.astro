@@ -507,15 +507,36 @@ import FeaturedIn from '../components/FeaturedIn.astro';
 .pro-price-saves{font-family:var(--mono);font-size:10px;color:var(--g);margin-top:6px;font-weight:700;}
 
 /* Affiliate Cards */
-.aff-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+/* Explicit column counts (not auto-fit) so the orphan rule below can know
+   how many columns there are. With 7 cards the last one would otherwise sit
+   alone in a 3-col row at desktop and a 2-col row at tablet. */
+.aff-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+/* A trailing card that starts its own row spans the full width instead of
+   floating alone. Works for any card count, not just 7. */
+.aff-card:last-child:nth-child(3n+1){grid-column:1/-1;}
+.aff-card:last-child:nth-child(3n+1) .aff-card-desc{max-width:70ch;}
+.aff-card:last-child:nth-child(3n+1) .aff-card-cta{width:auto;align-self:flex-start;min-width:260px;}
+@media (max-width:1023px){
+  .aff-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .aff-card:last-child:nth-child(3n+1){grid-column:auto;}
+  .aff-card:last-child:nth-child(2n+1){grid-column:1/-1;}
+  .aff-card:last-child:nth-child(2n+1) .aff-card-cta{width:auto;align-self:flex-start;min-width:260px;}
+}
+@media (max-width:639px){
+  .aff-grid{grid-template-columns:minmax(0,1fr);}
+  .aff-card:last-child:nth-child(n){grid-column:auto;}
+  .aff-card:last-child .aff-card-cta{width:100%;align-self:auto;}
+}
 .aff-card{background:var(--bg-3);border:1.5px solid var(--border-2);border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:14px;transition:border-color .2s,transform .2s;}
 .aff-card:hover{border-color:var(--g-border);transform:translateY(-3px);}
 .aff-card-tag{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--text-4);}
 .aff-card-name{font-weight:700;font-size:18px;color:var(--text);letter-spacing:-.02em;line-height:1.2;}
 .aff-card-desc{font-size:13px;color:var(--text-3);line-height:1.7;flex:1;}
 .aff-card-saving{font-family:var(--mono);font-size:12px;color:var(--g);font-weight:700;}
-.aff-card-cta{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--g);border:1px solid rgba(52,211,119,.3);padding:9px 16px;border-radius:4px;transition:all .2s;margin-top:auto;}
-.aff-card-cta:hover{background:var(--g);color:#000;}
+/* Visual treatment now comes from .cta-primary in global.css.
+   This rule only handles grid placement: push the CTA to the card floor
+   so every card in a row ends on the same baseline. */
+.aff-card-cta{margin-top:auto;width:100%;}
 
 /* CTA Strip */
 .cta-strip{background:var(--bg-3);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:36px 24px;}
@@ -910,49 +931,49 @@ import FeaturedIn from '../components/FeaturedIn.astro';
         <div class="aff-card-name">Make.com</div>
         <p class="aff-card-desc">The automation engine behind every Stack Architect tool. 1,000 free credits/month — enough to run the whole stack as one consolidated scenario &mdash; a single Shopify webhook with router branches for tracking, inventory and P&amp;L. No credit card, no time limit.</p>
         <div class="aff-card-saving">Replaces $19.99+/mo of Zapier costs</div>
-        <a href="/go/make" target="_blank" rel="noopener sponsored" class="aff-card-cta">Create a free Make.com account — 1,000 ops/month →</a>
+        <a href="/go/make" target="_blank" rel="noopener sponsored" class="cta-primary aff-card-cta">Start free on Make.com</a>
       </div>
       <div class="aff-card">
         <div class="aff-card-tag">Email Marketing &amp; CRM</div>
         <div class="aff-card-name">Systeme.io</div>
         <p class="aff-card-desc">Replaces Klaviyo entirely. Free plan: 2,000 contacts, unlimited email sends, full automation sequences, sales funnels, and CRM. No credit card required. Most stores never need the paid plan.</p>
         <div class="aff-card-saving">Replaces $20+/mo of Klaviyo costs</div>
-        <a href="/go/systeme" target="_blank" rel="noopener sponsored" class="aff-card-cta">Start Systeme.io free — 2,000 contacts, unlimited sends →</a>
+        <a href="/go/systeme" target="_blank" rel="noopener sponsored" class="cta-primary aff-card-cta">Start free on Systeme.io</a>
       </div>
       <div class="aff-card">
         <div class="aff-card-tag">Email Marketing</div>
         <div class="aff-card-name">GetResponse</div>
         <p class="aff-card-desc">Professional email marketing platform with advanced automation, landing pages, and webinar tools. A strong Klaviyo alternative for stores needing more advanced segmentation than Systeme.io's free tier.</p>
         <div class="aff-card-saving">From $0/mo — free plan available</div>
-        <a href="/replace-klaviyo-free/" class="aff-card-cta">How GetResponse compares →</a>
+        <a href="/go/getresponse" target="_blank" rel="noopener sponsored" class="cta-primary aff-card-cta">Try GetResponse free</a>
       </div>
       <div class="aff-card">
         <div class="aff-card-tag">Newsletter &amp; Email List</div>
         <div class="aff-card-name">Beehiiv</div>
         <p class="aff-card-desc">The newsletter platform Stack Architect uses to deliver guides and automation tips. Best-in-class growth tools, monetisation features, and deliverability. Free up to 2,500 subscribers.</p>
         <div class="aff-card-saving">Free up to 2,500 subscribers</div>
-        <a href="/blog/the-lean-shopify-tech-stack-2026/" class="aff-card-cta">Where Beehiiv fits →</a>
+        <a href="/go/beehiiv" target="_blank" rel="noopener sponsored" class="cta-primary aff-card-cta">Start free on Beehiiv</a>
       </div>
       <div class="aff-card">
         <div class="aff-card-tag">Live Chat &amp; Support</div>
         <div class="aff-card-name">Tidio</div>
         <p class="aff-card-desc">AI-powered live chat and customer support for Shopify. Converts visitors into buyers with automated responses, AI chatbots, and helpdesk tools. Free plan covers most small Shopify stores.</p>
         <div class="aff-card-saving">Free plan available — no credit card</div>
-        <a href="/go/tidio" target="_blank" rel="noopener sponsored" class="aff-card-cta">Try Tidio free — Lyro AI answers up to 70% of tickets →</a>
+        <a href="/go/tidio" target="_blank" rel="noopener sponsored" class="cta-primary aff-card-cta">Try Tidio free</a>
       </div>
       <div class="aff-card">
         <div class="aff-card-tag">Customer Support Helpdesk</div>
         <div class="aff-card-name">Gorgias</div>
         <p class="aff-card-desc">The leading Shopify customer support helpdesk. Centralises all support tickets from email, social, and chat in one place. Deep Shopify integration — view and edit orders without leaving the helpdesk.</p>
         <div class="aff-card-saving">Replaces $49–$349/mo of support tools</div>
-        <a href="/gorgias-shopify-guide/" class="aff-card-cta">Read the Gorgias guide →</a>
+        <a href="/go/gorgias" target="_blank" rel="noopener sponsored" class="cta-primary aff-card-cta">Try Gorgias free</a>
       </div>
       <div class="aff-card">
         <div class="aff-card-tag">Google Workspace — High Volume</div>
         <div class="aff-card-name">Google Workspace</div>
         <p class="aff-card-desc">Recommended for stores processing 500+ orders/month. Removes Gmail API limits that silently kill automations during traffic spikes and Black Friday volumes. Keeps the entire $0 stack running reliably at scale.</p>
         <div class="aff-card-saving">Recommended at 500+ orders/month</div>
-        <a href="/autocrat-quota-fix/" class="aff-card-cta">Read the Gmail quota guide →</a>
+        <a href="/go/workspace" target="_blank" rel="noopener sponsored" class="cta-primary aff-card-cta">Start Workspace trial</a>
       </div>
     </div>
   </div>

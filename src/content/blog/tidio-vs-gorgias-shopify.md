@@ -1,5 +1,6 @@
 ---
 title: "Tidio vs Gorgias vs Zendesk for Shopify 2026"
+heading: "Tidio vs Gorgias vs Zendesk for Shopify 2026 — Which Is Worth It?"
 description: "Pick by monthly revenue: Tidio under $50k, Gorgias $50k-$500k, Zendesk only above $500k with a 5+ person CX team. USD pricing and sourced AI benchmarks."
 answer: "Choose a Shopify helpdesk by monthly revenue rather than by feature list. Tidio suits stores under $50k a month, where AI resolution and live chat cover most volume. Gorgias earns its cost between $50k and $500k with a dedicated CX person. Zendesk only makes sense above $500k with a five-plus agent team."
 publishDate: "2026-03-22"
@@ -25,8 +26,6 @@ faqs:
   - question: "Can I switch from Gorgias to Tidio?"
     answer: "Yes. Tidio supports CSV import of customer and conversation history. Macro and automation logic doesn't transfer directly — you'll need to rebuild it inside Tidio. Most stores complete the switch in 4–8 hours of focused work. The reverse migration (Tidio to Gorgias) is also supported but typically takes longer because Gorgias macros are more sophisticated and require redesign rather than direct translation."
 ---
-
-# Tidio vs Gorgias vs Zendesk for Shopify 2026 — Which Is Worth It?
 
 > **The verdict, fast:** Tidio if you're under **$50k/mo** revenue. Gorgias if you're **$50k–$500k/mo** with a CX person. Zendesk only if you're **$500k+/mo** with a 5+ person CX team. Pick by your monthly revenue, not by the marketing pages.
 

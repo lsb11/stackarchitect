@@ -1,5 +1,6 @@
 ---
 title: "Tidio for Shopify: Free AI Live Chat Setup Guide 2026"
+heading: "Tidio for Shopify: Complete Setup Guide 2026 — Free AI Live Chat That Resolves 70% of Queries"
 description: "Install Tidio on Shopify, configure Lyro AI to resolve 70% of queries automatically, set up order status flows, and replace Gorgias for free. 30 minutes."
 answer: "Tidio installs on Shopify from the App Store, and its Lyro AI answers order-status, shipping and product questions automatically — roughly 60-70% of a typical store's support volume. The free plan covers live chat, a basic bot and Shopify order lookup. Full setup, including Lyro training, takes about 30 minutes."
 publishDate: "2026-03-20"
@@ -30,8 +31,6 @@ relatedGuides:
   - title: "Make.com for Shopify — Free automation guide"
     href: "/make-com-shopify/"
 ---
-
-# Tidio for Shopify: Complete Setup Guide 2026 — Free AI Live Chat That Resolves 70% of Queries
 
 Order status, shipping questions, and product FAQs account for 60–70% of all Shopify support volume. Tidio's Lyro AI resolves them automatically — without a human agent, without a helpdesk subscription, and without a monthly fee on the free plan.
 

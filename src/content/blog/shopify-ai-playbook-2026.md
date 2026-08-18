@@ -1,5 +1,6 @@
 ---
 title: "The Complete Shopify AI Playbook 2026"
+heading: "The Complete Shopify AI Playbook 2026 — How to Use AI Across Every Stage of Your Store"
 description: "AI across 7 Shopify stages: product research, ad creative, email, server-side tracking, customer support, GEO, and agentic storefronts. Free tools first."
 answer: "The practical AI stack for a Shopify store spans seven stages: product research, ad creative, email, server-side tracking, customer support, generative-engine optimisation and agentic storefronts. Most stages have a free route that matches a paid tool at small scale, so the useful question is which stage is actually costing your store money."
 publishDate: "2026-03-01"
@@ -30,8 +31,6 @@ relatedGuides:
   - title: "CAPI Shield — Free server-side tracking"
     href: "/capi-shield"
 ---
-
-# The Complete Shopify AI Playbook 2026 — How to Use AI Across Every Stage of Your Store
 
 AI-driven traffic to Shopify stores grew 8× year-over-year in 2025. Most guides about AI for Shopify are written by SaaS companies ranking their own products first. This playbook is written for operators — covering which AI applications generate measurable return, which are overhyped, and what the free alternative is before recommending any subscription.
 

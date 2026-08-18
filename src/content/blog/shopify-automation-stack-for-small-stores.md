@@ -1,5 +1,6 @@
 ---
 title: "Shopify Automation Stack for Small Stores 2026 — $0"
+heading: "Shopify Automation Stack for Small Stores 2026 — The $0 Setup Under 1,000 Orders/Month"
 description: "The minimum viable free automation stack for Shopify stores under 1,000 orders/month. What to deploy first, what to skip, and how to scale as volume grows."
 answer: "A Shopify store under 1,000 orders a month needs four automations: server-side conversion tracking, order logging to Google Sheets, a free email platform, and live profit reporting. All four run from one Make.com scenario on a single order webhook, costing nothing below roughly 250 orders and $12 monthly above that."
 publishDate: "2026-03-22"
@@ -29,8 +30,6 @@ relatedGuides:
   - title: "The Lean Shopify Tech Stack 2026"
     href: "/blog/the-lean-shopify-tech-stack-2026"
 ---
-
-# Shopify Automation Stack for Small Stores 2026 — The $0 Setup Under 1,000 Orders/Month
 
 Most Shopify automation guides are written for stores doing serious volume — the setups assume you're already paying hundreds of pounds a month on apps and want to optimise that spend. This guide is for stores earlier in the journey: under 1,000 orders per month, watching every expense, and trying to build a solid operational foundation without overcomplicating things.
 

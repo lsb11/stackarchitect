@@ -1,5 +1,6 @@
 ---
 title: "Shopify Abandoned Cart Recovery Free 2026"
+heading: "Shopify Abandoned Cart Recovery Free 2026 — No Apps, No Monthly Fees"
 description: "Recover Shopify abandoned carts free: a Make.com webhook on checkouts/create feeding a Systeme.io email sequence. No app, no monthly fee, 30-minute setup."
 answer: "Shopify abandoned cart recovery runs free by catching the native checkouts/create webhook in Make.com and routing it into a Systeme.io email sequence. There is no app to install and no monthly fee, on any Shopify plan. Stores abandon 70-80% of checkouts, and a three-email sequence typically recovers 5-15% of them."
 publishDate: "2026-04-21"
@@ -32,8 +33,6 @@ relatedGuides:
   - title: "The Complete Free Shopify Automation Stack"
     href: "/"
 ---
-
-# Shopify Abandoned Cart Recovery Free 2026 — No Apps, No Monthly Fees
 
 The average Shopify store abandons 70–80% of checkouts. Most stores pay £30–£100/month to recover them via Klaviyo, Omnisend, or a dedicated cart recovery app. The free alternative — a Make.com webhook routing to a Systeme.io automation sequence — does the same job at $0/month.
 

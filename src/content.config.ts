@@ -5,6 +5,10 @@ const blog = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
   schema: z.object({
     title: z.string(),
+    // On-page H1. Distinct from `title`, which is the <title>/SERP variant and
+    // is length-constrained. Rendered by BlogPost.astro above #answer; falls
+    // back to `title` when absent.
+    heading: z.string().optional(),
     description: z.string(),
     // Self-contained 40–60 word answer to the post's target question, rendered
     // as <p id="answer"> above the body. Must read correctly quoted in

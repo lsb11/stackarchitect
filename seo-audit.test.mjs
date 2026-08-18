@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert';
 import {
   walk, claimShape, claimsConflict, shapeLabel, pageUrlFor, auditPrices, loadApps,
-  extractPriceClaims,
+  extractPriceClaims, checkAnswerBlock, answerWordCount, ANSWER_EXEMPT,
 } from './seo-audit.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -119,4 +119,88 @@ test('every app quoted on a page has a verified, sourced price', () => {
       (!a.priceVerifiedDate || !a.priceSourceUrl));
   assert.deepStrictEqual(bad.map((a) => a.id), [],
     'a quoted app needs both priceVerifiedDate and priceSourceUrl');
+});
+
+
+// ---- answer block guard -----------------------------------------------------
+// Locks in three properties of <p id="answer">: it exists, it is 40–60 words,
+// and it renders AFTER the H1. The third is the regression that shipped on all
+// 21 blog posts — the layout emitted the answer above <slot />, and the H1 came
+// from the markdown body, so the quotable unit preceded the heading it answered.
+
+const H1 = '<h1>How to Fix Shopify Tracking</h1>';
+const words = (n) => Array.from({ length: n }, (_, i) => `word${i}`).join(' ');
+
+test('answerWordCount ignores markup and entities', () => {
+  assert.strictEqual(answerWordCount('<strong>two</strong> words'), 2);
+  assert.strictEqual(answerWordCount('a &mdash; b'), 2);
+  assert.strictEqual(answerWordCount('  spaced   out  '), 2);
+});
+
+test('checkAnswerBlock reports a missing answer block', () => {
+  const r = checkAnswerBlock(`<main>${H1}<p>No answer here.</p></main>`);
+  assert.strictEqual(r.present, false);
+  assert.strictEqual(r.afterH1, false);
+});
+
+test('checkAnswerBlock accepts an answer of 40-60 words placed after the h1', () => {
+  const r = checkAnswerBlock(`<main>${H1}<p id="answer">${words(50)}</p></main>`);
+  assert.strictEqual(r.present, true);
+  assert.strictEqual(r.words, 50);
+  assert.strictEqual(r.afterH1, true);
+});
+
+test('checkAnswerBlock counts both sides of the 40-60 word band', () => {
+  const at40 = checkAnswerBlock(`${H1}<p id="answer">${words(40)}</p>`);
+  const at60 = checkAnswerBlock(`${H1}<p id="answer">${words(60)}</p>`);
+  const at39 = checkAnswerBlock(`${H1}<p id="answer">${words(39)}</p>`);
+  const at61 = checkAnswerBlock(`${H1}<p id="answer">${words(61)}</p>`);
+  assert.strictEqual(at40.words, 40);
+  assert.strictEqual(at60.words, 60);
+  assert.strictEqual(at39.words, 39);
+  assert.strictEqual(at61.words, 61);
+});
+
+test('checkAnswerBlock flags an answer that precedes the h1', () => {
+  const r = checkAnswerBlock(`<main><p id="answer">${words(50)}</p>${H1}</main>`);
+  assert.strictEqual(r.present, true);
+  assert.strictEqual(r.afterH1, false, 'answer before the h1 must not pass');
+});
+
+test('checkAnswerBlock ignores an #answer that only appears inside a script', () => {
+  const r = checkAnswerBlock(`${H1}<script>var x = '<p id="answer">nope</p>';</script>`);
+  assert.strictEqual(r.present, false);
+});
+
+test('ANSWER_EXEMPT covers exactly the legal pages', () => {
+  const exempt = (p) => ANSWER_EXEMPT.some((r) => r.test(p));
+  assert.ok(exempt('/terms/'));
+  assert.ok(exempt('/privacy/'));
+  assert.ok(exempt('/refund-policy/'));
+  assert.ok(!exempt('/gorgias-shopify-guide/'));
+  assert.ok(!exempt('/blog/tidio-vs-gorgias-shopify/'));
+});
+
+// End-to-end over the real build, mirroring the audit's own exemptions.
+const AUDIT_NOINDEX_OK = [
+  /^\/404(\.html)?\/?$/, /^\/sitemap-page\/$/, /^\/embed\//, /^\/apps\/[^/]+\/$/,
+  /^\/privacy\/$/, /^\/terms\/$/, /^\/refund-policy\/$/,
+];
+
+test('every indexable content page has a 40-60 word answer after its h1', (t) => {
+  if (!fs.existsSync('dist')) return t.skip('dist/ not built');
+  const failures = [];
+  let guarded = 0;
+  for (const f of walk('dist').filter((f) => f.endsWith('.html'))) {
+    const page = f.slice('dist'.length).replace(/index\.html$/, '') || '/';
+    if (AUDIT_NOINDEX_OK.some((r) => r.test(page)) || page === '/404.html/') continue;
+    if (ANSWER_EXEMPT.some((r) => r.test(page))) continue;
+    guarded++;
+    const a = checkAnswerBlock(fs.readFileSync(f, 'utf8'));
+    if (!a.present) failures.push(`${page} — no #answer`);
+    else if (a.words < 40 || a.words > 60) failures.push(`${page} — ${a.words} words`);
+    else if (!a.afterH1) failures.push(`${page} — #answer before h1`);
+  }
+  assert.ok(guarded > 50, `expected to guard the content pages, guarded ${guarded}`);
+  assert.deepStrictEqual(failures, []);
 });

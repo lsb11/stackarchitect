@@ -1,5 +1,6 @@
 ---
 title: "Fix Shopify Google Ads Conversion Tracking 2026 — Free"
+heading: "How to Fix Shopify Google Ads Conversion Tracking in 2026 — Free Server-Side Setup (No GTM Required)"
 description: "Google Ads misses an estimated 20-40% of Shopify purchases. Free server-side Enhanced Conversions via Make.com — no GTM, no paid app, no code, 6 minutes."
 answer: "Google Ads reports fewer purchases than Shopify because browser conversion pixels miss an estimated 20-40% of real orders. The free fix has two layers: Shopify's native Google and YouTube channel for baseline tracking, then server-side Enhanced Conversions sent through a Make.com webhook. No Google Tag Manager, no paid app, no code."
 publishDate: "2026-04-16"
@@ -38,8 +39,6 @@ relatedGuides:
 ---
 > **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-attribution-tools-compared/).
 
-
-# How to Fix Shopify Google Ads Conversion Tracking in 2026 — Free Server-Side Setup (No GTM Required)
 
 If your Google Ads dashboard shows significantly fewer purchases than your Shopify order count, your conversion tracking is broken. In 2026, browser-based Google Ads pixels miss 20–40% of real purchases on most Shopify stores. The fix is server-side Enhanced Conversions — and it costs nothing.
 

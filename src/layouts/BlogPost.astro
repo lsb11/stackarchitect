@@ -13,6 +13,7 @@ interface Props {
 const { entry } = Astro.props;
 const {
   title,
+  heading,
   description,
   answer,
   canonical,
@@ -132,8 +133,16 @@ const pageTitle = (title + SUFFIX).length <= 60 ? title + SUFFIX : title;
       <span>· {categoryLabels[category] ?? category}</span>
     </div>
 
-    <!-- Direct answer — the quotable unit. Runbook §3.1. -->
-    {answer && <p id="answer" class="sa-answer">{answer}</p>}
+    <!--
+      The H1 is rendered here from frontmatter, not from the markdown body.
+      #answer must follow the H1 in the DOM — it is the quotable unit
+      (Runbook §3.1) and reads as a summary of the title above it, not as
+      a preamble to an unseen heading. seo-audit.mjs enforces this order.
+    -->
+    <header class="sa-post-head">
+      <h1 class="sa-post-title">{heading ?? title}</h1>
+      {answer && <p id="answer" class="sa-answer">{answer}</p>}
+    </header>
 
     <!-- Table of contents — injected by inline script if ≥3 H2s -->
     <div id="toc-container"></div>
@@ -141,7 +150,7 @@ const pageTitle = (title + SUFFIX).length <= 60 ? title + SUFFIX : title;
     {hasAffiliateLink && <Disclosure />}
 
     <!-- MDX content -->
-    <article id="post-body" class="prose-stack">
+    <article id="post-body" class="sa-prose">
       <slot />
     </article>
 
@@ -155,15 +164,33 @@ const pageTitle = (title + SUFFIX).length <= 60 ? title + SUFFIX : title;
 </Base>
 
 <style>
+  .sa-post-head {
+    max-width: var(--measure);
+    margin: 0 auto;
+  }
+
+  .sa-post-title {
+    font-family: var(--font-display);
+    font-size: clamp(30px, 5vw, 46px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--color-heading);
+    margin: 0 0 20px;
+    text-wrap: balance;
+  }
+
+  /* Inherits --text-body / --leading-body; the tint and rule carry the
+     emphasis instead of a second font size. */
   .sa-answer {
     margin: 0 0 28px;
     padding: 18px 20px;
-    border-left: 3px solid #34d377;
-    background: rgba(52, 211, 119, 0.05);
+    border-left: 3px solid var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 5%, transparent);
     border-radius: 0 8px 8px 0;
-    font-size: 16px;
-    line-height: 1.7;
-    color: #d6ded9;
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--color-body);
   }
 </style>
 

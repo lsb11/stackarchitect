@@ -1,5 +1,6 @@
 ---
 title: "Shopify Inventory in Google Sheets 2026"
+heading: "The Ultimate Guide to Shopify Inventory Management 2026 — Free Systems That Scale"
 description: "Send Shopify inventory to Google Sheets free in 2026: real-time order logging, stock alerts, supplier tracking — a replacement for the retired Stocky app."
 answer: "Shopify inventory management runs free by sending every order webhook into Google Sheets, which gives real-time order logging, stock levels, supplier tracking and low-stock alerts without an app. This matters urgently in 2026 because Shopify Stocky shuts down permanently on 31 August and paid replacements start around $29 a month."
 publishDate: "2026-03-28"
@@ -32,8 +33,6 @@ relatedGuides:
   - title: "Shopify Automation Stack for Small Stores"
     href: "/blog/shopify-automation-stack-for-small-stores"
 ---
-
-# The Ultimate Guide to Shopify Inventory Management 2026 — Free Systems That Scale
 
 Most Shopify inventory management guides end with a recommendation to pay $29–$199/month for an app. This one doesn't. Every system described here costs $0 and runs on tools you likely already have access to.
 

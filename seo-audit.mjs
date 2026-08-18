@@ -22,6 +22,38 @@ export function walk(dir) {
   return out;
 }
 
+// ── ANSWER BLOCK GUARD ──────────────────────────────────────────────────────
+// Every indexable content page opens with a self-contained 40–60 word answer
+// paragraph (Runbook §3.1) — it is the unit an LLM lifts verbatim, so it has to
+// stand alone and it has to read as an answer to the H1 above it.
+//
+// Three things drift here, and all three have happened:
+//   1. the block is dropped entirely on a new page
+//   2. it is padded past 60 words, at which point it stops being quotable
+//   3. it renders BEFORE the H1, so the quoted unit answers a question the
+//      reader has not been asked yet (this was live on all 21 blog posts until
+//      the H1 was moved into BlogPost.astro)
+// Legal pages carry no answer block by design.
+export const ANSWER_EXEMPT = [/^\/terms\//, /^\/privacy\//, /^\/refund-policy\//];
+
+export function answerWordCount(text) {
+  return text.replace(/<[^>]*>/g, ' ').replace(/&[a-z]+;/gi, ' ')
+    .trim().split(/\s+/).filter(Boolean).length;
+}
+
+// Returns { present, words, afterH1 } for one page's HTML.
+export function checkAnswerBlock(html) {
+  const body = html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<style[\s\S]*?<\/style>/g, '');
+  const m = body.match(/<(p|div)[^>]*id="answer"[^>]*>([\s\S]*?)<\/\1>/);
+  if (!m) return { present: false, words: 0, afterH1: false };
+  const h1 = body.search(/<h1[\s>]/);
+  return {
+    present: true,
+    words: answerWordCount(m[2]),
+    afterH1: h1 !== -1 && h1 < m.index,
+  };
+}
+
 // ---- price divergence guard ------------------------------------------------
 // Prices are authored in src/pages/*.astro (prose claims AND structured data
 // objects), so this guard reads source rather than dist/ — source is the
@@ -529,6 +561,16 @@ for (const f of htmlFiles) {
   const h1s = [...html.matchAll(/<h1[\s>]/g)].length;
   if (h1s === 0 && !isNoindexOk) warn(`${page} — no <h1>`);
   if (h1s > 1) warn(`${page} — ${h1s} <h1> tags`);
+
+  // answer block — presence, length, and position relative to the H1
+  if (!isNoindexOk && !ANSWER_EXEMPT.some((r) => r.test(page))) {
+    const a = checkAnswerBlock(html);
+    if (!a.present) err(`${page} — missing <p id="answer"> block (Runbook §3.1)`);
+    else {
+      if (a.words < 40 || a.words > 60) err(`${page} — #answer is ${a.words} words, must be 40–60`);
+      if (!a.afterH1) err(`${page} — #answer renders BEFORE the <h1>; it must follow the heading it answers`);
+    }
+  }
 
 
   // dead onclick handlers: onclick="fn()" must resolve to a global in the page

@@ -1,5 +1,6 @@
 ---
 title: "CAPI Shield: Closing the Conversion Tracking Gap"
+heading: "How CAPI Shield Closes the Shopify Conversion Tracking Gap"
 description: "How CAPI Shield sends Shopify purchase events server-side, past iOS, Safari ITP and ad blockers — and how to measure what it adds in Meta Events Manager."
 answer: "CAPI Shield sends Shopify purchase events server-to-server to Meta's Conversions API, bypassing the browser so iOS restrictions, Safari ITP and ad blockers cannot intercept them. It publishes no recovery percentage, because the figure depends on your traffic mix. You measure your own result as Additional Conversions Reported in Meta Events Manager."
 publishDate: "2026-03-10"
@@ -35,8 +36,6 @@ relatedGuides:
 ---
 > **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-attribution-tools-compared/).
 
-
-# How CAPI Shield Closes the Shopify Conversion Tracking Gap
 
 Your Shopify dashboard shows 200 orders this month. Meta Ads Manager shows 80 purchases. The 120-order gap is not a reporting anomaly — it represents real sales that Meta's algorithm never learned from. Every budget decision, every audience adjustment, every bid strategy is built on 40% of your actual data.
 

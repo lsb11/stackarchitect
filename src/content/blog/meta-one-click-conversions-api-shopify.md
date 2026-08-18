@@ -1,5 +1,6 @@
 ---
 title: "Meta One-Click Conversions API for Shopify — What It Fixes"
+heading: "Meta One-Click Conversions API for Shopify: What It Fixes — and the Two Gaps It Leaves"
 description: "Meta's free one-click CAPI mirrors your browser Pixel, for Meta only. What it fixes, how to switch it on in two minutes, and the two gaps it leaves open."
 answer: "Meta's one-click Conversions API, released on 15 April 2026, switches on server-side tracking from inside Events Manager with Meta hosting the infrastructure. It takes two minutes and costs nothing. It mirrors your browser Pixel for Meta alone, so it cannot recover events the Pixel never fired, nor feed Google or TikTok."
 publishDate: "2026-07-15"
@@ -31,8 +32,6 @@ relatedGuides:
 ---
 > **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-attribution-tools-compared/).
 
-
-# Meta One-Click Conversions API for Shopify: What It Fixes — and the Two Gaps It Leaves
 
 **TL;DR:** On 15 April 2026 Meta shipped a free, one-click Conversions API setup inside Events Manager. Turn it on today — it takes two minutes, costs nothing, and Meta measures a 17.8% lower cost per result for advertisers running CAPI on web events. But know exactly what you switched on: a server-side *mirror of your browser Pixel*, for *Meta only*. The two failure modes it doesn't fix — events the Pixel never fires, and every non-Meta platform — are the two that a [free Shopify webhook setup](/capi-shield/) exists to solve.
 
