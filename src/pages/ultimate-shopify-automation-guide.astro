@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 
 const SITE           = 'https://stackarchitect.xyz';
@@ -201,9 +202,7 @@ const tocHeadings = [
             <div>Updated: <span>April 2026</span></div>
             <div>Word count: <span>~8,000</span></div>
             <div style="margin-top:12px;">
-              <a href="/go/make" target="_blank" rel="noopener sponsored"
-                style="display:block;background:var(--g);color:var(--text-inv);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:10px;border-radius:6px;text-align:center;text-decoration:none;transition:background .2s;"
-                aria-label="Start free on Make.com">Start Free →</a>
+              <a href="#section-make">Jump to the tool stack →</a>
             </div>
           </div>
         </div>
@@ -359,7 +358,7 @@ const tocHeadings = [
           <div class="step-cards" itemscope itemtype="https://schema.org/HowTo">
             <meta itemprop="name" content="How to deploy CAPI Shield server-side tracking for Shopify" />
             {[
-              { n:1, title:"Activate your Make.com account", desc:"Sign up for the Make.com free tier — 1,000 credits/month (formerly called operations), no credit card required. This is your central automation hub. Most stores processing up to 200 orders per month stay on the free tier indefinitely.", tool:"make.com/en/register", link:"/go/make" },
+              { n:1, title:"Activate your Make.com account", desc:"Sign up for the Make.com free tier — 1,000 credits/month (formerly called operations), no credit card required. This is your central automation hub. Most stores processing up to 200 orders per month stay on the free tier indefinitely.", tool:"make.com free tier", link:"#section-make" },
               { n:2, title:"Create a Shopify webhook", desc:'In Shopify Admin, go to Settings → Notifications → Webhooks. Create a new webhook for the "Order payment" event and point it to the Make.com webhook URL you generate in step 3.', tool:"Shopify Admin → Settings → Notifications" },
               { n:3, title:"Build the Make.com scenario", desc:"Create a new scenario with a Webhooks trigger. Connect this to the Meta Conversions API module and map the Shopify order fields to the Meta Purchase event parameters — event_id, value, currency, and user_data.", tool:"Make.com → New Scenario → Webhooks" },
               { n:4, title:"Test with Meta Events Manager", desc:"Place a test order on your store. Open Meta Events Manager → Test Events and verify the server-side Purchase event appears. You should see both a browser event and a server event — confirming deduplication is working.", tool:"Meta Business Suite → Events Manager" },
@@ -386,7 +385,7 @@ const tocHeadings = [
               <h4>Deploy CAPI Shield — recover your Q1 2026 ROAS</h4>
               <p>Free via Make.com · Bypasses iOS 26 + Shopify pixel throttle · 6 minutes</p>
             </div>
-            <a href="/go/make" target="_blank" rel="noopener sponsored" class="btn btn-sm pulse" aria-label="Deploy CAPI Shield free on Make.com">Deploy CAPI Shield Free →</a>
+            <a href="/capi-shield/" class="btn btn-sm pulse">Read the CAPI Shield setup guide →</a>
           </div>
         </section>
 
@@ -451,6 +450,7 @@ const tocHeadings = [
 
         <!-- ══ SECTION 03 ══ -->
         <section class="guide-section" id="section-automation" aria-labelledby="automation-h">
+          <Disclosure />
           <span class="tag section-tag">03 — Workflow Automation</span>
           <h2 id="automation-h">Shopify Workflow Automation — Make.com vs Zapier, and Why the Free Tier Is Enough</h2>
           <p>Every Shopify automation workflow needs a central hub — a tool that receives events from Shopify and routes them to the right destinations. Two tools dominate this space: Zapier, which most store owners have heard of, and Make.com, which most store owners have not fully explored. In 2026, Make.com is the clear choice for free Shopify automation.</p>
@@ -491,7 +491,7 @@ const tocHeadings = [
               <h4>Activate Make.com — your free automation hub</h4>
               <p>Free up to 1,000 credits/month · Instant Shopify webhooks · Most stores never pay a penny</p>
             </div>
-            <a href="/go/make" target="_blank" rel="noopener sponsored" class="btn btn-sm pulse" aria-label="Activate Make.com free Shopify automation">Activate Make.com Free →</a>
+            <a href="/go/make" target="_blank" rel="noopener sponsored" class="btn btn-sm pulse" aria-label="Activate Make.com free Shopify automation">Activate Make.com free — 1,000 ops/month, no card →</a>
           </div>
         </section>
 
@@ -531,7 +531,7 @@ const tocHeadings = [
 
           <div class="callout info">
             <div class="callout-label">AI Customer Support — Free Tier Available</div>
-            <p>Pair your AI traffic strategy with AI-powered customer support. <strong>Tidio's Lyro AI</strong> resolves up to 70% of customer queries automatically — free plan available, no code required for Shopify integration. <a href="/go/tidio" target="_blank" rel="noopener sponsored">Try Tidio free →</a></p>
+            <p>Pair your AI traffic strategy with AI-powered customer support. <strong>Tidio's Lyro AI</strong> resolves up to 70% of customer queries automatically — free plan available, no code required for Shopify integration. <a href="/tidio-shopify-guide/">Read the Tidio setup guide →</a></p>
           </div>
 
           <div class="section-cta">
@@ -561,7 +561,7 @@ const tocHeadings = [
 
           <div class="callout info">
             <div class="callout-label">High-volume stores · 500+ orders/month</div>
-            <p>Scaling past 500 orders/month? Gmail API limits will break your automations. <strong>Google Workspace removes every Gmail API limit</strong> and keeps your entire $0 stack running at full speed during traffic spikes and Black Friday volumes. <a href="/go/workspace" target="_blank" rel="noopener sponsored">Activate Google Workspace free trial →</a></p>
+            <p>Scaling past 500 orders/month? Gmail API limits will break your automations. <strong>Google Workspace removes every Gmail API limit</strong> and keeps your entire $0 stack running at full speed during traffic spikes and Black Friday volumes. <a href="/autocrat-quota-fix/">Read the Gmail quota limits guide →</a></p>
           </div>
 
           <h3>The Autocrat Quota Fix — What It Does</h3>
@@ -601,7 +601,7 @@ const tocHeadings = [
 
           <div class="callout info">
             <div class="callout-label">Klaviyo Alternative — Engagement-Based Billing</div>
-            <p><strong>GetResponse</strong> uses engagement-based billing — you only pay for contacts who actually engage. Includes advanced ecommerce segmentation, automations, landing pages, and webinars. <a href="/go/getresponse" target="_blank" rel="noopener sponsored">Try GetResponse free for 30 days →</a> — see the <a href={`${SITE}/replace-klaviyo-free/`}>full Klaviyo vs GetResponse 2026 comparison →</a></p>
+            <p><strong>GetResponse</strong> uses engagement-based billing — you only pay for contacts who actually engage. Includes advanced ecommerce segmentation, automations, landing pages, and webinars. <a href="/replace-klaviyo-free/">Compare GetResponse and Klaviyo →</a> — see the <a href={`${SITE}/replace-klaviyo-free/`}>full Klaviyo vs GetResponse 2026 comparison →</a></p>
           </div>
 
           <span id="section-systeme" style="display:block;height:80px;margin-top:-80px;visibility:hidden;"></span>
@@ -617,7 +617,7 @@ const tocHeadings = [
 
           <div class="callout info">
             <div class="callout-label">Building a newsletter? Consider Beehiiv</div>
-            <p>If your email strategy is newsletter-first (content-driven, subscriber growth, monetisation via ads or paid subscriptions), <strong>Beehiiv</strong> is the strongest free alternative — built for newsletter growth, with better deliverability and monetisation tools for that specific use case. <a href="/go/beehiiv" target="_blank" rel="noopener sponsored">Try Beehiiv free →</a></p>
+            <p>If your email strategy is newsletter-first (content-driven, subscriber growth, monetisation via ads or paid subscriptions), <strong>Beehiiv</strong> is the strongest free alternative — built for newsletter growth, with better deliverability and monetisation tools for that specific use case. <a href="/blog/the-lean-shopify-tech-stack-2026/">Where Beehiiv fits in the stack →</a></p>
           </div>
 
           <div class="callout info">
@@ -630,7 +630,7 @@ const tocHeadings = [
               <h4>Activate Systeme.io — replace Klaviyo and ClickFunnels for $0</h4>
               <p>Free plan forever · No credit card · No profile billing surprises</p>
             </div>
-            <a href="/go/systeme" target="_blank" rel="noopener sponsored" class="btn btn-sm pulse" aria-label="Activate Systeme.io free marketing platform">Activate Systeme.io Free →</a>
+            <a href="/go/systeme" target="_blank" rel="noopener sponsored" class="btn btn-sm pulse" aria-label="Activate Systeme.io free marketing platform">Activate Systeme.io free — 2,000 contacts, unlimited sends →</a>
           </div>
         </section>
 
@@ -664,7 +664,7 @@ const tocHeadings = [
 
           <div class="callout info">
             <div class="callout-label">Enterprise customer support — Gorgias</div>
-            <p>For high-volume stores (1,000+ tickets/month) needing deep Shopify integration, order editing from the helpdesk, and advanced macros, <strong>Gorgias</strong> is the leading paid option. For smaller stores, Tidio's free tier handles the majority of queries. <a href="/go/gorgias" target="_blank" rel="noopener sponsored">See Gorgias for Shopify →</a></p>
+            <p>For high-volume stores (1,000+ tickets/month) needing deep Shopify integration, order editing from the helpdesk, and advanced macros, <strong>Gorgias</strong> is the leading paid option. For smaller stores, Tidio's free tier handles the majority of queries. <a href="/gorgias-shopify-guide/">Read the Gorgias guide →</a></p>
           </div>
 
           <p>The full breakdown — including which specific apps each free replacement covers, migration steps, and the order in which to switch — is in the <a href={`${SITE}/best-free-shopify-apps-2026/`}>free Shopify app replacements guide for 2026</a>. Use the <a href={`${SITE}/shopify-app-cost-calculator/`}>App Cost Calculator</a> to audit your current bill.</p>
@@ -713,11 +713,11 @@ const tocHeadings = [
             <meta itemprop="name" content="35-minute Shopify $0 automation stack deployment" />
             <meta itemprop="totalTime" content="PT35M" />
             {[
-              { n:1, title:"Minutes 0–3: Activate Make.com", desc:"Sign up for Make.com free at make.com/en/register. Verify your email. You are now in the Make.com dashboard — your central automation hub is active.", tool:"make.com free tier", link:"/go/make", ext:true },
+              { n:1, title:"Minutes 0–3: Activate Make.com", desc:"Sign up for Make.com free at make.com/en/register. Verify your email. You are now in the Make.com dashboard — your central automation hub is active.", tool:"make.com free tier", link:"#section-make", ext:false },
               { n:2, title:"Minutes 3–9: Deploy CAPI Shield", desc:"Create your first scenario using the CAPI Shield blueprint from the deployment manual. Connect Shopify webhook → Make.com → Meta Conversions API. Test with one order. Your Q1 2026 tracking recovery is now live.", tool:"CAPI Shield Setup Guide ↗", link:`${SITE}/capi-shield/`, ext:false },
               { n:3, title:"Minutes 9–14: Deploy Stocky Swap", desc:"Create your Google Sheet inventory ledger using the template. If you currently use Stocky, export your data first. Add a second Make.com scenario using the Stocky Swap blueprint.", tool:"Stocky Swap Setup Guide ↗", link:`${SITE}/stocky-swap/`, ext:false },
               { n:4, title:"Minutes 14–17: Add Quota Fix", desc:"If you use any Google Apps Script automation, apply the chunked processing pattern and exponential backoff template from the Quota Fix library. This takes 3 minutes and prevents mid-month crashes indefinitely.", tool:"Autocrat Quota Fix Guide ↗", link:`${SITE}/autocrat-quota-fix/`, ext:false },
-              { n:5, title:"Minutes 17–25: Activate Systeme.io", desc:"Sign up for Systeme.io free. Create your first email capture form. Embed it on your Shopify thank-you page or homepage. Build a 3-email welcome sequence. If you are currently on Klaviyo, check your profile count against the February 2025 billing change.", tool:"systeme.io free plan", link:"/go/systeme", ext:true },
+              { n:5, title:"Minutes 17–25: Activate Systeme.io", desc:"Sign up for Systeme.io free. Create your first email capture form. Embed it on your Shopify thank-you page or homepage. Build a 3-email welcome sequence. If you are currently on Klaviyo, check your profile count against the February 2025 billing change.", tool:"systeme.io free plan", link:"#section-klaviyo", ext:false },
               { n:6, title:"Minutes 25–30: Enable AI discoverability", desc:"Add FAQPage schema to your key product pages, verify your Google Merchant Centre product feed is complete and accurate, and if you are a US-based Shopify store, check the Knowledge Base App availability for Agentic Storefronts.", tool:"AI Playbook 2026 →", link:`${SITE}/blog/shopify-ai-playbook-2026/`, ext:false },
               { n:7, title:"Minutes 30–35: Audit your app bill", desc:"Review every active Shopify app. Cancel any tracking, inventory, or automation connector apps the stack now replaces. Use the App Cost Calculator to confirm your monthly saving.", tool:"App Cost Calculator →", link:`${SITE}/shopify-app-cost-calculator/`, ext:false },
             ].map((s) => (
@@ -742,7 +742,7 @@ const tocHeadings = [
               <h4>Ready? Start with Make.com — your free automation hub.</h4>
               <p>Free forever up to 1,000 credits/month · Most stores never pay a penny</p>
             </div>
-            <a href="/go/make" target="_blank" rel="noopener sponsored" class="btn pulse" aria-label="Start with Make.com free Shopify automation">Replace My Apps Free →</a>
+            <a href="/go/make" target="_blank" rel="noopener sponsored" class="btn pulse" aria-label="Start with Make.com free Shopify automation">Replace my apps with Make.com free — 1,000 ops/month →</a>
           </div>
         </section>
 

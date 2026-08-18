@@ -157,7 +157,7 @@ Compare this to Gorgias: £60–£300/month for a system that requires more huma
 
 ## Getting Started Today
 
-1. [Install Tidio from the Shopify App Store](/go/tidio) — free, 2 minutes
+1. [Install Tidio free — Lyro AI resolves up to 70% of tickets](/go/tidio) — free, 2 minutes
 2. Connect Shopify integration and verify order data sync
 3. Configure the chat widget — position, colour, welcome message
 4. Write 20 FAQ pairs and upload to Lyro's knowledge base

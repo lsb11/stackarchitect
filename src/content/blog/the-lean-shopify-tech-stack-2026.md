@@ -75,11 +75,11 @@ The only ongoing cost is Make.com's free plan (sufficient for most stores) or Co
 
 **What these do:** send automated email sequences (welcome, abandoned cart, post-purchase) and broadcast campaigns.
 
-**Free replacement:** [Systeme.io](/go/systeme) — 2,000 contacts, unlimited email sends, full automation sequences, sales funnels, and CRM. Permanently free, no credit card required.
+**Free replacement:** [Systeme.io — free for 2,000 contacts](/go/systeme) — 2,000 contacts, unlimited email sends, full automation sequences, sales funnels, and CRM. Permanently free, no credit card required.
 
 **When Klaviyo is worth keeping:** stores with 50,000+ contacts actively using predictive segmentation and browse-abandonment triggers. For everyone else running welcome, abandoned cart, and post-purchase sequences — Systeme.io covers this at zero cost.
 
-**For larger lists:** [GetResponse](/go/getresponse) at $19/month covers 1,000 contacts with equivalent automation — still 80–90% cheaper than Klaviyo at equivalent list sizes.
+**For larger lists:** [GetResponse — engagement-based billing](/go/getresponse) at $19/month covers 1,000 contacts with equivalent automation — still 80–90% cheaper than Klaviyo at equivalent list sizes.
 
 ## Layer 4 — P&L Reporting (Save $25–$299/Month)
 
@@ -103,7 +103,7 @@ The only ongoing cost is Make.com's free plan (sufficient for most stores) or Co
 
 **What these do:** manage customer support tickets, integrate with Shopify order data
 
-**Free replacement:** [Tidio](/go/tidio) — free tier includes live chat and 50 Lyro AI conversations per month. Lyro AI resolves approximately 70% of queries automatically (order status, shipping, FAQs) without human intervention. For stores under £30,000/month GMV, the free tier handles full support volume.
+**Free replacement:** [Tidio — free live chat with Lyro AI](/go/tidio) — free tier includes live chat and 50 Lyro AI conversations per month. Lyro AI resolves approximately 70% of queries automatically (order status, shipping, FAQs) without human intervention. For stores under £30,000/month GMV, the free tier handles full support volume.
 
 ## What to Keep Paying For
 

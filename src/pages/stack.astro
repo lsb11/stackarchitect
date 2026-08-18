@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import AuthorCard from '../components/AuthorCard.astro';
+import Disclosure from '../components/Disclosure.astro';
 // src/pages/stack.astro
 // PAGE INTENT: informational/research — "what does Stack Architect recommend"
 // HOMEPAGE INTENT: transactional — "replace my apps / deploy now"
@@ -16,8 +17,6 @@ const UPDATED    = "April 2026";
 // The newsletter form posts to /api/capture-email (Pages Function), which
 // forwards to Systeme.io server-side using the SYSTEME_API_KEY binding.
 // No publication ID or API credential belongs in this file.
-// Your Beehiiv affiliate referral link — earns commission on paid upgrades
-const BEEHIIV_AFFILIATE = "/go/beehiiv";
 
 const stats = [
   { value: "$700+", label: "Saved / month" },
@@ -41,7 +40,8 @@ const tools = [
     notFor: "stores on 500+ complex multi-branch orders/month — upgrade to Core at $12/mo",
     why: "10× more free operations than Zapier. Real-time webhook triggers vs Zapier's 15-minute polling. Multi-branch scenarios and full visual builder on the free tier. Every tool in this stack runs through it.",
     affiliateURL: "/go/make",
-    cta: "Activate Make.com free →",
+    ctaHref: "/go/make",
+    cta: "Activate Make.com free — 1,000 ops/month, no card →",
     badge: "Start here",
     badgeType: "core",
   },
@@ -60,7 +60,8 @@ const tools = [
     notFor: "stores relying on Klaviyo's advanced predictive analytics or deep Shopify segment triggers.",
     why: "Klaviyo changed billing in February 2025 — stores now pay for every active profile whether they email them or not. Affects UK, US, AU, and CA stores equally. Systeme.io has no profile billing, no contact limits, and no expiry on the free plan. Most stores save $20+/month permanently.",
     affiliateURL: "/go/systeme",
-    cta: "Activate Systeme.io free →",
+    ctaHref: "/go/systeme",
+    cta: "Activate Systeme.io free — unlimited contacts, no Klaviyo bill →",
     badge: "Best Klaviyo alternative",
     badgeType: "top",
   },
@@ -79,7 +80,8 @@ const tools = [
     notFor: "large support teams needing deep CRM or ticketing integrations at scale — use Gorgias at that stage.",
     why: "Tidio's Lyro AI answers up to 70% of customer questions automatically — no human agent needed. Deploys directly on Shopify in 5 minutes via app install, recovers abandoned carts via live chat, and replaces helpdesk subscriptions costing $40+/month.",
     affiliateURL: "/go/tidio",
-    cta: "Activate Tidio free →",
+    ctaHref: "/go/tidio",
+    cta: "Activate Tidio free — Lyro AI answers up to 70% of tickets →",
     badge: "AI chat + support",
     badgeType: "default",
   },
@@ -98,7 +100,8 @@ const tools = [
     notFor: "stores needing barcode scanning, multi-warehouse physical logistics, or EDI integrations at enterprise scale.",
     why: "Every paid inventory tool puts your data behind a paywall. Stocky shuts down August 31 2026 — 200,000+ stores across the UK, US, AU, and CA lose inventory history permanently on that date. Google Sheets inverts this: your data lives in a file you own, updated via Make.com webhook in real time, forever.",
     affiliateURL: "https://stackarchitect.xyz/stocky-swap/",
-    cta: "Deploy Stocky Swap free →",
+    ctaHref: `${SITE}/stocky-swap/`,
+    cta: "Read the Stocky Swap setup guide →",
     badge: "Stocky replacement",
     badgeType: "urgent",
   },
@@ -117,7 +120,8 @@ const tools = [
     notFor: "stores needing multi-touch attribution modelling across 5+ channels simultaneously.",
     why: "iOS 26 strips fbclid from private browsing links. Shopify throttled app pixels on January 13 2026. Stores on browser pixels alone are losing 30–45% of conversion data. Server-side CAPI fires from Shopify's server — unrestricted by iOS, ad blockers, or cookie expiry. Critical for UK, US, AU, and CA stores running Meta campaigns.",
     affiliateURL: "/go/make",
-    cta: "Deploy CAPI Shield free →",
+    ctaHref: `${SITE}/capi-shield/`,
+    cta: "Read the CAPI Shield setup guide →",
     badge: "Q1 2026 ROAS fix",
     badgeType: "urgent",
   },
@@ -136,7 +140,8 @@ const tools = [
     notFor: "stores with minimal TikTok spend where attribution accuracy is less critical.",
     why: "TikTok's CompletePayment event sent server-side achieves EMQ 6–8 in most deployments. iOS ITP and ad blockers cannot intercept server-side signals. Branches from your existing Make.com scenario at zero additional operations cost.",
     affiliateURL: "/go/make",
-    cta: "Deploy TikTok CAPI free →",
+    ctaHref: `${SITE}/tiktok-events-api-shopify/`,
+    cta: "Read the TikTok Events API guide →",
     badge: "Runs free alongside CAPI Shield",
     badgeType: "default",
   },
@@ -155,20 +160,21 @@ const tools = [
     notFor: "stores under 300 orders/month — free Gmail handles this volume comfortably.",
     why: "Free Gmail enforces hard limits: 100 emails/day, 6-minute Apps Script executions, 90 minutes total runtime/day. These limits silently kill automations during traffic spikes. Google Workspace removes every limit. It is the only paid upgrade the $0 stack ever needs.",
     affiliateURL: "/go/workspace",
-    cta: "Start Workspace trial →",
+    ctaHref: `${SITE}/autocrat-quota-fix/`,
+    cta: "Read the Gmail quota limits guide →",
     badge: "Required at 500+ orders/mo",
     badgeType: "infra",
   },
 ];
 
 const deploySteps = [
-  { num: "01", tool: "Make.com",          time: "2 min",  action: "Activate your automation hub",                        link: "/go/make",                         linkLabel: "activate →" },
+  { num: "01", tool: "Make.com",          time: "2 min",  action: "Activate your automation hub",                        link: "#make",       linkLabel: "see details →" },
   { num: "02", tool: "CAPI Shield",       time: "6 min",  action: "Deploy server-side Meta + Google tracking",           link: `${SITE}/capi-shield/`,                                               linkLabel: "view setup guide →" },
   { num: "03", tool: "TikTok Events API", time: "6 min",  action: "Add TikTok branch to your existing scenario",         link: `${SITE}/tiktok-events-api-shopify/`,                                 linkLabel: "view setup guide →" },
   { num: "04", tool: "Stocky Swap",       time: "4 min",  action: "Deploy inventory to Google Sheets — replaces Stocky",  link: `${SITE}/stocky-swap/`,                                               linkLabel: "view setup guide →" },
   { num: "05", tool: "P&L Auto",          time: "8 min",  action: "Add live profit dashboard to your Google Sheet",      link: `${SITE}/shopify-profit-loss-automation/`,                            linkLabel: "view setup guide →" },
-  { num: "06", tool: "Tidio",             time: "5 min",  action: "Activate AI live chat on your store",                 link: "/go/tidio",                         linkLabel: "activate →" },
-  { num: "07", tool: "Systeme.io",        time: "30 min", action: "Migrate email flows from Klaviyo",                    link: "/go/systeme", linkLabel: "activate →" },
+  { num: "06", tool: "Tidio",             time: "5 min",  action: "Activate AI live chat on your store",                 link: "#tidio",     linkLabel: "see details →" },
+  { num: "07", tool: "Systeme.io",        time: "30 min", action: "Migrate email flows from Klaviyo",                    link: "#systeme", linkLabel: "see details →" },
 ];
 
 const testimonials = [
@@ -346,7 +352,7 @@ const schemaWebPage = {
 
     <a href="/stack/" class="nav-link nav-active" aria-current="page">Stack</a>
 
-    <a href="/go/make" class="nav-cta" target="_blank" rel="sponsored nofollow noopener">SAVE $700+/MO <span class="nav-cta-long">→ REPLACE MY APPS FREE →</span></a>
+    <a href="#stack-table" class="nav-cta">SAVE $700+/MO <span class="nav-cta-long">→ SEE ALL 7 TOOLS ↓</span></a>
   </div>
 </nav>
 
@@ -398,21 +404,17 @@ const schemaWebPage = {
     </div>
 
     <div class="hero-actions">
-      <a href="/go/make" class="btn-primary" target="_blank" rel="sponsored nofollow noopener">Replace My Apps Free →</a>
-      <a href="#stack-table" class="btn-secondary">See All 7 Tools ↓</a>
+      <a href="#stack-table" class="btn-primary">See All 7 Tools ↓</a>
     </div>
 
-    <p class="hero-powered">Powered by <a href="/go/make" rel="sponsored nofollow noopener" target="_blank">Make.com</a> + <a href="/go/systeme" rel="sponsored nofollow noopener" target="_blank">Systeme.io</a> — both free. Most stores never pay a penny.</p>
+    <p class="hero-powered">Powered by Make.com + Systeme.io — both free. Most stores never pay a penny.</p>
 
   </div>
 </section>
 
 <!-- ─── DISCLOSURE ─── -->
 <aside class="disclosure-bar" aria-label="Affiliate disclosure">
-  <div class="container">
-    <span class="disc-icon" aria-hidden="true">ℹ</span>
-    <span>Links on this page are affiliate links. Stack Architect earns a small commission if you sign up via a link here — at no extra cost to you. This is what funds every free tool, guide, and calculator on this site. We only recommend tools this stack is actually built on.</span>
-  </div>
+  <div class="container"><Disclosure /></div>
 </aside>
 
 <!-- ─── TOOL CARDS ─── -->
@@ -477,7 +479,13 @@ const schemaWebPage = {
 
           <p class="tc-why">{tool.why}</p>
 
-          <a href={tool.affiliateURL} class="btn-tool-cta" target="_blank" rel="nofollow noopener" aria-label={`${tool.cta} (opens in new tab)`}>
+          <a
+            href={tool.ctaHref}
+            class="btn-tool-cta"
+            target={tool.ctaHref.startsWith("/go/") ? "_blank" : undefined}
+            rel={tool.ctaHref.startsWith("/go/") ? "sponsored nofollow noopener" : undefined}
+            aria-label={tool.cta}
+          >
             {tool.cta}
           </a>
         </article>
@@ -517,8 +525,8 @@ const schemaWebPage = {
               <td>{tool.setup}</td>
               <td class="dim-cell">{tool.freeTier.split("·")[0].trim()}</td>
               <td>
-                <a href={tool.affiliateURL} class="table-cta" target="_blank" rel="nofollow noopener">
-                  {tool.id === "workspace" ? "Start trial →" : tool.id === "sheets" ? "Deploy free →" : "Activate free →"}
+                <a href={`#${tool.id}`} class="table-cta">
+                  Details →
                 </a>
               </td>
             </tr>
@@ -674,10 +682,9 @@ const schemaWebPage = {
           <li>Analytics that actually matter</li>
           <li>No % cut of your revenue</li>
         </ul>
-        <a href={BEEHIIV_AFFILIATE} class="nla-cta" target="_blank" rel="nofollow noopener" aria-label="Try beehiiv free — affiliate link">
-          Try beehiiv free →
+        <a href="/blog/the-lean-shopify-tech-stack-2026/" class="nla-cta">
+          How we publish on beehiiv →
         </a>
-        <p class="nla-disc">affiliate link — Stack Architect earns a commission on paid upgrades, at no extra cost to you</p>
       </aside>
 
     </div>
@@ -690,7 +697,7 @@ const schemaWebPage = {
     <div class="upgrade-inner">
       <div class="upgrade-badge">High-volume stores · 500+ orders/month</div>
       <p class="upgrade-copy">Scaling past 500 orders/month? Gmail API limits will break your automations. Google Workspace removes every Gmail API limit and keeps your entire $0 stack running at full speed during Black Friday and product launches.</p>
-      <a href="/go/workspace" class="btn-secondary" target="_blank" rel="sponsored nofollow noopener">Activate Workspace →</a>
+      <a href="/autocrat-quota-fix/" class="btn-secondary">Read the Gmail quota limits guide →</a>
     </div>
   </div>
 </aside>

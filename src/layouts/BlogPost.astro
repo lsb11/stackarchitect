@@ -3,6 +3,7 @@ import Base from './Base.astro';
 import FAQSection from '../components/FAQSection.astro';
 import RelatedGuides from '../components/RelatedGuides.astro';
 import AuthorCard from '../components/AuthorCard.astro';
+import Disclosure from '../components/Disclosure.astro';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -23,6 +24,10 @@ const {
   faqs,
   relatedGuides,
 } = entry.data;
+// Posts that carry a /go/* affiliate cloak get an on-page disclosure above the body,
+// so it always precedes the first affiliate link rather than sitting in the footer.
+const hasAffiliateLink = entry.body?.includes('/go/') ?? false;
+
 const rawCanonical = canonical ?? `https://stackarchitect.xyz/blog/${entry.id}/`;
 const canonicalUrl = rawCanonical.endsWith('/') ? rawCanonical : rawCanonical + '/';
 
@@ -132,6 +137,8 @@ const pageTitle = (title + SUFFIX).length <= 60 ? title + SUFFIX : title;
 
     <!-- Table of contents — injected by inline script if ≥3 H2s -->
     <div id="toc-container"></div>
+
+    {hasAffiliateLink && <Disclosure />}
 
     <!-- MDX content -->
     <article id="post-body" class="prose-stack">

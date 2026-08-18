@@ -53,15 +53,15 @@ Recovery rate for this sequence: 5–15% of abandoned checkouts depending on you
 
 ## What You Need
 
-- A [Systeme.io free account](https://stackarchitect.xyz/go/systeme) — 2,000 contacts, unlimited sends, free
-- A [Make.com free account](/go/make) — 1,000 credits/month, free
+- A [Systeme.io free account — 2,000 contacts and unlimited sends at $0](https://stackarchitect.xyz/go/systeme)
+- A [Make.com free account — 1,000 credits a month, enough for ~200 orders](/go/make)
 - Your Shopify Admin access (Settings → Notifications → Webhooks)
 
 ## Step 1 — Create the Systeme.io Automation
 
 Set up the email sequence in Systeme.io before configuring the webhook, so you have a destination ready.
 
-**In Systeme.io** — [create your free account here](https://stackarchitect.xyz/go/systeme) if you haven't already:
+**In Systeme.io** — using the free account from the prerequisites above:
 
 1. Go to **Automations → Create automation**
 2. Set trigger: **Contact subscribes to a tag** — create a tag called `abandoned-cart`
@@ -95,7 +95,7 @@ Copy the key. You'll paste it into Make.com in the next step.
 
 ## Step 3 — Build the Make.com Scenario
 
-**In Make.com** — [create your free account here](/go/make) if you haven't already:
+**In Make.com** — using the free account from the prerequisites above:
 
 1. Create a new scenario
 2. Add **Webhooks → Custom webhook** as the trigger

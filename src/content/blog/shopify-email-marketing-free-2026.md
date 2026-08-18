@@ -41,7 +41,7 @@ This guide covers the complete free Shopify email setup: platform choice, Shopif
 
 Three genuine free options exist for Shopify stores in 2026:
 
-**[Systeme.io](https://stackarchitect.xyz/go/systeme) (recommended for most stores)**
+**[Systeme.io — free for 2,000 contacts with unlimited sends](https://stackarchitect.xyz/go/systeme) (recommended for most stores)**
 - 2,000 contacts, unlimited sends — permanently free
 - Full automation sequences with conditional logic
 - Sales funnels, CRM, affiliate management included
@@ -60,7 +60,7 @@ Three genuine free options exist for Shopify stores in 2026:
 - Paid from $19/month for 1,000 contacts
 - Advanced AI copywriting, webinars, landing pages
 - 60–70% cheaper than Klaviyo at equivalent list sizes
-- [GetResponse free trial →](https://stackarchitect.xyz/go/getresponse)
+- [Try GetResponse free — engagement-based billing, 30-day trial →](https://stackarchitect.xyz/go/getresponse)
 
 For stores under 2,000 contacts that want full automation capability at $0, Systeme.io is the correct choice. The rest of this guide covers Systeme.io setup.
 
@@ -70,7 +70,7 @@ Two methods — use whichever fits your setup:
 
 **Method 1 — Native Integration (5 minutes)**
 
-In [Systeme.io](https://stackarchitect.xyz/go/systeme): **Settings → Integrations → Shopify → Connect**
+In Systeme.io: **Settings → Integrations → Shopify → Connect**
 
 Enter your Shopify store URL. Systeme.io connects via OAuth. Once connected, Systeme.io can:
 - Automatically add customers to your list on purchase
@@ -79,7 +79,7 @@ Enter your Shopify store URL. Systeme.io connects via OAuth. Once connected, Sys
 
 **Method 2 — Make.com Webhook (more control, 15 minutes)**
 
-For stores that want to trigger Systeme.io sequences from specific Shopify events (abandoned checkout, specific product purchases, subscription renewals), use a [Make.com](/go/make) scenario with a Shopify webhook as the trigger and a Systeme.io HTTP module to create/tag contacts.
+For stores that want to trigger Systeme.io sequences from specific Shopify events (abandoned checkout, specific product purchases, subscription renewals), use a [Make.com — free, 1,000 ops/month](/go/make) scenario with a Shopify webhook as the trigger and a Systeme.io HTTP module to create/tag contacts.
 
 This is the method that powers the abandoned cart recovery sequence — see the [abandoned cart guide](/blog/shopify-abandoned-cart-recovery-free-2026/) for the full setup.
 
