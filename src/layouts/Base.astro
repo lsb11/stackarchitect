@@ -163,6 +163,7 @@ const personSchema = {
   'url': 'https://stackarchitect.xyz/about/',
   'sameAs': [
     'https://www.linkedin.com/in/luke-stackarchitect',
+    'https://medium.com/@stackarchitect123',
     'https://github.com/lsb11',
     'https://github.com/lsb11/stackarchitect',
     'https://github.com/lsb11/shopify-capi-validator',
@@ -288,9 +289,49 @@ const webSiteSchema = {
 // checked recursively so @graph-embedded breadcrumbs aren't duplicated.
 const canonicalPath = new URL(canonical).pathname;
 
-const schemaJson = JSON.stringify(schemaArray);
-const alreadyHasBreadcrumbSchema = schemaJson.includes('"BreadcrumbList"');
-const alreadyHasWebSiteSchema = schemaJson.includes('"WebSite"');
+// ── Schema collision guards ──────────────────────────────────────────
+// Both guards used to inspect only the `schema` prop. Almost every page
+// injects its JSON-LD through the `head` slot instead (<Fragment slot="head">),
+// which the prop never sees — so Base cheerfully emitted a second WebSite and
+// a second BreadcrumbList on top of the page's own. That shipped site-wide:
+// 23 of 120 pages carried a duplicate #website @id and 28 carried a duplicate
+// node type. Deleting the offending nodes page-by-page would have left the
+// guard just as blind for the next page that uses the slot.
+//
+// Rendering the slot here lets the guard see every node that actually reaches
+// <head>, whichever route it took. The template below still renders
+// <slot name="head" /> exactly as before, so emitted markup is unchanged —
+// this render is for inspection only.
+const headSlotHtml = Astro.slots.has('head') ? await Astro.slots.render('head') : '';
+
+// Parse the blocks rather than substring-matching the raw string: "WebSite"
+// and "BreadcrumbList" both occur inside prose descriptions on this site, and
+// a false positive silently suppresses a node that genuinely was missing.
+function collectSchemaTypes(...sources: unknown[]): Set<string> {
+  const types = new Set<string>();
+  const walk = (node: any): void => {
+    if (Array.isArray(node)) return node.forEach(walk);
+    if (!node || typeof node !== 'object') return;
+    const t = node['@type'];
+    if (typeof t === 'string') types.add(t);
+    else if (Array.isArray(t)) t.forEach((x) => typeof x === 'string' && types.add(x));
+    Object.values(node).forEach(walk);
+  };
+  for (const src of sources) {
+    if (typeof src === 'string') {
+      for (const m of src.matchAll(
+        /<script[^>]+application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi,
+      )) {
+        try { walk(JSON.parse(m[1])); } catch { /* malformed block — ignore */ }
+      }
+    } else walk(src);
+  }
+  return types;
+}
+
+const declaredSchemaTypes = collectSchemaTypes(schemaArray, headSlotHtml);
+const alreadyHasBreadcrumbSchema = declaredSchemaTypes.has('BreadcrumbList');
+const alreadyHasWebSiteSchema = declaredSchemaTypes.has('WebSite');
 
 function humanizeSlug(slug: string): string {
   const overrides: Record<string, string> = {
