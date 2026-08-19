@@ -1,0 +1,106 @@
+---
+// One editorial contribution, rendered as a structured citation rather than a
+// clause inside a paragraph. /about/ previously carried ~400 words of press
+// prose that repeated the five outlets already shown in the FeaturedIn logo
+// row; the facts were sound but a reader could not scan them and a model could
+// not segment them. Fields map 1:1 onto what a citation has to state: who
+// published it, what it was called, when, and what argument Luke actually made.
+//
+// Dofollow by default, matching the FeaturedIn logo row. These are genuine,
+// unpaid editorial citations to publications that featured the author, and the
+// same five outlets must not carry two different rel treatments on one page.
+// The old /about/ prose links were rel="nofollow noopener"; that was the
+// inconsistency, not the thing to preserve. `rel` stays a prop so a future
+// caller citing something paid or untrusted can nofollow it explicitly.
+interface Props {
+  outlet: string;
+  title: string;
+  url: string;
+  date: string;
+  /** Machine-readable publication date, ISO 8601. Omitted where the original
+      prose gave no date — do not invent one to fill the attribute. */
+  datetime?: string;
+  /** The argument Luke made, in his words from the source paragraph. */
+  argument: string;
+  /** Format qualifier, e.g. "18-contributor panel". Rendered as a chip. */
+  format?: string;
+  rel?: string;
+}
+const {
+  outlet, title, url, date, datetime, argument, format,
+  rel = 'noopener',
+} = Astro.props;
+---
+<article class="pc">
+  <header class="pc-head">
+    <span class="pc-outlet">{outlet}</span>
+    {date && (datetime
+      ? <time class="pc-date" datetime={datetime}>{date}</time>
+      : <span class="pc-date">{date}</span>)}
+    {format && <span class="pc-format">{format}</span>}
+  </header>
+  <h3 class="pc-title">
+    <a href={url} target="_blank" rel={rel}>{title}</a>
+  </h3>
+  <p class="pc-argument"><slot>{argument}</slot></p>
+</article>
+
+<style>
+  .pc {
+    border: 1px solid var(--color-border);
+    border-left: 2px solid var(--color-accent);
+    border-radius: 8px;
+    background: var(--color-surface-raised);
+    padding: 18px 20px;
+  }
+
+  .pc-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 10px;
+    margin-bottom: 8px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .pc-outlet { color: var(--color-accent); font-weight: 700; }
+  .pc-date { color: var(--color-muted); }
+
+  .pc-format {
+    color: var(--color-muted);
+    border: 1px solid var(--color-subtle);
+    border-radius: 3px;
+    padding: 2px 7px;
+    letter-spacing: 0.08em;
+  }
+
+  .pc-title {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+  }
+
+  .pc-title a {
+    color: var(--color-heading);
+    text-decoration: none;
+  }
+
+  .pc-title a:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .pc-argument {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--color-body);
+    margin: 0;
+  }
+</style>

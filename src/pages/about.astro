@@ -3,6 +3,11 @@ import Base from '../layouts/Base.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import FeaturedIn from '../components/FeaturedIn.astro';
+import PressCitation from '../components/PressCitation.astro';
+
+// Hero layout under evaluation: 'a' = 150px portrait stacked above the H1,
+// 'b' = two-column split with the type bottom-aligned to the portrait.
+const HERO_VARIANT: 'a' | 'b' = 'a';
 
 const tocHeadings = [
   {
@@ -28,10 +33,6 @@ const tocHeadings = [
   {
     "id": "get-in-touch",
     "text": "Get in touch"
-  },
-  {
-    "id": "related-app-alternatives",
-    "text": "Related App Alternatives"
   }
 ];
 
@@ -109,11 +110,13 @@ const tocHeadings = [
   <div class="hero">
     <div class="hero-inner">
       <div class="tag">About the author</div>
-      <div class="hero-id">
-        <img src="/luke.jpg" alt="Luke Sandelands, founder of Stack Architect" width="96" height="96" loading="eager" fetchpriority="high" style="border-radius:50%;object-fit:cover;border:2px solid var(--g-border);flex-shrink:0;" />
-        <h1>Luke Sandelands</h1>
+      <div class={`hero-id hero-id--${HERO_VARIANT}`}>
+        <img class="hero-portrait" src="/luke.jpg" alt="Luke Sandelands, founder of Stack Architect" width="150" height="150" loading="eager" fetchpriority="high" />
+        <div class="hero-id-text">
+          <h1>Luke Sandelands</h1>
+          <div class="hero-role">Shopify Automation Specialist</div>
+        </div>
       </div>
-      <div class="hero-role">Shopify Automation Specialist</div>
       <p id="answer" class="hero-lead">Luke Sandelands is a Shopify automation specialist and the founder of Stack Architect, which publishes free, open-source tools that replace paid Shopify apps. Every guide comes from hands-on implementation work — building Make.com scenarios, configuring Meta Conversions API and Google Enhanced Conversions, and testing each build in production stores before publishing.</p>
       <p class="hero-lead">The same architecture that Elevar charges $225/month and Triple Whale charges $219+/month for is released here free, with the full source on GitHub, step-by-step setup, and no upsell.</p>
       <div class="cred-strip">
@@ -150,7 +153,69 @@ const tocHeadings = [
       <p>That pattern repeated across every category. Inventory management. P&amp;L reporting. TikTok Events API. Email automation. In every case, the paid app was charging monthly for configuration work that takes under 10 minutes to replicate directly. So I documented all of it — step by step, with the exact API endpoints, field mappings, and Make.com scenario structures — and published it free.</p>
       <p>The full source for every tool is public on <a href="https://github.com/lsb11/stackarchitect" target="_blank" rel="noopener">GitHub</a>, so nothing here is a black box. Anything I describe can be inspected, forked, and rebuilt independently — which is more than any of the paid alternatives offer.</p>
       <p><strong>Every number on this site is sourced or clearly framed.</strong> The Event Match Quality target (7+) is what well-matched server-side events typically achieve. Savings figures are calculated against current Shopify App Store pricing, checked regularly. The 20–40% figure is our estimate of signal <em>lost</em> to browser-only tracking, drawn from the six sources in our iOS Attribution Gap Benchmark. We publish no recovery percentage — we have no first-party recovery measurement. No fabricated metrics. No purchased reviews. No manufactured social proof. If a number isn't backed by a source, it isn't here.</p>
-      <p><strong>Featured in.</strong> Stack Architect was featured in eCommerce Manager's <a href="https://ecommercemanager.co/shopify/top-shopify-apps-for-automating-your-store-in-x/" target="_blank" rel="nofollow noopener">Top Shopify Apps for Automating Your Store</a> (July 2026), where the free automation stack is recommended alongside the paid tools it replaces. I also contributed to eCommerce Manager's <a href="https://ecommercemanager.co/ecommerce/going-global-ecommerce-leaders-share-international-expansion-strategies/" target="_blank" rel="nofollow noopener">Going Global: Ecommerce Leaders Share International Expansion Strategies</a> (July 2026), on treating cross-border localisation as an automation problem rather than a translation one, and shared proven two-step intent strategies in <a href="https://ecommercemanager.co/shopify/effective-shopify-pop-up-forms-tips-best-practices/" target="_blank" rel="nofollow noopener">Effective Shopify Pop-Up Forms: Tips &amp; Best Practices</a> (July 2026). I was also interviewed by CTO Sync on <a href="https://ctosync.com/qa/deciding-when-engineering-teams-pay-down-technical-debt/" target="_blank" rel="nofollow noopener">deciding when engineering teams should pay down technical debt</a> — the same prioritisation thinking that shapes how the tools and guides here are built and maintained. Informatics Magazine put the sharper version of that question to me in <a href="https://informaticsmagazine.com/qa/balance-data-pipeline-debt-with-new-delivery-demands/" target="_blank" rel="nofollow noopener">Balance Data Pipeline Debt with New Delivery Demands</a> (August 2026): when pipeline debt collides with new delivery demands, my rule is to require absolute technical determinism before model creation. Build the deterministic pipeline first and the model second, because a model sitting on a pipeline you cannot reason about produces outputs you cannot verify — the same failure mode the free stacks documented here are engineered to avoid. Enterprise AI pilots fail for architectural reasons rather than political ones: generative models and agentic protocols like MCP are non-deterministic, and bolting them onto legacy REST APIs that assume explicit schemas and predictable state boundaries — with no intermediate validation or event-driven orchestration — breaks at the boundary layer, leaving an operator to hand-verify every output against a brittle database until that bottleneck destroys the ROI. That argument is mine in TechRound's 18-contributor panel <a href="https://techround.co.uk/artificial-intelligence/quite-contrary-the-real-reason-enterprise-ai-pilots-fail-according-to-chase-w-hughes/" target="_blank" rel="nofollow noopener">Quite Contrary: The Real Reason Enterprise AI Pilots Fail</a> (August 2026), where the fix I put forward is replacing fragile polling and middleman APIs with event-driven pipelines that enforce schema validation at ingestion.</p>
+      <!-- Was ~400 words of press prose naming the same five outlets already in
+           the logo row above, with six inline links buried mid-paragraph. Same
+           outlets, same links, same arguments — restructured as one citation per
+           contribution so a reader can scan them and a model can segment them.
+           Dofollow, matching the logo row above: the same five outlets were
+           carrying nofollow here and dofollow there, which misrepresented
+           genuine unpaid citations. Default set in PressCitation.astro. -->
+      <h3 class="press-heading">Press &amp; contributions</h3>
+      <div class="press-grid">
+        <PressCitation
+          outlet="eCommerce Manager"
+          title="Top Shopify Apps for Automating Your Store"
+          url="https://ecommercemanager.co/shopify/top-shopify-apps-for-automating-your-store-in-x/"
+          date="July 2026"
+          datetime="2026-07-07"
+          format="Featured"
+          argument="Stack Architect is featured here, where the free automation stack is recommended alongside the paid tools it replaces."
+        />
+        <PressCitation
+          outlet="eCommerce Manager"
+          title="Going Global: Ecommerce Leaders Share International Expansion Strategies"
+          url="https://ecommercemanager.co/ecommerce/going-global-ecommerce-leaders-share-international-expansion-strategies/"
+          date="July 2026"
+          datetime="2026-07-20"
+          format="Contribution"
+          argument="Treat cross-border localisation as an automation problem rather than a translation one."
+        />
+        <PressCitation
+          outlet="eCommerce Manager"
+          title="Effective Shopify Pop-Up Forms: Tips &amp; Best Practices"
+          url="https://ecommercemanager.co/shopify/effective-shopify-pop-up-forms-tips-best-practices/"
+          date="July 2026"
+          datetime="2026-07-31"
+          format="Contribution"
+          argument="Shared proven two-step intent strategies for Shopify pop-up forms."
+        />
+        <PressCitation
+          outlet="CTO Sync"
+          title="Deciding when engineering teams should pay down technical debt"
+          url="https://ctosync.com/qa/deciding-when-engineering-teams-pay-down-technical-debt/"
+          date=""
+          format="Interview"
+          argument="The same prioritisation thinking that shapes how the tools and guides here are built and maintained."
+        />
+        <PressCitation
+          outlet="Informatics Magazine"
+          title="Balance Data Pipeline Debt with New Delivery Demands"
+          url="https://informaticsmagazine.com/qa/balance-data-pipeline-debt-with-new-delivery-demands/"
+          date="August 2026"
+          datetime="2026-08-17"
+          format="Q&amp;A"
+          argument="When pipeline debt collides with new delivery demands, my rule is to require absolute technical determinism before model creation. Build the deterministic pipeline first and the model second, because a model sitting on a pipeline you cannot reason about produces outputs you cannot verify — the same failure mode the free stacks documented here are engineered to avoid."
+        />
+        <PressCitation
+          outlet="TechRound"
+          title="Quite Contrary: The Real Reason Enterprise AI Pilots Fail"
+          url="https://techround.co.uk/artificial-intelligence/quite-contrary-the-real-reason-enterprise-ai-pilots-fail-according-to-chase-w-hughes/"
+          date="August 2026"
+          datetime="2026-08-12"
+          format="18-contributor panel"
+          argument="Enterprise AI pilots fail for architectural reasons rather than political ones: generative models and agentic protocols like MCP are non-deterministic, and bolting them onto legacy REST APIs that assume explicit schemas and predictable state boundaries — with no intermediate validation or event-driven orchestration — breaks at the boundary layer, leaving an operator to hand-verify every output against a brittle database until that bottleneck destroys the ROI. The fix I put forward is replacing fragile polling and middleman APIs with event-driven pipelines that enforce schema validation at ingestion."
+        />
+      </div>
       <p><strong>Open-source &amp; community.</strong> Stack Architect tools are listed in <a href="https://github.com/kairichard/awesome-nocode-lowcode" target="_blank" rel="nofollow noopener">Awesome No-Code / Low-Code</a> and <a href="https://github.com/zhuima/awesome-cloudflare" target="_blank" rel="nofollow noopener">Awesome Cloudflare</a>, and the attribution-gap benchmark runs on an <a href="https://github.com/lsb11/stackarchitect" target="_blank" rel="nofollow noopener">open-source Cloudflare Workers backend</a>.</p>
     </div>
   </section>
@@ -195,7 +260,7 @@ const tocHeadings = [
       <a href="https://stocklog.onrender.com/" target="_blank" rel="noopener" style="display:block;margin:22px 0 10px;border:1px solid var(--line,#2a2f2a);border-radius:12px;overflow:hidden;">
         <img src="/images/stocklog-app.webp" alt="StockLog's live product page showing its Stocky import, retry-safe order tracking, and refund restocking features" width="1200" height="622" loading="lazy" style="display:block;width:100%;height:auto;" />
       </a>
-      <p style="font-size:13.5px;color:var(--text-4,#8b918b);">The live product at <a href="https://stocklog.onrender.com/" target="_blank" rel="noopener">stocklog.onrender.com</a> — every inventory guide on this site is informed by building it.</p>
+      <p class="figure-caption">The live product at <a href="https://stocklog.onrender.com/" target="_blank" rel="noopener">stocklog.onrender.com</a> — every inventory guide on this site is informed by building it.</p>
     </div>
   </section>
 
@@ -303,21 +368,9 @@ const tocHeadings = [
   </section>
 
 </main>
-<div style="max-width:860px;margin:0 auto;padding:0 24px;margin-bottom:60px;">
-    
-<div style="max-width:860px;margin:2rem auto;padding:0 24px;">
-  <h2 id="related-app-alternatives" style="font-size:1.5rem;font-weight:bold;margin-bottom:1rem;color:white;">Related App Alternatives</h2>
-  <ul style="list-style:disc;padding-left:1.5rem;color:#9ca3af;">
-    <li><a href="/apps/elevar/" style="color:#34d377;text-decoration:none;hover:underline;">Elevar Pricing & Alternatives</a></li>
-    <li><a href="/apps/triple-whale/" style="color:#34d377;text-decoration:none;hover:underline;">Triple Whale Pricing & Alternatives</a></li>
-    <li><a href="/apps/klaviyo/" style="color:#34d377;text-decoration:none;hover:underline;">Klaviyo Pricing & Alternatives</a></li>
-    <li><a href="/apps/stocky/" style="color:#34d377;text-decoration:none;hover:underline;">Stocky Pricing & Alternatives</a></li>
-    <li><a href="/apps/analyzify/" style="color:#34d377;text-decoration:none;hover:underline;">Analyzify Pricing & Alternatives</a></li>
-    <li><a href="/apps/gorgias/" style="color:#34d377;text-decoration:none;hover:underline;">Gorgias Pricing & Alternatives</a></li>
-  </ul>
+<div class="authorcard-wrap">
+  <AuthorCard />
 </div>
-<AuthorCard />
-  </div>
 </Base>
 
 <style>
@@ -340,9 +393,20 @@ const tocHeadings = [
     .hero{padding:64px 24px 52px;background:var(--bg)}
     .hero-inner{max-width:760px;margin:0 auto}
     .tag{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--g);background:var(--g-dim);border:1px solid var(--g-b);padding:4px 12px;border-radius:4px;display:inline-block;margin-bottom:22px}
-    .hero h1{font-size:clamp(34px,5.5vw,54px);font-weight:700;letter-spacing:-.04em;line-height:1.04;color:var(--text);margin-bottom:8px}
-    .hero-id{display:flex;align-items:center;gap:18px;justify-content:center;margin-bottom:6px;}
-    .hero-role{font-family:var(--mono);font-size:12px;color:var(--g);letter-spacing:.08em;margin-bottom:22px;display:flex;align-items:center;gap:10px}
+    .hero h1{font-size:clamp(34px,5.5vw,54px);font-weight:700;letter-spacing:-.04em;line-height:1.04;color:var(--text);margin-bottom:10px}
+    /* Portrait, not avatar. At 96px beside a 54px H1 it read as a UI element;
+       150px is large enough to be a photograph of a person. */
+    .hero-portrait{width:150px;height:150px;border-radius:50%;object-fit:cover;border:2px solid var(--border);flex-shrink:0;display:block}
+    .hero-id{display:flex;margin-bottom:22px}
+    .hero-id-text{min-width:0}
+    /* (a) Stacked: portrait above the H1, left-aligned with the rest of the
+       column. The tag, lead and credential strip are all left-aligned, so a
+       centred portrait+H1 would leave the block hanging off its own axis. */
+    .hero-id--a{flex-direction:column;align-items:flex-start;gap:20px}
+    /* (b) Two-column split, type bottom-aligned so the H1 baseline meets the
+       lower edge of the portrait rather than its centre. */
+    .hero-id--b{flex-direction:row;align-items:flex-end;gap:24px}
+    .hero-role{font-family:var(--mono);font-size:12px;color:var(--g);letter-spacing:.08em;display:flex;align-items:center;gap:10px}
     .hero-role::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--g);animation:ping 2.2s ease-in-out infinite}
     @keyframes ping{0%,100%{opacity:1}50%{opacity:.3}}
     .hero-lead{font-size:17px;color:var(--text-3);line-height:1.85;margin-bottom:32px;max-width:640px}
@@ -367,6 +431,14 @@ const tocHeadings = [
     .exp-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;line-height:1.3}
     .exp-body{font-size:13px;color:var(--text-3);line-height:1.65}
     .exp-body a{color:var(--g);text-decoration:underline;text-underline-offset:2px}
+    /* Figure caption — was an inline font-size, the same type-scale escape as
+       the h2 on the removed Related App Alternatives block. */
+    .figure-caption{font-size:13px;color:var(--text-4)}
+    /* Press citations */
+    .press-heading{font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.01em;margin:32px 0 14px}
+    .press-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+    /* Author card */
+    .authorcard-wrap{max-width:860px;margin:0 auto 60px;padding:0 24px}
     /* Methodology */
     .methodology{border:1px solid var(--g-b);background:var(--g-dim);border-radius:var(--r);padding:26px 30px;margin-top:28px}
     .methodology-label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--g);margin-bottom:16px;text-transform:uppercase}
@@ -405,6 +477,8 @@ const tocHeadings = [
     .btn:hover{opacity:.88;transform:translateY(-1px);text-decoration:none}
     @media(max-width:640px){
       .exp-grid,.method-grid,.contact-grid{grid-template-columns:1fr}
+      .hero-id--b{flex-direction:column;align-items:flex-start;gap:18px}
+      .hero-portrait{width:120px;height:120px}
       .hero{padding:44px 16px 36px}
       .section,.section-alt{padding:44px 16px}
       .cta-inner{flex-direction:column;align-items:flex-start}
