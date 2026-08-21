@@ -1503,22 +1503,12 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
   updateCountdown();
   setInterval(updateCountdown, 30000);
 
-  // Scroll bar reveal
-  var shown = false, gone = false;
-  window.addEventListener('scroll', function() {
-    if (gone) return;
-    var pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-    var bar = document.getElementById('scroll-bar');
-    if (!bar) return;
-    if (pct > 55 && !shown) { bar.style.display = 'block'; shown = true; }
-    else if (pct < 35 && shown) { bar.style.display = 'none'; shown = false; }
-  }, { passive: true });
-  var dismiss = document.getElementById('scroll-dismiss');
-  if (dismiss) dismiss.addEventListener('click', function() {
-    var bar = document.getElementById('scroll-bar');
-    if (bar) bar.style.display = 'none';
-    gone = true;
-  });
+  // The #scroll-bar listener that lived here was dead code: the element was
+  // removed from this page but its scroll handler and dismiss handler stayed,
+  // running on every scroll event and no-opping on a null lookup.
+  // StickyAffiliateCTA (mounted at the end of <main>) supersedes it and is
+  // better built - reveal threshold, primary-CTA suppression, session dismissal
+  // and GA4 reporting all handled in one place.
 })();
 
 // Scanner logic
