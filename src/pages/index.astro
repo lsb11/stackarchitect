@@ -370,7 +370,9 @@ const stockyGone = Date.now() > new Date(STOCKY_EOL).getTime();
     </details>
   </div>
 
-  <div class="urgency" role="note"><span class="dot" style="background:var(--amber);animation:none;"></span>Shopify's Stocky app shuts down August 31, 2026 — free replacement ready now</div>
+  <div class="urgency" role="note"><span class="dot" style="background:var(--amber);animation:none;"></span>{stockyGone
+    ? "Shopify deleted all Stocky data on August 31, 2026 — the free replacement deploys in 4 minutes"
+    : "Shopify's Stocky app shuts down August 31, 2026 — free replacement ready now"}</div>
 
   <div class="ledger reveal" aria-label="What the free stack replaces">
     <div class="ledger-row"><span class="ledger-app">Klaviyo <em>email</em></span><span class="ledger-fill"></span><span class="ledger-was">$20+/mo</span><span class="ledger-now">$0</span></div>
@@ -472,11 +474,17 @@ const stockyGone = Date.now() > new Date(STOCKY_EOL).getTime();
       <div class="sol-urgent-bar"></div>
       <div class="sol-urgent-inner">
         <div style="flex:1;min-width:260px;">
-          <div class="sol-urgent-badge">⚠ Action required — August 31, 2026</div>
+          <div class="sol-urgent-badge">{stockyGone ? "⚠ Stocky data deleted — August 31, 2026" : "⚠ Action required — August 31, 2026"}</div>
           <div style="margin-bottom:10px;"><span class="tag tag-sky">Inventory</span></div>
           <div class="sol-urgent-name">Stocky Swap</div>
-          <div class="sol-urgent-hl">Shopify Permanently Deletes All Stocky Data Aug 31. Replace It Now.</div>
-          <p class="sol-urgent-desc">Per Shopify's official shutdown notice, all Stocky data — purchase orders, stocktakes, transfers, SKU history — is permanently deleted after August 31, 2026. No migration path. Stocky Swap logs every order to Google Sheets in real time via Make.com webhook. Deploys in 4 minutes. Your data is safe the moment you deploy. <a href="/stocky-alternative/" style="color:var(--sky)">See all Stocky alternatives →</a></p>
+          <div class="sol-urgent-hl">{stockyGone
+            ? "Shopify Deleted All Stocky Data on Aug 31. Here Is What Replaces It."
+            : "Shopify Permanently Deletes All Stocky Data Aug 31. Replace It Now."}</div>
+          {stockyGone ? (
+            <p class="sol-urgent-desc">Stocky's purchase orders, stocktakes, transfers, supplier records and SKU history were permanently deleted after August 31, 2026, and Shopify provided no migration path. If you did not export before the deadline, that history is gone — but the ongoing tracking is replaceable today. Stocky Swap logs every new order to Google Sheets in real time via a Make.com webhook and starts building fresh inventory history the moment you deploy. Four minutes, no app install, $0. <a href="/stocky-alternative/" style="color:var(--sky)">See all Stocky alternatives →</a></p>
+          ) : (
+            <p class="sol-urgent-desc">Per Shopify's official shutdown notice, all Stocky data — purchase orders, stocktakes, transfers, SKU history — is permanently deleted after August 31, 2026. No migration path. Stocky Swap logs every order to Google Sheets in real time via Make.com webhook. Deploys in 4 minutes. Your data is safe the moment you deploy. <a href="/stocky-alternative/" style="color:var(--sky)">See all Stocky alternatives →</a></p>
+          )}
           <div class="sol-urgent-reps"><span class="sol-rep">Stocky</span><span class="sol-rep">Linnworks</span><span class="sol-rep">Skubana</span><span class="sol-rep">Inventory Planner</span></div>
           <div class="sol-urgent-meta"><span class="sol-urgent-save">Saves $29–$500/mo</span><span class="sol-urgent-time">~4 min setup</span></div>
           <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;">
