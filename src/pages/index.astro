@@ -3,6 +3,171 @@ import Base from '../layouts/Base.astro';
 import Disclosure from '../components/Disclosure.astro';
 import AttributionTracker from '../components/AttributionTracker.astro';
 import FeaturedIn from '../components/FeaturedIn.astro';
+import StickyAffiliateCTA from '../components/StickyAffiliateCTA.astro';
+
+/* ============================================================================
+ * SINGLE SOURCES OF TRUTH FOR THE HOMEPAGE
+ *
+ * Everything below used to live in inline <script> arrays and hand-written
+ * JSON-LD literals. Three problems followed from that, and all three are fixed
+ * by hoisting the data here:
+ *
+ *  1. The FAQ and the scanner were injected client-side into empty divs, so a
+ *     raw fetch of this page returned neither. AI crawlers (GPTBot,
+ *     OAI-SearchBot, ClaudeBot, PerplexityBot) do not execute JavaScript, so
+ *     the most citable content on the site was invisible to all of them.
+ *  2. The FAQPage JSON-LD declared 19 questions while the rendered array held
+ *     18, and the two carried different answer copy. Both are now generated
+ *     from FAQ below, so they cannot drift.
+ *  3. Savings figures were stated five different ways across the page. They
+ *     now derive from SAVINGS.
+ * ========================================================================= */
+
+/* ---------------------------------------------------------------------------
+ * SAVINGS — the page's only savings numbers. Change them here, once.
+ *
+ * Derived from the seven rows of the "Paid Apps vs The $0 Stack" table, which
+ * is the figure set carrying the "cross-referenced against vendor pricing
+ * pages" claim. Rows quoted as "$X+/mo" contribute their floor to BOTH bounds,
+ * so both bounds understate rather than overstate.
+ *
+ *   low  =  20 + 145 +  29 + 20 +  39 +  19 + 49  =   321
+ *   high =  20 + 650 + 500 + 20 + 299 + 299 + 99  = 1,887
+ *
+ * NOTE FOR REVIEW: the hero ledger and the comparison table previously quoted
+ * DIFFERENT prices for the same vendors (Klaviyo at "$20+/mo" in one and
+ * "$150-400/mo" in the other; Elevar/Triple Whale at "$145-650" vs
+ * "$225-1,250"). The table's figures are canonical here because they carry the
+ * verification claim. Re-check the per-row vendor prices.
+ * ------------------------------------------------------------------------ */
+const SAVINGS = { moLow: 321, moHigh: 1887, yrLow: 3852, yrHigh: 22644 };
+const money = (n: number) => '$' + n.toLocaleString('en-US');
+const MO_RANGE = `${money(SAVINGS.moLow)}–${money(SAVINGS.moHigh)}/mo`;
+const YR_RANGE = `${money(SAVINGS.yrLow)}–${money(SAVINGS.yrHigh)}/year`;
+
+/* ---------------------------------------------------------------------------
+ * PAINS — the diagnostic scanner options. Rendered server-side as real
+ * buttons; the inline script only attaches toggle behaviour to them.
+ * Costs sum to 1,887, matching SAVINGS.moHigh, so the scanner can no longer
+ * produce a figure that contradicts the rest of the page.
+ * ------------------------------------------------------------------------ */
+const PAINS = [
+  { id: 't',  label: 'Losing ad attribution after iOS updates — Meta/Google', cost: 650, badge: 'Most common',     sol: 'CAPI Shield',          url: '/capi-shield/' },
+  { id: 'k',  label: 'Paying Klaviyo $20+/mo for email marketing',            cost: 20,  badge: 'Replace free',    sol: 'Replace Klaviyo Free', url: '/replace-klaviyo-free/' },
+  { id: 'tk', label: 'Running TikTok ads — losing 20–40% of conversions',     cost: 299, badge: 'TikTok CAPI',     sol: 'TikTok Events API',    url: '/tiktok-events-api-shopify/' },
+  { id: 'i',  label: 'Paying for inventory or stock sync apps',               cost: 500, badge: 'Aug 2026 urgent', sol: 'Stocky Swap',          url: '/stocky-swap/' },
+  { id: 'p',  label: 'No live P&L — manual CSV exports or no reporting',      cost: 299, badge: 'Quick fix',       sol: 'P&L Auto',             url: '/shopify-profit-loss-automation/' },
+  { id: 'a',  label: 'Google Scripts or Make.com failing mid-month',          cost: 119, badge: null,              sol: 'Autocrat Quota Fix',   url: '/autocrat-quota-fix/' },
+];
+
+/* ---------------------------------------------------------------------------
+ * FAQ — 19 questions. The only definition.
+ *
+ * `a` carries inline links for human readers. The JSON-LD `text` value is the
+ * same string with tags stripped, so the marked-up answer and the visible
+ * answer are identical prose, as Google's structured data policy requires.
+ * ------------------------------------------------------------------------ */
+const FAQ = [
+  {
+    q: 'What is the best free alternative to Shopify Stocky in 2026?',
+    a: "<a href='/stocky-swap/'>Stocky Swap</a> is the best free Stocky alternative in 2026. Shopify is permanently shutting down Stocky on August 31, 2026 and deleting all data after that date. Stocky Swap logs every Shopify order to Google Sheets in real time via a Make.com webhook, capturing stock levels, fulfilment status, SKU data, and full order history. Free forever, deploys in 4 minutes, requires no Shopify app install, and runs on Make.com's free tier of 1,000 credits per month. See the full <a href='/stocky-alternative/'>Stocky alternatives comparison</a>.",
+  },
+  {
+    q: 'How do I replace Elevar for free on Shopify?',
+    a: "<a href='/capi-shield/'>CAPI Shield</a> replaces Elevar for free. It routes Shopify purchase events server-side to Meta Conversions API and Google Enhanced Conversions via a Make.com webhook, achieving Event Match Quality scores of 7–8.5 — the same technical outcome as Elevar at $225/mo, at $0 per month. Deploys in 6 minutes with no code required on Make.com's free tier. See the full <a href='/shopify-attribution-tools-compared/'>Elevar alternative comparison</a>.",
+  },
+  {
+    q: 'What is the best free Klaviyo alternative for Shopify in 2026?',
+    a: "Systeme.io is the best free Klaviyo alternative for Shopify in 2026. Its permanently free plan includes 2,000 contacts, unlimited email sends, full automation sequences covering welcome, abandoned cart, post-purchase and win-back, plus sales funnels, CRM, and affiliate management. Klaviyo changed its billing model in February 2025 to charge for all active profiles, so stores now pay $20+ per month for comparable volume. Migration takes approximately 30 minutes — see the <a href='/replace-klaviyo-free/'>full Klaviyo replacement guide</a> or calculate your saving with the <a href='/klaviyo-to-systeme-migration-savings-calculator/'>Klaviyo Migration Savings Calculator</a>.",
+  },
+  {
+    q: 'Does Make.com work with Shopify?',
+    a: "Yes, Make.com works natively with Shopify via webhooks and has over 100 Shopify triggers and actions. The free tier includes 1,000 credits per month, formerly called operations — ten times more than Zapier's 100 free tasks per month — which is enough for most Shopify stores processing up to several hundred orders per month. No credit card is required. Make.com is the automation engine behind every Stack Architect tool. Full answer: <a href='/make-com-shopify/'>does Make.com work with Shopify?</a>",
+  },
+  {
+    q: 'What is the Shopify Conversions API (CAPI)?',
+    a: "The Shopify Conversions API sends purchase events server-side directly to Meta and Google Ads, bypassing iOS Intelligent Tracking Prevention, ad blockers, and cookie expiry that block browser-based pixels. Since Shopify's App Pixel defaulted to Optimized mode on January 13, 2026, throttling Meta pixel data, server-side CAPI has become essential. It carries the estimated 20–40% of conversion data that browser tracking loses, keeping it visible to ad platforms and improving ROAS attribution accuracy. Full explanation: <a href='/capi-shield/'>what is the Shopify CAPI?</a>",
+  },
+  {
+    q: 'How do I set up TikTok server-side tracking for Shopify without code?',
+    a: "Use Make.com to route Shopify order webhooks as CompletePayment events to TikTok's Events API server-to-server. TikTok uses CompletePayment as its purchase event name, not Purchase. Stack Architect provides a free step-by-step guide that completes setup in 6 minutes — no developer required, no code, running on Make.com's free tier. EMQ scores of 6–8 are typical. Full walkthrough: <a href='/tiktok-events-api-shopify/'>TikTok Events API Shopify setup</a>.",
+  },
+  {
+    q: 'How much does Triple Whale cost and is there a free alternative?',
+    a: "Triple Whale uses GMV-based pricing that scales with your store's revenue and chosen package, with a limited free plan. The free alternative for server-side tracking is <a href='/capi-shield/'>CAPI Shield</a>, which provides server-side conversion events to Meta and Google Ads at $0 per month, typically reaching EMQ 7–8.5 — matching the attribution accuracy of Triple Whale's CAPI component. Full breakdown: <a href='/shopify-attribution-tools-compared/'>Shopify attribution tools compared</a>.",
+  },
+  {
+    q: 'What is server-side tracking for Shopify and why does it matter in 2026?',
+    a: "Server-side tracking sends purchase events directly from your server to ad platforms like Meta and Google Ads, bypassing iOS privacy restrictions, Safari cookie expiry, ad blockers, and browser-based pixel limitations. Since iOS 14.5 ATT and continuing through iOS 26 Link Tracking Protection, which strips fbclid from Private Browsing, Mail, and Messages links, browser tracking has become increasingly unreliable. Server-side tracking carries the estimated 20–40% of conversions that would otherwise go unmeasured. For Shopify stores running paid ads it is now essential for accurate ROAS measurement. Full guide: <a href='/blog/shopify-server-side-tracking-complete-setup-guide/'>Shopify server-side tracking setup</a>.",
+  },
+  {
+    q: 'Do I have to keep paying $500+ per month on Shopify apps?',
+    a: `No. The Stack Architect $0 Automation Stack replaces seven categories of paid Shopify apps — ad tracking, inventory management, email marketing, TikTok server-side tracking, P&L profit reporting, workflow automation and automation stability — using the free tiers of Make.com, Google Sheets and Systeme.io. Adding up the seven categories on this page gives ${MO_RANGE}, or ${YR_RANGE}. Or buy the <a href='/pro/'>Complete Kit for $29</a> for the pre-built files.`,
+  },
+  {
+    q: 'What is the Stack Architect Complete Kit and what does $29 include?',
+    a: "The <a href='/pro/'>Stack Architect Complete Kit</a> is a $29 one-time purchase containing four ready-to-import Make.com JSON blueprints — CAPI Shield for Meta and Google tracking, TikTok Events API, Stocky Swap for inventory, and P&L Auto for profit reporting — plus two pre-configured Google Sheets templates and four Loom walkthrough videos. It deploys the entire Shopify automation stack in 10 minutes instead of the 8 hours needed to build from the free guides. One payment, no subscription ever, and a 30-day money-back guarantee.",
+  },
+  {
+    q: 'Is my Shopify data secure with this stack?',
+    a: 'Yes. All data stays inside your own Google account and Make.com workspace. Stack Architect has zero access to your Shopify orders, customer data, or ad accounts. The tools are GDPR compliant by design — you own and control everything. Data flows from Shopify to your Make.com account to your Google Sheets, with no third-party storage or intermediary.',
+  },
+  {
+    q: 'Can I set up Shopify automation without a developer or any code?',
+    a: "Yes. Zero coding is required. Every tool in the Stack Architect stack is plug-and-play — any store owner can deploy each tool in under 10 minutes using the free step-by-step guides. The <a href='/pro/'>$29 Complete Kit</a> provides pre-configured Make.com JSON blueprint files that import in one click, requiring no manual module configuration, field mapping, or API setup.",
+  },
+  {
+    q: 'Why is my Shopify Google Ads conversion tracking showing wrong numbers?',
+    a: "Shopify Google Ads conversion tracking shows wrong numbers because iOS Link Tracking Protection strips the Google Click ID from ad URLs before customers open them in Safari, Mail, or Messages. Without gclid, Google cannot attribute the purchase to the ad. Safari ITP also clears attribution cookies within 24 hours. The fix is <a href='/shopify-google-ads-conversion-tracking/'>Google Enhanced Conversions via Make.com</a> — a server-side signal that sends hashed customer email to Google Ads directly from Shopify's server, bypassing browser restrictions entirely. It deploys in 6 minutes and recovers 15–40% of lost conversions at $0/month.",
+  },
+  {
+    q: 'How do I prepare my Shopify store for AI shopping and ChatGPT citations?',
+    a: "Three requirements for AI-discoverable Shopify stores in 2026: first, structured data — Product, Offer, Organization and FAQPage schema on every page; second, server-side tracking for accurate conversion signals back to ad platforms; third, an llms.txt file at your domain root describing your product catalogue for AI crawlers. Critically, all of it must be present in the server-rendered HTML, because AI crawlers do not execute JavaScript. The <a href='/blog/shopify-agentic-storefronts-setup-guide-2026/'>Agentic Storefronts setup guide</a> includes a 12-point readiness checklist.",
+  },
+  {
+    q: "What's the difference between Make.com and Zapier for Shopify automation?",
+    a: "Make.com's free tier includes 1,000 credits per month, formerly called operations. Zapier's free tier includes 100 tasks per month — ten times fewer. Make.com is also more flexible for multi-step branching workflows, such as routing one Shopify order event to Meta CAPI, Google Ads, TikTok Events API and Google Sheets simultaneously, because operations are counted per module rather than per multi-step zap. For Shopify stores with more than 100 orders per month, Make.com is usually 3–5x cheaper than Zapier at equivalent volume. Compare exactly with the <a href='/make-vs-zapier-cost-calculator/'>Make vs Zapier Calculator</a>.",
+  },
+  {
+    q: 'What happens to my Stocky data after the 31 August 2026 shutdown?',
+    a: "All Stocky data — purchase orders, stocktakes, transfers, supplier records, demand forecasts and SKU history — is permanently deleted after August 31, 2026 per Shopify's official shutdown notice. There is no migration path provided by Shopify. Store owners must export their data and migrate to a replacement before the deadline. <a href='/stocky-swap/'>Stocky Swap</a> is a free replacement that logs orders to Google Sheets via Make.com and deploys in 4 minutes. Score your migration complexity with the <a href='/stocky-migration-risk-scorer/'>Stocky Migration Risk Scorer</a>.",
+  },
+  {
+    q: 'How much does a typical Shopify store save with the free automation stack?',
+    a: `Adding up the seven paid app categories on this page gives ${MO_RANGE}, which is ${YR_RANGE}. The low bound is the sum of every category's entry-level price and the high bound the sum of every category's ceiling, so most stores land between them depending on which apps they run. Categories quoted as "from $X" contribute their floor to both bounds, so both figures understate rather than overstate. The $29 Complete Kit pays for itself in under a week at any point in that range. Calculate your exact figure with the <a href='/shopify-app-cost-calculator/'>App Cost Calculator</a>.`,
+  },
+  {
+    q: 'Does Shopify officially support replacing its Stocky app with third-party tools?',
+    a: "Yes. Shopify's own shutdown notice directs merchants to the Shopify App Store and third-party inventory management tools. Shopify does not provide a first-party migration path — the Stocky database will be deleted after August 31, 2026. Any tool that can ingest Shopify order webhooks can replace Stocky's core inventory tracking functionality, including free webhook-to-Sheets workflows like <a href='/stocky-swap/'>Stocky Swap</a>.",
+  },
+  {
+    q: 'Why is Stack Architect free and how does it make money?',
+    a: "Stack Architect's free tools, guides and calculators are funded by two revenue streams. First, affiliate commissions from tools we use and recommend — Make.com, Systeme.io, GetResponse, Beehiiv, Tidio, Gorgias and Google Workspace — which cost you nothing extra. Second, the optional $29 <a href='/pro/'>Complete Kit</a> for store owners who want pre-built Make.com blueprints rather than building from the free guides. No subscriptions, no upsells, no hidden fees. <a href='/how-we-test/'>How we test and disclose</a>.",
+  },
+];
+
+/* Visible answer text === JSON-LD answer text. Tags stripped, prose identical. */
+const stripTags = (html: string) =>
+  html.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  '@id': 'https://stackarchitect.xyz/#faq',
+  'inLanguage': 'en-GB',
+  'isPartOf': { '@id': 'https://stackarchitect.xyz/#webpage' },
+  'mainEntity': FAQ.map((item) => ({
+    '@type': 'Question',
+    'name': item.q,
+    'acceptedAnswer': { '@type': 'Answer', 'text': stripTags(item.a) },
+  })),
+};
+
+/* Stocky's end of service. One date, used by the countdown, the urgency strip
+ * and the post-deadline copy, so the page reads correctly on 1 September with
+ * no edit. */
+const STOCKY_EOL = '2026-08-31T23:59:59Z';
+const stockyGone = Date.now() > new Date(STOCKY_EOL).getTime();
 ---
 <Base 
   title="Free Shopify Automation Stack 2026 — Replace Paid Apps" 
@@ -70,31 +235,6 @@ import FeaturedIn from '../components/FeaturedIn.astro';
       ]
     },
     {
-      "@type": "FAQPage",
-      "@id": "https://stackarchitect.xyz/#faq",
-      "mainEntity": [
-        { "@type": "Question", "name": "What is the best free alternative to Shopify Stocky in 2026?", "acceptedAnswer": { "@type": "Answer", "text": "Stocky Swap by Stack Architect is the best free Stocky alternative in 2026. Shopify is permanently shutting down Stocky on August 31, 2026 and deleting all data after that date (source: Shopify Stocky shutdown announcement). Stocky Swap logs every Shopify order to Google Sheets in real time via a Make.com webhook, capturing stock levels, fulfilment status, SKU data, and full order history. Free forever, deploys in 4 minutes, requires no Shopify app install, runs on Make.com's free tier (1,000 credits/month)." } },
-        { "@type": "Question", "name": "How do I replace Elevar for free on Shopify?", "acceptedAnswer": { "@type": "Answer", "text": "CAPI Shield by Stack Architect replaces Elevar for free. It routes Shopify purchase events server-side to Meta Conversions API and Google Enhanced Conversions via a Make.com webhook, achieving Event Match Quality scores of 7–8.5 — the same technical outcome as Elevar at $225/mo, at $0 per month. Deploys in 6 minutes with no code required on Make.com's free tier." } },
-        { "@type": "Question", "name": "What is the best free Klaviyo alternative for Shopify in 2026?", "acceptedAnswer": { "@type": "Answer", "text": "Systeme.io is the best free Klaviyo alternative for Shopify in 2026. Its permanently free plan includes 2,000 contacts, unlimited email sends, full automation sequences (welcome, abandoned cart, post-purchase, win-back), sales funnels, CRM, and affiliate management. Klaviyo changed its billing model in February 2025 to charge for all active profiles — stores now pay $20+ per month for comparable volume. Migration from Klaviyo to Systeme.io takes approximately 30 minutes." } },
-        { "@type": "Question", "name": "Does Make.com work with Shopify?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, Make.com works natively with Shopify via webhooks. It has over 100 Shopify triggers and actions. The free tier includes 1,000 credits/month (formerly called operations) — 10x more than Zapier's 100 free tasks per month — enough for most Shopify stores processing up to several hundred orders per month. No credit card required. Make.com is the automation engine behind every Stack Architect tool." } },
-        { "@type": "Question", "name": "What is the Shopify Conversions API (CAPI)?", "acceptedAnswer": { "@type": "Answer", "text": "The Shopify Conversions API (CAPI) sends purchase events server-side directly to Meta and Google Ads, bypassing iOS Intelligent Tracking Prevention (ITP), ad blockers, and cookie expiry that block browser-based pixels. Since Shopify's App Pixel defaulted to Optimized mode on January 13, 2026, throttling Meta pixel data, server-side CAPI has become essential. It carries the estimated 20–40% of conversion data that browser tracking loses, keeping it visible to ad platforms, improving ROAS attribution accuracy." } },
-        { "@type": "Question", "name": "How do I set up TikTok server-side tracking for Shopify without code?", "acceptedAnswer": { "@type": "Answer", "text": "Use Make.com to route Shopify order webhooks as CompletePayment events to TikTok's Events API server-to-server. TikTok uses CompletePayment as its purchase event name, not Purchase. Stack Architect provides a free step-by-step guide that completes setup in 6 minutes — no developer required, no code, runs on Make.com's free tier. EMQ scores of 6–8 are typical." } },
-        { "@type": "Question", "name": "How much does Triple Whale cost and is there a free alternative?", "acceptedAnswer": { "@type": "Answer", "text": "Triple Whale uses GMV-based pricing that scales with your store's revenue and chosen package, with a limited free plan. The free alternative for server-side tracking is CAPI Shield by Stack Architect, which provides server-side conversion events to Meta and Google Ads at $0 per month, typically reaching EMQ 7–8.5 — matching the attribution accuracy of Triple Whale's CAPI component." } },
-        { "@type": "Question", "name": "What is server-side tracking for Shopify and why does it matter in 2026?", "acceptedAnswer": { "@type": "Answer", "text": "Server-side tracking sends purchase events directly from your server to ad platforms like Meta and Google Ads, bypassing iOS privacy restrictions (ITP), Safari cookie expiry, ad blockers, and browser-based pixel limitations. Since iOS 14.5 ATT and continuing through iOS 26 Link Tracking Protection (which strips fbclid from Private Browsing, Mail, and Messages links), browser tracking has become increasingly unreliable. Server-side tracking carries the estimated 20–40% of conversions that would otherwise go unmeasured. For Shopify stores running paid ads, it is now essential for accurate ROAS measurement." } },
-        { "@type": "Question", "name": "What is the Stack Architect Complete Kit and what does $29 include?", "acceptedAnswer": { "@type": "Answer", "text": "The Stack Architect Complete Kit is a $29 one-time purchase containing four ready-to-import Make.com JSON blueprints (CAPI Shield for Meta and Google tracking, TikTok Events API, Stocky Swap for inventory, P&L Auto for profit reporting), two pre-configured Google Sheets templates, and four Loom walkthrough videos. It deploys the entire Shopify automation stack in 10 minutes instead of the 8 hours needed to build from the free guides. One payment, no subscription ever. Includes 30-day money-back guarantee." } },
-        { "@type": "Question", "name": "Is my Shopify data secure with the Stack Architect automation stack?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. All data stays inside your own Google account and Make.com workspace. Stack Architect has zero access to your Shopify orders, customer data, or ad accounts. The tools are GDPR compliant by design — you own and control everything. Data flows from Shopify to your Make.com account to your Google Sheets, with no third-party storage or intermediary." } },
-        { "@type": "Question", "name": "Can I set up Shopify automation without a developer or any code?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Zero coding is required. Every tool in the Stack Architect stack is plug-and-play — any store owner can deploy each tool in under 10 minutes using the free step-by-step guides. The $29 Complete Kit provides pre-configured Make.com JSON blueprint files that import in one click, requiring no manual module configuration, field mapping, or API setup." } },
-        { "@type": "Question", "name": "Do I have to keep paying $500+ per month on Shopify apps?", "acceptedAnswer": { "@type": "Answer", "text": "No. The Stack Architect $0 Automation Stack replaces six categories of paid Shopify apps — ad tracking (Elevar, Triple Whale), inventory management (Stocky, Linnworks), email marketing (Klaviyo), TikTok server-side tracking (WeltPixel, Analyzify), P&L profit reporting (TrueProfit, BeProfit), and automation stability (Zapier) — using free tiers of Make.com (1,000 credits/month free), Google Sheets, and Systeme.io (2,000 contacts, unlimited sends free). Typical savings: $700+ per month." } },
-        { "@type": "Question", "name": "Why is my Shopify Google Ads conversion tracking showing wrong numbers?", "acceptedAnswer": { "@type": "Answer", "text": "Shopify Google Ads conversion tracking shows wrong numbers because iOS Link Tracking Protection strips the Google Click ID (gclid) from ad URLs before customers open them in Safari, Mail, or Messages. Without gclid, Google cannot attribute the purchase to the ad. Safari ITP also clears attribution cookies within 24 hours. The fix is Google Enhanced Conversions — a server-side signal that sends hashed customer email to Google Ads directly from Shopify's server, bypassing browser restrictions entirely. Stack Architect provides a free Make.com setup that deploys in 6 minutes and recovers 15–40% of lost conversions at $0/month, replacing Stape ($29+/month) and Littledata ($159+/month)." } },
-        { "@type": "Question", "name": "How do I prepare my Shopify store for AI shopping and ChatGPT citations?", "acceptedAnswer": { "@type": "Answer", "text": "Three requirements for AI-discoverable Shopify stores in 2026: (1) structured data — Product, Offer, Organization, and FAQPage schema on every page; (2) server-side tracking for accurate conversion signals back to ad platforms; (3) an llms.txt file at your domain root describing your product catalogue for AI crawlers. Stack Architect's Agentic Storefronts setup guide includes a 12-point readiness checklist covering all three." } },
-        { "@type": "Question", "name": "What's the difference between Make.com and Zapier for Shopify automation?", "acceptedAnswer": { "@type": "Answer", "text": "Make.com's free tier includes 1,000 credits/month (formerly called operations). Zapier's free tier includes 100 tasks per month — 10x fewer. Make.com is also more flexible for multi-step branching workflows (routing one Shopify order event to Meta CAPI, Google Ads, TikTok Events API, and Google Sheets simultaneously) because operations are counted per module, not per multi-step zap. For Shopify stores with more than 100 orders per month, Make.com is usually 3–5x cheaper than Zapier at equivalent volume." } },
-        { "@type": "Question", "name": "What happens to my Stocky data after the 31 August 2026 shutdown?", "acceptedAnswer": { "@type": "Answer", "text": "All Stocky data — purchase orders, stocktakes, transfers, supplier records, demand forecasts, and SKU history — will be permanently deleted after August 31, 2026 per Shopify's official shutdown notice. There is no migration path provided by Shopify. Store owners must export data and migrate to a replacement before the deadline. Stocky Swap by Stack Architect is a free replacement that logs orders to Google Sheets via Make.com and can be deployed in 4 minutes." } },
-        { "@type": "Question", "name": "How much does a typical Shopify store save with the free automation stack?", "acceptedAnswer": { "@type": "Answer", "text": "Typical savings range from $400 to $1,800 per month depending on which apps are being replaced. Example stack: Klaviyo ($20+/mo) + Triple Whale or Elevar ($225/mo) + Stocky or Inventory Planner (quote-only) + Zapier ($19.99+/mo) + TrueProfit or BeProfit ($19–$99/mo) = $426–$1,848/month replaced. The $29 Complete Kit pays for itself in less than one week for most stores." } },
-        { "@type": "Question", "name": "Does Shopify officially support replacing its Stocky app with third-party tools?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Shopify's own shutdown notice directs merchants to the Shopify App Store and third-party inventory management tools. Shopify does not provide a first-party migration path — the Stocky database will be deleted after August 31, 2026. Any tool that can ingest Shopify order webhooks can replace Stocky's core inventory tracking functionality, including free webhook-to-Sheets workflows like Stocky Swap." } },
-        { "@type": "Question", "name": "Why is Stack Architect free and how does it make money?", "acceptedAnswer": { "@type": "Answer", "text": "Stack Architect's free tools, guides, and calculators are funded by two revenue streams: (1) affiliate commissions from tools we use and recommend (Make.com, Systeme.io, GetResponse, Beehiiv, Tidio, Gorgias, Google Workspace) — these cost you nothing extra; (2) the optional $29 Complete Kit for store owners who want pre-built Make.com blueprints rather than building from free guides. No subscriptions, no upsells, no hidden fees." } }
-      ]
-    },
-    {
       "@type": "SoftwareApplication",
       "name": "Stack Architect Complete Kit",
       "url": "https://stackarchitect.xyz/pro/",
@@ -135,6 +275,12 @@ import FeaturedIn from '../components/FeaturedIn.astro';
   ]
 }
 </script>
+    <!-- FAQPage is generated from the FAQ array in this file's frontmatter, the
+         same array that renders the visible <details> list below. Emitting it as
+         a separate block (rather than inside the @graph literal) is what makes
+         "schema count === rendered count" true by construction instead of by
+         hand. Multiple ld+json blocks on one page are valid and are merged. -->
+    <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)}></script>
     <meta name="article:published_time" content="2026-02-01T00:00:00Z">
 <meta name="article:modified_time" content="2026-05-18T00:00:00Z">
 <meta name="article:section" content="Shopify Automation">
@@ -242,7 +388,25 @@ import FeaturedIn from '../components/FeaturedIn.astro';
   </div>
   <div class="scan-card">
     <div id="sc-scan">
-      <div class="pain-list" id="sc-list"></div>
+      {/* Server-rendered from PAINS. The inline script attaches toggle
+          behaviour to these buttons; it no longer creates them, so the six
+          labels are present in the raw HTML. */}
+      <div class="pain-list" id="sc-list">
+        {PAINS.map((p) => (
+          <button type="button" class="pain-btn" role="checkbox" aria-checked="false" data-pain={p.id} data-cost={p.cost} data-sol={p.sol} data-url={p.url} data-label={p.label}>
+            <div style="display:flex;align-items:center;gap:12px;flex:1;">
+              <div class="pain-chk" id={`chk${p.id}`}>
+                <svg id={`chkv${p.id}`} width="11" height="9" viewBox="0 0 11 9" fill="none" style="display:none" aria-hidden="true"><path d="M1 4.5L3.8 7.5L10 1" stroke="#0c0f0d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="pain-label-wrap">
+                <div class="pain-label">{p.label}</div>
+                {p.badge && <span class="pain-badge">{p.badge}</span>}
+              </div>
+            </div>
+            <div class="pain-cost">~${p.cost}/mo</div>
+          </button>
+        ))}
+      </div>
       <div class="scan-result" id="sc-result">
         <div class="sr-inner">
           <div>
@@ -1182,11 +1346,23 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
 <section class="section" id="faq" aria-labelledby="faq-h">
 <div class="inner-sm">
   <div class="sec-head">
-    <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Common questions · 18 answers</span>
+    <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Common questions · {FAQ.length} answers</span>
     <h2 id="faq-h">Everything You Need to Know</h2>
     <p>Answers to the questions Shopify store owners ask most before deploying the stack.</p>
   </div>
-  <div class="faq-list-c" id="faq-list"></div>
+  {/* Server-rendered. Native <details> needs no JavaScript, so every question
+      and answer is present in the raw HTML that AI crawlers fetch. The count,
+      the copy and the FAQPage JSON-LD all come from one array. */}
+  <div class="faq-list-c" id="faq-list">
+    {FAQ.map((item) => (
+      <details class="faq-item-c" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <summary><span itemprop="name">{item.q}</span><span class="faq-ico"></span></summary>
+        <div class="faq-ans-c" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p itemprop="text" set:html={item.a}></p>
+        </div>
+      </details>
+    ))}
+  </div>
 </div>
 </section>
 </main>
@@ -1266,24 +1442,25 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
 
 // Scanner logic
 (function() {
-  var P = [
-    { id:'t', label:'Losing ad attribution after iOS updates — Meta/Google', cost:299, badge:'Most common', sol:'CAPI Shield', url:'/capi-shield/' },
-    { id:'k', label:'Paying Klaviyo $20+/mo for email marketing', cost:300, badge:'Replace free', sol:'Replace Klaviyo Free', url:'/replace-klaviyo-free/' },
-    { id:'tk', label:'Running TikTok ads — losing 20–40% of conversions', cost:149, badge:'TikTok CAPI', sol:'TikTok Events API', url:'/tiktok-events-api-shopify/' },
-    { id:'i', label:'Paying for inventory or stock sync apps', cost:149, badge:'Aug 2026 urgent', sol:'Stocky Swap', url:'/stocky-swap/' },
-    { id:'p', label:'No live P&L — manual CSV exports or no reporting', cost:99, badge:'Quick fix', sol:'P&L Auto', url:'/shopify-profit-loss-automation/' },
-    { id:'a', label:'Google Scripts or Make.com failing mid-month', cost:99, badge:null, sol:'Autocrat Quota Fix', url:'/autocrat-quota-fix/' }
-  ];
-  var sel = [], cur = 0, tgt = 0, raf;
+  // PAINS is rendered server-side (see this file's frontmatter). The buttons
+  // already exist in the HTML; this script only reads them and binds toggles.
+  // It no longer builds the list, so the six labels survive a JS-less fetch.
   var list = document.getElementById('sc-list');
   if (!list) return;
+  var P = Array.prototype.map.call(list.querySelectorAll('.pain-btn'), function(b) {
+    return {
+      id:    b.getAttribute('data-pain'),
+      cost:  parseInt(b.getAttribute('data-cost'), 10) || 0,
+      sol:   b.getAttribute('data-sol')   || '',
+      url:   b.getAttribute('data-url')   || '',
+      label: b.getAttribute('data-label') || '',
+      _b:    b
+    };
+  });
+  if (!P.length) return;
+  var sel = [], cur = 0, tgt = 0, raf;
   P.forEach(function(p) {
-    var b = document.createElement('button');
-    b.type = 'button'; b.className = 'pain-btn';
-    b.setAttribute('role', 'checkbox'); b.setAttribute('aria-checked', 'false');
-    b.innerHTML = '<div style="display:flex;align-items:center;gap:12px;flex:1;"><div class="pain-chk" id="chk' + p.id + '"><svg id="chkv' + p.id + '" width="11" height="9" viewBox="0 0 11 9" fill="none" style="display:none"><path d="M1 4.5L3.8 7.5L10 1" stroke="#0c0f0d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="pain-label-wrap"><div class="pain-label">' + p.label + '</div>' + (p.badge ? '<span class="pain-badge">' + p.badge + '</span>' : '') + '</div></div><div class="pain-cost">~$' + p.cost + '/mo</div>';
-    b.onclick = function() { scToggle(p, b); };
-    list.appendChild(b); p._b = b;
+    p._b.addEventListener('click', function() { scToggle(p, p._b); });
   });
   function scToggle(p, b) {
     var on = sel.indexOf(p.id) === -1;
@@ -1361,42 +1538,9 @@ window.gfGet = function() {
   var confirm = document.getElementById('gf-confirm'); if(confirm) confirm.textContent = 'Guides on their way — check your inbox!';
 };
 
-// FAQ render — 18 questions matching schema
-(function() {
-  var Q = [
-    { q: "What is the best free alternative to Shopify Stocky in 2026?", a: "<a href='/stocky-swap/'>Stocky Swap</a>. Stocky shuts down August 31, 2026 — all data deleted after that date. Stocky Swap logs every Shopify order to Google Sheets in real time via Make.com — free forever, deploys in 4 minutes, no app fees. See the full <a href='/stocky-alternative/'>Stocky alternatives comparison</a>." },
-    { q: "How do I replace Elevar for free on Shopify?", a: "<a href='/capi-shield/'>CAPI Shield</a> replaces Elevar free. Routes Shopify purchase events server-side to Meta Conversions API and Google Enhanced Conversions via Make.com, typically reaching EMQ 7–8.5 — matching Elevar at $225/month, at $0. See the full <a href='/shopify-attribution-tools-compared/'>Elevar alternative guide</a>." },
-    { q: "What is the best free Klaviyo alternative for Shopify in 2026?", a: "<a href='/replace-klaviyo-free/'>Systeme.io</a> — unlimited emails, full automation sequences, funnels, and CRM on the free plan up to 2,000 contacts. Klaviyo charges $20+/mo for the same volume. Migration takes 30 minutes. Calculate your savings with the <a href='/klaviyo-to-systeme-migration-savings-calculator/'>Klaviyo Migration Savings Calculator</a>." },
-    { q: "Does Make.com work with Shopify?", a: "Yes — natively. Make.com has 100+ Shopify triggers and actions and works via Shopify webhooks. The free tier includes 1,000 credits/month. Full answer: <a href='/make-com-shopify/'>Does Make.com work with Shopify?</a>" },
-    { q: "What is the Shopify Conversions API (CAPI)?", a: "The Shopify CAPI sends purchase events server-side directly to Meta and Google Ads, bypassing iOS privacy restrictions and ad blockers. Covers the estimated 20–40% of conversion data lost to browser tracking. Full explanation: <a href='/capi-shield/'>What is the Shopify CAPI?</a>" },
-    { q: "How do I set up TikTok server-side tracking for Shopify without code?", a: "Use Make.com to route Shopify order webhooks as CompletePayment events to TikTok's Events API server-to-server. Full free walkthrough: <a href='/tiktok-events-api-shopify/'>TikTok Events API Shopify setup — no code</a>. Takes 6 minutes." },
-    { q: "How much does Triple Whale cost and is there a free alternative?", a: "Triple Whale uses GMV-based pricing — cost scales with your store's revenue across its Foundation, Automate, and Enterprise packages, with a limited free plan. The free alternative is <a href='/capi-shield/'>CAPI Shield</a> — server-side tracking to Meta and Google Ads at $0. Full breakdown: <a href='/shopify-attribution-tools-compared/'>Triple Whale pricing</a> and <a href='/shopify-attribution-tools-compared/'>Triple Whale alternative</a>." },
-    { q: "What is server-side tracking for Shopify and why does it matter in 2026?", a: "Server-side tracking sends purchase events directly from your server to ad platforms, bypassing iOS privacy restrictions and ad blockers that block browser-based pixels. Covers the estimated 20–40% of conversions that would otherwise go unmeasured. Full guide: <a href='/blog/shopify-server-side-tracking-complete-setup-guide/'>What is server-side tracking for Shopify?</a>" },
-    { q: "Do I have to keep paying $500+/month on Shopify apps?", a: "No. The $0 Automation Stack replaces six categories of paid apps — tracking, inventory, email marketing, TikTok CAPI, P&L reporting, and automation stability — using Make.com, Google Sheets, and Systeme.io free plans. Deploy in minutes and reclaim $700+ per month. Or purchase the <a href='/pro/'>Complete Kit for $29</a> for the pre-built files." },
-    { q: "What is the Stack Architect Complete Kit ($29)?", a: "The <a href='/pro/'>Complete Kit</a> is a $29 one-time purchase that gives you four ready-to-import Make.com JSON blueprints — CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto — plus two Google Sheets templates and four Loom walkthroughs. Every field pre-configured. Import and go live in 10 minutes. 30-day money-back guarantee. No subscription, ever." },
-    { q: "Is my Shopify data secure with this stack?", a: "Completely secure. Your data stays inside your own Google account and Make.com workspace. Stack Architect has zero access to your Shopify orders, customer data, or ad accounts. GDPR compliant by design." },
-    { q: "Can I set up Shopify automation without a developer?", a: "Yes. Zero coding required. Every tool uses pre-built Make.com scenarios. The most complex setup takes under 15 minutes. The <a href='/pro/'>$29 Complete Kit</a> gives you pre-configured JSON files that import in one click." },
-    { q: "Why is my Shopify Google Ads conversion tracking showing wrong numbers?", a: "iOS Link Tracking Protection strips the gclid from ad URLs in Safari, Mail, and Messages. Without gclid, Google can't attribute the purchase. The fix is <a href='/shopify-google-ads-conversion-tracking/'>Google Enhanced Conversions via Make.com</a> — free, 6 minutes, recovers 15–40% of lost conversions." },
-    { q: "How do I prepare my Shopify store for AI shopping and ChatGPT citations?", a: "Three requirements: structured data (Product, Offer, FAQPage schema), server-side tracking for accurate signals, and an llms.txt file at your domain root. The <a href='/blog/shopify-agentic-storefronts-setup-guide-2026/'>Agentic Storefronts guide</a> includes a 12-point readiness checklist." },
-    { q: "What's the difference between Make.com and Zapier for Shopify automation?", a: "Make.com's free tier: 1,000 credits/month. Zapier's free tier: 100 tasks/month — 10x fewer. Make.com counts per module, not per multi-step zap, making branching workflows much cheaper. For Shopify stores over 100 orders/month, Make.com is typically 3–5x cheaper. Compare exactly with the <a href='/make-vs-zapier-cost-calculator/'>Make vs Zapier Calculator</a>." },
-    { q: "What happens to my Stocky data after the 31 August 2026 shutdown?", a: "All Stocky data — purchase orders, stocktakes, transfers, supplier records, demand forecasts, SKU history — is permanently deleted after August 31, 2026 per Shopify's official shutdown notice. No migration path provided. <a href='/stocky-swap/'>Stocky Swap</a> replaces it free in 4 minutes. Score your migration risk with the <a href='/stocky-migration-risk-scorer/'>Stocky Migration Risk Scorer</a>." },
-    { q: "How much does a typical Shopify store save with the free automation stack?", a: "Typical savings: $400–$1,800/month. Example stack: Klaviyo ($20+/mo) + Triple Whale or Elevar ($225) + Stocky (free, shutting down) + Zapier ($19.99+) + TrueProfit ($19–$99) = $426–$1,848/month replaced. The $29 Complete Kit pays for itself in under a week. Calculate your exact figure with the <a href='/shopify-app-cost-calculator/'>App Cost Calculator</a>." },
-    { q: "Why is Stack Architect free and how does it make money?", a: "Two revenue streams: (1) affiliate commissions from tools we use and recommend — Make.com, Systeme.io, GetResponse, Beehiiv, Tidio, Gorgias, Google Workspace — these cost you nothing extra; (2) the optional $29 Complete Kit. No subscriptions, no upsells, no data sold." }
-  ];
-  var c = document.getElementById('faq-list');
-  if (!c) return;
-  Q.forEach(function(item) {
-    var d = document.createElement('details');
-    d.className = 'faq-item-c';
-    d.setAttribute('itemscope', '');
-    d.setAttribute('itemprop', 'mainEntity');
-    d.setAttribute('itemtype', 'https://schema.org/Question');
-    d.innerHTML = '<summary><span itemprop="name">' + item.q + '</span><span class="faq-ico"></span></summary>'
-      + '<div class="faq-ans-c" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">'
-      + '<p itemprop="text">' + item.a + '</p></div>';
-    c.appendChild(d);
-  });
-})();
+// FAQ is rendered server-side from the FAQ array in this file's frontmatter.
+// The old client-side injection loop lived here and is deliberately gone:
+// native <details> needs no JavaScript, and AI crawlers do not run any.
 </script>
 </Base>
 
