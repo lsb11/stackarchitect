@@ -165,7 +165,7 @@ This uses ground-truth revenue data from Shopify — which counts every order re
 
 **Timeline:** Steps 1–3 show impact in 24–72 hours. Full CAPI shows full impact 7–14 days after implementation. We publish no expected ROAS improvement — it depends on your spend, creative and audience, and we have not measured it across a sample. Measure your own result as Additional Conversions Reported in Meta Events Manager.
 
-The [CAPI Shield setup guide](/capi-shield/) covers every step of the full CAPI implementation including deduplication, event matching, and verification in Meta Events Manager.
+The [CAPI Shield setup guide](/capi-shield/) covers every step of the full CAPI implementation including deduplication, event matching, and verification in Meta Events Manager. Once it has been running for a fortnight, [recovering lost Shopify conversions with CAPI Shield](/blog/recover-lost-shopify-conversions-capi-shield/) shows how to read Additional Conversions Reported against your own order data — the difference between believing the gap closed and knowing by how much.
 
 
 ---

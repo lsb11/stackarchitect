@@ -172,6 +172,8 @@ Go to: **Meta Events Manager → Aggregated Event Measurement → Configure Web 
 
 A residual 15–25% gap is expected and normal even with full server-side implementation. This represents orders from users who cannot be attributed due to complete ATT denial combined with no click ID — Meta genuinely cannot match these. The important thing is that server-side delivery is not subject to the browser-side loss in the first place — measure what it adds as Additional Conversions Reported in Meta Events Manager.
 
+That measurement is the part most stores skip, and it is the only thing that tells you whether the work paid for itself. [Recovering lost Shopify conversions with CAPI Shield](/blog/recover-lost-shopify-conversions-capi-shield/) walks through reading Additional Conversions Reported against your own order data, so you can put a number on what came back rather than assuming the gap closed.
+
 ## TikTok and Google — The Same Problem
 
 The iOS tracking problem affects TikTok and Google Ads as well, not just Meta. If TikTok Ads Manager shows significantly fewer purchases than Shopify, the same diagnostic applies.

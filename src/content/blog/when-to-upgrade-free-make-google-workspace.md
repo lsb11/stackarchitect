@@ -52,6 +52,8 @@ You start receiving "Operations limit exceeded" errors in your Make.com scenario
 
 **What to do:** Upgrade to Make.com Core ($12/month, 10,000 credits). This covers stores up to approximately 2,000 orders/month on the full 5-branch stack.
 
+Before committing, work out whether the overrun is structural or seasonal, because the answer changes what you buy. Sustained growth justifies a permanent upgrade. A single spike does not: a store averaging 50 orders a day that processes 300 on Black Friday burns roughly 1,200 operations that day alone — past the free tier's monthly ceiling inside twenty-four hours — and then drops back to normal. That is an October upgrade and a January downgrade, not a plan change. The [BFCM automation checklist](/blog/shopify-bfcm-automation-checklist-2026/) sets out the full pre-season sequence and the deadline each piece has to be live by.
+
 ### Signal 2 — Google Apps Script timing out mid-run
 
 If you have any automations using Google Apps Script (Autocrat, custom Sheets scripts, document generation), and they're stopping mid-execution with "Exceeded maximum execution time", you've hit the 6-minute consumer ceiling.

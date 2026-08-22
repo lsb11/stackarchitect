@@ -145,6 +145,8 @@ The recommended deployment order:
 
 The [Shopify automation stack for small stores](/blog/shopify-automation-stack-for-small-stores/) covers the minimum viable version of this for stores just getting started.
 
+One caveat on timing. Tracking is first in that order for a reason that gets sharper the closer you are to peak season: Smart Bidding and Advantage+ need 60–90 days of clean conversion data before they optimise well, so tracking installed in November is tracking that contributes nothing to November. If Black Friday is the revenue that matters to you, the deployment order above has calendar deadlines attached to it — the [BFCM automation checklist](/blog/shopify-bfcm-automation-checklist-2026/) sets out which piece has to be live by which month.
+
 
 ---
 

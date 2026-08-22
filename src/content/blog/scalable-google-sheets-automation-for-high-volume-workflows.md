@@ -42,6 +42,8 @@ Google Sheets automation hits two separate walls as Shopify order volume grows:
 
 The solutions differ depending on which wall you've hit and how far past it you need to scale.
 
+Both of these are capacity problems — they appear because volume went up, and they get worse in a predictable direction. If your automations are failing at volumes they used to handle, or failing intermittently on some orders and not others, that is a reliability problem instead, and batching will not fix it. [The complete guide to reliable Shopify automations](/blog/the-complete-guide-to-reliable-shopify-automations/) covers that failure class — silent breakage, partial writes, and the error handling that catches both.
+
 ## Architecture Pattern 1 — Batch Processing with Checkpoints
 
 This pattern handles 500–2,000 rows per day on a consumer account without Google Workspace.

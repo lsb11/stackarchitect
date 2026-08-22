@@ -104,6 +104,8 @@ This single change resolves the error for most Sheets-based workflows. The proce
 
 Some scripts make service calls that genuinely cannot be batched — for example, creating a new Google Doc for each row. For these, add exponential backoff: catch the rate limit error and retry with increasing delays.
 
+Backoff converts a hard failure into a slower success, which is the right trade. It also changes the failure mode you have to watch for: a script that swallows errors and retries can burn its entire quota getting nowhere and still finish looking like it ran. Pair it with a failure alert you actually receive — [the complete guide to reliable Shopify automations](/blog/the-complete-guide-to-reliable-shopify-automations/) covers the monitoring that makes unattended retries safe.
+
 ```javascript
 function callWithBackoff(fn) {
   var maxAttempts = 5;

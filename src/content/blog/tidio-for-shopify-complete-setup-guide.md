@@ -141,6 +141,8 @@ Most stores set up Lyro and never touch it again. This is why they stay at 30% r
 
 After 4–6 weeks of weekly tuning, most stores reach 60–70% resolution rates. The improvement comes entirely from expanding and refining the FAQ content — not from any technical configuration.
 
+Those escalation logs are worth more than the support time they save. Every repeated pre-purchase question — sizing, delivery windows, whether it fits a particular use — is a question the product page failed to answer, asked by someone motivated enough to type it. Most visitors with the same question leave instead. Feeding the top escalation topics back into your product copy is one of the cheapest conversion gains available; [free Shopify conversion rate optimisation](/blog/shopify-conversion-rate-optimisation-free-2026/) covers where on the page that content belongs.
+
 ## Free Plan Limits and When to Upgrade
 
 **Free plan includes:**

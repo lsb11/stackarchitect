@@ -161,6 +161,8 @@ Recovery rate depends on four factors: email timing, subject lines, average orde
 
 The 1-hour email almost always has the highest open rate. Many stores see 30–40% of total recoveries from the first email alone. Don't skip it.
 
+Worth keeping the arithmetic in view, though: recovery works on carts that were already abandoned. Lifting a 6% recovery rate to 9% on 100 abandoned carts wins back three orders — meaningful, and cheaper than the alternative of paying for the traffic twice. But the same three orders come from stopping six abandonments happening at all, and the levers for that sit earlier, on the product page and in the checkout. [Free Shopify conversion rate optimisation](/blog/shopify-conversion-rate-optimisation-free-2026/) covers that side of it, and the two compound rather than compete.
+
 ## Free vs Paid: Is This Actually Equivalent to Klaviyo?
 
 Klaviyo's abandoned cart flow is more feature-rich: it supports dynamic product blocks showing the exact abandoned items with images, price drop triggers, and deep Shopify property access.
