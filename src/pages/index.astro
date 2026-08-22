@@ -35,10 +35,15 @@ import StickyAffiliateCTA from '../components/StickyAffiliateCTA.astro';
  *   high =  20 + 650 + 500 + 20 + 299 + 299 + 99  = 1,887
  *
  * NOTE FOR REVIEW: the hero ledger and the comparison table previously quoted
- * DIFFERENT prices for the same vendors (Klaviyo at "$20+/mo" in one and
- * "$150-400/mo" in the other; Elevar/Triple Whale at "$145-650" vs
- * "$225-1,250"). The table's figures are canonical here because they carry the
- * verification claim. Re-check the per-row vendor prices.
+ * DIFFERENT figures for the same vendors -- Klaviyo and Elevar/Triple Whale
+ * each carried two incompatible ranges depending on which block you read. The
+ * table is canonical here because it carries the verification claim. The
+ * per-row vendor figures still need checking against src/data/apps.json, which
+ * is the verified record and holds a priceVerifiedDate for each one.
+ *
+ * Do not restate a vendor price in a comment. seo-audit.mjs scans source text
+ * and cannot tell a comment from rendered copy, so a figure quoted here reads
+ * as a live claim and fails the build's pricing check.
  * ------------------------------------------------------------------------ */
 const SAVINGS = { moLow: 321, moHigh: 1887, yrLow: 3852, yrHigh: 22644 };
 const money = (n: number) => '$' + n.toLocaleString('en-US');
@@ -1143,10 +1148,10 @@ const stockyGone = Date.now() > new Date(STOCKY_EOL).getTime();
         were competing with them for the same click.
 
         The thesis problem mattered more. This page tells a reader to cancel
-        their paid apps, and the same grid was selling Gorgias at
-        "$49–$349/mo" and a Google Workspace subscription. Those two now sit
-        under an explicit paid-tools label so the $0 claim is not undercut by
-        its own recommendations. */}
+        their paid apps, and the same grid was selling a paid Gorgias plan and a
+        Google Workspace subscription as though they were free tiers. Those two
+        now sit under an explicit paid-tools label so the $0 claim is not
+        undercut by its own recommendations. */}
     <div class="aff-tier-label">The two accounts the stack needs</div>
     <div class="aff-grid aff-grid-primary">
       <div class="aff-card">
@@ -1196,7 +1201,7 @@ const stockyGone = Date.now() > new Date(STOCKY_EOL).getTime();
       <li class="aff-row">
         <div class="aff-row-main">
           <span class="aff-row-name">Gorgias</span>
-          <span class="aff-row-why">The leading Shopify support helpdesk. Deep Shopify integration — view and edit orders without leaving a ticket. Paid, from $49/mo.</span>
+          <span class="aff-row-why">The leading Shopify support helpdesk. Deep Shopify integration — view and edit orders without leaving a ticket. Paid plan only, no free tier.</span>
         </div>
         <a href="/go/gorgias/" target="_blank" rel="noopener sponsored" class="aff-row-cta" data-cta-position="grid-gorgias">See pricing <span class="aff-mark">affiliate</span></a>
       </li>

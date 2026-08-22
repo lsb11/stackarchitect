@@ -76,7 +76,7 @@ The foundation of free Shopify inventory management is a single Make.com scenari
 
 **Setup overview** (full step-by-step at [Stocky Swap](/stocky-swap/)):
 
-1. Create a free Make.com account at [make.com — free, 1,000 ops/month](/go/make)
+1. Create a free Make.com account at [make.com — free, 1,000 ops/month](/go/make/)
 2. Create a new scenario with a Webhooks module as the trigger
 3. Copy the webhook URL and add it to Shopify: **Settings → Notifications → Webhooks → Order payment**
 4. Add a Google Sheets module to append a row for each incoming order

@@ -62,7 +62,7 @@ Before deploying anything, be clear about what genuinely moves the needle at low
 
 Everything else depends on this. Make.com is the automation layer that connects Shopify's order events to Google Sheets, Meta, Google, and Systeme.io.
 
-1. Create a free account at [Make.com — free, 1,000 ops/month](/go/make) — no credit card required
+1. Create a free account at [Make.com — free, 1,000 ops/month](/go/make/) — no credit card required
 2. In Make.com, click **Create a new scenario**
 3. Add a **Webhooks → Custom webhook** module as the trigger
 4. Copy the webhook URL Make.com generates
@@ -104,7 +104,7 @@ Email automation delivers the highest returns of any marketing channel for most 
 
 **Post-purchase (day 1, day 7, day 30 after purchase):** thank you, onboarding, review request, cross-sell recommendation. Increases LTV and repeat purchase rate.
 
-[Systeme.io — free for 2,000 contacts](/go/systeme) provides all three on its free plan — 2,000 contacts, unlimited email sends, full automation builder. Setup takes 30–45 minutes.
+[Systeme.io — free for 2,000 contacts](/go/systeme/) provides all three on its free plan — 2,000 contacts, unlimited email sends, full automation builder. Setup takes 30–45 minutes.
 
 Connect Systeme.io to Shopify via **Settings → Integrations → Shopify** in your Systeme.io account. For abandoned cart sequences specifically, connect via a Make.com webhook for more reliable real-time triggering.
 
@@ -137,7 +137,7 @@ As your store grows, add complexity in this order:
 
 **At $30,000+/month GMV:** add Tidio for customer support. The free tier (50 Lyro AI conversations/month) handles support volume at this size without human agents for most queries.
 
-**At $50,000+/month GMV:** consider [GetResponse — engagement-based billing](/go/getresponse) ($19/month) if your email list has grown beyond Systeme.io's 2,000 free contacts. The abandoned cart and post-purchase sequences become more valuable as revenue scales.
+**At $50,000+/month GMV:** consider [GetResponse — engagement-based billing](/go/getresponse/) ($19/month) if your email list has grown beyond Systeme.io's 2,000 free contacts. The abandoned cart and post-purchase sequences become more valuable as revenue scales.
 
 **At $100,000+/month GMV:** the [lean stack guide](/blog/the-lean-shopify-tech-stack-2026/) covers the full optimised setup for larger stores including TikTok Events API, more sophisticated inventory management, and the decision points for paid tools.
 

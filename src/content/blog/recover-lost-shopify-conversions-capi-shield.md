@@ -98,7 +98,7 @@ CAPI Shield is free and deploys in approximately 2–3 hours. It covers Meta Con
 
 The full step-by-step setup is at [CAPI Shield](/capi-shield/). The overview:
 
-1. Create a free [Make.com — free, 1,000 ops/month](/go/make) account
+1. Create a free [Make.com — free, 1,000 ops/month](/go/make/) account
 2. Set up a Shopify Order Payment webhook pointing to Make.com
 3. Configure the Make.com HTTP module to call Meta's CAPI endpoint with order data
 4. Add a second branch for Google Enhanced Conversions

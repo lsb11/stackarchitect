@@ -175,7 +175,42 @@ if (lastmodCache.size > 0) {
 // ──────────────────────────────────────────────────────────────────
 // CONFIG
 // ──────────────────────────────────────────────────────────────────
+/**
+ * rehypeSponsorAffiliateLinks
+ *
+ * Markdown links written as [text](/go/make/) render as a bare <a> with no rel
+ * attribute. An audit of the built site on 2026-08-22 found 20 affiliate links
+ * in blog content with no rel="sponsored" — undisclosed affiliate links, which
+ * Google asks to be qualified and which are exactly the wrong signal on a
+ * domain under a site-level quality assessment.
+ *
+ * Every /go/* href in Markdown now gets rel="sponsored noopener" and
+ * target="_blank", matching how the .astro pages already mark theirs. Doing it
+ * in the pipeline rather than per-link means new blog posts are covered by
+ * default and cannot regress.
+ *
+ * No new dependency: a plain recursive walk, no unist-util-visit.
+ */
+function rehypeSponsorAffiliateLinks() {
+  return (tree) => {
+    const walk = (node) => {
+      if (node.type === 'element' && node.tagName === 'a') {
+        const href = node.properties?.href;
+        if (typeof href === 'string' && href.startsWith('/go/')) {
+          node.properties.rel = ['sponsored', 'noopener'];
+          node.properties.target = '_blank';
+        }
+      }
+      (node.children || []).forEach(walk);
+    };
+    walk(tree);
+  };
+}
+
 export default defineConfig({
+  markdown: {
+    rehypePlugins: [rehypeSponsorAffiliateLinks],
+  },
   site: SITE,
   output: 'static',
   trailingSlash: 'always',
