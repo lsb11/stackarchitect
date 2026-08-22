@@ -31,7 +31,24 @@ const PAGE_URL = `${SITE_URL}/stocky-swap/`;
 const SHUTDOWN_DATE = "August 31, 2026";
 const SHUTDOWN_DATE_ISO = "2026-08-31T23:59:59Z";
 const DATE_PUBLISHED = "2026-01-01";
-const DATE_MODIFIED = "2026-08-08";
+const DATE_MODIFIED = "2026-08-22";
+
+/* ---------------------------------------------------------------------------
+ * TIME AWARENESS — this page had a 9-day fuse.
+ *
+ * Every headline, CTA and the entire hero was written in the future tense
+ * against a deadline that passes on 31 August 2026. The countdown component
+ * degraded correctly; nothing else did. On 1 September the page would have
+ * greeted a reader with an expired countdown and "Stocky closes August 31" —
+ * at exactly the moment search intent for "stocky alternative" PEAKS, because
+ * that is when people discover their data is gone.
+ *
+ * shutdownPassed drives both states of every time-bound string below.
+ *
+ * NOTE: evaluated at BUILD time. A static build served past the deadline keeps
+ * pre-deadline copy until the site rebuilds — schedule a deploy for 1 Sept.
+ * ------------------------------------------------------------------------ */
+const shutdownPassed = Date.now() > new Date(SHUTDOWN_DATE_ISO).getTime();
 
 // ── Affiliate links — all routed through /go/ for Brave safety ──
 const aff = {
@@ -44,7 +61,20 @@ const aff = {
   workspace:   "/go/workspace/",
 };
 
-// Affiliate links
+/* ---------------------------------------------------------------------------
+ * AFFILIATE ARCHITECTURE
+ *
+ * Measured on the live page before this change: 4,313 words, TWO affiliate
+ * links (at 32% and 95% depth), and FIVE unattributed direct exits to
+ * make.com via SCENARIO_URL. Worse, step 1 of the deploy guide — "Create a
+ * free Make.com account" — was PLAIN TEXT. The single most conversion-critical
+ * instruction on the page was not a link at all.
+ *
+ * The scenario URL stays direct: it is a specific shared resource, not a
+ * signup, and rewriting it would break the clone. But cloning it REQUIRES an
+ * account, so every scenario link is now preceded by the account link rather
+ * than competing with it.
+ * ------------------------------------------------------------------------ */
 const MAKE_AFFILIATE = "/go/make/";
 const GETRESPONSE_AFFILIATE = "/go/getresponse/";
 const SYSTEME_AFFILIATE = "/go/systeme/";
@@ -412,13 +442,24 @@ const tocHeadings = [
       --g: #34d377; --g-dim: #15803d; --g-bg: rgba(52,211,119,.08); --g-border: rgba(52,211,119,.2);
       --bg: #0c0f0d; --bg-2: #0f1311; --bg-3: #121614; --bg-4: #171c19;
       --border: #222825; --border-2: #2f3733;
-      --text: #f2f5f3; --text-2: #b6c0ba; --text-3: #93a09a; --text-4: #6b7671; --text-inv: #0c0f0d;
+      /* --text-4 was #6b7671 — 4.09:1 on --bg, a WCAG AA fail, and it carries
+         the mono micro-labels at 11-12px. #7f8b85 measures 5.45:1 and stays
+         visibly dimmer than --text-3, so the hierarchy survives. Matches the
+         homepage fix. */
+      --text: #f2f5f3; --text-2: #b6c0ba; --text-3: #93a09a; --text-4: #7f8b85; --text-inv: #0c0f0d;
       --red: #f08a8a; --red-bg: rgba(240,138,138,.07); --red-border: rgba(240,138,138,.18);
       --sky: #8ccfe8; --sky-bg: rgba(140,207,232,.07); --sky-border: rgba(140,207,232,.18);
       --amber: #f5b64d; --amber-bg: rgba(245,182,77,.06); --amber-border: rgba(245,182,77,.2);
       --vio: #c3b8ef; --vio-bg: rgba(195,184,239,.07); --vio-border: rgba(195,184,239,.2);
       --mono: 'JetBrains Mono', monospace; --sans: 'Inter', -apple-system, sans-serif;
       --radius: 6px; --shadow-g: 0 8px 28px rgba(52,211,119,.3);
+
+      /* Type scale. This file carried 75 font-size declarations and zero
+         tokens, competing with the --text-body:17px scale global.css declares
+         and asks not to be overridden per-element. Six steps; running prose
+         sits at --fs-body, which equals the system's 17px. */
+      --fs-micro: 11px; --fs-sm: 13px; --fs-md: 15px;
+      --fs-body: 17px;  --fs-lg: 22px; --fs-xl: 34px;
     }
     html { scroll-behavior: smooth; }
     body { font-family: var(--sans); background: var(--bg); color: var(--text-3); line-height: 1.75; -webkit-font-smoothing: antialiased; overflow-x: hidden; padding-bottom: 0; }
@@ -431,12 +472,12 @@ const tocHeadings = [
     .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; background: var(--g); color: var(--text-inv); padding: 12px 20px; border-radius: 4px; font-weight: 700; z-index: 99999; }
     .skip-link:focus { position: fixed; top: 16px; left: 16px; width: auto; height: auto; }
 
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-family: var(--sans); font-size: 16px; font-weight: 700; text-decoration: none; letter-spacing: -.01em; padding: 16px 32px; border-radius: var(--radius); border: none; cursor: pointer; white-space: nowrap; background: var(--g); color: var(--text-inv); transition: background .2s, transform .15s, box-shadow .2s; min-height: 52px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-family: var(--sans); font-size: var(--fs-md); font-weight: 700; text-decoration: none; letter-spacing: -.01em; padding: 16px 32px; border-radius: var(--radius); border: none; cursor: pointer; white-space: nowrap; background: var(--g); color: var(--text-inv); transition: background .2s, transform .15s, box-shadow .2s; min-height: 52px; }
     .btn:hover { background: #45e28a; transform: translateY(-2px); box-shadow: var(--shadow-g); }
     .btn.pulse { animation: btnGlow 2.8s ease-in-out infinite; }
     @keyframes btnGlow { 0%,100% { box-shadow: 0 0 16px rgba(52,211,119,.1); } 50% { box-shadow: 0 0 28px rgba(52,211,119,.28); } }
-    .btn-sm { font-size: 14px; padding: 12px 22px; min-height: 44px; }
-    .btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--sans); font-size: 15px; font-weight: 600; text-decoration: none; padding: 15px 28px; border-radius: var(--radius); border: 1.5px solid var(--border-2); background: transparent; color: var(--text-2); transition: border-color .2s, color .2s, background .2s; min-height: 52px; }
+    .btn-sm { font-size: var(--fs-md); padding: 12px 22px; min-height: 44px; }
+    .btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--sans); font-size: var(--fs-md); font-weight: 600; text-decoration: none; padding: 15px 28px; border-radius: var(--radius); border: 1.5px solid var(--border-2); background: transparent; color: var(--text-2); transition: border-color .2s, color .2s, background .2s; min-height: 52px; }
     .btn-outline:hover { border-color: var(--g); color: var(--g); background: var(--g-bg); }
 
     .section { padding: 80px 24px; }
@@ -446,16 +487,16 @@ const tocHeadings = [
     .inner-sm { max-width: 720px; margin: 0 auto; }
     .sec-head { text-align: center; margin-bottom: 48px; }
     .sec-head h2 { font-family: var(--sans); font-weight: 700; font-size: clamp(26px, 4vw, 40px); letter-spacing: -.03em; color: var(--text); line-height: 1.1; margin-bottom: 12px; }
-    .sec-head p { font-size: 16px; color: var(--text-3); max-width: 580px; margin: 0 auto; line-height: 1.7; }
+    .sec-head p { font-size: var(--fs-md); color: var(--text-3); max-width: 580px; margin: 0 auto; line-height: 1.7; }
 
-    .urgency-banner { width: 100%; background: linear-gradient(90deg, #7f1d1d, #991b1b, #7f1d1d); padding: 12px 24px; text-align: center; font-family: var(--mono); font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #fca5a5; border-bottom: 1px solid rgba(255,100,100,.3); display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .urgency-banner { width: 100%; background: linear-gradient(90deg, #7f1d1d, #991b1b, #7f1d1d); padding: 12px 24px; text-align: center; font-family: var(--mono); font-size: var(--fs-micro); font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #fca5a5; border-bottom: 1px solid rgba(255,100,100,.3); display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
     .urgency-banner strong { color: #fff; }
     .dot-red { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--red); animation: dotRed 1.5s ease-in-out infinite; }
     @keyframes dotRed { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
 
     .crumb { background: var(--bg-2); border-bottom: 1px solid var(--border); padding: 10px 24px; }
     .crumb-inner { max-width: 1100px; margin: 0 auto; }
-    .crumb ol { display: flex; align-items: center; gap: 8px; list-style: none; font-family: var(--mono); font-size: 10px; color: var(--text-4); text-transform: uppercase; letter-spacing: .08em; }
+    .crumb ol { display: flex; align-items: center; gap: 8px; list-style: none; font-family: var(--mono); font-size: var(--fs-micro); color: var(--text-4); text-transform: uppercase; letter-spacing: .08em; }
     .crumb a { color: var(--text-4); transition: color .15s; }
     .crumb a:hover { color: var(--g); }
     .crumb .current { color: var(--sky); }
@@ -465,7 +506,7 @@ const tocHeadings = [
     /* Paragraph-length copy reads left-aligned; the hero stays centred for headings, badges and CTAs. */
     #answer { max-width: 640px; margin: 0 auto 24px; text-align: left; }
     .hero-inner { max-width: 920px; margin: 0 auto; position: relative; }
-    .hero-meta { font-family: var(--mono); font-size: 10px; color: var(--text-4); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 18px; opacity: .8; }
+    .hero-meta { font-family: var(--mono); font-size: var(--fs-micro); color: var(--text-4); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 18px; opacity: .8; }
     .hero h1 { font-size: clamp(40px, 7vw, 80px); font-weight: 700; color: var(--text); line-height: .95; letter-spacing: -.05em; margin: 0 auto 24px; max-width: 820px; }
     .hero h1 .green { color: var(--g); }
     .hero h1 .dim { color: var(--text-4); }
@@ -476,44 +517,48 @@ const tocHeadings = [
     .bg-grid { background-color: var(--bg); background-image: radial-gradient(ellipse 80% 40% at 50% 0%, rgba(52,211,119,.06) 0%, transparent 60%), radial-gradient(circle, var(--border) 1px, transparent 1px); background-size: 100% 100%, 44px 44px; }
 
     .countdown-strip { background: var(--amber-bg); border: 1px solid var(--amber-border); border-radius: 10px; padding: 18px 24px; margin: 0 auto 28px; max-width: 560px; text-align: center; }
-    .countdown-label { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--amber); margin-bottom: 10px; }
+    .countdown-label { font-family: var(--mono); font-size: var(--fs-micro); font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--amber); margin-bottom: 10px; }
     .countdown-nums { display: flex; gap: 10px; justify-content: center; align-items: center; }
     .cd-unit { text-align: center; }
-    .cd-val { font-family: var(--mono); font-size: 26px; font-weight: 700; color: var(--text); line-height: 1; }
-    .cd-l { font-size: 9px; color: var(--text-4); margin-top: 4px; font-family: var(--mono); letter-spacing: .1em; text-transform: uppercase; }
-    .cd-sep { font-family: var(--mono); font-size: 22px; color: var(--text-4); padding-top: 2px; }
+    .cd-val { font-family: var(--mono); font-size: var(--fs-lg); font-weight: 700; color: var(--text); line-height: 1; }
+    .cd-l { font-size: var(--fs-micro); color: var(--text-4); margin-top: 4px; font-family: var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+    .cd-sep { font-family: var(--mono); font-size: var(--fs-lg); color: var(--text-4); padding-top: 2px; }
 
     .speakable-answer { background: var(--bg-3); border: 1px solid var(--border-2); border-left: 3px solid var(--g); border-radius: 8px; padding: 22px 26px; margin: 32px auto; max-width: 760px; text-align: left; }
-    .speakable-answer .label { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--g); margin-bottom: 10px; }
-    .speakable-answer p { font-size: 15px; color: var(--text-2); line-height: 1.7; margin: 0; }
+    .speakable-answer .label { font-family: var(--mono); font-size: var(--fs-micro); font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--g); margin-bottom: 10px; }
+    .speakable-answer p { font-size: var(--fs-md); color: var(--text-2); line-height: 1.7; margin: 0; }
     .speakable-answer p strong { color: var(--text); }
 
     .trust-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; max-width: 760px; margin: 0 auto; }
     .trust-cell { background: var(--bg); padding: 18px 12px; text-align: center; }
-    .trust-v { font-family: var(--mono); font-size: 18px; font-weight: 700; color: var(--g); line-height: 1; }
-    .trust-l { font-size: 10px; color: var(--text-4); text-transform: uppercase; letter-spacing: .1em; margin-top: 6px; font-family: var(--mono); }
+    .trust-v { font-family: var(--mono); font-size: var(--fs-body); font-weight: 700; color: var(--g); line-height: 1; }
+    .trust-l { font-size: var(--fs-micro); color: var(--text-4); text-transform: uppercase; letter-spacing: .1em; margin-top: 6px; font-family: var(--mono); }
     @media (max-width: 640px) { .trust-strip { grid-template-columns: repeat(2,1fr); } }
 
     .body-text { max-width: 760px; margin: 0 auto; }
-    .body-text p { font-size: 16px; color: var(--text-3); line-height: 1.8; margin-bottom: 18px; text-align: left; }
+    .body-text p { font-size: var(--fs-body); color: var(--text-3); line-height: 1.8; margin-bottom: 18px; text-align: left; }
     .body-text p strong { color: var(--text-2); font-weight: 600; }
     .body-text p a { color: var(--g); text-decoration: underline; }
     .body-text h3 { font-weight: 800; font-size: clamp(20px, 2.8vw, 24px); color: var(--text); letter-spacing: -.02em; line-height: 1.2; margin: 36px 0 14px; text-align: left; }
-    .body-text h4 { font-weight: 700; font-size: 17px; color: var(--text-2); letter-spacing: -.01em; margin: 24px 0 10px; }
+    .body-text h4 { font-weight: 700; font-size: var(--fs-body); color: var(--text-2); letter-spacing: -.01em; margin: 24px 0 10px; }
     .body-text ul { list-style: none; padding: 0; margin: 0 0 22px; }
-    .body-text ul li { position: relative; padding: 10px 0 10px 26px; font-size: 15px; color: var(--text-3); line-height: 1.65; border-bottom: 1px solid var(--border); }
+    .body-text ul li { position: relative; padding: 10px 0 10px 26px; font-size: var(--fs-md); color: var(--text-3); line-height: 1.65; border-bottom: 1px solid var(--border); }
     .body-text ul li::before { content: "→"; position: absolute; left: 0; top: 10px; color: var(--g); font-weight: 700; }
     .body-text ul li:last-child { border-bottom: none; }
     .body-text ul li strong { color: var(--text-2); }
 
-    .comp-wrap { overflow-x: auto; margin: 24px 0; border-radius: 12px; border: 1px solid var(--border); }
+    /* min-width:0 is load-bearing. A grid/flex child defaults to min-width:auto,
+       which refuses to shrink below its content — so this scroll container never
+       actually constrained the 720px table and the whole document scrolled
+       sideways on mobile instead. */
+    .comp-wrap { overflow-x: auto; min-width: 0; max-width: 100%; margin: 24px 0; border-radius: 12px; border: 1px solid var(--border); }
     .comp-table { width: 100%; border-collapse: collapse; min-width: 720px; }
-    .comp-table th, .comp-table td { padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--border); font-size: 14px; }
-    .comp-table th { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-4); background: rgba(255,255,255,.025); }
+    .comp-table th, .comp-table td { padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--border); font-size: var(--fs-md); }
+    .comp-table th { font-family: var(--mono); font-size: var(--fs-micro); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-4); background: rgba(255,255,255,.025); }
     .comp-table td { color: var(--text-3); }
     .comp-table tr:last-child td { border-bottom: none; }
     .comp-table .row-tool { font-weight: 700; color: var(--text); }
-    .comp-table .row-tool .sub { font-weight: 400; font-size: 11px; color: var(--text-4); display: block; margin-top: 2px; }
+    .comp-table .row-tool .sub { font-weight: 400; font-size: var(--fs-micro); color: var(--text-4); display: block; margin-top: 2px; }
     .comp-table .win { color: var(--g); font-weight: 600; }
     .comp-table .neutral { color: var(--text-3); }
     .comp-table .miss { color: var(--text-4); }
@@ -522,36 +567,36 @@ const tocHeadings = [
 
     .step-cards { display: flex; flex-direction: column; gap: 14px; margin: 24px 0; }
     .step-card { background: var(--bg-3); border: 1px solid var(--border); border-radius: 10px; padding: 22px 24px; display: flex; gap: 18px; align-items: flex-start; }
-    .step-num { width: 32px; height: 32px; min-width: 32px; border-radius: 50%; background: rgba(52,211,119,.1); border: 1px solid rgba(52,211,119,.25); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--g); flex-shrink: 0; }
-    .step-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-    .step-desc { font-size: 14px; color: var(--text-3); line-height: 1.65; }
+    .step-num { width: 32px; height: 32px; min-width: 32px; border-radius: 50%; background: rgba(52,211,119,.1); border: 1px solid rgba(52,211,119,.25); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: var(--fs-sm); font-weight: 700; color: var(--g); flex-shrink: 0; }
+    .step-title { font-size: var(--fs-md); font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .step-desc { font-size: var(--fs-md); color: var(--text-3); line-height: 1.65; }
     .step-desc a { color: var(--g); text-decoration: underline; }
-    .step-tool { font-family: var(--mono); font-size: 10px; color: var(--text-4); background: rgba(255,255,255,.03); border: 1px solid var(--border); padding: 3px 8px; border-radius: 3px; display: inline-block; margin-top: 8px; }
+    .step-tool { font-family: var(--mono); font-size: var(--fs-micro); color: var(--text-4); background: rgba(255,255,255,.03); border: 1px solid var(--border); padding: 3px 8px; border-radius: 3px; display: inline-block; margin-top: 8px; }
 
     .callout { background: var(--bg-3); border: 1px solid var(--border-2); border-radius: 10px; padding: 22px 24px; margin: 24px 0; border-left: 3px solid var(--g); text-align: left; }
     .callout.warn { border-left-color: var(--amber); background: var(--amber-bg); }
     .callout.info { border-left-color: var(--sky); background: var(--sky-bg); }
     .callout.purple { border-left-color: var(--vio); background: var(--vio-bg); }
-    .callout-label { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--g); margin-bottom: 8px; }
+    .callout-label { font-family: var(--mono); font-size: var(--fs-micro); font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--g); margin-bottom: 8px; }
     .callout.warn .callout-label { color: var(--amber); }
     .callout.info .callout-label { color: var(--sky); }
     .callout.purple .callout-label { color: var(--vio); }
-    .callout p { font-size: 14px; color: var(--text-2); line-height: 1.7; margin: 0; }
+    .callout p { font-size: var(--fs-md); color: var(--text-2); line-height: 1.7; margin: 0; }
     .callout p + p { margin-top: 10px; }
     .callout p strong { color: var(--text); }
     .callout p a { color: var(--g); text-decoration: underline; }
 
     .section-cta { background: rgba(52,211,119,.06); border: 1.5px solid rgba(52,211,119,.2); border-radius: 12px; padding: 28px 32px; margin: 36px 0; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
-    .section-cta-text h4 { font-weight: 800; font-size: 18px; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
-    .section-cta-text p { font-size: 13px; color: var(--text-3); margin: 0; }
+    .section-cta-text h4 { font-weight: 800; font-size: var(--fs-body); color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+    .section-cta-text p { font-size: var(--fs-sm); color: var(--text-3); margin: 0; }
     @media (max-width: 600px) { .section-cta { flex-direction: column; align-items: flex-start; } .section-cta .btn { width: 100%; justify-content: center; } }
 
-    .aff-note { font-size: 12px; color: var(--text-4); font-style: italic; margin: 10px auto 0; max-width: 540px; text-align: center; line-height: 1.6; }
+    .aff-note { font-size: var(--fs-sm); color: var(--text-4); font-style: italic; margin: 10px auto 0; max-width: 540px; text-align: center; line-height: 1.6; }
     .aff-note a { color: var(--text-3); text-decoration: underline; }
 
     .author-line { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 32px; padding: 14px 22px; background: rgba(255,255,255,.02); border: 1px solid var(--border); border-radius: 100px; max-width: 460px; margin-left: auto; margin-right: auto; }
-    .author-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--g-bg); border: 1px solid var(--g-border); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-weight: 800; color: var(--g); font-size: 12px; }
-    .author-text { font-size: 13px; color: var(--text-3); line-height: 1.4; text-align: left; }
+    .author-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--g-bg); border: 1px solid var(--g-border); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-weight: 800; color: var(--g); font-size: var(--fs-sm); }
+    .author-text { font-size: var(--fs-sm); color: var(--text-3); line-height: 1.4; text-align: left; }
     .author-text strong { color: var(--text-2); font-weight: 600; }
     .author-text a { color: var(--text-3); text-decoration: underline; }
 
@@ -559,31 +604,31 @@ const tocHeadings = [
     .timeline-item { position: relative; padding: 0 0 28px 28px; }
     .timeline-item:last-child { padding-bottom: 0; }
     .timeline-item::before { content: ""; position: absolute; left: -33px; top: 4px; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 2px solid var(--g); }
-    .timeline-date { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--g); margin-bottom: 6px; }
-    .timeline-title { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 6px; line-height: 1.3; }
-    .timeline-desc { font-size: 14px; color: var(--text-3); line-height: 1.65; }
+    .timeline-date { font-family: var(--mono); font-size: var(--fs-micro); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--g); margin-bottom: 6px; }
+    .timeline-title { font-size: var(--fs-body); font-weight: 700; color: var(--text); margin-bottom: 6px; line-height: 1.3; }
+    .timeline-desc { font-size: var(--fs-md); color: var(--text-3); line-height: 1.65; }
     .timeline-desc a { color: var(--g); text-decoration: underline; }
 
     .playbook-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 32px 0; }
     .playbook-card { background: var(--bg-3); border: 1.5px solid var(--border); border-radius: 12px; padding: 24px; transition: border-color .2s, transform .2s; }
     .playbook-card:hover { border-color: var(--g-border); transform: translateY(-3px); }
-    .playbook-tag { font-family: var(--mono); font-size: 9px; font-weight: 700; color: var(--g); letter-spacing: .15em; text-transform: uppercase; margin-bottom: 10px; }
-    .playbook-name { font-weight: 800; font-size: 17px; color: var(--text); letter-spacing: -.01em; margin-bottom: 8px; }
-    .playbook-desc { font-size: 13px; color: var(--text-3); line-height: 1.65; margin-bottom: 14px; }
+    .playbook-tag { font-family: var(--mono); font-size: var(--fs-micro); font-weight: 700; color: var(--g); letter-spacing: .15em; text-transform: uppercase; margin-bottom: 10px; }
+    .playbook-name { font-weight: 800; font-size: var(--fs-body); color: var(--text); letter-spacing: -.01em; margin-bottom: 8px; }
+    .playbook-desc { font-size: var(--fs-sm); color: var(--text-3); line-height: 1.65; margin-bottom: 14px; }
     .playbook-desc strong { color: var(--text-2); }
-    .playbook-list { list-style: none; padding: 0; margin: 0; font-size: 12px; }
+    .playbook-list { list-style: none; padding: 0; margin: 0; font-size: var(--fs-sm); }
     .playbook-list li { position: relative; padding: 6px 0 6px 16px; color: var(--text-3); line-height: 1.5; border-bottom: 1px solid var(--border); }
-    .playbook-list li::before { content: "·"; position: absolute; left: 0; top: 6px; color: var(--g); font-weight: 700; font-size: 18px; line-height: 1; }
+    .playbook-list li::before { content: "·"; position: absolute; left: 0; top: 6px; color: var(--g); font-weight: 700; font-size: var(--fs-body); line-height: 1; }
     .playbook-list li:last-child { border-bottom: none; }
     @media (max-width: 760px) { .playbook-grid { grid-template-columns: 1fr; } }
 
     .vs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
     .vs-card { background: var(--bg-3); border: 1px solid var(--border); border-radius: 10px; padding: 22px 24px; }
-    .vs-card-title { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 14px; }
+    .vs-card-title { font-family: var(--mono); font-size: var(--fs-micro); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 14px; }
     .vs-card-title.win { color: var(--g); }
     .vs-card-title.lose { color: var(--text-4); }
     .vs-list { list-style: none; padding: 0; margin: 0; }
-    .vs-list li { position: relative; padding: 8px 0 8px 22px; font-size: 14px; color: var(--text-3); line-height: 1.6; }
+    .vs-list li { position: relative; padding: 8px 0 8px 22px; font-size: var(--fs-md); color: var(--text-3); line-height: 1.6; }
     .vs-list li::before { position: absolute; left: 0; top: 7px; font-weight: 700; }
     .vs-list.pros li::before { content: "✓"; color: var(--g); }
     .vs-list.cons li::before { content: "✕"; color: var(--text-4); }
@@ -592,50 +637,50 @@ const tocHeadings = [
     .crosslink-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
     .crosslink-card { background: var(--bg-3); border: 1.5px solid var(--border); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; transition: border-color .2s, transform .2s; }
     .crosslink-card:hover { border-color: var(--g-border); transform: translateY(-3px); }
-    .crosslink-tag { font-family: var(--mono); font-size: 9px; font-weight: 700; color: var(--g); letter-spacing: .15em; text-transform: uppercase; margin-bottom: 10px; }
-    .crosslink-name { font-weight: 800; font-size: 17px; color: var(--text); letter-spacing: -.01em; margin-bottom: 6px; }
-    .crosslink-desc { font-size: 13px; color: var(--text-3); line-height: 1.6; flex: 1; }
-    .crosslink-arrow { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--g); margin-top: 12px; }
+    .crosslink-tag { font-family: var(--mono); font-size: var(--fs-micro); font-weight: 700; color: var(--g); letter-spacing: .15em; text-transform: uppercase; margin-bottom: 10px; }
+    .crosslink-name { font-weight: 800; font-size: var(--fs-body); color: var(--text); letter-spacing: -.01em; margin-bottom: 6px; }
+    .crosslink-desc { font-size: var(--fs-sm); color: var(--text-3); line-height: 1.6; flex: 1; }
+    .crosslink-arrow { font-family: var(--mono); font-size: var(--fs-micro); font-weight: 700; color: var(--g); margin-top: 12px; }
     @media (max-width: 600px) { .crosslink-grid { grid-template-columns: 1fr; } }
 
     .glossary-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 28px 0; }
     .glossary-item { background: var(--bg-3); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; }
-    .glossary-term { font-weight: 800; font-size: 14px; color: var(--text); margin-bottom: 6px; }
-    .glossary-def { font-size: 13px; color: var(--text-3); line-height: 1.65; margin: 0; }
+    .glossary-term { font-weight: 800; font-size: var(--fs-md); color: var(--text); margin-bottom: 6px; }
+    .glossary-def { font-size: var(--fs-sm); color: var(--text-3); line-height: 1.65; margin: 0; }
     .glossary-def a { color: var(--g); text-decoration: underline; }
     @media (max-width: 600px) { .glossary-grid { grid-template-columns: 1fr; } }
 
     .trouble-list { display: flex; flex-direction: column; gap: 12px; margin: 24px 0; }
     .trouble-item { background: var(--bg-3); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; }
-    .trouble-q { font-weight: 700; font-size: 15px; color: var(--text); margin-bottom: 8px; line-height: 1.4; }
-    .trouble-a { font-size: 14px; color: var(--text-3); line-height: 1.7; margin: 0; }
+    .trouble-q { font-weight: 700; font-size: var(--fs-md); color: var(--text); margin-bottom: 8px; line-height: 1.4; }
+    .trouble-a { font-size: var(--fs-md); color: var(--text-3); line-height: 1.7; margin: 0; }
     .trouble-a a { color: var(--g); text-decoration: underline; }
     .trouble-a strong { color: var(--text-2); }
 
     .faq-list-s { display: flex; flex-direction: column; gap: 8px; margin-top: 32px; }
     details.faq-item-s { border-radius: 10px; border: 1.5px solid var(--border); background: rgba(255,255,255,.02); transition: border-color .2s; }
     details.faq-item-s[open] { border-color: rgba(140,207,232,.25); background: rgba(140,207,232,.025); }
-    details.faq-item-s summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; cursor: pointer; list-style: none; min-height: 58px; font-size: 15px; font-weight: 600; color: var(--text-3); }
+    details.faq-item-s summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; cursor: pointer; list-style: none; min-height: 58px; font-size: var(--fs-md); font-weight: 600; color: var(--text-3); }
     details.faq-item-s summary::-webkit-details-marker { display: none; }
     details.faq-item-s[open] summary { color: var(--text); }
     .faq-ico { width: 14px; height: 14px; min-width: 14px; position: relative; opacity: .4; }
     .faq-ico::before { content: ''; position: absolute; top: 2px; left: 1px; width: 9px; height: 9px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); transition: transform .25s; }
     details.faq-item-s[open] .faq-ico { opacity: 1; color: var(--sky); }
     details.faq-item-s[open] .faq-ico::before { transform: rotate(225deg); top: 5px; }
-    .faq-ans-s { padding: 0 22px 20px; font-size: 14px; color: var(--text-3); line-height: 1.75; border-top: 1px solid var(--border); padding-top: 14px; }
+    .faq-ans-s { padding: 0 22px 20px; font-size: var(--fs-md); color: var(--text-3); line-height: 1.75; border-top: 1px solid var(--border); padding-top: 14px; }
     .faq-ans-s a { color: var(--g); text-decoration: underline; }
     .faq-ans-s strong { color: var(--text-2); }
 
     .pro-block { background: linear-gradient(180deg, var(--bg-3) 0%, var(--bg-2) 100%); border: 1.5px solid var(--vio); border-radius: 16px; padding: 36px 32px; margin: 48px auto 0; max-width: 760px; text-align: center; box-shadow: 0 8px 28px rgba(195,184,239,.08); }
-    .pro-tag { display: inline-block; font-family: var(--mono); font-size: 10px; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; color: var(--vio); background: rgba(195,184,239,.08); border: 1px solid rgba(195,184,239,.2); padding: 5px 12px; border-radius: 100px; margin-bottom: 16px; }
-    .pro-block h3 { font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -.02em; margin-bottom: 10px; }
-    .pro-block p { font-size: 15px; color: var(--text-3); line-height: 1.7; margin-bottom: 18px; max-width: 580px; margin-left: auto; margin-right: auto; }
-    .pro-block .pro-price { font-family: var(--mono); font-size: 32px; font-weight: 800; color: var(--text); margin: 18px 0 8px; }
-    .pro-block .pro-price-sub { font-size: 12px; color: var(--text-4); margin-bottom: 22px; }
+    .pro-tag { display: inline-block; font-family: var(--mono); font-size: var(--fs-micro); font-weight: 800; letter-spacing: .15em; text-transform: uppercase; color: var(--vio); background: rgba(195,184,239,.08); border: 1px solid rgba(195,184,239,.2); padding: 5px 12px; border-radius: 100px; margin-bottom: 16px; }
+    .pro-block h3 { font-size: var(--fs-lg); font-weight: 700; color: var(--text); letter-spacing: -.02em; margin-bottom: 10px; }
+    .pro-block p { font-size: var(--fs-md); color: var(--text-3); line-height: 1.7; margin-bottom: 18px; max-width: 580px; margin-left: auto; margin-right: auto; }
+    .pro-block .pro-price { font-family: var(--mono); font-size: var(--fs-xl); font-weight: 800; color: var(--text); margin: 18px 0 8px; }
+    .pro-block .pro-price-sub { font-size: var(--fs-sm); color: var(--text-4); margin-bottom: 22px; }
     .pro-block .btn-pro { background: var(--vio); color: var(--text-inv); }
     .pro-block .btn-pro:hover { background: #d8c8ff; }
     .pro-features { list-style: none; padding: 0; margin: 0 auto 24px; max-width: 480px; text-align: left; }
-    .pro-features li { position: relative; padding: 7px 0 7px 24px; font-size: 14px; color: var(--text-3); }
+    .pro-features li { position: relative; padding: 7px 0 7px 24px; font-size: var(--fs-md); color: var(--text-3); }
     .pro-features li::before { content: "✓"; position: absolute; left: 0; top: 7px; color: var(--vio); font-weight: 700; }
     @media (max-width: 640px) {
       .hero { padding: 48px 20px 40px; }
@@ -644,6 +689,150 @@ const tocHeadings = [
       .section, .section-alt { padding: 56px 20px; }
       .author-line { flex-direction: column; padding: 14px; max-width: 100%; }
       .author-text { text-align: center; }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+     * MECHANISM FLOW + DELETED/SURVIVES SPLIT
+     *
+     * Both are built from real text rather than images. An <img> of this
+     * pipeline would be invisible to the crawlers this page is written for,
+     * and would need alt text duplicating every label anyway.
+     * ══════════════════════════════════════════════════════════════════ */
+    .flow { margin: 40px auto 0; max-width: 1000px; }
+    .flow-track {
+      list-style: none; margin: 0; padding: 0;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+      counter-reset: flow;
+    }
+    .flow-node {
+      position: relative; display: flex; flex-direction: column; gap: 7px;
+      background: var(--bg-3); border: 1px solid var(--border);
+      border-radius: 12px; padding: 20px 18px 18px;
+      transition: border-color .2s, transform .2s;
+    }
+    .flow-node:hover { border-color: var(--g-border); transform: translateY(-2px); }
+    /* Connector: a chevron sitting in the gap, hidden on the last node and
+       rotated to point down once the track stacks. */
+    .flow-node::after {
+      content: ""; position: absolute; top: 50%; right: -10px;
+      width: 10px; height: 10px; margin-top: -5px; z-index: 1;
+      border-top: 1.5px solid var(--text-4); border-right: 1.5px solid var(--text-4);
+      transform: rotate(45deg);
+    }
+    .flow-node-end::after { display: none; }
+    .flow-idx {
+      font-family: var(--mono); font-size: var(--fs-micro); font-weight: 700;
+      letter-spacing: .16em; color: var(--g);
+    }
+    .flow-ico { display: block; width: 22px; height: 22px; color: var(--text-2); }
+    .flow-ico svg { width: 100%; height: 100%; display: block; }
+    .flow-name { font-size: var(--fs-md); font-weight: 700; color: var(--text); line-height: 1.3; }
+    .flow-sub  { font-size: var(--fs-sm); color: var(--text-3); line-height: 1.55; }
+    .flow-cap {
+      margin: 18px auto 0; max-width: 68ch; text-align: center;
+      font-size: var(--fs-sm); color: var(--text-3); line-height: 1.7;
+    }
+    @media (max-width: 860px) {
+      .flow-track { grid-template-columns: 1fr 1fr; }
+      .flow-node:nth-child(2)::after { display: none; }
+    }
+    @media (max-width: 520px) {
+      .flow-track { grid-template-columns: 1fr; }
+      .flow-node::after {
+        top: auto; bottom: -10px; right: 50%; margin: 0 -5px 0 0;
+        transform: rotate(135deg);
+      }
+      .flow-node:nth-child(2)::after { display: block; }
+      .flow-node-end::after { display: none; }
+    }
+
+    .ledger-split {
+      margin: 36px 0 28px; padding: 0;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    }
+    .split-col { border: 1px solid var(--border); border-radius: 12px; padding: 22px; background: var(--bg-3); }
+    .split-gone { border-color: var(--red-border); background: var(--red-bg); }
+    .split-safe { border-color: var(--g-border); background: var(--g-bg); }
+    .split-head { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px; }
+    .split-ico { flex: 0 0 auto; width: 22px; height: 22px; }
+    .split-ico svg { width: 100%; height: 100%; display: block; }
+    .split-gone .split-ico { color: var(--red); }
+    .split-safe .split-ico { color: var(--g); }
+    .split-title { font-size: var(--fs-md); font-weight: 700; color: var(--text); line-height: 1.25; }
+    .split-note  { font-size: var(--fs-sm); color: var(--text-3); line-height: 1.55; margin-top: 3px; }
+    .split-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0; }
+    .split-list li {
+      font-size: var(--fs-md); color: var(--text-2); line-height: 1.5;
+      padding: 9px 0 9px 22px; position: relative;
+      border-top: 1px solid var(--border);
+    }
+    .split-list li:first-child { border-top: none; }
+    .split-list li::before {
+      position: absolute; left: 0; top: 9px;
+      font-family: var(--mono); font-size: var(--fs-sm); font-weight: 700;
+    }
+    .split-gone .split-list li::before { content: "\2715"; color: var(--red); }
+    .split-safe .split-list li::before { content: "\2713"; color: var(--g); }
+    .split-cap {
+      grid-column: 1 / -1; margin: 4px auto 0; max-width: 72ch; text-align: center;
+      font-size: var(--fs-sm); color: var(--text-3); line-height: 1.7;
+    }
+    @media (max-width: 720px) { .ledger-split { grid-template-columns: 1fr; } }
+
+    /* ── Affiliate marker + inline CTA blocks ───────────────────────────── */
+    .aff-tag {
+      font-family: var(--mono); font-size: var(--fs-micro); font-weight: 600;
+      letter-spacing: .14em; text-transform: uppercase;
+      border: 1px solid currentColor; border-radius: 2px;
+      padding: 1px 5px; margin-left: 7px; opacity: .7; vertical-align: 1px;
+      white-space: nowrap;
+    }
+    .btn .aff-tag, .btn-g .aff-tag { opacity: .55; }
+    .hero-ctas-note {
+      font-size: var(--fs-sm); color: var(--text-3); line-height: 1.65;
+      margin: 14px auto 0; max-width: 56ch;
+    }
+    .section-cta-inline {
+      margin: 30px 0; padding: 22px 24px;
+      background: var(--g-bg); border: 1px solid var(--g-border); border-radius: 12px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 20px; flex-wrap: wrap; text-align: left;
+    }
+    .section-cta-inline .section-cta-text h4 {
+      font-size: var(--fs-md); font-weight: 700; color: var(--text); margin: 0 0 5px;
+    }
+    .section-cta-inline .section-cta-text p {
+      font-size: var(--fs-sm); color: var(--text-3); line-height: 1.6; margin: 0; max-width: 56ch;
+    }
+    .step-cta {
+      display: inline-flex; align-items: center;
+      font-family: var(--sans); font-size: var(--fs-sm); font-weight: 700;
+      background: var(--g); color: var(--text-inv);
+      text-decoration: none; border-radius: var(--radius);
+      padding: 9px 16px; margin: 12px 12px 0 0; transition: background .2s, transform .15s;
+    }
+    .step-cta:hover { background: #3bdc84; transform: translateY(-1px); }
+    @media (max-width: 640px) {
+      .section-cta-inline { flex-direction: column; align-items: stretch; }
+      .section-cta-inline .btn { width: 100%; justify-content: center; }
+    }
+
+    /* ── Mobile: let long CTA labels wrap ──────────────────────────────────
+       .btn is white-space:nowrap. The final CTA label ("Replace Stocky with
+       Make.com free — 4-minute setup, no card →") needs 393px and sat in a
+       320px column, overflowing the viewport by 73px and making the WHOLE
+       DOCUMENT scroll sideways on a 390px screen. That is the page's primary
+       affiliate CTA, on the platform where this site's clickthrough actually
+       happens. Measured: documentElement.scrollWidth 428 vs clientWidth 390.
+       ─────────────────────────────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .btn, .btn-outline, .btn-pro, .step-cta {
+        white-space: normal;
+        text-align: center;
+        max-width: 100%;
+      }
+      .hero-ctas { width: 100%; }
+      .hero-ctas .btn, .hero-ctas .btn-outline { width: 100%; }
     }
   </style>
 
@@ -689,23 +878,31 @@ const tocHeadings = [
       </div>
 
       <h1 id="hero-heading">
-        The free<br />
-        <span class="green">Stocky alternative.</span><br />
-        <span class="dim">Live in 4 minutes.</span>
+        {shutdownPassed ? (
+          <>Stocky is gone.<br /><span class="green">This replaces it.</span><br /><span class="dim">Free, live in 4 minutes.</span></>
+        ) : (
+          <>The free<br /><span class="green">Stocky alternative.</span><br /><span class="dim">Live in 4 minutes.</span></>
+        )}
       </h1>
 
-      <p id="answer">Stocky Swap is the free replacement for Shopify Stocky, which shuts down August 31, 2026. It's a public Make.com scenario that logs every order to a Google Sheet you own in real time — order tracking, not full inventory management. Stores needing demand forecasting or purchase orders should look at paid tools like Qoblex or Inventory Planner instead, priced $59–$999/month.</p>
+      <p id="answer">{shutdownPassed
+        ? "Stocky Swap is the free replacement for Shopify Stocky, which shut down on August 31, 2026. It's a public Make.com scenario that logs every order to a Google Sheet you own in real time — order tracking, not full inventory management. It starts logging from the moment you switch it on; it cannot recover data Shopify already deleted. Stores needing demand forecasting or purchase orders should look at paid tools like Qoblex or Inventory Planner instead, priced $59–$999/month."
+        : "Stocky Swap is the free replacement for Shopify Stocky, which shuts down August 31, 2026. It's a public Make.com scenario that logs every order to a Google Sheet you own in real time — order tracking, not full inventory management. Stores needing demand forecasting or purchase orders should look at paid tools like Qoblex or Inventory Planner instead, priced $59–$999/month."}</p>
 
   <TableOfContents headings={tocHeadings} />
 
 
       <p class="hero-sub">
-        When the deadline passes, your supplier records and stocktake history go with it — there is no export button waiting for you. <strong>Whatever has not been moved out by then is gone for good.</strong>
+        {shutdownPassed ? (
+          <>Your supplier records and stocktake history went with the app — there was no export button waiting, and there is no recovery path. <strong>What matters now is that every order from today forward lands somewhere you own.</strong></>
+        ) : (
+          <>When the deadline passes, your supplier records and stocktake history go with it — there is no export button waiting for you. <strong>Whatever has not been moved out by then is gone for good.</strong></>
+        )}
       </p>
 
       <div class="countdown-strip" id="cd-strip-post" aria-label="Stocky end of service" hidden>
         <div class="countdown-label">⚠ Stocky — end of service</div>
-        <div style="font-family:var(--mono);font-size:24px;font-weight:700;text-align:center;">31 August 2026</div>
+        <div style="font-family:var(--mono);font-size:var(--fs-lg);font-weight:700;text-align:center;">31 August 2026</div>
       </div>
       <div class="countdown-strip" id="cd-strip" aria-label="Time remaining until Stocky shuts down">
         <div class="countdown-label" id="cd-strip-label">⚠ Stocky shuts down in</div>
@@ -720,12 +917,18 @@ const tocHeadings = [
         </div>
       </div>
 
+      {/* The scenario cannot be cloned without a Make.com account, so the
+          account comes first. Previously the only hero exit was the scenario
+          itself — an unattributed direct link to make.com. */}
       <div class="hero-ctas">
-        <a href="#deploy-stocky-swap-in-3-steps" class="btn pulse">See the 4-minute setup →</a>
-        <a href={SCENARIO_URL} class="btn-outline" target="_blank" rel="noopener" data-cta="hero-scenario">
-          Clone the tested scenario →
+        <a href="#deploy-stocky-swap-in-3-steps" class="btn pulse btn-g">See the 4-minute setup →</a>
+        <a href={MAKE_AFFILIATE} class="btn-outline" target="_blank" rel="noopener sponsored" data-cta="hero-make">
+          Start free on Make.com <span class="aff-tag">affiliate</span>
         </a>
       </div>
+      <p class="hero-ctas-note">
+        Cloning the scenario needs a free Make.com account first — <a href={SCENARIO_URL} target="_blank" rel="noopener" data-cta="hero-scenario">preview the tested scenario</a> if you want to see it before signing up.
+      </p>
 
       <p class="aff-note">
         Make.com is an affiliate partner. Sign up via this page and Stack Architect earns a small commission at no cost to you — that's how the guides stay free. <a href="/privacy/">Disclosure</a>.
@@ -771,6 +974,51 @@ const tocHeadings = [
       <div class="trust-cell"><div class="trust-v">Real-time</div><div class="trust-l">webhook sync</div></div>
       <div class="trust-cell"><div class="trust-v">Public</div><div class="trust-l">Make.com scenario</div></div>
     </div>
+
+    {/* ── THE MECHANISM ───────────────────────────────────────────────────
+        This page described a four-stage pipeline in 4,300 words and never
+        drew it. Built as semantic HTML rather than a flat image so every
+        label stays crawlable text — an AI summarising "how does Stocky Swap
+        work" reads the actual stages, which an <img> would hide. */}
+    <figure class="flow" aria-labelledby="flow-cap">
+      <ol class="flow-track">
+        <li class="flow-node">
+          <span class="flow-idx">01</span>
+          <span class="flow-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          </span>
+          <span class="flow-name">A customer orders</span>
+          <span class="flow-sub">Shopify marks the order paid</span>
+        </li>
+        <li class="flow-node">
+          <span class="flow-idx">02</span>
+          <span class="flow-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></svg>
+          </span>
+          <span class="flow-name">Webhook fires</span>
+          <span class="flow-sub">Pushed instantly — not polled</span>
+        </li>
+        <li class="flow-node">
+          <span class="flow-idx">03</span>
+          <span class="flow-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4h-5a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h5"/></svg>
+          </span>
+          <span class="flow-name">Make.com splits the order</span>
+          <span class="flow-sub">One row per SKU, not per order</span>
+        </li>
+        <li class="flow-node flow-node-end">
+          <span class="flow-idx">04</span>
+          <span class="flow-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>
+          </span>
+          <span class="flow-name">Your Google Sheet</span>
+          <span class="flow-sub">You own it. No vendor lock-in.</span>
+        </li>
+      </ol>
+      <figcaption id="flow-cap" class="flow-cap">
+        Four stages, about six seconds end to end. Nothing in this chain is owned by Stack Architect — the Make.com account and the Google Sheet are both yours, and either can be switched off without asking anyone.
+      </figcaption>
+    </figure>
   </section>
 
   <section class="section-alt">
@@ -790,6 +1038,56 @@ const tocHeadings = [
       <p>
         If you need deeper features (multi-channel sync, demand forecasting, purchase order management, multi-warehouse), the <a href="#comparison">comparison table below</a> covers the paid alternatives the Shopify community is migrating to. If you just need orders flowing into something you own — keep reading.
       </p>
+
+    {/* ── WHAT DIES, WHAT LIVES ────────────────────────────────────────
+        The single most anxious question a reader arrives with, previously
+        answered mid-paragraph. Split into two scannable columns; still real
+        text, so it answers the question for AI crawlers too. */}
+    <figure class="ledger-split" aria-labelledby="split-cap">
+      <div class="split-col split-gone">
+        <div class="split-head">
+          <span class="split-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="m10 11 4 4M14 11l-4 4"/></svg>
+          </span>
+          <div>
+            <div class="split-title">{shutdownPassed ? "Deleted on 31 August" : "Deleted on 31 August"}</div>
+            <div class="split-note">Lived inside the Stocky app. No export button, no recovery.</div>
+          </div>
+        </div>
+        <ul class="split-list">
+          <li>Purchase orders</li>
+          <li>Supplier records and contact details</li>
+          <li>Stocktake history</li>
+          <li>Transfers between locations</li>
+          <li>Demand forecasts</li>
+          <li>Stocky's own SKU cost history</li>
+        </ul>
+      </div>
+      <div class="split-col split-safe">
+        <div class="split-head">
+          <span class="split-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>
+          </span>
+          <div>
+            <div class="split-title">Untouched in Shopify Admin</div>
+            <div class="split-note">Never lived in Stocky. Nothing to migrate.</div>
+          </div>
+        </div>
+        <ul class="split-list">
+          <li>Current inventory levels per variant</li>
+          <li>Product and variant records</li>
+          <li>Full order history</li>
+          <li>Customer records</li>
+          <li>Locations and fulfilment settings</li>
+          <li>Everything Stocky Swap writes from today forward</li>
+        </ul>
+      </div>
+      <figcaption id="split-cap" class="split-cap">
+        {shutdownPassed
+          ? "If you did not export before the deadline, the left column is gone and no tool can bring it back — including this one. The right column was never at risk. Stocky Swap rebuilds forward history from the moment you switch it on."
+          : "The left column is what you have days to export. The right column was never at risk. Stocky Swap does not migrate the left column — it makes sure the right column keeps growing after 31 August."}
+      </figcaption>
+    </figure>
 
       <div class="callout warn">
         <div class="callout-label">⚠ Time-sensitive</div>
@@ -875,8 +1173,11 @@ const tocHeadings = [
           <div>
             <div class="step-title">Create a free Make.com account</div>
             <div class="step-desc">
-              Sign up at make.com. No credit card required. The free tier (1,000 credits/month) is enough to run Stocky Swap on a small-to-medium store.
+              No credit card required. The free tier (1,000 credits/month) is enough to run Stocky Swap on a small-to-medium store.
             </div>
+            <a href={MAKE_AFFILIATE} class="step-cta btn-g" target="_blank" rel="noopener sponsored" data-cta="step1-make">
+              Create your free account <span class="aff-tag">affiliate</span>
+            </a>
             <span class="step-tool">~60 seconds</span>
           </div>
         </div>
@@ -890,7 +1191,7 @@ const tocHeadings = [
             </div>
             <div class="callout info" style="margin:14px 0 0;">
               <div class="callout-label">Tested & verified</div>
-              <p style="margin:0;font-size:14px;line-height:1.6;">This scenario is live-tested: a multi-item order writes one row per SKU to Google Sheets, with timestamp, quantity, order ID and product name. It's not a mockup — it's the exact build we run and verified end-to-end.</p>
+              <p style="margin:0;font-size:var(--fs-md);line-height:1.6;">This scenario is live-tested: a multi-item order writes one row per SKU to Google Sheets, with timestamp, quantity, order ID and product name. It's not a mockup — it's the exact build we run and verified end-to-end.</p>
             </div>
             <span class="step-tool">~90 seconds</span>
           </div>
@@ -919,9 +1220,14 @@ const tocHeadings = [
         </a>
       </div>
 
-      {/* SCREENSHOT PLACEHOLDER 1: Make.com scenario flow view (Shopify trigger → mapper → Google Sheets writer). When you add it, save to /public/screenshots/stocky-swap-make-flow.png and replace this comment with: <img src="/screenshots/stocky-swap-make-flow.png" alt="Stocky Swap Make.com scenario flow view showing Shopify webhook, data mapper, and Google Sheets writer modules" loading="lazy" style="width:100%;border:1px solid var(--border);border-radius:12px;margin:32px 0;" /> */}
+      {/* The Make.com flow view this placeholder asked for is now covered by the
+          .flow diagram near the top of the page, which is better for this page's
+          purpose: it is real text, so an AI crawler summarising "how does Stocky
+          Swap work" reads the four stages instead of skipping an image. A real
+          screenshot of the scenario is still worth adding here as corroboration
+          — save to /public/screenshots/stocky-swap-make-flow.png. */}
 
-      {/* SCREENSHOT PLACEHOLDER 2: Google Sheet showing real order rows after a test order. Save to /public/screenshots/stocky-swap-sheet.png with caption "Live Stocky Swap output — every order logged to a Google Sheet you own." */}
+      
     </div>
   </section>
 
@@ -1004,6 +1310,19 @@ const tocHeadings = [
           </tbody>
         </table>
       </div>
+      </div>
+
+      {/* Placed immediately after the price table: the reader has just read
+          $59–$999/mo across eight vendors. Strongest price-anchoring moment on
+          the page, and it previously carried no exit at all. */}
+      <div class="section-cta section-cta-inline">
+        <div class="section-cta-text">
+          <h4>Every row above but one bills you monthly</h4>
+          <p>The $0 row runs on Make.com's free tier — 1,000 operations a month, no card, no trial clock.</p>
+        </div>
+        <a href={MAKE_AFFILIATE} class="btn btn-g" target="_blank" rel="noopener sponsored" data-cta="table-make">
+          Start free on Make.com <span class="aff-tag">affiliate</span>
+        </a>
       </div>
 
       <div class="callout info">
@@ -1177,6 +1496,18 @@ const tocHeadings = [
       </ul>
       </div>
 
+      {/* Directly after "what it does NOT do". A reader who has just been told
+          the limits and stayed is the most qualified click on the page. */}
+      <div class="section-cta section-cta-inline">
+        <div class="section-cta-text">
+          <h4>Still the right fit? It's four minutes from here</h4>
+          <p>You've read the limits. If order logging into a sheet you own is what you actually need, nothing above stands in the way.</p>
+        </div>
+        <a href={MAKE_AFFILIATE} class="btn btn-g" target="_blank" rel="noopener sponsored" data-cta="honesty-make">
+          Start free on Make.com <span class="aff-tag">affiliate</span>
+        </a>
+      </div>
+
       <div class="callout">
         <div class="callout-label">↳ Who Stocky Swap is right for</div>
         <p>Small-to-medium Shopify stores that used Stocky mostly for <strong>order tracking and basic inventory visibility</strong>, want a $0 path off the app before September 1, and either don't need PO/forecasting features or run those workflows somewhere else (an accountant, a separate system, native Shopify). For complex inventory accounting, this isn't the right tool — that's what the paid alternatives in the table above exist for. <a href="/stocky-migration-risk-scorer/">Run our 60-second migration risk assessment →</a> if you're not sure which side you fall on.</p>
@@ -1231,7 +1562,7 @@ const tocHeadings = [
 
       <div class="callout info">
         <div class="callout-label">↳ Sizing your Make.com tier</div>
-        <p>Free tier (1,000 credits/month) covers most small stores. <strong>Make.com Core at $12/month</strong> covers 10,000 credits — appropriate once you pass roughly 100 orders/day with the standard Stocky Swap scenario. <a href="/blog/when-to-upgrade-free-make-google-workspace/">Full Make.com tier guide →</a></p>
+        <p>Free tier (1,000 credits/month) covers most small stores. <a href={MAKE_AFFILIATE} target="_blank" rel="noopener sponsored" data-cta="sizing-make"><strong>Make.com Core at $12/month</strong></a> covers 10,000 credits — appropriate once you pass roughly 100 orders/day with the standard Stocky Swap scenario. <a href="/blog/when-to-upgrade-free-make-google-workspace/">Full Make.com tier guide →</a></p>
       </div>
     </div>
   </section>
@@ -1262,7 +1593,7 @@ const tocHeadings = [
         </div>
         <div class="trouble-item">
           <div class="trouble-q">I'm hitting Make.com's free tier limit</div>
-          <p class="trouble-a">Each order = 1-2 operations on the standard scenario. If you're consistently over 1,000/month, upgrade to Make.com Core at $12/month for 10,000 credits — still cheaper than any Shopify inventory app. Upgrade in your Make.com dashboard →</p>
+          <p class="trouble-a">Each order = 1-2 operations on the standard scenario. If you're consistently over 1,000/month, upgrade to <a href={MAKE_AFFILIATE} target="_blank" rel="noopener sponsored" data-cta="trouble-make">Make.com Core at $12/month</a> for 10,000 credits — still cheaper than any Shopify inventory app. Upgrade in your Make.com dashboard →</p>
         </div>
       </div>
     </div>
@@ -1500,8 +1831,12 @@ const tocHeadings = [
   <section class="section-alt">
     <div class="inner-md" style="text-align:center;">
       <div class="sec-head">
-        <h2 id="stocky-closes-august-31-replace-it-free-in-4-minutes">Stocky closes August 31. Replace it free in 4 minutes.</h2>
-        <p>Free Make.com account. Public scenario. Google Sheet you own.</p>
+        <h2 id="stocky-closes-august-31-replace-it-free-in-4-minutes">{shutdownPassed
+          ? "Stocky is gone. Replace it free in 4 minutes."
+          : "Stocky closes August 31. Replace it free in 4 minutes."}</h2>
+        <p>{shutdownPassed
+          ? "Free Make.com account. Public scenario. A Google Sheet you own — logging from the next order onward."
+          : "Free Make.com account. Public scenario. Google Sheet you own."}</p>
       </div>
 
       <div class="hero-ctas" style="margin-top: 24px;">
@@ -1519,11 +1854,11 @@ const tocHeadings = [
     </div>
   </section>
 
-  <section style="max-width:760px;margin:0 auto;padding:40px 24px;border-top:1px solid #222825;"><h2 id="related-reading" style="font-size:15px;font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:4px;">Related reading</h2><p style="font-size:12px;color:#6b7671;margin-bottom:18px;">Related guides and tools from Stack Architect.</p><div style="display:grid;gap:10px;"><a href="/stocky-alternative/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:14px;font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Replace Shopify Stocky with a $0 inventory system →</a><a href="/stocky-shutdown/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:14px;font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Stocky shutdown: what you need to know →</a><a href="/stocky-migration-risk-scorer/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:14px;font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Stocky migration risk scorer →</a></div></section>
+  <section style="max-width:760px;margin:0 auto;padding:40px 24px;border-top:1px solid #222825;"><h2 id="related-reading" style="font-size:var(--fs-md);font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:4px;">Related reading</h2><p style="font-size:var(--fs-sm);color:#6b7671;margin-bottom:18px;">Related guides and tools from Stack Architect.</p><div style="display:grid;gap:10px;"><a href="/stocky-alternative/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:var(--fs-md);font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Replace Shopify Stocky with a $0 inventory system →</a><a href="/stocky-shutdown/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:var(--fs-md);font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Stocky shutdown: what you need to know →</a><a href="/stocky-migration-risk-scorer/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:var(--fs-md);font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Stocky migration risk scorer →</a></div></section>
   <section class="pro-cta" style="margin: 64px auto; max-width: 860px; padding: 40px; background: linear-gradient(135deg, rgba(52,211,119,0.1), rgba(12,15,13,0.9)); border: 2px solid var(--g); border-radius: 16px; text-align: center;">
-    <h2 style="font-size: 28px; color: var(--text); margin-bottom: 16px; font-weight: 800;">The Complete Shopify Automation Kit (Pro)</h2>
-    <p style="font-size: 16px; color: var(--text-2); margin-bottom: 32px; max-width: 600px; margin-inline: auto;">Skip the setup and get all 40+ systems pre-built. Includes the exact Make.com blueprints, CAPI templates, and AI prompts we use for 7-figure stores.</p>
-    <a href="/pro/" class="btn-g" style="font-size: 18px; padding: 16px 32px;">Get the Pro Bundle →</a>
+    <h2 style="font-size: var(--fs-xl); color: var(--text); margin-bottom: 16px; font-weight: 800;">The Complete Shopify Automation Kit (Pro)</h2>
+    <p style="font-size: var(--fs-md); color: var(--text-2); margin-bottom: 32px; max-width: 600px; margin-inline: auto;">Skip the setup and get all 40+ systems pre-built. Includes the exact Make.com blueprints, CAPI templates, and AI prompts we use for 7-figure stores.</p>
+    <a href="/pro/" class="btn-g" style="font-size: var(--fs-body); padding: 16px 32px;">Get the Pro Bundle →</a>
   </section>
 
   </main>
