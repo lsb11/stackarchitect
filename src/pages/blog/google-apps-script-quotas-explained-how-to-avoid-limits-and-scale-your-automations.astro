@@ -1,6 +1,44 @@
 ---
 import Base from '../../layouts/Base.astro';
+import quotaData from '../../data/apps-script-quotas.json';
 // Stack Architect Blog — Google Apps Script Quotas 2026
+//
+// This page carries ~60% of every impression the domain has ever recorded
+// (11,327 of 18,875 in the Feb–Jun GSC export, average position 7.73). It earns
+// that because it is the one page on the site that is a reference artefact —
+// exact numbers, in a table, against a stated verification date — rather than
+// prose advice. The full table lives in src/data/apps-script-quotas.json so the
+// figures can be re-verified against Google's documentation without touching
+// markup, the same way src/data/apps.json works for vendor pricing.
+
+const VERIFIED = new Date(quotaData.verifiedDate).toLocaleDateString('en-GB', {
+  day: 'numeric', month: 'long', year: 'numeric',
+});
+
+const datasetSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Dataset',
+  '@id': 'https://stackarchitect.xyz/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/#dataset',
+  name: 'Google Apps Script quotas and limitations, 2026',
+  description:
+    'The complete set of Google Apps Script quotas and hard limitations for 2026 — ' +
+    `${quotaData.quotas.length} daily quotas and ${quotaData.limitations.length} fixed limitations, ` +
+    'each given for consumer (@gmail.com) and Google Workspace accounts, transcribed from ' +
+    "Google's official documentation and dated.",
+  license: 'https://creativecommons.org/licenses/by/4.0/',
+  isAccessibleForFree: true,
+  dateModified: quotaData.verifiedDate,
+  creator: { '@id': 'https://stackarchitect.xyz/#org' },
+  isBasedOn: quotaData.source,
+  citation: quotaData.source,
+  variableMeasured: quotaData.quotas
+    .concat(quotaData.limitations)
+    .map((r) => ({
+      '@type': 'PropertyValue',
+      name: r.feature,
+      value: `Consumer ${r.consumer}; Google Workspace ${r.workspace}`,
+    })),
+};
 ---
 <Base title="Google Apps Script Quotas 2026 — Every Limit Explained" description="Google Apps Script quotas 2026: 6-minute execution limit, 90-minute trigger runtime, 20,000 UrlFetch calls/day, 100 emails/day — every limit, verified.">
 <Fragment slot="head">
@@ -129,6 +167,7 @@ import Base from '../../layouts/Base.astro';
 }
 </script>
 <script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps \u2014 server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
+<script type="application/ld+json" set:html={JSON.stringify(datasetSchema)} />
   </Fragment>
 
 
@@ -177,6 +216,7 @@ import Base from '../../layouts/Base.astro';
       <li><a href="#quick-answer">Quick Answer &mdash; 2026 Quota Numbers</a></li>
       <li><a href="#what-are-quotas">What Are Google Apps Script Quotas?</a></li>
       <li><a href="#exact-limits">The Exact Quota Limits in 2026</a></li>
+      <li><a href="#every-quota">Every Quota and Limitation &mdash; Complete Table</a></li>
       <li><a href="#why-break">Why Quota Limits Break Your Automations</a></li>
       <li><a href="#error-messages">Common Quota Errors and What They Mean</a></li>
       <li><a href="#stay-under">How to Stay Under Quotas (6 Steps)</a></li>
@@ -277,6 +317,75 @@ import Base from '../../layouts/Base.astro';
       <tr><td><strong>Script properties size</strong></td><td>500KB</td><td>500KB</td><td>Persistent</td></tr>
     </tbody>
   </table>
+  </div>
+
+  <h2 id="every-quota">Every Google Apps Script Quota and Limitation (2026) &mdash; Complete Table</h2>
+  <p>
+    The seven figures above are the ones that break automations. Google publishes
+    <strong>{quotaData.quotas.length} daily quotas</strong> and
+    <strong>{quotaData.limitations.length} fixed limitations</strong> in total, and the rarer ones
+    &mdash; Slides created, JDBC failed connections, URL Fetch header size &mdash; are exactly the
+    ones nobody can find when a script starts failing. Here is the complete set, both account types,
+    nothing omitted.
+  </p>
+  <p class="quota-provenance">
+    <strong>Verified {VERIFIED}</strong> against
+    <a href={quotaData.source} rel="noopener nofollow" target="_blank">{quotaData.sourceName}</a>.
+    Google does not version that page, so the check date is the only provenance available &mdash;
+    these are re-verified quarterly and every change is logged at the foot of this section.
+  </p>
+
+  <h3 id="daily-quotas">Daily quotas &mdash; reset on a 24-hour rolling window</h3>
+  <div style="overflow-x:auto;width:100%;max-width:100vw;box-sizing:border-box;margin:16px 0;">
+    <table class="comparison-table">
+      <thead>
+        <tr><th>Feature</th><th>Consumer (free)</th><th>Google Workspace</th></tr>
+      </thead>
+      <tbody>
+        {quotaData.quotas.map((row) => (
+          <tr>
+            <td><strong>{row.feature}</strong></td>
+            <td class={row.keyRow ? 'highlight' : undefined}>{row.consumer}</td>
+            <td>{row.workspace}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="hard-limitations">Hard limitations &mdash; fixed, and identical on both account types unless stated</h3>
+  <div style="overflow-x:auto;width:100%;max-width:100vw;box-sizing:border-box;margin:16px 0;">
+    <table class="comparison-table">
+      <thead>
+        <tr><th>Feature</th><th>Consumer (free)</th><th>Google Workspace</th></tr>
+      </thead>
+      <tbody>
+        {quotaData.limitations.map((row) => (
+          <tr>
+            <td><strong>{row.feature}</strong></td>
+            <td class={row.keyRow ? 'highlight' : undefined}>{row.consumer}</td>
+            <td>{row.workspace}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Two things worth noticing in the complete set. <strong>Only three limitations differ between
+    account types at all</strong> &mdash; email body size, and the two email-recipient quotas.
+    Everything else in the limitations table is identical whether you pay Google or not, which is
+    why &ldquo;upgrade to Workspace&rdquo; is such poor advice for a script that is timing out.
+    And <strong>document, presentation and slide creation all share the same 250/day consumer
+    ceiling</strong> &mdash; if one workflow generates all three, they do not pool, but they do fail
+    on the same day.
+  </p>
+
+  <div class="callout">
+    <span class="label">Verification log</span>
+    {quotaData.changelog.map((entry) => (
+      <p><strong>{entry.date}</strong> &mdash; {entry.change}</p>
+    ))}
   </div>
 
   <figure style="margin:32px 0;border:1px solid var(--border-strong);border-radius:18px;overflow:hidden;background:#0b0e0c;">
@@ -629,6 +738,11 @@ a{text-decoration:none;}
 .architect-article li{position:relative;padding:11px 0 11px 34px;border-bottom:1px solid var(--border);font-size:17px;line-height:1.65;color:var(--muted);}
 .architect-article li::before{content:"→";position:absolute;left:0;top:11px;color:var(--accent);font-weight:700;}
 .callout{margin:24px 0 30px;padding:18px 18px 16px;border:1px solid var(--border-strong);border-left:4px solid var(--accent);border-radius:14px;background:rgba(255,255,255,.02);}
+/* Provenance line above the complete quota tables. The verification date is the
+   claim that makes the table quotable, so it reads as a statement rather than
+   small print. */
+.quota-provenance{font-size:14px;color:var(--soft);border-left:2px solid var(--border-strong);padding-left:14px;margin:14px 0 26px;line-height:1.6;}
+.quota-provenance strong{color:var(--accent);}
 .callout p{margin-bottom:0;color:var(--muted);font-size:17px;}
 .callout .label{display:block;margin-bottom:10px;color:#ffffff;font-size:12px;text-transform:uppercase;letter-spacing:1.8px;font-weight:800;}
 .callout-warning{margin:24px 0 30px;padding:18px 18px 16px;border:1px solid rgba(245,158,11,.3);border-left:4px solid var(--warning);border-radius:14px;background:rgba(245,158,11,.06);}
