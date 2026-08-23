@@ -30,6 +30,19 @@ for (const [path, raw] of Object.entries(rawBlog)) {
   pages[route] = { title };
 }
 
+// Fonts are vendored, not fetched. Left unset, astro-og-canvas downloads Noto
+// Sans from api.fontsource.org on every build — a third-party host inside the
+// deploy path. It returns 403 to some egress ranges, and when it does the OG
+// route throws and takes the whole `astro build` down with it, so a Cloudflare
+// deploy fails for a reason that has nothing to do with the commit.
+// These two files are Inter (SIL OFL 1.1, licence alongside them), derived from
+// the @fontsource/inter package this repo already depends on, so the cards now
+// use the site's own typeface instead of a fallback.
+const OG_FONTS = [
+  './src/assets/fonts/Inter-Regular.ttf',
+  './src/assets/fonts/Inter-Bold.ttf',
+];
+
 const getRouter = async () => {
   return await OGImageRoute({
     pages: pages,
@@ -37,7 +50,8 @@ const getRouter = async () => {
       title: page?.title || 'Stack Architect',
       bgGradient: [[12, 15, 13], [24, 32, 28]],
       border: { color: [52, 211, 119], width: 10, side: 'block-start' },
-      padding: 80
+      padding: 80,
+      fonts: OG_FONTS,
     })
   });
 };
