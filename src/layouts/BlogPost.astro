@@ -124,7 +124,7 @@ const pageTitle = (title + SUFFIX).length <= 60 ? title + SUFFIX : title;
 
   <main class="flex-1 max-w-3xl mx-auto px-4 py-10 w-full">
     <!-- Post metadata bar -->
-    <div class="flex flex-wrap items-center gap-3 text-xs text-[#6b7671] font-mono mb-6 border-b border-[#222825] pb-4">
+    <div class="flex flex-wrap items-center gap-3 text-xs text-[#93a09a] font-mono mb-6 border-b border-[#222825] pb-4">
       <span>Published: {displayDate(publishDate)}</span>
       {updatedDate && updatedDate !== publishDate && (
         <span>· Updated: {displayDate(updatedDate)}</span>
@@ -225,10 +225,14 @@ const pageTitle = (title + SUFFIX).length <= 60 ? title + SUFFIX : title;
 
       const toc = document.createElement('nav');
       toc.setAttribute('aria-label', 'Table of contents');
-      toc.className = 'border border-[#222825] bg-[#0c0f0d] p-4 mb-8 font-mono';
+      // sa-toc carries the layout (two columns on wide viewports). A ten-item
+      // single-column list pushed the first line of the article below 1,000px,
+      // so a reader arriving from search met a navigation block instead of a
+      // sentence. Halving its height puts prose above the fold.
+      toc.className = 'sa-toc border border-[#222825] bg-[#0c0f0d] p-4 mb-8 font-mono';
 
       const label = document.createElement('div');
-      label.className = 'text-xs text-[#6b7671] uppercase tracking-widest mb-3';
+      label.className = 'text-xs text-[#93a09a] uppercase tracking-widest mb-3';
       label.textContent = 'CONTENTS //';
       toc.appendChild(label);
 

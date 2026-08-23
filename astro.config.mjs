@@ -210,6 +210,16 @@ function rehypeSponsorAffiliateLinks() {
 export default defineConfig({
   markdown: {
     rehypePlugins: [rehypeSponsorAffiliateLinks],
+    // Astro's default Shiki theme is `github-dark`, whose comment token is
+    // #6a737d — 3.05:1 against the code-block background, a WCAG AA fail.
+    // Comments in these posts are not decoration: they are the lines that say
+    // "// THIS TRIGGERS THE ERROR", i.e. the part of the snippet that carries
+    // the explanation. `github-dark-default` uses #8b949e for comments and is
+    // otherwise the same palette.
+    shikiConfig: {
+      theme: 'github-dark-default',
+      wrap: false,
+    },
   },
   site: SITE,
   output: 'static',

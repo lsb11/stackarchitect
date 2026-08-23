@@ -82,6 +82,30 @@ Full analysis lives in the StackArchitect project doc `gsc-indexing-diagnosis.md
   rather than reading the first response. Verify with
   `curl -sI https://audit.stackarchitect.xyz/ | head -3` before believing any
   tool that claims otherwise.
+- **Run `npm run a11y` before any CSS or colour-token change ships.** It builds
+  nothing — run `npm run build` first — then measures every text node and every
+  link/button on all 58 indexable pages with proper alpha and gradient
+  compositing. It must exit 0. Two bug classes it exists to catch, both found
+  live on 23 Aug 2026:
+  - **Dark Tailwind tokens used as text on a dark ground.** `#15803d`
+    (green-700), `#6d28d9` (violet-700) and `#2f3733` are designed for white
+    backgrounds. On `/tools/` the trust microcopy ("No credit card · No monthly
+    fees") measured **1.38:1 at 9px** — not rendered, in practice. Use the site
+    accent `#34d377` and the `--text-2/3/4` ramp (`#b6c0ba` / `#93a09a` /
+    `#7f8b85`) for text on dark.
+  - **Page-scoped link resets repainting filled buttons.** Astro compiles a
+    page's `a { color: inherit }` into `a[data-astro-cid-xxxx]`, specificity
+    (0,1,1), which beats `.cta-primary` (0,1,0). Six `/go/*` CTAs on `/stack/`
+    were rendering white-on-green at **1.72:1**, and the GetResponse button on
+    `/replace-klaviyo-free/` was green-on-green at **1:1** — invisible. The
+    `!important` on `.cta-primary`/`.cta-secondary` ink and fill in global.css
+    is the fix. **Do not remove it.**
+- **Never add `max-width` to the `body > *` block in global.css.** That block is
+  unlayered, and unlayered CSS beats every rule inside Tailwind's
+  `@layer utilities` regardless of specificity. A `max-width` there overrides
+  `max-w-3xl` on the blog layout's `<main>` and widens every post from 768px to
+  the full viewport. This shipped in `00f8f3f` and was live until 23 Aug. The
+  viewport clamp belongs in the `@media (max-width:700px)` block.
 - **`/go/*` affiliate cloaks are revenue-critical.** Both slash variants must be
   declared in `public/_redirects`, both 302, and `functions/_middleware.js` must
   keep exempting `/go/*` from slash-adding. Audited 17 Aug: 9 cloaks, 18 rules,

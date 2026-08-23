@@ -55,17 +55,26 @@ const { faqs } = Astro.props;
   }
 
   .faq-q {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 700;
     color: #f2f5f3;
     margin: 0 0 10px;
     line-height: 1.4;
+    /* Question and answer share a measure with the article body, so the eye
+       does not have to re-adjust between the two. */
+    max-width: 68ch;
   }
 
   .faq-a {
-    font-size: 14px;
-    color: #6b7671;
+    /* Was 14px in #6b7671, which is 4.09:1 against the #0c0f0d page — under
+       the 4.5:1 WCAG AA floor for body text, and the reason this section read
+       as unreachable grey. #b6c0ba is the site's own --color-body at 10.31:1,
+       and these answers are body text: they are also the acceptedAnswer.text
+       in the FAQPage graph, so they are the most quoted prose on the page. */
+    font-size: 16px;
+    color: #b6c0ba;
     line-height: 1.75;
     margin: 0;
+    max-width: 68ch;
   }
 </style>

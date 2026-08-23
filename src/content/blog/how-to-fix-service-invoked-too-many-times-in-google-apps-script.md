@@ -184,6 +184,8 @@ The [Autocrat Quota Fix](/autocrat-quota-fix/) guide covers the full Make.com im
 - No document create daily cap (250/day consumer limit)
 - Runs reliably at any volume
 
+What this costs: nothing, for most of the workflows that produce this error. [Make.com's free plan gives you 1,000 credits a month](/go/make/) with no card, and a document-generation run typically spends 2–3 credits per document — roughly 350 documents a month inside the free tier, against Apps Script's 250/day consumer ceiling that no amount of code will move. Above that, Core is $12/month for 10,000 credits.
+
 ## Which Fix Applies to Your Situation
 
 | Symptom | Most likely cause | Fix |
@@ -201,6 +203,12 @@ For errors that are not "Service invoked too many times" — specifically "Excee
 
 ## Replace Google Apps Script with Make.com
 
-If quota errors are blocking your Shopify workflows, Make.com is the permanent fix — it replaces GAS entirely for order-triggered automations with no quota limits on the free tier. The Complete Kit includes four ready-to-import Make.com scenarios: server-side tracking, inventory, TikTok CAPI, and P&L reporting. $29 one-time.
+If quota errors are blocking your Shopify workflows, Make.com is the permanent fix — it replaces GAS entirely for order-triggered automations, and the free plan carries most stores indefinitely.
+
+There are two roads out of this error, and the cheaper one is free:
+
+**Build it yourself.** [Open a free Make.com account — 1,000 credits a month, no card](/go/make/), then follow [Autocrat Quota Fix](/autocrat-quota-fix/) for document workflows or [Make.com for Shopify](/make-com-shopify/) for order-triggered ones. Budget an afternoon.
+
+**Skip the build.** The Complete Kit is four ready-to-import Make.com scenarios — server-side tracking, inventory, TikTok CAPI, and P&L reporting — with the connections and field mappings already done. $29 one-time, no subscription.
 
 **[Get the Complete Kit — $29 →](/pro/)**

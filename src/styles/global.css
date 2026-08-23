@@ -197,22 +197,34 @@ body::after {
   transition: background-color .18s ease, border-color .18s ease, color .18s ease;
 }
 
+/* The `!important` here is deliberate and load-bearing — do not remove it.
+   `.cta-primary` is specificity (0,1,0). Almost every page in this site opens
+   its scoped <style> with a link reset, and Astro compiles `a { color: inherit }`
+   into `a[data-astro-cid-xxxx] { color: inherit }`, which is (0,1,1) and wins.
+   The result is the page's body-text colour painted onto the filled accent
+   button: measured 23 Aug 2026, the six /go/* affiliate CTAs on /stack/ were
+   rendering #f0f0f0 on #34d377 at 1.72:1, and /tools/ was doing the same thing
+   via `.how-link`. Those buttons were, in practice, unreadable — the exact
+   elements the site earns from.
+   Ink and fill on a filled button are a component contract, not a suggestion a
+   page-level reset gets to override, so they are pinned. Everything else about
+   the button (size, position, margin) stays freely overridable. */
 .cta-primary {
-  background: var(--color-accent);
-  color: var(--color-accent-ink);
+  background: var(--color-accent) !important;
+  color: var(--color-accent-ink) !important;
   border: 1px solid var(--color-accent);
 }
 
 .cta-primary:hover,
 .cta-primary:focus-visible {
-  background: color-mix(in srgb, var(--color-accent) 86%, #fff);
+  background: color-mix(in srgb, var(--color-accent) 86%, #fff) !important;
   border-color: color-mix(in srgb, var(--color-accent) 86%, #fff);
-  color: var(--color-accent-ink);
+  color: var(--color-accent-ink) !important;
 }
 
 .cta-secondary {
   background: transparent;
-  color: var(--color-accent);
+  color: var(--color-accent) !important;
   border: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
 }
 
@@ -551,12 +563,32 @@ body::after {
   margin: 24px 0;
 }
 
-/* ── INTRO PARAGRAPH (first p after h1) ────────────────────── */
+/* ── INTRO PARAGRAPH (first p after h1) ─────────────────────────
+   Was a 3px accent left-border — identical to the treatment on .sa-answer
+   directly above it, so the page opened with two matching accent bars and
+   neither read as the more important one. The answer block is the quotable
+   unit (it carries #answer, it is in the speakable selector and the Article
+   schema); the intro is a lede and should look like one. Larger, quieter,
+   no rule. */
 .sa-prose > p:first-of-type {
-  color: var(--color-body);
-  border-left: 3px solid var(--color-accent);
-  padding-left: 20px;
-  margin-bottom: 32px;
+  color: var(--color-muted);
+  font-size: 1.09em;
+  line-height: 1.66;
+  margin-bottom: 34px;
+}
+
+/* ── ARTICLE TABLE OF CONTENTS ──────────────────────────────────
+   Injected by BlogPost.astro when a post has three or more H2s. */
+.sa-toc { border-radius: 10px; }
+.sa-toc > div:first-child { letter-spacing: .16em; }
+.sa-toc ul { margin: 0; padding: 0; list-style: none; }
+.sa-toc li { break-inside: avoid; }
+.sa-toc a { text-decoration: none; }
+@media (min-width: 800px) {
+  /* Two columns halve the block's height. `columns` rather than grid so the
+     list stays a single <ul> for assistive technology and the item order
+     still reads top-to-bottom, left column then right. */
+  .sa-toc ul { columns: 2; column-gap: 28px; }
 }
 
 /* ── STEP BLOCKS (Bold text starting with Step N) ─────────── */
@@ -781,7 +813,14 @@ img, svg, video, canvas, iframe { max-width: 100%; height: auto; }
    `min-width: 0` is the standard release valve and restores the intended
    behaviour of every overflow rule below. */
 body > *,
-main#main-content { min-width: 0; max-width: 100%; }
+main#main-content { min-width: 0; }
+/* NOTE: do not add `max-width: 100%` here. This block is unlayered, and
+   unlayered CSS beats every rule inside Tailwind's @layer utilities no matter
+   how specific the utility is. A `max-width` declared here therefore overrides
+   `max-w-3xl` on the blog layout's <main>, widening every post from 768px to
+   the full viewport and taking the FAQ, author card and related-guides blocks
+   with it. The viewport clamp lives in the max-width:700px block below, where
+   it is actually needed. */
 
 /* The rule further up gives tables inside an inline overflow-x wrapper a
    `min-width: 38rem` floor so columns don't crush. That is right, but the
