@@ -8,8 +8,13 @@ interface AppProfile {
   category: string;
   description: string;
   monthlyCost: string;
+  /** The plan the figure belongs to, e.g. "Core" or "Starter, per agent, billed annually". */
+  pricePlan?: string;
   priceVerifiedDate: string | null;
   priceSourceUrl: string | null;
+  /** Set when a price was checked but deliberately not recorded — see priceHeldReason. */
+  priceCheckedDate?: string;
+  priceHeldReason?: string;
   replacement: string;
   savings: string;
   stackarchitectAlternativeLink: string;
@@ -73,6 +78,12 @@ function offerFor(app: AppProfile) {
 }
 
 const verifiedCount = apps.filter((a) => a.priceVerifiedDate).length;
+
+// Vendors whose pricing page was opened and whose figure was deliberately left
+// unpublished. Saying why is a stronger trust signal than a number we would have
+// to caveat, and it is the promise /how-we-test/ makes.
+const held = apps.filter((a) => a.priceHeldReason);
+const heldDate = held.map((a) => a.priceCheckedDate).filter(Boolean).sort().pop() ?? "";
 const categories = [...new Set(apps.map((a) => a.category))].sort();
 
 // Page freshness follows the most recent price verification.
@@ -179,6 +190,24 @@ const schema = {
       <span id="row-count" class="text-sm text-gray-400" aria-live="polite"></span>
     </div>
 
+    {held.length > 0 && (
+      <div style="border:1px solid var(--border);border-left:3px solid #34d377;border-radius:10px;padding:16px 18px;margin:0 0 20px;background:rgba(255,255,255,.02);">
+        <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-4);margin-bottom:10px;">Checked, deliberately not recorded</div>
+        <p class="text-sm text-gray-400" style="margin:0 0 10px;line-height:1.6;">
+          These vendors' pricing pages were opened on {heldDate} and the figure was
+          <em>not</em> published, because what they showed could not be stated as a plain fact.
+          Recording why is more useful than recording a number we would not stand behind.
+        </p>
+        <ul style="margin:0;padding-left:18px;">
+          {held.map((a) => (
+            <li class="text-sm text-gray-400" style="margin-bottom:6px;line-height:1.6;">
+              <strong style="color:#fff;">{a.name}</strong> — {a.priceHeldReason}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+
     <div style="overflow-x:auto;">
       <table id="apps-table" style="width:100%;border-collapse:collapse;font-size:14px;">
         <caption class="text-sm text-gray-400" style="caption-side:top;text-align:left;padding-bottom:8px;">
@@ -208,7 +237,15 @@ const schema = {
                   <a href={`/apps/${app.id}/`} style="color:#fff;font-weight:600;text-decoration:none;">{app.name}</a>
                 </td>
                 <td style="padding:10px 12px;color:var(--text-3);">{app.category}</td>
-                <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">{app.monthlyCost}</td>
+                <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">
+                  {app.monthlyCost}
+                  {/* The plan the figure belongs to. A bare "$299" is not quotable —
+                      "$299, Core plan" is, and it is the difference between a number
+                      someone has to re-check and one they can cite. */}
+                  {app.pricePlan && (
+                    <span style="display:block;color:var(--text-4);font-size:12px;line-height:1.4;margin-top:2px;">{app.pricePlan}</span>
+                  )}
+                </td>
                 <td style="padding:10px 12px;font-family:var(--mono);font-size:13px;">
                   {app.priceVerifiedDate && app.priceSourceUrl ? (
                     <a
@@ -221,7 +258,9 @@ const schema = {
                       {app.priceVerifiedDate}
                     </a>
                   ) : (
-                    <span style="color:var(--text-4);">unverified</span>
+                    <span style="color:var(--text-4);" title={app.priceHeldReason ?? undefined}>
+                      {app.priceHeldReason ? "checked, not recorded" : "unverified"}
+                    </span>
                   )}
                 </td>
                 <td style="padding:10px 12px;">
