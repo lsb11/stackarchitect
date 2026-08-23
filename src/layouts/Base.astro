@@ -428,6 +428,45 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    {/*
+      CRITICAL SHELL — the fallback for when the main stylesheet is missing.
+
+      global.css is a ~64 KB external file with a content hash in its name, so
+      every deploy changes that filename. During the window between Cloudflare
+      Pages publishing new HTML and the matching /_astro/ asset reaching a given
+      edge node, a visitor gets HTML pointing at a stylesheet that node cannot
+      serve yet. Observed on 23 Aug 2026 minutes after a push: the page rendered
+      as an unstyled document — white ground, serif headings, blue underlined
+      links, prose running the full 2,000px viewport width. Both stylesheets
+      verified serving 200 immediately afterwards, so nothing was broken; the
+      reader simply arrived mid-deploy.
+
+      Rather than let that render as a 1996 text dump, these declarations paint
+      the dark ground and hold the reading measure. They live in a layer that is
+      declared before Tailwind's, which puts them at the BOTTOM of the cascade:
+      the moment the real stylesheet arrives, every one of them loses. Nothing
+      here is a design decision — it is only the difference between "styles are
+      still loading" and "this site looks broken".
+    */}
+    <style is:inline>
+      @layer sa-shell;
+      @layer sa-shell {
+        :root { color-scheme: dark; }
+        body {
+          background: #0c0f0d;
+          color: #b6c0ba;
+          font-family: Inter, system-ui, -apple-system, sans-serif;
+          margin: 0;
+          line-height: 1.7;
+        }
+        main { max-width: 768px; margin: 0 auto; padding: 24px 16px; }
+        h1, h2, h3 { color: #f2f5f3; line-height: 1.2; }
+        a { color: #34d377; }
+        pre, code { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+        pre { overflow-x: auto; }
+      }
+    </style>
+
     <!-- Primary SEO -->
     <title>{title}</title>
     <meta name="description" content={description} />
