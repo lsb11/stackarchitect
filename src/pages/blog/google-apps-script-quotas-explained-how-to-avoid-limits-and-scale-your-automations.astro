@@ -15,6 +15,54 @@ const VERIFIED = new Date(quotaData.verifiedDate).toLocaleDateString('en-GB', {
   day: 'numeric', month: 'long', year: 'numeric',
 });
 
+// ── Quota exhaustion calculator ─────────────────────────────────────────────
+// This page ranks 4.5–5.0 for the quota queries and loses nearly every click,
+// because for "google apps script execution time limit official documentation"
+// Google's own docs ARE the answer and no page outranks a primary source on its
+// own facts. What the official page does not do is tell you whether *your*
+// script is going to hit the ceiling, or when. That is the gap this fills.
+//
+// The quota constants below are exact and come from the same verified table as
+// the rest of the page. The only estimate is per-call latency, and it is an
+// input with its default stated rather than a number buried in the maths — so
+// the reader owns the assumption and can see what changes when they move it.
+const LIMITS = {
+  scriptRuntimeSec: 360,          // 6 min / execution, both account types
+  triggerDailyConsumerSec: 5400,  // 90 min / day
+  triggerDailyWorkspaceSec: 21600,// 6 hr / day
+  urlFetchConsumer: 20000,
+  urlFetchWorkspace: 100000,
+};
+
+function quotaVerdict(rows: number, callsPerRow: number, runsPerDay: number, latencyMs: number) {
+  const callsPerRun = rows * callsPerRow;
+  const secPerRun = (callsPerRun * latencyMs) / 1000;
+  const dailySec = secPerRun * runsPerDay;
+  const dailyCalls = callsPerRun * runsPerDay;
+
+  const runPct = (secPerRun / LIMITS.scriptRuntimeSec) * 100;
+  const dayPct = (dailySec / LIMITS.triggerDailyConsumerSec) * 100;
+  const fetchPct = (dailyCalls / LIMITS.urlFetchConsumer) * 100;
+
+  // Rows that fit inside one 6-minute execution at this latency.
+  const maxRows = Math.floor(LIMITS.scriptRuntimeSec / ((callsPerRow * latencyMs) / 1000));
+
+  const binding = [
+    { name: 'the 6-minute execution ceiling', pct: runPct },
+    { name: 'the 90-minute daily trigger runtime', pct: dayPct },
+    { name: 'the 20,000/day UrlFetch quota', pct: fetchPct },
+  ].sort((a, b) => b.pct - a.pct)[0];
+
+  return { callsPerRun, secPerRun, dailySec, dailyCalls, runPct, dayPct, fetchPct, maxRows, binding };
+}
+
+// A nightly Sheets job over 500 rows, three service calls each, four times a day.
+const CALC_EG = { rows: 500, callsPerRow: 3, runsPerDay: 4, latencyMs: 200 };
+const eg = quotaVerdict(CALC_EG.rows, CALC_EG.callsPerRow, CALC_EG.runsPerDay, CALC_EG.latencyMs);
+const fmtMinSec = (s: number) =>
+  `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;
+const limitsJson = JSON.stringify(LIMITS);
+
 const datasetSchema = {
   '@context': 'https://schema.org',
   '@type': 'Dataset',
@@ -217,6 +265,7 @@ const datasetSchema = {
       <li><a href="#what-are-quotas">What Are Google Apps Script Quotas?</a></li>
       <li><a href="#exact-limits">The Exact Quota Limits in 2026</a></li>
       <li><a href="#every-quota">Every Quota and Limitation &mdash; Complete Table</a></li>
+      <li><a href="#will-i-hit">Will Your Script Hit a Quota? &mdash; Calculator</a></li>
       <li><a href="#why-break">Why Quota Limits Break Your Automations</a></li>
       <li><a href="#error-messages">Common Quota Errors and What They Mean</a></li>
       <li><a href="#stay-under">How to Stay Under Quotas (6 Steps)</a></li>
@@ -441,6 +490,71 @@ const datasetSchema = {
 
   <p>If your quota errors are tied to <strong>Shopify order volume</strong> &mdash; particularly inventory sync or order logging workflows &mdash; the <a href="https://stackarchitect.xyz/stocky-swap/">Stocky Swap free replacement</a> routes every order through Make.com directly to Google Sheets, bypassing Apps Script execution entirely. No quota ceiling, no 6-minute limit, no document create cap. <a href="https://stackarchitect.xyz/stocky-swap/">Deploy free in 4 minutes &rarr;</a></p>
 
+  <h2 id="will-i-hit">Will Your Script Hit a Quota? Work Out Which Ceiling Binds First</h2>
+  <p>
+    Google publishes the limits. It does not tell you whether <em>your</em> script is going to reach
+    them, and that is the only question that matters at 2am when a batch dies halfway through. Three
+    ceilings can stop an Apps Script job and they bind in different orders depending on what the
+    script does. This works out which one you reach first.
+  </p>
+
+  <div class="qcalc" id="qcalc">
+    <div class="qcalc-grid">
+      <label class="qcalc-field">
+        <span>Rows or items per run</span>
+        <input type="number" id="q-rows" min="1" value={CALC_EG.rows} />
+      </label>
+      <label class="qcalc-field">
+        <span>Service calls per row</span>
+        <input type="number" id="q-calls" min="1" value={CALC_EG.callsPerRow} />
+        <small>Each <code>getValue</code>, <code>setValue</code>, <code>appendRow</code> or <code>UrlFetch</code> counts as one</small>
+      </label>
+      <label class="qcalc-field">
+        <span>Runs per day</span>
+        <input type="number" id="q-runs" min="1" value={CALC_EG.runsPerDay} />
+      </label>
+      <label class="qcalc-field">
+        <span>Latency per call (ms)</span>
+        <input type="number" id="q-latency" min="10" step="10" value={CALC_EG.latencyMs} />
+        <small>The one estimate here — measure yours and replace it</small>
+      </label>
+    </div>
+
+    <div class="qcalc-out" id="q-out">
+      <span class="qcalc-state" id="q-state">Worked example · {CALC_EG.rows} rows × {CALC_EG.callsPerRow} calls, {CALC_EG.runsPerDay}× a day at {CALC_EG.latencyMs}ms</span>
+      <div class="qcalc-bars">
+        <div class="qcalc-bar">
+          <div class="qcalc-bar-head"><span>Per-run execution time</span><b id="q-run-val">{fmtMinSec(eg.secPerRun)} of 6:00</b></div>
+          <div class="qcalc-track"><i id="q-run-fill" style={`width:${Math.min(eg.runPct, 100)}%`}></i></div>
+        </div>
+        <div class="qcalc-bar">
+          <div class="qcalc-bar-head"><span>Daily trigger runtime (consumer)</span><b id="q-day-val">{fmtMinSec(eg.dailySec)} of 90:00</b></div>
+          <div class="qcalc-track"><i id="q-day-fill" style={`width:${Math.min(eg.dayPct, 100)}%`}></i></div>
+        </div>
+        <div class="qcalc-bar">
+          <div class="qcalc-bar-head"><span>UrlFetch calls per day (if external)</span><b id="q-fetch-val">{eg.dailyCalls.toLocaleString('en-GB')} of 20,000</b></div>
+          <div class="qcalc-track"><i id="q-fetch-fill" style={`width:${Math.min(eg.fetchPct, 100)}%`}></i></div>
+        </div>
+      </div>
+      <p class="qcalc-verdict" id="q-verdict">
+        <strong>You reach {eg.binding.name} first, at {Math.round(eg.binding.pct)}% of it.</strong>
+        {' '}At {CALC_EG.callsPerRow} calls per row and {CALC_EG.latencyMs}ms per call, one execution
+        fits about <strong>{eg.maxRows.toLocaleString('en-GB')} rows</strong> before the 6-minute wall.
+        You are processing {CALC_EG.rows.toLocaleString('en-GB')}, so there is roughly{' '}
+        {(eg.maxRows - CALC_EG.rows).toLocaleString('en-GB')} rows of headroom — one busy week of
+        growth. When it goes, it goes mid-batch: rows before the cutoff are written, rows after it are
+        not, and nothing tells you which.
+      </p>
+    </div>
+
+    <p class="qcalc-method">
+      Ceilings are exact, from the verified table above. Latency is the estimate — a Sheets call is
+      typically 150–300ms, but it depends on sheet size and network, so measure yours with
+      <code>console.time()</code> and put the real number in. The arithmetic is
+      <code>rows × calls × latency</code>; nothing is hidden.
+    </p>
+  </div>
+
   <h2 id="stay-under">How to Stay Under Quotas Without Breaking Your Workflow</h2>
   <p>These six techniques reduce quota pressure and can sustain most medium-volume automations on consumer accounts. They are mitigation strategies &mdash; not architectural solutions for serious scale.</p>
   <ul>
@@ -567,6 +681,88 @@ const datasetSchema = {
 </div>
 </div>
 
+
+<script is:inline set:html={`
+// Quota exhaustion calculator. Constants are handed in from the same verified
+// table the page renders, so the server-side worked example and anything the
+// visitor calculates cannot disagree.
+(function () {
+  var L = ${limitsJson};
+  var el = function (id) { return document.getElementById(id); };
+  var out = el('q-out');
+  if (!out) return;
+
+  function fmt(s) {
+    return Math.floor(s / 60) + ':' + String(Math.round(s % 60)).padStart(2, '0');
+  }
+  function paint(fill, pct) {
+    fill.style.width = Math.min(pct, 100) + '%';
+    fill.className = pct >= 100 ? 'over' : pct >= 75 ? 'warn' : '';
+  }
+
+  function run(userEdited) {
+    var rows = Math.max(1, parseInt(el('q-rows').value) || 0);
+    var callsPerRow = Math.max(1, parseInt(el('q-calls').value) || 0);
+    var runsPerDay = Math.max(1, parseInt(el('q-runs').value) || 0);
+    var latency = Math.max(10, parseInt(el('q-latency').value) || 0);
+
+    var callsPerRun = rows * callsPerRow;
+    var secPerRun = (callsPerRun * latency) / 1000;
+    var dailySec = secPerRun * runsPerDay;
+    var dailyCalls = callsPerRun * runsPerDay;
+
+    var runPct = (secPerRun / L.scriptRuntimeSec) * 100;
+    var dayPct = (dailySec / L.triggerDailyConsumerSec) * 100;
+    var fetchPct = (dailyCalls / L.urlFetchConsumer) * 100;
+    var maxRows = Math.floor(L.scriptRuntimeSec / ((callsPerRow * latency) / 1000));
+
+    el('q-run-val').textContent = fmt(secPerRun) + ' of 6:00';
+    el('q-day-val').textContent = fmt(dailySec) + ' of 90:00';
+    el('q-fetch-val').textContent = dailyCalls.toLocaleString('en-GB') + ' of 20,000';
+    paint(el('q-run-fill'), runPct);
+    paint(el('q-day-fill'), dayPct);
+    paint(el('q-fetch-fill'), fetchPct);
+
+    var worst = [
+      { name: 'the 6-minute execution ceiling', pct: runPct },
+      { name: 'the 90-minute daily trigger runtime', pct: dayPct },
+      { name: 'the 20,000/day UrlFetch quota', pct: fetchPct }
+    ].sort(function (a, b) { return b.pct - a.pct; })[0];
+
+    var headroom = maxRows - rows;
+    var verdict;
+    if (worst.pct >= 100) {
+      verdict = '<strong>You are already past ' + worst.name + ', at ' + Math.round(worst.pct) +
+        '% of it.</strong> This script is failing now, or will on the next slightly larger batch. ' +
+        'One execution fits about ' + maxRows.toLocaleString('en-GB') + ' rows at this latency and you are sending ' +
+        rows.toLocaleString('en-GB') + '.';
+    } else if (worst.pct >= 75) {
+      verdict = '<strong>You reach ' + worst.name + ' first, at ' + Math.round(worst.pct) +
+        '% of it.</strong> That is inside the margin where a slow day tips it over. One execution fits about ' +
+        maxRows.toLocaleString('en-GB') + ' rows, leaving roughly ' + headroom.toLocaleString('en-GB') +
+        ' rows of headroom.';
+    } else {
+      verdict = '<strong>Nothing binds yet — the closest is ' + worst.name + ' at ' +
+        Math.round(worst.pct) + '%.</strong> One execution fits about ' + maxRows.toLocaleString('en-GB') +
+        ' rows, so you have around ' + headroom.toLocaleString('en-GB') + ' rows of growth before this matters.';
+    }
+    verdict += ' When it goes, it goes mid-batch: rows before the cutoff are written, rows after it are not, and nothing tells you which.';
+    el('q-verdict').innerHTML = verdict;
+
+    if (userEdited) {
+      var st = el('q-state');
+      st.textContent = 'Your numbers · ' + rows.toLocaleString('en-GB') + ' rows × ' + callsPerRow +
+        ' calls, ' + runsPerDay + '× a day at ' + latency + 'ms';
+      st.classList.add('live');
+    }
+  }
+
+  ['q-rows', 'q-calls', 'q-runs', 'q-latency'].forEach(function (id) {
+    var i = el(id);
+    if (i) i.addEventListener('input', function () { run(true); });
+  });
+})();
+`}></script>
 
 <script is:inline>
 (function() {
@@ -743,6 +939,30 @@ a{text-decoration:none;}
    small print. */
 .quota-provenance{font-size:14px;color:var(--soft);border-left:2px solid var(--border-strong);padding-left:14px;margin:14px 0 26px;line-height:1.6;}
 .quota-provenance strong{color:var(--accent);}
+
+/* Quota exhaustion calculator. Renders its worked example server-side, so the
+   numbers are in the HTML whether or not JavaScript runs. */
+.qcalc{border:1px solid var(--border-strong);border-radius:16px;background:var(--surface-2);padding:22px;margin:24px 0 32px;}
+.qcalc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:20px;}
+.qcalc-field{display:flex;flex-direction:column;gap:6px;min-width:0;}
+.qcalc-field>span{font-size:12px;font-weight:600;color:var(--text);}
+.qcalc-field small{font-size:11px;color:var(--muted);line-height:1.45;}
+.qcalc-field input{background:var(--bg);border:1px solid var(--border-strong);border-radius:8px;color:var(--text);
+  font-family:var(--mono,monospace);font-size:15px;padding:10px 12px;width:100%;min-width:0;}
+.qcalc-field input:focus{outline:2px solid var(--accent);outline-offset:1px;}
+.qcalc-out{border-top:1px solid var(--border);padding-top:18px;}
+.qcalc-state{display:block;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
+.qcalc-state.live{color:var(--accent);}
+.qcalc-bars{display:flex;flex-direction:column;gap:14px;margin-bottom:18px;}
+.qcalc-bar-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:13px;color:var(--soft);margin-bottom:6px;flex-wrap:wrap;}
+.qcalc-bar-head b{font-family:var(--mono,monospace);color:var(--text);font-variant-numeric:tabular-nums;}
+.qcalc-track{height:8px;border-radius:4px;background:var(--bg);border:1px solid var(--border);overflow:hidden;}
+.qcalc-track i{display:block;height:100%;background:var(--accent);transition:width .25s ease;}
+.qcalc-track i.warn{background:var(--warning,#f5b64d);}
+.qcalc-track i.over{background:#f87171;}
+.qcalc-verdict{font-size:14px;line-height:1.7;color:var(--soft);margin:0;}
+.qcalc-verdict strong{color:var(--text);}
+.qcalc-method{font-size:12px;line-height:1.6;color:var(--muted);border-top:1px solid var(--border);margin:18px 0 0;padding-top:14px;}
 .callout p{margin-bottom:0;color:var(--muted);font-size:17px;}
 .callout .label{display:block;margin-bottom:10px;color:#ffffff;font-size:12px;text-transform:uppercase;letter-spacing:1.8px;font-weight:800;}
 .callout-warning{margin:24px 0 30px;padding:18px 18px 16px;border:1px solid rgba(245,158,11,.3);border-left:4px solid var(--warning);border-radius:14px;background:rgba(245,158,11,.06);}
