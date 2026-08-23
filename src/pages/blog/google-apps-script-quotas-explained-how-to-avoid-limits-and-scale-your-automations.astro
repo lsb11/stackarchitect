@@ -269,6 +269,7 @@ const datasetSchema = {
       <li><a href="#why-break">Why Quota Limits Break Your Automations</a></li>
       <li><a href="#error-messages">Common Quota Errors and What They Mean</a></li>
       <li><a href="#stay-under">How to Stay Under Quotas (6 Steps)</a></li>
+      <li><a href="#resumable">Resumable Batch Pattern &mdash; Working Code</a></li>
       <li><a href="#autocrat">Autocrat &mdash; Why It Hits Limits &amp; the Fix</a></li>
       <li><a href="#outgrown">When You&apos;ve Outgrown Apps Script</a></li>
       <li><a href="#best-architecture">Best Architecture for Scale</a></li>
@@ -569,6 +570,129 @@ const datasetSchema = {
   <div class="callout">
     <span class="label">Important limit on these approaches</span>
     <p>Batching and backoff can take a stable 100-row workflow and scale it to 500 rows. They cannot take a 500-row workflow to 5,000 rows. At that point, the daily trigger-runtime ceiling is the binding constraint &mdash; and no code optimisation changes a 90-minute daily limit.</p>
+  </div>
+
+  <h2 id="resumable">The Resumable Batch Pattern &mdash; Working Code That Survives the 6-Minute Wall</h2>
+  <p>
+    Everything above reduces how often you hit the ceiling. This is the pattern that makes hitting it
+    <em>survivable</em>: the script processes what it can inside a time budget, writes down where it
+    got to, schedules itself to continue, and picks up from the same row on the next run. A job that
+    needs forty minutes finishes across nine executions instead of dying at six.
+  </p>
+  <p>
+    Most published versions of this leak triggers. They create a new one-shot trigger on every
+    resume without deleting the one that just fired &mdash; and because a script is capped at
+    <strong>20 triggers</strong> (see the limitations table above), a long job kills itself with
+    <em>&ldquo;This script has too many triggers&rdquo;</em> around the twentieth chunk. The version
+    below deletes its own triggers before creating the next, holds a lock so two chunks can never run
+    at once, and bounds its retries so a permanent error cannot loop until the daily quota is gone.
+  </p>
+
+  <div class="code-block">
+    <div class="code-head">
+      <span class="code-title">Resumable batch processor</span>
+      <span class="code-note">Paste into the Apps Script editor and run <code>runResumableBatch</code> once</span>
+    </div>
+    <pre><code>{`const HANDLER        = 'runResumableBatch';   // must equal this function's name
+const CURSOR_KEY     = 'batch_cursor';
+const RETRY_KEY      = 'batch_retries';
+const TIME_BUDGET_MS = 4.5 * 60 * 1000;       // stop at 4:30 of the 6:00 ceiling
+const CHUNK_ROWS     = 200;                   // rows per read/write pair
+const MAX_RETRIES    = 3;
+
+function runResumableBatch() {
+  const started = Date.now();
+  const props   = PropertiesService.getScriptProperties();
+
+  // Never let two chunks run at once. tryLock, not waitLock: a queued chunk
+  // would burn its own execution time sitting in the queue.
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(5000)) {
+    console.log('Another chunk holds the lock. Exiting.');
+    return;
+  }
+
+  try {
+    // Delete the one-shot trigger that fired this run, plus any strays. A
+    // time-based trigger created with .after() is NOT removed automatically.
+    clearOwnTriggers_();
+
+    const sheet   = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Orders');
+    const lastRow = sheet.getLastRow();
+    let   cursor  = Number(props.getProperty(CURSOR_KEY) || 2);  // row 1 = headers
+
+    while (cursor <= lastRow) {
+      // Check the clock BEFORE starting a chunk, never during. A chunk that
+      // starts must be allowed to finish, or its rows are read and not written.
+      if (Date.now() - started > TIME_BUDGET_MS) {
+        props.setProperty(CURSOR_KEY, String(cursor));
+        scheduleNextChunk_();
+        console.log('Budget reached at row ' + cursor + '. Next chunk scheduled.');
+        return;
+      }
+
+      const rows   = Math.min(CHUNK_ROWS, lastRow - cursor + 1);
+      const values = sheet.getRange(cursor, 1, rows, 3).getValues();   // ONE read
+      const output = values.map(processRow_);
+      sheet.getRange(cursor, 4, output.length, 1).setValues(output);   // ONE write
+
+      cursor += rows;
+      props.setProperty(CURSOR_KEY, String(cursor));   // checkpoint after the write
+    }
+
+    props.deleteProperty(CURSOR_KEY);
+    props.deleteProperty(RETRY_KEY);
+    console.log('Finished at row ' + (cursor - 1) + '.');
+
+  } catch (err) {
+    // A thrown error must not strand the batch halfway. Reschedule — but bound
+    // it, or a permanent failure retries until the daily runtime quota is gone.
+    const attempts = Number(props.getProperty(RETRY_KEY) || 0) + 1;
+    if (attempts <= MAX_RETRIES) {
+      props.setProperty(RETRY_KEY, String(attempts));
+      scheduleNextChunk_();
+      console.log('Chunk failed (attempt ' + attempts + '). Retry scheduled.');
+    } else {
+      props.deleteProperty(CURSOR_KEY);
+      props.deleteProperty(RETRY_KEY);
+      console.log('Giving up after ' + MAX_RETRIES + ' attempts. Cursor cleared.');
+    }
+    throw err;   // still surface it, so the execution shows as failed
+
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// Your per-row work. Must return a one-cell array to match the setValues range.
+function processRow_(row) {
+  return [row[0] + '-' + row[1]];
+}
+
+function clearOwnTriggers_() {
+  ScriptApp.getProjectTriggers()
+    .filter(function (t) { return t.getHandlerFunction() === HANDLER; })
+    .forEach(function (t) { ScriptApp.deleteTrigger(t); });
+}
+
+function scheduleNextChunk_() {
+  ScriptApp.newTrigger(HANDLER).timeBased().after(60 * 1000).create();
+}`}</code></pre>
+  </div>
+
+  <h3 id="resumable-why">Why each piece is there</h3>
+  <ul>
+    <li><strong><code>TIME_BUDGET_MS</code> is 4:30, not 6:00.</strong> The check happens between chunks, so the budget must leave room for the slowest possible chunk plus the checkpoint and the trigger call. Setting it at 5:50 means the run dies inside a chunk with rows read and not written.</li>
+    <li><strong>The clock is checked before a chunk, never inside one.</strong> A chunk that has started must finish, or you get the exact partial-write failure the whole pattern exists to prevent.</li>
+    <li><strong><code>tryLock</code>, not <code>waitLock</code>.</strong> A chunk that queues behind another spends its own six minutes waiting. Better to exit and let the scheduled trigger handle it.</li>
+    <li><strong><code>clearOwnTriggers_()</code> runs first.</strong> One-shot <code>.after()</code> triggers persist after firing. Without this the script accumulates one per resume and stops at the 20-trigger cap &mdash; a quota failure caused by the fix for a quota failure.</li>
+    <li><strong>The checkpoint is written after the <code>setValues</code>, not before.</strong> Checkpoint first and a crash between the two loses the chunk silently; checkpoint after and the worst case is one chunk processed twice, which is recoverable.</li>
+    <li><strong>Retries are bounded.</strong> An unbounded reschedule on a permanent error &mdash; a bad reference, a deleted sheet &mdash; will consume the entire 90-minute daily trigger allowance overnight and take every other automation on the account down with it.</li>
+  </ul>
+
+  <div class="callout">
+    <span class="label">What this pattern does not fix</span>
+    <p>It defeats the <strong>per-execution</strong> ceiling, not the <strong>daily</strong> one. Nine chunks of four and a half minutes is roughly 40 minutes of the 90-minute consumer trigger allowance &mdash; run that twice a day and there is nothing left for anything else on the account. Use the calculator above with your real numbers: if the daily bar is the one filling up, no amount of chunking helps and the work has to move off Apps Script entirely.</p>
   </div>
 
   <div class="autocrat-section" id="autocrat">
@@ -963,6 +1087,21 @@ a{text-decoration:none;}
 .qcalc-verdict{font-size:14px;line-height:1.7;color:var(--soft);margin:0;}
 .qcalc-verdict strong{color:var(--text);}
 .qcalc-method{font-size:12px;line-height:1.6;color:var(--muted);border-top:1px solid var(--border);margin:18px 0 0;padding-top:14px;}
+
+/* Code blocks. This page is about a programming limit and shipped without a
+   single one, while the pages outranking it lead with working examples. */
+.code-block{background:#080a09;border:1px solid var(--border-strong);border-radius:14px;margin:22px 0;overflow:hidden;}
+.code-head{display:flex;justify-content:space-between;align-items:center;gap:12px;
+  padding:10px 16px;border-bottom:1px solid var(--border);background:#0d100e;flex-wrap:wrap;}
+.code-title{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);}
+.code-note{font-size:11px;color:var(--soft);}
+.code-block pre{margin:0;padding:18px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.code-block code{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13px;line-height:1.7;
+  color:#cfd8d3;white-space:pre;display:block;}
+.code-block .cm{color:#5d6862;font-style:italic;}
+.code-block .kw{color:#7ee2a8;}
+.code-block .st{color:#e5c07b;}
+.code-block .fn{color:#61afef;}
 .callout p{margin-bottom:0;color:var(--muted);font-size:17px;}
 .callout .label{display:block;margin-bottom:10px;color:#ffffff;font-size:12px;text-transform:uppercase;letter-spacing:1.8px;font-weight:800;}
 .callout-warning{margin:24px 0 30px;padding:18px 18px 16px;border:1px solid rgba(245,158,11,.3);border-left:4px solid var(--warning);border-radius:14px;background:rgba(245,158,11,.06);}
