@@ -232,9 +232,14 @@ const schemaFAQ = {
   }))
 };
 
+// Declared standalone AND referenced by schemaWebPage.breadcrumb below. Without
+// an @id those are two unrelated BreadcrumbList nodes describing one trail, which
+// is the same duplicate-node defect Base.astro's guard exists to prevent — the
+// guard catches top-level declarations, not one nested inside a WebPage.
 const schemaBreadcrumb = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
+  "@id": CANONICAL + "#breadcrumb",
   "itemListElement": [
     { "@type": "ListItem", "position": 1, "name": "Stack Architect", "item": SITE },
     { "@type": "ListItem", "position": 2, "name": "Recommended Stack", "item": CANONICAL }
@@ -285,7 +290,7 @@ const schemaWebPage = {
   "name": "Recommended Shopify Stack 2026",
   "url": CANONICAL,
   "description": "The reference page for the Stack Architect free Shopify automation stack — 7 vetted tools, full comparison table, and deployment order.",
-  "breadcrumb": schemaBreadcrumb,
+  "breadcrumb": { "@id": CANONICAL + "#breadcrumb" },
   "isPartOf": { "@type": "WebSite", "url": SITE, "name": "Stack Architect" },
 };
 ---
