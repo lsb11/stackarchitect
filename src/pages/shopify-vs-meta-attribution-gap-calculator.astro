@@ -75,8 +75,13 @@ const tocHeadings = [
   .calc-field input::placeholder{color:#6b7280;}
   .calc-btn{width:100%;background:#34d377;color:#000;font-family:inherit;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:14px;border:none;cursor:pointer;transition:background .2s;margin-top:8px;}
   .calc-btn:hover{background:#34d377;}
-  .calc-result{display:none;margin-top:32px;border:1px solid #262c29;border-radius:10px;background:#0c0f0d;padding:28px;}
+  /* Visible on load — the panel used to be display:none with "--" in every
+     cell until four fields were filled, so a visitor from search saw nothing
+     and a crawler saw an empty main content area. */
+  .calc-result{display:block;margin-top:32px;border:1px solid #262c29;border-radius:10px;background:#0c0f0d;padding:28px;}
   .calc-result.show{display:block;}
+  .calc-state{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#6b7671;margin-bottom:18px;display:block;}
+  .calc-state.live{color:#34d377;}
   .result-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#93a09a;margin-bottom:8px;}
   .result-value{font-size:36px;font-weight:700;color:#34d377;line-height:1;letter-spacing:-.03em;}
   .result-sub{font-size:12px;color:#8b8b93;margin-top:6px;line-height:1.6;}
@@ -156,15 +161,15 @@ const tocHeadings = [
         <div class="calc-grid">
           <div class="calc-field">
             <label>Shopify revenue (last 30 days) £/$</label>
-            <input type="number" id="ag-shopify" placeholder="e.g. 45000" />
+            <input type="number" id="ag-shopify" placeholder="e.g. 45000" / value="50000" >
           </div>
           <div class="calc-field">
             <label>Meta Ads reported revenue (last 30 days) £/$</label>
-            <input type="number" id="ag-meta" placeholder="e.g. 52000" />
+            <input type="number" id="ag-meta" placeholder="e.g. 52000" / value="42000" >
           </div>
           <div class="calc-field">
             <label>Meta ad spend (last 30 days) £/$</label>
-            <input type="number" id="ag-spend" placeholder="e.g. 12000" />
+            <input type="number" id="ag-spend" placeholder="e.g. 12000" / value="15000" >
           </div>
           <div class="calc-field">
             <label>Attribution window in use</label>
@@ -194,24 +199,25 @@ const tocHeadings = [
         </div>
         <button class="calc-btn" onclick="calcAttrib()">CALCULATE ATTRIBUTION GAP →</button>
         <div class="calc-result" id="ag-result">
+          <span class="calc-state" id="ag-state">Worked example · £50,000 Shopify revenue, £42,000 reported by Meta, £15,000 ad spend, browser pixel only</span>
           <div class="result-grid">
             <div class="result-cell">
               <div class="result-label">Attribution Gap</div>
-              <div class="result-value" id="ag-gap">--</div>
-              <div class="result-sub" id="ag-gap-label">Meta vs Shopify</div>
+              <div class="result-value" id="ag-gap" style="color:#f5b64d;">−16%</div>
+              <div class="result-sub" id="ag-gap-label">Slight under-reporting — check pixel</div>
             </div>
             <div class="result-cell">
               <div class="result-label">True ROAS Estimate</div>
-              <div class="result-value" id="ag-roas" style="font-size:28px;">--</div>
+              <div class="result-value" id="ag-roas" style="font-size:28px;">2.83x</div>
               <div class="result-sub">Blended, de-duplicated</div>
             </div>
             <div class="result-cell">
               <div class="result-label">Reported ROAS</div>
-              <div class="result-value" id="ag-reported-roas" style="font-size:28px;color:#6b7671;">--</div>
+              <div class="result-value" id="ag-reported-roas" style="font-size:28px;color:#6b7671;">2.80x</div>
               <div class="result-sub">Meta dashboard figure</div>
             </div>
           </div>
-          <div class="result-insight" id="ag-insight"></div>
+          <div class="result-insight" id="ag-insight"><strong>Tracking loss confirmed.</strong> Meta is missing conversions that Shopify is recording. On browser-pixel-only tracking at £15,000/month of spend, server-side CAPI is likely to recover roughly <strong>£3,750/month</strong> in attributed revenue — not new sales, but sales Meta already drove and cannot currently see, which is what its bidding optimises on. <a href="/capi-shield/">Free CAPI setup guide →</a></div>
         </div>
 
         <GapContribute source="gap-calculator" />
@@ -357,4 +363,25 @@ const tocHeadings = [
     if (window.gapContributeShow) window.gapContributeShow();
   }
   
+
+  // Run once on load so the panel shows a real result rather than placeholders,
+  // and recalculate as the visitor types rather than making them find the button.
+  (function () {
+    var ids = ["ag-shopify","ag-meta","ag-spend","ag-tracking"];
+    ids.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.addEventListener('input', calcAttrib);
+    });
+    try { calcAttrib(); } catch (e) {}
+    var st = document.getElementById('ag-state');
+    if (st) {
+      ids.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('input', function () {
+          st.textContent = 'Your numbers';
+          st.classList.add('live');
+        });
+      });
+    }
+  })();
 </script>

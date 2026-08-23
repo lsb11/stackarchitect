@@ -11,6 +11,46 @@ const breadcrumb = [
   { label: 'Tools', href: '/tools/' },
   { label: 'Make.com vs Zapier Cost Calculator — Free Automation Platform Comparison 2026' },
 ];
+
+// ── Worked example, rendered server-side ────────────────────────────────────
+// The result panel used to be display:none with "--" in every cell until the
+// visitor filled in four fields. That costs three things at once: someone
+// arriving from search sees no value before committing effort, the main content
+// area is empty at render time on a page whose entire purpose is the
+// calculation, and a model reading the page finds no result to quote.
+//
+// The tiers live here and are handed to the client as JSON, so the figure in the
+// HTML and the figure the calculator produces come from one source and cannot
+// drift apart.
+const MAKE_TIERS = [
+  { maxOps: 1000, cost: 0, plan: 'Free tier' },
+  { maxOps: 10000, cost: 9, plan: 'Core — 10k ops' },
+  { maxOps: 40000, cost: 16, plan: 'Pro — 40k ops' },
+  { maxOps: 150000, cost: 29, plan: 'Teams — 150k ops' },
+  { maxOps: Infinity, cost: 99, plan: 'Enterprise' },
+];
+const ZAPIER_TIERS = [
+  { maxOps: 100, cost: 0, plan: 'Free tier' },
+  { maxOps: 750, cost: 17, plan: 'Starter — 750 tasks' },
+  { maxOps: 2000, cost: 44, plan: 'Professional — 2k tasks' },
+  { maxOps: 50000, cost: 89, plan: 'Team — 50k tasks' },
+  { maxOps: Infinity, cost: 299, plan: 'Company' },
+];
+const pick = (tiers: { maxOps: number; cost: number; plan: string }[], ops: number) =>
+  tiers.find((t) => ops <= t.maxOps)!;
+
+// A store doing ~500 paid orders a month on a five-module scenario — the shape
+// the rest of this site is written for.
+const EG = { runs: 500, steps: 5 };
+const egOps = EG.runs * EG.steps;
+const egMake = pick(MAKE_TIERS, egOps);
+const egZapier = pick(ZAPIER_TIERS, egOps);
+const egSaving = egZapier.cost - egMake.cost;
+
+const tiersJson = JSON.stringify({
+  make: MAKE_TIERS.map((t) => ({ ...t, maxOps: t.maxOps === Infinity ? null : t.maxOps })),
+  zapier: ZAPIER_TIERS.map((t) => ({ ...t, maxOps: t.maxOps === Infinity ? null : t.maxOps })),
+});
 import TableOfContents from '../components/TableOfContents.astro';
 
 const tocHeadings = [
@@ -78,8 +118,12 @@ const tocHeadings = [
   .calc-field input::placeholder{color:#6b7280;}
   .calc-btn{width:100%;background:#34d377;color:#000;font-family:inherit;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:14px;border:none;cursor:pointer;transition:background .2s;margin-top:8px;}
   .calc-btn:hover{background:#34d377;}
-  .calc-result{display:none;margin-top:32px;border:1px solid #262c29;border-radius:10px;background:#0c0f0d;padding:28px;}
+  /* Visible on load, showing the worked example below. `.show` is retained
+     because the script still adds it after a calculation. */
+  .calc-result{display:block;margin-top:32px;border:1px solid #262c29;border-radius:10px;background:#0c0f0d;padding:28px;}
   .calc-result.show{display:block;}
+  .calc-state{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#6b7671;margin-bottom:18px;display:block;}
+  .calc-state.live{color:#34d377;}
   .result-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#93a09a;margin-bottom:8px;}
   .result-value{font-size:36px;font-weight:700;color:#34d377;line-height:1;letter-spacing:-.03em;}
   .result-sub{font-size:12px;color:#8b8b93;margin-top:6px;line-height:1.6;}
@@ -159,13 +203,13 @@ const tocHeadings = [
         <div class="calc-grid">
           <div class="calc-field">
             <label>Monthly automation runs (workflow executions)</label>
-            <input type="number" id="mz-runs" placeholder="e.g. 500" />
+            <input type="number" id="mz-runs" placeholder="e.g. 500" value={EG.runs} />
           </div>
           <div class="calc-field">
             <label>Average steps per workflow</label>
             <select id="mz-steps">
               <option value="2">1–3 steps (simple trigger → action)</option>
-              <option value="5">4–6 steps (intermediate)</option>
+              <option value="5" selected>4–6 steps (intermediate)</option>
               <option value="9">7–12 steps (complex)</option>
               <option value="15">12+ steps (advanced)</option>
             </select>
@@ -185,12 +229,16 @@ const tocHeadings = [
         </div>
         <button class="calc-btn" onclick="calcMakeZapier()">COMPARE PLATFORM COSTS →</button>
         <div class="calc-result" id="mz-result">
+          <span class="calc-state" id="mz-state">Worked example · {EG.runs} runs/month × {EG.steps} steps — change any field to use your own</span>
           <div class="result-grid">
-            <div class="result-cell"><div class="result-label">Make.com Monthly Cost</div><div class="result-value" id="mz-make">--</div><div class="result-sub" id="mz-make-plan">--</div></div>
-            <div class="result-cell"><div class="result-label">Zapier Monthly Cost</div><div class="result-value" id="mz-zapier" style="font-size:28px;color:#f87171;">--</div><div class="result-sub" id="mz-zapier-plan">--</div></div>
-            <div class="result-cell"><div class="result-label">Monthly Saving (Make)</div><div class="result-value" id="mz-saving" style="font-size:28px;">--</div><div class="result-sub">Annual: <span id="mz-annual">--</span></div></div>
+            <div class="result-cell"><div class="result-label">Make.com Monthly Cost</div><div class="result-value" id="mz-make">{egMake.cost === 0 ? 'FREE' : '£' + egMake.cost + '/mo'}</div><div class="result-sub" id="mz-make-plan">{egMake.plan} ({egOps.toLocaleString('en-GB')} ops needed)</div></div>
+            <div class="result-cell"><div class="result-label">Zapier Monthly Cost</div><div class="result-value" id="mz-zapier" style="font-size:28px;color:#f87171;">{egZapier.cost === 0 ? 'FREE' : '£' + egZapier.cost + '/mo'}</div><div class="result-sub" id="mz-zapier-plan">{egZapier.plan}</div></div>
+            <div class="result-cell"><div class="result-label">Monthly Saving (Make)</div><div class="result-value" id="mz-saving" style="font-size:28px;">{egSaving > 0 ? '£' + egSaving + '/mo' : '£0'}</div><div class="result-sub">Annual: <span id="mz-annual">{egSaving > 0 ? '£' + (egSaving * 12).toLocaleString('en-GB') : '£0'}</span></div></div>
           </div>
-          <div class="result-insight" id="mz-insight"></div>
+          <div class="result-insight" id="mz-insight">
+            <strong>At {EG.runs} orders a month on a {EG.steps}-module scenario, Make.com costs £{egMake.cost} and Zapier costs £{egZapier.cost} — a £{egSaving * 12} difference over a year.</strong>
+            {' '}The gap comes from how the two count usage: Zapier bills a task per action step, so a five-step Zap run {EG.runs} times is {egOps.toLocaleString('en-GB')} tasks and lands on {egZapier.plan}. Make.com counts operations the same way but its tiers are far wider, so the same volume sits inside {egMake.plan}. Enter your own numbers above to see where your store falls.
+          </div>
         </div>
       </div>
 
@@ -326,15 +374,29 @@ const tocHeadings = [
     document.getElementById('mz-make-plan').textContent = makePlan + ' (' + ops.toLocaleString() + ' ops needed)';
     document.getElementById('mz-zapier').textContent = zapierCost === 0 ? 'FREE' : '£' + zapierCost + '/mo';
     document.getElementById('mz-zapier-plan').textContent = zapierPlan;
-    document.getElementById('mz-saving').textContent = saving > 0 ? '£' + saving + '/mo' : '$0';
+    // Was '$0' while every other figure on the page is in £.
+    document.getElementById('mz-saving').textContent = saving > 0 ? '£' + saving + '/mo' : '£0';
     document.getElementById('mz-saving').style.color = saving > 0 ? '#34d377' : '#6b7671';
-    document.getElementById('mz-annual').textContent = saving > 0 ? '£' + (saving*12).toLocaleString() : '$0';
+    document.getElementById('mz-annual').textContent = saving > 0 ? '£' + (saving*12).toLocaleString() : '£0';
 
     let insight = saving > 0
       ? '<strong>Switch to Make.com saves £' + saving + '/month</strong> (£' + (saving*12) + '/year) at your automation volume. Make.com also handles the multi-path routing required for Shopify CAPI, TikTok Events API, and Google Sheets simultaneously — which Zapier cannot do in a single workflow.'
       : 'At this volume both platforms are in a similar price bracket. Make.com\'s advantage is in capability — complex multi-path scenarios, data transformation, and the ability to run the full $0 Shopify automation stack in a single scenario.';
     document.getElementById('mz-insight').innerHTML = insight;
     document.getElementById('mz-result').classList.add('show');
+
+    // The panel arrives showing a worked example. Once the visitor calculates,
+    // say so — otherwise they cannot tell whose numbers they are looking at.
+    var state = document.getElementById('mz-state');
+    if (state) {
+      state.textContent = 'Your numbers · ' + runs.toLocaleString() + ' runs/month × ' + steps + ' steps';
+      state.classList.add('live');
+    }
   }
-  
+
+  // Recalculate as the visitor types rather than making them find the button.
+  ['mz-runs', 'mz-steps', 'mz-cost', 'mz-current'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('input', calcMakeZapier);
+  });
 </script>

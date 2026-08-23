@@ -78,8 +78,13 @@ const tocHeadings = [
   .calc-field input::placeholder{color:#6b7280;}
   .calc-btn{width:100%;background:#34d377;color:#000;font-family:inherit;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:14px;border:none;cursor:pointer;transition:background .2s;margin-top:8px;}
   .calc-btn:hover{background:#34d377;}
-  .calc-result{display:none;margin-top:32px;border:1px solid #262c29;border-radius:10px;background:#0c0f0d;padding:28px;}
+  /* Visible on load — the panel used to be display:none with "--" in every
+     cell until four fields were filled, so a visitor from search saw nothing
+     and a crawler saw an empty main content area. */
+  .calc-result{display:block;margin-top:32px;border:1px solid #262c29;border-radius:10px;background:#0c0f0d;padding:28px;}
   .calc-result.show{display:block;}
+  .calc-state{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#6b7671;margin-bottom:18px;display:block;}
+  .calc-state.live{color:#34d377;}
   .result-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#93a09a;margin-bottom:8px;}
   .result-value{font-size:36px;font-weight:700;color:#34d377;line-height:1;letter-spacing:-.03em;}
   .result-sub{font-size:12px;color:#8b8b93;margin-top:6px;line-height:1.6;}
@@ -161,7 +166,7 @@ const tocHeadings = [
             <label>Monthly Shopify orders</label>
             <select id="sr-orders">
               <option value="50">Under 100/month</option>
-              <option value="300">100–500/month</option>
+              <option value="300" selected>100–500/month</option>
               <option value="750">500–1,000/month</option>
               <option value="2000">1,000–5,000/month</option>
               <option value="5000">5,000+/month</option>
@@ -171,7 +176,7 @@ const tocHeadings = [
             <label>Number of active SKUs</label>
             <select id="sr-skus">
               <option value="20">Under 50</option>
-              <option value="100">50–200</option>
+              <option value="100" selected>50–200</option>
               <option value="400">200–500</option>
               <option value="1000">500–2,000</option>
               <option value="3000">2,000+</option>
@@ -181,7 +186,7 @@ const tocHeadings = [
             <label>How often do you manually update stock?</label>
             <select id="sr-manual">
               <option value="0">Rarely — mostly automated</option>
-              <option value="2">1–3 times per week</option>
+              <option value="2" selected>1–3 times per week</option>
               <option value="5">Daily</option>
               <option value="10">Multiple times per day</option>
             </select>
@@ -190,7 +195,7 @@ const tocHeadings = [
             <label>Number of suppliers / warehouses</label>
             <select id="sr-suppliers">
               <option value="1">1</option>
-              <option value="3">2–5</option>
+              <option value="3" selected>2–5</option>
               <option value="8">6–15</option>
               <option value="20">15+</option>
             </select>
@@ -199,7 +204,7 @@ const tocHeadings = [
             <label>Do you use Stocky purchase orders?</label>
             <select id="sr-pos">
               <option value="0">No / rarely</option>
-              <option value="3">Yes, occasionally</option>
+              <option value="3" selected>Yes, occasionally</option>
               <option value="7">Yes, frequently (main workflow)</option>
             </select>
           </div>
@@ -207,13 +212,14 @@ const tocHeadings = [
             <label>Current backup / export habit</label>
             <select id="sr-backup">
               <option value="0">Regular exports</option>
-              <option value="3">Occasional</option>
+              <option value="3" selected>Occasional</option>
               <option value="5">Rarely or never</option>
             </select>
           </div>
         </div>
         <button class="calc-btn" onclick="calcStocky()">CALCULATE MY MIGRATION RISK →</button>
         <div class="calc-result" id="sr-result">
+          <span class="calc-state" id="sr-state">Worked example · a mid-sized store — change any answer to score your own</span>
           <div class="result-grid">
             <div class="result-cell">
               <div class="result-label">Risk Score</div>
@@ -378,4 +384,25 @@ const tocHeadings = [
     document.getElementById('sr-result').classList.add('show');
   }
   
+
+  // Run once on load so the panel shows a real result rather than placeholders,
+  // and recalculate as the visitor types rather than making them find the button.
+  (function () {
+    var ids = [];
+    ids.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.addEventListener('input', calcStocky);
+    });
+    try { calcStocky(); } catch (e) {}
+    var st = document.getElementById('sr-state');
+    if (st) {
+      ids.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('input', function () {
+          st.textContent = 'Your numbers';
+          st.classList.add('live');
+        });
+      });
+    }
+  })();
 </script>

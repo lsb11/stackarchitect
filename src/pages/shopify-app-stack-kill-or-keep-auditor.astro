@@ -69,8 +69,13 @@ const tocHeadings = [
   .calc-field input::placeholder{color:#6b7280;}
   .calc-btn{width:100%;background:#34d377;color:#000;font-family:inherit;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:14px;border:none;cursor:pointer;transition:background .2s;margin-top:8px;}
   .calc-btn:hover{background:#34d377;}
-  .calc-result{display:none;margin-top:32px;border:1px solid #262c29;border-radius:10px;background:#0c0f0d;padding:28px;}
+  /* Visible on load — the panel used to be display:none with "--" in every
+     cell until four fields were filled, so a visitor from search saw nothing
+     and a crawler saw an empty main content area. */
+  .calc-result{display:block;margin-top:32px;border:1px solid #262c29;border-radius:10px;background:#0c0f0d;padding:28px;}
   .calc-result.show{display:block;}
+  .calc-state{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#6b7671;margin-bottom:18px;display:block;}
+  .calc-state.live{color:#34d377;}
   .result-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#93a09a;margin-bottom:8px;}
   .result-value{font-size:36px;font-weight:700;color:#34d377;line-height:1;letter-spacing:-.03em;}
   .result-sub{font-size:12px;color:#8b8b93;margin-top:6px;line-height:1.6;}
@@ -150,7 +155,7 @@ const tocHeadings = [
         <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px;" id="app-checks">
           
           <label style="display:flex;align-items:center;gap:12px;cursor:pointer;border:1px solid #222825;padding:12px 14px;background:#0c0f0d;transition:border-color .2s;" for="a1">
-            <input type="checkbox" id="a1" data-cost="199" data-replace="CAPI Shield (free)" data-link="/capi-shield/" style="accent-color:#34d377;flex-shrink:0;" />
+            <input type="checkbox" id="a1" data-cost="199" data-replace="CAPI Shield (free)" data-link="/capi-shield/" style="accent-color:#34d377;flex-shrink:0;"  checked />
             <div style="flex:1;">
               <div style="font-size:11px;color:#dfe6e2;">Ad tracking / attribution (Triple Whale, Northbeam, Elevar, etc.)</div>
               <div style="font-size:10px;color:#6b7671;margin-top:2px;">Typical cost: ~$199/mo · Replace with: CAPI Shield (free)</div>
@@ -160,7 +165,7 @@ const tocHeadings = [
             </div>
           </label>
           <label style="display:flex;align-items:center;gap:12px;cursor:pointer;border:1px solid #222825;padding:12px 14px;background:#0c0f0d;transition:border-color .2s;" for="a2">
-            <input type="checkbox" id="a2" data-cost="200" data-replace="Systeme.io free plan" data-link="/replace-klaviyo-free/" style="accent-color:#34d377;flex-shrink:0;" />
+            <input type="checkbox" id="a2" data-cost="200" data-replace="Systeme.io free plan" data-link="/replace-klaviyo-free/" style="accent-color:#34d377;flex-shrink:0;"  checked />
             <div style="flex:1;">
               <div style="font-size:11px;color:#dfe6e2;">Email marketing (Klaviyo, Mailchimp, Drip, etc.)</div>
               <div style="font-size:10px;color:#6b7671;margin-top:2px;">Typical cost: ~$200/mo · Replace with: Systeme.io free plan</div>
@@ -170,7 +175,7 @@ const tocHeadings = [
             </div>
           </label>
           <label style="display:flex;align-items:center;gap:12px;cursor:pointer;border:1px solid #222825;padding:12px 14px;background:#0c0f0d;transition:border-color .2s;" for="a3">
-            <input type="checkbox" id="a3" data-cost="99" data-replace="Stocky Swap (free)" data-link="/stocky-swap/" style="accent-color:#34d377;flex-shrink:0;" />
+            <input type="checkbox" id="a3" data-cost="99" data-replace="Stocky Swap (free)" data-link="/stocky-swap/" style="accent-color:#34d377;flex-shrink:0;"  checked />
             <div style="flex:1;">
               <div style="font-size:11px;color:#dfe6e2;">Inventory management (Stocky, Linnworks, etc.)</div>
               <div style="font-size:10px;color:#6b7671;margin-top:2px;">Typical cost: ~$99/mo · Replace with: Stocky Swap (free)</div>
@@ -190,7 +195,7 @@ const tocHeadings = [
             </div>
           </label>
           <label style="display:flex;align-items:center;gap:12px;cursor:pointer;border:1px solid #222825;padding:12px 14px;background:#0c0f0d;transition:border-color .2s;" for="a5">
-            <input type="checkbox" id="a5" data-cost="79" data-replace="Make.com + Sheets (free)" data-link="/shopify-profit-loss-automation/" style="accent-color:#34d377;flex-shrink:0;" />
+            <input type="checkbox" id="a5" data-cost="79" data-replace="Make.com + Sheets (free)" data-link="/shopify-profit-loss-automation/" style="accent-color:#34d377;flex-shrink:0;"  checked />
             <div style="flex:1;">
               <div style="font-size:11px;color:#dfe6e2;">P&L / reporting dashboard (TrueProfit, BeProfit, etc.)</div>
               <div style="font-size:10px;color:#6b7671;margin-top:2px;">Typical cost: ~$79/mo · Replace with: Make.com + Sheets (free)</div>
@@ -252,6 +257,7 @@ const tocHeadings = [
         </div>
         <button class="calc-btn" onclick="calcApps()">AUDIT MY APP STACK →</button>
         <div class="calc-result" id="app-result">
+          <span class="calc-state" id="app-state">Worked example · tick the apps you pay for to build your kill list</span>
           <div class="result-grid">
             <div class="result-cell">
               <div class="result-label">Total Monthly App Spend</div>
@@ -408,4 +414,25 @@ const tocHeadings = [
     document.getElementById('app-result').classList.add('show');
   }
   
+
+  // Run once on load so the panel shows a real result rather than placeholders,
+  // and recalculate as the visitor types rather than making them find the button.
+  (function () {
+    var ids = [];
+    ids.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.addEventListener('input', calcApps);
+    });
+    try { calcApps(); } catch (e) {}
+    var st = document.getElementById('app-state');
+    if (st) {
+      ids.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('input', function () {
+          st.textContent = 'Your numbers';
+          st.classList.add('live');
+        });
+      });
+    }
+  })();
 </script>
