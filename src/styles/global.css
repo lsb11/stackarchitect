@@ -755,3 +755,123 @@ nav a, footer a { padding-block: 2px; }
 
 /* Never let media break the viewport */
 img, svg, video, canvas, iframe { max-width: 100%; height: auto; }
+
+/* ── NO SIDEWAYS SCROLL ON A PHONE ──────────────────────────────
+   Measured with Playwright at a 390px iPhone viewport across all 58
+   indexable pages: 19 of them scrolled horizontally, by 14px to 358px.
+   Every click the site has recorded in GSC over the last three months
+   came from mobile, so this is the surface that matters most.
+
+   The existing `.sa-prose table` rule above already solves this — but only
+   for tables inside `.sa-prose`. The pages that overflow are the .astro
+   landing pages, whose tables (.comp-table, .emq-table, .sheet-table and
+   several unclassed ones) live outside it and were never covered. Same
+   story for their code blocks and affiliate CTA rows.
+
+   Scoped Astro styles compile to `.class[data-astro-cid-…]`, so a plain
+   global selector loses on specificity. Hence !important here, matching
+   the existing max-width:760px block's approach. Everything is confined
+   to narrow viewports; desktop layout is untouched. */
+/* `body` is a flex container, which makes `main` a flex item, and a flex item
+   defaults to `min-width: auto` — it refuses to shrink below its content's
+   min-content width. So one 608px table inside `main` doesn't scroll: it widens
+   `main` to 640px inside a 390px viewport and drags the whole page with it,
+   headline, breadcrumbs, answer paragraph and all. That is why four pages were
+   overflowing by 250–358px rather than by a table's worth.
+   `min-width: 0` is the standard release valve and restores the intended
+   behaviour of every overflow rule below. */
+body > *,
+main#main-content { min-width: 0; max-width: 100%; }
+
+/* The rule further up gives tables inside an inline overflow-x wrapper a
+   `min-width: 38rem` floor so columns don't crush. That is right, but the
+   wrapper needs its own ceiling or the 608px floor just moves the problem
+   up one level. */
+[style*="overflow-x"] { max-width: 100%; }
+
+@media (max-width: 700px) {
+  /* Some pages put a section straight on <body> rather than inside <main>,
+     with its own max-width in a scoped stylesheet that outranks the rule
+     above. Nothing at the top level should be able to exceed the viewport. */
+  body > * { max-width: 100% !important; }
+
+  /* A wide table scrolls inside its own box instead of widening the page.
+     Tables already inside an overflow-x wrapper keep that wrapper's
+     behaviour — the rules further up still apply to them. */
+  body table {
+    display: block !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Code is the other habitual offender — one Apps Script sample renders
+     677px wide inside a 390px viewport. */
+  body pre {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  body :not(pre) > code {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  /* Link text that is one long unbreakable token — scenario-import URLs,
+     API endpoints — breaks rather than pushing the page. `break-word` only
+     acts when the word genuinely cannot fit, so ordinary links are unaffected. */
+  body a { overflow-wrap: break-word; }
+
+  /* The affiliate CTA row is `white-space: nowrap` + `flex-shrink: 0`, so it
+     cannot get narrower than its longest label — 427px on the Klaviyo
+     calculator. These are the highest-value links on the page; they should
+     wrap, not push the page sideways. */
+  .aff-block { flex-wrap: wrap !important; }
+  /* Attribute match rather than a class list: the CTA classes are named
+     per-page (btn-g, btn-o, btn-green, btn-gold, cta-btn …) and a long label
+     like "Start free on Make.com — 1,000 ops/month" renders 416px wide with
+     `white-space: nowrap`. */
+  body a[class*="btn"], body button[class*="btn"],
+  body a[class*="cta"], body button[class*="cta"], body .btn,
+  body a[class*="import-link"], body a[class*="block-link"] {
+    white-space: normal !important;
+    max-width: 100% !important;
+  }
+
+  /* Flex children default to `min-width: auto` and refuse to shrink below
+     their longest word. Release the ones that carry long labels. */
+  body .step-card > *, body .gpc-header > *,
+  body .gpc-left, main .gpc-right { min-width: 0 !important; }
+
+  /* Grid tracks written as `1fr` are really `minmax(auto, 1fr)`, so a track
+     cannot shrink below its content's min-content width and the grid pushes
+     past its container. `min-width: 0` on the children restores minmax(0,1fr). */
+  body [style*="display:grid"] > *,
+  body [class*="grid"] > * { min-width: 0; }
+
+  /* Two equal columns inside a 390px viewport give ~163px per card, minus
+     28px padding each side. That is not a layout, it is a squeeze — and it is
+     what pushed the TikTok prerequisites section past the viewport. */
+  body [style*="grid-template-columns:1fr 1fr"],
+  body [style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  .aff-block-link {
+    white-space: normal !important;
+    flex-shrink: 1 !important;
+    max-width: 100% !important;
+    text-align: center;
+  }
+  .aff-disclosure { max-width: 100%; overflow-wrap: anywhere; }
+
+  /* Long unbroken strings — API endpoints, scenario URLs — inside the
+     step cards and guide cards. */
+  .step-title, .step-desc, .step-body, .code-ref,
+  .gpc-title, .gpc-label, .gpc-desc { overflow-wrap: anywhere; }
+
+  /* Single-line flex rows that hold more than a phone can carry: the author
+     byline strip runs to 700px of unwrappable content. */
+  .author-meta, .breadcrumbs, .eyebrow, .hero-meta, .stat-row {
+    flex-wrap: wrap !important;
+  }
+}
