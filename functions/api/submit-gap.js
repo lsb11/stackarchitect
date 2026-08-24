@@ -113,12 +113,24 @@ export async function onRequestPost(context) {
     }
   }
 
+  // Historic placeholder pair. The contribution form used to suggest
+  // "e.g. 320" and "e.g. 470", and three of the first five submissions were
+  // that exact pair — 60% of the dataset was the example echoed back, and one
+  // had been approved. The placeholders are now non-numeric, so new matches
+  // should be rare; any that do arrive are flagged rather than trusted, because
+  // a real store CAN legitimately report 320 of 470 and this must not silently
+  // discard it. Moderator sees the flag and decides.
+  const LEGACY_PLACEHOLDER = meta === 320 && orders === 470;
+  const seedNote = LEGACY_PLACEHOLDER
+    ? "AUTO-FLAG 320/470: matches the retired form placeholder pair. Verify before approving."
+    : null;
+
   try {
     await env.DB.prepare(
       `INSERT INTO submissions
-       (meta_reported, actual_orders, window_days, gap_pct, platform_note, ip_hash, user_agent)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`
-    ).bind(meta, orders, windowDays, gap, note || null, ipHash, ua).run();
+       (meta_reported, actual_orders, window_days, gap_pct, platform_note, ip_hash, user_agent, moderation_note)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+    ).bind(meta, orders, windowDays, gap, note || null, ipHash, ua, seedNote).run();
   } catch (e) {
     return json({ error: "Could not store submission" }, 500, cors);
   }

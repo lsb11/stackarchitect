@@ -355,11 +355,20 @@ const tocHeadings = [
       <div style="display:flex;flex-direction:column;gap:16px;">
         <div>
           <label style="display:block;font-size:13px;font-weight:600;color:var(--text-2);margin-bottom:6px;">Conversions your ad platform reported last month</label>
-          <input id="f-reported" type="number" inputmode="numeric" placeholder="e.g. 320" style="width:100%;background:var(--bg);border:1px solid var(--border-2);border-radius:8px;padding:12px 14px;color:var(--text);font-size:15px;font-family:var(--mono);" />
+          {/* Placeholders used to carry example NUMBERS — "e.g. 320" and
+              "e.g. 470". Three of the first five submissions were that exact
+              pair: 60% of the dataset was people echoing the example back, and
+              one of them had been approved into the figure this page will
+              eventually publish. A numeric example inside a numeric field is
+              indistinguishable from a real answer once it has been submitted.
+              Replaced with where to FIND the number, which is the more useful
+              hint anyway. submit-gap.js flags any remaining exact matches for
+              the moderator rather than trusting them. */}
+          <input id="f-reported" type="number" inputmode="numeric" placeholder="From your Ads Manager" style="width:100%;background:var(--bg);border:1px solid var(--border-2);border-radius:8px;padding:12px 14px;color:var(--text);font-size:15px;font-family:var(--mono);" />
         </div>
         <div>
           <label style="display:block;font-size:13px;font-weight:600;color:var(--text-2);margin-bottom:6px;">Actual paid orders in Shopify for the same period</label>
-          <input id="f-actual" type="number" inputmode="numeric" placeholder="e.g. 470" style="width:100%;background:var(--bg);border:1px solid var(--border-2);border-radius:8px;padding:12px 14px;color:var(--text);font-size:15px;font-family:var(--mono);" />
+          <input id="f-actual" type="number" inputmode="numeric" placeholder="From Shopify Analytics" style="width:100%;background:var(--bg);border:1px solid var(--border-2);border-radius:8px;padding:12px 14px;color:var(--text);font-size:15px;font-family:var(--mono);" />
         </div>
         <div>
           <label style="display:block;font-size:13px;font-weight:600;color:var(--text-2);margin-bottom:6px;">Main ad platform</label>
@@ -377,6 +386,27 @@ const tocHeadings = [
         <div id="result-gap" style="font-family:var(--mono);font-size:40px;font-weight:800;color:var(--g);line-height:1;"></div>
         <p id="result-msg" style="font-size:14px;color:var(--text-3);line-height:1.7;margin:12px 0 0;"></p>
         <a href="/capi-shield/" class="btn btn-sm pulse" style="margin-top:16px;display:inline-flex;">Close the gap free with CAPI Shield →</a>
+
+        {/* The benchmark needs 10 approved submissions to publish a first-party
+            figure and has 2. Organic search cannot supply the other 8 — the
+            page has to be indexed to get traffic, and the first-party number is
+            part of what earns indexing. That loop only breaks from outside
+            search, which means the people most likely to recruit the next
+            submitter are the ones who just got a number they did not like.
+            This is the ask, placed at the one moment they care. */}
+        <div id="result-share" style="margin-top:22px;padding-top:18px;border-top:1px solid var(--border);">
+          <div style="font-family:var(--mono);font-size:11px;color:var(--text-4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">Help finish the dataset</div>
+          <p style="font-size:13px;color:var(--text-3);line-height:1.7;margin:0 0 14px;">
+            <span id="share-progress"></span> Every store that runs the same two numbers makes the published figure harder to argue with. Sharing your result is the fastest way to get there.
+          </p>
+          <div id="share-quote" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;font-family:var(--mono);font-size:12px;color:var(--text-3);line-height:1.7;"></div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;">
+            <button id="share-copy" type="button" style="font-family:var(--mono);font-size:12px;font-weight:600;color:var(--g);background:transparent;border:1px solid var(--g);border-radius:6px;padding:8px 16px;cursor:pointer;">Copy result</button>
+            <a id="share-x" href="#" target="_blank" rel="noopener" style="font-family:var(--mono);font-size:12px;font-weight:600;color:var(--text-2);border:1px solid var(--border-2);border-radius:6px;padding:8px 16px;text-decoration:none;">Post on X</a>
+            <a id="share-li" href="#" target="_blank" rel="noopener" style="font-family:var(--mono);font-size:12px;font-weight:600;color:var(--text-2);border:1px solid var(--border-2);border-radius:6px;padding:8px 16px;text-decoration:none;">Share on LinkedIn</a>
+          </div>
+          <p style="font-size:11px;color:var(--text-4);line-height:1.6;margin:12px 0 0;">Your figure only. No store name, no URL, nothing identifying — the same anonymity that applies to the dataset applies to the share text.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -457,8 +487,18 @@ const tocHeadings = [
       thanks: document.getElementById('contrib-thanks'),
       result: document.getElementById('contrib-result'),
       resultGap: document.getElementById('result-gap'),
-      resultMsg: document.getElementById('result-msg')
+      resultMsg: document.getElementById('result-msg'),
+      shareQuote: document.getElementById('share-quote'),
+      shareCopy: document.getElementById('share-copy'),
+      shareX: document.getElementById('share-x'),
+      shareLi: document.getElementById('share-li'),
+      shareProgress: document.getElementById('share-progress')
     };
+
+    // Populated from /api/gap-stats so the share ask can state how many more
+    // submissions the dataset needs. Falls back to no claim rather than a
+    // guessed one.
+    var benchmarkNeeded = null;
 
     if (!els.count) return; // Guard clause just in case
 
@@ -478,6 +518,7 @@ const tocHeadings = [
           els.count.textContent = data.n;
           els.note.textContent = data.message;
           els.fill.style.width = Math.min(100, (data.n / data.min_n) * 100) + '%';
+          benchmarkNeeded = Math.max(0, data.min_n - data.n);
         }
       })
       .catch(err => {
@@ -548,6 +589,36 @@ const tocHeadings = [
           els.resultMsg.innerHTML = `Perfect matching. You are losing <strong>0%</strong> of your conversions. Your tracking is fully intact.`;
         }
         
+        // Share text carries the submitter's own figure and nothing else — no
+        // store name, no URL, no order counts that could identify a business.
+        // The gap percentage alone is the interesting number and the safe one.
+        var pageUrl = 'https://stackarchitect.xyz/shopify-ios-attribution-gap-benchmark/';
+        var shareText = 'My Shopify store is losing ' + gapPct + '% of its purchase conversions to iOS attribution loss. '
+          + 'Ad platforms are bidding on numbers that are wrong. Free benchmark to check your own:';
+        if (els.shareQuote) els.shareQuote.textContent = shareText + ' ' + pageUrl;
+        if (els.shareX) {
+          els.shareX.href = 'https://twitter.com/intent/tweet?text='
+            + encodeURIComponent(shareText) + '&url=' + encodeURIComponent(pageUrl);
+        }
+        if (els.shareLi) {
+          els.shareLi.href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(pageUrl);
+        }
+        if (els.shareProgress) {
+          els.shareProgress.textContent = (benchmarkNeeded && benchmarkNeeded > 0)
+            ? 'This benchmark needs ' + benchmarkNeeded + ' more stores before it can publish a first-party figure.'
+            : '';
+        }
+        if (els.shareCopy) {
+          els.shareCopy.addEventListener('click', function () {
+            navigator.clipboard.writeText(shareText + ' ' + pageUrl).then(function () {
+              els.shareCopy.textContent = 'Copied ✓';
+              setTimeout(function () { els.shareCopy.textContent = 'Copy result'; }, 2000);
+            }).catch(function () {
+              els.shareCopy.textContent = 'Press Ctrl+C';
+            });
+          }, { once: false });
+        }
+
         els.btn.innerHTML = 'Submitted ✓';
         els.btn.classList.remove('pulse');
         els.btn.style.background = 'var(--bg-3)';

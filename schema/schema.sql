@@ -15,7 +15,15 @@ CREATE TABLE IF NOT EXISTS submissions (
   -- moderation / trust
   status        TEXT    NOT NULL DEFAULT 'pending', -- pending | approved | rejected
   ip_hash       TEXT,               -- sha-256 of IP, dedupe + abuse only, never raw IP
-  user_agent    TEXT
+  user_agent    TEXT,
+  -- Moderation audit trail. A benchmark's credibility is the ability to show
+  -- WHY each row was accepted or dropped, not just the resulting median.
+  -- Added 2026-08-22, after three of the first five rows turned out to be the
+  -- contribution form's own placeholder values (320/470) — one of which had
+  -- already been approved and would have silently entered the published
+  -- median the moment the dataset reached MIN_N.
+  moderation_note TEXT,
+  moderated_at    TEXT              -- ISO date the status was last set by a human
 );
 
 CREATE INDEX IF NOT EXISTS idx_status  ON submissions(status);
