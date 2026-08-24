@@ -37,6 +37,22 @@
   --leading-body: 1.75;
 }
 
+/* ── SENTINEL — the off-switch for Base.astro's critical shell ───────────
+   Base.astro inlines a small fallback stylesheet so a visitor who arrives
+   mid-deploy, before this file has propagated to their edge node, still gets a
+   dark, readable page instead of an unstyled document. Its layout rules read
+   these two variables and use their own fallback values when the variables are
+   undefined — which is exactly the case when THIS FILE failed to load.
+
+   Present  → main gets `max-width: none` and no extra padding: pages lay out
+              normally, as though the shell were not there at all.
+   Missing  → the shell's own 768px / 16px values apply and hold a measure.
+
+   DO NOT DELETE OR RENAME THESE. Removing them silently clamps every page on
+   the site to a 768px column — which is precisely the regression that made
+   this sentinel necessary. Base.astro carries the matching comment. */
+:root { --sa-css-loaded: none; --sa-css-loaded-pad: 0; }
+
 html { background: var(--color-surface); }
 body {
   font-family: var(--font-sans);

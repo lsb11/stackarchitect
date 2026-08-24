@@ -1,0 +1,168 @@
+{
+  "title": "Shopify Agentic Storefronts — per-channel eligibility and capability matrix",
+  "description": "Which AI channels Shopify Agentic Storefronts covers, who is eligible for each, whether checkout happens in-conversation or on the merchant's own store, and which product types, fulfilment methods and tracking pixels work in each path. Every field is sourced to Shopify's own documentation.",
+  "verifiedDate": "2026-08-24",
+  "verifiedAgainst": "help.shopify.com Agentic Storefronts documentation",
+  "note": "Checkout behaviour inverted in March 2026. ChatGPT launched with in-conversation Instant Checkout and now redirects to the merchant's own checkout; Google, Copilot and Meta carry direct checkout. Guidance published before 24 March 2026 describes the opposite arrangement and is stale.",
+
+  "channels": [
+    {
+      "id": "chatgpt",
+      "name": "ChatGPT",
+      "operator": "OpenAI",
+      "inShopifyAdmin": true,
+      "checkoutModel": "redirect",
+      "checkoutDetail": "Shoppers complete the purchase on the merchant's own Shopify checkout, opened in the ChatGPT in-app browser or a new tab on web.",
+      "storeLocationRule": "Any country",
+      "customerLocationRule": "Must sell to customers in the United States",
+      "storeLocationQuote": "Your store must sell to customers in the United States, however, your store can be based outside the United States.",
+      "fee": "None beyond standard payment processing",
+      "productRestrictionsApply": false,
+      "clientPixelsFire": true,
+      "notes": [
+        "B2B-only products are not supported.",
+        "Legal disclosures must appear within the first 6,000 characters of the product description.",
+        "Opting out can take up to 7 days to take effect."
+      ],
+      "source": "https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts/chatgpt"
+    },
+    {
+      "id": "google",
+      "name": "Google AI Mode & Gemini",
+      "operator": "Google",
+      "inShopifyAdmin": true,
+      "checkoutModel": "direct",
+      "checkoutDetail": "Checkout completes inside Google's interface. Direct checkout renders only for US-based customers; everyone else is redirected to the merchant's store.",
+      "storeLocationRule": "United States, United Kingdom, Australia or Canada",
+      "customerLocationRule": "Must sell to customers in one of those four countries",
+      "storeLocationQuote": "Your store must be based in the United States, the United Kingdom, Australia, or Canada, and you must sell to customers in one of those countries.",
+      "fee": "None beyond standard payment processing",
+      "productRestrictionsApply": true,
+      "clientPixelsFire": false,
+      "notes": [
+        "Early access — not yet available to all eligible stores.",
+        "Requires the Google & YouTube sales channel with product and shipping sync enabled."
+      ],
+      "source": "https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts/google"
+    },
+    {
+      "id": "copilot",
+      "name": "Microsoft Copilot",
+      "operator": "Microsoft",
+      "inShopifyAdmin": true,
+      "checkoutModel": "direct",
+      "checkoutDetail": "Copilot Checkout completes the purchase inside Copilot.",
+      "storeLocationRule": "Any country",
+      "customerLocationRule": "Must sell to customers in the United States",
+      "storeLocationQuote": "all eligible stores that sell to customers in the United States",
+      "fee": "None beyond standard payment processing",
+      "productRestrictionsApply": true,
+      "clientPixelsFire": false,
+      "notes": [],
+      "source": "https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts/ai-channels-with-built-in-checkout"
+    },
+    {
+      "id": "meta",
+      "name": "Meta AI (Facebook & Instagram)",
+      "operator": "Meta",
+      "inShopifyAdmin": true,
+      "checkoutModel": "direct",
+      "checkoutDetail": "Checkout completes inside Meta's surfaces.",
+      "storeLocationRule": "Any country",
+      "customerLocationRule": "Must sell to customers in the United States",
+      "storeLocationQuote": "all eligible stores that sell to customers in the United States",
+      "fee": "None beyond standard payment processing",
+      "productRestrictionsApply": true,
+      "clientPixelsFire": false,
+      "notes": [],
+      "source": "https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts/ai-channels-with-built-in-checkout"
+    },
+    {
+      "id": "perplexity",
+      "name": "Perplexity",
+      "operator": "Perplexity",
+      "inShopifyAdmin": false,
+      "checkoutModel": "outside-shopify",
+      "checkoutDetail": "In-chat buying on Perplexity runs on PayPal Instant Buy. Those orders are managed through PayPal, not the Shopify admin, and the merchant applies to the Perplexity Merchant Program separately.",
+      "storeLocationRule": "Not governed by Shopify Agentic Storefronts",
+      "customerLocationRule": "Not governed by Shopify Agentic Storefronts",
+      "storeLocationQuote": "those orders are managed through PayPal rather than your Shopify admin",
+      "fee": "Set by PayPal / Perplexity, not Shopify",
+      "productRestrictionsApply": null,
+      "clientPixelsFire": null,
+      "notes": [
+        "Perplexity appeared in Shopify's December 2025 launch announcement and is no longer listed as an Agentic Storefronts channel in the help documentation.",
+        "Guides that list Perplexity as a Shopify agentic channel with redirect checkout are describing an arrangement that does not exist."
+      ],
+      "source": "https://www.shopify.com/blog/perplexity-shopping"
+    }
+  ],
+
+  "directCheckoutLimits": {
+    "appliesTo": ["google", "copilot", "meta"],
+    "doesNotApplyTo": ["chatgpt"],
+    "whyNot": "ChatGPT sends the shopper to the merchant's own Shopify checkout, so the merchant's normal checkout rules, extensions and client-side pixels all apply as usual.",
+    "unsupportedProductTypes": [
+      "Subscriptions",
+      "Product bundles",
+      "Digital products",
+      "Customizable products",
+      "B2B-only products"
+    ],
+    "unsupportedFulfilment": [
+      "Local delivery",
+      "Pickup in store",
+      "Pickup points"
+    ],
+    "unsupportedCheckoutFeatures": [
+      "Custom checkout fields",
+      "Checkout upsells",
+      "Checkout validations",
+      "A subset of accelerated checkout options",
+      "Requiring customer sign-in"
+    ],
+    "discounts": {
+      "supported": true,
+      "quote": "Any automatic discounts or discount codes that you set up are supported in agentic storefront direct checkouts."
+    },
+    "pixels": {
+      "clientSideFire": false,
+      "serverSideFire": true,
+      "serverSideEvents": ["started", "completed"],
+      "quote": "Google Analytics and custom pixels won't fire in all agentic storefront direct checkouts. The checkouts fire only server-to-server pixels (started, completed), so none of the standard or custom client side pixels fire."
+    },
+    "source": "https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts/ai-channels-with-built-in-checkout"
+  },
+
+  "knowledgeBaseApp": {
+    "name": "Shopify Knowledge Base",
+    "developer": "Shopify",
+    "launched": "2025-05-16",
+    "price": "Free",
+    "priceNote": "The App Store listing shows no paid tier and no Plus-only carve-out. Claims of a monthly fee for standard plans could not be sourced to any Shopify page and appear to conflate this app with third-party knowledge-base apps.",
+    "visibleOnStorefront": false,
+    "quote": "Your FAQs aren't displayed directly on your storefront — instead, they serve as a trusted data source for AI platforms.",
+    "source": "https://apps.shopify.com/shopify-knowledge-base"
+  },
+
+  "timeline": [
+    { "date": "2025-05-16", "event": "Shopify Knowledge Base app published to the Shopify App Store." },
+    { "date": "2025-12-10", "event": "Agentic Storefronts announced in Shopify's Winter '26 Edition." },
+    { "date": "2026-03-24", "event": "General availability for eligible US merchants. OpenAI retires ChatGPT Instant Checkout the same day; ChatGPT becomes a discovery-focused referrer that redirects to the merchant's own checkout." },
+    { "date": "2026-06-17", "event": "Spring '26 Edition opens UCP and MCP access to all developers without prior approval." }
+  ],
+
+  "changelog": [
+    {
+      "date": "2026-08-24",
+      "changes": [
+        "Corrected the checkout model per channel after the 24 March 2026 inversion: ChatGPT redirects, Google/Copilot/Meta carry direct checkout.",
+        "Removed the claim that the Knowledge Base app costs a monthly fee on standard plans — the App Store listing shows it as free.",
+        "Removed Perplexity as a Shopify agentic channel; it runs on PayPal Instant Buy outside the Shopify admin.",
+        "Reversed the discount-code claim: automatic discounts and discount codes are both supported.",
+        "Added Meta as a direct-checkout channel and added digital, customizable and B2B-only products to the unsupported list.",
+        "Corrected the announcement date from January 2026 to 10 December 2025, and added the March and June 2026 milestones."
+      ]
+    }
+  ]
+}

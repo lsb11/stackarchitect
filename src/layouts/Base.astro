@@ -442,11 +442,30 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
       reader simply arrived mid-deploy.
 
       Rather than let that render as a 1996 text dump, these declarations paint
-      the dark ground and hold the reading measure. They live in a layer that is
-      declared before Tailwind's, which puts them at the BOTTOM of the cascade:
-      the moment the real stylesheet arrives, every one of them loses. Nothing
-      here is a design decision — it is only the difference between "styles are
-      still loading" and "this site looks broken".
+      the dark ground and hold the reading measure.
+
+      HOW THE OFF-SWITCH WORKS — read this before editing.
+
+      A low CSS layer is NOT sufficient on its own. A layer only loses to rules
+      that exist; a fallback declaration for a property no other stylesheet sets
+      wins by default and becomes the live design. The first version of this
+      block set `main { max-width: 768px }`, nothing else in the site sets a
+      max-width on `main`, and so every page — the homepage included — was
+      clamped to a 768px column against the full-width nav. That was a live
+      regression caused by the safety net itself.
+
+      So the layout rules are gated on a sentinel: global.css declares
+      `--sa-css-loaded: none` on :root. When that file is present the variable
+      resolves and `max-width: none` means no constraint, so pages lay out
+      exactly as they always did. When the file is missing the variable is
+      undefined, the fallback value applies, and the page gets a readable
+      measure instead of full-bleed prose.
+
+      Consequence: if you remove `--sa-css-loaded` from global.css, every page
+      silently narrows to 768px. The two files are a pair.
+
+      Colour and font need no sentinel — global.css sets those properties on the
+      same elements, so the layer ordering alone is enough for them to lose.
     */}
     <style is:inline>
       @layer sa-shell;
@@ -459,7 +478,11 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
           margin: 0;
           line-height: 1.7;
         }
-        main { max-width: 768px; margin: 0 auto; padding: 24px 16px; }
+        main {
+          max-width: var(--sa-css-loaded, 768px);
+          margin-inline: auto;
+          padding-inline: var(--sa-css-loaded-pad, 16px);
+        }
         h1, h2, h3 { color: #f2f5f3; line-height: 1.2; }
         a { color: #34d377; }
         pre, code { font-family: 'JetBrains Mono', ui-monospace, monospace; }
