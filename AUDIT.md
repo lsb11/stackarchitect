@@ -9,13 +9,15 @@ Nothing was changed. One item (Core Web Vitals) could not be completed — see �
 
 ## Falsified hypotheses — read this before proposing any of them again
 
-Three explanations for the indexing collapse have now been **measured and ruled out**. They are recorded here so they are not re-litigated. Re-opening one requires new evidence, not a new intuition.
+Five explanations for the indexing collapse have now been **measured and ruled out**. They are recorded here so they are not re-litigated. Re-opening one requires new evidence, not a new intuition.
 
 | # | Hypothesis | Test | Result | Measured |
 |---|---|---|---|---|
 | 1 | Thin content / low boilerplate ratio is suppressing indexing | 8-word shingle analysis across all 59 indexable pages; boilerplate = shingles present on ≥50% of pages | **FALSE.** Worst page is **63% unique**, median 80%. The flag threshold was 40%. Nothing is close. Min page length 850 words; 49 of 59 exceed 1,500 | 26 Aug 2026 |
 | 2 | Keyword cannibalisation / near-duplicate pages | Pairwise containment of non-boilerplate shingles, all 1,711 page pairs | **FALSE.** Max overlap between any two pages is **16.1%**. Only 2 pairs exceed 15%; **zero** exceed 25%. Genuine cannibalisation runs 40–70% | 26 Aug 2026 |
 | 3 | The April migration repair is incomplete / redirects still broken | Reconstructed the rule set from git, walked all 248 rules for chains, loops and dead targets, verified survivors against production with `curl -sI` | **FALSE.** 0 chains, 0 loops, 0 duplicate LHS, 0 homepage dumps. Of 4 rules lost since 3 Jul, 2 still resolve 200 in 2 hops and 1 is a truncated slug that was never a real page | 26 Aug 2026 |
+| 4 | Document weight from 1,000–2,300-line `.astro` sources explains slow FCP | Measured raw / gzip / brotli for five templates | **FALSE.** Markup compresses ~6:1 — **19–32 KB brotli**. Parse time on a 173 KB document is single-digit ms | 26 Aug 2026 |
+| 5 | Core Web Vitals are suppressing indexing | Attempted CrUX via PSI; checked GSC prerequisites | **UNANSWERABLE, AND MOOT.** No field data exists — ~5 clicks/180 days is below CrUX's sampling threshold. **Workstream closed**, see §9 | 26 Aug 2026 |
 
 **Caveat on #2, and it matters.** Shingle overlap measures *text* duplication, not *query* competition. Two pages at 16% textual overlap can still compete for one SERP. What is falsified is near-duplicate content; intent overlap is a separate question that `dist/` cannot answer, and it remains open pending query-level GSC data.
 
@@ -183,20 +185,23 @@ The iOS Attribution Gap Benchmark, the one page positioned to be a primary sourc
 6. **`llms.txt` is a static file in `public/`, not generated.** Content quality is genuinely good, but it will silently drift from the sitemap. Phase 5 asks for it to share a source of truth; it does not.
 7. All `<img>` tags have `alt`. No missing-alt findings.
 
-## 9. Core Web Vitals — NOT COMPLETED
+## 9. Core Web Vitals — WITHDRAWN
 
-Lighthouse is not installed in this repo and I did not install it, since Phase 0 is read-only. **I am not going to estimate CWV numbers I did not measure.** To finish this item, say the word and I will `npx lighthouse` the five templates.
+**This section previously reported Lighthouse mobile scores for five templates. Those numbers were wrong and have been removed rather than caveated.**
 
-What I could measure statically, which argues against the brief's suspicion:
+They were measured by serving `dist/` over Python's `http.server`, which does not compress anything. Production serves brotli — the CSS measured at 128 KB transferred is **~25–31 KB** in production (`content-encoding: br`, `cf-cache-status: HIT`, immutable, verified against the live origin on 26 Aug 2026). Every metric downstream of transfer was inflated by roughly 100 KB that no real visitor receives, so the FCP and LCP figures were harness artifacts, not measurements of the site.
 
-- **Hero video is well configured** — `preload="metadata"`, `poster="/videos/poster-16x9.jpg"`, `playsinline`, `controls`, no `autoplay`. It is not an LCP candidate and does not download its 3.8 MB until a user clicks.
-- **JS is very light** — largest bundle is Astro's own 16 KB ClientRouter; every page script is ≤8 KB; `dist/_astro` totals 1.8 MB across all 120 pages.
-- HTML 104–204 KB uncompressed per page; 3–4 stylesheet links; a `@layer sa-shell` critical-CSS fallback is inlined in `<head>`.
-- The 7 videos in `public/` total ~20 MB but none autoplay.
+A withdrawn measurement left visible is a trap for the next reader, so the figures are not reproduced here. `docs/PERF-DIAGNOSIS.md` records what was actually established: document weight is fine (19–32 KB brotli), the v12 critical shell is correctly sized at 675 bytes, and the one real defect found — 13 pages loading duplicate fonts from Google — has been fixed.
 
-Nothing here looks like a CWV problem, but that is an inference, not a measurement.
+**The Core Web Vitals workstream (Phase 7 performance) is closed.** Not deferred, not forgotten — closed, for a reason that will not change on its own:
 
----
+- There is **no field data**, because there is no field. The site records roughly 5 clicks per 180 days. CrUX only reports an origin with enough real-user samples; this one does not have them, so Search Console's Core Web Vitals report has nothing to show.
+- CWV therefore **cannot be what is suppressing indexing**. One page is indexed out of 59; that is not a page-experience outcome.
+- Optimising against synthetic lab numbers on a site with no users is effort spent on a metric nobody is experiencing.
+
+Reopen this only if traffic arrives and CrUX begins reporting. At that point measure production, not localhost. Until then there is nothing here worth an hour.
+
+Accessibility is a separate matter and remains in force: `npm run a11y` must exit 0 before any CSS or colour-token change ships, per CLAUDE.md.
 
 ## 10. Diagnosis — why is one page indexed out of 59?
 
