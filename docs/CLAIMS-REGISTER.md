@@ -11,7 +11,7 @@ Every third-party price claim the site can currently account for, with its sourc
 | Vendor prices with a source URL and a check date | **27** |
 | Vendor prices missing a source or a date | **27** |
 | Page files asserting prices with no verifiedDate at all | **48** |
-| Individual undated claims in those files | **1212** |
+| Individual undated claims in those files | **1210** |
 
 ## 2. Verified vendor prices
 
@@ -94,7 +94,7 @@ These files assert third-party prices with no `verifiedDate`. They are quarantin
 | `src/pages/stocky-swap.astro` | 61 |
 | `src/pages/pro.astro` | 60 |
 | `src/pages/shopify-profit-loss-automation.astro` | 58 |
-| `src/pages/index.astro` | 56 |
+| `src/pages/index.astro` | 54 |
 | `src/content/blog/tidio-vs-gorgias-shopify.md` | 51 |
 | `src/content/blog/the-lean-shopify-tech-stack-2026.md` | 50 |
 | `src/pages/ultimate-shopify-automation-guide.astro` | 32 |
