@@ -1,0 +1,109 @@
+---
+/**
+ * PriceClaim.astro — renders a third-party price (or other vendor-specific
+ * figure) together with the source it came from and the date a human last
+ * checked it.
+ *
+ * WHY THIS EXISTS
+ * The August 2026 audit found 2,796 price claims sitewide, 2,662 of them
+ * carrying no verification date. That was a plumbing failure, not 2,662
+ * editorial failures: blog frontmatter had no verifiedDate field, and only
+ * 3 of 38 .astro pages passed one to <Base>. A price asserted with no
+ * checked-on date is a trust failure on a site under quality assessment —
+ * prices change, and a stale price stated as current is worse than no price.
+ *
+ * FIELD NAMES DELIBERATELY MIRROR src/data/apps.json
+ * apps.json already models the right shape (`monthlyCost`, `priceVerifiedDate`,
+ * `priceSourceUrl`) and is the one part of the site that was already doing
+ * this correctly — 0 stale claims as of 2026-08-23. This component follows
+ * that shape rather than inventing a second pattern, so a claim can move
+ * between the dataset and prose without being restructured.
+ *
+ * USAGE
+ *   <PriceClaim
+ *     value="$225/mo"
+ *     vendor="Elevar"
+ *     sourceUrl="https://www.audiense.com/products/audiense-online/pricing/"
+ *     verifiedDate="2026-08-08"
+ *   />
+ *
+ * Renders inline, inside prose: "$225/mo (Elevar pricing, checked 8 Aug 2026)"
+ * with the vendor name linking to the primary source.
+ *
+ * RULES
+ *  - sourceUrl must be the vendor's own pricing page, not a third-party
+ *    summary or our own page. If the vendor does not publish a price, say so
+ *    in prose — do not cite a reseller.
+ *  - verifiedDate is when a human opened that URL and read that number. It is
+ *    not the build date, not the page's updatedDate, and must never be
+ *    generated. Both props are required for exactly that reason: there is no
+ *    way to render this component without stating who said it and when we
+ *    looked.
+ *  - Per CLAUDE.md, never emit a schema.org Offer without both
+ *    priceVerifiedDate and priceSourceUrl. This component carries the same
+ *    guarantee for prose claims.
+ */
+interface Props {
+  /** The figure as it should read, e.g. "$225/mo", "$145–$650/month". */
+  value: string;
+  /** Whose price this is, e.g. "Elevar". Becomes the link text. */
+  vendor: string;
+  /** Vendor's own pricing page. */
+  sourceUrl: string;
+  /** ISO date (YYYY-MM-DD) a human last read this figure at sourceUrl. */
+  verifiedDate: string;
+  /**
+   * Set when the figure is derived rather than read off the page — e.g. an
+   * annual total computed from a monthly list price. Rendered as a
+   * parenthetical so arithmetic is never presented as a measured outcome.
+   */
+  derivation?: string;
+}
+
+const { value, vendor, sourceUrl, verifiedDate, derivation } = Astro.props;
+
+if (!/^\d{4}-\d{2}-\d{2}$/.test(verifiedDate)) {
+  throw new Error(
+    `PriceClaim: verifiedDate must be YYYY-MM-DD, got "${verifiedDate}" for ${vendor} ${value}`
+  );
+}
+if (!/^https?:\/\//.test(sourceUrl)) {
+  throw new Error(
+    `PriceClaim: sourceUrl must be an absolute vendor URL, got "${sourceUrl}" for ${vendor}`
+  );
+}
+
+const display = new Date(verifiedDate).toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+});
+---
+
+<span class="price-claim" data-verified={verifiedDate}
+  >{value}<span class="price-claim-src"
+    >&nbsp;(<a href={sourceUrl} rel="nofollow noopener" target="_blank">{vendor} pricing</a>, checked {
+      display
+    }{derivation ? `; ${derivation}` : ''})</span
+  ></span
+>
+
+<style>
+  /* Inherits prose colour for the figure itself so the number reads as body
+     text; the attribution is stepped down to --text-3 (#93a09a), which clears
+     WCAG AA on #0c0f0d. Do not use a dark Tailwind token here — see CLAUDE.md
+     on green-700/violet-700 measuring 1.38:1 on this ground. */
+  .price-claim-src {
+    color: #93a09a;
+    font-size: 0.875em;
+  }
+  .price-claim-src a {
+    color: #93a09a;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .price-claim-src a:hover,
+  .price-claim-src a:focus-visible {
+    color: #34d377;
+  }
+</style>
