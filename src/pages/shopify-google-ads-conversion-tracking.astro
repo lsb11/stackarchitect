@@ -33,7 +33,7 @@ const SCENARIO_URL = "https://eu1.make.com/public/shared-scenario/QBl8tBAX4k1/sh
 const KIT_URL   = "https://buy.stripe.com/00wfZa7w1a3Bfo55tnfrW00";
 
 const heroStats = [
-  { value: "15–40%",      label: "Purchases Google misses" },
+  { value: "gclid",       label: "Stripped before Google sees it" },
   { value: "$29–$375/mo", label: "Paid tools charge" },
   { value: "Broken bids", label: "Smart Bidding blind" },
   { value: "$0",          label: "This fix costs" }
@@ -76,7 +76,7 @@ const compRows = [
 
 const faqs = [
   { q: "Why is my Shopify Google Ads conversion tracking wrong in 2026?",                  a: "Three causes account for most Google Ads attribution gaps on Shopify in 2026: iOS Link Tracking Protection stripping gclid click IDs from URLs before customers open them in Safari, Mail, or Messages; Safari Intelligent Tracking Prevention (ITP) clearing attribution cookies before the purchase completes; and ad blockers preventing the gTag from loading. Server-side Google Enhanced Conversions fixes all three because events are sent from Shopify's server to Google directly, bypassing the browser." },
-  { q: "What is Google Enhanced Conversions for Shopify?",                                 a: "Google Enhanced Conversions is Google's server-side conversion tracking supplement. It sends hashed first-party customer data — email, phone, name — alongside each conversion event via API. Google uses this to match conversions to signed-in Google accounts with greater accuracy, improving Smart Bidding and Performance Max optimisation even when cookies and gclid are blocked. For Shopify stores, it recovers 15–40% of purchase events that the browser-based gTag misses due to iOS and Safari restrictions." },
+  { q: "What is Google Enhanced Conversions for Shopify?",                                 a: "Google Enhanced Conversions is Google's server-side conversion tracking supplement. It sends hashed first-party customer data — email, phone, name — alongside each conversion event via API. Google uses this to match conversions to signed-in Google accounts with greater accuracy, improving Smart Bidding and Performance Max optimisation even when cookies and gclid are blocked. For Shopify stores, it carries purchase events that the browser-based gTag misses when iOS and Safari strip the click ID or clear the cookie. We have not measured what share of events that is, and are not aware of a published figure for Google Ads specifically, so this page does not quote one." },
   { q: "How do I set up Google Ads conversion tracking on Shopify for free?",              a: "The free two-layer approach: first, ensure the Google & YouTube sales channel is installed in Shopify for baseline browser-side tracking. Then add Google Enhanced Conversions via Make.com — create a Make.com free account, add a Webhooks module as the trigger, create a Shopify Order payment webhook pointing to your Make.com URL, add an HTTP module calling the Google Ads Conversions API endpoint, and hash customer email and phone with SHA-256. Full setup takes 6 minutes. No code, no GTM, no paid apps." },
   { q: "What is GCLID and why does it matter for Shopify Google Ads?",                    a: "GCLID (Google Click ID) is the unique identifier Google appends to your ad URLs when someone clicks an ad — for example, ?gclid=CjwKCAjw8. Shopify's thank-you page uses this ID to attribute the purchase back to the specific Google Ads click. When iOS Link Tracking Protection or Safari ITP strips or clears the gclid, the conversion is unattributed. Google Enhanced Conversions supplements this by matching purchases via hashed email/phone to Google account data, recovering conversions even when gclid is lost." },
   { q: "Do I need Google Tag Manager for Shopify Google Ads conversion tracking?",        a: "No. The Make.com approach sends Google Enhanced Conversions events directly to the Google Ads Conversions API via HTTP request — no Google Tag Manager container required. GTM is one implementation route. Direct server-to-server API calls via Make.com are simpler and more reliable for Shopify stores because the entire flow operates without a browser." },
@@ -111,7 +111,7 @@ const schemaGraph = {
       "@type": "WebPage",
       "url": CANONICAL,
       "name": "Free Shopify Google Ads Conversion Tracking 2026 — GCLID + Enhanced Conversions",
-      "description": "Fix Shopify Google Ads conversion tracking free. Server-side Google Enhanced Conversions via Make.com webhook — recovers 15–40% of lost purchase events blocked by iOS and Safari ITP. No code, 6 minutes.",
+      "description": "Fix Shopify Google Ads conversion tracking free. Server-side Google Enhanced Conversions via Make.com webhook — carries purchase events blocked by iOS and Safari ITP. No code, 6 minutes.",
       "dateModified": "2026-07-17",
       "speakable": { "@type": "SpeakableSpecification", "cssSelector": [".direct-answer", ".hero h1", ".sec-head h2"] },
       "breadcrumb": {
@@ -127,7 +127,7 @@ const schemaGraph = {
       "name": "Shopify Google Ads Conversion Tracking — Free Setup via Make.com",
       "applicationCategory": "BusinessApplication",
       "url": CANONICAL,
-      "description": "Free Shopify Google Ads conversion tracking using Make.com server-side webhooks. Sends purchase events to Google Enhanced Conversions API, recovering 15–40% of conversions lost to iOS and Safari ITP. Replaces Stape, Littledata, and Analyzify at $0/month.",
+      "description": "Free Shopify Google Ads conversion tracking using Make.com server-side webhooks. Sends purchase events to Google Enhanced Conversions API, carrying conversions lost to iOS and Safari ITP. A free alternative to Stape, Littledata and Analyzify.",
       "featureList": [
         "Google Enhanced Conversions integration",
         "GCLID extraction and recovery",
@@ -176,7 +176,7 @@ const schemaGraph = {
       "@type": "Article",
       "@id": `${CANONICAL}#article`,
       "headline": "Free Shopify Google Ads Conversion Tracking 2026 — Server-Side Enhanced Conversions via Make.com",
-      "description": "Fix broken Shopify Google Ads conversion tracking for free. Server-side Google Enhanced Conversions via Make.com recovers 15–40% of purchase events lost to iOS and Safari ITP. No code, 6 minutes, replaces Stape and Littledata.",
+      "description": "Fix broken Shopify Google Ads conversion tracking for free. Server-side Google Enhanced Conversions via Make.com carries purchase events lost to iOS and Safari ITP. No code, 6 minutes, a free alternative to Stape and Littledata.",
       "author":    { "@id": "https://stackarchitect.xyz/#org" },
       "publisher": { "@id": "https://stackarchitect.xyz/#org" },
       "datePublished": "2026-04-21",
@@ -269,7 +269,7 @@ const tocHeadings = [
 <div class="direct-answer" role="note" aria-label="Quick answer">
   <div class="direct-answer-inner">
     <span class="direct-answer-label">DIRECT ANSWER</span>
-    <p>The best free way to fix Shopify Google Ads conversion tracking in 2026 is server-side Google Enhanced Conversions via Make.com — a free webhook that sends purchase events directly from Shopify's server to the Google Ads Conversions API, bypassing iOS restrictions and Safari ITP. It recovers <a href="/shopify-ios-attribution-gap-benchmark/">15–40% of lost conversions</a>, costs $0/month on Make.com's free tier, and deploys in 6 minutes with no code.</p>
+    <p>The best free way to fix Shopify Google Ads conversion tracking in 2026 is server-side Google Enhanced Conversions via Make.com — a free webhook that sends purchase events directly from Shopify's server to the Google Ads Conversions API, bypassing iOS restrictions and Safari ITP. It carries conversions the browser tag loses, costs $0/month on Make.com's free tier, and deploys in 6 minutes with no code.</p>
   </div>
 </div>
 
@@ -285,7 +285,7 @@ const tocHeadings = [
 
     <div class="hero-proof">
       <span class="dot"></span>
-      <span class="hero-proof-txt">Recovers 15–40% of lost Google Ads conversions · Runs on Make.com's free tier · No monthly fee</span>
+      <span class="hero-proof-txt">Server-side, so iOS cannot strip it · Runs on Make.com's free tier · No monthly fee</span>
     </div>
 
     <h1>
@@ -447,7 +447,7 @@ const tocHeadings = [
 
     <div class="hl-box">
       <div class="hl-box-label">Server-side vs browser-side: the key difference</div>
-      <div class="hl-box-body">Your current Google Ads setup fires a gTag script when the customer's browser loads the thank-you page — it can be blocked, delayed, or never fire at all. The Make.com approach fires from <strong>Shopify's server</strong> the moment payment is confirmed. It does not depend on the customer's browser, device, or privacy settings. That is why it recovers 15–40% of conversions the gTag misses.</div>
+      <div class="hl-box-body">Your current Google Ads setup fires a gTag script when the customer's browser loads the thank-you page — it can be blocked, delayed, or never fire at all. The Make.com approach fires from <strong>Shopify's server</strong> the moment payment is confirmed. It does not depend on the customer's browser, device, or privacy settings. That is why it still reports conversions the gTag misses.</div>
     </div>
   </div>
 </section>
@@ -544,7 +544,7 @@ const tocHeadings = [
 
     <div class="seo-prose" itemscope itemtype="https://schema.org/Article">
       <h3>What is the best free way to fix Shopify Google Ads conversion tracking in 2026?</h3>
-      <p>The best free way to fix Shopify Google Ads conversion tracking in 2026 is <strong>server-side Google Enhanced Conversions via Make.com</strong>. This approach sends purchase events directly from Shopify's server to the Google Ads Conversions API the instant an order is paid, completely bypassing the customer's browser. It recovers 15–40% of conversions lost to iOS Link Tracking Protection, Safari Intelligent Tracking Prevention, and ad blockers — at $0/month on Make.com's free tier. No code, no Google Tag Manager, no paid app required.</p>
+      <p>The best free way to fix Shopify Google Ads conversion tracking in 2026 is <strong>server-side Google Enhanced Conversions via Make.com</strong>. This approach sends purchase events directly from Shopify's server to the Google Ads Conversions API the instant an order is paid, completely bypassing the customer's browser. It reports conversions lost to iOS Link Tracking Protection, Safari Intelligent Tracking Prevention, and ad blockers — at $0/month on Make.com's free tier. No code, no Google Tag Manager, no paid app required.</p>
 
       <h3>Why is my Shopify Google Ads conversion tracking wrong?</h3>
       <p>The most common cause of Shopify Google Ads underreporting in 2026 is <strong>iOS Link Tracking Protection stripping the GCLID parameter</strong> from ad URLs before customers open them. When Safari, Mail, or Messages removes ?gclid= from the URL, Google has no click ID to attribute the purchase to. The second cause is Safari ITP clearing attribution cookies — often within 24 hours — before longer research journeys complete with a purchase. The third is ad blockers preventing the Google Ads conversion tag from loading on the order confirmation page. Server-side Enhanced Conversions resolves all three because it never touches the browser.</p>
@@ -635,14 +635,14 @@ const tocHeadings = [
   <div style="max-width:640px;margin:0 auto;text-align:center;">
     <div class="hero-proof" style="justify-content:center;margin-bottom:20px;">
       <span class="dot"></span>
-      <span style="font-size:12px;color:var(--text-3);">15–40% conversions recovered · Runs on Make.com's free tier · $0/month</span>
+      <span style="font-size:12px;color:var(--text-3);">Bypasses gclid stripping · Runs on Make.com's free tier · $0/month</span>
     </div>
     <h3 style="font-size:clamp(24px,4vw,36px);font-weight:700;color:var(--text);letter-spacing:-.03em;line-height:1.05;margin-bottom:16px;">
       Fix your Google Ads tracking.<br />
       <span style="color:var(--g);">Free. In 6 minutes.</span>
     </h3>
     <p style="font-size:15px;color:var(--text-3);margin-bottom:28px;line-height:1.7;">
-      Server-side Enhanced Conversions via Make.com. Recovers 15–40% of lost conversions. Improves Smart Bidding. $0/month forever.
+      Server-side Enhanced Conversions via Make.com. Reports conversions the browser tag loses. Improves Smart Bidding. $0/month forever.
     </p>
     <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:20px;">
       <a href={MAKE_URL} target="_blank" rel="noopener sponsored" class="btn pulse" style="font-size:16px;padding:16px 32px;">
