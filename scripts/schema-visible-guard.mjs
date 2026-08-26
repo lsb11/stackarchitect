@@ -139,6 +139,25 @@ function visibleText(html) {
     .replace(/\s+/g, ' ');
 }
 
+/**
+ * A single money figure counts as visible when its digits appear on the page
+ * with a currency prefix, even if the surrounding formatting differs. Schema
+ * writing "from $2,999/month" and the page writing "$2,999+" are the same
+ * claim to a reader; only the suffix differs.
+ *
+ * DELIBERATELY NOT APPLIED TO RANGES. "$19–$99/mo" must match exactly,
+ * because a page containing "$19" somewhere and "$99" somewhere else has not
+ * asserted the range — and a range the page never states is precisely the
+ * drift this guard exists to catch.
+ */
+function singleMoneyVisible(claim, visRaw) {
+  if (!claim.startsWith('$')) return false;
+  if (/\d[-–—]/.test(claim) || claim.split('$').length > 2) return false; // a range
+  const core = claim.match(/^\$(\d+(?:\.\d+)?)/);
+  if (!core) return false;
+  return visRaw.includes('$' + core[1]);
+}
+
 const files = [];
 (function walk(d) {
   for (const e of fs.readdirSync(d, { withFileTypes: true })) {
@@ -182,6 +201,7 @@ for (const f of files) {
       for (const claim of numericClaims(s)) {
         if (visClaims.has(claim)) continue;
         if (visRaw.includes(claim)) continue;
+        if (singleMoneyVisible(claim, visRaw)) continue;
         violations.push({ url, claim, context: s.slice(0, 150) });
       }
     }
