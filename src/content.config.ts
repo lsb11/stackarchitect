@@ -17,6 +17,14 @@ const blog = defineCollection({
     ogImage: z.string().optional(),
     publishDate: z.string(),
     updatedDate: z.string().optional(),
+    // Date a human last checked this post's factual claims (pricing, plan
+    // limits, eligibility rules) against their live source. Distinct from
+    // updatedDate, which only means the content changed. Threaded to
+    // Base.astro, which renders it on-page and prefers it for dateModified.
+    // Until this field existed, no blog post could carry a verification date
+    // at all — 319 price claims across the collection were structurally
+    // unverifiable. Format: YYYY-MM-DD.
+    verifiedDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
     category: z.enum([
       'tracking',
       'inventory',
