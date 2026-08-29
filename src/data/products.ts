@@ -69,7 +69,7 @@ export interface Product {
   faq: Faq[];
 }
 
-export const KIT_STRIPE_URL = 'https://buy.stripe.com/00wfZa7w1a3Bfo55tnfrW00';
+export const KIT_STRIPE_URL = 'https://buy.stripe.com/9B68wI4jP3Fd8ZH6xrfrW02';
 
 /** TODO: Payment Link for the $14 single → full-kit upgrade (brief §9.2). */
 export const UPGRADE_STRIPE_URL = '';
