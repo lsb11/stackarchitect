@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 import AttributionTracker from '../components/AttributionTracker.astro';
 import ProductChooser from '../components/ProductChooser.astro';
-import { KIT_PRICE, formatPrice } from '../data/products';
+import { KIT_PRICE, SINGLE_PRICE, formatPrice } from '../data/products';
 import { isPostShutdown } from '../utils/stockyDeadline';
 
 // Rendered at build time so crawlers get the correct side of the deadline.
@@ -21,6 +21,7 @@ const postShutdown = isPostShutdown();
 // src/pages/pro/[slug].astro does it. Grep this file for the price before
 // changing KIT_PRICE.
 const kit = formatPrice(KIT_PRICE);
+const single = formatPrice(SINGLE_PRICE);
 ---
 <Base title={`Stack Architect Complete Kit — ${kit}`} description="Four import-ready Make.com blueprints plus two Google Sheets templates. Server-side tracking, TikTok CAPI, inventory and live P&L, live in 10 minutes.">
 <Fragment slot="head">
@@ -33,7 +34,7 @@ const kit = formatPrice(KIT_PRICE);
         "@id": "https://stackarchitect.xyz/#website",
         "url": "https://stackarchitect.xyz",
         "name": "Stack Architect",
-        "description": "Free Shopify automation stack — replace paid tracking, inventory, email, TikTok CAPI, and workflow apps. Save $700+ per month. No code required.",
+        "description": "Free Shopify automation stack — replace paid tracking, inventory, email, TikTok CAPI, and workflow apps. No code required.",
         "inLanguage": "en-GB",
         "publisher": { "@id": "https://stackarchitect.xyz/#org" }
       },
@@ -42,7 +43,7 @@ const kit = formatPrice(KIT_PRICE);
         "@id": "https://stackarchitect.xyz/pro#webpage",
         "url": "https://stackarchitect.xyz/pro/",
         "name": "Stack Architect Complete Kit — $24 | Shopify Automation Files Ready to Import",
-        "description": "Four import-ready Make.com automation scenario JSON files (CAPI Shield, TikTok CAPI, Stocky Swap, P&L Auto) and two pre-configured Google Sheets templates. Replaces $700+/month of paid Shopify apps. $24 one-time. Instant access via Stripe.",
+        "description": "Four import-ready Make.com automation scenario JSON files (CAPI Shield, TikTok CAPI, Stocky Swap, P&L Auto) and two pre-configured Google Sheets templates. Replaces $60–$180/month of paid Shopify apps for most stores. $24 one-time. Instant access via Stripe.",
         "inLanguage": "en-GB",
         "dateModified": "2026-07-17",
         "isPartOf": { "@id": "https://stackarchitect.xyz/#website" },
@@ -58,7 +59,7 @@ const kit = formatPrice(KIT_PRICE);
       {
         "@type": "Product",
         "name": "Stack Architect Complete Kit",
-        "description": "The Stack Architect Complete Kit is a $24 one-time purchase containing four ready-to-import Make.com automation scenario JSON files for Shopify: Blueprint 01 CAPI Shield (Meta Conversions API via Graph API v19.0 + Google Ads Enhanced Conversions, routed server-side), Blueprint 02 TikTok CAPI (TikTok Events API v1.3 CompletePayment server-side events), Blueprint 03 Stocky Swap (live inventory logging to Google Sheets, replacing Shopify Stocky before its August 31 2026 shutdown), and Blueprint 04 P&L Auto (live profit and loss reporting to Google Sheets). Also includes two pre-configured Google Sheets templates and a PDF setup guide. Replaces over $700 per month of paid Shopify apps including Elevar, Triple Whale, WeltPixel, Shopify Stocky, TrueProfit, and BeProfit. One-time $24. Instant access via Stripe.",
+        "description": "The Stack Architect Complete Kit is a $24 one-time purchase containing four ready-to-import Make.com automation scenario JSON files for Shopify: Blueprint 01 CAPI Shield (Meta Conversions API via Graph API v19.0 + Google Ads Enhanced Conversions, routed server-side), Blueprint 02 TikTok CAPI (TikTok Events API v1.3 CompletePayment server-side events), Blueprint 03 Stocky Swap (live inventory logging to Google Sheets, replacing Shopify Stocky before its August 31 2026 shutdown), and Blueprint 04 P&L Auto (live profit and loss reporting to Google Sheets). Also includes two pre-configured Google Sheets templates and a PDF setup guide. Most stores replace $60–$180 per month of apps including Elevar, Triple Whale, WeltPixel, Shopify Stocky, TrueProfit, and BeProfit; heavy ad spenders replace far more. One-time $24. Instant access via Stripe.",
         "url": "https://stackarchitect.xyz/pro/",
         "image": "https://stackarchitect.xyz/og/og-complete-kit.png",
         "sku": "SA-COMPLETE-KIT-001",
@@ -74,7 +75,7 @@ const kit = formatPrice(KIT_PRICE);
         },
         "featureList": [
           "One-click import into Make.com",
-          "Runs on Make.com free tier",
+          "Runs any two scenarios on Make's free tier; all four needs Make Core, about $9/mo",
           "All Shopify plans supported",
           "CAPI Shield — Meta Conversions API (Graph API v19.0) + Google Ads Enhanced Conversions, server-side",
           "TikTok CAPI — TikTok Events API v1.3 CompletePayment server-side events",
@@ -92,7 +93,7 @@ const kit = formatPrice(KIT_PRICE);
         "name": "Stack Architect Shopify Automation Stack",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web",
-        "description": "Four Make.com automation scenario JSON blueprints for Shopify: CAPI Shield for Meta Conversions API, Google Ads Enhanced Conversions, and GA4 server-side tracking, TikTok CAPI for TikTok Events API v1.3, Stocky Swap for inventory management replacing Shopify Stocky before its August 2026 shutdown, and P&L Auto for live profit and loss reporting. All run on Make.com free tier with Google Sheets. $24 one-time.",
+        "description": "Four Make.com automation scenario JSON blueprints for Shopify: CAPI Shield for Meta Conversions API, Google Ads Enhanced Conversions, and GA4 server-side tracking, TikTok CAPI for TikTok Events API v1.3, Stocky Swap for inventory management replacing Shopify Stocky before its August 2026 shutdown, and P&L Auto for live profit and loss reporting. Any two run on Make's free tier; all four needs Make Core, about $9/mo. $24 one-time.",
         "url": "https://stackarchitect.xyz/pro/",
         "offers": { "@type": "Offer", "price": "24.00", "priceCurrency": "USD" }
       },
@@ -131,15 +132,15 @@ const kit = formatPrice(KIT_PRICE);
     "@type": "FAQPage",
     "mainEntity": [
       {"@type":"Question","name":"What is the Stack Architect Complete Kit?","acceptedAnswer":{"@type":"Answer","text":"The Stack Architect Complete Kit is a $24 one-time purchase containing seven files: four ready-to-import Make.com automation JSON blueprints (CAPI Shield for Meta + Google server-side tracking, TikTok CAPI for TikTok Events API v1.3, Stocky Swap for inventory management replacing Shopify Stocky before its August 2026 shutdown, and P&L Auto for live profit and loss reporting), two pre-configured Google Sheets templates, and a PDF setup guide. Access is instant via Stripe."}},
-      {"@type":"Question","name":"What is a Make.com JSON blueprint and how does importing it work?","acceptedAnswer":{"@type":"Answer","text":"A Make.com JSON blueprint is a complete export of a finished automation — every module, API connection, field mapping, and routing rule is embedded in the file. In Make.com, go to Create new scenario → Import Blueprint → upload the JSON file. The entire scenario is recreated instantly with no manual setup. Works on Make.com free tier."}},
+      {"@type":"Question","name":"What is a Make.com JSON blueprint and how does importing it work?","acceptedAnswer":{"@type":"Answer","text":"A Make.com JSON blueprint is a complete export of a finished automation — every module, API connection, field mapping, and routing rule is embedded in the file. In Make.com, go to Create new scenario → Import Blueprint → upload the JSON file. The entire scenario is recreated instantly with no manual setup. Works on Make's free tier, which allows two active scenarios."}},
       {"@type":"Question","name":"How do I access the files after purchase?","acceptedAnswer":{"@type":"Answer","text":"After payment via Stripe, you are redirected immediately to a Google Drive folder containing all seven files. No email required, no account to create. The folder link is yours to keep and re-access at any time."}},
       {"@type":"Question","name":"How is the Complete Kit different from the free Stack Architect guides?","acceptedAnswer":{"@type":"Answer","text":"The free guides are step-by-step instructions for building each automation yourself. The Complete Kit gives you the finished JSON blueprint files. The technical outcome is identical — same EMQ scores, same attribution accuracy, same data. The difference is time: each guide takes approximately 2 hours, all four take 8+ hours. The kit deploys in 10 minutes total."}},
-      {"@type":"Question","name":"Do I need a paid Make.com plan?","acceptedAnswer":{"@type":"Answer","text":"No. All four scenarios run on Make.com's free tier (1,000 credits/month (formerly called operations)), sufficient for up to 300 orders per month. Stores above that can upgrade to Make.com Core for $12 per month."}},
-      {"@type":"Question","name":"What Shopify apps does the Complete Kit replace?","acceptedAnswer":{"@type":"Answer","text":"CAPI Shield replaces Elevar ($225/mo), Triple Whale (GMV-based), and Northbeam. TikTok CAPI replaces WeltPixel and Analyzify. Stocky Swap replaces Shopify Stocky (shutting down August 31 2026), Linnworks, and Skubana. P&L Auto replaces TrueProfit and BeProfit ($19–$299/mo). Combined monthly savings typically exceed $696."}},
+      {"@type":"Question","name":"Do I need a paid Make.com plan?","acceptedAnswer":{"@type":"Answer","text":"Make's free plan allows two active scenarios, so any two of the four run free (1,000 credits/month, enough for roughly 300 orders a month). Running all four at once needs Make Core, about $9/month, which also lifts the credit ceiling to 10,000. Checked against make.com/pricing on 29 August 2026."}},
+      {"@type":"Question","name":"What Shopify apps does the Complete Kit replace?","acceptedAnswer":{"@type":"Answer","text":"CAPI Shield replaces Elevar ($225/mo), Triple Whale (GMV-based), and Northbeam. TikTok CAPI replaces WeltPixel and Analyzify. Stocky Swap replaces Shopify Stocky (shutting down August 31 2026), Linnworks, and Skubana. P&L Auto replaces TrueProfit and BeProfit ($19–$299/mo). Most stores replace $60–$180 per month; heavy ad spenders on Elevar or Analyzify replace far more."}},
       {"@type":"Question","name":"What is Stocky Swap and why is August 2026 the deadline?","acceptedAnswer":{"@type":"Answer","text":"Stocky Swap logs every Shopify order line item to a Google Sheets inventory log in real time — six columns: timestamp, SKU, quantity sold as a negative change, order ID, product, and a note. Shopify is permanently shutting down Stocky on August 31, 2026 and will delete all data after that date. The JSON imports in 60 seconds and starts capturing data immediately."}},
       {"@type":"Question","name":"Will the kit work with my Shopify plan?","acceptedAnswer":{"@type":"Answer","text":"Yes. The kit uses Shopify webhooks available on every plan including Shopify Basic. No app installation required. The only change in Shopify Admin is adding one webhook URL under Settings → Notifications → Webhooks — a two-minute step that triggers all four automations simultaneously."}},
       {"@type":"Question","name":"Does the Complete Kit work outside the US?","acceptedAnswer":{"@type":"Answer","text":"Yes. All four scenarios work globally. Shopify webhooks, Make.com, Meta Conversions API, Google GA4, and TikTok Events API all support international markets. The P&L Auto scenario supports any Shopify-supported currency."}},
-      {"@type":"Question","name":"Is this a subscription?","acceptedAnswer":{"@type":"Answer","text":"No. The Complete Kit is a one-time $24 payment. You own the files permanently. All four Make.com scenarios run on Make.com's free tier at $0 per month ongoing. No subscription, no renewal, no lock-in."}},
+      {"@type":"Question","name":"Is this a subscription?","acceptedAnswer":{"@type":"Answer","text":"No. The Complete Kit is a one-time $24 payment. You own the files permanently. There is no recurring charge from us; the only ongoing cost is Make's own plan, and any two scenarios run on their free tier."}},
       {"@type":"Question","name":"What support is included?","acceptedAnswer":{"@type":"Answer","text":"One direct support question is included with every purchase. Email support@stackarchitect.xyz with your question, which file (Blueprint 01–04), a screenshot of any Make.com error, and your Shopify plan. Response within 24 hours on UK working days."}}
     ]
   }</script>
@@ -155,15 +156,15 @@ const kit = formatPrice(KIT_PRICE);
   <!-- HERO -->
   <section class="hero" aria-label={`Stack Architect Complete Kit — ${kit} Shopify Automation`}>
     <div class="hero-inner">
-      <div class="hero-dateline">Instant access via Stripe · {kit} one-time · Runs on Make.com's free tier · Updated July 2026</div>
+      <div class="hero-dateline">Instant access via Stripe · {kit} one-time · Any two scenarios on Make's free tier · Updated August 2026</div>
       <div class="hero-proof">
         <span class="dot"></span>
         <span>One-time {kit} · No subscription ever · 30-day money-back guarantee</span>
       </div>
 
-      <h1 itemprop="headline">Your entire Shopify backend.<br><span class="green">Pre-built. Kit import: live in 10 minutes.</span></h1>
+      <h1 itemprop="headline">Your Shopify backend, already built.<br><span class="green">Import the file. Live in ten minutes.</span></h1>
 
-      <p id="answer" class="hero-sub" itemprop="description">The Complete Kit is four pre-built Make.com blueprints and two Google Sheets templates covering server-side tracking, TikTok Events API, inventory logging and live profit reporting. <strong>Every field is pre-mapped and every API connected</strong>, so you add credentials, import, and go live in <strong>about ten minutes instead of eight hours</strong>. One payment of {kit}, no subscription.</p>
+      <p id="answer" class="hero-sub" itemprop="description">Four finished Make.com blueprints — server-side Meta, Google and TikTok tracking, live inventory, and per-order profit. Every module and field mapping is built; you paste your own API credentials and switch it on. <strong>{kit} once, or {single} for the one you actually need.</strong> No subscription.</p>
 
       <div class="price-row">
         <div class="price-main">{kit}</div>
@@ -212,10 +213,12 @@ const kit = formatPrice(KIT_PRICE);
 
       <div class="trust-row">
         <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"></path></svg>One-click import into Make.com</span>
-        <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"></path></svg>Runs on Make.com free tier</span>
+        <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"></path></svg>Any two scenarios on Make's free tier</span>
         <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"></path></svg>Any Shopify plan</span>
         <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"></path></svg>1 direct support question included</span>
       </div>
+
+      <div class="make-tier-note" role="note">Runs on Make's free tier — any two scenarios free (Make's free plan allows two active scenarios). All four needs Make Core, about $9/mo. <span class="make-tier-date">Checked against make.com/pricing, 29 Aug 2026.</span></div>
 
       <div class="urgency" role="note">
         <span class="dot" style="background:var(--red);animation:none;"></span>
@@ -424,7 +427,7 @@ const kit = formatPrice(KIT_PRICE);
           <div class="how-n" style="color:var(--sky)">Step 02 // ~3 min</div>
           <div class="how-title" itemprop="name">Import JSON blueprints</div>
           <p class="how-body" itemprop="text">In Make.com, click Create new scenario → Import Blueprint → upload each JSON file. Every module, API connection, and field mapping is pre-configured inside the file. Nothing to set up manually.</p>
-          <span class="how-tool">Make.com · free tier · one click</span>
+          <span class="how-tool">Make.com · two scenarios free · one click</span>
         </div>
         <div class="how-step" itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
           <div class="how-n" style="color:var(--vio)">Step 03 // ~2 min</div>
@@ -462,7 +465,7 @@ const kit = formatPrice(KIT_PRICE);
           <div class="compare-head-cell" role="columnheader">Feature</div>
           <div class="compare-head-cell" role="columnheader">Free Guides</div>
           <div class="compare-head-cell hl" role="columnheader">Complete Kit — {kit} ✓</div>
-          <div class="compare-head-cell" role="columnheader">Paid Apps ($700+/mo)</div>
+          <div class="compare-head-cell" role="columnheader">Paid Apps ($60–$180+/mo)</div>
         </div>
         <div class="compare-row" role="row">
           <div class="compare-cell">Server-side tracking (Meta + Google)</div>
@@ -496,9 +499,9 @@ const kit = formatPrice(KIT_PRICE);
         </div>
         <div class="compare-row" role="row">
           <div class="compare-cell">Monthly ongoing cost</div>
-          <div class="compare-cell"><span class="yes">$0/mo</span></div>
-          <div class="compare-cell hl"><span class="yes">$0/mo</span></div>
-          <div class="compare-cell"><span style="color:var(--red);font-family:var(--mono);font-size:12px;">$700+/mo</span></div>
+          <div class="compare-cell"><span class="yes">$0 — or ~$9 for all four</span></div>
+          <div class="compare-cell hl"><span class="yes">$0 — or ~$9 for all four</span></div>
+          <div class="compare-cell"><span style="color:var(--red);font-family:var(--mono);font-size:12px;">$60–$180+/mo</span></div>
         </div>
         <div class="compare-row" role="row">
           <div class="compare-cell">One-time cost</div>
@@ -537,16 +540,22 @@ const kit = formatPrice(KIT_PRICE);
           <div class="compare-cell"><span style="color:var(--red);font-family:var(--mono);font-size:12px;">High</span></div>
         </div>
         <div class="compare-row" role="row">
+          <div class="compare-cell">Updated when APIs change</div>
+          <div class="compare-cell"><span class="no">— you re-follow the guide</span></div>
+          <div class="compare-cell hl"><span class="yes">✓ updated blueprints</span></div>
+          <div class="compare-cell"><span class="yes">✓</span></div>
+        </div>
+        <div class="compare-row" role="row">
           <div class="compare-cell">Year-one total cost</div>
-          <div class="compare-cell"><span class="yes">$0</span></div>
+          <div class="compare-cell"><span class="yes">$0 — or ~$108 on Core</span></div>
           <div class="compare-cell hl"><span style="color:var(--amber);font-family:var(--mono);font-size:12px;font-weight:700;">{kit}</span></div>
-          <div class="compare-cell"><span style="color:var(--red);font-family:var(--mono);font-size:12px;font-weight:700;">$8,400+</span></div>
+          <div class="compare-cell"><span style="color:var(--red);font-family:var(--mono);font-size:12px;font-weight:700;">$720–$2,160+</span></div>
         </div>
       </div>
 
       <div class="hl-box" style="margin-top:20px;">
-        <div class="hl-box-label">the honest summary</div>
-        <div class="hl-box-body">If you have 8 hours and want to learn exactly how every automation works, use the free guides. At {kit} — less than one month of WeltPixel, the cheapest app the kit replaces — the Complete Kit pays for itself before your next order is processed. The technical outcome is identical either way.</div>
+        <div class="hl-box-label">what you're actually paying for</div>
+        <div class="hl-box-body">The free guides produce the same scenario — build from them if you want to learn how every module works, and the result will be identical on day one. What you get here is the finished file, the error handling already wired in (a failed row never stalls the queue), the hashing normalisation that's easy to get subtly wrong, and updated blueprints when Meta bumps the Graph API version or TikTok moves off v1.3. Silent tracking failure after an API deprecation is the expensive part, and it's the part a static guide can't help with.</div>
       </div>
     </div>
   </section>
@@ -556,8 +565,8 @@ const kit = formatPrice(KIT_PRICE);
     <div class="inner">
       <div class="sec-head">
         <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">exact savings · per scenario</span>
-        <h2 id="savings-h">$8,300+ saved in <span style="color:var(--g)">year one</span></h2>
-        <p>{kit} one-time. Zero monthly fees. These are the exact apps the Complete Kit replaces — and what they cost.</p>
+        <h2 id="savings-h">Most stores replace <span style="color:var(--g)">$60–$180/mo</span> of apps</h2>
+        <p>Heavy ad spenders on Elevar or Analyzify replace far more. {kit} one-time, zero monthly fees — these are the exact apps the Complete Kit replaces, and what they cost.</p>
       </div>
 
       <div class="rep-table" role="table" aria-label="Complete Kit app replacement savings breakdown">
@@ -588,15 +597,14 @@ const kit = formatPrice(KIT_PRICE);
         </div>
         <div class="rep-row rep-total" role="row">
           <div class="rep-cell">Total stack · monthly saving</div>
-          <div class="rep-cell" style="color:var(--text-3);">Typically $500–$900/mo depending on apps currently used</div>
-          <div class="rep-cell"><span class="rep-saving" style="font-size:14px;">$696+/mo</span></div>
+          <div class="rep-cell" style="color:var(--text-3);">Depends entirely on which apps you actually run today</div>
+          <div class="rep-cell"><span class="rep-saving" style="font-size:14px;">$60–$180/mo</span></div>
         </div>
       </div>
 
       <div class="stat-strip" style="margin-top:24px;">
         <div class="stat-cell"><div class="stat-v amber">{kit}</div><div class="stat-l">kit cost · one-time</div></div>
-        <div class="stat-cell"><div class="stat-v green">$696+</div><div class="stat-l">saved per month</div></div>
-        <div class="stat-cell"><div class="stat-v green">$8,300+</div><div class="stat-l">saved · year one</div></div>
+        <div class="stat-cell"><div class="stat-v green">$60–$180</div><div class="stat-l">replaced per month</div></div>
       </div>
     </div>
   </section>
@@ -620,7 +628,7 @@ const kit = formatPrice(KIT_PRICE);
           <div class="for-item"><span class="for-dot y">✓</span><span>You use or plan to use Meta Ads, Google Ads, or TikTok Ads and want accurate attribution</span></div>
           <div class="for-item"><span class="for-dot y">✓</span><span>You used Shopify Stocky and need a replacement after the August 2026 shutdown</span></div>
           <div class="for-item"><span class="for-dot y">✓</span><span>You want no platform lock-in — everything runs in your own Google and Make.com accounts</span></div>
-          <div class="for-item"><span class="for-dot y">✓</span><span>You process up to 300 orders/month (Make.com free tier) or are happy to pay $12/mo for Core</span></div>
+          <div class="for-item"><span class="for-dot y">✓</span><span>You are happy running any two scenarios on Make's free plan, or paying about $9/mo for Make Core to run all four</span></div>
         </div>
         <div class="for-card no-card">
           <div class="for-card-label">— THIS IS NOT FOR YOU IF...</div>
@@ -639,13 +647,13 @@ const kit = formatPrice(KIT_PRICE);
       <div class="sec-head">
         <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">about the kit</span>
         <h2 id="about-h">The complete Shopify automation kit — <span style="color:var(--g)">explained</span></h2>
-        <p>Everything you need to know about what the Complete Kit is, how it works, and why it replaces $700+/month of paid apps.</p>
+        <p>Everything you need to know about what the Complete Kit is, how it works, and which paid apps it replaces.</p>
       </div>
       <div class="seo-prose" itemscope itemtype="https://schema.org/Article">
         <meta itemprop="headline" content="Stack Architect Complete Kit — Shopify Automation JSON Blueprint Files for Make.com">
 
         <h3>What is the Stack Architect Complete Kit?</h3>
-        <p>The Stack Architect Complete Kit is a <strong>{kit} one-time purchase</strong> that gives Shopify store owners seven ready-to-use files: four pre-configured Make.com automation scenario JSON blueprints, two Google Sheets templates, and a PDF setup guide. The four scenarios are CAPI Shield (Meta Conversions API via Graph API v19.0 + Google Ads Enhanced Conversions), TikTok CAPI (TikTok Events API v1.3), Stocky Swap (live inventory to Google Sheets, replacing Shopify Stocky before its August 31 2026 shutdown), and P&L Auto (live profit and loss reporting). Access is instant via Stripe — files open in your browser immediately after payment. The kit replaces over $700 per month of paid Shopify apps including Elevar, Triple Whale, WeltPixel, and TrueProfit.</p>
+        <p>The Stack Architect Complete Kit is a <strong>{kit} one-time purchase</strong> that gives Shopify store owners seven ready-to-use files: four pre-configured Make.com automation scenario JSON blueprints, two Google Sheets templates, and a PDF setup guide. The four scenarios are CAPI Shield (Meta Conversions API via Graph API v19.0 + Google Ads Enhanced Conversions), TikTok CAPI (TikTok Events API v1.3), Stocky Swap (live inventory to Google Sheets, replacing Shopify Stocky before its August 31 2026 shutdown), and P&L Auto (live profit and loss reporting). Access is instant via Stripe — files open in your browser immediately after payment. Most stores replace $60–$180 per month of apps with it; heavy ad spenders on Elevar or Analyzify replace far more.</p>
 
         <h3>What is a Make.com JSON blueprint and why does it matter?</h3>
         <p>A <strong>Make.com JSON blueprint</strong> (also called a scenario file) is a complete export of a finished Make.com automation. Every module, API endpoint, field mapping, routing rule, and connection setting is embedded inside the JSON file. Importing it into Make.com recreates the entire automation in one click — no manual configuration required. This is different from a guide or tutorial, which describes how to build the automation step by step. The Complete Kit gives you the finished blueprint files, not instructions for building them. At {kit}, the kit costs less than two hours of agency time and less than a single month of any tracking app it replaces.</p>
@@ -676,7 +684,7 @@ const kit = formatPrice(KIT_PRICE);
     <div class="cta-strip-inner">
       <div>
         <div class="cta-strip-title">The maths are straightforward.</div>
-        <div class="cta-strip-sub">{kit} once vs <span>$696+ every single month</span>.</div>
+        <div class="cta-strip-sub">{kit} once. Most stores replace <span>$60–$180/mo</span> of apps.</div>
       </div>
       <div class="cta-strip-actions">
         <a href="https://buy.stripe.com/00wfZa7w1a3Bfo55tnfrW00" class="btn btn-sm pulse">Get the Kit — {kit} →</a>
@@ -851,7 +859,7 @@ const kit = formatPrice(KIT_PRICE);
       },
       {
         q: "What is a Make.com JSON blueprint and how does importing it work?",
-        a: "A Make.com JSON blueprint is a complete export of a finished automation — every module, API connection, field mapping, and routing rule is embedded in the file. In Make.com, go to Create new scenario → Import Blueprint → upload the JSON file. The entire pre-configured scenario is recreated instantly. No manual setup required. Works on Make.com free tier."
+        a: "A Make.com JSON blueprint is a complete export of a finished automation — every module, API connection, field mapping, and routing rule is embedded in the file. In Make.com, go to Create new scenario → Import Blueprint → upload the JSON file. The entire pre-configured scenario is recreated instantly. No manual setup required. Works on Make's free tier, which allows two active scenarios."
       },
       {
         q: "How do I access the files after purchase?",
@@ -863,11 +871,11 @@ const kit = formatPrice(KIT_PRICE);
       },
       {
         q: "Do I need a paid Make.com plan?",
-        a: "No. All four scenarios run on Make.com's free tier (1,000 credits/month), sufficient for up to 300 orders/month. Stores above that can upgrade to Make.com Core for $12/month."
+        a: "Make's free plan allows two active scenarios, so any two of the four run free (1,000 credits/month, enough for roughly 300 orders a month). Running all four at once needs Make Core, about $9/month, which also lifts the credit ceiling to 10,000. Checked against make.com/pricing on 29 August 2026."
       },
       {
         q: "What Shopify apps does the Complete Kit replace?",
-        a: "CAPI Shield replaces Elevar ($225/mo), Triple Whale (GMV-based), and Northbeam (from $1,500+/mo). TikTok CAPI replaces WeltPixel ($39+/mo) and Analyzify ($145–$275/mo). Stocky Swap replaces Shopify Stocky, Linnworks, and Skubana — none of which publish a price. P&L Auto replaces TrueProfit and BeProfit ($19–$299/mo). Combined monthly savings typically exceed $696."
+        a: "CAPI Shield replaces Elevar ($225/mo), Triple Whale (GMV-based), and Northbeam (from $1,500+/mo). TikTok CAPI replaces WeltPixel ($39+/mo) and Analyzify ($145–$275/mo). Stocky Swap replaces Shopify Stocky, Linnworks, and Skubana — none of which publish a price. P&L Auto replaces TrueProfit and BeProfit ($19–$299/mo). Most stores replace $60–$180 per month; heavy ad spenders on Elevar or Analyzify replace far more."
       },
       {
         q: "What is Stocky Swap and why is August 2026 the deadline?",
@@ -883,7 +891,7 @@ const kit = formatPrice(KIT_PRICE);
       },
       {
         q: "Is this a subscription?",
-        a: "No. The Complete Kit is a one-time $24 payment. You own the files permanently. All four Make.com scenarios run on Make.com's free tier at $0/month ongoing."
+        a: "No. The Complete Kit is a one-time $24 payment. You own the files permanently. There is no recurring charge from us; the only ongoing cost is Make's own plan, and any two scenarios run on their free tier."
       },
       {
         q: "What support is included?",
@@ -1078,6 +1086,21 @@ const kit = formatPrice(KIT_PRICE);
     .price-row { display: flex; align-items: baseline; justify-content: center; gap: 16px; margin-bottom: 8px; flex-wrap: wrap; }
     .price-main { font-family: var(--mono); font-size: 60px; font-weight: 800; color: var(--text); letter-spacing: -.04em; line-height: 1; }
     .price-note { font-family: var(--mono); font-size: 13px; color: var(--text-4); margin-bottom: 8px; }
+
+    /* Make.com free-tier limit — a factual correction, not a selling point,
+       so it is styled as a note rather than as a trust badge. */
+    .make-tier-note {
+      max-width: 620px;
+      margin: 16px auto 0;
+      padding: 10px 16px;
+      border: 1px solid var(--border-2);
+      border-radius: 6px;
+      background: var(--bg-3);
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: var(--text-3);
+    }
+    .make-tier-date { display: block; margin-top: 4px; font-family: var(--mono); font-size: 10.5px; color: var(--text-4); }
     /* NEW: price anchor below note */
     .price-anchor {
       font-family: var(--mono); font-size: 11px;
