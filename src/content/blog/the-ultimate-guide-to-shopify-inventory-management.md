@@ -212,7 +212,7 @@ The average store is paying anywhere from $29 to $500 a month for inventory mana
 4. **Export Stocky data** if Stocky still opens in your admin — its end of service was 31 August 2026, and there is no export route afterwards.
 5. **Add P&L tracking** — a third branch on the same scenario, no additional setup cost.
 
-Every step above is free. The only ongoing cost is Make.com's Core plan at $12/month if your order volume exceeds 160 orders per month on the free plan — still 90–97% cheaper than any dedicated inventory app.
+Every step above is free. The only ongoing cost is Make.com's Core plan at $9/month if your order volume exceeds 160 orders per month on the free plan — still 90–97% cheaper than any dedicated inventory app.
 
 
 ---

@@ -184,7 +184,7 @@ The [Autocrat Quota Fix](/autocrat-quota-fix/) guide covers the full Make.com im
 - No document create daily cap (250/day consumer limit)
 - Runs reliably at any volume
 
-What this costs: nothing, for most of the workflows that produce this error. [Make.com's free plan gives you 1,000 credits a month](/go/make/) with no card, and a document-generation run typically spends 2–3 credits per document — roughly 350 documents a month inside the free tier, against Apps Script's 250/day consumer ceiling that no amount of code will move. Above that, Core is $12/month for 10,000 credits.
+What this costs: nothing, for most of the workflows that produce this error. [Make.com's free plan gives you 1,000 credits a month](/go/make/) with no card, and a document-generation run typically spends 2–3 credits per document — roughly 350 documents a month inside the free tier, against Apps Script's 250/day consumer ceiling that no amount of code will move. Above that, Core is $9/month for 10,000 credits.
 
 ## Which Fix Applies to Your Situation
 

@@ -54,7 +54,7 @@ The result: lower monthly costs, faster store performance (fewer app scripts loa
 
 **Free replacement:** [CAPI Shield](/capi-shield/) — a Make.com scenario that receives a Shopify Order Payment webhook and sends purchase events directly to Meta's Conversions API and Google's Enhanced Conversions. Same server-side result. Zero monthly cost.
 
-The only ongoing cost is Make.com's free plan (sufficient for most stores) or Core plan at $12/month for higher volumes. Versus $225/month for Elevar Core — the saving is $213/month minimum.
+The only ongoing cost is Make.com's free plan (sufficient for most stores) or Core plan at $9/month for higher volumes. Versus $225/month for Elevar Core — the saving is $216/month minimum.
 
 **Also handles:** TikTok Events API via an additional branch on the same Make.com scenario. Replaces WeltPixel and similar TikTok tracking apps ($39–$99/month). See [TikTok Events API setup](/tiktok-events-api-shopify/).
 
@@ -130,7 +130,7 @@ Not everything has a free replacement that matches quality. These are worth keep
 | Automation platform | Zapier | $49/month | Make.com | $0 |
 | **Total** | | **$620/month** | | **$0/month** |
 
-The Make.com Core plan at $12/month becomes necessary above approximately 160 orders/month on the full stack. Even at $12/month, the saving versus the paid alternatives is $611/month — $7,332/year.
+The Make.com Core plan at $9/month becomes necessary above approximately 160 orders/month on the full stack. Even at $9/month, the saving versus the paid alternatives is $611/month — $7,332/year.
 
 ## Deploying the Stack
 
