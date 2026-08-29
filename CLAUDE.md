@@ -1,3 +1,7 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 ## Status: Consolidation Release v1 is SHIPPED. The URL set is FROZEN.
 
 Spec: docs/RUNBOOK-consolidation-v1.md — read it before any structural change.
@@ -15,6 +19,78 @@ Verified against the build on 2026-08-17:
 
 The runbook's 88 → 58 target is met. An earlier version of this file said the cut
 was still to be made; that was stale and caused wasted work.
+
+## Commands
+
+| Command | What it does |
+|---|---|
+| `npm run dev` | Astro dev server on `localhost:4321` |
+| `npm run build` | `claims-guard` → `astro build` → `schema-visible-guard`. Both guards exit non-zero and fail the build. |
+| `npm run preview` | Serve `dist/` locally |
+| `npm test` | `node --test` — runs `tests/*.test.js` and `functions/api/*.test.js` |
+| `node --test tests/ios-attribution-gap-benchmark.json.test.js` | Single test file |
+| `npm run a11y` | Playwright contrast audit over `dist/` (needs a build first). Mandatory before any CSS/token change. |
+| `npm run claims` / `npm run claims:burndown` | List unverified price claims / burndown report |
+| `npm run claims:register` | Regenerate `docs/CLAIMS-REGISTER.md` |
+| `npm run schema:check` | Schema-vs-visible-text report without failing |
+| `npm run seo:audit` / `npm run seo:crawl` | `seo-audit.mjs` over `dist/`; crawl audit against production |
+| `npm run pricing-audit` | Cross-check asserted vendor prices |
+| `npm run gsc:coverage` | GSC URL Inspection sweep (needs `GSC_KEY_JSON`) |
+| `node scripts/redirect-smoke.mjs --parse-only` | Lint `public/_redirects` offline (chains, loops, truncation) |
+| `node scripts/moderate-gap.mjs list\|approve\|reject\|stats` | Moderate D1 benchmark submissions via wrangler |
+
+`seo-audit.mjs` has its own tests (`seo-audit.test.mjs`), also picked up by `npm test`.
+
+## Architecture
+
+Astro 6, `output: 'static'`, `trailingSlash: 'always'`, Tailwind 4 via `@tailwindcss/vite`,
+deployed to Cloudflare Pages (project `stackarchitect2`, `dist/`).
+
+**Routing.** `src/pages/**` are the routes — one `.astro` file per money page. Blog posts are
+a content collection (`src/content/blog/*.md`, schema in `src/content.config.ts`) rendered by
+`src/pages/blog/[slug].astro`; three posts are hand-built `.astro` files under `src/pages/blog/`
+instead. `src/pages/apps/[app].astro` generates 54 noindexed detail pages from
+`src/data/apps.json`; `/apps/` itself is the canonical hub. `src/pages/og/[...route].ts` renders
+OG images with `astro-og-canvas`.
+
+**`src/layouts/Base.astro` is the single SEO surface.** It forces the canonical to
+apex + trailing slash regardless of what a page passes, emits JSON-LD, and picks `dateModified`
+from `verifiedDate` when that is newer than `updatedDate` (`verifiedDate` = a human re-checked
+the factual claims; `updatedDate` = the content changed). Change SEO behaviour here, not per page.
+
+**`astro.config.mjs` does more than config.** At load it walks `src/content/blog/` and
+`src/pages/`, resolving a real `lastmod` per URL (frontmatter date → `git log -1 --format=%cI`
+→ build time) into a cache the sitemap `serialize()` reads; the build logs
+`[sitemap] indexed N URL(s)`. Its `filter()` is what keeps `/apps/*`, `/embed/*` and the legal
+pages out of the sitemap. It also defines the `rehypeSponsorAffiliateLinks` plugin, which stamps
+`rel="sponsored noopener"` on every `/go/*` link in Markdown — so blog affiliate links are
+disclosed by the pipeline, not by hand.
+
+**Edge behaviour, in order.** `functions/_middleware.js` runs first: https, strip `www.`,
+redirect any non-primary host (including `*.pages.dev` previews) to the apex, then add a
+trailing slash — exempting `/api/*`, `/go/*` and anything with a file extension. Responses served
+on a non-primary host get `X-Robots-Tag: noindex`. `public/_redirects` (290 lines) then handles
+affiliate cloaks and legacy URLs. Redirect edits are covered by `.github/workflows/redirect-smoke.yml`
+(parse-only on PR, live assertions after deploy, plus nightly).
+
+**Pages Functions + D1.** `functions/api/{submit-gap,gap-stats,gap-badge}.js` back the iOS
+Attribution Gap Benchmark, writing to the `attribution-gap` D1 database (`binding = "DB"`,
+schema in `schema/`). The gap is computed server-side, submissions land `pending`, and
+`/api/gap-stats` refuses to publish a figure below N=10. Moderation is a local wrangler script
+by design — no admin endpoint exists. The page's *sourced* (non-first-party) rows live in
+`src/data/attributionGap.js`, the single source shared by the page and the CSV/JSON download
+endpoints.
+
+**Build guards** (`scripts/`, both wired into `npm run build`):
+- `claims-guard.mjs` — a page asserting a third-party price with no `verifiedDate` fails the
+  build unless it is quarantined in `docs/claims-unverified.json`. That quarantine may only
+  shrink; a stale entry also fails. Clear one by reading the vendor's live pricing page and
+  passing that date as `verifiedDate` — never by stamping today's date.
+- `schema-visible-guard.mjs` — runs over `dist/` and fails when JSON-LD asserts a number that
+  does not appear in the page's visible text.
+
+Root-level `*.patch` files, `.archived-pages/`, `.*-backup*/` and the loose `.py`/`.cjs` scripts
+are historical artefacts, not live tooling.
 
 ### Where the indexing problem actually stands
 
