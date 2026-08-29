@@ -1,0 +1,133 @@
+---
+/**
+ * InlineOffer — the "skip the build" offer, inline in a free guide.
+ *
+ * The guide pages carry warm, problem-specific traffic: someone reading
+ * /stocky-swap/ has one problem, not four. This block offers the one blueprint
+ * that solves it at $9.99 rather than pushing them at the four-product kit.
+ *
+ * Every string comes from src/data/products.ts. `source` is the §5 attribution
+ * tag — `guide_{page}_inline_top` / `guide_{page}_inline_end` — which rides on
+ * the Stripe link as client_reference_id and shows against the payment in the
+ * dashboard, so no analytics setup is needed to know which block sold it.
+ *
+ * The accent hexes are duplicated here rather than read from a --sky/--amber
+ * var because the guide pages each declare their own palette in a page-level
+ * <style>; there is no global one to inherit. They match src/pages/pro/[slug].astro.
+ */
+import { getProduct, SINGLE_PRICE, formatPrice, buildStripeUrl } from '../data/products';
+
+interface Props {
+  /** Product slug from products.ts — see the table in brief §4. */
+  slug: string;
+  /** §5 source string, e.g. `guide_stocky_swap_inline_top`. */
+  source: string;
+}
+
+const { slug, source } = Astro.props;
+
+const product = getProduct(slug);
+if (!product) throw new Error(`InlineOffer: unknown product slug "${slug}"`);
+
+const { name, deployTime, accent, stripeUrl } = product;
+const single = formatPrice(SINGLE_PRICE);
+
+/* '' until the Payment Links exist (brief §9.2). Same signal /pro/{slug}/ uses:
+   render a disabled button rather than a link to nowhere. */
+const href = buildStripeUrl(stripeUrl, source);
+---
+
+<aside class={`io io-${accent}`} aria-label={`${name} — finished blueprint, ${single}`}>
+  <p class="io-body">
+    <strong>Skip the build.</strong> {name} as a finished Make.com blueprint — import it,
+    paste your credentials, done in {deployTime}. <strong class="io-price">{single}</strong>, one-time.
+  </p>
+  <div class="io-cta">
+    {href
+      ? <a href={href} class="io-btn" data-cta={source}>Get {name} — {single} →</a>
+      : <button class="io-btn" type="button" disabled aria-disabled="true">Coming this week</button>
+    }
+  </div>
+  <p class="io-note">Or keep reading — this guide builds the same thing free.</p>
+</aside>
+
+<style>
+  .io {
+    --io-acc: #34d377;
+    --io-ink: #0c0f0d;
+    --io-tint: rgba(52, 211, 119, .06);
+    --io-border: rgba(52, 211, 119, .3);
+
+    max-width: 760px;
+    margin: 32px auto;
+    padding: 22px 24px;
+    border: 1px solid var(--io-border);
+    border-left: 3px solid var(--io-acc);
+    border-radius: 10px;
+    background: var(--io-tint);
+    font-family: 'Inter', -apple-system, 'Helvetica Neue', sans-serif;
+    box-sizing: border-box;
+  }
+  .io-sky {
+    --io-acc: #6cc3e6;
+    --io-tint: rgba(108, 195, 230, .06);
+    --io-border: rgba(108, 195, 230, .3);
+  }
+  .io-tiktok {
+    --io-acc: #ff2e63;
+    --io-ink: #fff;
+    --io-tint: rgba(255, 46, 99, .06);
+    --io-border: rgba(255, 46, 99, .3);
+  }
+  .io-amber {
+    --io-acc: #f59e0b;
+    --io-tint: rgba(245, 158, 11, .07);
+    --io-border: rgba(245, 158, 11, .32);
+  }
+
+  .io-body {
+    margin: 0 0 16px;
+    font-size: 15px;
+    line-height: 1.65;
+    color: #dfe6e2;
+  }
+  .io-body strong { color: #fff; font-weight: 700; }
+  .io-price { color: var(--io-acc) !important; white-space: nowrap; }
+
+  .io-cta { margin: 0 0 10px; }
+  .io-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 11px 20px;
+    border: 1px solid var(--io-acc);
+    border-radius: 6px;
+    background: var(--io-acc);
+    /* Dark ink on a filled accent — see CLAUDE.md on filled-button contrast. */
+    color: var(--io-ink);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .io-btn:hover { filter: brightness(1.08); }
+  .io-btn[disabled] {
+    background: transparent;
+    color: #93a09a;
+    border-color: #2f3733;
+    cursor: default;
+  }
+
+  .io-note {
+    margin: 0;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: #93a09a;
+  }
+
+  @media (max-width: 520px) {
+    .io { padding: 18px 18px; margin: 26px auto; }
+    .io-btn { width: 100%; justify-content: center; }
+  }
+</style>
