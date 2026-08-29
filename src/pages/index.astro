@@ -4,6 +4,7 @@ import Disclosure from '../components/Disclosure.astro';
 import AttributionTracker from '../components/AttributionTracker.astro';
 import FeaturedIn from '../components/FeaturedIn.astro';
 import StickyAffiliateCTA from '../components/StickyAffiliateCTA.astro';
+import { isPostShutdown } from '../utils/stockyDeadline';
 
 /* ============================================================================
  * SINGLE SOURCES OF TRUTH FOR THE HOMEPAGE
@@ -171,8 +172,7 @@ const faqJsonLd = {
 /* Stocky's end of service. One date, used by the countdown, the urgency strip
  * and the post-deadline copy, so the page reads correctly on 1 September with
  * no edit. */
-const STOCKY_EOL = '2026-08-31T23:59:59Z';
-const stockyGone = Date.now() > new Date(STOCKY_EOL).getTime();
+const stockyGone = isPostShutdown();
 ---
 <Base 
   title="Free Shopify Automation Stack 2026 — Replace Paid Apps" 

@@ -2,6 +2,11 @@
 import Base from '../layouts/Base.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 import AttributionTracker from '../components/AttributionTracker.astro';
+import { isPostShutdown } from '../utils/stockyDeadline';
+
+// Rendered at build time so crawlers get the correct side of the deadline.
+// See src/utils/stockyDeadline.ts for the redeploy caveat.
+const postShutdown = isPostShutdown();
 ---
 <Base title="Stack Architect Complete Kit — $29" description="Four import-ready Make.com blueprints plus two Google Sheets templates. Server-side tracking, TikTok CAPI, inventory and live P&L, live in 10 minutes.">
 <Fragment slot="head">
@@ -204,7 +209,9 @@ import AttributionTracker from '../components/AttributionTracker.astro';
 
       <div class="urgency" role="note">
         <span class="dot" style="background:var(--red);animation:none;"></span>
-        Stocky shuts down August 31, 2026 — Stocky Swap JSON deploys in 60 seconds
+        {postShutdown
+          ? "Stocky's data was deleted August 31, 2026 — Stocky Swap JSON deploys in 60 seconds"
+          : "Stocky shuts down August 31, 2026 — Stocky Swap JSON deploys in 60 seconds"}
       </div>
 
       <div class="stat-strip">
@@ -217,26 +224,33 @@ import AttributionTracker from '../components/AttributionTracker.astro';
   </section>
 
   <!-- STOCKY URGENCY BAND -->
-  <div style="background:rgba(239,68,68,.05);border-top:1px solid rgba(239,68,68,.15);border-bottom:1px solid rgba(239,68,68,.15);padding:20px 24px;" role="alert" aria-label="Shopify Stocky shutdown warning">
+  <div style="background:rgba(239,68,68,.05);border-top:1px solid rgba(239,68,68,.15);border-bottom:1px solid rgba(239,68,68,.15);padding:20px 24px;" role={postShutdown ? "note" : "alert"} aria-label={postShutdown ? "Shopify Stocky end of service" : "Shopify Stocky shutdown warning"}>
     <div style="max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
       <div>
-        <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--red);letter-spacing:.12em;margin-bottom:6px;">⚠ TIME-SENSITIVE // SHOPIFY STOCKY SHUTDOWN — AUGUST 31, 2026</div>
-        <p style="font-size:13px;color:var(--text-3);line-height:1.65;max-width:560px;">Shopify set August 31, 2026 as Stocky's end of service — its data is deleted rather than migrated to Shopify Admin. The <strong style="color:var(--text-2);">Stocky Swap scenario</strong> in this kit imports in 60 seconds and starts capturing live inventory data immediately — no data loss, no manual migration.</p>
+        <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--red);letter-spacing:.12em;margin-bottom:6px;">{postShutdown ? "SHOPIFY STOCKY — SERVICE ENDED 31 AUG 2026" : "⚠ TIME-SENSITIVE // SHOPIFY STOCKY SHUTDOWN — AUGUST 31, 2026"}</div>
+        {postShutdown ? (
+          <p style="font-size:13px;color:var(--text-3);line-height:1.65;max-width:560px;">Stocky's data was deleted, not migrated to Shopify Admin. <strong style="color:var(--text-2);">Stocky Swap</strong> starts logging from your next order — timestamp, SKU, quantity, order ID and product, straight into Google Sheets. No migration to do, because there's nothing left to migrate.</p>
+        ) : (
+          <p style="font-size:13px;color:var(--text-3);line-height:1.65;max-width:560px;">Shopify set August 31, 2026 as Stocky's end of service — its data is deleted rather than migrated to Shopify Admin. The <strong style="color:var(--text-2);">Stocky Swap scenario</strong> in this kit imports in 60 seconds and starts capturing live inventory data immediately — no data loss, no manual migration.</p>
+        )}
       </div>
-      <div class="countdown-box" id="cd-box" style="min-width:190px;">
-        <div class="countdown-label">Stocky shuts down in</div>
-        <div class="countdown-nums">
-          <div class="cd-unit"><span class="cd-val" id="cd-d">--</span><div class="cd-l">Days</div></div>
-          <div class="cd-sep">:</div>
-          <div class="cd-unit"><span class="cd-val" id="cd-h">--</span><div class="cd-l">Hrs</div></div>
-          <div class="cd-sep">:</div>
-          <div class="cd-unit"><span class="cd-val" id="cd-m">--</span><div class="cd-l">Min</div></div>
+      {postShutdown ? (
+        <div class="countdown-box" style="min-width:190px;">
+          <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--red);text-align:center;">Ended 31 Aug 2026</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--text-4);text-align:center;line-height:1.6;margin-top:8px;">Every day without it is inventory history you're not capturing.</div>
         </div>
-      </div>
-      <div class="countdown-box" id="cd-box-post" style="min-width:190px;" hidden>
-        <div class="countdown-label">Stocky — end of service</div>
-        <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--red);text-align:center;">31 Aug 2026</div>
-      </div>
+      ) : (
+        <div class="countdown-box" id="cd-box" style="min-width:190px;">
+          <div class="countdown-label">Stocky shuts down in</div>
+          <div class="countdown-nums">
+            <div class="cd-unit"><span class="cd-val" id="cd-d">--</span><div class="cd-l">Days</div></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-unit"><span class="cd-val" id="cd-h">--</span><div class="cd-l">Hrs</div></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-unit"><span class="cd-val" id="cd-m">--</span><div class="cd-l">Min</div></div>
+          </div>
+        </div>
+      )}
     </div>
   </div>
 
@@ -271,8 +285,12 @@ import AttributionTracker from '../components/AttributionTracker.astro';
             <div class="sol-urgent-badge">⚠ Blueprint 03 // MAKE.COM JSON — STOCKY END OF SERVICE 31 AUG 2026</div>
             <span class="tag tag-sky" style="margin-bottom:10px;display:inline-flex;">Inventory Management</span>
             <div class="sol-urgent-name">Stocky Swap Scenario</div>
-            <div class="sol-urgent-hl">Live inventory to Google Sheets — replaces Shopify Stocky before shutdown</div>
-            <p class="sol-urgent-desc">Every Shopify order line item auto-logged to Google Sheets in real time — timestamp, SKU, quantity sold, order ID and product. Shopify closes Stocky on August 31, 2026 and deletes all data. This JSON file is ready to import today — 60 seconds from download to data capture. No data loss. No manual migration.</p>
+            <div class="sol-urgent-hl">{postShutdown ? "Live inventory to Google Sheets — the Shopify Stocky replacement" : "Live inventory to Google Sheets — replaces Shopify Stocky before shutdown"}</div>
+            {postShutdown ? (
+              <p class="sol-urgent-desc">Every Shopify order line item auto-logged to Google Sheets in real time — timestamp, SKU, quantity sold, order ID and product. Shopify closed Stocky on August 31, 2026 and deleted all data. This JSON file imports in 60 seconds and starts logging from your next order. No migration to do, because there's nothing left to migrate.</p>
+            ) : (
+              <p class="sol-urgent-desc">Every Shopify order line item auto-logged to Google Sheets in real time — timestamp, SKU, quantity sold, order ID and product. Shopify closes Stocky on August 31, 2026 and deletes all data. This JSON file is ready to import today — 60 seconds from download to data capture. No data loss. No manual migration.</p>
+            )}
             <div class="sol-reps" style="margin-bottom:12px;"><span class="sol-rep">Shopify Stocky</span><span class="sol-rep">Linnworks</span><span class="sol-rep">Skubana</span><span class="sol-rep">Inventory Planner</span></div>
             <div class="sol-urgent-meta"><span class="sol-urgent-save">Saves $29–$199/mo</span><span class="sol-urgent-time">~4 min after import</span></div>
             <div style="display:flex;gap:12px;flex-wrap:wrap;">
@@ -815,13 +833,13 @@ import AttributionTracker from '../components/AttributionTracker.astro';
       var dEls = document.querySelectorAll('#cd-d');
       var hEls = document.querySelectorAll('#cd-h');
       var mEls = document.querySelectorAll('#cd-m');
-      // Past the deadline, swap the countdown for a plain statement of the
-      // date rather than rendering zeros under a "shuts down in" label.
+      // The post-deadline copy is rendered at build time (isPostShutdown in
+      // src/utils/stockyDeadline.ts), so #cd-box is simply absent past the
+      // date and there is nothing to tick. This only has to avoid painting
+      // zeros in the window between the deadline and the next deploy.
       if (diff <= 0) {
         var box = document.getElementById('cd-box');
-        var post = document.getElementById('cd-box-post');
         if (box) box.hidden = true;
-        if (post) post.hidden = false;
         return;
       }
       var days = Math.floor(diff / (1000 * 60 * 60 * 24));

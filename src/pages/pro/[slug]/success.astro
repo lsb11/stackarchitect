@@ -1,0 +1,182 @@
+---
+/**
+ * /pro/{slug}/success/ — the Stripe redirect target for a single-blueprint
+ * purchase.
+ *
+ * Two jobs, in order: get the buyer to their file without a support email, and
+ * offer the remaining three blueprints at the upgrade price while they are
+ * still in a buying frame of mind. A single buyer who upgrades here recovers
+ * most of the bundle margin the unbundle gives away.
+ *
+ * noindex — a thank-you page has nothing to rank for, and one that ranks leaks
+ * the fulfilment link to people who have not paid. Also filtered out of the
+ * sitemap in astro.config.mjs.
+ */
+import Base from '../../../layouts/Base.astro';
+import {
+  PRODUCTS,
+  SINGLE_PRICE,
+  UPGRADE_PRICE,
+  UPGRADE_STRIPE_URL,
+  buildStripeUrl,
+  formatPrice,
+  type Product,
+} from '../../../data/products';
+
+export function getStaticPaths() {
+  return PRODUCTS.map((product) => ({
+    params: { slug: product.slug },
+    props: { product },
+  }));
+}
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+const { slug, name, blueprint, files, driveUrl, accent, deployTime, guideUrl } = product;
+
+const others = PRODUCTS.filter((p) => p.slug !== slug);
+const upgradeHref = buildStripeUrl(UPGRADE_STRIPE_URL, `thanks_${slug}_upgrade`);
+const upgrade = formatPrice(UPGRADE_PRICE);
+const single = formatPrice(SINGLE_PRICE);
+---
+<Base
+  title={`${name} — your files | Stack Architect`}
+  description={`Your ${name} download and setup steps.`}
+  noindex={true}
+>
+<div class={`ok acc-${accent}`}>
+  <section class="wrap">
+
+    <div class="ok-mark" aria-hidden="true">✓</div>
+    <h1>Payment received. {name} is yours.</h1>
+    <p class="lede">{blueprint} · {files.length === 1 ? '1 file' : `${files.length} files`} · deploys in {deployTime}</p>
+
+    {driveUrl
+      ? <a href={driveUrl} class="btn" target="_blank" rel="noopener">Open your {name} folder →</a>
+      : <div class="pending">
+          Your folder link is on its way. If it did not open automatically, email
+          <a href="mailto:support@stackarchitect.xyz">support@stackarchitect.xyz</a> with your
+          Stripe receipt and we will send it straight over.
+        </div>
+    }
+
+    <ol class="next">
+      <li>Open the folder and download <strong>{files[0]}</strong>{files.length > 1 ? ', plus the Sheets template beside it.' : '.'}</li>
+      <li>In Make.com: <strong>Create a new scenario → Import Blueprint</strong> → upload the JSON.</li>
+      <li>Paste your own credentials where the blueprint marks them, add the Shopify webhook, place a test order.</li>
+    </ol>
+
+    <p class="fine">
+      The full walkthrough for this scenario is on the free guide: <a href={guideUrl}>{guideUrl}</a>.
+      Stuck on a step? Email <a href="mailto:support@stackarchitect.xyz">support@stackarchitect.xyz</a>.
+    </p>
+
+    <!-- UPGRADE -->
+    <div class="upgrade">
+      <div class="upgrade-label">add the other three</div>
+      <h2>The rest of the kit, for {upgrade}</h2>
+      <p>
+        You have one blueprint. The other three, both Google Sheets templates and the setup
+        PDF are {upgrade} from here — the price of one and a half singles at {single} each.
+      </p>
+      <ul class="others">
+        {others.map((p) => (
+          <li><strong>{p.name}</strong> — {p.tagline}</li>
+        ))}
+      </ul>
+      {upgradeHref
+        ? <a href={upgradeHref} class="btn btn-kit" data-cta={`thanks_${slug}_upgrade`}>Add the other three blueprints — {upgrade} →</a>
+        : <div class="pending">
+            Want the other three? Email <a href="mailto:support@stackarchitect.xyz">support@stackarchitect.xyz</a>
+            and we will send you the {upgrade} upgrade link.
+          </div>
+      }
+    </div>
+
+  </section>
+</div>
+</Base>
+
+<style>
+  /* Same token block as pro.astro and /pro/[slug].astro — :root is left
+     unscoped by Astro. Keep the three in step. */
+  :root {
+    --bg: #0c0f0d;
+    --bg-2: #0f1311;
+    --bg-3: #121614;
+    --border: rgba(255,255,255,0.06);
+    --border-2: rgba(255,255,255,0.11);
+    --text: #f2f5f3;
+    --text-2: #b6c0ba;
+    --text-3: #93a09a;
+    --text-4: #7f8b85;
+    --g: #34d377;
+    --g-dim: rgba(52,211,119,0.1);
+    --g-border: rgba(52,211,119,0.2);
+    --sky: #6cc3e6;
+    --sky-dim: rgba(108,195,230,0.1);
+    --sky-border: rgba(108,195,230,0.2);
+    --amber: #f59e0b;
+    --amber-dim: rgba(245,158,11,0.1);
+    --amber-border: rgba(245,158,11,0.25);
+    --tiktok: #ff2e63;
+    --tiktok-dim: rgba(255,46,99,0.1);
+    --tiktok-border: rgba(255,46,99,0.22);
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+    --sans: 'Inter', -apple-system, 'Helvetica Neue', sans-serif;
+  }
+
+  .ok { --acc: var(--g); --acc-dim: var(--g-dim); --acc-border: var(--g-border); }
+  .ok.acc-sky { --acc: var(--sky); --acc-dim: var(--sky-dim); --acc-border: var(--sky-border); }
+  .ok.acc-tiktok { --acc: var(--tiktok); --acc-dim: var(--tiktok-dim); --acc-border: var(--tiktok-border); }
+  .ok.acc-amber { --acc: var(--amber); --acc-dim: var(--amber-dim); --acc-border: var(--amber-border); }
+  .ok { background: var(--bg); color: var(--text); font-family: var(--sans); }
+  .ok *, .ok *::before, .ok *::after { box-sizing: border-box; }
+
+  .wrap { max-width: 620px; margin: 0 auto; padding: 64px 24px 72px; }
+
+  .ok-mark {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--acc-dim); border: 1px solid var(--acc-border);
+    color: var(--acc); font-size: 20px; font-weight: 700; margin-bottom: 20px;
+  }
+  .ok h1 { font-size: clamp(26px,4.4vw,38px); font-weight: 700; letter-spacing: -.03em; line-height: 1.1; color: var(--text); margin-bottom: 10px; }
+  .lede { font-family: var(--mono); font-size: 12px; color: var(--text-4); letter-spacing: .04em; margin-bottom: 26px; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px;
+    background: var(--acc); color: #0c0f0d; font-family: var(--sans); font-size: 14px;
+    font-weight: 700; border-radius: 8px; text-decoration: none;
+    transition: opacity .15s, transform .15s; letter-spacing: -.01em;
+  }
+  .btn:hover { opacity: .9; transform: translateY(-1px); }
+  .btn.btn-kit { background: var(--g); }
+
+  .pending {
+    background: var(--bg-3); border: 1px solid var(--border-2); border-radius: 8px;
+    padding: 16px 18px; font-size: 13px; color: var(--text-2); line-height: 1.7;
+  }
+  .pending a { color: var(--g); text-decoration: none; }
+
+  .next { margin: 28px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 10px; }
+  .next li { font-size: 14px; color: var(--text-3); line-height: 1.7; }
+  .next strong { color: var(--text-2); font-weight: 600; }
+
+  .fine { font-size: 13px; color: var(--text-4); line-height: 1.7; margin-top: 22px; }
+  .fine a { color: var(--g); text-decoration: none; }
+
+  .upgrade {
+    margin-top: 44px; padding: 26px; border-radius: 12px;
+    background: var(--bg-3); border: 1px solid var(--g-border);
+  }
+  .upgrade-label { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .1em; color: var(--g); margin-bottom: 8px; }
+  .upgrade h2 { font-size: 20px; font-weight: 700; letter-spacing: -.02em; color: var(--text); margin-bottom: 10px; }
+  .upgrade p { font-size: 13px; color: var(--text-3); line-height: 1.7; margin-bottom: 14px; }
+  .others { list-style: none; margin: 0 0 20px; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+  .others li { font-family: var(--mono); font-size: 12px; color: var(--text-3); }
+  .others strong { color: var(--text-2); font-weight: 700; }
+</style>

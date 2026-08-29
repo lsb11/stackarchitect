@@ -1,51 +1,69 @@
 ---
-// Target: August 31, 2026 00:00:00 UTC
+// Countdown to Stocky's end of service.
+//
+// The expired state is now chosen at BUILD time rather than by the script
+// below: the previous version shipped both states in the markup and unhid the
+// expired one from JS, so a crawler that renders no JS saw "-- Days : -- Hours"
+// under a live countdown label regardless of the date.
+//
+// NOTE: currently imported by nothing — pro.astro, index.astro,
+// stocky-swap.astro and shopify-automation-guides.astro each carry their own
+// inline countdown. Kept in sync anyway so it is not a trap for whoever wires
+// it up.
+import { isPostShutdown, STOCKY_EOL_ISO, STOCKY_EOL_SHORT } from '../utils/stockyDeadline';
+
+const postShutdown = isPostShutdown();
 ---
 
 <div id="countdown-wrapper" class="font-mono">
-  <div id="countdown-display" class="flex items-center gap-2 text-sm">
-    <span class="text-[#34d377]" id="cd-days">--</span>
-    <span class="text-[#93a09a]">Days :</span>
-    <span class="text-[#34d377]" id="cd-hours">--</span>
-    <span class="text-[#93a09a]">Hours :</span>
-    <span class="text-[#34d377]" id="cd-mins">--</span>
-    <span class="text-[#93a09a]">Mins</span>
-  </div>
-  <div id="countdown-expired" class="hidden text-red-500 font-bold text-sm uppercase tracking-wide">
-    STOCKY — END OF SERVICE 31 AUG 2026
-  </div>
+  {postShutdown ? (
+    <div class="text-red-500 font-bold text-sm uppercase tracking-wide">
+      Stocky — service ended {STOCKY_EOL_SHORT}
+    </div>
+  ) : (
+    <div id="countdown-display" class="flex items-center gap-2 text-sm">
+      <span class="text-[#34d377]" id="cd-days">--</span>
+      <span class="text-[#93a09a]">Days :</span>
+      <span class="text-[#34d377]" id="cd-hours">--</span>
+      <span class="text-[#93a09a]">Hours :</span>
+      <span class="text-[#34d377]" id="cd-mins">--</span>
+      <span class="text-[#93a09a]">Mins</span>
+    </div>
+  )}
 </div>
 
-<script>
-  function updateCountdown() {
-    const target = new Date('2026-08-31T00:00:00Z').getTime();
-    const now = Date.now();
-    const diff = target - now;
+{!postShutdown && (
+  <script is:inline define:vars={{ eol: STOCKY_EOL_ISO }}>
+    function updateCountdown() {
+      const target = new Date(eol).getTime();
+      const diff = target - Date.now();
 
-    const display = document.getElementById('countdown-display');
-    const expired = document.getElementById('countdown-expired');
+      const display = document.getElementById('countdown-display');
 
-    if (diff <= 0) {
-      display?.classList.add('hidden');
-      expired?.classList.remove('hidden');
-      return;
+      // Past the deadline the build-time branch above has already replaced
+      // this block; between the deadline and the next deploy, hide rather
+      // than paint zeros.
+      if (diff <= 0) {
+        display?.classList.add('hidden');
+        return;
+      }
+
+      const totalMins = Math.floor(diff / 60000);
+      const totalHours = Math.floor(totalMins / 60);
+      const days = Math.floor(totalHours / 24);
+      const hours = totalHours % 24;
+      const mins = totalMins % 60;
+
+      const daysEl = document.getElementById('cd-days');
+      const hoursEl = document.getElementById('cd-hours');
+      const minsEl = document.getElementById('cd-mins');
+
+      if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
+      if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+      if (minsEl) minsEl.textContent = String(mins).padStart(2, '0');
     }
 
-    const totalMins = Math.floor(diff / 60000);
-    const totalHours = Math.floor(totalMins / 60);
-    const days = Math.floor(totalHours / 24);
-    const hours = totalHours % 24;
-    const mins = totalMins % 60;
-
-    const daysEl = document.getElementById('cd-days');
-    const hoursEl = document.getElementById('cd-hours');
-    const minsEl = document.getElementById('cd-mins');
-
-    if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
-    if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
-    if (minsEl) minsEl.textContent = String(mins).padStart(2, '0');
-  }
-
-  updateCountdown();
-  setInterval(updateCountdown, 30000);
-</script>
+    updateCountdown();
+    setInterval(updateCountdown, 30000);
+  </script>
+)}

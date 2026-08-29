@@ -515,6 +515,9 @@ const NOINDEX_OK = [
   /^\/privacy\/$/,
   /^\/terms\/$/,
   /^\/refund-policy\/$/,
+  // Post-purchase thank-you pages: noindex because they carry the fulfilment
+  // link and have nothing to rank for. Also filtered out of the sitemap.
+  /^\/pro\/[^/]+\/success\/$/,
 ];
 
 // Pages deliberately absent from the sitemap. Distinct from NOINDEX_OK: a page

@@ -268,6 +268,10 @@ export default defineConfig({
         // /apps/ itself is the canonical comparison hub and stays in.
         if (/^\/apps\/[^/]+\/?$/.test(path)) return false;
 
+        // Post-purchase thank-you pages are noindexed: nothing to rank for,
+        // and the fulfilment link on them is for people who have paid.
+        if (/^\/pro\/[^/]+\/success\/?$/.test(path)) return false;
+
         // Legal pages: indexable, but no value as sitemap entries.
         if (['/privacy/', '/terms/', '/refund-policy/'].includes(path)) return false;
 

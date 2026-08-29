@@ -21,13 +21,21 @@ import "@fontsource/jetbrains-mono/500.css";
 // stays evergreen.
 //
 // The announcement bar states the date as a fact rather than as a countdown,
-// so it does not need deleting on 1 September. Retire it when the shutdown
-// stops being the most useful thing to tell a first-time visitor.
+// so it never renders an expired timer. It does switch to past tense at the
+// deadline — a first-time visitor arriving on 1 September needs "recover what
+// you can", not "export it in time". Both variants are chosen at BUILD time
+// (isPostShutdown, src/utils/stockyDeadline.ts) because this bar is on every
+// page and is the first thing a non-JS crawler reads. Retire it when the
+// shutdown stops being the most useful thing to tell a first-time visitor.
+
+import { isPostShutdown } from '../utils/stockyDeadline';
 
 interface Props {
   showAnnouncement?: boolean;
 }
 const { showAnnouncement = true } = Astro.props;
+
+const postShutdown = isPostShutdown();
 
 const currentPath = Astro.url.pathname;
 
@@ -71,7 +79,11 @@ const guides = [
   <div class="sa-announce" role="region" aria-label="Announcement">
     <a href="/stocky-alternative/">
       <span class="sa-announce-dot" aria-hidden="true"></span>
-      Shopify Stocky — end of service <strong class="figure">31 Aug 2026</strong>. Export, recover and replace it free
+      {postShutdown ? (
+        <Fragment>Stocky has shut down. Recover what you can and replace it free</Fragment>
+      ) : (
+        <Fragment>Shopify Stocky — end of service <strong class="figure">31 Aug 2026</strong>. Export, recover and replace it free</Fragment>
+      )}
       <span class="sa-announce-arrow" aria-hidden="true">→</span>
     </a>
   </div>

@@ -5,6 +5,7 @@ import StickyAffiliateCTA from '../components/StickyAffiliateCTA.astro';
 import StockLogPromo from '../components/StockLogPromo.astro';
 import RelatedGuides from '../components/RelatedGuides.astro';
 import AuthorCard from '../components/AuthorCard.astro';
+import { isPostShutdown, STOCKY_EOL_ISO } from '../utils/stockyDeadline';
 
 /**
  * STOCKY SWAP — /stocky-swap/ — MAXIMUM VERSION v2
@@ -29,7 +30,7 @@ import AuthorCard from '../components/AuthorCard.astro';
 const SITE_URL = "https://stackarchitect.xyz";
 const PAGE_URL = `${SITE_URL}/stocky-swap/`;
 const SHUTDOWN_DATE = "August 31, 2026";
-const SHUTDOWN_DATE_ISO = "2026-08-31T23:59:59Z";
+const SHUTDOWN_DATE_ISO = STOCKY_EOL_ISO;
 const DATE_PUBLISHED = "2026-01-01";
 const DATE_MODIFIED = "2026-08-22";
 
@@ -48,7 +49,7 @@ const DATE_MODIFIED = "2026-08-22";
  * NOTE: evaluated at BUILD time. A static build served past the deadline keeps
  * pre-deadline copy until the site rebuilds — schedule a deploy for 1 Sept.
  * ------------------------------------------------------------------------ */
-const shutdownPassed = Date.now() > new Date(SHUTDOWN_DATE_ISO).getTime();
+const shutdownPassed = isPostShutdown();
 
 // ── Affiliate links — all routed through /go/ for Brave safety ──
 const aff = {

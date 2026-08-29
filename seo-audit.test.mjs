@@ -185,6 +185,7 @@ test('ANSWER_EXEMPT covers exactly the legal pages', () => {
 const AUDIT_NOINDEX_OK = [
   /^\/404(\.html)?\/?$/, /^\/sitemap-page\/$/, /^\/embed\//, /^\/apps\/[^/]+\/$/,
   /^\/privacy\/$/, /^\/terms\/$/, /^\/refund-policy\/$/,
+  /^\/pro\/[^/]+\/success\/$/,
 ];
 
 test('every indexable content page has a 40-60 word answer after its h1', (t) => {

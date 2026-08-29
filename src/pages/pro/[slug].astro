@@ -1,0 +1,511 @@
+---
+/**
+ * /pro/{slug}/ — one page per blueprint, for the single-problem buyer.
+ *
+ * The kit page sells four things to someone who came for one. These four pages
+ * are the unbundle: the H1 is the buyer's problem, the price is $9.99, and the
+ * bundle is offered once, on the way out, rather than as the entry price.
+ *
+ * All copy, prices and file names come from src/data/products.ts. Nothing here
+ * is per-slug except what that file provides — a template that forks on slug is
+ * how four pages drift apart.
+ */
+import { existsSync } from 'node:fs';
+import path from 'node:path';
+import Base from '../../layouts/Base.astro';
+import {
+  PRODUCTS,
+  SINGLE_PRICE,
+  KIT_PRICE,
+  KIT_STRIPE_URL,
+  buildStripeUrl,
+  formatPrice,
+  type Product,
+} from '../../data/products';
+import { isPostShutdown, STOCKY_EOL_SHORT } from '../../utils/stockyDeadline';
+
+export function getStaticPaths() {
+  return PRODUCTS.map((product) => ({
+    params: { slug: product.slug },
+    props: { product },
+  }));
+}
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+const {
+  slug, name, blueprint, tagline, problem, files, replaces,
+  savingRange, guideUrl, stripeUrl, accent, deployTime, steps, faq,
+} = product;
+
+const single = formatPrice(SINGLE_PRICE);
+const kit = formatPrice(KIT_PRICE);
+const twoSingles = formatPrice(SINGLE_PRICE * 2);
+
+const heroHref = buildStripeUrl(stripeUrl, `single_${slug}_hero`);
+const bottomHref = buildStripeUrl(stripeUrl, `single_${slug}_bottom`);
+const bundleHref = buildStripeUrl(KIT_STRIPE_URL, `single_${slug}_bundle_upsell`);
+
+// Proof screenshot (brief §7). The images are supplied by hand and are not in
+// the repo yet, so the frame renders in dev — where it is a reminder that the
+// layout is waiting on an asset — and is simply absent in a production build
+// rather than shipping an empty placeholder to a buyer being asked for a card.
+const proofSrc = `/proof/scenario-${slug}.png`;
+const hasProof = existsSync(path.join(process.cwd(), 'public', 'proof', `scenario-${slug}.png`));
+const showProofFrame = hasProof || import.meta.env.DEV;
+
+// Stocky is the one product whose framing turns over on a date.
+// See src/utils/stockyDeadline.ts for why this is a build-time branch.
+const stockyLine = slug === 'stocky-swap'
+  ? (isPostShutdown()
+      ? `Shopify ended Stocky's service on ${STOCKY_EOL_SHORT}. Its data was deleted, not migrated.`
+      : `Shopify ends Stocky's service on ${STOCKY_EOL_SHORT}. Its data is deleted, not migrated.`)
+  : null;
+
+const pageUrl = `https://stackarchitect.xyz/pro/${slug}/`;
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: `${name} — ${blueprint}`,
+    description: `${name} is a ready-to-import Make.com blueprint: ${tagline}. Import the file, paste your own API credentials, live in ${deployTime}. ${single} one-time, no subscription. Replaces ${replaces.map((r) => r.name).join(', ')}.`,
+    url: pageUrl,
+    sku: `SA-${slug.toUpperCase()}-001`,
+    brand: { '@type': 'Brand', name: 'Stack Architect' },
+    offers: {
+      '@type': 'Offer',
+      price: String(SINGLE_PRICE),
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      priceValidUntil: '2027-12-31',
+      url: pageUrl,
+      seller: { '@id': 'https://stackarchitect.xyz/#org' },
+      hasMerchantReturnPolicy: {
+        '@type': 'MerchantReturnPolicy',
+        returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        merchantReturnDays: 30,
+        returnFees: 'https://schema.org/FreeReturn',
+      },
+    },
+    isRelatedTo: {
+      '@type': 'Product',
+      name: 'Stack Architect Complete Kit',
+      url: 'https://stackarchitect.xyz/pro/',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://stackarchitect.xyz/' },
+      { '@type': 'ListItem', position: 2, name: 'Complete Kit', item: 'https://stackarchitect.xyz/pro/' },
+      { '@type': 'ListItem', position: 3, name, item: pageUrl },
+    ],
+  },
+];
+---
+<Base
+  title={`${name} — ${single} Make.com blueprint for Shopify`}
+  description={`${problem} ${name} is the finished Make.com blueprint that fixes it — live in ${deployTime}, ${single} once, no subscription.`}
+  pageType="product"
+  schema={schema}
+>
+<div class={`pp acc-${accent}`}>
+
+  <nav class="breadcrumb-bar" aria-label="Breadcrumb">
+    <a href="/">~/HOME</a><span>/</span><a href="/pro/">Complete Kit</a><span>/</span><span>{name}</span>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="ph1">
+    <div class="hero-inner">
+      <div class="hero-dateline">{blueprint} · one-time {single} · instant access via Stripe</div>
+
+      <h1 id="ph1">{problem}</h1>
+
+      {/* Self-contained 40–60 word answer paragraph — the site rule for every
+          indexable page. It has to stand on its own when a model quotes it
+          away from the H1, so it names the product rather than saying "it". */}
+      <p id="answer" class="hero-sub">
+        <strong>{name}</strong> ({blueprint}) is a finished Make.com blueprint for Shopify:
+        {' '}{tagline}. Import the file, paste your own API credentials, and it is live in
+        {' '}<strong>{deployTime}</strong> — no developer to hire and no monthly app to install.
+        {' '}{single} once, no subscription.
+      </p>
+
+      {stockyLine && <div class="urgency" style="margin-bottom:22px;">{stockyLine}</div>}
+
+      <div class="price-row"><div class="price-main">{single}</div></div>
+      <div class="price-note">one-time · instant access · no subscription</div>
+
+      <div class="hero-ctas">
+        {heroHref
+          ? <a href={heroHref} class="btn pulse" data-cta={`single_${slug}_hero`}>Get {name} — {single} <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a>
+          : <button class="btn" type="button" disabled aria-disabled="true">Coming this week</button>
+        }
+      </div>
+
+      <a class="quiet-link" href={guideUrl}>Build it yourself free →</a>
+    </div>
+  </section>
+
+  {showProofFrame && (
+    <section class="section" aria-label={`${name} in Make.com`}>
+      <div class="inner">
+        <figure class="proof">
+          {hasProof
+            ? <img src={proofSrc} alt={`The ${name} scenario open in the Make.com canvas, with the resulting rows in Google Sheets.`} width="1600" height="900" loading="lazy" decoding="async" />
+            : <div class="proof-pending">proof/scenario-{slug}.png — screenshot pending</div>
+          }
+          <figcaption>{blueprint} on the Make.com canvas, and the result it writes.</figcaption>
+        </figure>
+      </div>
+    </section>
+  )}
+
+  <!-- WHAT YOU GET -->
+  <section class="section-alt" aria-labelledby="get-h">
+    <div class="inner-sm">
+      <div class="sec-head">
+        <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">what you get</span>
+        <h2 id="get-h">{files.length === 1 ? 'One file' : `${files.length} files`}, yours to keep</h2>
+      </div>
+      <div class="folder-contents" style="margin:0;">
+        <div class="folder-contents-label">IN THE FOLDER, IMMEDIATELY AFTER PAYMENT</div>
+        <ul class="folder-file-list">
+          {files.map((f) => (
+            <li class="folder-file">
+              <span class="folder-file-icon">▸</span>{f}
+              <span class="folder-file-type">{f.split('.').pop()!.toUpperCase()}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" aria-labelledby="how-h">
+    <div class="inner">
+      <div class="sec-head">
+        <h2 id="how-h">Live in <span class="acc-ink">{deployTime}</span></h2>
+        <p>No developer, no agency, no configuration screens. Three steps.</p>
+      </div>
+      <div class="how-grid how-grid-3">
+        {steps.map((s, i) => (
+          <div class="how-step">
+            <div class="how-n">Step 0{i + 1} // {s.time}</div>
+            <div class="how-title">{s.title}</div>
+            <p class="how-body">{s.body}</p>
+            <span class="how-tool">{s.tool}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- REPLACES -->
+  <section class="section-alt" aria-labelledby="rep-h">
+    <div class="inner-sm">
+      <div class="sec-head">
+        <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">what it replaces</span>
+        <h2 id="rep-h">Apps that charge monthly for this</h2>
+      </div>
+      <div class="rep-table" role="table" aria-label={`Apps ${name} replaces`}>
+        <div class="rep-row rep-head" role="row">
+          <div class="rep-cell" role="columnheader">App</div>
+          <div class="rep-cell" role="columnheader">What it costs</div>
+        </div>
+        {replaces.map((r) => (
+          <div class="rep-row rep-row-2" role="row">
+            <div class="rep-cell">{r.name}</div>
+            <div class="rep-cell">{r.price || '—'}</div>
+          </div>
+        ))}
+        <div class="rep-row rep-row-2 rep-total" role="row">
+          <div class="rep-cell">Replaced by {name}</div>
+          <div class="rep-cell"><span class="rep-saving">{savingRange} saved</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUNDLE UPSELL -->
+  <section class="section" aria-labelledby="bundle-h">
+    <div class="inner-sm">
+      <div class="value-callout">
+        <div>
+          <div class="value-callout-label">fixing more than one thing?</div>
+          <div class="value-callout-title" id="bundle-h">All four blueprints, both Sheets templates and the setup PDF</div>
+          <div class="value-callout-desc">
+            Two singles cost {twoSingles}. The Complete Kit is {kit} and includes one support question.
+          </div>
+        </div>
+        <div class="value-callout-price">
+          <div class="value-callout-num">{kit}</div>
+          <div class="value-callout-sub">one-time</div>
+        </div>
+      </div>
+      <div style="text-align:center;">
+        <a href={bundleHref} class="btn btn-sm btn-kit" data-cta={`single_${slug}_bundle_upsell`}>Get the Complete Kit — {kit} →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section-alt" aria-labelledby="faq-h">
+    <div class="inner-sm">
+      <div class="sec-head">
+        <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">faq</span>
+        <h2 id="faq-h">{name}, in detail</h2>
+      </div>
+      <div class="faq-list-c">
+        {faq.map((f) => (
+          <details class="faq-item-c">
+            <summary>{f.q}<span class="faq-ico"></span></summary>
+            <div class="faq-ans-c">{f.a}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- BOTTOM CTA -->
+  <section class="bottom-cta" id="buy" aria-labelledby="buy-h">
+    <div style="max-width:640px;margin:0 auto;">
+      <h3 id="buy-h">{name} — {tagline}.</h3>
+      <p>{blueprint}, import-ready. {single} once, no subscription, files yours to keep.</p>
+
+      <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:16px;">
+        {bottomHref
+          ? <a href={bottomHref} class="btn" style="font-size:16px;padding:16px 32px;" data-cta={`single_${slug}_bottom`}>Get {name} — {single} <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a>
+          : <button class="btn" type="button" disabled aria-disabled="true" style="font-size:16px;padding:16px 32px;">Coming this week</button>
+        }
+      </div>
+
+      <div class="guarantee-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        30-day money-back guarantee — full refund, no questions.
+      </div>
+
+      <div class="risk-strip">
+        <div class="risk-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"></path></svg>Instant access via Stripe</div>
+        <div class="risk-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"></path></svg>No subscription · ever</div>
+        <div class="risk-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"></path></svg>Any Shopify plan · any market</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</Base>
+
+<style>
+  /* Tokens are declared per page in this codebase; :root is left unscoped by
+     Astro, so this is the same block pro.astro carries. Keep them in step. */
+  :root {
+    --bg: #0c0f0d;
+    --bg-2: #0f1311;
+    --bg-3: #121614;
+    --border: rgba(255,255,255,0.06);
+    --border-2: rgba(255,255,255,0.11);
+    --text: #f2f5f3;
+    --text-2: #b6c0ba;
+    --text-3: #93a09a;
+    --text-4: #7f8b85;
+    --g: #34d377;
+    --g-dim: rgba(52,211,119,0.1);
+    --g-border: rgba(52,211,119,0.2);
+    --sky: #6cc3e6;
+    --sky-dim: rgba(108,195,230,0.1);
+    --sky-border: rgba(108,195,230,0.2);
+    --amber: #f59e0b;
+    --amber-dim: rgba(245,158,11,0.1);
+    --amber-border: rgba(245,158,11,0.25);
+    --tiktok: #ff2e63;
+    --tiktok-dim: rgba(255,46,99,0.1);
+    --tiktok-border: rgba(255,46,99,0.22);
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+    --sans: 'Inter', -apple-system, 'Helvetica Neue', sans-serif;
+  }
+
+  @keyframes dotPing { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(52,211,119,.3)} 50%{box-shadow:0 0 0 8px rgba(52,211,119,0)} }
+
+  /* Per-product accent. One class on the wrapper repoints --acc everywhere
+     below it, so nothing in the markup forks on slug. */
+  .pp { --acc: var(--g); --acc-dim: var(--g-dim); --acc-border: var(--g-border); }
+  .pp.acc-sky { --acc: var(--sky); --acc-dim: var(--sky-dim); --acc-border: var(--sky-border); }
+  .pp.acc-tiktok { --acc: var(--tiktok); --acc-dim: var(--tiktok-dim); --acc-border: var(--tiktok-border); }
+  .pp.acc-amber { --acc: var(--amber); --acc-dim: var(--amber-dim); --acc-border: var(--amber-border); }
+  .pp { background: var(--bg); color: var(--text); font-family: var(--sans); }
+  .pp *, .pp *::before, .pp *::after { box-sizing: border-box; }
+  .acc-ink { color: var(--acc); }
+
+  /* BREADCRUMB */
+  .breadcrumb-bar {
+    max-width: 1100px; margin: 0 auto; padding: 14px 24px;
+    font-family: var(--mono); font-size: 12px; color: var(--text-4);
+  }
+  .breadcrumb-bar a { color: var(--text-4); text-decoration: none; }
+  .breadcrumb-bar a:hover { color: var(--text-3); }
+  .breadcrumb-bar span { margin: 0 6px; }
+
+  /* HERO */
+  .hero {
+    padding: 64px 24px 56px; text-align: center; border-bottom: 1px solid var(--border);
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.015) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,.015) 40px),
+      var(--bg);
+  }
+  .hero-inner { max-width: 720px; margin: 0 auto; }
+  .hero-dateline { font-family: var(--mono); font-size: 13px; color: var(--text-4); letter-spacing: .06em; margin-bottom: 14px; }
+  .hero h1 {
+    font-family: var(--sans); font-size: clamp(30px,5.4vw,50px); font-weight: 700;
+    line-height: 1.05; color: var(--text); letter-spacing: -.035em; margin-bottom: 20px;
+  }
+  .hero-sub {
+    font-size: clamp(15px,2vw,17px); color: var(--text-3); line-height: 1.7;
+    max-width: 580px; margin: 0 auto 28px;
+  }
+  .hero-sub strong { color: var(--text-2); font-weight: 600; }
+  .urgency {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 11px; color: var(--text-3);
+    background: var(--bg-3); border: 1px solid var(--border);
+    padding: 8px 16px; border-radius: 4px;
+  }
+  .price-row { display: flex; align-items: baseline; justify-content: center; gap: 16px; margin-bottom: 8px; }
+  .price-main { font-family: var(--mono); font-size: 60px; font-weight: 800; color: var(--text); letter-spacing: -.04em; line-height: 1; }
+  .price-note { font-family: var(--mono); font-size: 13px; color: var(--text-4); margin-bottom: 22px; }
+
+  /* The secondary CTA is deliberately quiet: it is an honesty signal, not a
+     competing offer, and it must never out-shout the button above it. */
+  .quiet-link { font-family: var(--mono); font-size: 12px; color: var(--text-4); text-decoration: none; }
+  .quiet-link:hover { color: var(--text-3); }
+
+  /* BUTTONS — accent-filled, dark ink. See CLAUDE.md on filled-button contrast. */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px;
+    background: var(--acc); color: #0c0f0d; font-family: var(--sans); font-size: 14px;
+    font-weight: 700; border-radius: 8px; text-decoration: none; border: none;
+    cursor: pointer; transition: opacity .15s, transform .15s; letter-spacing: -.01em;
+  }
+  .btn:hover { opacity: .9; transform: translateY(-1px); }
+  .btn.pulse { animation: pulse 2.5s ease-in-out infinite; }
+  .btn.btn-sm { padding: 10px 20px; font-size: 13px; }
+  /* The kit CTA is always the site green — it is a different product. */
+  .btn.btn-kit { background: var(--g); }
+  .btn[disabled] { background: var(--bg-3); color: var(--text-3); border: 1px solid var(--border-2); cursor: not-allowed; }
+  .btn[disabled]:hover { opacity: 1; transform: none; }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 14px; }
+
+  /* TAGS */
+  .tag { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 4px 10px; border-radius: 3px; background: var(--acc-dim); color: var(--acc); border: 1px solid var(--acc-border); }
+  .tag-dim { background: rgba(255,255,255,.03); color: var(--text-4); border: 1px solid var(--border); }
+
+  /* SECTIONS */
+  .section { padding: 64px 24px; }
+  .section-alt { padding: 64px 24px; background: var(--bg-3); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .inner { max-width: 860px; margin: 0 auto; }
+  .inner-sm { max-width: 680px; margin: 0 auto; }
+  .sec-head { text-align: center; margin-bottom: 40px; }
+  .sec-head h2 { font-family: var(--sans); font-size: clamp(24px,3.6vw,34px); font-weight: 700; color: var(--text); letter-spacing: -.03em; line-height: 1.1; margin-bottom: 12px; margin-top: 12px; }
+  .sec-head p { font-size: 15px; color: var(--text-3); line-height: 1.7; max-width: 520px; margin: 0 auto; }
+
+  /* PROOF */
+  .proof { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--bg-3); }
+  .proof img { display: block; width: 100%; height: auto; }
+  .proof-pending {
+    aspect-ratio: 16 / 9; display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 12px; color: var(--text-4);
+    background: repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(255,255,255,.02) 12px, rgba(255,255,255,.02) 24px);
+  }
+  .proof figcaption { font-family: var(--mono); font-size: 11px; color: var(--text-4); padding: 12px 16px; border-top: 1px solid var(--border); }
+
+  /* FILE LIST */
+  .folder-contents { background: var(--bg); border: 1px solid var(--border-2); border-radius: 8px; padding: 18px 20px; text-align: left; }
+  .folder-contents-label { font-family: var(--mono); font-size: 9px; color: var(--acc); font-weight: 700; letter-spacing: .12em; margin-bottom: 12px; }
+  .folder-file-list { list-style: none; display: flex; flex-direction: column; gap: 5px; margin: 0; padding: 0; }
+  .folder-file { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 12px; color: var(--text-3); }
+  .folder-file-icon { color: var(--acc); flex-shrink: 0; }
+  .folder-file-type { font-size: 9px; color: var(--text-4); background: var(--bg); border: 1px solid var(--border); padding: 1px 6px; border-radius: 2px; margin-left: auto; white-space: nowrap; }
+
+  /* HOW GRID */
+  .how-grid { display: grid; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .how-grid-3 { grid-template-columns: repeat(3,1fr); }
+  @media (max-width: 700px) { .how-grid-3 { grid-template-columns: 1fr; } }
+  .how-step { padding: 26px 22px; border-right: 1px solid var(--border); background: var(--bg-3); }
+  .how-step:last-child { border-right: none; }
+  @media (max-width: 700px) {
+    .how-step { border-right: none; border-bottom: 1px solid var(--border); }
+    .how-step:last-child { border-bottom: none; }
+  }
+  .how-n { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--acc); letter-spacing: .1em; margin-bottom: 10px; }
+  .how-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 8px; letter-spacing: -.02em; }
+  .how-body { font-size: 12px; color: var(--text-3); line-height: 1.7; margin-bottom: 14px; }
+  .how-tool { font-family: var(--mono); font-size: 12px; color: var(--text-4); letter-spacing: .06em; }
+
+  /* REPLACES TABLE */
+  .rep-table { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .rep-row { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .rep-row:last-child { border-bottom: none; }
+  .rep-head { background: var(--bg); }
+  .rep-cell { padding: 13px 18px; color: var(--text-3); display: flex; align-items: center; }
+  .rep-cell:first-child { color: var(--text-2); font-weight: 500; }
+  .rep-head .rep-cell { font-family: var(--mono); font-size: 10px; color: var(--text-4); letter-spacing: .08em; font-weight: 700; }
+  .rep-saving { color: var(--acc); font-family: var(--mono); font-size: 12px; font-weight: 700; white-space: nowrap; }
+  .rep-total { background: var(--acc-dim); border-top: 1px solid var(--acc-border); }
+  .rep-total .rep-cell:first-child { color: var(--acc); font-family: var(--mono); font-size: 12px; font-weight: 700; }
+
+  /* BUNDLE UPSELL */
+  .value-callout { background: var(--bg-3); border: 1px solid var(--g-border); border-radius: 12px; padding: 28px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .value-callout-label { font-family: var(--mono); font-size: 10px; color: var(--g); font-weight: 700; letter-spacing: .1em; margin-bottom: 6px; }
+  .value-callout-title { font-size: 18px; font-weight: 700; color: var(--text); letter-spacing: -.02em; margin-bottom: 6px; }
+  .value-callout-desc { font-size: 13px; color: var(--text-3); line-height: 1.65; }
+  .value-callout-price { text-align: center; flex-shrink: 0; }
+  .value-callout-num { font-family: var(--mono); font-size: 48px; font-weight: 800; color: var(--g); line-height: 1; }
+  .value-callout-sub { font-family: var(--mono); font-size: 10px; color: var(--text-4); margin-top: 4px; }
+
+  /* FAQ */
+  .faq-list-c { display: flex; flex-direction: column; gap: 3px; }
+  .faq-item-c { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .faq-item-c summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 15px 18px; background: var(--bg);
+    font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--text);
+    cursor: pointer; letter-spacing: .02em; list-style: none; transition: background .15s;
+  }
+  .faq-item-c summary:hover { background: var(--bg-2); }
+  .faq-item-c summary::-webkit-details-marker { display: none; }
+  .faq-ico { width: 16px; height: 16px; border-radius: 50%; border: 1px solid var(--border-2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 10px; color: var(--text-4); transition: transform .2s; }
+  .faq-ico::before { content: '▶'; }
+  .faq-item-c[open] .faq-ico { transform: rotate(90deg); }
+  .faq-ans-c { padding: 0 18px 16px; background: var(--bg); font-size: 13px; color: var(--text-3); line-height: 1.75; }
+
+  /* BOTTOM CTA */
+  .bottom-cta { text-align: center; padding: 64px 24px; background: var(--bg-3); border-top: 2px solid var(--acc-border); }
+  .bottom-cta h3 { font-family: var(--sans); font-size: clamp(22px,4vw,34px); font-weight: 700; color: var(--text); letter-spacing: -.03em; line-height: 1.1; margin-bottom: 12px; }
+  .bottom-cta p { font-size: 15px; color: var(--text-3); line-height: 1.7; margin-bottom: 24px; max-width: 520px; margin-left: auto; margin-right: auto; }
+  .guarantee-badge {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 10px; color: var(--g);
+    background: rgba(52,211,119,.06); border: 1px solid rgba(52,211,119,.18);
+    padding: 8px 16px; border-radius: 5px; margin-bottom: 16px;
+  }
+  .risk-strip { background: var(--bg-2); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: center; }
+  .risk-item { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px; color: var(--text-3); }
+</style>
