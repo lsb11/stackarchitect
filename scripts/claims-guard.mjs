@@ -41,12 +41,19 @@ const QUARANTINE = path.join(ROOT, 'docs', 'claims-unverified.json');
 
 /**
  * Prices that are ours, not a third party's, and so need no vendor source:
- *   $0    — the free stack, the whole premise
- *   $29   — the Complete Kit
- *   $7.99 — StockLog
+ *   $0     — the free stack, the whole premise
+ *   $24    — the Complete Kit (KIT_PRICE)
+ *   $9.99  — any single blueprint (SINGLE_PRICE)
+ *   $14    — the single-to-kit upgrade (UPGRADE_PRICE)
+ *   $7.99  — StockLog
  * Everything else is somebody else's number and needs a source and a date.
+ *
+ * TODO: these are hand-kept in sync with src/data/products.ts, which is how
+ * they went stale when the kit moved off $29 — every mention of the new price
+ * read as an undated third-party claim and failed the build. The follow-up
+ * commit moves them into src/data/claims.json and has this file read them.
  */
-const OURS = /^\$(0|29|7\.99)(\/(mo|month|yr|year))?[,.]?$/;
+const OURS = /^\$(0|24|14|9\.99|7\.99)(\/(mo|month|yr|year))?[,.]?$/;
 
 const PRICE =
   /\$[0-9][0-9,]*(?:\.[0-9]{2})?(?:\s*[–—-]\s*\$?[0-9][0-9,]*(?:\.[0-9]{2})?)?(?:\s*\/\s*(?:mo|month|yr|year))?\+?/g;

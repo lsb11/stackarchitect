@@ -172,9 +172,9 @@ The [CAPI Shield setup guide](/capi-shield/) covers every step of the full CAPI 
 
 ## Get the pre-built CAPI Shield file
 
-The Complete Kit includes the CAPI Shield Make.com JSON blueprint — the fastest path to recovering your Meta ROAS. Import in 60 seconds, add one webhook, and server-side purchase events start flowing immediately. Also includes TikTok CAPI, Stocky Swap, and P&L Auto. $29 one-time.
+The Complete Kit includes the CAPI Shield Make.com JSON blueprint — the fastest path to recovering your Meta ROAS. Import in 60 seconds, add one webhook, and server-side purchase events start flowing immediately. Also includes TikTok CAPI, Stocky Swap, and P&L Auto. $24 one-time.
 
-**[Get the Complete Kit — $29 →](/pro/)**
+**[Get the Complete Kit — $24 →](/pro/)**
 
 
 ## Related App Alternatives

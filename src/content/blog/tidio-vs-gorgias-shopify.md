@@ -146,9 +146,9 @@ Once you cross 300 tickets/month or hit Tidio's seat cap, [upgrade to Gorgias �
 
 ## Complete your free stack alongside whichever helpdesk you choose
 
-The Complete Kit handles the rest of your automation — server-side tracking (replaces Elevar/Triple Whale), Stocky replacement (before August 31 shutdown), and live P&L reporting. Four pre-built Make.com JSON blueprints. $29 one-time, $0/month ongoing.
+The Complete Kit handles the rest of your automation — server-side tracking (replaces Elevar/Triple Whale), Stocky replacement (before August 31 shutdown), and live P&L reporting. Four pre-built Make.com JSON blueprints. $24 one-time, $0/month ongoing.
 
-**[Get the Complete Kit — $29 →](https://stackarchitect.xyz/pro/)**
+**[Get the Complete Kit — $24 →](https://stackarchitect.xyz/pro/)**
 
 
 ## Related App Alternatives

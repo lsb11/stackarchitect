@@ -209,6 +209,6 @@ There are two roads out of this error, and the cheaper one is free:
 
 **Build it yourself.** [Open a free Make.com account — 1,000 credits a month, no card](/go/make/), then follow [Autocrat Quota Fix](/autocrat-quota-fix/) for document workflows or [Make.com for Shopify](/make-com-shopify/) for order-triggered ones. Budget an afternoon.
 
-**Skip the build.** The Complete Kit is four ready-to-import Make.com scenarios — server-side tracking, inventory, TikTok CAPI, and P&L reporting — with the connections and field mappings already done. $29 one-time, no subscription.
+**Skip the build.** The Complete Kit is four ready-to-import Make.com scenarios — server-side tracking, inventory, TikTok CAPI, and P&L reporting — with the connections and field mappings already done. $24 one-time, no subscription.
 
-**[Get the Complete Kit — $29 →](/pro/)**
+**[Get the Complete Kit — $24 →](/pro/)**

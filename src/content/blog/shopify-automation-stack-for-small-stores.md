@@ -148,9 +148,9 @@ The [Make.com beginner's guide](/make-com-shopify/) covers the full scenario set
 
 ## Get the pre-built stack files
 
-The Complete Kit collapses 8+ hours of setup into 10 minutes — four Make.com JSON blueprints (CAPI Shield, TikTok CAPI, Stocky Swap, P&L Auto) plus two Google Sheets templates, all pre-configured. $29 one-time. Perfect for small stores that want the stack without the build time.
+The Complete Kit collapses 8+ hours of setup into 10 minutes — four Make.com JSON blueprints (CAPI Shield, TikTok CAPI, Stocky Swap, P&L Auto) plus two Google Sheets templates, all pre-configured. $24 one-time. Perfect for small stores that want the stack without the build time.
 
-**[Get the Complete Kit — $29 →](/pro/)**
+**[Get the Complete Kit — $24 →](/pro/)**
 
 
 ## Related App Alternatives

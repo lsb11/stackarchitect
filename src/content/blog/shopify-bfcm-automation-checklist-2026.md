@@ -201,7 +201,7 @@ If all five fire correctly, your automation stack is BFCM-ready.
 
 If you have not set up any of the above, the Complete Kit gives you four Make.com JSON blueprints — CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto — ready to import in 10 minutes instead of building each one from scratch.
 
-**[Get the Complete Kit — $29 →](/pro/)**
+**[Get the Complete Kit — $24 →](/pro/)**
 
 Deploy all four automations today. Run the test order checklist in October. Enter BFCM with a complete, verified automation stack.
 

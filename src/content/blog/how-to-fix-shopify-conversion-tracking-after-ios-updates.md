@@ -201,9 +201,9 @@ The [CAPI Shield guide](/capi-shield/) covers steps 5–7 in full detail includi
 
 ## Get the pre-built server-side tracking files
 
-The Complete Kit includes the CAPI Shield Make.com JSON blueprint — import it in 60 seconds and your server-side tracking is live. Also includes Google Ads Enhanced Conversions, TikTok CAPI, Stocky Swap, and P&L Auto. $29 one-time, deploys in 10 minutes.
+The Complete Kit includes the CAPI Shield Make.com JSON blueprint — import it in 60 seconds and your server-side tracking is live. Also includes Google Ads Enhanced Conversions, TikTok CAPI, Stocky Swap, and P&L Auto. $24 one-time, deploys in 10 minutes.
 
-**[Get the Complete Kit — $29 →](/pro/)**
+**[Get the Complete Kit — $24 →](/pro/)**
 
 ---
 

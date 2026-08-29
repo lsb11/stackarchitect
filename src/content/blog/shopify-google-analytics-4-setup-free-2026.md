@@ -287,9 +287,9 @@ GA4 is now your analytics foundation. Every traffic decision, every product deci
 
 ## Complete your free tracking stack
 
-GA4 handles analytics. For ad attribution and conversion recovery, add CAPI Shield (server-side Meta + Google) and Google Enhanced Conversions — both included in the Complete Kit as ready-to-import Make.com JSON blueprints. $29 one-time, deploys in 10 minutes.
+GA4 handles analytics. For ad attribution and conversion recovery, add CAPI Shield (server-side Meta + Google) and Google Enhanced Conversions — both included in the Complete Kit as ready-to-import Make.com JSON blueprints. $24 one-time, deploys in 10 minutes.
 
-**[Get the Complete Kit — $29 →](/pro/)**
+**[Get the Complete Kit — $24 →](/pro/)**
 
 
 ## Related App Alternatives

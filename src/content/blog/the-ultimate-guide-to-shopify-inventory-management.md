@@ -219,9 +219,9 @@ Every step above is free. The only ongoing cost is Make.com's Core plan at $9/mo
 
 ## Get the Stocky Swap files
 
-The Complete Kit includes the Stocky Swap Make.com JSON blueprint — deploys in 60 seconds and starts capturing live inventory data immediately. Also includes CAPI Shield (tracking), TikTok CAPI, and P&L Auto. $29 one-time. Deploy before the Stocky shutdown deadline.
+The Complete Kit includes the Stocky Swap Make.com JSON blueprint — deploys in 60 seconds and starts capturing live inventory data immediately. Also includes CAPI Shield (tracking), TikTok CAPI, and P&L Auto. $24 one-time. Deploy before the Stocky shutdown deadline.
 
-**[Get the Complete Kit — $29 →](/pro/)**
+**[Get the Complete Kit — $24 →](/pro/)**
 
 
 ## Related App Alternatives

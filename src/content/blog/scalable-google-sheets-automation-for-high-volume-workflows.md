@@ -196,9 +196,9 @@ If you'd rather not build it from scratch, the Complete Kit has it pre-configure
 
 ### Get the pre-built Google Sheets automation files
 
-The Complete Kit includes two pre-configured Google Sheets templates (Stocky Swap inventory dashboard + P&L reporting dashboard) plus four Make.com JSON blueprints. All formulas, headers, and connections pre-set — import and go. $29 one-time, no subscription.
+The Complete Kit includes two pre-configured Google Sheets templates (Stocky Swap inventory dashboard + P&L reporting dashboard) plus four Make.com JSON blueprints. All formulas, headers, and connections pre-set — import and go. $24 one-time, no subscription.
 
-**[Get the Complete Kit — $29 →](/pro/)**
+**[Get the Complete Kit — $24 →](/pro/)**
 
 
 ## Related App Alternatives

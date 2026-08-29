@@ -157,9 +157,9 @@ Stay on the free stack until one of the 7 signals appears. When it does, the $15
 
 ## Get the pre-built Make.com files while you're on the free tier
 
-The Complete Kit is designed for Make.com's free tier — four JSON blueprints (CAPI Shield, TikTok CAPI, Stocky Swap, P&L Auto) that run within 1,000 credits/month for most Shopify stores. Import in 60 seconds each. $29 one-time.
+The Complete Kit is designed for Make.com's free tier — four JSON blueprints (CAPI Shield, TikTok CAPI, Stocky Swap, P&L Auto) that run within 1,000 credits/month for most Shopify stores. Import in 60 seconds each. $24 one-time.
 
-**[Get the Complete Kit — $29 →](/pro/)**
+**[Get the Complete Kit — $24 →](/pro/)**
 
 
 ## Related App Alternatives

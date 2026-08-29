@@ -125,9 +125,9 @@ For the full diagnosis of your specific tracking situation — including which i
 
 ## Get the pre-built CAPI Shield file
 
-The Complete Kit includes the CAPI Shield Make.com JSON blueprint — import it in 60 seconds, add one Shopify webhook, and server-side tracking is live. Also includes TikTok CAPI, Stocky Swap, and P&L Auto. $29 one-time, deploys in 10 minutes.
+The Complete Kit includes the CAPI Shield Make.com JSON blueprint — import it in 60 seconds, add one Shopify webhook, and server-side tracking is live. Also includes TikTok CAPI, Stocky Swap, and P&L Auto. $24 one-time, deploys in 10 minutes.
 
-**[Get the Complete Kit — $29 →](/pro/)**
+**[Get the Complete Kit — $24 →](/pro/)**
 
 ---
 

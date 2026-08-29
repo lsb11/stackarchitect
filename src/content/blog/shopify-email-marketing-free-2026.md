@@ -182,9 +182,9 @@ For the typical Shopify store under £500k/year revenue running welcome, abandon
 
 ## Get the free automation stack that runs alongside your email
 
-While you're setting up email marketing, the same Make.com free account powers your server-side tracking, inventory, and P&L reporting. The [Complete Kit](/pro/) has all four automations pre-built — import in 10 minutes. $29 one-time, 30-day guarantee.
+While you're setting up email marketing, the same Make.com free account powers your server-side tracking, inventory, and P&L reporting. The [Complete Kit](/pro/) has all four automations pre-built — import in 10 minutes. $24 one-time, 30-day guarantee.
 
-[Get the Complete Kit — $29 →](/pro/)
+[Get the Complete Kit — $24 →](/pro/)
 
 
 ## Related App Alternatives
