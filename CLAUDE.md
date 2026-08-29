@@ -141,7 +141,15 @@ Full analysis lives in the StackArchitect project doc `gsc-indexing-diagnosis.md
   permitted and encouraged; new URLs are not.
 - Merging content means DEDUPLICATING, never concatenating. A 4,500-word page
   assembled by stapling four 1,100-word posts together is still four thin pages.
-- Never emit a schema.org Offer without both priceVerifiedDate and priceSourceUrl.
+- **Never emit a schema.org Offer for a THIRD-PARTY price without both
+  priceVerifiedDate and priceSourceUrl.** The rule is about somebody else's
+  number: it needs a source and the date a human read it there. First-party
+  offers — the Complete Kit, the four single blueprints, the upgrade,
+  StockLog — are prices we set, so there is no external source to cite and no
+  verification to date. They come from `src/data/products.ts` and are pinned
+  in `src/data/claims.json`, which `scripts/claims-guard.mjs` enforces: a page
+  stating one of them with a retired value fails the build. That is the
+  guarantee those offers carry instead.
 - Zero internal links may point at a path on the left-hand side of public/_redirects.
 - Organization @id is always #org, never #organization.
 - Person name is always "Luke Sandelands", never "Luke".
