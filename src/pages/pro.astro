@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 import ProductChooser from '../components/ProductChooser.astro';
 import {
+  PRODUCTS,
   KIT_PRICE,
   SINGLE_PRICE,
   KIT_STRIPE_URL,
@@ -16,15 +17,10 @@ import { isPostShutdown } from '../utils/stockyDeadline';
 const postShutdown = isPostShutdown();
 
 // The kit price, from the single source of truth. Changing KIT_PRICE moves
-// every figure below with it.
-//
-// CAVEAT — the two raw <script> blocks on this page (the JSON-LD graph in the
-// head, and the FAQ array that builds #faq-list) carry the price as a literal.
-// Astro does not interpolate expressions inside script elements, so `{kit}`
-// would ship as the characters "{kit}". They stay literal until brief section 6
-// moves the graph onto the `schema` prop Base already accepts, the way
-// src/pages/pro/[slug].astro does it. Grep this file for the price before
-// changing KIT_PRICE.
+// every figure on this page with it, schema included — brief section 6 moved
+// the JSON-LD off a raw <script> block and onto Base's `schema` prop, which
+// is a real expression context. There are no hand-swept price literals left
+// on this page.
 const kit = formatPrice(KIT_PRICE);
 const single = formatPrice(SINGLE_PRICE);
 
@@ -39,129 +35,217 @@ const heroHref = buildStripeUrl(KIT_STRIPE_URL, 'pro_hero');
 const afterChooserHref = buildStripeUrl(KIT_STRIPE_URL, 'pro_after_chooser');
 const bottomHref = buildStripeUrl(KIT_STRIPE_URL, 'pro_bottom');
 const stickyHref = buildStripeUrl(KIT_STRIPE_URL, 'pro_sticky');
----
-<Base title={`Stack Architect Complete Kit — ${kit}`} description="Four import-ready Make.com blueprints plus two Google Sheets templates. Server-side tracking, TikTok CAPI, inventory and live P&L, live in 10 minutes.">
-<Fragment slot="head">
-<script type="application/ld+json">
+
+// ---------------------------------------------------------------------------
+// FAQ — one array, rendered server-side below AND serialised into the FAQPage
+// graph. It used to exist twice: as a hand-written JSON-LD block in the head
+// and again as a JS array that built #faq-list on the client. Two copies of
+// the same eleven answers, each carrying the price as a literal, is how the
+// page ended up quoting $29 in schema after the visible copy had moved.
+const faqs = [
   {
-    "@context": "https://schema.org",
-    "@graph": [
+    q: 'What is the Stack Architect Complete Kit?',
+    a: `The Stack Architect Complete Kit is a ${kit} one-time purchase containing seven files: four ready-to-import Make.com automation JSON blueprints (CAPI Shield for Meta + Google server-side tracking, TikTok CAPI for TikTok Events API v1.3, Stocky Swap for inventory management replacing Shopify Stocky, and P&L Auto for live profit and loss reporting), two pre-configured Google Sheets templates, and a PDF setup guide. One direct support question is also included. Access is instant via Stripe — you are redirected to a Google Drive folder with all files immediately after payment.`,
+  },
+  {
+    q: 'Can I buy just one blueprint?',
+    a: `Yes. Each of the four is sold on its own at ${single}: ${PRODUCTS.map((p) => p.name).join(', ')}. The kit is ${kit} for all four plus both Sheets templates, the setup PDF and one support question — cheaper than three singles.`,
+  },
+  {
+    q: 'What is a Make.com JSON blueprint and how does importing it work?',
+    a: 'A Make.com JSON blueprint is a complete export of a finished automation — every module, API connection, field mapping, and routing rule is embedded in the file. In Make.com, go to Create new scenario → Import Blueprint → upload the JSON file. The entire pre-configured scenario is recreated instantly. No manual setup required. Works on Make’s free tier, which allows two active scenarios.',
+  },
+  {
+    q: 'How do I access the files after purchase?',
+    a: 'After payment via Stripe, you are redirected immediately to a Google Drive folder containing all seven files. Files are available to download directly in your browser — no email required, no account to create. The folder link is yours to keep and re-access at any time.',
+  },
+  {
+    q: 'How is the Complete Kit different from the free Stack Architect guides?',
+    a: 'The free guides build the same scenarios and the result is identical on day one. What you get here is the finished file, the error handling already wired in, the hashing normalisation that is easy to get subtly wrong, and updated blueprints when Meta bumps the Graph API version or TikTok moves off v1.3.',
+  },
+  {
+    q: 'Do I need a paid Make.com plan?',
+    a: `Make’s free plan allows two active scenarios, so any two of the four run free (1,000 credits/month, enough for roughly 300 orders a month). Running all four at once needs Make Core, about $9/month, which also lifts the credit ceiling to 10,000. Checked against make.com/pricing on 29 August 2026.`,
+  },
+  {
+    q: 'What Shopify apps does the Complete Kit replace?',
+    a: 'CAPI Shield replaces Elevar ($225/mo), Triple Whale (GMV-based), and Northbeam (from $1,500+/mo). TikTok CAPI replaces WeltPixel ($39+/mo) and Analyzify ($145–$275/mo). Stocky Swap replaces Shopify Stocky, Linnworks, and Skubana — none of which publish a price. P&L Auto replaces TrueProfit and BeProfit ($19–$299/mo). Most stores replace $60–$180 per month; heavy ad spenders on Elevar or Analyzify replace far more.',
+  },
+  {
+    q: 'What is Stocky Swap and why is August 2026 the deadline?',
+    a: 'Stocky Swap logs every Shopify order line item to a Google Sheets inventory log in real time — six columns: timestamp, SKU, quantity sold as a negative change, order ID, product, and a note. Shopify ended Stocky’s service on 31 August 2026 and deleted its data rather than migrating it. The JSON imports in 60 seconds and starts capturing data from your next order.',
+  },
+  {
+    q: 'Will the kit work with my Shopify plan?',
+    a: 'Yes. The kit uses Shopify webhooks available on every plan including Shopify Basic. No app installation required. The only change in Shopify Admin is adding one webhook URL under Settings → Notifications → Webhooks.',
+  },
+  {
+    q: 'Does the Complete Kit work outside the US?',
+    a: 'Yes. All four scenarios work globally. Shopify webhooks, Make.com, Meta Conversions API, Google GA4, and TikTok Events API all support international markets. The P&L Auto scenario supports any Shopify-supported currency.',
+  },
+  {
+    q: 'Is this a subscription?',
+    a: `No. The Complete Kit is a one-time ${kit} payment. You own the files permanently. There is no recurring charge from us; the only ongoing cost is Make’s own plan, and any two scenarios run on their free tier.`,
+  },
+  {
+    q: 'What support is included?',
+    a: 'One direct support question is included with every purchase. Email support@stackarchitect.xyz with your question, which file (Blueprint 01–04), a screenshot of any Make.com error, and your Shopify plan. Response within 24 hours on UK working days.',
+  },
+];
+
+// ---------------------------------------------------------------------------
+// SCHEMA (brief section 6). Handed to <Base schema={...}> rather than written
+// as a raw <script type="application/ld+json"> block, because Astro does not
+// interpolate expressions inside script elements — which is why every price in
+// the old block had to be swept by hand and drifted from KIT_PRICE twice.
+// Every figure below now comes from src/data/products.ts.
+const PRO_URL = 'https://stackarchitect.xyz/pro/';
+
+// Build date, so dateModified reflects the deploy rather than a date somebody
+// remembered to edit.
+const buildDate = new Date().toISOString().slice(0, 10);
+
+const proSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': 'https://stackarchitect.xyz/pro#webpage',
+    url: PRO_URL,
+    name: `Stack Architect Complete Kit — ${kit} | Shopify Automation Files Ready to Import`,
+    description: `Four import-ready Make.com automation scenario JSON files (${PRODUCTS.map((p) => p.name).join(', ')}) and two pre-configured Google Sheets templates. ${kit} one-time, or ${single} for any single blueprint. Instant access via Stripe.`,
+    inLanguage: 'en-GB',
+    dateModified: buildDate,
+    isPartOf: { '@id': 'https://stackarchitect.xyz/#website' },
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['.hero h1', '.sec-head h2', '.seo-prose h3'],
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://stackarchitect.xyz/' },
+      { '@type': 'ListItem', position: 2, name: 'Complete Kit', item: PRO_URL },
+    ],
+  },
+  // ProductGroup rather than a bare Product: there are five things for sale
+  // here — the kit and the four singles — and hasVariant is how that is said.
+  // The AggregateOffer spans them, $9.99 to $24 across 5 offers.
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ProductGroup',
+    '@id': 'https://stackarchitect.xyz/pro/#productgroup',
+    name: 'Stack Architect Complete Kit',
+    description: `Four ready-to-import Make.com blueprints for Shopify — ${PRODUCTS.map((p) => `${p.name} (${p.tagline})`).join('; ')} — plus two pre-configured Google Sheets templates, a PDF setup guide and one direct support question. ${kit} for all four, or ${single} for any one on its own. No subscription.`,
+    url: PRO_URL,
+    image: 'https://stackarchitect.xyz/og/og-complete-kit.png',
+    brand: { '@type': 'Brand', name: 'Stack Architect' },
+    productGroupID: 'SA-KIT',
+    variesBy: 'https://schema.org/size',
+    offers: {
+      '@type': 'AggregateOffer',
+      lowPrice: String(SINGLE_PRICE),
+      highPrice: String(KIT_PRICE),
+      offerCount: PRODUCTS.length + 1,
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      seller: { '@id': 'https://stackarchitect.xyz/#org' },
+    },
+    hasVariant: [
       {
-        "@type": "WebSite",
-        "@id": "https://stackarchitect.xyz/#website",
-        "url": "https://stackarchitect.xyz",
-        "name": "Stack Architect",
-        "description": "Free Shopify automation stack — replace paid tracking, inventory, email, TikTok CAPI, and workflow apps. No code required.",
-        "inLanguage": "en-GB",
-        "publisher": { "@id": "https://stackarchitect.xyz/#org" }
-      },
-      {
-        "@type": "WebPage",
-        "@id": "https://stackarchitect.xyz/pro#webpage",
-        "url": "https://stackarchitect.xyz/pro/",
-        "name": "Stack Architect Complete Kit — $24 | Shopify Automation Files Ready to Import",
-        "description": "Four import-ready Make.com automation scenario JSON files (CAPI Shield, TikTok CAPI, Stocky Swap, P&L Auto) and two pre-configured Google Sheets templates. Replaces $60–$180/month of paid Shopify apps for most stores. $24 one-time. Instant access via Stripe.",
-        "inLanguage": "en-GB",
-        "dateModified": "2026-07-17",
-        "isPartOf": { "@id": "https://stackarchitect.xyz/#website" },
-        "speakable": { "@type": "SpeakableSpecification", "cssSelector": [".hero h1", ".sec-head h2", ".seo-prose h3"] }
-      },
-      {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://stackarchitect.xyz" },
-          { "@type": "ListItem", "position": 2, "name": "Complete Kit", "item": "https://stackarchitect.xyz/pro/" }
-        ]
-      },
-      {
-        "@type": "Product",
-        "name": "Stack Architect Complete Kit",
-        "description": "The Stack Architect Complete Kit is a $24 one-time purchase containing four ready-to-import Make.com automation scenario JSON files for Shopify: Blueprint 01 CAPI Shield (Meta Conversions API via Graph API v19.0 + Google Ads Enhanced Conversions, routed server-side), Blueprint 02 TikTok CAPI (TikTok Events API v1.3 CompletePayment server-side events), Blueprint 03 Stocky Swap (live inventory logging to Google Sheets, replacing Shopify Stocky before its August 31 2026 shutdown), and Blueprint 04 P&L Auto (live profit and loss reporting to Google Sheets). Also includes two pre-configured Google Sheets templates and a PDF setup guide. Most stores replace $60–$180 per month of apps including Elevar, Triple Whale, WeltPixel, Shopify Stocky, TrueProfit, and BeProfit; heavy ad spenders replace far more. One-time $24. Instant access via Stripe.",
-        "url": "https://stackarchitect.xyz/pro/",
-        "image": "https://stackarchitect.xyz/og/og-complete-kit.png",
-        "sku": "SA-COMPLETE-KIT-001",
-        "brand": { "@type": "Brand", "name": "Stack Architect" },
-        "offers": {
-          "@type": "Offer",
-          "price": "24.00",
-          "priceCurrency": "USD",
-          "availability": "https://schema.org/InStock", "hasMerchantReturnPolicy": {"@type": "MerchantReturnPolicy", "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow", "merchantReturnDays": 30, "returnFees": "https://schema.org/FreeReturn"},
-          "priceValidUntil": "2027-12-31",
-          "url": "https://buy.stripe.com/00wfZa7w1a3Bfo55tnfrW00",
-          "seller": { "@id": "https://stackarchitect.xyz/#org" }
+        '@type': 'Product',
+        name: 'Stack Architect Complete Kit — all four blueprints',
+        sku: 'SA-COMPLETE-KIT-001',
+        url: PRO_URL,
+        description: `All four blueprints, both Google Sheets templates, the PDF setup guide and one direct support question. ${kit} one-time.`,
+        offers: {
+          '@type': 'Offer',
+          price: String(KIT_PRICE),
+          priceCurrency: 'USD',
+          availability: 'https://schema.org/InStock',
+          priceValidUntil: '2027-12-31',
+          url: KIT_STRIPE_URL,
+          seller: { '@id': 'https://stackarchitect.xyz/#org' },
+          hasMerchantReturnPolicy: {
+            '@type': 'MerchantReturnPolicy',
+            returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+            merchantReturnDays: 30,
+            returnFees: 'https://schema.org/FreeReturn',
+          },
         },
-        "featureList": [
-          "One-click import into Make.com",
-          "Runs any two scenarios on Make's free tier; all four needs Make Core, about $9/mo",
-          "All Shopify plans supported",
-          "CAPI Shield — Meta Conversions API (Graph API v19.0) + Google Ads Enhanced Conversions, server-side",
-          "TikTok CAPI — TikTok Events API v1.3 CompletePayment server-side events",
-          "Stocky Swap — live inventory to Google Sheets, replaces the retired Shopify Stocky app",
-          "P&L Auto — live profit and loss reporting to Google Sheets",
-          "Two pre-configured Google Sheets templates",
-          "PDF setup guide and README",
-          "One direct support question included",
-          "Instant access via Stripe — files open immediately after payment",
-          "No monthly subscription — one-time purchase"
-        ]
       },
-      {
-        "@type": "SoftwareApplication",
-        "name": "Stack Architect Shopify Automation Stack",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web",
-        "description": "Four Make.com automation scenario JSON blueprints for Shopify: CAPI Shield for Meta Conversions API, Google Ads Enhanced Conversions, and GA4 server-side tracking, TikTok CAPI for TikTok Events API v1.3, Stocky Swap for inventory management replacing Shopify Stocky before its August 2026 shutdown, and P&L Auto for live profit and loss reporting. Any two run on Make's free tier; all four needs Make Core, about $9/mo. $24 one-time.",
-        "url": "https://stackarchitect.xyz/pro/",
-        "offers": { "@type": "Offer", "price": "24.00", "priceCurrency": "USD" }
-      },
-      {
-        "@type": "HowTo",
-        "name": "How to Deploy the Stack Architect Complete Kit in 10 Minutes",
-        "description": "Purchase the Stack Architect Complete Kit for $24 via Stripe. Get instant access to four Make.com JSON blueprint files and two Google Sheets templates. Import the JSONs into Make.com, add one Shopify webhook, and your entire backend is live in under 10 minutes.",
-        "totalTime": "PT10M",
-        "estimatedCost": { "@type": "MonetaryAmount", "currency": "USD", "value": "24" },
-        "step": [
-          { "@type": "HowToStep", "position": 1, "name": "Purchase and access files instantly", "text": "Purchase at stackarchitect.xyz/pro via Stripe. You are redirected immediately to a Google Drive folder containing all files — four JSON blueprint files, two Google Sheets templates, and a PDF setup guide. Files open in your browser instantly." },
-          { "@type": "HowToStep", "position": 2, "name": "Import JSON blueprints into Make.com", "text": "In Make.com, click Create a new scenario, then Import Blueprint, and upload each JSON file. All modules, API connections, and field mappings are pre-configured inside the file. Nothing to set up manually." },
-          { "@type": "HowToStep", "position": 3, "name": "Add one Shopify webhook", "text": "In Shopify Admin, go to Settings, then Notifications, then Webhooks. Add an Order payment webhook and paste the Make.com URL. This single webhook triggers all four automations simultaneously." },
-          { "@type": "HowToStep", "position": 4, "name": "Connect Google Sheets and test", "text": "Copy the Google Sheets templates to your Drive and connect them in Make.com. Place a test paid order and verify data appears in your Sheets dashboard and in Meta Events Manager. Stack is live." }
-        ]
-      },
-      {
-        "@type": "ItemList",
-        "name": "Stack Architect Complete Kit — Full Contents",
-        "numberOfItems": 7,
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Blueprint 01 — CAPI Shield Make.com Scenario (JSON)", "description": "Import-ready JSON blueprint. Routes server-side purchase events to Meta Conversions API (Graph API v19.0) and Google Ads Enhanced Conversions via a built-in router. Sends SHA-256 hashed email, phone, name, plus IP and user-agent for high Event Match Quality. Replaces Elevar, Triple Whale, Stape, and Littledata." },
-          { "@type": "ListItem", "position": 2, "name": "Blueprint 02 — TikTok CAPI Make.com Scenario (JSON)", "description": "Import-ready JSON blueprint. TikTok Events API v1.3 CompletePayment server-side events with full Advanced Matching. A free alternative to WeltPixel and Analyzify." },
-          { "@type": "ListItem", "position": 3, "name": "Blueprint 03 — Stocky Swap Make.com Scenario (JSON)", "description": "Import-ready JSON blueprint. Live Shopify order logging to Google Sheets. Permanent replacement for Shopify Stocky before August 31 2026 shutdown." },
-          { "@type": "ListItem", "position": 4, "name": "Blueprint 04 — P&L Auto Make.com Scenario (JSON)", "description": "Import-ready JSON blueprint. Automated revenue, COGS, and profit calculation into Google Sheets per order. Replaces TrueProfit and BeProfit." },
-          { "@type": "ListItem", "position": 5, "name": "Stocky Swap Inventory Google Sheets Template", "description": "Pre-configured spreadsheet with the six-column Inventory_Log (Timestamp, SKU, Change_Amount, Order_ID, Product, Notes), example rows, and a READ_ME_FIRST setup tab — ready to connect to the Stocky Swap scenario." },
-          { "@type": "ListItem", "position": 6, "name": "P&L Auto Google Sheets Template", "description": "Pre-configured spreadsheet with four tabs — Order_Data (per-order log), COGS_Table (your product costs), a live Dashboard that auto-totals revenue, fees, COGS and gross profit via SUM formulas, and a READ_ME_FIRST setup tab — ready to connect to the P&L Auto scenario." },
-          { "@type": "ListItem", "position": 7, "name": "PDF Setup Guide and README", "description": "Complete setup documentation covering all four scenarios, placeholder values, troubleshooting, and support information." }
-        ]
-      }
-    ]
-  }
-  </script>
-<script type="application/ld+json">{
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {"@type":"Question","name":"What is the Stack Architect Complete Kit?","acceptedAnswer":{"@type":"Answer","text":"The Stack Architect Complete Kit is a $24 one-time purchase containing seven files: four ready-to-import Make.com automation JSON blueprints (CAPI Shield for Meta + Google server-side tracking, TikTok CAPI for TikTok Events API v1.3, Stocky Swap for inventory management replacing Shopify Stocky before its August 2026 shutdown, and P&L Auto for live profit and loss reporting), two pre-configured Google Sheets templates, and a PDF setup guide. Access is instant via Stripe."}},
-      {"@type":"Question","name":"What is a Make.com JSON blueprint and how does importing it work?","acceptedAnswer":{"@type":"Answer","text":"A Make.com JSON blueprint is a complete export of a finished automation — every module, API connection, field mapping, and routing rule is embedded in the file. In Make.com, go to Create new scenario → Import Blueprint → upload the JSON file. The entire scenario is recreated instantly with no manual setup. Works on Make's free tier, which allows two active scenarios."}},
-      {"@type":"Question","name":"How do I access the files after purchase?","acceptedAnswer":{"@type":"Answer","text":"After payment via Stripe, you are redirected immediately to a Google Drive folder containing all seven files. No email required, no account to create. The folder link is yours to keep and re-access at any time."}},
-      {"@type":"Question","name":"How is the Complete Kit different from the free Stack Architect guides?","acceptedAnswer":{"@type":"Answer","text":"The free guides are step-by-step instructions for building each automation yourself. The Complete Kit gives you the finished JSON blueprint files. The technical outcome is identical — same EMQ scores, same attribution accuracy, same data. The difference is time: each guide takes approximately 2 hours, all four take 8+ hours. The kit deploys in 10 minutes total."}},
-      {"@type":"Question","name":"Do I need a paid Make.com plan?","acceptedAnswer":{"@type":"Answer","text":"Make's free plan allows two active scenarios, so any two of the four run free (1,000 credits/month, enough for roughly 300 orders a month). Running all four at once needs Make Core, about $9/month, which also lifts the credit ceiling to 10,000. Checked against make.com/pricing on 29 August 2026."}},
-      {"@type":"Question","name":"What Shopify apps does the Complete Kit replace?","acceptedAnswer":{"@type":"Answer","text":"CAPI Shield replaces Elevar ($225/mo), Triple Whale (GMV-based), and Northbeam. TikTok CAPI replaces WeltPixel and Analyzify. Stocky Swap replaces Shopify Stocky (shutting down August 31 2026), Linnworks, and Skubana. P&L Auto replaces TrueProfit and BeProfit ($19–$299/mo). Most stores replace $60–$180 per month; heavy ad spenders on Elevar or Analyzify replace far more."}},
-      {"@type":"Question","name":"What is Stocky Swap and why is August 2026 the deadline?","acceptedAnswer":{"@type":"Answer","text":"Stocky Swap logs every Shopify order line item to a Google Sheets inventory log in real time — six columns: timestamp, SKU, quantity sold as a negative change, order ID, product, and a note. Shopify is permanently shutting down Stocky on August 31, 2026 and will delete all data after that date. The JSON imports in 60 seconds and starts capturing data immediately."}},
-      {"@type":"Question","name":"Will the kit work with my Shopify plan?","acceptedAnswer":{"@type":"Answer","text":"Yes. The kit uses Shopify webhooks available on every plan including Shopify Basic. No app installation required. The only change in Shopify Admin is adding one webhook URL under Settings → Notifications → Webhooks — a two-minute step that triggers all four automations simultaneously."}},
-      {"@type":"Question","name":"Does the Complete Kit work outside the US?","acceptedAnswer":{"@type":"Answer","text":"Yes. All four scenarios work globally. Shopify webhooks, Make.com, Meta Conversions API, Google GA4, and TikTok Events API all support international markets. The P&L Auto scenario supports any Shopify-supported currency."}},
-      {"@type":"Question","name":"Is this a subscription?","acceptedAnswer":{"@type":"Answer","text":"No. The Complete Kit is a one-time $24 payment. You own the files permanently. There is no recurring charge from us; the only ongoing cost is Make's own plan, and any two scenarios run on their free tier."}},
-      {"@type":"Question","name":"What support is included?","acceptedAnswer":{"@type":"Answer","text":"One direct support question is included with every purchase. Email support@stackarchitect.xyz with your question, which file (Blueprint 01–04), a screenshot of any Make.com error, and your Shopify plan. Response within 24 hours on UK working days."}}
-    ]
-  }</script>
-</Fragment>
+      ...PRODUCTS.map((p) => ({
+        '@type': 'Product',
+        name: `${p.name} — ${p.blueprint}`,
+        sku: `SA-${p.slug.toUpperCase()}-001`,
+        url: `https://stackarchitect.xyz/pro/${p.slug}/`,
+        description: `${p.tagline}. Import the file, paste your own API credentials, live in ${p.deployTime}. Replaces ${p.replaces.map((r) => r.name).join(', ')}.`,
+        offers: {
+          '@type': 'Offer',
+          price: String(SINGLE_PRICE),
+          priceCurrency: 'USD',
+          availability: 'https://schema.org/InStock',
+          priceValidUntil: '2027-12-31',
+          url: `https://stackarchitect.xyz/pro/${p.slug}/`,
+          seller: { '@id': 'https://stackarchitect.xyz/#org' },
+          hasMerchantReturnPolicy: {
+            '@type': 'MerchantReturnPolicy',
+            returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+            merchantReturnDays: 30,
+            returnFees: 'https://schema.org/FreeReturn',
+          },
+        },
+      })),
+    ],
+  },
+  // The four single-product pages as a list, so a crawler that does not follow
+  // hasVariant still finds them.
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Stack Architect blueprints, sold individually',
+    numberOfItems: PRODUCTS.length,
+    itemListElement: PRODUCTS.map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: p.name,
+      url: `https://stackarchitect.xyz/pro/${p.slug}/`,
+      description: p.problem,
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'How to deploy a Stack Architect blueprint',
+    description: `Buy at stackarchitect.xyz/pro via Stripe — ${kit} for the kit or ${single} for one blueprint. You are redirected to a Google Drive folder. Import the JSON into Make.com, add one Shopify webhook, paste your own API credentials.`,
+    totalTime: 'PT10M',
+    estimatedCost: { '@type': 'MonetaryAmount', currency: 'USD', value: String(KIT_PRICE) },
+    step: [
+      { '@type': 'HowToStep', position: 1, name: 'Buy and open the folder', text: 'Purchase via Stripe. You are redirected immediately to a Google Drive folder with the files — four JSON blueprints, two Sheets templates and a PDF guide for the kit, or the single blueprint you bought.' },
+      { '@type': 'HowToStep', position: 2, name: 'Import the blueprint into Make.com', text: 'In Make.com, click Create a new scenario, then Import Blueprint, and upload the JSON file. Every module, router and field mapping is recreated as it was built.' },
+      { '@type': 'HowToStep', position: 3, name: 'Paste your own API credentials', text: 'The blueprints ship with placeholders where your secrets go — Meta pixel ID and Conversions API token, Google Ads conversion action, TikTok Events API token, your Google account. Nothing is proxied through us.' },
+      { '@type': 'HowToStep', position: 4, name: 'Add the Shopify webhook and place a test order', text: 'In Shopify Admin, go to Settings, then Notifications, then Webhooks, and add an Order payment webhook pointing at the Make.com URL. Place a test order and confirm the data arrives.' },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+
+---
+<Base
+  title={`Stack Architect Complete Kit — ${kit}`}
+  description={`Four import-ready Make.com blueprints plus two Google Sheets templates. Server-side tracking, TikTok CAPI, inventory and live P&L, live in 10 minutes. ${kit} once, or ${single} for one.`}
+  pageType="product"
+  schema={proSchema}
+>
 <!-- NAV -->
   
 
@@ -175,9 +259,9 @@ const stickyHref = buildStripeUrl(KIT_STRIPE_URL, 'pro_sticky');
     <div class="hero-inner">
       <div class="hero-dateline">Instant access via Stripe · Updated August 2026</div>
 
-      <h1 itemprop="headline">Your Shopify backend, already built.<br><span class="green">Import the file. Live in ten minutes.</span></h1>
+      <h1>Your Shopify backend, already built.<br><span class="green">Import the file. Live in ten minutes.</span></h1>
 
-      <p id="answer" class="hero-sub" itemprop="description">Four finished Make.com blueprints — server-side Meta, Google and TikTok tracking, live inventory, and per-order profit. Every module and field mapping is built; you paste your own API credentials and switch it on. <strong>{kit} once, or {single} for the one you actually need.</strong> No subscription.</p>
+      <p id="answer" class="hero-sub">Four finished Make.com blueprints — server-side Meta, Google and TikTok tracking, live inventory, and per-order profit. Every module and field mapping is built; you paste your own API credentials and switch it on. <strong>{kit} once, or {single} for the one you actually need.</strong> No subscription.</p>
 
       <div class="price-row">
         <div class="price-main">{kit}</div>
@@ -381,9 +465,7 @@ const stickyHref = buildStripeUrl(KIT_STRIPE_URL, 'pro_sticky');
   </section>
 
   <!-- HOW IT DEPLOYS -->
-  <section class="section-alt" id="how-it-works" aria-labelledby="how-h" itemscope itemtype="https://schema.org/HowTo">
-    <meta itemprop="name" content="How to Deploy the Stack Architect Complete Kit in 10 Minutes">
-    <meta itemprop="totalTime" content="PT10M">
+  <section class="section-alt" id="how-it-works" aria-labelledby="how-h">
     <div class="inner">
       <div class="sec-head">
         <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">deployment · 4 steps · 10 minutes</span>
@@ -391,28 +473,28 @@ const stickyHref = buildStripeUrl(KIT_STRIPE_URL, 'pro_sticky');
         <p>No developer. No agency. No configuration screens. Import the JSON — every field is already mapped.</p>
       </div>
       <div class="how-grid">
-        <div class="how-step" itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
+        <div class="how-step">
           <div class="how-n">Step 01 // ~1 min</div>
-          <div class="how-title" itemprop="name">Pay &amp; access files instantly</div>
-          <p class="how-body" itemprop="text">Purchase at stackarchitect.xyz/pro via Stripe. You are redirected immediately to a Google Drive folder containing all 7 files — four JSON blueprints, two Sheets templates, and a PDF guide. No email wait. Open a file, done.</p>
+          <div class="how-title">Pay &amp; access files instantly</div>
+          <p class="how-body">Purchase at stackarchitect.xyz/pro via Stripe. You are redirected immediately to a Google Drive folder containing all 7 files — four JSON blueprints, two Sheets templates, and a PDF guide. No email wait. Open a file, done.</p>
           <span class="how-tool">Stripe checkout · instant redirect</span>
         </div>
-        <div class="how-step" itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
+        <div class="how-step">
           <div class="how-n" style="color:var(--sky)">Step 02 // ~3 min</div>
-          <div class="how-title" itemprop="name">Import JSON blueprints</div>
-          <p class="how-body" itemprop="text">In Make.com, click Create new scenario → Import Blueprint → upload each JSON file. Every module, API connection, and field mapping is pre-configured inside the file. Nothing to set up manually.</p>
+          <div class="how-title">Import JSON blueprints</div>
+          <p class="how-body">In Make.com, click Create new scenario → Import Blueprint → upload each JSON file. Every module, API connection, and field mapping is pre-configured inside the file. Nothing to set up manually.</p>
           <span class="how-tool">Make.com · two scenarios free · one click</span>
         </div>
-        <div class="how-step" itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
+        <div class="how-step">
           <div class="how-n" style="color:var(--vio)">Step 03 // ~2 min</div>
-          <div class="how-title" itemprop="name">Add one Shopify webhook</div>
-          <p class="how-body" itemprop="text">In Shopify Admin → Settings → Notifications → Webhooks, add an Order payment webhook and paste the Make.com URL. One webhook triggers all four automations simultaneously — no separate connections needed.</p>
+          <div class="how-title">Add one Shopify webhook</div>
+          <p class="how-body">In Shopify Admin → Settings → Notifications → Webhooks, add an Order payment webhook and paste the Make.com URL. One webhook triggers all four automations simultaneously — no separate connections needed.</p>
           <span class="how-tool">Shopify Admin · no app install</span>
         </div>
-        <div class="how-step" itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
+        <div class="how-step">
           <div class="how-n" style="color:var(--amber)">Step 04 // ~4 min</div>
-          <div class="how-title" itemprop="name">Connect Sheets &amp; test</div>
-          <p class="how-body" itemprop="text">Copy the Google Sheets templates to your Drive and connect them in Make.com. Place a test order — verify data appears in your Sheets dashboard and in Meta Events Manager. Stack is live.</p>
+          <div class="how-title">Connect Sheets &amp; test</div>
+          <p class="how-body">Copy the Google Sheets templates to your Drive and connect them in Make.com. Place a test order — verify data appears in your Sheets dashboard and in Meta Events Manager. Stack is live.</p>
           <span class="how-tool">Google Sheets · test order</span>
         </div>
       </div>
@@ -653,7 +735,14 @@ const stickyHref = buildStripeUrl(KIT_STRIPE_URL, 'pro_sticky');
         <h2 id="faq-h">Every question <span style="color:var(--g)">answered</span></h2>
         <p>Everything Shopify store owners ask before purchasing the Complete Kit.</p>
       </div>
-      <div class="faq-list-c" id="faq-list"></div>
+      <div class="faq-list-c">
+        {faqs.map((f) => (
+          <details class="faq-item-c">
+            <summary><span>{f.q}</span><span class="faq-ico" aria-hidden="true"></span></summary>
+            <div class="faq-ans-c"><p>{f.a}</p></div>
+          </details>
+        ))}
+      </div>
     </div>
   </section>
 
@@ -786,69 +875,6 @@ const stickyHref = buildStripeUrl(KIT_STRIPE_URL, 'pro_sticky');
     });
   })();
 
-  // FAQ
-  (function() {
-    var Q = [
-      {
-        q: "What is the Stack Architect Complete Kit?",
-        a: "The Stack Architect Complete Kit is a $24 one-time purchase containing seven files: four ready-to-import Make.com automation JSON blueprints (CAPI Shield for Meta + Google server-side tracking, TikTok CAPI for TikTok Events API v1.3, Stocky Swap for inventory management replacing Shopify Stocky before its August 2026 shutdown, and P&L Auto for live profit and loss reporting), two pre-configured Google Sheets templates, and a PDF setup guide. One direct support question is also included. Access is instant via Stripe — you are redirected to a Google Drive folder with all files immediately after payment."
-      },
-      {
-        q: "What is a Make.com JSON blueprint and how does importing it work?",
-        a: "A Make.com JSON blueprint is a complete export of a finished automation — every module, API connection, field mapping, and routing rule is embedded in the file. In Make.com, go to Create new scenario → Import Blueprint → upload the JSON file. The entire pre-configured scenario is recreated instantly. No manual setup required. Works on Make's free tier, which allows two active scenarios."
-      },
-      {
-        q: "How do I access the files after purchase?",
-        a: "After payment via Stripe, you are redirected immediately to a Google Drive folder containing all seven files. Files are available to download directly in your browser — no email required, no account to create. The folder link is yours to keep and re-access at any time."
-      },
-      {
-        q: "How is the Complete Kit different from the free Stack Architect guides?",
-        a: "The free guides are step-by-step instructions for building each automation yourself. The Complete Kit gives you the finished JSON blueprint files. The technical outcome is identical: same EMQ scores, same attribution accuracy, same data. The difference is time. Each guide takes approximately 2 hours. All four take 8+ hours. The kit deploys in 10 minutes total."
-      },
-      {
-        q: "Do I need a paid Make.com plan?",
-        a: "Make's free plan allows two active scenarios, so any two of the four run free (1,000 credits/month, enough for roughly 300 orders a month). Running all four at once needs Make Core, about $9/month, which also lifts the credit ceiling to 10,000. Checked against make.com/pricing on 29 August 2026."
-      },
-      {
-        q: "What Shopify apps does the Complete Kit replace?",
-        a: "CAPI Shield replaces Elevar ($225/mo), Triple Whale (GMV-based), and Northbeam (from $1,500+/mo). TikTok CAPI replaces WeltPixel ($39+/mo) and Analyzify ($145–$275/mo). Stocky Swap replaces Shopify Stocky, Linnworks, and Skubana — none of which publish a price. P&L Auto replaces TrueProfit and BeProfit ($19–$299/mo). Most stores replace $60–$180 per month; heavy ad spenders on Elevar or Analyzify replace far more."
-      },
-      {
-        q: "What is Stocky Swap and why is August 2026 the deadline?",
-        a: "Stocky Swap logs every Shopify order line item to a Google Sheets inventory log in real time — six columns: timestamp, SKU, quantity sold as a negative change, order ID, product, and a note. Shopify is permanently shutting down Stocky on August 31, 2026 and will delete all data after that date. The JSON imports in 60 seconds and starts capturing data immediately."
-      },
-      {
-        q: "Will the kit work with my Shopify plan?",
-        a: "Yes. The kit uses Shopify webhooks available on every plan including Shopify Basic. No app installation required. The only change in Shopify Admin is adding one webhook URL under Settings → Notifications → Webhooks — a two-minute step that triggers all four automations simultaneously."
-      },
-      {
-        q: "Does the Complete Kit work outside the US?",
-        a: "Yes. All four scenarios work globally. Shopify webhooks, Make.com, Meta Conversions API, Google GA4, and TikTok Events API all support international markets. The P&L Auto scenario supports any Shopify-supported currency. Stores in the UK, EU, Australia, Canada, and all other Shopify markets are fully compatible."
-      },
-      {
-        q: "Is this a subscription?",
-        a: "No. The Complete Kit is a one-time $24 payment. You own the files permanently. There is no recurring charge from us; the only ongoing cost is Make's own plan, and any two scenarios run on their free tier."
-      },
-      {
-        q: "What support is included?",
-        a: "One direct support question is included with every purchase. Email support@stackarchitect.xyz with your question, which file (Blueprint 01–04), a screenshot of any Make.com error, and your Shopify plan. Response within 24 hours on UK working days."
-      }
-    ];
-
-    var c = document.getElementById('faq-list');
-    if (!c) return;
-    Q.forEach(function(item) {
-      var d = document.createElement('details');
-      d.className = 'faq-item-c';
-      d.setAttribute('itemscope', '');
-      d.setAttribute('itemprop', 'mainEntity');
-      d.setAttribute('itemtype', 'https://schema.org/Question');
-      d.innerHTML = '<summary><span itemprop="name">' + item.q + '</span><span class="faq-ico" aria-hidden="true"></span></summary>'
-        + '<div class="faq-ans-c" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">'
-        + '<p itemprop="text">' + item.a + '</p></div>';
-      c.appendChild(d);
-    });
-  })();
   </script>
 
 <!-- ── STICKY BOTTOM CTA ─────────────────────────────────────────────── -->
