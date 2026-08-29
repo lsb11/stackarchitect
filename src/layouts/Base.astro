@@ -693,6 +693,16 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
               var isKitPage   = (href === '/pro/' || href.indexOf('/pro#') === 0 || href.indexOf('/pro/#') === 0);
               var isStripe    = absHref.indexOf('buy.stripe.com') > -1;
 
+              // The CTA's own source string (brief section 5): written onto the
+              // link at build time by buildStripeUrl() in src/data/products.ts,
+              // and declared again as data-cta so non-Stripe CTAs — the chooser
+              // cards, which point at /pro/{slug}/ — are attributable too.
+              var ctaSource = a.getAttribute('data-cta') || '';
+              if (!ctaSource && isStripe) {
+                try { ctaSource = new URL(absHref).searchParams.get('client_reference_id') || ''; }
+                catch (err) {}
+              }
+
               // --- outbound (non-affiliate external) — useful for GEO/referral insight
               if (!isAffiliate && !isKitPage && !isStripe) {
                 var isExternal = false;
@@ -749,6 +759,7 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
                 source_page:  sourcePage,
                 destination:  href,
                 partner:      partner,
+                cta_source:   ctaSource,
                 link_text:    linkText,
                 link_position: linkPosition,
                 landing_path: landing.path || '',
@@ -768,7 +779,20 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
                     cmp: (landing.utm_camp   || '').slice(0, 20),
                     ts:  Date.now()
                   }));
-                  stripeUrl.searchParams.set('client_reference_id', payload);
+                  // Stripe gives us exactly ONE field, and two things want it.
+                  // This handler used to .set() the payload over whatever was
+                  // already there, which silently destroyed the CTA source that
+                  // buildStripeUrl had written at build time — so every source
+                  // string on /pro/{slug}/, the guide offers and the thanks-page
+                  // upsell reached Stripe as an opaque blob.
+                  //
+                  // Both now travel: the readable source first, so it is legible
+                  // in the dashboard against the payment exactly as brief
+                  // section 5 intends, then the session payload behind it.
+                  // Decode with: ref.split('__') -> [source, b64payload].
+                  // Stripe caps client_reference_id at 200 characters.
+                  var ref = ctaSource ? (ctaSource + '__' + payload) : payload;
+                  stripeUrl.searchParams.set('client_reference_id', ref.slice(0, 200));
                   a.href = stripeUrl.toString();
                 } catch (err) {}
               }

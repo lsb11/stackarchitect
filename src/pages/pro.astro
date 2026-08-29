@@ -1,9 +1,14 @@
 ---
 import Base from '../layouts/Base.astro';
 import AuthorCard from '../components/AuthorCard.astro';
-import AttributionTracker from '../components/AttributionTracker.astro';
 import ProductChooser from '../components/ProductChooser.astro';
-import { KIT_PRICE, SINGLE_PRICE, formatPrice } from '../data/products';
+import {
+  KIT_PRICE,
+  SINGLE_PRICE,
+  KIT_STRIPE_URL,
+  buildStripeUrl,
+  formatPrice,
+} from '../data/products';
 import { isPostShutdown } from '../utils/stockyDeadline';
 
 // Rendered at build time so crawlers get the correct side of the deadline.
@@ -22,6 +27,18 @@ const postShutdown = isPostShutdown();
 // changing KIT_PRICE.
 const kit = formatPrice(KIT_PRICE);
 const single = formatPrice(SINGLE_PRICE);
+
+// Brief section 5. Each CTA stamps its own source onto the Stripe link as
+// client_reference_id, which shows against the payment in the Stripe
+// dashboard — attribution with no analytics setup at all.
+//
+// The brief's `pro_compare` is absent because 3e removed the CTA that sat by
+// the comparison table. `pro_after_chooser` is the strip that follows the
+// chooser, named for where it actually is rather than where it used to be.
+const heroHref = buildStripeUrl(KIT_STRIPE_URL, 'pro_hero');
+const afterChooserHref = buildStripeUrl(KIT_STRIPE_URL, 'pro_after_chooser');
+const bottomHref = buildStripeUrl(KIT_STRIPE_URL, 'pro_bottom');
+const stickyHref = buildStripeUrl(KIT_STRIPE_URL, 'pro_sticky');
 ---
 <Base title={`Stack Architect Complete Kit — ${kit}`} description="Four import-ready Make.com blueprints plus two Google Sheets templates. Server-side tracking, TikTok CAPI, inventory and live P&L, live in 10 minutes.">
 <Fragment slot="head">
@@ -168,7 +185,7 @@ const single = formatPrice(SINGLE_PRICE);
       <div class="price-anchor">Less than one month of the cheapest app it replaces — and you own it forever.</div>
 
       <div class="hero-ctas">
-        <a href="https://buy.stripe.com/00wfZa7w1a3Bfo55tnfrW00" class="btn pulse">Get the Complete Kit — {kit} <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a>
+        <a href={heroHref} data-cta="pro_hero" class="btn pulse">Get the Complete Kit — {kit} <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a>
         <a href="#whats-inside" class="btn-outline" onclick="event.preventDefault();document.getElementById('whats-inside').scrollIntoView({behavior:'smooth'})">See what's inside <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"></path></svg></a>
       </div>
 
@@ -260,7 +277,7 @@ const single = formatPrice(SINGLE_PRICE);
       </div>
       <div class="cta-strip-actions">
         <a href="#whats-inside" class="btn-outline btn-outline-sm" onclick="event.preventDefault();document.getElementById('whats-inside').scrollIntoView({behavior:'smooth'})">See What's Inside</a>
-        <a href="https://buy.stripe.com/00wfZa7w1a3Bfo55tnfrW00" class="btn btn-sm pulse">Get the Kit — {kit} →</a>
+        <a href={afterChooserHref} data-cta="pro_after_chooser" class="btn btn-sm pulse">Get the Kit — {kit} →</a>
       </div>
     </div>
   </div>
@@ -648,7 +665,7 @@ const single = formatPrice(SINGLE_PRICE);
 
 
       <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:16px;">
-        <a href="https://buy.stripe.com/00wfZa7w1a3Bfo55tnfrW00" class="btn pulse" style="font-size:16px;padding:16px 32px;">Get the Complete Kit — {kit} <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a>
+        <a href={bottomHref} data-cta="pro_bottom" class="btn pulse" style="font-size:16px;padding:16px 32px;">Get the Complete Kit — {kit} <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a>
       </div>
 
       <!-- GUARANTEE at bottom CTA -->
@@ -840,7 +857,7 @@ const single = formatPrice(SINGLE_PRICE);
     <span style="color:#34d377;font-weight:700;">Complete Kit — {kit}</span> &nbsp;·&nbsp; Pre-built · 10 min · 30-day guarantee
   </div>
   <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-    <a href="https://buy.stripe.com/00wfZa7w1a3Bfo55tnfrW00" style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#0c0f0d;background:#34d377;padding:9px 18px;border-radius:6px;text-decoration:none;white-space:nowrap;">Get the Kit — {kit} →</a>
+    <a href={stickyHref} data-cta="pro_sticky" data-cta-position="sticky" style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#0c0f0d;background:#34d377;padding:9px 18px;border-radius:6px;text-decoration:none;white-space:nowrap;">Get the Kit — {kit} →</a>
     <button id="sticky-close" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#93a09a;background:none;border:none;cursor:pointer;padding:4px 8px;">✕</button>
   </div>
 </div>

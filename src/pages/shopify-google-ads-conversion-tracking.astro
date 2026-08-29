@@ -30,7 +30,7 @@ const OG_IMAGE  = "https://stackarchitect.xyz/og/og-google-ads-conversion-tracki
 
 const MAKE_URL  = "/go/make/";
 const SCENARIO_URL = "https://eu1.make.com/public/shared-scenario/QBl8tBAX4k1/shopify-to-google-ads-enhanced-conversio";
-const KIT_URL   = "https://buy.stripe.com/00wfZa7w1a3Bfo55tnfrW00";
+const KIT_URL   = KIT_STRIPE_URL;
 
 const heroStats = [
   { value: "gclid",       label: "Stripped before Google sees it" },
@@ -189,7 +189,7 @@ const schemaGraph = {
 };
 import TableOfContents from '../components/TableOfContents.astro';
 import InlineOffer from '../components/InlineOffer.astro';
-import { KIT_PRICE, formatPrice } from '../data/products';
+import { KIT_PRICE, KIT_STRIPE_URL, buildStripeUrl, formatPrice } from '../data/products';
 
 const tocHeadings = [
   {
@@ -479,7 +479,7 @@ const tocHeadings = [
 
     <div style="margin-top:24px;text-align:center;">
       <p style="font-size:14px;color:var(--text-4);margin-bottom:16px;">Prefer all four in one place? The Complete Kit includes a ready-to-import Make.com JSON blueprint for this exact setup — plus Meta CAPI, TikTok CAPI, Stocky Swap, and P&L Auto.</p>
-      <a href={KIT_URL} class="btn btn-sm" target="_blank" rel="noopener">
+      <a href={buildStripeUrl(KIT_URL, "guide_shopify_google_ads_conversion_tracking_kit_mid")} data-cta="guide_shopify_google_ads_conversion_tracking_kit_mid" class="btn btn-sm" target="_blank" rel="noopener">
         Get all 4 pre-built automations — {formatPrice(KIT_PRICE)}
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
@@ -639,7 +639,7 @@ const tocHeadings = [
         Fix Google Ads tracking free on Make.com — no credit card
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
-      <a href={KIT_URL} target="_blank" rel="noopener" class="btn-outline" style="font-size:15px;">
+      <a href={buildStripeUrl(KIT_URL, "guide_shopify_google_ads_conversion_tracking_kit_end")} data-cta="guide_shopify_google_ads_conversion_tracking_kit_end" target="_blank" rel="noopener" class="btn-outline" style="font-size:15px;">
         Get pre-built kit — {formatPrice(KIT_PRICE)}
       </a>
     </div>
