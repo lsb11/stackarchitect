@@ -2,6 +2,7 @@
 import "@fontsource/sora/600.css";
 import "@fontsource/sora/700.css";
 import "@fontsource/jetbrains-mono/500.css";
+import { KIT_PRICE, formatPrice } from '../data/products';
 // Nav.astro — Stack Architect, 2026 refresh
 // Changes vs previous version:
 //  • Fake status ticker ("PRODUCT_NODES // ACCESS_OPEN") replaced with ONE
@@ -116,7 +117,7 @@ const guides = [
             <span class="sa-drop-desc">All seven tools, vetted and ranked</span>
           </a>
           <a href="/pro/" class="sa-drop-item sa-drop-item--pro" role="menuitem">
-            <span class="sa-drop-title">Complete kit — <span class="figure">$29</span></span>
+            <span class="sa-drop-title">Complete kit — <span class="figure">{formatPrice(KIT_PRICE)}</span></span>
             <span class="sa-drop-desc">Every scenario ready to import — kit import, live in 10 minutes</span>
           </a>
         </div>
@@ -169,7 +170,7 @@ const guides = [
     </div>
 
     <div class="sa-nav-right">
-      <a href="/pro/" class="sa-nav-cta">Get the kit — <span class="figure-inline">$29</span></a>
+      <a href="/pro/" class="sa-nav-cta">Get the kit — <span class="figure-inline">{formatPrice(KIT_PRICE)}</span></a>
     </div>
 
     <button class="sa-hamburger" id="sa-hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sa-mobile-menu">
@@ -196,7 +197,7 @@ const guides = [
       <a href="/apps/" aria-current={currentPath === '/apps/' || currentPath.startsWith('/apps/') ? 'page' : undefined}>App Directory</a>
       <a href="/about/" aria-current={currentPath === '/about/' || currentPath.startsWith('/about/') ? 'page' : undefined}>About</a>
     </div>
-    <a href="/pro/" class="sa-mobile-cta">Get the complete kit — $29</a>
+    <a href="/pro/" class="sa-mobile-cta">Get the complete kit — {formatPrice(KIT_PRICE)}</a>
   </div>
 </nav>
 

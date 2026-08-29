@@ -1,0 +1,265 @@
+---
+/**
+ * ProductChooser — "Which problem are you fixing?"
+ *
+ * Section 2 of /pro/, immediately below the hero. The kit page's failure mode
+ * is that it sells four things to someone who arrived with one problem; this
+ * grid puts the four problems in front of them in their own words and lets
+ * them self-select before the page asks for anything.
+ *
+ * Cards link to /pro/{slug}/, NOT to Stripe. The per-single Payment Links do
+ * not exist yet (brief §9.2), and a card that leads to the single's own page
+ * is the better funnel regardless: that page carries the steps, the FAQ and
+ * the bundle upsell, none of which a checkout redirect can.
+ *
+ * The bundle line below the grid does go to Stripe — KIT_STRIPE_URL is live —
+ * stamped with the §5 `pro_chooser_kit` source.
+ *
+ * Accent hexes are duplicated here rather than read from --g/--sky/--tiktok/
+ * --amber. This component's <style> is scoped to the component, so it cannot
+ * see the custom properties pro.astro declares in its own scoped block. Same
+ * reasoning, and the same values, as src/components/InlineOffer.astro.
+ */
+import {
+  PRODUCTS,
+  KIT_PRICE,
+  SINGLE_PRICE,
+  KIT_STRIPE_URL,
+  buildStripeUrl,
+  formatPrice,
+} from '../data/products';
+
+const single = formatPrice(SINGLE_PRICE);
+const kit = formatPrice(KIT_PRICE);
+const kitHref = buildStripeUrl(KIT_STRIPE_URL, 'pro_chooser_kit');
+---
+
+<section class="pc" id="chooser" aria-labelledby="pc-h">
+  <div class="pc-inner">
+    <div class="pc-head">
+      <span class="pc-tag">choose one · or take all four</span>
+      <h2 id="pc-h">Which problem are you fixing?</h2>
+      <p class="pc-sub">
+        Each blueprint is sold on its own at {single}. Pick the one that matches what is
+        actually broken — or take the set below.
+      </p>
+    </div>
+
+    <div class="pc-grid">
+      {PRODUCTS.map((p) => (
+        <article class={`pc-card acc-${p.accent}`}>
+          <div class="pc-bar"></div>
+          <div class="pc-body">
+            <h3 class="pc-problem">{p.problem}</h3>
+            <div class="pc-name">{p.name}</div>
+            <div class="pc-tagline">{p.tagline}</div>
+            <div class="pc-saving">Replaces {p.savingRange}</div>
+          </div>
+          <div class="pc-foot">
+            <a href={`/pro/${p.slug}/`} class="pc-btn" data-cta={`pro_chooser_${p.slug}`}>
+              {single} →
+            </a>
+            <span class="pc-blueprint">{p.blueprint}</span>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="pc-bundle">
+      <p class="pc-bundle-copy">
+        <strong class="pc-bundle-lede">All four — {kit}.</strong>
+        Cheaper than three singles. Includes both Sheets templates, the setup PDF
+        and one support question.
+      </p>
+      {kitHref
+        ? <a href={kitHref} class="pc-bundle-btn" data-cta="pro_chooser_kit">Get the Complete Kit — {kit}</a>
+        : <button class="pc-bundle-btn" type="button" disabled aria-disabled="true">Coming this week</button>
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .pc {
+    border-bottom: 1px solid rgba(255, 255, 255, .06);
+    padding: 56px 24px 60px;
+    font-family: 'Inter', -apple-system, 'Helvetica Neue', sans-serif;
+  }
+  .pc-inner { max-width: 1100px; margin: 0 auto; }
+
+  .pc-head { text-align: center; margin-bottom: 30px; }
+  .pc-tag {
+    display: inline-flex;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #7f8b85;
+    border: 1px solid rgba(255, 255, 255, .11);
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin-bottom: 16px;
+  }
+  .pc-head h2 {
+    font-size: clamp(26px, 4vw, 36px);
+    font-weight: 800;
+    letter-spacing: -.035em;
+    color: #f2f5f3;
+    margin: 0 0 10px;
+    line-height: 1.15;
+  }
+  .pc-sub {
+    max-width: 560px;
+    margin: 0 auto;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: #93a09a;
+  }
+
+  .pc-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 960px) { .pc-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .pc-grid { grid-template-columns: 1fr; } }
+
+  .pc-card {
+    --acc: #34d377;
+    --ink: #0c0f0d;
+    --tint: rgba(52, 211, 119, .07);
+
+    display: flex;
+    flex-direction: column;
+    background: #121614;
+    border: 1px solid rgba(255, 255, 255, .11);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color .2s, transform .2s;
+  }
+  .pc-card:hover { border-color: var(--acc); transform: translateY(-2px); }
+  .pc-card.acc-sky   { --acc: #6cc3e6; --tint: rgba(108, 195, 230, .07); }
+  .pc-card.acc-tiktok { --acc: #ff2e63; --ink: #fff; --tint: rgba(255, 46, 99, .07); }
+  .pc-card.acc-amber { --acc: #f59e0b; --tint: rgba(245, 158, 11, .08); }
+
+  .pc-bar { height: 3px; background: var(--acc); }
+  .pc-body { padding: 20px 18px 16px; flex: 1; }
+
+  .pc-problem {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -.02em;
+    color: #f2f5f3;
+    margin: 0 0 14px;
+  }
+  .pc-name {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    color: var(--acc);
+    margin-bottom: 4px;
+  }
+  .pc-tagline {
+    font-size: 13px;
+    line-height: 1.55;
+    color: #93a09a;
+    margin-bottom: 14px;
+  }
+  .pc-saving {
+    display: inline-block;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--acc);
+    background: var(--tint);
+    border-radius: 4px;
+    padding: 4px 8px;
+  }
+
+  .pc-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 14px 18px 18px;
+  }
+  .pc-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 18px;
+    border-radius: 6px;
+    background: var(--acc);
+    /* Dark ink on a filled accent — see CLAUDE.md on filled-button contrast. */
+    color: var(--ink);
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .pc-btn:hover { filter: brightness(1.08); }
+  .pc-blueprint {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: .06em;
+    color: #7f8b85;
+  }
+
+  .pc-bundle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    padding: 20px 24px;
+    border: 1px solid rgba(52, 211, 119, .3);
+    border-radius: 12px;
+    background: rgba(52, 211, 119, .06);
+  }
+  .pc-bundle-copy {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: #b6c0ba;
+    max-width: 620px;
+  }
+  .pc-bundle-lede {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    color: #34d377;
+  }
+  .pc-bundle-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 13px 24px;
+    border: 1px solid #34d377;
+    border-radius: 7px;
+    background: #34d377;
+    color: #0c0f0d;
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .pc-bundle-btn:hover { filter: brightness(1.08); }
+  .pc-bundle-btn[disabled] {
+    background: transparent;
+    color: #93a09a;
+    border-color: #2f3733;
+    cursor: default;
+  }
+
+  @media (max-width: 620px) {
+    .pc { padding: 40px 18px 44px; }
+    .pc-bundle { padding: 18px; }
+    .pc-bundle-btn { width: 100%; justify-content: center; }
+  }
+</style>
