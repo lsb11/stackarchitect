@@ -27,6 +27,25 @@
  * number, and passing the date you read it as verifiedDate to <Base>. That
  * is the whole job. There is no other way to clear it.
  *
+ * ---------------------------------------------------------------------------
+ * SECOND CHECK — CANONICAL FIGURES (src/data/claims.json)
+ *
+ * The ratchet above asks "is this number dated?". It cannot ask "is this
+ * number right?", and that is the failure that actually happened: two blog
+ * posts drifted from $9 to $12 for Make Core and sat wrong for months, while
+ * the kit price lived as a literal inside this file's own allowlist, so
+ * moving the kit off $29 broke the build rather than being caught by it.
+ *
+ * src/data/claims.json names the figures we consider settled — our prices,
+ * Make's Core price, Make's free-plan scenario cap, the savings range. This
+ * check reads every page and fails the build when one states a number in the
+ * right context with the wrong value, or repeats a claim we have retired.
+ *
+ * There is no quarantine for this one. A quarantine is for work outstanding —
+ * a vendor price nobody has verified yet. A contradiction of a canonical
+ * figure is not outstanding work, it is a page that is wrong, and the fix is
+ * to correct the page or to change claims.json deliberately.
+ *
  * Usage:
  *   node scripts/claims-guard.mjs          # exit 1 on violation
  *   node scripts/claims-guard.mjs --list   # print the worklist, always exit 0
@@ -38,22 +57,29 @@ import path from 'node:path';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const QUARANTINE = path.join(ROOT, 'docs', 'claims-unverified.json');
+const CANONICAL = path.join(ROOT, 'src', 'data', 'claims.json');
+
+const canonical = JSON.parse(fs.readFileSync(CANONICAL, 'utf8'));
+
+/** Every figure under `ours` as a bare number, for the allowlist below. */
+const ourPrices = Object.values(canonical.ours)
+  .map((c) => c.value)
+  .filter((v) => typeof v === 'number');
 
 /**
- * Prices that are ours, not a third party's, and so need no vendor source:
- *   $0     — the free stack, the whole premise
- *   $24    — the Complete Kit (KIT_PRICE)
- *   $9.99  — any single blueprint (SINGLE_PRICE)
- *   $14    — the single-to-kit upgrade (UPGRADE_PRICE)
- *   $7.99  — StockLog
- * Everything else is somebody else's number and needs a source and a date.
+ * Prices that are ours, not a third party's, and so need no vendor source.
+ * Built from src/data/claims.json — $0 (the free stack, the whole premise)
+ * plus every figure under `ours`. Everything else is somebody else's number
+ * and needs a source and a date.
  *
- * TODO: these are hand-kept in sync with src/data/products.ts, which is how
- * they went stale when the kit moved off $29 — every mention of the new price
- * read as an undated third-party claim and failed the build. The follow-up
- * commit moves them into src/data/claims.json and has this file read them.
+ * This list used to be a hand-written regex, which is exactly how it went
+ * stale: the kit moved to $24 and every mention of the new price read as an
+ * undated third-party claim.
  */
-const OURS = /^\$(0|24|14|9\.99|7\.99)(\/(mo|month|yr|year))?[,.]?$/;
+const OURS = new RegExp(
+  `^\\$(0|${ourPrices.map((v) => String(v).replace('.', '\\.')).join('|')})` +
+    `(\\/(mo|month|yr|year))?[,.]?$`
+);
 
 const PRICE =
   /\$[0-9][0-9,]*(?:\.[0-9]{2})?(?:\s*[–—-]\s*\$?[0-9][0-9,]*(?:\.[0-9]{2})?)?(?:\s*\/\s*(?:mo|month|yr|year))?\+?/g;
@@ -85,6 +111,103 @@ function scan() {
   }
 
   return out;
+}
+
+/**
+ * Every text file a reader or a crawler can reach. Wider than the ratchet's
+ * scan, which only looks at top-level pages and blog posts: the Make Core
+ * price is quoted in components and layouts too, and llms.txt is what a model
+ * reads when asked what we charge.
+ */
+function contentFiles() {
+  const roots = [
+    ['src', 'pages'],
+    ['src', 'content'],
+    ['src', 'components'],
+    ['src', 'layouts'],
+    ['public'],
+  ];
+  const exts = /\.(astro|md|mdx|ts|js|mjs|json|txt|vtt)$/;
+  const skip = /node_modules|\.astro\/|dist\//;
+  const found = [];
+
+  const walk = (dir) => {
+    if (!fs.existsSync(dir)) return;
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (skip.test(full)) continue;
+      if (entry.isDirectory()) walk(full);
+      else if (exts.test(entry.name)) found.push(full);
+    }
+  };
+
+  for (const r of roots) walk(path.join(ROOT, ...r));
+  // claims.json states the canonical values; checking it against itself would
+  // flag every retired figure it deliberately records.
+  return found.filter((f) => f !== CANONICAL);
+}
+
+/** Line number of a character offset, for an error a human can act on. */
+function lineOf(source, index) {
+  return source.slice(0, index).split('\n').length;
+}
+
+function checkCanonical() {
+  const problems = [];
+  const entries = [
+    ...Object.entries(canonical.ours).map(([k, v]) => [k, v, 'ours']),
+    ...Object.entries(canonical.thirdParty).map(([k, v]) => [k, v, 'thirdParty']),
+  ];
+
+  for (const file of contentFiles()) {
+    const src = fs.readFileSync(file, 'utf8');
+    const rel = path.relative(ROOT, file);
+
+    for (const [id, claim] of entries) {
+      // (a) numbers stated in a context that identifies the claim
+      for (const pattern of claim.contexts || []) {
+        const re = new RegExp(pattern, 'gi');
+        for (const m of src.matchAll(re)) {
+          const stated = Number(m[1]);
+          if (!Number.isFinite(stated) || stated === claim.value) continue;
+          // Only flag a value we know to be a stale version of this claim, or
+          // one that reads as a straight contradiction. Anything else is
+          // probably a sentence the pattern caught by accident.
+          const isRetired = (claim.retired || []).includes(stated);
+          if (!isRetired) continue;
+          problems.push({
+            file: rel,
+            line: lineOf(src, m.index),
+            id,
+            found: `$${stated}`,
+            expected: `$${claim.value}`,
+            why: claim.source
+              ? `verified at ${claim.source} on ${claim.verifiedDate}`
+              : `ours to set — see ${claim.mirrors}`,
+            excerpt: m[0].replace(/\s+/g, ' ').trim().slice(0, 90),
+          });
+        }
+      }
+
+      // (b) phrasings we have retired outright
+      for (const f of claim.forbid || []) {
+        const re = new RegExp(f.pattern, 'gi');
+        for (const m of src.matchAll(re)) {
+          problems.push({
+            file: rel,
+            line: lineOf(src, m.index),
+            id,
+            found: m[0].replace(/\s+/g, ' ').trim().slice(0, 60),
+            expected: String(claim.value),
+            why: f.why,
+            excerpt: m[0].replace(/\s+/g, ' ').trim().slice(0, 90),
+          });
+        }
+      }
+    }
+  }
+
+  return problems;
 }
 
 const quarantine = fs.existsSync(QUARANTINE)
@@ -129,6 +252,23 @@ if (listMode) {
 }
 
 let failed = false;
+
+const contradictions = checkCanonical();
+if (contradictions.length) {
+  failed = true;
+  console.error('\n✗ claims-guard: page contradicts a canonical figure in src/data/claims.json\n');
+  for (const c of contradictions) {
+    console.error(`  ${c.file}:${c.line}`);
+    console.error(`    ${c.id}: found ${c.found}, expected ${c.expected} — ${c.why}`);
+    console.error(`    …${c.excerpt}…`);
+  }
+  console.error(
+    '\n  Fix the page. If the figure itself has changed, change it in\n' +
+      '  src/data/claims.json (and src/data/products.ts for a price we set),\n' +
+      '  re-verify any third-party figure against its source, and update the\n' +
+      '  verifiedDate to the day you read it.\n'
+  );
+}
 
 if (violations.length) {
   failed = true;

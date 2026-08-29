@@ -1,0 +1,118 @@
+{
+  "_comment": [
+    "Canonical figures. If a number in here appears on a page, it must appear",
+    "with THIS value — scripts/claims-guard.mjs fails the build otherwise.",
+    "",
+    "This exists because two blog posts drifted from $9 to $12 for Make Core",
+    "and nobody noticed for months, and because the guard meant to catch that",
+    "had the kit price hardcoded in its own allowlist, so moving the kit off",
+    "$29 broke the build instead of being caught by it.",
+    "",
+    "Prices under `ours` are ours to set: no vendor source needed, and they",
+    "mirror src/data/products.ts, which stays the source of truth for anything",
+    "rendered. Everything under `thirdParty` is somebody else's number and",
+    "carries the date a human last read it on the vendor's own pricing page.",
+    "Do not edit a verifiedDate without opening that page."
+  ],
+
+  "ours": {
+    "kitPrice": {
+      "value": 24,
+      "unit": "USD one-time",
+      "mirrors": "src/data/products.ts KIT_PRICE",
+      "retired": [29],
+      "contexts": [
+        "(?:Complete Kit|Stack Architect Pro|pre-built kit|the kit)[^.$\\n<]{0,90}?\\$([0-9]+(?:\\.[0-9]{2})?)\\b",
+        "\\$([0-9]+(?:\\.[0-9]{2})?)\\s+one-time[^.\\n<]{0,40}(?:kit|blueprint)"
+      ]
+    },
+    "singlePrice": {
+      "value": 9.99,
+      "unit": "USD one-time",
+      "mirrors": "src/data/products.ts SINGLE_PRICE",
+      "retired": [],
+      "contexts": []
+    },
+    "upgradePrice": {
+      "value": 14,
+      "unit": "USD one-time",
+      "mirrors": "src/data/products.ts UPGRADE_PRICE",
+      "retired": [],
+      "contexts": []
+    },
+    "stockLogPrice": {
+      "value": 7.99,
+      "unit": "USD one-time",
+      "mirrors": "StockLog listing",
+      "retired": [],
+      "contexts": []
+    },
+    "kitSavingsRange": {
+      "value": "$60-$180/mo",
+      "unit": "apps the KIT's four blueprints replace, typical store",
+      "mirrors": "brief 3c recalibration",
+      "retired": [],
+      "_scope": [
+        "This is the Complete Kit's claim — what its four blueprints replace.",
+        "It is NOT the seven-category free-stack claim ($700+/mo), which covers",
+        "a wider basket including email and helpdesk, is computed from the",
+        "SAVINGS table in src/pages/index.astro, and is a separate figure with",
+        "its own basis. Do not collapse the two."
+      ],
+      "forbid": [
+        {
+          "pattern": "\\$696\\+?\\s*/?\\s*(?:mo|month)",
+          "why": "the retired kit aggregate; say $60-$180/mo (brief 3c)"
+        },
+        {
+          "pattern": "\\$8,300\\+",
+          "why": "the retired kit year-one aggregate; say $60-$180/mo (brief 3c)"
+        }
+      ]
+    }
+  },
+
+  "thirdParty": {
+    "makeCorePrice": {
+      "value": 9,
+      "unit": "USD/month, monthly billing",
+      "source": "https://www.make.com/en/pricing",
+      "verifiedDate": "2026-08-29",
+      "retired": [12],
+      "contexts": [
+        "Make(?:\\.com)?'?s?\\s+Core[^.\\n<]{0,70}?\\$([0-9]+(?:\\.[0-9]{2})?)",
+        "\\$([0-9]+(?:\\.[0-9]{2})?)\\s*(?:/|per\\s+)(?:mo|month)[^.\\n<]{0,40}?Make(?:\\.com)?\\s+Core",
+        "Core (?:plan )?(?:at|is|costs|starts at|for)\\s+\\$([0-9]+(?:\\.[0-9]{2})?)"
+      ]
+    },
+    "makeFreeScenarioCap": {
+      "value": 2,
+      "unit": "active scenarios on the free plan",
+      "source": "https://www.make.com/en/pricing",
+      "verifiedDate": "2026-08-29",
+      "retired": [],
+      "forbid": [
+        {
+          "pattern": "free\\s+(?:tier|plan)[^.\\n<]{0,80}unlimited\\s+scenarios",
+          "why": "Make's free plan allows two active scenarios; unlimited scenarios is Core"
+        },
+        {
+          "pattern": "unlimited\\s+scenarios[^.\\n<]{0,60}free\\s+(?:tier|plan)",
+          "why": "Make's free plan allows two active scenarios; unlimited scenarios is Core"
+        },
+        {
+          "pattern": "all four (?:scenarios )?run (?:on )?(?:Make(?:\\.com)?'?s? )?free",
+          "why": "two active scenarios on the free plan, so four separate ones need Core"
+        }
+      ]
+    },
+    "makeFreeCredits": {
+      "value": 1000,
+      "unit": "credits/month on the free plan",
+      "source": "https://www.make.com/en/pricing",
+      "verifiedDate": "2026-08-29",
+      "retired": [],
+      "contexts": []
+    }
+  }
+}
