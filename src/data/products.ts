@@ -93,7 +93,7 @@ export const PRODUCTS: Product[] = [
     ],
     savingRange: '$29–$199/mo',
     guideUrl: '/stocky-swap/',
-    stripeUrl: '', // TODO: $9.99 Payment Link (brief §9.2)
+    stripeUrl: 'https://buy.stripe.com/aFa6oA8A51x50tbcVPfrW03',
     driveUrl: '', // TODO: per-single Drive folder (brief §9.4)
     accent: 'sky',
     deployTime: '~4 min',
@@ -151,7 +151,7 @@ export const PRODUCTS: Product[] = [
     ],
     savingRange: '$29–$225/mo',
     guideUrl: '/capi-shield/',
-    stripeUrl: '', // TODO: $9.99 Payment Link (brief §9.2)
+    stripeUrl: 'https://buy.stripe.com/7sY4gsaId4Jhek12hbfrW04',
     driveUrl: '', // TODO: per-single Drive folder (brief §9.4)
     accent: 'green',
     deployTime: '~6 min',
@@ -207,7 +207,7 @@ export const PRODUCTS: Product[] = [
     ],
     savingRange: '$39–$275/mo',
     guideUrl: '/tiktok-events-api-shopify/',
-    stripeUrl: '', // TODO: $9.99 Payment Link (brief §9.2)
+    stripeUrl: 'https://buy.stripe.com/7sY4gs4jP0t17VDdZTfrW05',
     driveUrl: '', // TODO: per-single Drive folder (brief §9.4)
     accent: 'tiktok',
     deployTime: '~6 min',
@@ -264,7 +264,7 @@ export const PRODUCTS: Product[] = [
     ],
     savingRange: '$19–$99/mo',
     guideUrl: '/shopify-profit-loss-automation/',
-    stripeUrl: '', // TODO: $9.99 Payment Link (brief §9.2)
+    stripeUrl: 'https://buy.stripe.com/5kQfZaeYtdfNb7P8FzfrW06',
     driveUrl: '', // TODO: per-single Drive folder (brief §9.4)
     accent: 'amber',
     deployTime: '~8 min',
