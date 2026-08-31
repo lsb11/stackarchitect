@@ -10,9 +10,10 @@
  * is per-slug except what that file provides — a template that forks on slug is
  * how four pages drift apart.
  */
-import { existsSync } from 'node:fs';
-import path from 'node:path';
 import Base from '../../layouts/Base.astro';
+import ProofShot from '../../components/ProofShot.astro';
+import { SCENARIO_SHOTS, RESULT_SHOTS } from '../../data/proofShots';
+import { resolveShots } from '../../utils/proof';
 import {
   PRODUCTS,
   SINGLE_PRICE,
@@ -49,13 +50,13 @@ const heroHref = buildStripeUrl(stripeUrl, `single_${slug}_hero`);
 const bottomHref = buildStripeUrl(stripeUrl, `single_${slug}_bottom`);
 const bundleHref = buildStripeUrl(KIT_STRIPE_URL, `single_${slug}_bundle_upsell`);
 
-// Proof screenshot (brief §7). The images are supplied by hand and are not in
-// the repo yet, so the frame renders in dev — where it is a reminder that the
-// layout is waiting on an asset — and is simply absent in a production build
-// rather than shipping an empty placeholder to a buyer being asked for a card.
-const proofSrc = `/proof/scenario-${slug}.png`;
-const hasProof = existsSync(path.join(process.cwd(), 'public', 'proof', `scenario-${slug}.png`));
-const showProofFrame = hasProof || import.meta.env.DEV;
+// Proof screenshots (brief §7): the Make.com canvas for this blueprint, then
+// the result it produces — the Events Manager entry or the populated Sheet.
+// Absent-file handling, real PNG dimensions and the capture date all live in
+// src/utils/proof.ts; see there for why a missing asset is not a build error.
+const proofShots = resolveShots([SCENARIO_SHOTS[slug], RESULT_SHOTS[slug]]);
+const shotSources = [SCENARIO_SHOTS[slug], RESULT_SHOTS[slug]].filter(Boolean);
+const showProofFrame = proofShots.length > 0;
 
 // Stocky is the one product whose framing turns over on a date.
 // See src/utils/stockyDeadline.ts for why this is a build-time branch.
@@ -163,15 +164,11 @@ const schema = [
   </section>
 
   {showProofFrame && (
-    <section class="section" aria-label={`${name} in Make.com`}>
+    <section class="section" aria-label={`${name} running`}>
       <div class="inner">
-        <figure class="proof">
-          {hasProof
-            ? <img src={proofSrc} alt={`The ${name} scenario open in the Make.com canvas, with the resulting rows in Google Sheets.`} width="1600" height="900" loading="lazy" decoding="async" />
-            : <div class="proof-pending">proof/scenario-{slug}.png — screenshot pending</div>
-          }
-          <figcaption>{blueprint} on the Make.com canvas, and the result it writes.</figcaption>
-        </figure>
+        <div class="proof-grid">
+          {shotSources.map((shot) => <ProofShot shot={shot!} />)}
+        </div>
       </div>
     </section>
   )}
@@ -426,15 +423,9 @@ const schema = [
   .sec-head h2 { font-family: var(--sans); font-size: clamp(24px,3.6vw,34px); font-weight: 700; color: var(--text); letter-spacing: -.03em; line-height: 1.1; margin-bottom: 12px; margin-top: 12px; }
   .sec-head p { font-size: 15px; color: var(--text-3); line-height: 1.7; max-width: 520px; margin: 0 auto; }
 
-  /* PROOF */
-  .proof { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--bg-3); }
-  .proof img { display: block; width: 100%; height: auto; }
-  .proof-pending {
-    aspect-ratio: 16 / 9; display: flex; align-items: center; justify-content: center;
-    font-family: var(--mono); font-size: 12px; color: var(--text-4);
-    background: repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(255,255,255,.02) 12px, rgba(255,255,255,.02) 24px);
-  }
-  .proof figcaption { font-family: var(--mono); font-size: 11px; color: var(--text-4); padding: 12px 16px; border-top: 1px solid var(--border); }
+  /* PROOF — frame styles live in ProofShot.astro; this is only the layout. */
+  .proof-grid { display: grid; gap: 20px; }
+  @media (min-width: 860px) { .proof-grid { grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); } }
 
   /* FILE LIST */
   .folder-contents { background: var(--bg); border: 1px solid var(--border-2); border-radius: 8px; padding: 18px 20px; text-align: left; }

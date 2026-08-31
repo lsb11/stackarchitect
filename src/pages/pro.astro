@@ -2,6 +2,8 @@
 import Base from '../layouts/Base.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 import ProductChooser from '../components/ProductChooser.astro';
+import ProofShot from '../components/ProofShot.astro';
+import { KIT_HERO_SHOT } from '../data/proofShots';
 import {
   PRODUCTS,
   KIT_PRICE,
@@ -45,7 +47,7 @@ const stickyHref = buildStripeUrl(KIT_STRIPE_URL, 'pro_sticky');
 const faqs = [
   {
     q: 'What is the Stack Architect Complete Kit?',
-    a: `The Stack Architect Complete Kit is a ${kit} one-time purchase containing seven files: four ready-to-import Make.com automation JSON blueprints (CAPI Shield for Meta + Google server-side tracking, TikTok CAPI for TikTok Events API v1.3, Stocky Swap for inventory management replacing Shopify Stocky, and P&L Auto for live profit and loss reporting), two pre-configured Google Sheets templates, and a PDF setup guide. One direct support question is also included. Access is instant via Stripe — you are redirected to a Google Drive folder with all files immediately after payment.`,
+    a: `The Stack Architect Complete Kit is a ${kit} one-time purchase containing eight files: an all-in-one JSON blueprint that runs all four automations in a single scenario, the same four automations as separate ready-to-import Make.com JSON blueprints (CAPI Shield for Meta + Google server-side tracking, TikTok CAPI for TikTok Events API v1.3, Stocky Swap for inventory management replacing Shopify Stocky, and P&L Auto for live profit and loss reporting), two pre-configured Google Sheets templates, and a PDF setup guide. One direct support question is also included. Access is instant via Stripe — you are redirected to a Google Drive folder with all files immediately after payment.`,
   },
   {
     q: 'Can I buy just one blueprint?',
@@ -57,7 +59,7 @@ const faqs = [
   },
   {
     q: 'How do I access the files after purchase?',
-    a: 'After payment via Stripe, you are redirected immediately to a Google Drive folder containing all seven files. Files are available to download directly in your browser — no email required, no account to create. The folder link is yours to keep and re-access at any time.',
+    a: 'After payment via Stripe, you are redirected immediately to a Google Drive folder containing all eight files. Files are available to download directly in your browser — no email required, no account to create. The folder link is yours to keep and re-access at any time.',
   },
   {
     q: 'How is the Complete Kit different from the free Stack Architect guides?',
@@ -291,6 +293,7 @@ const proSchema = [
       <div class="folder-contents">
         <div class="folder-contents-label">WHAT YOU GET INSTANTLY AFTER PAYMENT</div>
         <ul class="folder-file-list" aria-label="Complete Kit file contents">
+          <li class="folder-file"><span class="folder-file-icon">▸</span>FILE_00_Complete_Kit_All_In_One.json — all four automations in one scenario: one webhook, one of Make's two free scenario slots, about a third fewer credits per order<span class="folder-file-type">JSON</span></li>
           <li class="folder-file"><span class="folder-file-icon">▸</span>Blueprint 01_CAPI_Shield.json — Meta CAPI (Graph v19.0) + Google Ads Enhanced Conversions<span class="folder-file-type">JSON</span></li>
           <li class="folder-file"><span class="folder-file-icon">▸</span>Blueprint 02_TikTok_CAPI.json — TikTok Events API v1.3<span class="folder-file-type">JSON</span></li>
           <li class="folder-file"><span class="folder-file-icon">▸</span>Blueprint 03_Stocky_Swap_Inventory.json — Live inventory log<span class="folder-file-type">JSON</span></li>
@@ -315,6 +318,15 @@ const proSchema = [
           ? "Stocky's data was deleted August 31, 2026 — Stocky Swap JSON deploys in 60 seconds"
           : "Stocky shuts down August 31, 2026 — Stocky Swap JSON deploys in 60 seconds"}
       </div>
+    </div>
+  </section>
+
+  <!-- HERO PROOF — the page's primary proof asset (brief §7). It sits between
+       the hero and the chooser because it answers "is this real" before the
+       buyer is asked to pick anything. Eager-loaded: it is above the fold. -->
+  <section class="hero-proof" aria-label="The Complete Kit running in Make.com">
+    <div class="hero-proof-inner">
+      <ProofShot shot={KIT_HERO_SHOT} eager />
     </div>
   </section>
 
@@ -370,7 +382,7 @@ const proSchema = [
   <section class="section" id="whats-inside" aria-labelledby="inside-h">
     <div class="inner">
       <div class="sec-head">
-        <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">contents · 7 files</span>
+        <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">contents · 8 files</span>
         <h2 id="inside-h">Everything in the <span style="color:var(--g)">Complete Kit</span></h2>
         <p>Not instructions. The actual files. Import the JSON — it is already built. No configuration screens. No field mapping. No guesswork.</p>
       </div>
@@ -476,7 +488,7 @@ const proSchema = [
         <div class="how-step">
           <div class="how-n">Step 01 // ~1 min</div>
           <div class="how-title">Pay &amp; access files instantly</div>
-          <p class="how-body">Purchase at stackarchitect.xyz/pro via Stripe. You are redirected immediately to a Google Drive folder containing all 7 files — four JSON blueprints, two Sheets templates, and a PDF guide. No email wait. Open a file, done.</p>
+          <p class="how-body">Purchase at stackarchitect.xyz/pro via Stripe. You are redirected immediately to a Google Drive folder containing all 8 files — the all-in-one blueprint, the same four as separate blueprints, two Sheets templates, and a PDF guide. No email wait. Open a file, done.</p>
           <span class="how-tool">Stripe checkout · instant redirect</span>
         </div>
         <div class="how-step">
@@ -718,7 +730,7 @@ const proSchema = [
         <p>P&L Auto fires the instant a Shopify order is paid. It writes one row per order to an Order_Data tab with ten fields — Order_ID, Date, Channel, Revenue, Discount, Shipping_Rev, Shopify_Fee, Payment_Fee, COGS, and Gross_Profit. A COGS_Table maps each Variant_ID to its cost price, and a live Dashboard tab auto-totals revenue, fees, COGS, gross profit, order count and average profit per order via SUM formulas. The Shopify fee defaults to 2.9% + $0.30 and is editable for your plan. TrueProfit charges $19–$99 per month; the P&L Auto scenario produces a real-time profit picture at $0 per month.</p>
 
         <h3>What is included in the Complete Kit for {kit}?</h3>
-        <p>The Stack Architect Complete Kit contains exactly seven files: <strong>Blueprint 01_CAPI_Shield.json</strong> (Meta Conversions API via Graph API v19.0 + Google Ads Enhanced Conversions, split across a built-in router), <strong>Blueprint 02_TikTok_CAPI.json</strong> (TikTok Events API v1.3), <strong>Blueprint 03_Stocky_Swap_Inventory.json</strong> (live inventory to Sheets), <strong>Blueprint 04_P_and_L_Auto.json</strong> (live P&L to Sheets), <strong>SA_Template_1_Stocky_Swap_Inventory.xlsx</strong> (pre-built six-column inventory log with example rows and setup tab), <strong>SA_Template_2_PnL_Auto.xlsx</strong> (pre-built P&L workbook with four tabs including a live auto-totalling dashboard), and <strong>README_Complete_Kit.pdf</strong> (full setup documentation). One direct support question is also included with every purchase. All files are accessible instantly via Stripe — no email required.</p>
+        <p>The Stack Architect Complete Kit contains exactly eight files: <strong>FILE_00_Complete_Kit_All_In_One.json</strong> (all four automations in one scenario — one webhook, one of Make's two free scenario slots, about a third fewer credits per order), <strong>Blueprint 01_CAPI_Shield.json</strong> (Meta Conversions API via Graph API v19.0 + Google Ads Enhanced Conversions, split across a built-in router), <strong>Blueprint 02_TikTok_CAPI.json</strong> (TikTok Events API v1.3), <strong>Blueprint 03_Stocky_Swap_Inventory.json</strong> (live inventory to Sheets), <strong>Blueprint 04_P_and_L_Auto.json</strong> (live P&L to Sheets), <strong>SA_Template_1_Stocky_Swap_Inventory.xlsx</strong> (pre-built six-column inventory log with example rows and setup tab), <strong>SA_Template_2_PnL_Auto.xlsx</strong> (pre-built P&L workbook with four tabs including a live auto-totalling dashboard), and <strong>README_Complete_Kit.pdf</strong> (full setup documentation). One direct support question is also included with every purchase. All files are accessible instantly via Stripe — no email required.</p>
 
         <h3>Does the Complete Kit work for Shopify stores outside the US?</h3>
         <p>Yes. <strong>All four scenarios work globally.</strong> Shopify webhooks, Make.com, Meta Conversions API, Google GA4, and TikTok Events API all support international markets. The P&L Auto scenario supports any currency Shopify supports. Stores in the UK, EU, Australia, Canada, and all other Shopify markets are fully compatible. There are no geographic restrictions on any of the platforms the kit uses.</p>
@@ -1128,6 +1140,11 @@ const proSchema = [
     /* LAYOUT */
     .section { padding: 72px 24px; }
     .section-alt { padding: 72px 24px; background: var(--bg-3); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    /* HERO PROOF — frame styles live in ProofShot.astro. Sized to the chooser
+       below it (1100px) so the two read as one block, not two stacked cards. */
+    .hero-proof { padding: 0 24px 8px; }
+    .hero-proof-inner { max-width: 1000px; margin: 0 auto; }
+
     .inner { max-width: 860px; margin: 0 auto; }
     .inner-sm { max-width: 680px; margin: 0 auto; }
     .sec-head { text-align: center; margin-bottom: 48px; }

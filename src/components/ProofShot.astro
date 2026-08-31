@@ -1,0 +1,71 @@
+---
+/**
+ * ProofShot — one screenshot of the product actually working, with a caption.
+ *
+ * Used on /pro/ (hero) and on all four /pro/{slug}/ pages. The absent-file
+ * behaviour, the real PNG dimensions and the capture date all come from
+ * src/utils/proof.ts; this component is only the markup and the frame.
+ *
+ * `eager` is for the /pro/ hero and nothing else. Every other shot is below the
+ * fold and loads lazily.
+ */
+import type { ProofShot as Shot } from '../data/proofShots';
+import { resolveShot } from '../utils/proof';
+
+interface Props {
+  shot: Shot;
+  /** Hero only: skip lazy loading and hint high fetch priority. */
+  eager?: boolean;
+  class?: string;
+}
+
+const { shot, eager = false, class: className = '' } = Astro.props;
+const s = resolveShot(shot);
+---
+
+{s.visible && (
+  <figure class:list={['proof', className]}>
+    {s.present ? (
+      <img
+        src={s.src}
+        alt={s.alt}
+        width={s.width}
+        height={s.height}
+        loading={eager ? 'eager' : 'lazy'}
+        decoding={eager ? 'sync' : 'async'}
+        fetchpriority={eager ? 'high' : undefined}
+      />
+    ) : (
+      <div class="proof-pending" style={`aspect-ratio:${s.width} / ${s.height}`}>{s.pending}</div>
+    )}
+    <figcaption>{s.caption}</figcaption>
+    {import.meta.env.DEV && s.present && s.pending && (
+      <div class="proof-pending-note">{s.pending}</div>
+    )}
+  </figure>
+)}
+
+<style>
+  .proof {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--bg-3);
+    margin: 0;
+  }
+  .proof img { display: block; width: 100%; height: auto; }
+  .proof-pending {
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    padding: 16px;
+    font-family: var(--mono); font-size: 12px; color: var(--text-4);
+    background: repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(255,255,255,.02) 12px, rgba(255,255,255,.02) 24px);
+  }
+  .proof figcaption {
+    font-family: var(--mono); font-size: 11px; line-height: 1.6; color: var(--text-4);
+    padding: 12px 16px; border-top: 1px solid var(--border);
+  }
+  .proof-pending-note {
+    font-family: var(--mono); font-size: 10px; color: var(--text-4);
+    padding: 8px 16px; border-top: 1px dashed var(--border);
+  }
+</style>
