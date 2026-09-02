@@ -49,6 +49,23 @@
  * ---------------------------------------------------------------------------
  * THIRD CHECK — press credentials. See checkPress() below.
  *
+ * ---------------------------------------------------------------------------
+ * FOURTH AND FIFTH CHECKS — affiliate integrity. See checkDisclosure() and
+ * checkGoTargets() below.
+ *
+ * Fourth: a page carrying a /go/* cloak must carry <Disclosure /> too. An
+ * undisclosed affiliate link is the one failure on this site that is a legal
+ * problem and not merely an SEO one, and it had already happened once — the
+ * Apps Script quotas post injected a floating /go/make/ CTA from an inline
+ * script and disclosed nothing.
+ *
+ * Fifth: no /go/* cloak may resolve to a domain listed in src/data/apps.json.
+ * apps.json is the list of apps this site tells readers to *replace*. Earning
+ * a commission on an app we also tell you to drop makes the comparison
+ * worthless, whatever the recommendation happens to be. This is what caught
+ * /go/gorgias, which paid a $200-500 bounty on a vendor apps.json names as
+ * something to swap out for Tidio.
+ *
  * Usage:
  *   node scripts/claims-guard.mjs          # exit 1 on violation
  *   node scripts/claims-guard.mjs --list   # print the worklist, always exit 0
@@ -319,6 +336,162 @@ function checkPress() {
   return problems;
 }
 
+// ───────────────────────────────────────────────────────────────────────────
+// AFFILIATE INTEGRITY
+// ───────────────────────────────────────────────────────────────────────────
+
+const APPS_JSON = path.join(ROOT, 'src', 'data', 'apps.json');
+const REDIRECTS = path.join(ROOT, 'public', '_redirects');
+const BLOG_LAYOUT = path.join(ROOT, 'src', 'layouts', 'BlogPost.astro');
+
+/**
+ * Comments are not links. Stripping them first is what lets a file document
+ * why a cloak was removed — `// Do not reintroduce a /go/gorgias cloak` —
+ * without the guard reading that as a live affiliate link.
+ */
+function stripComments(source) {
+  return source
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/\/\*[\s\S]*?\*\//g, ' ')
+    .replace(/(^|[^:])\/\/[^\n]*/g, '$1 ');
+}
+
+/** Every /go/<slug> cloak referenced in a file, comments excluded. */
+function goSlugsIn(source) {
+  const slugs = new Set();
+  for (const m of stripComments(source).matchAll(/\/go\/([a-z0-9][a-z0-9-]*)/g)) {
+    slugs.add(m[1]);
+  }
+  return slugs;
+}
+
+/** Registrable-ish host compare: api.make.com matches make.com. */
+function hostMatches(host, domain) {
+  return host === domain || host.endsWith('.' + domain);
+}
+
+/**
+ * FOURTH CHECK — every page with a /go/* link carries <Disclosure />.
+ *
+ * Markdown posts under src/content/blog are covered by BlogPost.astro, which
+ * injects <Disclosure /> whenever the body contains a cloak. That indirection
+ * is fine, but it is also a single point of failure for fourteen posts, so
+ * the guard verifies the wiring itself rather than trusting it.
+ */
+function checkDisclosure() {
+  const problems = [];
+  const HAS_DISCLOSURE = /<Disclosure\s*\/?>/;
+
+  const layoutSrc = fs.existsSync(BLOG_LAYOUT)
+    ? fs.readFileSync(BLOG_LAYOUT, 'utf8')
+    : '';
+  const layoutAutoInjects =
+    /hasAffiliateLink\s*=[^\n]*\/go\//.test(layoutSrc) &&
+    /hasAffiliateLink\s*&&\s*<Disclosure\s*\/?>/.test(layoutSrc);
+
+  for (const file of contentFiles()) {
+    const rel = path.relative(ROOT, file);
+    const isPage = rel.startsWith(path.join('src', 'pages')) && rel.endsWith('.astro');
+    const isPost =
+      rel.startsWith(path.join('src', 'content', 'blog')) && /\.mdx?$/.test(rel);
+    if (!isPage && !isPost) continue;
+
+    const src = fs.readFileSync(file, 'utf8');
+    const slugs = goSlugsIn(src);
+    if (!slugs.size) continue;
+
+    if (isPage) {
+      if (!HAS_DISCLOSURE.test(src)) {
+        problems.push({
+          file: rel,
+          slugs: [...slugs],
+          why: 'page links /go/* but renders no <Disclosure />',
+        });
+      }
+    } else if (!layoutAutoInjects) {
+      problems.push({
+        file: rel,
+        slugs: [...slugs],
+        why: 'BlogPost.astro no longer auto-injects <Disclosure /> for /go/* posts',
+      });
+    }
+  }
+  return problems;
+}
+
+/**
+ * FIFTH CHECK — no cloak resolves to a vendor apps.json says to replace, and
+ * every cloak a page uses actually resolves at all.
+ */
+function checkGoTargets() {
+  const problems = [];
+
+  const appsRaw = fs.readFileSync(APPS_JSON, 'utf8');
+  const apps = JSON.parse(appsRaw);
+  // Any host apps.json cites, not just priceSourceUrl — a vendor named in a
+  // brandChange href or a migration step is the same conflict.
+  const appDomains = new Map();
+  for (const m of appsRaw.matchAll(/https?:\/\/([a-z0-9.-]+)/gi)) {
+    const host = m[1].toLowerCase().replace(/^www\./, '');
+    if (host.endsWith('stackarchitect.xyz')) continue;
+    if (!appDomains.has(host)) appDomains.set(host, host);
+  }
+  const appNameFor = (host) => {
+    const hit = apps.find(
+      (a) =>
+        typeof a.priceSourceUrl === 'string' &&
+        a.priceSourceUrl.toLowerCase().includes(host)
+    );
+    return hit ? hit.name : null;
+  };
+
+  // /go/<slug> → target, from public/_redirects.
+  const targets = new Map();
+  for (const line of fs.readFileSync(REDIRECTS, 'utf8').split('\n')) {
+    const m = line.match(/^\s*\/go\/([a-z0-9][a-z0-9-]*)\/?\s+(\S+)/);
+    if (m) targets.set(m[1], m[2]);
+  }
+
+  for (const [slug, target] of targets) {
+    let host;
+    try {
+      host = new URL(target).hostname.toLowerCase().replace(/^www\./, '');
+    } catch {
+      problems.push({ slug, target, why: 'target is not a parseable absolute URL' });
+      continue;
+    }
+    for (const domain of appDomains.keys()) {
+      if (!hostMatches(host, domain)) continue;
+      const name = appNameFor(domain);
+      problems.push({
+        slug,
+        target,
+        why:
+          `resolves to ${domain}, which src/data/apps.json lists` +
+          (name ? ` as ${name} — an app this site tells readers to replace` : ''),
+      });
+      break;
+    }
+  }
+
+  // A cloak a page links but _redirects does not declare is a dead link on a
+  // revenue path, and it fails silently in production.
+  for (const file of contentFiles()) {
+    const rel = path.relative(ROOT, file);
+    if (rel.startsWith('public')) continue;
+    for (const slug of goSlugsIn(fs.readFileSync(file, 'utf8'))) {
+      if (targets.has(slug)) continue;
+      problems.push({
+        slug,
+        target: '(none)',
+        why: `linked from ${rel} but no /go/${slug} rule exists in public/_redirects`,
+      });
+    }
+  }
+
+  return problems;
+}
+
 const quarantine = fs.existsSync(QUARANTINE)
   ? JSON.parse(fs.readFileSync(QUARANTINE, 'utf8'))
   : { files: {} };
@@ -393,6 +566,38 @@ if (pressProblems.length) {
       '  against the article itself, and change src/data/press.ts and the press\n' +
       '  block in src/data/claims.json together — they are checked against each\n' +
       '  other on purpose.\n'
+  );
+}
+
+const undisclosed = checkDisclosure();
+if (undisclosed.length) {
+  failed = true;
+  console.error('\n✗ claims-guard: affiliate link with no on-page disclosure\n');
+  for (const p of undisclosed) {
+    console.error(`  ${p.file} — /go/${p.slugs.join(', /go/')}`);
+    console.error(`    ${p.why}`);
+  }
+  console.error(
+    '\n  Import src/components/Disclosure.astro and render <Disclosure /> above\n' +
+      '  the first affiliate link on the page. For a markdown post the layout\n' +
+      '  does it — restore BlogPost.astro\'s hasAffiliateLink injection instead.\n'
+  );
+}
+
+const goConflicts = checkGoTargets();
+if (goConflicts.length) {
+  failed = true;
+  console.error('\n✗ claims-guard: /go/* affiliate cloak does not resolve cleanly\n');
+  for (const p of goConflicts) {
+    console.error(`  /go/${p.slug} → ${p.target}`);
+    console.error(`    ${p.why}`);
+  }
+  console.error(
+    '\n  For an apps.json conflict: we cannot be paid by both sides of a\n' +
+      '  comparison. Either drop the cloak and link the vendor directly,\n' +
+      '  unsponsored, or remove the app from src/data/apps.json.\n' +
+      '  For an undeclared cloak: add both slash variants to public/_redirects\n' +
+      '  as 302s, or correct the link.\n'
   );
 }
 
