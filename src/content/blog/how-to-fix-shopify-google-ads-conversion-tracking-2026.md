@@ -103,7 +103,7 @@ This is the server-side layer. Every time a Shopify order is paid, Make.com send
 
 **Step 1 — Create your Make.com account**
 
-Go to [Make.com — free, 1,000 ops/month](/go/make/) and sign up on the free plan. No credit card required.
+Go to [Make.com — free, 1,000 ops/month](/go/make/?source=how-to-fix-shopify-google-ads-conversion-n1) and sign up on the free plan. No credit card required.
 
 **Step 2 — Set up your Shopify webhook (skip if already done)**
 
@@ -218,7 +218,7 @@ For stores already running Make.com for CAPI Shield or Stocky Swap, the Google E
 
 The campaign performance improvement typically follows 2–4 weeks after implementation as Google's Smart Bidding and Performance Max algorithms adjust to the more complete conversion dataset. Stores running ROAS-based bidding often see ROAS improvement as more real conversions surface — the same budget is now training on more accurate signal.
 
-Start with the [Make.com free account — 1,000 ops/month, no card](/go/make/) and follow the steps above. If you want the complete cross-platform setup covering Meta and TikTok simultaneously, [CAPI Shield](/capi-shield/) covers all three in a single guided implementation.
+Start with the [Make.com free account — 1,000 ops/month, no card](/go/make/?source=how-to-fix-shopify-google-ads-conversion-n2) and follow the steps above. If you want the complete cross-platform setup covering Meta and TikTok simultaneously, [CAPI Shield](/capi-shield/) covers all three in a single guided implementation.
 
 
 ---

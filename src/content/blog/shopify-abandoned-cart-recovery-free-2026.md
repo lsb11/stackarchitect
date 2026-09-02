@@ -52,8 +52,8 @@ Recovery rate for this sequence: 5–15% of abandoned checkouts depending on you
 
 ## What You Need
 
-- A [Systeme.io free account — 2,000 contacts and unlimited sends at $0](https://stackarchitect.xyz/go/systeme)
-- A [Make.com free account — 1,000 credits a month, enough for ~200 orders](/go/make/)
+- A [Systeme.io free account — 2,000 contacts and unlimited sends at $0](https://stackarchitect.xyz/go/systeme/?source=shopify-abandoned-cart-recovery-free-202-n1)
+- A [Make.com free account — 1,000 credits a month, enough for ~200 orders](/go/make/?source=shopify-abandoned-cart-recovery-free-202-n2)
 - Your Shopify Admin access (Settings → Notifications → Webhooks)
 
 ## Step 1 — Create the Systeme.io Automation

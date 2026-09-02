@@ -42,7 +42,7 @@ Before analysing your conversion rate, verify you're measuring it accurately.
 
 **The tracking gap problem:** iOS restrictions, Safari ITP, and ad blockers mean browser-based tracking misses 20–40% of real purchases on most Shopify stores. If your GA4 shows 80 purchases and Shopify shows 100, your GA4 conversion rate is 20% artificially low. Every CRO decision based on this data is wrong.
 
-**Free fix:** Server-side tracking via [Make.com — free, 1,000 ops/month](/go/make/) recovers the missing purchase events. [CAPI Shield](/capi-shield/) covers Meta and Google simultaneously. [Google Enhanced Conversions](/shopify-google-ads-conversion-tracking/) fixes Google Ads attribution specifically. Both deploy in under 10 minutes at $0.
+**Free fix:** Server-side tracking via [Make.com — free, 1,000 ops/month](/go/make/?source=shopify-conversion-rate-optimisation-fre-n1) recovers the missing purchase events. [CAPI Shield](/capi-shield/) covers Meta and Google simultaneously. [Google Enhanced Conversions](/shopify-google-ads-conversion-tracking/) fixes Google Ads attribution specifically. Both deploy in under 10 minutes at $0.
 
 Only after fixing tracking does your conversion rate become a reliable number to optimise against.
 
@@ -81,7 +81,7 @@ The native Shopify Product Reviews app is free and adds star ratings and review 
 
 ### 5. Tidio Live Chat Free Plan (Free)
 
-[Tidio — free live chat with Lyro AI](https://stackarchitect.xyz/go/tidio) that automatically resolves approximately 70% of pre-purchase queries that automatically resolves approximately 70% of pre-purchase queries. Unanswered questions at checkout are a top conversion killer. Lyro handles "Do you ship to X?", "What's your returns policy?", "When will this arrive?" without any human response needed.
+[Tidio — free live chat with Lyro AI](https://stackarchitect.xyz/go/tidio/?source=shopify-conversion-rate-optimisation-fre-n2) that automatically resolves approximately 70% of pre-purchase queries that automatically resolves approximately 70% of pre-purchase queries. Unanswered questions at checkout are a top conversion killer. Lyro handles "Do you ship to X?", "What's your returns policy?", "When will this arrive?" without any human response needed.
 
 Tidio's free plan covers most Shopify stores. It installs via the Shopify App Store in 2 minutes.
 
@@ -104,7 +104,7 @@ This built-in single email fires 10 hours after abandonment by default. It's fre
 
 ## Free Email and Retention Tools
 
-### 8. [Systeme.io free plan — 2,000 contacts with unlimited sends](https://stackarchitect.xyz/go/systeme) (0–2,000 Contacts)
+### 8. [Systeme.io free plan — 2,000 contacts with unlimited sends](https://stackarchitect.xyz/go/systeme/?source=shopify-conversion-rate-optimisation-fre-n3) (0–2,000 Contacts)
 
 The complete free email marketing stack: welcome sequence, abandoned cart recovery, post-purchase sequence, and win-back campaign. [Full setup guide →](/blog/shopify-email-marketing-free-2026/)
 

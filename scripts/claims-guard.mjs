@@ -492,6 +492,53 @@ function checkGoTargets() {
   return problems;
 }
 
+/**
+ * SIXTH CHECK — functions/go/_cloaks.js agrees with public/_redirects.
+ *
+ * The Function takes precedence over the static rule, and the static rule is
+ * the fallback when the Function fails. Two copies of the same destination is
+ * the price of that safety net; letting them drift silently is not. A cloak
+ * declared in one and not the other, or pointing somewhere different, means
+ * the fallback sends readers somewhere the live path does not.
+ */
+async function checkCloakParity() {
+  const problems = [];
+  const mod = await import(
+    new URL('../functions/go/_cloaks.js', import.meta.url).href
+  );
+  const cloaks = mod.CLOAKS;
+
+  const declared = new Map();
+  for (const line of fs.readFileSync(REDIRECTS, 'utf8').split('\n')) {
+    const m = line.match(/^\s*\/go\/([a-z0-9][a-z0-9-]*)\/?\s+(\S+)/);
+    if (m) declared.set(m[1], m[2]);
+  }
+
+  for (const [slug, target] of declared) {
+    if (!cloaks[slug]) {
+      problems.push(`/go/${slug} is in public/_redirects but not in functions/go/_cloaks.js`);
+    } else if (cloaks[slug].destination !== target) {
+      problems.push(
+        `/go/${slug} destinations differ:\n` +
+          `      _redirects -> ${target}\n` +
+          `      _cloaks.js -> ${cloaks[slug].destination}`
+      );
+    }
+  }
+  for (const slug of Object.keys(cloaks)) {
+    if (!declared.has(slug)) {
+      problems.push(
+        `/go/${slug} is in functions/go/_cloaks.js but has no public/_redirects rule — ` +
+          'the fallback would 404'
+      );
+    }
+    if (!cloaks[slug].subidParam) {
+      problems.push(`/go/${slug} has no subidParam in functions/go/_cloaks.js`);
+    }
+  }
+  return problems;
+}
+
 const quarantine = fs.existsSync(QUARANTINE)
   ? JSON.parse(fs.readFileSync(QUARANTINE, 'utf8'))
   : { files: {} };
@@ -581,6 +628,20 @@ if (undisclosed.length) {
     '\n  Import src/components/Disclosure.astro and render <Disclosure /> above\n' +
       '  the first affiliate link on the page. For a markdown post the layout\n' +
       '  does it — restore BlogPost.astro\'s hasAffiliateLink injection instead.\n'
+  );
+}
+
+const cloakDrift = await checkCloakParity();
+if (cloakDrift.length) {
+  failed = true;
+  console.error(
+    '\n✗ claims-guard: functions/go/_cloaks.js has drifted from public/_redirects\n'
+  );
+  for (const p of cloakDrift) console.error(`  ${p}`);
+  console.error(
+    '\n  Both must declare every cloak with the same destination. _redirects is\n' +
+      '  the fallback the Function drops through to on any error, so a difference\n' +
+      '  means the safety net points somewhere else.\n'
   );
 }
 
