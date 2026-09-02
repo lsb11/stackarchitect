@@ -1,16 +1,53 @@
 ---
-// AuthorCard.astro — Standardized E-E-A-T Author Bio Component for Stack Architect
+// AuthorCard.astro — the visible author byline.
+//
+// Every fact here comes from src/data/author.ts, the same file Base.astro's
+// personSchema reads. That is the point of the component: the byline a reader
+// sees and the Person node a crawler parses are generated from one source, so
+// they cannot say different things about the same person.
+//
+// There is deliberately NO "Verified Author" badge. Nobody verified it but us,
+// so it is a claim we cannot substantiate — the same class of unsupported
+// assertion as the Make free-tier line. Do not reinstate it.
+import { AUTHOR } from '../data/author';
+import { PRESS } from '../data/press';
+
+interface Props {
+  /** Optional: when the page's content was last reviewed. Falls back to the
+      date the author profile itself was last confirmed accurate. */
+  dateModified?: string;
+  /** Show the MAKERSPACE credential line. Off by default — it belongs on the
+      commercial pages and /about/, not on every guide that carries a byline. */
+  press?: boolean;
+}
+
+const { dateModified, press = false } = Astro.props;
+
+const modified = dateModified || AUTHOR.profileVerified;
+const modifiedLabel = new Date(modified).toLocaleDateString('en-GB', {
+  day: 'numeric', month: 'long', year: 'numeric',
+});
+
+// Never link a page to itself: /about/ carries this card too.
+const onAboutPage = Astro.url.pathname.replace(/\/+$/, '') === '/about';
+const quote = PRESS[0];
 ---
 <div class="author-card-container" style="background:#0f1311;border:1px solid #222825;border-radius:12px;padding:1.5rem;margin:3rem 0;display:flex;align-items:center;gap:1.25rem;box-shadow:0 4px 16px rgba(0,0,0,.3);">
-  <img src="/luke.jpg" alt="Luke Sandelands" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid #34d377;flex-shrink:0;" />
+  <img src={AUTHOR.image} alt={AUTHOR.name} width="64" height="64" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid #34d377;flex-shrink:0;" />
   <div>
-    <div style="font-weight:700;color:#fff;font-size:1.05rem;display:flex;align-items:center;gap:8px;">
-      Written by Luke Sandelands
-      <span style="font-size:0.75rem;font-family:'JetBrains Mono',monospace;color:#34d377;border:1px solid rgba(52,211,119,.3);border-radius:99px;padding:2px 8px;font-weight:600;">Verified Author</span>
+    <div style="font-weight:700;color:#fff;font-size:1.05rem;">
+      Written by {AUTHOR.name}
     </div>
-    <div style="font-size:0.85rem;color:#93a09a;margin-bottom:6px;">Founder, Stack Architect · Shopify Automation Specialist</div>
+    <div style="font-size:0.85rem;color:#93a09a;margin-bottom:6px;">{AUTHOR.roleLine}</div>
     <div style="font-size:0.88rem;color:#b6c0ba;line-height:1.5;">
-      Developer of <a href="https://stocklog.onrender.com/" target="_blank" rel="noopener" style="color:#34d377;text-decoration:underline;">StockLog</a> and author of the open-source <a href="https://github.com/lsb11/shopify-capi-validator" target="_blank" rel="noopener" style="color:#34d377;text-decoration:underline;"><code>shopify-capi-validator</code></a> npm package. Certified in Shopify server-side tracking, Meta CAPI, and Google Apps Script engineering.
+      Developer of <a href={AUTHOR.links.stockLog} target="_blank" rel="noopener" style="color:#34d377;text-decoration:underline;">StockLog</a> and author of the open-source <a href={AUTHOR.links.validatorRepo} target="_blank" rel="noopener" style="color:#34d377;text-decoration:underline;"><code>shopify-capi-validator</code></a> npm package. Certified in Shopify server-side tracking, Meta CAPI, and Google Apps Script engineering.{press && (
+        <Fragment> <a href={quote.url} target="_blank" rel="noopener" style="color:#34d377;text-decoration:underline;">{quote.shortLine}</a>.</Fragment>
+      )}
+    </div>
+    <div style="font-size:0.78rem;color:#7f8b85;margin-top:8px;">
+      {!onAboutPage && (
+        <Fragment><a href={AUTHOR.links.about} style="color:#93a09a;text-decoration:underline;">Full profile and credentials</a> · </Fragment>
+      )}Last reviewed <time datetime={modified}>{modifiedLabel}</time>
     </div>
   </div>
 </div>

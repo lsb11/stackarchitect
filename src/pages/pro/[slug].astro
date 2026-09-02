@@ -11,6 +11,7 @@
  * how four pages drift apart.
  */
 import Base from '../../layouts/Base.astro';
+import { PRESS } from '../../data/press';
 import ProofShot from '../../components/ProofShot.astro';
 import { SCENARIO_SHOTS, RESULT_SHOTS } from '../../data/proofShots';
 import { resolveShots } from '../../utils/proof';
@@ -117,6 +118,8 @@ const schema = [
     ],
   },
 ];
+const quote = PRESS[0];
+
 ---
 <Base
   title={`${name} — ${single} Make.com blueprint for Shopify`}
@@ -160,6 +163,15 @@ const schema = [
       </div>
 
       <a class="quiet-link" href={guideUrl}>Build it yourself free →</a>
+
+      {/* One credential line, inside the hero — not an "AS SEEN IN" strip and
+          not a badge. These pages carry no author card, so this is the only
+          place the byline's credential can sit without opening a new section.
+          The only text reproduced from that article is our own contributed
+          quote's description; see src/data/press.ts. */}
+      <p class="press-line">
+        <a href={quote.url} target="_blank" rel="noopener">{quote.shortLine}</a>
+      </p>
     </div>
   </section>
 
@@ -391,6 +403,12 @@ const schema = [
 
   /* The secondary CTA is deliberately quiet: it is an honesty signal, not a
      competing offer, and it must never out-shout the button above it. */
+  /* Credential line under the hero CTA. Quiet by design: a citation, not a
+     badge. --text-4 ramp on the dark ground, per CLAUDE.md's a11y note. */
+  .press-line { margin: 18px auto 0; max-width: 560px; font-size: 12.5px; line-height: 1.6; color: #7f8b85; }
+  .press-line a { color: #93a09a; text-decoration: underline; }
+  .press-line a:hover { color: #34d377; }
+
   .quiet-link { font-family: var(--mono); font-size: 12px; color: var(--text-4); text-decoration: none; }
   .quiet-link:hover { color: var(--text-3); }
 

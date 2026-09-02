@@ -1,10 +1,18 @@
 ---
+import { PRESS } from '../data/press';
+
 // `pressContext` gates the Leaders Perception pulled quote AND supplies the one
 // sentence of context rendered under it. Absent by default: on the homepage a
 // bordered blockquote under the hero competes with the primary CTA. /about/ is
 // the E-E-A-T anchor, so it is the only page that passes it.
-interface Props { pressContext?: string }
-const { pressContext } = Astro.props;
+// `pressLine` renders the MAKERSPACE contributed quote as one line under the
+// press group. Same gating idea as `pressContext`: opt-in per page, because a
+// credential line earns its place on the commercial and E-E-A-T pages and just
+// adds noise on a guide.
+interface Props { pressContext?: string; pressLine?: boolean }
+const { pressContext, pressLine = false } = Astro.props;
+
+const quote = PRESS[0];
 
 const CITATION_URL = 'https://leadersperception.com/luke-sandelands-on-replacing-shopify-apps-with-server-side-pipelines/';
 ---
@@ -65,7 +73,22 @@ const CITATION_URL = 'https://leadersperception.com/luke-sandelands-on-replacing
         <svg class="fi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"></path><path d="M18 14h-8"></path><path d="M15 18h-5"></path><path d="M10 6h8v4h-8V6Z"></path></svg>
         <span>Leaders Perception</span>
       </a>
+
+      <!-- MAKERSPACE. A contributed quote in a multi-contributor newsletter,
+           same class as the TechRound and eCommerce Manager panels. The link
+           text is the outlet; nothing from the article itself is reproduced
+           here beyond our own contribution — see src/data/press.ts. -->
+      <a href={quote.url} target="_blank" rel="noopener" class="fi-logo-link" aria-label={quote.shortLine}>
+        <svg class="fi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+        <span>{quote.outlet}</span>
+      </a>
     </div>
+
+    {pressLine && (
+      <p class="fi-line">
+        <a href={quote.url} target="_blank" rel="noopener">{quote.shortLine}</a>
+      </p>
+    )}
   </div>
 
   {pressContext && (
@@ -115,6 +138,19 @@ const CITATION_URL = 'https://leadersperception.com/luke-sandelands-on-replacing
     pointer-events: none;
     z-index: 0;
   }
+
+  /* One credential line under the press group. Deliberately quiet: this is a
+     citation, not a badge. --text-3 on the wrapper's dark ground. */
+  .fi-line {
+    position: relative;
+    z-index: 1;
+    margin: 10px 0 0;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: #93a09a;
+  }
+  .fi-line a { color: #93a09a; text-decoration: underline; }
+  .fi-line a:hover { color: #34d377; }
 
   .fi-group {
     position: relative;

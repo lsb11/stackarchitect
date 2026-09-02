@@ -14,13 +14,14 @@
     "carries the date a human last read it on the vendor's own pricing page.",
     "Do not edit a verifiedDate without opening that page."
   ],
-
   "ours": {
     "kitPrice": {
       "value": 24,
       "unit": "USD one-time",
       "mirrors": "src/data/products.ts KIT_PRICE",
-      "retired": [29],
+      "retired": [
+        29
+      ],
       "contexts": [
         "(?:Complete Kit|Stack Architect Pro|pre-built kit|the kit)[^.$\\n<]{0,90}?\\$([0-9]+(?:\\.[0-9]{2})?)\\b",
         "\\$([0-9]+(?:\\.[0-9]{2})?)\\s+one-time[^.\\n<]{0,40}(?:kit|blueprint)"
@@ -71,14 +72,15 @@
       ]
     }
   },
-
   "thirdParty": {
     "makeCorePrice": {
       "value": 9,
       "unit": "USD/month, monthly billing",
       "source": "https://www.make.com/en/pricing",
       "verifiedDate": "2026-08-29",
-      "retired": [12],
+      "retired": [
+        12
+      ],
       "contexts": [
         "Make(?:\\.com)?'?s?\\s+Core[^.\\n<]{0,70}?\\$([0-9]+(?:\\.[0-9]{2})?)",
         "\\$([0-9]+(?:\\.[0-9]{2})?)\\s*(?:/|per\\s+)(?:mo|month)[^.\\n<]{0,40}?Make(?:\\.com)?\\s+Core",
@@ -113,6 +115,43 @@
       "verifiedDate": "2026-08-29",
       "retired": [],
       "contexts": []
+    }
+  },
+  "press": {
+    "_comment": [
+      "Press mentions. A press credential is a set of facts about somebody else's",
+      "publication, and it drifts exactly the way the Make Core price drifted:",
+      "right on one page, a month out on another. src/data/press.ts is what",
+      "renders; this block is the independent copy that catches an edit to one",
+      "and not the other. Change both together, or the build fails.",
+      "",
+      "`forbidNear` catches a wrong date stated beside the outlet name.",
+      "`url` also scopes the rating-markup check: a Review, Rating,",
+      "AggregateRating, EndorsementRating or Award node near this URL fails the",
+      "build. A contributed quote is an Article the person is a subject of.",
+      "Marking it as a rating of us is structured-data spam and risks a manual",
+      "action — see CLAUDE.md."
+    ],
+    "makerspaceCheckoutUpsells": {
+      "outlet": "MAKERSPACE",
+      "publication": "MAKERSPACE (LinkedIn newsletter)",
+      "articleAuthor": "Karan Raval",
+      "title": "34 Checkout-Page Upsell Tactics to Maximize Conversion Without Hurting Margin",
+      "url": "https://www.linkedin.com/pulse/34-checkout-page-upsell-tactics-maximize-conversion-without-raval-alizf/",
+      "datePublished": "2026-08-14",
+      "displayDate": "August 2026",
+      "attribution": "Luke Sandelands, Founder, Stack Architect",
+      "mirrors": "src/data/press.ts PRESS[0]",
+      "forbidNear": [
+        {
+          "pattern": "MAKERSPACE[^<.]{0,60}?(?:January|February|March|April|May|June|July|September|October|November|December)\\s+20\\d\\d",
+          "why": "the MAKERSPACE piece ran in August 2026 — a month stated beside the outlet name must be August"
+        },
+        {
+          "pattern": "MAKERSPACE[^<.]{0,60}?August\\s+(?!2026)20\\d\\d",
+          "why": "the MAKERSPACE piece ran in August 2026, not another year"
+        }
+      ]
     }
   }
 }

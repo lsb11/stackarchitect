@@ -4,6 +4,9 @@ import AuthorCard from '../components/AuthorCard.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import FeaturedIn from '../components/FeaturedIn.astro';
 import PressCitation from '../components/PressCitation.astro';
+import { PRESS } from '../data/press';
+
+const quote = PRESS[0];
 
 // Hero layout under evaluation: 'a' = 150px portrait stacked above the H1,
 // 'b' = two-column split with the type bottom-aligned to the portrait.
@@ -215,6 +218,22 @@ const tocHeadings = [
           format="18-contributor panel"
           argument="Enterprise AI pilots fail for architectural reasons rather than political ones: generative models and agentic protocols like MCP are non-deterministic, and bolting them onto legacy REST APIs that assume explicit schemas and predictable state boundaries — with no intermediate validation or event-driven orchestration — breaks at the boundary layer, leaving an operator to hand-verify every output against a brittle database until that bottleneck destroys the ROI. The fix I put forward is replacing fragile polling and middleman APIs with event-driven pipelines that enforce schema validation at ingestion."
         />
+        {/* MAKERSPACE — the full treatment: our contributed quote verbatim,
+            the attribution line the outlet printed it under, the outlet, the
+            linked title and the date. Every field comes from src/data/press.ts;
+            nothing else from that 34-contributor article appears anywhere on
+            this site. */}
+        <PressCitation
+          outlet={quote.outlet}
+          title={quote.title}
+          url={quote.url}
+          date="August 2026"
+          datetime={quote.datePublished}
+          format="34-contributor newsletter"
+          quote={quote.pullQuote}
+          attribution={quote.attribution}
+          argument="Checkout upsells belong in Shopify Checkout Extensibility, not in a third-party app that injects client-side code at the point of payment — the same server-side-first argument every blueprint on this site is built on."
+        />
       </div>
       <p><strong>Open-source &amp; community.</strong> Stack Architect tools are listed in <a href="https://github.com/kairichard/awesome-nocode-lowcode" target="_blank" rel="nofollow noopener">Awesome No-Code / Low-Code</a> and <a href="https://github.com/zhuima/awesome-cloudflare" target="_blank" rel="nofollow noopener">Awesome Cloudflare</a>, and the attribution-gap benchmark runs on an <a href="https://github.com/lsb11/stackarchitect" target="_blank" rel="nofollow noopener">open-source Cloudflare Workers backend</a>.</p>
     </div>
@@ -369,7 +388,7 @@ const tocHeadings = [
 
 </main>
 <div class="authorcard-wrap">
-  <AuthorCard />
+  <AuthorCard press />
 </div>
 </Base>
 

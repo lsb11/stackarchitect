@@ -25,10 +25,17 @@ interface Props {
   /** Format qualifier, e.g. "18-contributor panel". Rendered as a chip. */
   format?: string;
   rel?: string;
+  /** Verbatim text WE supplied to the outlet, rendered as a pull quote.
+      Only ever our own contributed words — never another contributor's text
+      and never a summary of theirs. See the copyright rule in
+      src/data/press.ts, which is the only permitted source for this prop. */
+  quote?: string;
+  /** The attribution line the outlet printed the quote under. */
+  attribution?: string;
 }
 const {
   outlet, title, url, date, datetime, argument, format,
-  rel = 'noopener',
+  rel = 'noopener', quote, attribution,
 } = Astro.props;
 ---
 <article class="pc">
@@ -42,6 +49,20 @@ const {
   <h3 class="pc-title">
     <a href={url} target="_blank" rel={rel}>{title}</a>
   </h3>
+  {quote && (
+    /* A contributed quote, marked up as a quotation and nothing more. It is
+       NOT a Review, Rating or endorsement of us — see CLAUDE.md and the guard
+       in scripts/claims-guard.mjs, which fails the build on rating-shaped
+       markup near this article's URL. */
+    <figure class="pc-quote-fig">
+      <blockquote class="pc-quote" cite={url}>{quote}</blockquote>
+      {attribution && (
+        <figcaption class="pc-quote-attr">
+          {attribution} — <a href={url} target="_blank" rel={rel}>{outlet}</a>{date && <Fragment>, {date}</Fragment>}
+        </figcaption>
+      )}
+    </figure>
+  )}
   <p class="pc-argument"><slot>{argument}</slot></p>
 </article>
 
@@ -53,6 +74,22 @@ const {
     background: var(--color-surface-raised);
     padding: 18px 20px;
   }
+
+  .pc-quote-fig { margin: 12px 0 10px; }
+  .pc-quote {
+    margin: 0;
+    padding: 0 0 0 14px;
+    border-left: 2px solid var(--color-accent);
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--color-text-secondary, #b6c0ba);
+  }
+  .pc-quote-attr {
+    margin: 8px 0 0 14px;
+    font-size: 12px;
+    color: #7f8b85;
+  }
+  .pc-quote-attr a { color: #93a09a; }
 
   .pc-head {
     display: flex;

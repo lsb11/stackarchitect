@@ -46,6 +46,9 @@
  * figure is not outstanding work, it is a page that is wrong, and the fix is
  * to correct the page or to change claims.json deliberately.
  *
+ * ---------------------------------------------------------------------------
+ * THIRD CHECK — press credentials. See checkPress() below.
+ *
  * Usage:
  *   node scripts/claims-guard.mjs          # exit 1 on violation
  *   node scripts/claims-guard.mjs --list   # print the worklist, always exit 0
@@ -210,6 +213,112 @@ function checkCanonical() {
   return problems;
 }
 
+/**
+ * ---------------------------------------------------------------------------
+ * THIRD CHECK — PRESS CREDENTIALS (src/data/claims.json `press`)
+ *
+ * A press credential is a set of facts about somebody else's publication, and
+ * it drifts exactly the way the Make Core price drifted: right on one page, a
+ * month out on another. Three things are pinned.
+ *
+ *  (a) src/data/press.ts must agree with claims.json field for field. press.ts
+ *      is what renders; claims.json is the independent copy that catches an
+ *      edit to one and not the other.
+ *  (b) No page may state a wrong date beside the outlet name.
+ *  (c) No page may wrap the mention in Review, Rating, AggregateRating,
+ *      endorsement or award markup. A contributed quote is an Article the
+ *      person is a subject of. Marking it as a rating of us is
+ *      structured-data spam and risks a manual action — see CLAUDE.md.
+ *
+ * Check (c) is scoped by PROXIMITY, not by file. A page may legitimately carry
+ * a Review of somebody else's product — /gorgias-shopify-guide/ rates Gorgias,
+ * and that is a real review we wrote. What must never happen is the press
+ * mention itself being marked as a rating. Only a rating type within
+ * RATING_WINDOW characters of the article URL is close enough to mean "the
+ * same node".
+ */
+function checkPress() {
+  const problems = [];
+  const press = canonical.press || {};
+  const entries = Object.entries(press).filter(([k]) => k !== '_comment');
+  if (entries.length === 0) return problems;
+
+  const pressTs = path.join(ROOT, 'src', 'data', 'press.ts');
+  const tsSrc = fs.existsSync(pressTs) ? fs.readFileSync(pressTs, 'utf8') : '';
+
+  // Both JSON ("@type": "Review") and the single-quoted TS the schema modules
+  // are actually written in ('@type': 'Review').
+  const RATING =
+    /['"]?@type['"]?\s*:\s*['"](Review|Rating|AggregateRating|EndorsementRating|Award)['"]/g;
+  const RATING_WINDOW = 400;
+
+  for (const [id, claim] of entries) {
+    // (a) mirror check — every pinned string must appear in press.ts verbatim.
+    if (!tsSrc) {
+      problems.push({
+        file: 'src/data/press.ts', line: 1, id,
+        found: 'file missing',
+        expected: claim.mirrors || 'src/data/press.ts',
+        why: 'claims.json pins a press credential with nothing to mirror it',
+        excerpt: claim.url || id,
+      });
+    } else {
+      for (const field of [
+        'outlet', 'publication', 'articleAuthor', 'title', 'url',
+        'datePublished', 'displayDate', 'attribution',
+      ]) {
+        const want = claim[field];
+        if (!want || tsSrc.includes(want)) continue;
+        problems.push({
+          file: 'src/data/press.ts', line: 1, id,
+          found: `no ${field} matching claims.json`,
+          expected: want,
+          why: `claims.json press.${id} and ${claim.mirrors} must agree`,
+          excerpt: `${field}: ${want}`,
+        });
+      }
+    }
+
+    for (const file of contentFiles()) {
+      if (file === pressTs) continue; // press.ts IS the mirror, checked above
+      const src = fs.readFileSync(file, 'utf8');
+      const rel = path.relative(ROOT, file);
+
+      // (b) a wrong date stated beside the outlet name
+      for (const f of claim.forbidNear || []) {
+        for (const m of src.matchAll(new RegExp(f.pattern, 'gi'))) {
+          problems.push({
+            file: rel, line: lineOf(src, m.index), id,
+            found: m[0].replace(/\s+/g, ' ').trim().slice(0, 60),
+            expected: claim.displayDate || claim.datePublished,
+            why: f.why,
+            excerpt: m[0].replace(/\s+/g, ' ').trim().slice(0, 90),
+          });
+        }
+      }
+
+      // (c) rating-shaped markup wrapping THIS mention
+      if (!claim.url) continue;
+      const urlAt = [];
+      for (let i = src.indexOf(claim.url); i !== -1; i = src.indexOf(claim.url, i + 1)) {
+        urlAt.push(i);
+      }
+      if (urlAt.length === 0) continue;
+      for (const m of src.matchAll(RATING)) {
+        if (!urlAt.some((u) => Math.abs(u - m.index) <= RATING_WINDOW)) continue;
+        problems.push({
+          file: rel, line: lineOf(src, m.index), id,
+          found: m[1], expected: 'Article (subjectOf)',
+          why: 'a contributed quote is not a review, rating or award — see CLAUDE.md',
+          excerpt: m[0],
+        });
+      }
+    }
+  }
+
+  return problems;
+}
+
 const quarantine = fs.existsSync(QUARANTINE)
   ? JSON.parse(fs.readFileSync(QUARANTINE, 'utf8'))
   : { files: {} };
@@ -267,6 +376,23 @@ if (contradictions.length) {
       '  src/data/claims.json (and src/data/products.ts for a price we set),\n' +
       '  re-verify any third-party figure against its source, and update the\n' +
       '  verifiedDate to the day you read it.\n'
+  );
+}
+
+const pressProblems = checkPress();
+if (pressProblems.length) {
+  failed = true;
+  console.error('\n✗ claims-guard: press credential drifted from src/data/claims.json\n');
+  for (const c of pressProblems) {
+    console.error(`  ${c.file}:${c.line}`);
+    console.error(`    ${c.id}: found ${c.found}, expected ${c.expected} — ${c.why}`);
+    console.error(`    …${c.excerpt}…`);
+  }
+  console.error(
+    '\n  A press credential is somebody else\'s published fact. Correct the page\n' +
+      '  against the article itself, and change src/data/press.ts and the press\n' +
+      '  block in src/data/claims.json together — they are checked against each\n' +
+      '  other on purpose.\n'
   );
 }
 

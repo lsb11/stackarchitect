@@ -75,7 +75,11 @@ const href = buildStripeUrl(stripeUrl, source);
   }
   .io-tiktok {
     --io-acc: #ff2e63;
-    --io-ink: #fff;
+    /* No --io-ink override here. White on #ff2e63 measures 3.61:1 at 14px —
+       below WCAG AA on the highest-value CTA on the TikTok guide, caught by
+       `npm run a11y` on 2 Sep 2026. The base dark ink (#0c0f0d) on the same
+       fill measures 5.34:1, so the brand pink and the block's visual weight
+       are unchanged and only the label flips. Do not reinstate #fff. */
     --io-tint: rgba(255, 46, 99, .06);
     --io-border: rgba(255, 46, 99, .3);
   }
