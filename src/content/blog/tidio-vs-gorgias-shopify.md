@@ -140,7 +140,7 @@ For most $500k+ Shopify stores, **Gorgias Pro or Advanced** is still the right a
 
 Start with [Tidio free — Lyro AI resolves support at $0/month](https://stackarchitect.xyz/go/tidio). The [Tidio honest review](https://stackarchitect.xyz/tidio-shopify-guide/) covers when the free plan is enough and when it isn't. The [Tidio setup guide](https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide/) covers the full configuration including the Lyro knowledge base structure.
 
-Once you cross 300 tickets/month or hit Tidio's seat cap, [upgrade to Gorgias — native Shopify integration and revenue attribution](https://stackarchitect.xyz/go/gorgias). The [Gorgias review for $50k+ stores](https://stackarchitect.xyz/gorgias-shopify-guide/) covers the upgrade decision and which Gorgias tier matches your ticket volume.
+Once you cross 300 tickets/month or hit Tidio's seat cap, [upgrade to Gorgias — native Shopify integration and revenue attribution](https://www.gorgias.com/). The [Gorgias review for $50k+ stores](https://stackarchitect.xyz/gorgias-shopify-guide/) covers the upgrade decision and which Gorgias tier matches your ticket volume.
 
 ---
 
