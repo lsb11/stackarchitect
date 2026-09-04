@@ -5,6 +5,11 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { buildBadge, onRequestGet } from './gap-badge.js';
 
+// The rendered value, read back out of the badge's own <title> — the SVG body
+// carries percentages of its own (gradient stops), so asserting over the whole
+// document would not test what the badge says.
+const badgeTitle = (svg) => svg.match(/<title>([^<]*)<\/title>/)[1];
+
 describe('gap-badge', () => {
   describe('buildBadge', () => {
     it('generates valid SVG string', () => {
@@ -32,7 +37,7 @@ describe('gap-badge', () => {
       }
     });
 
-    it('returns synthesis value when DB throws an error', async () => {
+    it('returns the unavailable state, and no figure, when the DB throws', async () => {
       const context = createMockContext(new Error('DB error'));
       const response = await onRequestGet(context);
 
@@ -40,16 +45,26 @@ describe('gap-badge', () => {
       assert.equal(response.headers.get('Content-Type'), 'image/svg+xml; charset=utf-8');
 
       const text = await response.text();
-      assert.ok(text.includes('20–40% est.'));
+      assert.ok(text.includes('unavailable'));
+      assert.ok(!/\d/.test(badgeTitle(text)), 'badge must assert no figure without data');
     });
 
-    it('returns synthesis value when there are fewer than 10 rows', async () => {
+    it('returns the collecting counter, and no figure, below N=10', async () => {
       const results = Array.from({ length: 9 }, (_, i) => ({ gap_pct: i * 0.05 }));
       const context = createMockContext(results);
       const response = await onRequestGet(context);
 
       const text = await response.text();
-      assert.ok(text.includes('20–40% est.'));
+      assert.ok(text.includes('collecting 9/10'));
+      assert.ok(!badgeTitle(text).includes('%'), 'badge must assert no percentage below N=10');
+    });
+
+    it('shows the collecting counter at zero submissions', async () => {
+      const context = createMockContext([]);
+      const response = await onRequestGet(context);
+
+      const text = await response.text();
+      assert.ok(text.includes('collecting 0/10'));
     });
 
     it('returns median for odd number of rows >= 10', async () => {

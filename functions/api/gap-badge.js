@@ -1,32 +1,45 @@
 // GET /api/gap-badge
 // Live shields-style SVG badge for the Shopify iOS Attribution Gap benchmark.
-// - Before 10 approved submissions: shows the published synthesis range.
-// - After: shows the first-party median (N=…), automatically.
+// Mirrors the three states of /embed/gap-index/, and asserts a figure in none
+// but the first:
+//   - N >= 10 approved submissions: the first-party median, with N.
+//   - fewer than that:              a collection counter, no figure.
+//   - DB unreachable:               "unavailable", no figure.
+// There is no fallback number. The synthesis range this badge used to fall back
+// to was retracted; a badge that shows a figure when the benchmark holds none is
+// exactly the claim we withdrew.
 // Hot-linkable from READMEs and blogs; cached at the edge for 1 hour.
 
-const SYNTH_LABEL = "iOS attribution gap";
-const SYNTH_VALUE = "20\u201340% est."; // published synthesis range
+const LABEL = "iOS attribution gap";
+const MIN_N = 10; // must match /api/gap-stats
+const COLOR_READY = "#4ade80";
+const COLOR_COLLECTING = "#fbbf24";
+const COLOR_UNAVAILABLE = "#cbd5e1";
 
 export async function onRequestGet(context) {
   const { env } = context;
-  let value = SYNTH_VALUE;
-  let color = "#4ade80";
+  let value = "unavailable";
+  let color = COLOR_UNAVAILABLE;
 
   try {
     const rows = (await env.DB.prepare(
       `SELECT gap_pct FROM submissions WHERE status = 'approved' ORDER BY gap_pct ASC`
     ).all()).results || [];
     const n = rows.length;
-    if (n >= 10) {
+    if (n >= MIN_N) {
       const gaps = rows.map((r) => r.gap_pct);
       const median = n % 2 ? gaps[(n - 1) / 2] : (gaps[n / 2 - 1] + gaps[n / 2]) / 2;
       value = `${(median * 100).toFixed(1)}% median (N=${n})`;
+      color = COLOR_READY;
+    } else {
+      value = `collecting ${n}/${MIN_N}`;
+      color = COLOR_COLLECTING;
     }
   } catch {
-    // fall back to synthesis value; badge must never 500
+    // Leave the unavailable state in place; the badge must never 500.
   }
 
-  return new Response(buildBadge(SYNTH_LABEL, value, color), {
+  return new Response(buildBadge(LABEL, value, color), {
     headers: {
       "Content-Type": "image/svg+xml; charset=utf-8",
       "Cache-Control": "public, max-age=3600, s-maxage=3600",

@@ -5,7 +5,6 @@ import { dataPoints, benchmarkMeta } from '../../data/attributionGap.js';
 export function GET() {
   const body = {
     name: benchmarkMeta.name,
-    headline: benchmarkMeta.headline,
     canonical: benchmarkMeta.canonical,
     license: benchmarkMeta.license,
     licenseName: benchmarkMeta.licenseName,

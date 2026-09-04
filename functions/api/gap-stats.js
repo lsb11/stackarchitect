@@ -35,7 +35,7 @@ export async function onRequestGet(context) {
       n,
       median_gap_pct: round1(median * 100),
       mean_gap_pct: round1(mean * 100),
-      methodology_url: "https://stackarchitect.xyz/capi-shield/#methodology",
+      methodology_url: "https://stackarchitect.xyz/shopify-ios-attribution-gap-benchmark/#methodology",
       cite_as: `Stack Architect, iOS CAPI Attribution Gap (first-party, N=${n}, 2026)`,
       updated: new Date().toISOString().slice(0, 10),
     }, 200, { "Cache-Control": "public, max-age=3600" });

@@ -12,7 +12,11 @@ test('JSON export endpoint returns valid JSON with correct structure', async () 
   const data = JSON.parse(text);
 
   assert.equal(data.name, benchmarkMeta.name);
-  assert.equal(data.headline, benchmarkMeta.headline);
+  // The retracted 20-40% synthesis was this export's `headline`. Assert it is
+  // gone by name: `data.headline === benchmarkMeta.headline` still passed once
+  // both sides were undefined, which is a test that had stopped testing.
+  assert.ok(!('headline' in data), 'the retracted headline figure must not be exported');
+  assert.ok(!('headline' in benchmarkMeta), 'benchmarkMeta carries identity and licence, no figure');
   assert.equal(data.canonical, benchmarkMeta.canonical);
   assert.equal(data.license, benchmarkMeta.license);
   assert.equal(data.licenseName, benchmarkMeta.licenseName);

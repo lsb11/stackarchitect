@@ -45,11 +45,14 @@ export const dataPoints = [
   }
 ];
 
+// Identity and licence only. No headline figure lives here: the 20–40% synthesis
+// was retracted — it was a range assembled from other people's numbers, and this
+// benchmark asserts a figure only once /api/gap-stats has N ≥ 10 first-party
+// submissions to compute one from.
 export const benchmarkMeta = {
   name: 'Shopify iOS Attribution Gap Benchmark',
   canonical: 'https://stackarchitect.xyz/shopify-ios-attribution-gap-benchmark/',
   license: 'https://creativecommons.org/licenses/by/4.0/',
   licenseName: 'CC BY 4.0',
   creator: 'Stack Architect (stackarchitect.xyz)',
-  headline: 'Typical Shopify store loses an estimated 20–40% of purchase-conversion signal to iOS ATT and Safari ITP (rising toward 50% on mobile-heavy stores).',
 };
