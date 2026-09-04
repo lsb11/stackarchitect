@@ -12,14 +12,6 @@ export const dataPoints = [
     sourceDate: "Apr 2025"
   },
   {
-    metric: "Reduction in Meta Ads tracking accuracy from ATT",
-    value: "30–40%",
-    detail: "ATT reduced Meta's ability to accurately attribute conversions by an estimated 30–40%, even after Meta's modelled-conversion and CAPI recovery efforts.",
-    source: "Leo Answer Library — Meta Ads privacy impact",
-    sourceUrl: "https://www.leoads.ai/answers/meta-ads/meta-ads-privacy-changes-impact/",
-    sourceDate: "Feb 2026"
-  },
-  {
     metric: "Share of Shopify traffic that is mobile",
     value: "74–78%",
     detail: "Mobile devices drive roughly three-quarters of Shopify store traffic — the exact segment most affected by iOS/Safari tracking restrictions.",

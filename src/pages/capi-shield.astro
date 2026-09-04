@@ -65,11 +65,18 @@ const heroStats = [
   { value: "Degraded ROAS", label: "Smart bidding blind" },
   { value: "$0", label: "CAPI Shield costs" },
 ];
+// Two tiles here used to assert measurements this site has not made: a "35%
+// Avg conversions lost" (the 20-40% synthesis restated as a measured average)
+// and a "7-8.5 EMQ score achieved". The FAQ below says plainly that we have not
+// sampled EMQ across stores and do not publish a typical score, so the tiles
+// contradicted the page. Replaced with the match-key count, which is a property
+// of what CAPI Shield sends and is verifiable by reading the scenario. Restore
+// an EMQ figure here only when a measured one exists.
 const stripStats = [
-  { value: "35%",   label: "Avg conversions lost" },
-  { value: "6 min", label: "Full deployment" },
-  { value: "7–8.5", label: "EMQ score achieved" },
-  { value: "$0",    label: "Monthly cost" },
+  { value: "20–40%", label: "Conversions lost (estimate)" },
+  { value: "6 min",  label: "Full deployment" },
+  { value: "5",      label: "Match keys sent per event" },
+  { value: "$0",     label: "Monthly cost" },
 ];
 
 // ─── How-it-works steps ───────────────────────────────────────────────────────
@@ -515,7 +522,7 @@ const tocHeadings = [
         <div class="platform-label">Meta Conversions API</div>
         <div class="platform-title">Recover lost Meta purchase events</div>
         <div class="platform-desc">Meta CAPI sends Shopify purchase events server-to-server, bypassing iOS ITP, ad blockers, and Safari cookie restrictions. CAPI Shield sends hashed email, phone, name, and IP address with every event — the full customer signal set Meta needs for accurate attribution and Advantage+ optimisation.</div>
-        <div class="platform-metric">EMQ 7.0–8.5 typical</div>
+        <div class="platform-metric">5 match keys per event</div>
       </div>
       <div class="platform-card google">
         <div class="platform-label">Google Enhanced Conversions</div>
