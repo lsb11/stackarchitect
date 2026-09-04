@@ -20,7 +20,13 @@ import {
   firstPartyPrices,
   firstPartyPriceViolations,
 } from '../scripts/schema-visible-guard.mjs';
-import { KIT_PRICE, SINGLE_PRICE, UPGRADE_PRICE } from '../src/data/products.ts';
+import {
+  KIT_PRICE,
+  SINGLE_PRICE,
+  UPGRADE_PRICE,
+  STOCKLOG_PRICE,
+  STOCKLOG_UNIT,
+} from '../src/data/products.ts';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const claims = JSON.parse(
@@ -45,6 +51,16 @@ test('claims.json ours mirrors the products.ts constants', () => {
   assert.equal(claims.ours.kitPrice.value, KIT_PRICE);
   assert.equal(claims.ours.singlePrice.value, SINGLE_PRICE);
   assert.equal(claims.ours.upgradePrice.value, UPGRADE_PRICE);
+  assert.equal(claims.ours.stockLogPrice.value, STOCKLOG_PRICE);
+});
+
+test('StockLog is pinned as recurring, not one-time', () => {
+  // The pin said "USD one-time" until 4 Sep 2026 while /about/ emitted a
+  // UnitPriceSpecification of MONTH beside it. The number matched; the offer
+  // did not. Nothing in the guard can catch that, so assert it here.
+  assert.match(claims.ours.stockLogPrice.unit, /\/month\b/);
+  assert.doesNotMatch(claims.ours.stockLogPrice.unit, /one-time/);
+  assert.equal(STOCKLOG_UNIT, 'MONTH');
 });
 
 test('the shipped defect is caught', () => {
@@ -110,6 +126,105 @@ test('AggregateOffer bounds are checked too', () => {
   const found = firstPartyPriceViolations(agg, claims);
   assert.equal(found.length, 1);
   assert.equal(found[0].key, 'highPrice');
+});
+
+/* -------------------------------------------------------------------------
+ * RECURRING PRICES. Every case above is one-time, and a monthly price is not
+ * the same shape: it states the figure twice, once on the Offer and once on a
+ * nested UnitPriceSpecification carrying the period. Both are prices we set,
+ * so both have to be checked — a guard that walked only the Offer would let
+ * the priceSpecification drift away from it silently, which is the more
+ * likely half to be forgotten because it is the one further from the eye.
+ * ---------------------------------------------------------------------- */
+
+/** /about/'s StockLog node, at the constant. */
+function stockLogNode(price = String(STOCKLOG_PRICE), specPrice = price) {
+  return {
+    '@type': 'SoftwareApplication',
+    '@id': 'https://stocklog.onrender.com/#app',
+    name: 'StockLog',
+    url: 'https://stocklog.onrender.com/',
+    author: { '@id': 'https://stackarchitect.xyz/#luke' },
+    publisher: { '@id': 'https://stackarchitect.xyz/#org' },
+    offers: {
+      '@type': 'Offer',
+      url: 'https://stocklog.onrender.com/',
+      price,
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      priceSpecification: {
+        '@type': 'UnitPriceSpecification',
+        price: specPrice,
+        priceCurrency: 'USD',
+        unitText: STOCKLOG_UNIT,
+      },
+    },
+  };
+}
+
+test('a recurring first-party price is covered — StockLog at the constant is clean', () => {
+  assert.deepEqual(firstPartyPriceViolations(stockLogNode(), claims), []);
+});
+
+test('both halves of a recurring price are checked, not just the Offer', () => {
+  // StockLog is first-party via author/publisher #luke/#org, not via a
+  // stackarchitect.xyz url — its url is stocklog.onrender.com. That the node
+  // is reached at all is the thing this asserts alongside the count.
+  const found = firstPartyPrices(stockLogNode());
+  assert.equal(found.length, 2, 'Offer.price and UnitPriceSpecification.price');
+  assert.ok(found.every((p) => p.value === STOCKLOG_PRICE));
+});
+
+test('a UnitPriceSpecification that drifts from its Offer is caught', () => {
+  // The half nobody looks at: the Offer still reads $7.99, the period price
+  // has been left on a retired figure.
+  const found = firstPartyPriceViolations(stockLogNode(String(STOCKLOG_PRICE), '5.99'), claims);
+  assert.equal(found.length, 1);
+  assert.equal(found[0].value, 5.99);
+  assert.match(found[0].path, /priceSpecification/);
+});
+
+test('a recurring price drifting off the constant is caught on the Offer too', () => {
+  const found = firstPartyPriceViolations(stockLogNode('6.99'), claims);
+  assert.equal(found.length, 2, 'both halves move together and both are flagged');
+  assert.ok(found.every((p) => p.value === 6.99));
+});
+
+test('the check is by value, not by product — a known limit, asserted so it is known', () => {
+  // 9.99 is SINGLE_PRICE. It is pinned under `ours`, so StockLog asserting it
+  // passes: the guard answers "is this one of our prices?", not "is this the
+  // right one of our prices?". Tying each Offer to a named claim would need a
+  // mapping from node to claim id that nothing in the JSON-LD carries. What
+  // covers this instead is the unit assertion above plus the constant being
+  // the only thing the page renders — there is no literal left to get wrong.
+  assert.deepEqual(firstPartyPriceViolations(stockLogNode('9.99'), claims), []);
+  assert.equal(claims.ours.singlePrice.value, 9.99);
+});
+
+test('the built about page carries no first-party price mismatch', (t) => {
+  const file = path.join(ROOT, 'dist', 'about', 'index.html');
+  if (!fs.existsSync(file)) {
+    t.skip('dist/about/index.html not built — run npm run build');
+    return;
+  }
+  const html = fs.readFileSync(file, 'utf8');
+  const found = [];
+  let stockLogPrices = 0;
+  for (const [, json] of html.matchAll(
+    /<script type="application\/ld\+json">([\s\S]*?)<\/script>/g
+  )) {
+    let graph;
+    try {
+      graph = JSON.parse(json);
+    } catch {
+      continue;
+    }
+    found.push(...firstPartyPriceViolations(graph, claims));
+    stockLogPrices += firstPartyPrices(graph).filter((p) => p.value === STOCKLOG_PRICE).length;
+  }
+  assert.deepEqual(found, [], 'first-party prices in /about/ JSON-LD must match their constants');
+  assert.equal(stockLogPrices, 2, `/about/ should assert StockLog at ${STOCKLOG_PRICE} twice`);
+  assert.match(html, /"unitText"\s*:\s*"MONTH"/, 'the billing period must survive to the page');
 });
 
 test('an Offer inherits first-party status from the enclosing node', () => {

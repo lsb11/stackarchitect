@@ -3,6 +3,8 @@
 // Two-panel: brand + tagline + ledger visual left, description + pricing right.
 // When approved: set APP_STORE_URL to the live listing and the CTA switches
 // automatically from "Get notified" to "Install StockLog".
+import { STOCKLOG_PRICE, STOCKLOG_TRIAL_DAYS, formatMonthly } from '../data/products';
+
 const APP_STORE_URL = ""; // e.g. "https://apps.shopify.com/stocklog" once approved
 const NOTIFY_URL = "https://stackarchitect.beehiiv.com/subscribe";
 
@@ -51,7 +53,7 @@ const ROWS = [
       <li>Retry-safe order tracking — no double-counting, ever</li>
       <li>Low-stock flags against per-variant reorder points</li>
     </ul>
-    <p class="sl-price"><strong>$7.99/month</strong> · 7-day free trial · billed through Shopify · cancel any time</p>
+    <p class="sl-price"><strong>{formatMonthly(STOCKLOG_PRICE)}</strong> · {STOCKLOG_TRIAL_DAYS}-day free trial · billed through Shopify · cancel any time</p>
     <div class="sl-ctas">
       {APP_STORE_URL ? (
         <a class="sl-cta" href={APP_STORE_URL} rel="noopener">Install StockLog &rarr;</a>

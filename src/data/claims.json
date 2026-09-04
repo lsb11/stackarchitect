@@ -43,10 +43,32 @@
     },
     "stockLogPrice": {
       "value": 7.99,
-      "unit": "USD one-time",
-      "mirrors": "StockLog listing",
+      "unit": "USD/month, 7-day trial, billed through Shopify",
+      "mirrors": "src/data/products.ts STOCKLOG_PRICE",
       "retired": [],
-      "contexts": []
+      "_scope": [
+        "RECURRING. This was recorded as \"USD one-time\" until 4 Sep 2026,",
+        "which contradicted the UnitPriceSpecification of MONTH that /about/",
+        "had been emitting beside it. $7.99 once and $7.99 a month are not the",
+        "same offer and the unit is the whole difference.",
+        "",
+        "The contexts below deliberately match nothing in src/pages/about.astro",
+        "or src/components/StockLogPromo.astro: both now render the constant,",
+        "so there is no literal left in them to drift. What the patterns do",
+        "guard is public/llms.txt and public/llms-full.txt, which are static",
+        "text a crawler and a model read and which cannot import anything.",
+        "Those two are the only places the number is still written by hand.",
+        "",
+        "Note how claims-guard treats contexts: a match is reported only when",
+        "the stated value appears in `retired`. With `retired` empty these",
+        "patterns are armed and loaded with nothing, which is correct today —",
+        "7.99 has had no predecessor. The moment the price moves, adding the",
+        "old figure to `retired` turns them live against every file above."
+      ],
+      "contexts": [
+        "StockLog[^\\n]{0,400}?\\$([0-9]+(?:\\.[0-9]{2})?)\\s*/\\s*(?:mo|month)\\b",
+        "\\$([0-9]+(?:\\.[0-9]{2})?)\\s*/\\s*(?:mo|month)\\b[^\\n]{0,80}?(?:day free trial|day trial|billed through Shopify)"
+      ]
     },
     "kitSavingsRange": {
       "value": "$60-$180/mo",

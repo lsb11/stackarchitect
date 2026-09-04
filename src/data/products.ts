@@ -32,6 +32,35 @@ export const SINGLE_PRICE = 9.99;
 /** Post-purchase upgrade from one single to the full four. */
 export const UPGRADE_PRICE = 14;
 
+/* ---------------------------------------------------------------------------
+ * StockLog — our Shopify app, and the only RECURRING price we set.
+ *
+ * It is not a Product in the sense the PRODUCTS array below means. There is no
+ * Stripe link, no blueprint file and no Drive folder, because Shopify bills it
+ * and Shopify delivers it, so giving it a Product entry would mean four empty
+ * fields and a `steps` array describing an install we do not run. What it does
+ * share with the kit prices is the only property that matters to this file: it
+ * is a number we chose, and it was being spelled out by hand in four places
+ * plus two static text files under public/.
+ *
+ * The unit is load-bearing and is not decoration. $7.99 one-time and
+ * $7.99/month are different products, and src/data/claims.json recorded this
+ * one as "USD one-time" until 4 Sep 2026 while the schema on /about/ had
+ * already been asserting a UnitPriceSpecification of MONTH beside it.
+ * ------------------------------------------------------------------------ */
+
+/** StockLog, per month. Billed by Shopify, not through our Stripe account. */
+export const STOCKLOG_PRICE = 7.99;
+
+/** Billing period, spelled as schema.org's UnitPriceSpecification unitText. */
+export const STOCKLOG_UNIT = 'MONTH';
+
+/** Free trial before the first charge, in days. */
+export const STOCKLOG_TRIAL_DAYS = 7;
+
+/** Where the app lives until the App Store listing is approved. */
+export const STOCKLOG_URL = 'https://stocklog.onrender.com/';
+
 export type Accent = 'green' | 'sky' | 'tiktok' | 'amber';
 
 export interface HowStep {
@@ -334,4 +363,14 @@ export function buildStripeUrl(url: string, source: string): string {
 /** Formats a price the way it is written on the page: $24, $9.99. */
 export function formatPrice(n: number): string {
   return `$${Number.isInteger(n) ? n : n.toFixed(2)}`;
+}
+
+/**
+ * Formats a recurring price the way it is written on the page: $7.99/month.
+ *
+ * Separate from formatPrice because the interval is the part that goes wrong:
+ * a one-time price and a monthly one render identically without it.
+ */
+export function formatMonthly(n: number): string {
+  return `${formatPrice(n)}/month`;
 }

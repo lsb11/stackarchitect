@@ -5,6 +5,12 @@ import TableOfContents from '../components/TableOfContents.astro';
 import FeaturedIn from '../components/FeaturedIn.astro';
 import PressCitation from '../components/PressCitation.astro';
 import { PRESS } from '../data/press';
+import {
+  STOCKLOG_PRICE,
+  STOCKLOG_UNIT,
+  STOCKLOG_URL,
+  formatMonthly,
+} from '../data/products';
 
 const quote = PRESS[0];
 
@@ -39,8 +45,51 @@ const tocHeadings = [
   }
 ];
 
+/* ---------------------------------------------------------------------------
+ * STOCKLOG_SCHEMA — StockLog's SoftwareApplication node.
+ *
+ * Lifted out of the raw <script type="application/ld+json"> @graph below for
+ * one reason: Astro does not interpolate expressions inside a script element,
+ * so the two prices written there were literals that no constant could keep
+ * honest — the same defect that let the homepage ship the Kit at a retired
+ * $29. Handed to <Base schema={...}> instead, where STOCKLOG_PRICE reaches it.
+ *
+ * Both prices come from the one constant. The Offer states the charge and the
+ * UnitPriceSpecification states the period; they are not two facts, and they
+ * must not be two literals.
+ *
+ * No priceVerifiedDate / priceSourceUrl: those cite somebody else's number.
+ * StockLog is ours, so it carries the constant and the claims.json pin under
+ * `ours` instead — see the hard rule in CLAUDE.md.
+ * ------------------------------------------------------------------------ */
+const stockLogSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  '@id': 'https://stocklog.onrender.com/#app',
+  name: 'StockLog',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Shopify',
+  url: STOCKLOG_URL,
+  description:
+    'Shopify inventory app that keeps a persistent stock ledger: decrements on orders, restocks on cancellations and refunds, imports Stocky CSV exports, and keeps a timestamped audit trail of every movement.',
+  author: { '@id': 'https://stackarchitect.xyz/#luke' },
+  publisher: { '@id': 'https://stackarchitect.xyz/#org' },
+  offers: {
+    '@type': 'Offer',
+    url: STOCKLOG_URL,
+    price: String(STOCKLOG_PRICE),
+    priceCurrency: 'USD',
+    availability: 'https://schema.org/InStock',
+    priceSpecification: {
+      '@type': 'UnitPriceSpecification',
+      price: String(STOCKLOG_PRICE),
+      priceCurrency: 'USD',
+      unitText: STOCKLOG_UNIT,
+    },
+  },
+};
 ---
-<Base title="About Luke Sandelands — Founder, Stack Architect" description="Luke Sandelands builds free, open-source Shopify automation tools that replace paid apps. Hands-on with Make.com, Meta CAPI and Google Enhanced Conversions.">
+<Base title="About Luke Sandelands — Founder, Stack Architect" description="Luke Sandelands builds free, open-source Shopify automation tools that replace paid apps. Hands-on with Make.com, Meta CAPI and Google Enhanced Conversions." schema={stockLogSchema}>
 <Fragment slot="head">
 <script type="application/ld+json">
   {
@@ -72,30 +121,6 @@ const tocHeadings = [
         "about": { "@id": "https://stackarchitect.xyz/#luke" },
         "mainEntity": { "@id": "https://stackarchitect.xyz/#luke" },
         "mentions": { "@id": "https://stocklog.onrender.com/#app" }
-      },
-      {
-        "@type": "SoftwareApplication",
-        "@id": "https://stocklog.onrender.com/#app",
-        "name": "StockLog",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Shopify",
-        "url": "https://stocklog.onrender.com/",
-        "description": "Shopify inventory app that keeps a persistent stock ledger: decrements on orders, restocks on cancellations and refunds, imports Stocky CSV exports, and keeps a timestamped audit trail of every movement.",
-        "author": { "@id": "https://stackarchitect.xyz/#luke" },
-        "publisher": { "@id": "https://stackarchitect.xyz/#org" },
-        "offers": {
-          "@type": "Offer",
-          "url": "https://stocklog.onrender.com/",
-          "price": "7.99",
-          "priceCurrency": "USD",
-          "availability": "https://schema.org/InStock",
-          "priceSpecification": {
-            "@type": "UnitPriceSpecification",
-            "price": "7.99",
-            "priceCurrency": "USD",
-            "unitText": "MONTH"
-          }
-        }
       }
     ]
   }
@@ -275,7 +300,7 @@ const tocHeadings = [
     <div class="inner">
       <div class="sec-tag">Proof of work</div>
       <h2 id="i-ship-products-not-just-guides">I ship products, not just guides</h2>
-      <p>The clearest test of whether someone understands Shopify inventory is whether they can build for it. <strong>StockLog</strong> is my Shopify app — a persistent stock ledger that decrements on orders, restocks on cancellations and refunds, imports Stocky CSV exports ahead of the 31 August 2026 shutdown, and keeps a timestamped audit trail of every movement. Its Shopify App Store listing is dated August 2026, and it costs $7.99/month.</p>
+      <p>The clearest test of whether someone understands Shopify inventory is whether they can build for it. <strong>StockLog</strong> is my Shopify app — a persistent stock ledger that decrements on orders, restocks on cancellations and refunds, imports Stocky CSV exports ahead of the 31 August 2026 shutdown, and keeps a timestamped audit trail of every movement. Its Shopify App Store listing is dated August 2026, and it costs {formatMonthly(STOCKLOG_PRICE)}.</p>
       <a href="https://stocklog.onrender.com/" target="_blank" rel="noopener" style="display:block;margin:22px 0 10px;border:1px solid var(--line,#2a2f2a);border-radius:12px;overflow:hidden;">
         <img src="/images/stocklog-app.webp" alt="StockLog's live product page showing its Stocky import, retry-safe order tracking, and refund restocking features" width="1200" height="622" loading="lazy" style="display:block;width:100%;height:auto;" />
       </a>
