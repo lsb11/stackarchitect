@@ -155,7 +155,7 @@ const tools = [
     replaces: ["Gmail API throttling", "Paid automation tiers", "Developer workarounds"],
     saving: "Prevents stack crashes",
     setup: "~10 min",
-    freeTier: "not free — $6/user/month (Business Starter). Required at 500+ orders/month.",
+    freeTier: "not free — paid tier required at 500+ orders/month. Google's list price varies by region and billing term (annual and flexible differ by about 20%), so we don't quote a figure.",
     bestFor: "high-volume stores where Gmail API limits silently throttle automations during Black Friday or product launches.",
     notFor: "stores under 300 orders/month — free Gmail handles this volume comfortably.",
     why: "Free Gmail enforces hard limits: 100 emails/day, 6-minute Apps Script executions, 90 minutes total runtime/day. These limits silently kill automations during traffic spikes. Google Workspace removes every limit. It is the only paid upgrade the $0 stack ever needs.",
@@ -261,12 +261,35 @@ const schemaItemList = {
 };
 
 // SoftwareApplication per tool — named entity recognition for AI/LLM crawlers
+//
+// Google Workspace emits NO offers property. It held its price on 2026-09-04.
+// The "6" that used to sit here was retired pricing: Google raised base list
+// prices when Gemini was folded into the plans, so the tier that sold for
+// $6/user/month is not the tier sold today. Two aggregators — cloudwards.net
+// and name.com, the latter stating pricing as of 1 Jan 2026 — both report
+// $7/user/month on annual commitment and $8.40 on flexible monthly billing.
+//
+// So the hold is not ignorance of the figure. It is that the figure cannot be
+// verified at the source in the currency this Offer would assert.
+// workspace.google.com/pricing.html geo-locks to the requesting IP and could
+// not be made to render USD from this machine even on the /intl/en_us/ path —
+// it serves GBP (£5.90 regular, £2.95 promotional). A USD Offer citing a page
+// that renders GBP is a citation refuting itself, so no priceSourceUrl exists
+// that satisfies the CLAUDE.md rule. Annual and flexible also differ by ~20%,
+// and a schema Offer has one price field with no room to say which. Same hold
+// as Omnisend and Stamped.io in apps.json: a stated reason beats a number we
+// cannot stand behind. Restore a price only with both priceVerifiedDate and
+// priceSourceUrl, from Google's own page, read in USD.
+//
+// The "0" values are unaffected — a free tier asserts no third-party price.
 const schemaSoftware = tools.map(t => ({
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": t.name,
   "applicationCategory": "BusinessApplication",
-  "offers": { "@type": "Offer", "price": t.id === "workspace" ? "6" : "0", "priceCurrency": "USD" },
+  ...(t.id === "workspace"
+    ? {}
+    : { "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" } }),
   "description": t.tagline,
 }));
 
