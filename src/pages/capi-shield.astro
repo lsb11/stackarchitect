@@ -60,7 +60,7 @@ const guides = [
 
 // ─── Stats ────────────────────────────────────────────────────────────────────
 const heroStats = [
-  { value: "20–40%", label: "Conversions lost" },
+  { value: "Silent loss", label: "Purchase events iOS drops" },
   { value: "$145–$650/mo", label: "Paid tools charge" },
   { value: "Degraded ROAS", label: "Smart bidding blind" },
   { value: "$0", label: "CAPI Shield costs" },
@@ -73,7 +73,7 @@ const heroStats = [
 // of what CAPI Shield sends and is verifiable by reading the scenario. Restore
 // an EMQ figure here only when a measured one exists.
 const stripStats = [
-  { value: "20–40%", label: "Conversions lost (estimate)" },
+  { value: "74–78%", label: "Shopify traffic that is mobile" },
   { value: "6 min",  label: "Full deployment" },
   { value: "5",      label: "Match keys sent per event" },
   { value: "$0",     label: "Monthly cost" },
@@ -126,7 +126,7 @@ const faqs = [
   { q: "How to set up Shopify server-side tracking free?",               a: "Use CAPI Shield — a free Make.com scenario that routes Shopify order webhooks to Meta Conversions API and Google Enhanced Conversions simultaneously. Sign up for Make.com free, create a scenario with a Webhooks trigger, add the Meta Conversions API module and Google Ads Enhanced Conversions module, create a Shopify Order Payment webhook pointing to your Make.com URL, and test with a sample order. Takes 6 minutes, no code required, free forever on Make.com's free tier." },
   { q: "What is Google Enhanced Conversions and how does it work with Shopify?", a: "Google Enhanced Conversions is Google's server-side conversion tracking system. It supplements your standard Google Ads conversion tags by sending hashed first-party customer data — email, phone, name — alongside each conversion event. Google uses this to match conversions to Google accounts with greater accuracy, improving Smart Bidding and Performance Max optimisation even when cookies and pixels are blocked by iOS or ad blockers. CAPI Shield sets this up free alongside Meta CAPI in the same Make.com scenario — one setup recovers both platforms." },
   { q: "What is Meta CAPI and how does it work with Shopify?",           a: "Meta Conversions API (CAPI) is a server-to-server connection that sends Shopify purchase events directly to Meta without going through the browser. CAPI Shield sets this up free using Make.com, sending hashed email, phone, name, IP and user-agent with every event — the match-key set Meta scores Event Match Quality against, and a larger one than the browser pixel carries." },
-  { q: "How much conversion data am I losing without server-side tracking?", a: "Typically 20–40% of purchase events are lost with browser-only pixel tracking in 2026. Stores with high mobile and iOS traffic often lose 35–50%. See the sourced figures in our Shopify iOS Attribution Gap Benchmark. After CAPI Shield deployment most stores see an immediate increase in reported conversions in Meta Events Manager within 24–48 hours." },
+  { q: "How much conversion data am I losing without server-side tracking?", a: "We do not publish a number, because the honest answer is specific to your store: the loss is driven by how much of your traffic is mobile and iOS, and how many of those visitors decline tracking. Measure yours instead. The Shopify vs Meta Attribution Gap Calculator turns your Ads Manager conversion count and your Shopify order count into your own gap; the Meta EMQ Score Estimator scores the match quality of what you are currently sending; and the Shopify iOS Attribution Gap Benchmark publishes the sourced figures behind the mechanism. After CAPI Shield deployment most stores see an immediate increase in reported conversions in Meta Events Manager within 24–48 hours." },
   { q: "Does CAPI Shield replace my Meta Pixel?",                        a: "No. CAPI Shield works alongside your existing Meta Pixel, not instead of it. The pixel still captures upper-funnel events like ViewContent and AddToCart. CAPI Shield adds server-side Purchase events on top. Both fire simultaneously and Meta deduplicates them automatically using the event_id included in every server event." },
   { q: "What is the difference between CAPI Shield and Elevar or Northbeam?", a: "Elevar costs $225/month and Northbeam starts at $1,500+/month, with its upper tiers quoted only through a sales call. CAPI Shield uses Make.com to achieve the same server-side event forwarding for free. The core technical outcome — server-side purchase events reaching Meta CAPI and Google Enhanced Conversions — is identical. Elevar and Northbeam add analytics dashboards on top. If you only need conversion recovery, CAPI Shield is the free equivalent." },
   { q: "Will CAPI Shield improve my ROAS?",                              a: "Indirectly, yes. CAPI Shield gives Meta and Google complete conversion data. Smart Bidding and Advantage+ Shopping use conversion signals to optimise delivery. Most stores see measurable ROAS improvement within 14–21 days as the algorithm relearns with full data." },
@@ -278,7 +278,7 @@ const tocHeadings = [
 ];
 
 ---
-<Base title="Shopify Server-Side Tracking — CAPI Shield, Free Setup" description="Browser-only tracking loses an estimated 20–40% of purchase events. CAPI Shield sends them server-side to Meta CAPI + Google free — no code, 6 min.">
+<Base title="Shopify Server-Side Tracking — CAPI Shield, Free Setup" description="Browser-only tracking loses purchase events to iOS, Safari ITP and ad blockers. CAPI Shield sends them server-side to Meta CAPI + Google free — no code, 6 min.">
 <Fragment slot="head">
 <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
 

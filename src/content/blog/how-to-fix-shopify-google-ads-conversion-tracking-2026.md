@@ -2,7 +2,7 @@
 title: "Fix Shopify Google Ads Conversion Tracking 2026 — Free"
 heading: "How to Fix Shopify Google Ads Conversion Tracking in 2026 — Free Server-Side Setup (No GTM Required)"
 description: "Google Ads misses Shopify purchases whenever cookies are blocked or iOS clears attribution. Free server-side Enhanced Conversions via Make.com — no GTM, no paid app, no code, 6 minutes."
-answer: "Google Ads reports fewer purchases than Shopify because browser conversion pixels miss an estimated 20-40% of real orders. The free fix has two layers: Shopify's native Google and YouTube channel for baseline tracking, then server-side Enhanced Conversions sent through a Make.com webhook. No Google Tag Manager, no paid app, no code."
+answer: "Google Ads reports fewer purchases than Shopify because browser conversion pixels miss real orders — iOS, Safari ITP and ad blockers stop them firing. The free fix has two layers: Shopify's native Google and YouTube channel for baseline tracking, then server-side Enhanced Conversions sent through a Make.com webhook. No Google Tag Manager, no paid app, no code."
 publishDate: "2026-04-16"
 updatedDate: "2026-04-16"
 category: "tracking"
@@ -14,7 +14,7 @@ faqs:
   - question: "How do I set up Google Ads conversion tracking on Shopify for free?"
     answer: "The free approach is two-layer: install the Google & YouTube sales channel from the Shopify App Store for basic GA4 and Google Ads purchase event tracking (2 minutes, no cost), then add Google Enhanced Conversions via Make.com webhook for server-side coverage (6 minutes, no cost). The Make.com approach sends purchase events directly from Shopify's server to Google's Conversions API, bypassing browser restrictions, iOS tracking limitations, and ad blockers. No Google Tag Manager required."
   - question: "What is Google Enhanced Conversions for Shopify?"
-    answer: "Google Enhanced Conversions is a server-side conversion tracking method that supplements your standard Google Ads pixel by sending hashed customer data (email address, phone number) alongside purchase events directly to Google's API. This allows Google to match conversions to signed-in Google accounts even when cookies are blocked or iOS has cleared attribution data. For Shopify stores, it recovers 15-35% of purchase events the browser pixel misses."
+    answer: "Google Enhanced Conversions is a server-side conversion tracking method that supplements your standard Google Ads pixel by sending hashed customer data (email address, phone number) alongside purchase events directly to Google's API. This allows Google to match conversions to signed-in Google accounts even when cookies are blocked or iOS has cleared attribution data. For Shopify stores, it recovers purchase events the browser pixel misses."
   - question: "Do I need Google Tag Manager for Shopify conversion tracking?"
     answer: "No. The free Make.com approach sends Google Enhanced Conversions events directly to Google's Conversions API endpoint via HTTP request — no Google Tag Manager container required. GTM is one implementation method; direct API calls via Make.com is another, and for Shopify stores it is simpler and more reliable because it operates entirely server-side with no browser dependency."
   - question: "Why is my Google Ads showing fewer conversions than Shopify in 2026?"
@@ -40,7 +40,7 @@ relatedGuides:
 > **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-attribution-tools-compared/).
 
 
-If your Google Ads dashboard shows significantly fewer purchases than your Shopify order count, your conversion tracking is broken. In 2026, browser-based Google Ads pixels miss 20–40% of real purchases on most Shopify stores. The fix is server-side Enhanced Conversions — and it costs nothing.
+If your Google Ads dashboard shows significantly fewer purchases than your Shopify order count, your conversion tracking is broken. In 2026, browser-based Google Ads pixels miss real purchases on most Shopify stores. The fix is server-side Enhanced Conversions — and it costs nothing.
 
 This guide covers the complete free setup: the native Google & YouTube channel layer (2 minutes), and the Make.com server-side Enhanced Conversions layer (6 minutes). No Google Tag Manager. No paid apps. No code.
 
@@ -56,7 +56,7 @@ Google Ads conversion tracking on Shopify works by firing a browser-based pixel 
 
 **Ad blockers and privacy browsers** block the Google Ads pixel script entirely. Brave, Firefox with Enhanced Tracking Protection, and Safari with ad blockers all prevent `gtag.js` from loading. No pixel load means no conversion event regardless of what the customer does.
 
-The cumulative effect: on a typical Shopify store in 2026, 20–40% of purchases from Google Ads never appear in Google Ads Manager.
+The cumulative effect: on a typical Shopify store in 2026, a share of the purchases driven by Google Ads never appears in Google Ads Manager — and that share is set by your own traffic mix and consent rate, not by an industry average.
 
 ## What Google Enhanced Conversions Actually Does
 
@@ -172,7 +172,7 @@ Goals → Summary → [Your purchase conversion] → Settings → Enhanced conve
 
 **In Google Ads — Conversion comparison:**
 
-After 7–14 days, compare your Google Ads reported conversions against your Shopify order count for the same period. A healthy Enhanced Conversions setup reduces the gap from 20–40% down to 10–20%. The residual gap (orders from non-Google-account users, opted-out customers) is not recoverable by any tool.
+After 7–14 days, compare your Google Ads reported conversions against your Shopify order count for the same period. A healthy Enhanced Conversions setup narrows that gap substantially, but not to zero. The residual gap (orders from non-Google-account users, opted-out customers) is not recoverable by any tool.
 
 **What to check if it's not working:**
 - Conversion ID and Label format: must be `AW-XXXXXXXXXX` and the exact label string from Google Ads, not paraphrased
@@ -211,7 +211,7 @@ For stores already running Make.com for CAPI Shield or Stocky Swap, the Google E
 
 | Metric | Before | After (14 days) |
 |---|---|---|
-| Google Ads vs Shopify gap | 20–40% | 10–20% |
+| Google Ads vs Shopify gap | Wide | Narrowed to residual |
 | Enhanced Conversions status | Inactive | Active |
 | Campaign optimisation data | Partial | Near-complete |
 | iOS purchase attribution | Mostly missing | Mostly recovered |

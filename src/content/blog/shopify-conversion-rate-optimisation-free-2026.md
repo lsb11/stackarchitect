@@ -2,7 +2,7 @@
 title: "Shopify CRO Free 2026 — 12 Tools That Cost Nothing"
 heading: "Shopify Conversion Rate Optimisation Free 2026 — 12 Tools That Cost Nothing"
 description: "12 free Shopify CRO tools and tactics, in order. Fix the tracking gap first, because every decision made on incomplete conversion data is wrong."
-answer: "Shopify conversion rate optimisation should begin with measurement, not apps. Browser tracking misses an estimated 20-40% of purchases, so a store's reported conversion rate reads artificially low and every decision built on it is wrong. Fix tracking first, then checkout friction, then retention flows. Twelve free tools cover all three."
+answer: "Shopify conversion rate optimisation should begin with measurement, not apps. Browser tracking misses purchases, so a store's reported conversion rate reads artificially low and every decision built on it is wrong. Fix tracking first, then checkout friction, then retention flows. Twelve free tools cover all three."
 publishDate: "2026-04-21"
 updatedDate: "2026-04-21"
 category: "automation"
@@ -16,7 +16,7 @@ faqs:
   - question: "What free tools can improve Shopify conversion rate?"
     answer: "The highest-impact free CRO tools for Shopify in 2026 are: Tidio (free AI live chat resolving 70% of queries automatically), Google Analytics 4 (free funnel analysis showing checkout drop-off points), Hotjar free plan (500 sessions/month of heatmaps and recordings), Microsoft Clarity (unlimited free heatmaps and session recordings), CAPI Shield (server-side tracking that fixes attribution gaps which artificially lower apparent conversion rates), and Shopify's native checkout customisation tools."
   - question: "Why does my Shopify conversion rate look low?"
-    answer: "Many apparent conversion rate problems are actually tracking problems. If your GA4 or Meta Ads Manager is missing 20–40% of purchase events due to iOS restrictions or ad blockers, your reported conversion rate is artificially low. The first step before any CRO work is verifying your tracking is accurate — implement server-side Enhanced Conversions for Google Ads and Meta CAPI for Facebook to get accurate purchase data."
+    answer: "Many apparent conversion rate problems are actually tracking problems. If your GA4 or Meta Ads Manager is missing purchase events due to iOS restrictions or ad blockers, your reported conversion rate is artificially low. The first step before any CRO work is verifying your tracking is accurate — implement server-side Enhanced Conversions for Google Ads and Meta CAPI for Facebook to get accurate purchase data."
   - question: "Does Shopify have a free CRO tool?"
     answer: "Shopify's built-in analytics show conversion funnel data (sessions → product views → add to cart → checkout → purchase) at no cost. Combined with free tools like Microsoft Clarity for session recordings and Tidio for live chat, you have a complete free CRO toolkit. Paid Shopify CRO apps like Rebuy ($99+/month) and LimeSpot ($15–$100/month) add AI personalisation, but the free alternatives cover 80% of the conversion improvement opportunity for most stores."
   - question: "How do I find where customers are dropping off in Shopify checkout?"
@@ -32,7 +32,7 @@ relatedGuides:
     href: "/"
 ---
 
-The most common CRO mistake Shopify store owners make is spending £50–200/month on conversion apps before fixing the fundamentals. Most stores have a 20–40% tracking gap that makes their conversion rate look worse than it is, checkout friction that no app can fix, and missing retention flows that paid apps claim to solve.
+The most common CRO mistake Shopify store owners make is spending £50–200/month on conversion apps before fixing the fundamentals. Most stores have a tracking gap that makes their conversion rate look worse than it is, checkout friction that no app can fix, and missing retention flows that paid apps claim to solve.
 
 This guide covers 12 free tools and tactics that address the real levers — in the right order.
 
@@ -40,7 +40,7 @@ This guide covers 12 free tools and tactics that address the real levers — in 
 
 Before analysing your conversion rate, verify you're measuring it accurately.
 
-**The tracking gap problem:** iOS restrictions, Safari ITP, and ad blockers mean browser-based tracking misses 20–40% of real purchases on most Shopify stores. If your GA4 shows 80 purchases and Shopify shows 100, your GA4 conversion rate is 20% artificially low. Every CRO decision based on this data is wrong.
+**The tracking gap problem:** iOS restrictions, Safari ITP, and ad blockers mean browser-based tracking misses real purchases on most Shopify stores. The size of the miss is your store's, not the industry's — it scales with your iOS traffic and your consent rate — and you can read it straight off your own dashboards. If your GA4 shows 80 purchases and Shopify shows 100, your GA4 conversion rate is 20% artificially low. Every CRO decision based on this data is wrong.
 
 **Free fix:** Server-side tracking via [Make.com — free, 1,000 ops/month](/go/make/?source=shopify-conversion-rate-optimisation-fre-n1) recovers the missing purchase events. [CAPI Shield](/capi-shield/) covers Meta and Google simultaneously. [Google Enhanced Conversions](/shopify-google-ads-conversion-tracking/) fixes Google Ads attribution specifically. Both deploy in under 10 minutes at $0.
 
@@ -149,7 +149,7 @@ The total cost of implementing all six: $0/month. Most paid CRO apps target the 
 
 ## The foundation of CRO: accurate tracking data
 
-Before optimising your conversion rate, ensure your tracking is accurate. If your Google Ads and Meta Ads are optimising on 60–70% of real conversion data (due to iOS blocking), your CRO efforts are working with a corrupted signal. The Complete Kit deploys server-side tracking (CAPI Shield + Google Enhanced Conversions + TikTok CAPI), inventory management (Stocky Swap), and P&L reporting — four pre-built Make.com JSON blueprints, $24 one-time.
+Before optimising your conversion rate, ensure your tracking is accurate. If your Google Ads and Meta Ads are optimising on part of your real conversion data (due to iOS blocking), your CRO efforts are working with a corrupted signal. The Complete Kit deploys server-side tracking (CAPI Shield + Google Enhanced Conversions + TikTok CAPI), inventory management (Stocky Swap), and P&L reporting — four pre-built Make.com JSON blueprints, $24 one-time.
 
 **[Get the Complete Kit — $24 →](/pro/)**
 

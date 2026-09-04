@@ -83,11 +83,11 @@ Length: [word count].
 
 Most AI tools for Shopify are about creating content or generating ideas. Server-side tracking is about preserving the data quality that makes all of your advertising AI work correctly.
 
-Meta's Advantage+ AI, Google's Performance Max, and TikTok's Smart Campaigns all rely on purchase event data to optimise. iOS restrictions, ad blockers, and Shopify's January 2026 pixel update mean browser pixels miss 30–60% of purchase events. When your ad platform's AI trains on incomplete data, it makes poor decisions — poor targeting, poor bidding, poor delivery.
+Meta's Advantage+ AI, Google's Performance Max, and TikTok's Smart Campaigns all rely on purchase event data to optimise. iOS restrictions, ad blockers, and Shopify's January 2026 pixel update mean browser pixels miss purchase events. When your ad platform's AI trains on incomplete data, it makes poor decisions — poor targeting, poor bidding, poor delivery.
 
 **The fix is server-side tracking:** sending purchase events directly from Shopify's server to Meta, Google, and TikTok via their Conversions APIs. This bypasses browsers entirely. Meta's [Conversions API](https://developers.facebook.com/docs/marketing-api/conversions-api) and Google's [Enhanced Conversions](https://support.google.com/google-ads/answer/9888656) both support server-side event submission with hashed first-party data — the mechanism that makes tracking reliable regardless of browser privacy settings.
 
-**Free approach:** [CAPI Shield](/capi-shield/) — Make.com scenario that handles Meta CAPI, Google Enhanced Conversions, and TikTok Events API in one setup. Covers the estimated 20–40% of purchase events browser tracking loses. Deploys in under an hour. $0/month.
+**Free approach:** [CAPI Shield](/capi-shield/) — Make.com scenario that handles Meta CAPI, Google Enhanced Conversions, and TikTok Events API in one setup. Covers the purchase events browser tracking loses. Deploys in under an hour. $0/month.
 
 This is the AI-adjacent investment with the clearest ROI on this list. Better purchase data → better AI ad optimisation → better ROAS.
 
@@ -125,7 +125,7 @@ This is the newest layer and the one most Shopify content sites have not yet ada
 
 2. **Write direct, factual answers** — not marketing copy. AI engines cite content that directly answers questions. "Systeme.io gives 2,000 contacts and unlimited sends free" is citable. "Supercharge your email marketing" is not.
 
-3. **Use specific numbers and data.** "Browser-only tracking loses an estimated 20–40% of purchase events" is more citable than "improves tracking". Precision signals authority.
+3. **Use specific, sourceable facts.** "Safari ITP caps script-writable first-party cookies at seven days" is more citable than "improves tracking" — and unlike a synthesised percentage, it survives someone checking it. Precision only signals authority if the precise thing is true.
 
 4. **Install the Shopify Knowledge Base App.** AI crawlers access your knowledge base even before you enable Agentic Storefronts. Populate it with FAQ content, product details, and return policies.
 

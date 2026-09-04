@@ -299,7 +299,7 @@ const tocHeadings = [
     <div class="editorial-inner">
       <h2 id="what-is-meta-event-match-quality-emq">What Is Meta Event Match Quality (EMQ)?</h2>
       <p>Meta Event Match Quality is a score from 0–10 that measures how accurately your conversion events are being matched back to Meta user profiles. A high EMQ score means Meta can reliably attribute purchases, add-to-carts, and other events to specific ad clicks — which directly determines how accurately your ROAS is reported and how well Meta's algorithm can optimise your campaigns.</p>
-      <p><strong>The core problem: browser-only tracking is broken.</strong> Apple's iOS App Tracking Transparency, Safari's ITP, and widespread use of ad blockers all interfere with the Meta Pixel's ability to fire accurately. When a customer uses iOS Safari, your pixel may miss 20–40% of conversions entirely. Those conversions still happen — they just become invisible to Meta.</p>
+      <p><strong>The core problem: browser-only tracking is broken.</strong> Apple's iOS App Tracking Transparency, Safari's ITP, and widespread use of ad blockers all interfere with the Meta Pixel's ability to fire accurately. When a customer uses iOS Safari, your pixel may miss the conversion entirely. Those conversions still happen — they just become invisible to Meta. How many you lose is specific to your store, because it tracks how much of your traffic is iOS and how much of it consents.</p>
 
       <h2 id="how-emq-score-is-calculated">How EMQ Score Is Calculated</h2>
       <p>Meta calculates EMQ based on which customer data signals are present in your event payload and how accurately they can be matched to a Meta user profile. The most valuable signals are:</p>
@@ -320,7 +320,7 @@ const tocHeadings = [
       <h2 id="how-to-fix-low-meta-emq-on-shopify-free-method">How to Fix Low Meta EMQ on Shopify — Free Method</h2>
       <p>The fastest way to improve EMQ on Shopify is to implement server-side tracking via the <a href="/capi-shield/">Meta Conversions API using Make.com</a>. When a Shopify order is placed, a Make.com webhook fires immediately and sends a Purchase event directly to Meta's server — with hashed email, phone, external_id, and IP address all included in the payload. This bypasses every browser-level restriction and typically moves EMQ scores from 4–5 range to 6–8+ range.</p>
       <p>The full setup takes approximately 6 minutes on Make.com's free tier (1,000 credits/month). No code, no developer, no ongoing subscription. The guide at <a href="/capi-shield/">stackarchitect.xyz/capi-shield</a> covers every step.</p>
-      <p>Low EMQ is one visible symptom of a wider measurement gap. For how much purchase signal the typical Shopify store loses to iOS — a sourced 20–40% — see the <a href="/shopify-ios-attribution-gap-benchmark/">iOS attribution gap benchmark</a>.</p>
+      <p>Low EMQ is one visible symptom of a wider measurement gap. For the sourced evidence on how iOS removes purchase signal — and why the size of the loss is a property of your store rather than an industry constant — see the <a href="/shopify-ios-attribution-gap-benchmark/">iOS attribution gap benchmark</a>.</p>
 
       <h2 id="emq-score-bands-what-each-range-actually-means">EMQ score bands — what each range actually means</h2>
       <p>Meta scores every web event from 0–10 on a rolling 48-hour window. The bands below are the working interpretation used across Shopify tracking practice in 2026 — what each range tells you to do next, not just a colour.</p>
@@ -491,7 +491,7 @@ const tocHeadings = [
     let insight = '';
     if (!signals.includes('email')) insight += '<strong>Add email address</strong> — the highest-impact single signal. Hashed SHA256, sent server-side. ';
     if (!signals.includes('phone')) insight += '<strong>Add phone number</strong> — second highest EMQ impact. Hashed E.164 format. ';
-    if (method === 'pixel') insight += '<strong>Switch to server-side Events API</strong> — browser pixel loses 20–40% of iOS conversions. ';
+    if (method === 'pixel') insight += '<strong>Switch to server-side Events API</strong> — the browser pixel loses iOS conversions the server never would. ';
     if (!signals.includes('fbc')) insight += '<strong>Capture fbc from URL</strong> — enables precise click-level deduplication. ';
     if (!insight) insight = 'Strong signal setup. Maintain server-side tracking and ensure all customer data fields are consistently populated at checkout.';
 

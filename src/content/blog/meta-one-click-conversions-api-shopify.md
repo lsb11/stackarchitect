@@ -15,7 +15,7 @@ faqs:
   - question: "What is the Meta one-click Conversions API?"
     answer: "Announced by Meta on 15 April 2026, the Meta-enabled Conversions API is a free, one-click setup inside Events Manager. Meta hosts the server-side infrastructure itself — no code, no server, no maintenance. It creates a server-side connection alongside your existing Meta Pixel, with event_id deduplication handled automatically, covering standard web events like ViewContent, AddToCart, InitiateCheckout, and Purchase."
   - question: "Is Meta's one-click CAPI free?"
-    answer: "Yes. There is no cost and no ongoing fee. Meta runs the server-side infrastructure. Meta reports that advertisers using Conversions API for web events see an average 17.8% lower cost per result than those without, so if you currently run Pixel-only tracking, activating it is free performance."
+    answer: "Yes. There is no cost and no ongoing fee. Meta runs the server-side infrastructure. Meta reported in April 2026 that advertisers using Conversions API for web events see an average 17.8% lower cost per result than those without, so if you currently run Pixel-only tracking, activating it is free performance."
   - question: "Does one-click CAPI replace CAPI Shield or webhook-based tracking?"
     answer: "No — they solve different failure modes. One-click CAPI mirrors events your browser Pixel fires, so if the Pixel never fires (blocked script, abandoned browser session before the thank-you page), there may be no event to mirror. A Shopify orders/paid webhook originates from Shopify's server the moment payment is confirmed, independent of any browser. It also feeds Google Enhanced Conversions and TikTok Events API from the same trigger, which one-click CAPI cannot."
   - question: "Should Shopify stores turn on Meta's one-click CAPI?"
@@ -33,7 +33,7 @@ relatedGuides:
 > **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-attribution-tools-compared/).
 
 
-**TL;DR:** On 15 April 2026 Meta shipped a free, one-click Conversions API setup inside Events Manager. Turn it on today — it takes two minutes, costs nothing, and Meta measures a 17.8% lower cost per result for advertisers running CAPI on web events. But know exactly what you switched on: a server-side *mirror of your browser Pixel*, for *Meta only*. The two failure modes it doesn't fix — events the Pixel never fires, and every non-Meta platform — are the two that a [free Shopify webhook setup](/capi-shield/) exists to solve.
+**TL;DR:** On 15 April 2026 Meta shipped a free, one-click Conversions API setup inside Events Manager. Turn it on today — it takes two minutes, costs nothing, and Meta's April 2026 figure puts advertisers running CAPI on web events at a 17.8% lower cost per result. But know exactly what you switched on: a server-side *mirror of your browser Pixel*, for *Meta only*. The two failure modes it doesn't fix — events the Pixel never fires, and every non-Meta platform — are the two that a [free Shopify webhook setup](/capi-shield/) exists to solve.
 
 ## What Meta actually released
 
@@ -41,7 +41,7 @@ Meta announced two connected updates on 15 April 2026: an AI-enhanced Pixel that
 
 Before this, "set up CAPI" meant choosing between a developer build, a partner integration (Shopify's Facebook & Instagram channel), a CAPI Gateway container, or middleware like Stape. The one-click option adds a fourth path: Meta runs the server, you press a button. Deduplication is automatic — Meta inherits your Pixel's event configuration and assigns matching `event_id` values so browser and server events merge instead of double-counting.
 
-Meta's framing was as notable as the feature: every advertiser should run Pixel *and* Conversions API together, with deduplication. The company quantified why — advertisers with CAPI on web events average **17.8% lower cost per result** than those without.
+Meta's framing was as notable as the feature: every advertiser should run Pixel *and* Conversions API together, with deduplication. The company quantified why, in that same April 2026 announcement — advertisers with CAPI on web events average **17.8% lower cost per result** than those without.
 
 ## How to activate it (2 minutes)
 
@@ -54,7 +54,7 @@ Meta rolls features out gradually, so if the button isn't visible on your accoun
 
 ## The honest part: what it doesn't fix
 
-**It mirrors the Pixel — it doesn't replace it.** The Meta-enabled CAPI creates a server-side connection *to your Pixel data*. When the Pixel fires, Meta now also receives the event server-side, immune to anything that happens after the browser sends it. But when the Pixel never fires at all — an ad blocker stripped the script, a strict content blocker on iOS 26 killed it, the customer closed the tab before the thank-you page finished loading — there is nothing to mirror. Industry estimates in 2026 put Pixel-only signal loss at 30–60% of real conversions; one-click CAPI recovers the portion where the Pixel fired but delivery failed, not the portion where the Pixel never ran.
+**It mirrors the Pixel — it doesn't replace it.** The Meta-enabled CAPI creates a server-side connection *to your Pixel data*. When the Pixel fires, Meta now also receives the event server-side, immune to anything that happens after the browser sends it. But when the Pixel never fires at all — an ad blocker stripped the script, a strict content blocker on iOS 26 killed it, the customer closed the tab before the thank-you page finished loading — there is nothing to mirror. One-click CAPI recovers the portion where the Pixel fired but delivery failed, not the portion where the Pixel never ran — and how those two portions divide is a property of your store and its traffic, not something an industry figure can tell you.
 
 That second portion is what a **Shopify webhook** fixes. Shopify's `orders/paid` webhook fires from Shopify's server the moment payment is confirmed — no browser, no script, no dependency on the customer's device. That's the architecture behind [CAPI Shield](/capi-shield/): one Make.com scenario receives the webhook and posts the purchase server-to-server, with the same `event_id` deduplication, at $0/month on Make.com's free tier (~250 orders/month at 4 credits per order).
 

@@ -76,7 +76,7 @@ Place a test order in Shopify (use a 100% discount code on any product). Go back
 
 ## Step 2 — Server-Side Tracking (2–3 Hours, Highest Priority)
 
-If you run Meta or Google ads and are not running server-side tracking, your ad algorithms are working from incomplete data. iOS restrictions and browser limitations mean browser pixels miss 30–60% of purchase events for many stores. Campaigns are optimising blind.
+If you run Meta or Google ads and are not running server-side tracking, your ad algorithms are working from incomplete data. iOS restrictions and browser limitations mean browser pixels miss purchase events for many stores. Campaigns are optimising blind.
 
 [CAPI Shield](/capi-shield/) adds a branch to your Make.com scenario that sends each purchase event directly to Meta's Conversions API and Google's Enhanced Conversions endpoint. No browser involved. No iOS restriction applies.
 

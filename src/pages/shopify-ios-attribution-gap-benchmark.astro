@@ -29,10 +29,15 @@ const dateModified  = "2026-07-02";
 const verified      = "2 July 2026";
 const lastReviewISO = "2026-07-02";
 
-// ── The synthesised headline range (from sourced figures below) ──
-const HEADLINE_LOW  = 20;
-const HEADLINE_HIGH = 40;
-const HEADLINE_MOBILE_HIGH = 50;
+// ── No headline range lives here any more. ──
+// This page used to publish a synthesised 20–40% (rising to 50% on
+// mobile-heavy stores). It was withdrawn on 4 September 2026: no row in the
+// evidence table measured that quantity, and rows 2 and 5 establish that the
+// loss is set by a store's own mobile/iOS traffic mix and consent rate, so a
+// single industry range is the wrong shape of answer however well sourced.
+// The mechanism and every sourced input survive; only the magnitude is gone.
+// Do not reinstate a constant here. A first-party figure arrives from
+// /api/gap-stats once N >= 10 approved submissions exist to compute one from.
 
 import { dataPoints } from '../data/attributionGap.js';
 
@@ -42,11 +47,11 @@ const platforms = ["Meta", "Google", "TikTok", "More than one"];
 const faqs = [
   {
     q: "What is the iOS attribution gap for Shopify stores?",
-    a: `The iOS attribution gap is the share of real purchases that ad platforms like Meta, Google and TikTok fail to attribute because Apple's App Tracking Transparency (ATT) and Safari Intelligent Tracking Prevention (ITP) block the browser signals those platforms rely on. Synthesising published research, the typical Shopify store loses an estimated ${HEADLINE_LOW}–${HEADLINE_HIGH}% of purchase-conversion signal, rising toward ${HEADLINE_MOBILE_HIGH}% on mobile-heavy stores.`
+    a: `The iOS attribution gap is the share of real purchases that ad platforms like Meta, Google and TikTok fail to attribute because Apple's App Tracking Transparency (ATT) and Safari Intelligent Tracking Prevention (ITP) block the browser signals those platforms rely on. Its size is store-specific: it is set by how much of your traffic is mobile and iOS, and how many of those visitors decline tracking. This page publishes the sourced figures behind the mechanism, and a calculator that turns two numbers from your own dashboards into your own gap.`
   },
   {
     q: "How is the Stack Architect Attribution Gap Index calculated?",
-    a: "It is a transparent synthesis of published third-party figures — ATT opt-out rates (~75% at the 2021 launch, ~50% by 2024–25), the mobile share of Shopify traffic (74–78%), Safari ITP's 7-day cap on script-writable first-party cookies, and documented conversion-loss case data (~40% without CAPI). We do not present this as proprietary primary data; every input is named, dated and linked in the methodology. As real store submissions accumulate, we will publish an original first-party figure alongside it."
+    a: "It is a transparent synthesis of published third-party figures — ATT opt-out rates (~75% at the 2021 launch, ~50% by 2024–25), the mobile share of Shopify traffic (74–78%), Safari ITP's 7-day cap on script-writable first-party cookies, and documented conversion-loss case data (~40% without CAPI). We do not present this as proprietary primary data; every input is named, dated and linked in the methodology. The index no longer resolves those inputs into a single headline percentage — that synthesis was withdrawn in September 2026, because none of the inputs measures it and two of them show the quantity is store-specific. What the inputs bound is the mechanism, not a number. A first-party figure is published here once enough real store submissions accumulate to compute one."
   },
   {
     q: "Why does server-side tracking (CAPI) close the gap?",
@@ -64,7 +69,7 @@ const schemaGraph = {
     {
       "@type": "Dataset",
       "name": "Shopify iOS Attribution Gap Benchmark",
-      "description": `A maintained synthesis of published research on how much Shopify purchase-conversion signal is lost to iOS ATT and Safari ITP — an estimated ${HEADLINE_LOW}–${HEADLINE_HIGH}% for the typical store, up to ${HEADLINE_MOBILE_HIGH}% on mobile-heavy stores.`,
+      "description": "A maintained set of sourced, dated figures on how iOS ATT and Safari ITP remove Shopify purchase-conversion signal, and on what determines the size of the loss for an individual store. Every row is attributed to a named third-party source. No synthesised headline percentage is published.",
       "url": CANONICAL,
       "keywords": ["iOS attribution gap","Shopify conversion tracking","ATT","App Tracking Transparency","Safari ITP","Meta CAPI","Conversions API","server-side tracking","Enhanced Conversions","ecommerce measurement"],
       "creator": { "@id": "https://stackarchitect.xyz/#luke" },
@@ -130,7 +135,7 @@ const schemaGraph = {
       "@type": "Article",
       "@id": `${CANONICAL}#article`,
       "headline": "Shopify iOS Attribution Gap Benchmark 2026",
-      "description": `How much purchase-conversion signal the typical Shopify store loses to iOS ATT and Safari ITP — a sourced ${HEADLINE_LOW}–${HEADLINE_HIGH}% synthesis, updated and dated.`,
+      "description": "How iOS ATT and Safari ITP remove Shopify purchase-conversion signal, what determines the size of the loss for any one store, and the sourced figures behind it — updated and dated.",
       "author":    { "@id": "https://stackarchitect.xyz/#luke" },
       "publisher": { "@id": "https://stackarchitect.xyz/#org" },
       "datePublished": datePublished,
@@ -224,20 +229,20 @@ const tocHeadings = [
     </div>
 
     <h1>
-      The typical Shopify store loses<br />
-      <span class="big-stat">{HEADLINE_LOW}–{HEADLINE_HIGH}%</span><br />
-      <span class="dim">of its conversion signal to iOS.</span>
+      The iOS attribution gap is<br />
+      <span class="big-stat">yours</span><br />
+      <span class="dim">to measure — not ours to average.</span>
     </h1>
 
-    <p id="answer">This benchmark estimates how much purchase-conversion signal a typical Shopify store loses to iOS App Tracking Transparency and Safari ITP, expressed as a percentage range. It is a sourced synthesis of published platform and vendor data rather than a survey of stores, released under CC BY 4.0 with machine-readable JSON and CSV.</p>
+    <p id="answer">This benchmark documents how iOS App Tracking Transparency and Safari ITP remove purchase-conversion signal from Shopify stores, and what determines the size of that loss for any one store. It publishes the sourced third-party figures behind the mechanism rather than a single headline percentage, released under CC BY 4.0 with machine-readable JSON and CSV.</p>
 
   <TableOfContents headings={tocHeadings} />
 
 
     <p class="hero-sub">
       Apple's App Tracking Transparency and Safari ITP block the browser signals Meta, Google and TikTok depend on.
-      Synthesising published research, the average store loses an estimated <strong>{HEADLINE_LOW}–{HEADLINE_HIGH}% of purchase-conversion signal — rising toward {HEADLINE_MOBILE_HIGH}% on mobile-heavy stores.</strong>
-      This page documents the sources, the method, and how to close the gap.
+      <strong>How much any one store loses is set by its own mobile/iOS traffic mix and its own consent rate</strong> — which is why this page publishes the sourced evidence and a way to measure your store, rather than an industry average that describes nobody.
+      Below: the sources, the method, and how to close the gap.
     </p>
 
     <div class="hero-ctas">
@@ -254,7 +259,7 @@ const tocHeadings = [
     <div class="stat-cell" role="listitem"><div class="stat-v">~75%</div><div class="stat-l">iOS tracking opt-out, 2021 ATT launch (~50% by 2024–25)</div></div>
     <div class="stat-cell" role="listitem"><div class="stat-v">7 days</div><div class="stat-l">Safari ITP cookie cap</div></div>
     <div class="stat-cell" role="listitem"><div class="stat-v">74–78%</div><div class="stat-l">Shopify traffic is mobile</div></div>
-    <div class="stat-cell" role="listitem"><div class="stat-v">{HEADLINE_LOW}–{HEADLINE_HIGH}%</div><div class="stat-l">Signal lost (synthesised)</div></div>
+    <div class="stat-cell" role="listitem"><div class="stat-v">~$10B</div><div class="stat-l">Meta's own estimated 2022 ATT revenue hit</div></div>
   </div>
 </div>
 
@@ -294,16 +299,17 @@ const tocHeadings = [
       <h2 id="index-h">The Stack Architect Attribution Gap Index</h2>
     </div>
     <div class="body-text">
-      <p>No single published source states "the Shopify attribution gap is X%." That number has to be <em>synthesised</em> — which is exactly the work this page does, and why it is citable.</p>
-      <p>Combining the inputs above: mobile is <strong>74–78% of Shopify traffic</strong>, a large share of it iOS; ATT removed app-tracking consent for most of those users at launch (<strong>~75%</strong> opt-out in 2021, easing to roughly <strong>50%</strong> by 2024–25); and Safari ITP independently caps script-writable first-party cookies at <strong>7 days</strong>, degrading browser attribution regardless of ATT consent. Documented store-level cases land near <strong>40% conversion loss without CAPI</strong>. Triangulating these gives a defensible working range:</p>
-      <p style="font-size:13px;color:var(--text-4);"><strong>Revision, 3 September 2026.</strong> An earlier version of this table carried a sixth row citing a 30–40% reduction in Meta attribution accuracy, attributed to an AI answer library. That source does not meet the standard set out in <a href="/how-we-test/" style="color:var(--g);text-decoration:underline;">how we test</a>, which excludes AI-generated statistics, and we could not locate a primary source for the figure. The row has been removed. It was one of the inputs behind the range below, so the range now rests on a narrower evidence base than when it was first published — we have left the figure unchanged and are flagging that here rather than restating a number we cannot re-derive.</p>
+      <p>No single published source states "the Shopify attribution gap is X%." This page used to answer that by synthesising one — a 20–40% range, rising to 50% on mobile-heavy stores, triangulated from the figures above. <strong>That range was withdrawn on 4 September 2026.</strong> It is documented below rather than quietly removed, because it was cited from here.</p>
+      <p>The inputs themselves are unchanged and still stand. Mobile is <strong>74–78% of Shopify traffic</strong>, a large share of it iOS; ATT removed app-tracking consent for most of those users at launch (<strong>~75%</strong> opt-out in 2021, easing to roughly <strong>50%</strong> by 2024–25); and Safari ITP independently caps script-writable first-party cookies at <strong>7 days</strong>, degrading browser attribution regardless of ATT consent. Documented store-level cases land near <strong>40% conversion loss without CAPI</strong>.</p>
+      <p>What that set of figures establishes is a <em>mechanism</em> and its <em>drivers</em> — not a magnitude. Two of the five rows are store variables rather than constants: the mobile/iOS share of your traffic, and the rate at which those visitors decline tracking. A store at the top of the mobile range with a high refusal rate and a store at the bottom with a low one do not share a number, and the average of the two describes neither. Only one row was even denominated in the retracted quantity — a single documented case, reported at second hand — and nothing in the evidence table derives the lower bound of 20% at all. So the range is gone rather than re-derived, and the sourced rows it was built from remain above, individually citable.</p>
+      <p style="font-size:13px;color:var(--text-4);"><strong>Revision, 3 September 2026.</strong> An earlier version of this table carried a sixth row citing a 30–40% reduction in Meta attribution accuracy, attributed to an AI answer library. That source does not meet the standard set out in <a href="/how-we-test/" style="color:var(--g);text-decoration:underline;">how we test</a>, which excludes AI-generated statistics, and we could not locate a primary source for the figure. The row has been removed. It was one of the inputs behind the headline range, and narrowing that evidence base is part of what led to the range being withdrawn outright a day later.</p>
       <div class="big-callout">
-        <div class="big-callout-num">{HEADLINE_LOW}–{HEADLINE_HIGH}%</div>
+        <div class="big-callout-num">Yours</div>
         <div class="big-callout-body">
-          <p>of purchase-conversion signal lost by the <strong>typical</strong> Shopify store to iOS ATT + Safari ITP — before any server-side recovery. Stores where mobile/iOS traffic skews high (fashion, beauty, DTC impulse) trend toward <strong>{HEADLINE_MOBILE_HIGH}%</strong>.</p>
+          <p>The only gap figure worth acting on is your store's, and it is <strong>two numbers you already have</strong>: conversions your ad platform reported last month, against paid orders Shopify recorded for the same period. <a href="#contribute">Work it out below</a> — you get the result immediately, and submitting it anonymously is what will let this page publish a first-party figure.</p>
         </div>
       </div>
-      <p style="font-size:13px;color:var(--text-4);">We label this a <strong>synthesis of published third-party figures</strong>, not proprietary primary data. That distinction matters: it is honest, and it is still citable, because the synthesis itself is the original contribution. As real store submissions accumulate below, we will publish a first-party figure ("based on N stores") alongside this range.</p>
+      <p style="font-size:13px;color:var(--text-4);">Everything above is <strong>published third-party figures</strong>, each named, dated and linked — not proprietary primary data, and no longer resolved into a headline of our own. The original contribution this page can honestly make is first-party: a figure measured from real stores, published as "based on N stores" once the sample supports it.</p>
     </div>
   </div>
 </section>
@@ -418,7 +424,7 @@ const tocHeadings = [
     <div style="border:1px solid var(--border);border-radius:12px;padding:24px;background:var(--bg-2);">
       <p style="font-size:14px;color:var(--text-2);line-height:1.7;margin:0 0 14px;">Writing about iOS, ATT or Shopify conversion tracking? You're welcome to cite this benchmark. Suggested attribution:</p>
       <div id="cite-text" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;font-family:var(--mono);font-size:12px;color:var(--text-3);line-height:1.7;">
-        The typical Shopify store loses an estimated {HEADLINE_LOW}–{HEADLINE_HIGH}% of purchase-conversion signal to iOS ATT and Safari ITP, up to {HEADLINE_MOBILE_HIGH}% on mobile-heavy stores (Stack Architect Attribution Gap Benchmark, {verified}). <span style="color:var(--text-4);">— stackarchitect.xyz/shopify-ios-attribution-gap-benchmark</span>
+        Shopify purchase-conversion signal lost to iOS ATT and Safari ITP is store-specific, driven by a store's mobile/iOS traffic mix and its consent rate (Stack Architect Attribution Gap Benchmark, {verified}). <span style="color:var(--text-4);">— stackarchitect.xyz/shopify-ios-attribution-gap-benchmark</span>
       </div>
       <button id="cite-copy" type="button" style="margin-top:12px;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--g);background:transparent;border:1px solid var(--g);border-radius:6px;padding:8px 16px;cursor:pointer;">Copy citation</button>
       <p style="font-size:13px;color:var(--text-2);margin:16px 0 0;">Download the underlying data (every row sourced and dated, CC BY 4.0): <a href="/downloads/ios-attribution-gap-benchmark.csv" style="color:var(--g);">CSV</a> · <a href="/downloads/ios-attribution-gap-benchmark.json" style="color:var(--g);">JSON</a>. Both files are generated from the same data as this page at build time, so they can never drift from the published table.</p>

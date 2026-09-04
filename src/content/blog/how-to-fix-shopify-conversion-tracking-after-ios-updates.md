@@ -2,7 +2,7 @@
 title: "Fix Shopify Conversion Tracking After iOS Updates 2026"
 heading: "How to Fix Shopify Conversion Tracking After iOS Updates 2026"
 description: "iOS updates have broken Shopify conversion tracking for millions of stores. Diagnoses which iOS change broke yours and gives the free fix for each cause."
-answer: "Shopify conversion tracking breaks after iOS updates because browser pixels are blocked by App Tracking Transparency, Safari ITP cookie expiry and Link Tracking Protection. By 2026 most stores lose 30-60% of conversion data across Meta, Google and TikTok. The fix is sending purchase events server-side, where no browser restriction can intercept them."
+answer: "Shopify conversion tracking breaks after iOS updates because browser pixels are blocked by App Tracking Transparency, Safari ITP cookie expiry and Link Tracking Protection. By 2026 stores lose conversion data across Meta, Google and TikTok in proportion to how much of their traffic is iOS. The fix is sending purchase events server-side, where no browser restriction can intercept them."
 publishDate: "2026-03-15"
 updatedDate: "2026-04-16"
 category: "tracking"
@@ -12,7 +12,7 @@ readTime: 14
 canonical: "https://stackarchitect.xyz/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/"
 faqs:
   - question: "Why did iOS updates break Shopify conversion tracking?"
-    answer: "iOS updates introduced App Tracking Transparency (ATT) in iOS 14.5, Intelligent Tracking Prevention (ITP) in Safari, and Link Tracking Protection in iOS 17 onwards which strips click identifiers including Meta's fbclid from URLs. Each update progressively reduced the ability of browser-based pixels to track conversions. The cumulative effect is that browser pixels now miss 30-60% of purchase events for stores with significant iOS traffic."
+    answer: "iOS updates introduced App Tracking Transparency (ATT) in iOS 14.5, Intelligent Tracking Prevention (ITP) in Safari, and Link Tracking Protection in iOS 17 onwards which strips click identifiers including Meta's fbclid from URLs. Each update progressively reduced the ability of browser-based pixels to track conversions. The cumulative effect is that browser pixels now miss purchase events for stores with significant iOS traffic, in proportion to that traffic and to how many of those visitors decline tracking."
   - question: "Does iOS 17 Link Tracking Protection affect all Safari traffic?"
     answer: "No. iOS 17 Link Tracking Protection strips click identifiers (fbclid, gclid, ttclid) when links are opened from Private Browsing mode, Mail app, and Messages app. Standard Safari browsing sessions are not affected. The impact is highest for stores that drive traffic via email campaigns and social media direct messages where links open in Private Browsing."
   - question: "What is the free fix for iOS conversion tracking on Shopify?"
@@ -43,7 +43,7 @@ relatedGuides:
 > **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-attribution-tools-compared/).
 
 
-iOS updates have progressively degraded browser-based conversion tracking since 2021. By 2026, the cumulative effect of multiple iOS privacy changes means most Shopify stores are missing 30–60% of their conversion data in Meta Ads Manager, Google Ads, and TikTok Ads Manager.
+iOS updates have progressively degraded browser-based conversion tracking since 2021. By 2026, the cumulative effect of multiple iOS privacy changes means most Shopify stores are missing conversion data in Meta Ads Manager, Google Ads, and TikTok Ads Manager. How much is a property of the individual store — it scales with the iOS share of its traffic and with how many of those visitors decline tracking — which is why this guide shows you how to measure your own gap rather than quoting an industry figure at you.
 
 This guide diagnoses exactly which iOS change is causing your tracking gap and provides the specific free fix for each cause.
 
@@ -128,7 +128,7 @@ Follow the DNS verification or meta tag verification steps. Once verified, go to
 
 ### Cause 3 — No Server-Side Conversions API
 
-**Fix time: 2–3 hours. Covers the estimated 20–40% of purchase events browser tracking loses.**
+**Fix time: 2–3 hours. Covers the purchase events browser tracking loses.**
 
 This is the most impactful fix. The Conversions API (CAPI) sends purchase events directly from Shopify's server to Meta — bypassing the browser, iOS restrictions, ITP, ad blockers, and Shopify's pixel throttling entirely.
 
@@ -166,7 +166,7 @@ Go to: **Meta Events Manager → Aggregated Event Measurement → Configure Web 
 
 | Metric | Before | After |
 |---|---|---|
-| Shopify vs Meta gap | 35–60% | 15–25% |
+| Shopify vs Meta gap | Wide, and iOS-driven | Narrowed to residual |
 | Event Match Quality | Below 5 | 6–8+ |
 | CAPI events visible | No | Yes — alongside pixel |
 

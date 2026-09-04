@@ -11,7 +11,7 @@ badgeType: "new"
 readTime: 10
 faqs:
   - question: "How many Shopify conversions am I losing to iOS tracking restrictions?"
-    answer: "Most Shopify stores are losing 30–60% of their conversion events to iOS restrictions, ad blockers, and browser privacy settings. The exact number depends on your traffic mix — stores with high iOS traffic from Instagram and email campaigns are most affected. You can calculate your specific gap by comparing Shopify order count against Meta Ads Manager reported purchases for the same 30-day period."
+    answer: "Shopify stores lose conversion events to iOS restrictions, ad blockers, and browser privacy settings. There is no industry figure worth quoting, because the amount depends on your traffic mix — stores with high iOS traffic from Instagram and email campaigns are most affected. You can calculate your specific gap by comparing Shopify order count against Meta Ads Manager reported purchases for the same 30-day period."
   - question: "What is CAPI Shield and how does it work?"
     answer: "CAPI Shield is a free Make.com scenario that receives a Shopify Order Payment webhook and forwards a formatted purchase event directly to Meta's Conversions API and Google's Enhanced Conversions endpoint. Because the event travels server-to-server, iOS restrictions, Safari ITP, and ad blockers cannot interfere. The result is that purchase events reach Meta and Google regardless of what browser or device the customer used."
   - question: "How much does CAPI Shield cost?"
