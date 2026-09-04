@@ -45,10 +45,46 @@ export const dataPoints = [
   }
 ];
 
+// ── Export versioning ──
+// The JSON download is versioned so an automated consumer can tell a
+// deliberate change in the payload from a broken one. v1 was the implicit,
+// unversioned shape that carried a `headline` field. v2 removes it. Without a
+// version and the record below, `headline` simply disappeared from the payload
+// between one deploy and the next, which is precisely the silent change a
+// downstream consumer has no way to interpret.
+// Bump this whenever a field is added to or removed from the export.
+export const EXPORT_VERSION = 2;
+export const EXPORT_VERSION_DATE = '2026-09-04';
+
+// Figures this benchmark has published and later withdrawn. A retraction needs
+// somewhere to land that a machine can read, not only a paragraph on the page.
+// Entries are append-only: a withdrawn figure stays listed so that anyone who
+// cached or cited the old payload can find out what happened to it.
+export const retractions = [
+  {
+    field: 'headline',
+    value: '20–40% of purchase-conversion signal lost, rising toward 50% on mobile-heavy stores',
+    publishedUntil: '2026-09-04',
+    removedInVersion: 2,
+    reason:
+      'Withdrawn, not revised. No row in this dataset measured the quantity the headline asserted; ' +
+      'the rows measure ATT opt-out rates, mobile traffic share, a cookie lifetime cap and Meta revenue, ' +
+      'which are inputs to that quantity rather than observations of it. Exactly one row was denominated ' +
+      'in it — the ~40% attributable-conversion loss without CAPI — and that row is a single documented ' +
+      'case (n=1) reported at second hand. The lower bound of 20% has no derivation in any surviving row. ' +
+      'The loss is in any case store-specific: rows 2 and 5 establish that it is driven by a store\'s own ' +
+      'mobile/iOS traffic mix and its consent rate, so no single industry figure describes a given store.',
+    supersededBy:
+      'A first-party figure computed from real store submissions, published once N >= 10 approved ' +
+      'submissions exist. Until then this dataset asserts no gap magnitude.',
+    record: 'https://stackarchitect.xyz/how-we-test/#the-20-40-figure',
+  },
+];
+
 // Identity and licence only. No headline figure lives here: the 20–40% synthesis
 // was retracted — it was a range assembled from other people's numbers, and this
 // benchmark asserts a figure only once /api/gap-stats has N ≥ 10 first-party
-// submissions to compute one from.
+// submissions to compute one from. See `retractions` above for the record.
 export const benchmarkMeta = {
   name: 'Shopify iOS Attribution Gap Benchmark',
   canonical: 'https://stackarchitect.xyz/shopify-ios-attribution-gap-benchmark/',

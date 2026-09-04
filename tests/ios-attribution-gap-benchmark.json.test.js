@@ -1,7 +1,13 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { GET } from '../src/pages/downloads/ios-attribution-gap-benchmark.json.js';
-import { dataPoints, benchmarkMeta } from '../src/data/attributionGap.js';
+import {
+  dataPoints,
+  benchmarkMeta,
+  retractions,
+  EXPORT_VERSION,
+  EXPORT_VERSION_DATE,
+} from '../src/data/attributionGap.js';
 
 test('JSON export endpoint returns valid JSON with correct structure', async () => {
   const response = GET();
@@ -17,6 +23,20 @@ test('JSON export endpoint returns valid JSON with correct structure', async () 
   // both sides were undefined, which is a test that had stopped testing.
   assert.ok(!('headline' in data), 'the retracted headline figure must not be exported');
   assert.ok(!('headline' in benchmarkMeta), 'benchmarkMeta carries identity and licence, no figure');
+
+  // The export is versioned so the disappearance of `headline` is legible to an
+  // automated consumer rather than looking like a broken payload.
+  assert.equal(data.version, EXPORT_VERSION);
+  assert.equal(data.versionDate, EXPORT_VERSION_DATE);
+  assert.ok(EXPORT_VERSION >= 2, 'v1 was the unversioned shape that carried headline');
+
+  // ...and the retraction has a field of its own to land in.
+  assert.deepEqual(data.retractions, retractions);
+  const headlineRetraction = data.retractions.find((r) => r.field === 'headline');
+  assert.ok(headlineRetraction, 'the withdrawn headline figure must be recorded, not just absent');
+  assert.equal(headlineRetraction.removedInVersion, EXPORT_VERSION);
+  assert.match(headlineRetraction.value, /20.{1,3}40%/, 'the record names the figure it withdraws');
+  assert.match(headlineRetraction.record, /^https:\/\/stackarchitect\.xyz\/how-we-test\/#/);
   assert.equal(data.canonical, benchmarkMeta.canonical);
   assert.equal(data.license, benchmarkMeta.license);
   assert.equal(data.licenseName, benchmarkMeta.licenseName);
