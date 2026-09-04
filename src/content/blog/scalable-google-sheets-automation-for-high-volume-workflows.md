@@ -4,7 +4,8 @@ heading: "Scalable Google Sheets Automation for High-Volume Shopify Workflows 20
 description: "Apps Script caps runs at 6 minutes and 90 minutes of daily trigger time. The batching, checkpoint and Make.com patterns that scale past both, for free."
 answer: "Google Sheets automation for Shopify hits two Apps Script walls: a six-minute ceiling on any single execution, and 90 minutes of trigger-driven runtime per day on consumer accounts. Batching writes and checkpointing progress pushes both further out. Moving the trigger to Make.com removes the execution ceiling altogether."
 publishDate: "2026-03-20"
-updatedDate: "2026-04-16"
+updatedDate: "2026-09-04"
+verifiedDate: "2026-08-29"
 category: "workflow"
 badge: "Architecture Guide"
 badgeType: "new"
@@ -183,7 +184,7 @@ The Sheets + Make.com hybrid handles most Shopify stores reliably. The genuine l
 - **Complex relational data** — if you need to join orders with customers, products, and suppliers frequently, a proper database (Airtable, Notion, or a lightweight SQL database) handles this better
 - **Real-time dashboards** — Sheets with formulas recalculate on every edit. At high volume, this creates a constant performance drag. Looker Studio connected to Sheets is a better dashboard layer for data you don't need to edit.
 
-For most Shopify stores — including those doing $1–2 million per year in revenue — the Sheets + Make.com architecture described here is more than sufficient. The [Google Apps Script quotas guide](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/) covers the specific limits in detail and the [upgrade guide](/blog/when-to-upgrade-free-make-google-workspace/) covers when Google Workspace's higher quota ceilings become worth the $6/month cost.
+For most Shopify stores — including those doing $1–2 million per year in revenue — the Sheets + Make.com architecture described here is more than sufficient. The [Google Apps Script quotas guide](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/) covers the specific limits in detail and the [upgrade guide](/blog/when-to-upgrade-free-make-google-workspace/) covers when Google Workspace's higher quota ceilings become worth paying for.
 
 
 ---

@@ -1,10 +1,11 @@
 ---
 title: "When to Upgrade Free Make.com to Google Workspace"
 heading: "When to Upgrade from Free Make.com to Google Workspace — Shopify Operator's Guide 2026"
-description: "7 signals it's time to upgrade from free Make.com to Google Workspace for Shopify automation. The $21/month cost calculation and zero-downtime migration."
-answer: "Upgrade from the free Shopify automation stack when you hit a real ceiling, not on principle. The three signals are Make.com credits exhausted before month end, Apps Script runs exceeding six minutes, and daily trigger runtime running out. Make.com Core plus Google Workspace costs about $15 a month combined for a solo operator."
+description: "7 signals it's time to upgrade from free Make.com to Google Workspace for Shopify automation — what the upgrade actually changes, and how to migrate with zero downtime."
+answer: "Upgrade from the free Shopify automation stack when you hit a real ceiling, not on principle. The three signals are Make.com credits exhausted before month end, Apps Script runs exceeding six minutes, and daily trigger runtime running out. What you buy is quota headroom, not features, so the decision follows the symptom rather than the price."
 publishDate: "2026-03-25"
-updatedDate: "2026-04-14"
+updatedDate: "2026-09-04"
+verifiedDate: "2026-08-29"
 category: "automation"
 badge: "Decision Guide"
 badgeType: "new"
@@ -13,12 +14,12 @@ canonical: "https://stackarchitect.xyz/blog/when-to-upgrade-free-make-google-wor
 faqs:
   - question: "How many operations does Make.com give you for free?"
     answer: "Make.com's free plan gives 1,000 credits per month. A 4-5 branch Shopify automation scenario uses approximately 5-6 operations per order. This covers roughly 160-200 orders per month on the full automation stack before needing to upgrade to Make.com Core at $9/month."
-  - question: "What does Google Workspace cost for one user?"
-    answer: "Google Workspace Business Starter costs $6/user/month billed monthly, or $6/user/month billed annually. For a solo operator, the total is $6/month. The main benefit for Shopify automation is the increase in Google Apps Script daily quotas. The 6-minute per-execution ceiling is identical on both consumer and Workspace accounts — upgrading does not change it. What Workspace raises is the daily headroom: trigger runtime goes from 90 minutes to 6 hours, UrlFetch calls from 20,000 to 100,000, document creates from 250 to 1,500, and email recipients from 100 to 1,500."
+  - question: "What does upgrading to Google Workspace actually change?"
+    answer: "It raises Google Apps Script daily quotas, and that is the whole reason to do it for automation. The 6-minute per-execution ceiling is identical on both consumer and Workspace accounts — upgrading does not change it. What Workspace raises is the daily headroom: trigger runtime goes from 90 minutes to 6 hours, UrlFetch calls from 20,000 to 100,000, document creates from 250 to 1,500, and email recipients from 100 to 1,500. Workspace is priced per seat, so a second person is a second full seat rather than a marginal add-on."
   - question: "Do I need Google Workspace for Make.com to work?"
     answer: "No. Make.com works with any Google account including free Gmail. Google Workspace is only needed when Google Apps Script quota limits are causing automation failures — typically scripts hitting the 6-minute consumer execution ceiling or the 90-minute daily trigger-runtime limit."
-  - question: "What is the combined cost of Make.com Core plus Google Workspace?"
-    answer: "Make.com Core at $9/month plus Google Workspace Business Starter at $6/month equals $15/month total. This is the upgrade cost that makes sense for stores exceeding free plan limits. At 500+ orders per month with a multi-branch automation stack, this combination pays for itself in saved manual time within the first week."
+  - question: "Does upgrading to Google Workspace fix Apps Script timeouts?"
+    answer: "No. The 6-minute per-execution ceiling is identical on consumer and Workspace accounts, so 'Exceeded maximum execution time' will keep happening after you pay. The fixes are structural: batch reads and writes so each run does less work, split the job into chunks that each finish inside 6 minutes and save progress with PropertiesService between runs, or move the heavy work onto Make.com, which has no per-execution time limit. Upgrading raises daily quotas, not the per-run ceiling."
   - question: "When should I upgrade Make.com from free to paid?"
     answer: "Upgrade Make.com when you consistently hit the 1,000 credits/month limit. Signs include: scenarios failing with 'operations limit exceeded' errors, having to disable some automation branches to stay within the limit, or processing more than 160-200 orders per month on the full automation stack."
 relatedGuides:
@@ -32,7 +33,7 @@ relatedGuides:
     href: "/stocky-swap"
 ---
 
-The free stack — Make.com free + Gmail + Google Sheets on a consumer account — covers most Shopify stores indefinitely. The upgrade to Make.com Core ($9/month) and Google Workspace ($6/month) makes sense at specific trigger points. This guide covers the 7 signals, the $21/month decision, and how to migrate with zero downtime.
+The free stack — Make.com free + Gmail + Google Sheets on a consumer account — covers most Shopify stores indefinitely. The upgrade to Make.com Core and Google Workspace makes sense at specific trigger points, and not before. This guide covers the 7 signals, what the upgrade actually changes, and how to migrate with zero downtime.
 
 ## The Free Stack and Its Limits
 
@@ -76,7 +77,7 @@ If you use Autocrat or any document generation workflow and documents are being 
 
 Consumer Google accounts are single-user. If a second person needs to edit Make.com scenarios, view Google Sheets dashboards with proper permissions, or access Tidio / other tools from a shared business account, Google Workspace becomes necessary for organisational reasons.
 
-**What to do:** Upgrade to Google Workspace. Add users at $6/user/month each.
+**What to do:** Upgrade to Google Workspace. Note that it is priced per seat, so a second person is a second full seat, not a marginal add-on — the cost of this signal scales with headcount in a way the other six do not.
 
 ### Signal 6 — Email deliverability matters for automation-triggered emails
 
@@ -90,15 +91,15 @@ Consumer Google accounts have no SLA — if Gmail or Sheets goes down, your auto
 
 **What to do:** Upgrade to Google Workspace if your automations are mission-critical for revenue (server-side tracking, order logging, inventory sync) and you need contractual uptime guarantees.
 
-## The $21/Month Decision
+## The Upgrade Decision
 
-The typical upgrade is Make.com Core + Google Workspace Business Starter for a single user:
+The typical upgrade is Make.com Core plus Google Workspace Business Starter for a single user. We quote one of those prices and not the other, deliberately.
 
-- Make.com Core: $9/month
-- Google Workspace Business Starter: $6/month
-- **Total: $15/month** (not $21 — the $21 figure includes a second Workspace user)
+Make.com Core is **$9/month**, verified against [Make's own pricing page](https://www.make.com/en/pricing) on 29 August 2026. Make publishes a readable USD list price, so we can state it and tell you when we last read it.
 
-For a solo operator: $15/month.
+Google Workspace we hold. Google's pricing page geo-locks to the country you load it from, and annual and flexible billing differ by roughly 20%, so there is no single figure that is true for every reader — quoting one would mean picking a currency and a billing term on your behalf and not saying so. Check [Google's pricing page](https://workspace.google.com/pricing.html) from where you actually are, on the billing term you would actually pick. A price we cannot source in the currency we would be quoting is a price we would rather not assert.
+
+This is less of a problem than it sounds, because the number was never what the decision turned on. What you are buying is quota headroom, and that is fixed and checkable:
 
 **What this gets you:**
 - 10,000 Make.com credits/month (covers ~2,000 orders/month on the full stack)
@@ -116,7 +117,7 @@ At 500 orders/month with a 5-branch scenario running server-side tracking, inven
 - Time saved by automated P&L vs manual calculation: approximately 1 hour/week
 - At a conservative operator value of £25/hour: 3 hours × £25 × 4.3 weeks = £322.50/month saved
 
-The $15/month upgrade pays for itself in under 2 days of saved manual time.
+Against roughly £322/month of recovered time, a two-line subscription bill is not the deciding variable — which is the point. At this volume the upgrade is not a close call, and whatever Google is charging in your region this quarter does not change the answer. If it *is* a close call for you, that is the signal you have not actually hit a ceiling yet.
 
 ## Migration — Zero Downtime
 
@@ -150,7 +151,7 @@ The full migration takes 2–4 hours of active work and causes zero downtime if 
 
 ## The Bottom Line
 
-Stay on the free stack until one of the 7 signals appears. When it does, the $15/month upgrade (Make.com Core + Google Workspace) is straightforward to justify. The [Make.com beginner's guide](/make-com-shopify/) covers the initial setup, and the [Google Apps Script quota guide](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/) covers the specific limits you'll hit as volume grows.
+Stay on the free stack until one of the 7 signals appears. When it does, the upgrade (Make.com Core + Google Workspace) is straightforward to justify. The [Make.com beginner's guide](/make-com-shopify/) covers the initial setup, and the [Google Apps Script quota guide](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/) covers the specific limits you'll hit as volume grows.
 
 
 ---
