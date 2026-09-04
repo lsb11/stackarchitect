@@ -1,7 +1,7 @@
 ---
 title: "Shopify Meta ROAS Dropped in 2026: The Free Fix"
 heading: "Shopify Meta ROAS Dropped in 2026? Here's Exactly Why — and the Free Fix"
-description: "Three Q1 2026 changes are costing Shopify stores 40–60% of Meta conversions. Free server-side fix to recover ROAS without attribution software."
+description: "Three Q1 2026 changes are costing Shopify stores Meta conversion data. Free server-side fix to recover ROAS without attribution software."
 answer: "Meta ROAS falls on Shopify because Ads Manager counts only conversions it can attribute, and three converging Q1 2026 changes cost stores 40-60% of that signal. The sales still happen and Shopify still counts them, but Meta's algorithm never learns from them. Server-side purchase events restore the feed without attribution software."
 publishDate: "2026-03-21"
 updatedDate: "2026-04-14"
