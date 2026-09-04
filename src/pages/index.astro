@@ -4,6 +4,7 @@ import Disclosure from '../components/Disclosure.astro';
 import FeaturedIn from '../components/FeaturedIn.astro';
 import StickyAffiliateCTA from '../components/StickyAffiliateCTA.astro';
 import { isPostShutdown } from '../utils/stockyDeadline';
+import { KIT_PRICE, formatPrice } from '../data/products';
 
 /* ============================================================================
  * SINGLE SOURCES OF TRUTH FOR THE HOMEPAGE
@@ -172,10 +173,46 @@ const faqJsonLd = {
  * and the post-deadline copy, so the page reads correctly on 1 September with
  * no edit. */
 const stockyGone = isPostShutdown();
+
+/* ---------------------------------------------------------------------------
+ * KIT_SCHEMA — the Complete Kit's SoftwareApplication node.
+ *
+ * This lived inside the raw <script type="application/ld+json"> @graph below
+ * until it was found asserting "price": "29" while the Kit had been $24 since
+ * 29 Aug -- a price nothing on the page, in products.ts or in claims.json
+ * agreed with. Astro does not interpolate expressions inside a script element,
+ * so a price written in that literal cannot reference KIT_PRICE and has to be
+ * swept by hand. This node is therefore handed to <Base schema={...}> instead,
+ * the same reason pro.astro moved its schema into frontmatter.
+ *
+ * No priceVerifiedDate / priceSourceUrl: those exist for somebody else's
+ * number. This is a price we set, so it carries KIT_PRICE and the claims.json
+ * pin instead -- see the hard rule in CLAUDE.md.
+ * ------------------------------------------------------------------------ */
+const kitSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Stack Architect Complete Kit',
+  url: 'https://stackarchitect.xyz/pro/',
+  applicationCategory: 'BusinessApplication',
+  applicationSubCategory: 'Shopify Automation',
+  operatingSystem: 'Any (web-based)',
+  offers: {
+    '@type': 'Offer',
+    price: String(KIT_PRICE),
+    priceCurrency: 'USD',
+    availability: 'https://schema.org/InStock',
+    priceValidUntil: '2026-12-31',
+    url: 'https://stackarchitect.xyz/pro/',
+  },
+  description: `Four ready-to-import Make.com JSON blueprints for Shopify server-side tracking (Meta Conversions API + Google Enhanced Conversions), TikTok Events API, inventory management (Stocky replacement via Google Sheets), and live P&L reporting. Includes two Google Sheets templates and four Loom walkthrough videos. ${formatPrice(KIT_PRICE)} one-time, no subscription ever. 30-day money-back guarantee.`,
+  provider: { '@id': 'https://stackarchitect.xyz/#org' },
+};
 ---
 <Base 
   title="Free Shopify Automation Stack 2026 — Replace Paid Apps" 
   description="Replace six paid Shopify apps with free tools: Meta CAPI, Google Enhanced Conversions, Stocky replacement, Klaviyo alternative, TikTok CAPI and live P&L."
+  schema={kitSchema}
 >
   <Fragment slot="head">
     <link rel="preload" as="image" href="/videos/poster-16x9.jpg" fetchpriority="high" />
@@ -240,26 +277,6 @@ const stockyGone = isPostShutdown();
         { "@type": "ListItem", "position": 12, "name": "Klaviyo Migration Savings Calculator", "url": "https://stackarchitect.xyz/klaviyo-to-systeme-migration-savings-calculator/", "description": "Free calculator. Inputs: list size and sending frequency. Outputs: annual saving from migrating Klaviyo to Systeme.io plus estimated migration time." },
         { "@type": "ListItem", "position": 13, "name": "Stack Architect Complete Kit", "url": "https://stackarchitect.xyz/pro/", "description": "Pre-built Complete Kit. Four ready-to-import Make.com JSON blueprints (CAPI Shield, TikTok Events API, Stocky Swap, P&L Auto), two Google Sheets templates, four Loom walkthrough videos. $24 one-time. Deploys in 10 minutes instead of 8 hours. 30-day money-back guarantee." }
       ]
-    },
-    {
-      "@type": "SoftwareApplication",
-      "name": "Stack Architect Complete Kit",
-      "url": "https://stackarchitect.xyz/pro/",
-      "applicationCategory": "BusinessApplication",
-      "applicationSubCategory": "Shopify Automation",
-      "operatingSystem": "Any (web-based)",
-      "offers": {
-        "@type": "Offer",
-        "price": "29",
-        "priceCurrency": "USD",
-        "availability": "https://schema.org/InStock",
-        "priceValidUntil": "2026-12-31",
-        "priceVerifiedDate": "2026-08-21",
-        "priceSourceUrl": "https://stackarchitect.xyz/pro/",
-        "url": "https://stackarchitect.xyz/pro/"
-      },
-      "description": "Four ready-to-import Make.com JSON blueprints for Shopify server-side tracking (Meta Conversions API + Google Enhanced Conversions), TikTok Events API, inventory management (Stocky replacement via Google Sheets), and live P&L reporting. Includes two Google Sheets templates and four Loom walkthrough videos. $24 one-time, no subscription ever. 30-day money-back guarantee.",
-      "provider": { "@id": "https://stackarchitect.xyz/#org" }
     },
     {
       "@type": "HowTo",
