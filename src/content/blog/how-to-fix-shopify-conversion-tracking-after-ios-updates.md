@@ -22,7 +22,7 @@ faqs:
   - question: "What is Shopify's App Pixel Optimized mode and how does it affect tracking?"
     answer: "On January 13, 2026, Shopify changed the default for all App Pixels from Always on to Optimized mode. In Optimized mode, Shopify monitors whether the pixel is generating attribution signals. When iOS strips click IDs, no attribution signals reach the pixel, and Shopify throttles or pauses data sharing. The fix is switching to Always on in Settings → Customer Events → App Pixels tab."
   - question: "Does server-side tracking completely fix the iOS tracking problem?"
-    answer: "Server-side tracking significantly reduces the tracking gap but does not eliminate it entirely. Browser pixels handle the first-party tracking layer including page views, add-to-cart, and checkout events. Server-side CAPI handles the purchase conversion event reliably regardless of browser settings. Running both simultaneously with proper deduplication is the standard approach — typical residual gap after full CAPI implementation is 15-25%."
+    answer: "Server-side tracking significantly reduces the tracking gap but does not eliminate it entirely. Browser pixels handle the first-party tracking layer including page views, add-to-cart, and checkout events. Server-side CAPI handles the purchase conversion event reliably regardless of browser settings. Running both simultaneously with proper deduplication is the standard approach. A residual gap remains even then — orders from visitors who denied ATT and arrived with no click ID, which Meta genuinely cannot match — and its size is a property of your own traffic, not a figure we can quote for you."
 relatedGuides:
   - title: "Meta One-Click Conversions API for Shopify — What It Fixes"
     href: "/blog/meta-one-click-conversions-api-shopify"
@@ -170,7 +170,7 @@ Go to: **Meta Events Manager → Aggregated Event Measurement → Configure Web 
 | Event Match Quality | Below 5 | 6–8+ |
 | CAPI events visible | No | Yes — alongside pixel |
 
-A residual 15–25% gap is expected and normal even with full server-side implementation. This represents orders from users who cannot be attributed due to complete ATT denial combined with no click ID — Meta genuinely cannot match these. The important thing is that server-side delivery is not subject to the browser-side loss in the first place — measure what it adds as Additional Conversions Reported in Meta Events Manager.
+A residual gap is expected and normal even with full server-side implementation. This represents orders from users who cannot be attributed due to complete ATT denial combined with no click ID — Meta genuinely cannot match these. The important thing is that server-side delivery is not subject to the browser-side loss in the first place — measure what it adds as Additional Conversions Reported in Meta Events Manager.
 
 That measurement is the part most stores skip, and it is the only thing that tells you whether the work paid for itself. [Recovering lost Shopify conversions with CAPI Shield](/blog/recover-lost-shopify-conversions-capi-shield/) walks through reading Additional Conversions Reported against your own order data, so you can put a number on what came back rather than assuming the gap closed.
 

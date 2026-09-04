@@ -274,7 +274,7 @@ GA4 covers the traffic and behaviour layer. Two additional free tools complete y
 After your GA4 setup has been running for a week, verify these metrics to confirm everything is working:
 
 - **Session count:** should broadly match your Shopify Analytics visitor count (within 10–20% variance is normal due to ad blockers and bot filtering)
-- **Purchase count:** compare GA4 purchases to Shopify orders. A gap of 20–30% is normal with browser-only tracking. If you've deployed the Make.com server-side layer, this gap should narrow to 5–15%.
+- **Purchase count:** compare GA4 purchases to Shopify orders. A gap is normal with browser-only tracking, and how wide depends on your store's iOS and ad-blocker traffic. If you've deployed the Make.com server-side layer, the gap should narrow — read the change against your own pre-deployment baseline rather than against a target figure.
 - **Average session duration:** under 30 seconds across the board indicates a configuration problem (bot traffic or misconfigured filters). Over 1 minute is healthy for a product-browsing store.
 - **Bounce rate equivalent:** in GA4, look for "Engaged sessions" — sessions with more than 10 seconds, a conversion, or 2+ page views. Below 40% engaged sessions indicates landing pages need work.
 

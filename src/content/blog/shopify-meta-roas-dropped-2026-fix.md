@@ -92,7 +92,7 @@ Gap % = (Shopify orders − Meta reported purchases) ÷ Shopify orders × 100
 | 200 | 160 | 20% |
 
 **Severity guide:**
-- 20–35% gap — expected range for pixel-only tracking
+- 20–35% gap — iOS impact present, fix worthwhile
 - Above 35% — tracking problem present
 - Above 50% — serious, fix immediately
 
