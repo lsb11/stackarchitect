@@ -3,6 +3,11 @@ import "@fontsource/sora/600.css";
 import "@fontsource/sora/700.css";
 import "@fontsource/jetbrains-mono/500.css";
 import { KIT_PRICE, formatPrice } from '../data/products';
+// Derived, never typed. This label said "All 53 apps" on every page of the site
+// from 14 Aug to 5 Sep 2026, after Stockful took apps.json to 54 — the same
+// hand-written-count bug as the /apps/ <h1>, but in the sitewide nav.
+import appsData from '../data/apps.json';
+const APP_COUNT = appsData.length;
 // Nav.astro — Stack Architect, 2026 refresh
 // Changes vs previous version:
 //  • Fake status ticker ("PRODUCT_NODES // ACCESS_OPEN") replaced with ONE
@@ -141,7 +146,7 @@ const guides = [
           </a>
           <a href="/apps/" class="sa-drop-item" role="menuitem">
             <span class="sa-drop-title">App pricing index</span>
-            <span class="sa-drop-desc">All 53 apps — real costs and free replacements</span>
+            <span class="sa-drop-desc">All {APP_COUNT} apps — real costs and free replacements</span>
           </a>
         </div>
       </div>

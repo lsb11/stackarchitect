@@ -1,13 +1,44 @@
 ---
 import Base from "../../layouts/Base.astro";
 import appsData from "../../data/apps.json";
+import {
+  indexMeta,
+  statusOf,
+  STATUS_LABEL,
+  verified,
+  held,
+  unchecked,
+  inherited,
+  sweeps,
+  sweepDates,
+  latestVerified,
+  oldestVerified,
+  heldCheckedDate,
+  categories,
+  zeroCoverageCategories,
+  revisions,
+  revisionCounts,
+  revisedUp,
+  revisedDown,
+  fieldNotes,
+  daysBetween,
+  POPULATED_ON,
+  EXPORT_VERSION_DATE,
+} from "../../data/appsIndex.js";
+
+interface BrandChange {
+  note: string;
+  href: string;
+  linkText: string;
+}
 
 interface AppProfile {
   id: string;
   name: string;
   category: string;
   description: string;
-  monthlyCost: string;
+  /** Display text, not a number: "$99", "$45+", "Free", "Not publicly listed". */
+  monthlyCost: string | null;
   /** The plan the figure belongs to, e.g. "Core" or "Starter, per agent, billed annually". */
   pricePlan?: string;
   priceVerifiedDate: string | null;
@@ -15,6 +46,8 @@ interface AppProfile {
   /** Set when a price was checked but deliberately not recorded — see priceHeldReason. */
   priceCheckedDate?: string;
   priceHeldReason?: string;
+  /** Set when the source page is published under a different brand than the app. */
+  brandChange?: BrandChange;
   replacement: string;
   savings: string;
   stackarchitectAlternativeLink: string;
@@ -24,13 +57,30 @@ const apps = (appsData as AppProfile[]).slice().sort((a, b) => a.name.localeComp
 
 const SITE = "https://stackarchitect.xyz";
 const canonical = `${SITE}/apps/`;
+const CSV = "/downloads/shopify-app-pricing-index.csv";
+const JSON_URL = "/downloads/shopify-app-pricing-index.json";
+
+// Counts are DERIVED, never typed. The <h1> read "53 Apps Compared" over a
+// table of 54 rows from 14 Aug until 5 Sep 2026, because Stockful was added to
+// apps.json and four hand-written copies of the number were not updated. On a
+// page whose entire claim is that its figures are checked, miscounting its own
+// rows is the most expensive possible error. Nothing below states a count as a
+// literal — read them from appsIndex.js or not at all.
+const total = apps.length;
+const staleDays = daysBetween(POPULATED_ON, EXPORT_VERSION_DATE);
+
+// Vendors whose pricing page is published under a different brand than the app.
+// Currently Elevar/Audiense only, and it is data-driven so a second one appears
+// here without an edit.
+const rebranded = apps.filter((a) => a.brandChange);
 
 // ── price parsing ───────────────────────────────────────────────────────────
-// monthlyCost is authored as display text ("$145–$275", "$45+", "Free").
+// monthlyCost is authored as display text ("$145–$275", "$45+", "Free"), and is
+// null for an app whose price we hold no position on at all.
 // Schema.org needs numbers, so parse rather than guess: a bare figure is an
 // Offer, a range or an open-ended "+" is an AggregateOffer.
-function parseCost(raw: string) {
-  const s = String(raw).replace(/,/g, "");
+function parseCost(raw: string | null) {
+  const s = String(raw ?? "").replace(/,/g, "");
   const nums = [...s.matchAll(/\$\s*([0-9]+(?:\.[0-9]+)?)/g)].map((m) => parseFloat(m[1]));
   const openEnded = s.includes("+");
   const isFree = nums.length === 0 && /free/i.test(s);
@@ -63,6 +113,18 @@ function offerFor(app: AppProfile) {
     priceVerifiedDate: app.priceVerifiedDate,
   };
 
+  // The rebrand disclosure, in the machine-readable copy as well as the visible
+  // one. Elevar's Offer passed every guard while pointing at audiense.com under
+  // the name "Elevar": both required fields present, so the gate above let it
+  // through, and a model following the citation landed on a page that does not
+  // say "Elevar" anywhere. That is a check passing while the thing it exists to
+  // prevent happens. The source URL is right — the vendor renamed itself — so
+  // the fix is to say so here rather than to withdraw the figure.
+  if (app.brandChange) {
+    base.name = `${app.name} — priced on the vendor's current pricing page`;
+    base.description = app.brandChange.note;
+  }
+
   // price "0" is only truthful for an app that is actually free. A parse that
   // yields no figure is not evidence of $0 — it is evidence of nothing.
   if (isFree) return { "@type": "Offer", ...base, price: "0" };
@@ -77,22 +139,10 @@ function offerFor(app: AppProfile) {
   return agg;
 }
 
-const verifiedCount = apps.filter((a) => a.priceVerifiedDate).length;
-
-// Vendors whose pricing page was opened and whose figure was deliberately left
-// unpublished. Saying why is a stronger trust signal than a number we would have
-// to caveat, and it is the promise /how-we-test/ makes.
-const held = apps.filter((a) => a.priceHeldReason);
-const heldDate = held.map((a) => a.priceCheckedDate).filter(Boolean).sort().pop() ?? "";
-const categories = [...new Set(apps.map((a) => a.category))].sort();
-
-// Page freshness follows the most recent price verification.
-const latestVerified =
-  apps.map((a) => a.priceVerifiedDate).filter(Boolean).sort().pop() ?? null;
-
-const title = "Shopify App Pricing — 53 Apps and Free Alternatives";
+const title = `Shopify App Pricing Index — ${total} Apps, Sourced and Dated`;
 const description =
-  "Compare 53 paid Shopify apps by monthly cost, category and free replacement. Prices verified against vendor pricing pages, each with its source and date.";
+  `Monthly cost, source and check date for ${total} paid Shopify apps, each with a free replacement. ` +
+  `${verified.length} verified against vendor pricing pages, ${held.length} held, ${unchecked.length} not yet checked.`;
 
 const schema = {
   "@context": "https://schema.org",
@@ -107,6 +157,27 @@ const schema = {
       isPartOf: { "@id": `${SITE}/#website` },
       ...(latestVerified ? { dateModified: latestVerified } : {}),
       mainEntity: { "@id": `${canonical}#itemlist` },
+    },
+    // The index as a citable dataset. The two distributions are the same rows
+    // the table renders, which is what makes the citation checkable.
+    {
+      "@type": "Dataset",
+      "@id": `${canonical}#dataset`,
+      name: indexMeta.name,
+      description:
+        "Published monthly cost, named plan, source URL and verification date for paid Shopify apps, " +
+        "with the free or cheaper replacement documented for each. Records are marked verified, " +
+        "checked-and-not-recorded, or not yet checked.",
+      url: canonical,
+      license: indexMeta.license,
+      creator: { "@id": `${SITE}/#org` },
+      isAccessibleForFree: true,
+      ...(latestVerified ? { dateModified: latestVerified } : {}),
+      temporalCoverage: `${POPULATED_ON}/${latestVerified ?? EXPORT_VERSION_DATE}`,
+      distribution: [
+        { "@type": "DataDownload", encodingFormat: "text/csv", contentUrl: `${SITE}${CSV}` },
+        { "@type": "DataDownload", encodingFormat: "application/json", contentUrl: `${SITE}${JSON_URL}` },
+      ],
     },
     {
       "@type": "ItemList",
@@ -123,6 +194,8 @@ const schema = {
             "@type": "SoftwareApplication",
             "@id": `${SITE}/apps/${app.id}/#app`,
             name: app.name,
+            // The name the vendor now trades under, where that differs.
+            ...(app.brandChange ? { alternateName: "Audiense Online" } : {}),
             applicationCategory: app.category,
             operatingSystem: "Shopify",
             description: app.description,
@@ -133,6 +206,15 @@ const schema = {
     },
   ],
 };
+
+const h2 =
+  "font-size:1.6rem;color:#fff;font-weight:700;margin-top:3rem;margin-bottom:1rem;letter-spacing:-.01em;";
+const body = "color:var(--text-2);line-height:1.75;margin-bottom:1rem;";
+const card =
+  "background:#0f1311;border:1px solid #222825;border-radius:12px;padding:16px;";
+const th =
+  "text-align:left;padding:10px 12px;color:var(--text-3);font-weight:600;";
+const td = "padding:10px 12px;color:var(--text-2);vertical-align:top;";
 ---
 
 <Base
@@ -152,93 +234,216 @@ const schema = {
     </nav>
 
     <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">
-      Shopify App Pricing —<br /><span class="green">53 Apps Compared</span>
+      Shopify App Pricing Index —<br /><span class="green">{total} Apps, Sourced and Dated</span>
     </h1>
 
-    <p id="answer">Fifty-three paid Shopify apps, their published monthly cost, and the free replacement for each. Prices are read from vendor pricing pages rather than comparison sites; {verifiedCount} of 53 currently carry a verification date and a source link, and the rest are marked unverified.</p>
+    <p id="answer">
+      {total} paid Shopify apps, their published monthly cost, and a free replacement for each.
+      Prices are read from vendor pricing pages, never from comparison sites. {verified.length} records
+      carry a check date and a source link, {held.length} were checked and deliberately not recorded,
+      and {unchecked.length} have not been checked yet.
+    </p>
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 my-8">
-      <div style="background:#0f1311;border:1px solid #222825;border-radius:12px;padding:16px;">
-        <div class="text-sm text-gray-400 mb-1">Apps tracked</div>
-        <div class="text-xl font-bold text-white">{apps.length}</div>
+      <div style={card}>
+        <div class="text-sm" style="color:var(--text-3);margin-bottom:4px;">Apps tracked</div>
+        <div class="text-xl font-bold text-white">{total}</div>
       </div>
-      <div style="background:#0f1311;border:1px solid #222825;border-radius:12px;padding:16px;">
-        <div class="text-sm text-gray-400 mb-1">Categories</div>
-        <div class="text-xl font-bold text-white">{categories.length}</div>
+      <div style={card}>
+        <div class="text-sm" style="color:var(--text-3);margin-bottom:4px;">Price verified</div>
+        <div class="text-xl font-bold" style="color:#34d377;">{verified.length}</div>
       </div>
-      <div style="background:#0f1311;border:1px solid #222825;border-radius:12px;padding:16px;">
-        <div class="text-sm text-gray-400 mb-1">Price verified</div>
-        <div class="text-xl font-bold text-emerald-400">{verifiedCount}</div>
+      <div style={card}>
+        <div class="text-sm" style="color:var(--text-3);margin-bottom:4px;">Checked, not recorded</div>
+        <div class="text-xl font-bold text-white">{held.length}</div>
       </div>
-      <div style="background:#0f1311;border:1px solid #222825;border-radius:12px;padding:16px;">
-        <div class="text-sm text-gray-400 mb-1">Free replacement</div>
-        <div class="text-xl font-bold text-emerald-400">Every app</div>
+      <div style={card}>
+        <div class="text-sm" style="color:var(--text-3);margin-bottom:4px;">Not yet checked</div>
+        <div class="text-xl font-bold text-white">{unchecked.length}</div>
       </div>
     </div>
 
+    <!-- ───────────────────────── coverage ───────────────────────── -->
+    <h2 id="coverage" style={h2}>What has actually been checked</h2>
+
+    <p style={body}>
+      This index was populated on {POPULATED_ON} with figures that had not been sourced, and has been
+      checked in three sweeps since. It is not finished, and the useful thing to publish is which parts
+      are not finished rather than a table that looks uniformly authoritative.
+    </p>
+
+    <div style="overflow-x:auto;margin-bottom:1.5rem;">
+      <table style="width:100%;border-collapse:collapse;font-size:14px;max-width:520px;">
+        <caption style="caption-side:top;text-align:left;padding-bottom:8px;color:var(--text-3);font-size:13px;">
+          Verification sweeps
+        </caption>
+        <thead>
+          <tr style="border-bottom:1px solid var(--border);">
+            <th scope="col" style={th}>Date</th>
+            <th scope="col" style={th}>Records verified</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sweeps.map((s) => (
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style={td + "font-family:var(--mono);"}>{s.date}</td>
+              <td style={td}>{s.count}</td>
+            </tr>
+          ))}
+          <tr>
+            <td style={td + "font-family:var(--mono);"}>{heldCheckedDate}</td>
+            <td style={td}>{held.length} checked, deliberately not recorded — see below</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style={body}>
+      The sweeps went category by category and did not reach the end of the list.
+      <strong style="color:#fff;">Not one app has been checked in {zeroCoverageCategories.length} of
+      the {categories.length} categories:</strong>{" "}
+      {zeroCoverageCategories.map((c, i) => (
+        <>
+          {i > 0 && (i === zeroCoverageCategories.length - 1 ? " and " : ", ")}
+          <span style="color:#fff;">{c.category}</span> ({c.apps.join(", ")})
+        </>
+      ))}. If you need a figure in one of those, treat the number in the table as
+      indicative and check the vendor yourself.
+    </p>
+
+    <p style={body}>
+      Worse than undated: <strong style="color:#fff;">{inherited.length} records still carry the figure
+      they were populated with on {POPULATED_ON}</strong> — {staleDays} days ago as of {EXPORT_VERSION_DATE} —
+      never sourced and never even revised since. They are marked <em>not yet checked</em> in the table and
+      they emit no structured price. A further {unchecked.length - inherited.length} unchecked records were
+      revised in a sweep without being verified, mostly because the vendor turned out not to publish a
+      price at all.
+    </p>
+
+    <!-- ───────────────────────── holds ───────────────────────── -->
+    <h2 id="held" style={h2}>Checked, and deliberately not recorded</h2>
+
+    <p style={body}>
+      These pricing pages were opened on {heldCheckedDate} and the figure was <em>not</em> recorded, because
+      what they showed could not be stated as a plain fact. A hold is not a gap in the work — it is the
+      work. Publishing why a number is unavailable is more useful than publishing a number that would need
+      a caveat every time it is quoted, and it is the only part of this index that cannot be reproduced by
+      guessing.
+    </p>
+
+    <div style="border:1px solid var(--border);border-left:3px solid #34d377;border-radius:10px;padding:16px 18px;margin:0 0 20px;background:rgba(255,255,255,.02);">
+      <ul style="margin:0;padding-left:18px;">
+        {held.map((a) => (
+          <li style="margin-bottom:12px;line-height:1.7;color:var(--text-2);">
+            <strong style="color:#fff;">{a.name}</strong> — {a.priceHeldReason}{" "}
+            <span style="color:var(--text-4);">Shown as “{a.monthlyCost}” in the table below, unsourced and unverified.</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    {rebranded.length > 0 && (
+      <>
+        <h3 style="font-size:1.15rem;color:#fff;font-weight:700;margin-top:2rem;margin-bottom:.75rem;">
+          Verified, but the source page carries a different brand
+        </h3>
+        <div style="border:1px solid var(--border);border-left:3px solid var(--text-4);border-radius:10px;padding:16px 18px;margin:0 0 20px;background:rgba(255,255,255,.02);">
+          <ul style="margin:0;padding-left:18px;">
+            {rebranded.map((a) => (
+              <li style="line-height:1.7;color:var(--text-2);">
+                <strong style="color:#fff;">{a.name}</strong> — {a.brandChange!.note} The figure was read
+                from that page on {a.priceVerifiedDate} and is recorded as verified; the source link in
+                the table goes to a page that does not carry the name “{a.name}”, which is why it is
+                called out here rather than left for you to discover.{" "}
+                <a href={a.brandChange!.href} style="color:#34d377;text-decoration:underline;">{a.brandChange!.linkText}</a>.
+              </li>
+            ))}
+          </ul>
+        </div>
+      </>
+    )}
+
+    <!-- ───────────────────────── the table ───────────────────────── -->
+    <h2 id="index" style={h2}>The index</h2>
+
     <div class="flex flex-wrap gap-3 items-center my-6">
-      <label for="cat-filter" class="text-sm text-gray-400">Filter by category</label>
+      <label for="cat-filter" class="text-sm" style="color:var(--text-3);">Filter by category</label>
       <select
         id="cat-filter"
         style="background:#0f1311;border:1px solid #222825;border-radius:8px;color:#fff;padding:8px 12px;font-size:14px;"
       >
-        <option value="">All categories ({apps.length})</option>
+        <option value="">All categories ({total})</option>
         {categories.map((c) => (
           <option value={c}>{c} ({apps.filter((a) => a.category === c).length})</option>
         ))}
       </select>
-      <span id="row-count" class="text-sm text-gray-400" aria-live="polite"></span>
+      <span id="row-count" class="text-sm" style="color:var(--text-3);" aria-live="polite"></span>
     </div>
 
-    {held.length > 0 && (
-      <div style="border:1px solid var(--border);border-left:3px solid #34d377;border-radius:10px;padding:16px 18px;margin:0 0 20px;background:rgba(255,255,255,.02);">
-        <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-4);margin-bottom:10px;">Checked, deliberately not recorded</div>
-        <p class="text-sm text-gray-400" style="margin:0 0 10px;line-height:1.6;">
-          These vendors' pricing pages were opened on {heldDate} and the figure was
-          <em>not</em> published, because what they showed could not be stated as a plain fact.
-          Recording why is more useful than recording a number we would not stand behind.
-        </p>
-        <ul style="margin:0;padding-left:18px;">
-          {held.map((a) => (
-            <li class="text-sm text-gray-400" style="margin-bottom:6px;line-height:1.6;">
-              <strong style="color:#fff;">{a.name}</strong> — {a.priceHeldReason}
-            </li>
-          ))}
-        </ul>
-      </div>
-    )}
+    {/*
+      THIS TABLE MUST STAY FULLY SERVER-RENDERED. Every row is in the HTML, and
+      scripts/schema-visible-guard.mjs depends on that: the page emits an Offer
+      or AggregateOffer for each verified app, and the guard fails the build when
+      JSON-LD asserts a figure that is absent from the page's visible text. The
+      only thing anchoring those prices is this table printing every monthlyCost.
 
+      So do NOT paginate it, virtualise it, lazy-load it, or move rendering into
+      the client script below. Any of those strips the visible anchor from the
+      schema prices and fails the build — which is the good outcome. The bad one
+      is doing it in a way the guard misses and leaving structured prices on the
+      page that a reader cannot see, which is the drift the guard exists to stop.
+      Filtering and sorting are fine: they reorder and hide rows in the DOM, but
+      every row is present in the delivered HTML.
+    */}
     <div style="overflow-x:auto;">
       <table id="apps-table" style="width:100%;border-collapse:collapse;font-size:14px;">
-        <caption class="text-sm text-gray-400" style="caption-side:top;text-align:left;padding-bottom:8px;">
-          Click any column heading to sort.
+        <caption class="text-sm" style="caption-side:top;text-align:left;padding-bottom:8px;color:var(--text-3);">
+          Click any column heading to sort. All {total} rows are in the page; filtering hides them, it does not fetch them.
         </caption>
         <thead>
           <tr style="border-bottom:1px solid var(--border);">
-            <th data-sort="name" aria-sort="ascending" style="text-align:left;padding:10px 12px;color:var(--text-3);cursor:pointer;user-select:none;">App <span class="sort-ind">▲</span></th>
-            <th data-sort="category" style="text-align:left;padding:10px 12px;color:var(--text-3);cursor:pointer;user-select:none;">Category <span class="sort-ind"></span></th>
-            <th data-sort="cost" style="text-align:left;padding:10px 12px;color:var(--text-3);cursor:pointer;user-select:none;">Monthly cost <span class="sort-ind"></span></th>
-            <th data-sort="verified" style="text-align:left;padding:10px 12px;color:var(--text-3);cursor:pointer;user-select:none;">Price verified <span class="sort-ind"></span></th>
-            <th style="text-align:left;padding:10px 12px;color:var(--text-3);">Free replacement</th>
+            <th scope="col" data-sort="name" aria-sort="ascending" style={th + "cursor:pointer;user-select:none;"}>App <span class="sort-ind">▲</span></th>
+            <th scope="col" data-sort="category" style={th + "cursor:pointer;user-select:none;"}>Category <span class="sort-ind"></span></th>
+            <th scope="col" data-sort="cost" style={th + "cursor:pointer;user-select:none;"}>Monthly cost <span class="sort-ind"></span></th>
+            <th scope="col" data-sort="status" style={th + "cursor:pointer;user-select:none;"}>Status <span class="sort-ind"></span></th>
+            <th scope="col" data-sort="verified" style={th + "cursor:pointer;user-select:none;"}>Source <span class="sort-ind"></span></th>
+            <th scope="col" style={th}>Free replacement</th>
           </tr>
         </thead>
         <tbody>
           {apps.map((app) => {
             const cost = parseCost(app.monthlyCost);
+            const status = statusOf(app);
+            // The source domain as visible text, not only as a link target.
+            // Elevar's source is audiense.com; a reader should be able to see
+            // that without hovering the date.
+            let host = "";
+            if (app.priceSourceUrl) {
+              try {
+                host = new URL(app.priceSourceUrl).hostname.replace(/^www\./, "");
+              } catch {
+                host = "";
+              }
+            }
             return (
               <tr
                 data-name={app.name.toLowerCase()}
                 data-category={app.category}
                 data-cost={String(cost.sortValue)}
+                data-status={status}
                 data-verified={app.priceVerifiedDate ?? ""}
                 style="border-bottom:1px solid var(--border);"
               >
-                <td style="padding:10px 12px;">
+                <td style={td}>
                   <a href={`/apps/${app.id}/`} style="color:#fff;font-weight:600;text-decoration:none;">{app.name}</a>
                 </td>
-                <td style="padding:10px 12px;color:var(--text-3);">{app.category}</td>
-                <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">
-                  {app.monthlyCost}
+                <td style={td + "color:var(--text-3);"}>{app.category}</td>
+                <td style={td + "color:#fff;font-family:var(--mono);"}>
+                  {/* monthlyCost is null for an app we hold no position on. An
+                      empty cell reads as an oversight, so say what it is. */}
+                  {app.monthlyCost ?? (
+                    <span style="color:var(--text-4);font-family:inherit;font-style:italic;">No figure recorded</span>
+                  )}
                   {/* The plan the figure belongs to. A bare "$299" is not quotable —
                       "$299, Core plan" is, and it is the difference between a number
                       someone has to re-check and one they can cite. */}
@@ -246,24 +451,41 @@ const schema = {
                     <span style="display:block;color:var(--text-4);font-size:12px;line-height:1.4;margin-top:2px;">{app.pricePlan}</span>
                   )}
                 </td>
-                <td style="padding:10px 12px;font-family:var(--mono);font-size:13px;">
-                  {app.priceVerifiedDate && app.priceSourceUrl ? (
-                    <a
-                      href={app.priceSourceUrl}
-                      rel="nofollow noopener"
-                      target="_blank"
-                      style="color:#34d377;text-decoration:underline;"
-                      title="Vendor pricing page this figure was read from"
-                    >
-                      {app.priceVerifiedDate}
-                    </a>
+                <td style={td + "font-size:13px;"}>
+                  {status === "verified" && <span style="color:#34d377;">{STATUS_LABEL.verified}</span>}
+                  {status === "held" && (
+                    <span style="color:var(--text-2);" title={app.priceHeldReason}>{STATUS_LABEL.held}</span>
+                  )}
+                  {status === "unchecked" && <span style="color:var(--text-4);">{STATUS_LABEL.unchecked}</span>}
+                </td>
+                <td style={td + "font-family:var(--mono);font-size:13px;"}>
+                  {status === "verified" ? (
+                    <>
+                      <a
+                        href={app.priceSourceUrl!}
+                        rel="nofollow noopener"
+                        target="_blank"
+                        style="color:#34d377;text-decoration:underline;"
+                        title="Vendor pricing page this figure was read from"
+                      >
+                        {app.priceVerifiedDate}
+                      </a>
+                      {host && (
+                        <span style="display:block;color:var(--text-4);font-size:12px;line-height:1.4;margin-top:2px;">{host}</span>
+                      )}
+                      {app.brandChange && (
+                        <span style="display:block;color:var(--text-4);font-size:12px;line-height:1.4;margin-top:2px;font-family:var(--font);">
+                          Vendor rebranded — <a href="#held" style="color:#34d377;text-decoration:underline;">why this domain</a>
+                        </span>
+                      )}
+                    </>
+                  ) : status === "held" ? (
+                    <span style="color:var(--text-4);">checked {app.priceCheckedDate}, <a href="#held" style="color:#34d377;text-decoration:underline;">not recorded</a></span>
                   ) : (
-                    <span style="color:var(--text-4);" title={app.priceHeldReason ?? undefined}>
-                      {app.priceHeldReason ? "checked, not recorded" : "unverified"}
-                    </span>
+                    <span style="color:var(--text-4);">no source read</span>
                   )}
                 </td>
-                <td style="padding:10px 12px;">
+                <td style={td}>
                   <a href={app.stackarchitectAlternativeLink} style="color:#34d377;text-decoration:underline;">
                     {app.replacement}
                   </a>
@@ -275,12 +497,202 @@ const schema = {
       </table>
     </div>
 
-    <p class="text-gray-300" style="margin-top:2rem;font-size:.9rem;border-top:1px solid var(--border);padding-top:1rem;">
-      <strong class="text-white">On these figures:</strong> a date in the “Price verified” column links to the
-      vendor pricing page the figure was read from on that date. Rows marked <em>unverified</em> have not yet been
-      checked against a live vendor page and may be stale — treat them as indicative. Vendors change prices without
-      notice; re-check before making a purchasing decision. Our sourcing rules are on
+    <!-- ───────────────────────── methodology ───────────────────────── -->
+    <h2 id="methodology" style={h2}>How these prices are collected</h2>
+
+    <p style={body}>
+      One rule underneath all of the following: a figure is what a named source said on a named date, or
+      it is not recorded. There is no house estimate, no “typical”, and no averaging of what other
+      comparison sites publish. Our general sourcing rules are on{" "}
+      <a href="/how-we-test/" style="color:#34d377;text-decoration:underline;">how we test</a>; what
+      follows is specific to app pricing.
+    </p>
+
+    <h3 style="font-size:1.15rem;color:#fff;font-weight:700;margin-top:2rem;margin-bottom:.75rem;">Where the figure comes from</h3>
+    <p style={body}>
+      In strict order of preference, stopping at the first that yields an unambiguous number: the vendor's
+      own public pricing page; the vendor's in-app billing screen; the app's Shopify App Store listing.
+      If none of those gives a figure that can be stated plainly, nothing is recorded and the record says
+      why. Comparison sites, press coverage, cached copies and the vendor's sales collateral are never
+      used, because a price is a fact with an address and those are all somebody's summary of it.
+    </p>
+    <p style={body}>
+      In practice the first tier has so far been enough: every one of the {verified.length} verified
+      records was read from the vendor's own domain, and the source column shows which. The lower tiers
+      are the stated fallback, not a description of work already done.
+    </p>
+
+    <h3 style="font-size:1.15rem;color:#fff;font-weight:700;margin-top:2rem;margin-bottom:.75rem;">What counts as the entry price on a tiered plan</h3>
+    <p style={body}>
+      The lowest paid tier that actually includes the function the app is bought for — not the cheapest
+      row on the pricing table if that row excludes the feature. Where the vendor names the tier, the name
+      is recorded beside the figure and shown under it in the table, because a bare figure is not quotable
+      and a named plan is. Monthly billing is used unless the vendor sells annual-only, in which case the
+      table says so. Per-seat pricing is recorded per seat and labelled. Usage and transaction fees are
+      stated alongside the figure, never folded into it: Recharge is a monthly fee <em>plus</em> a
+      percentage and a per-transaction charge, and a single blended number would be a number we invented.
+      An open-ended record ends in “+”, which means the floor is sourced and the ceiling is not.
+    </p>
+
+    <h3 style="font-size:1.15rem;color:#fff;font-weight:700;margin-top:2rem;margin-bottom:.75rem;">Free tiers</h3>
+    <p style={body}>
+      A free tier is not a price, and is not recorded as one. “Free” in the cost column means the app is
+      genuinely usable at no cost for the job this index is comparing it on. An app with a free tier that
+      does not cover that job is recorded at its paid floor, because quoting $0 for a plan nobody can
+      actually run the workload on is the most flattering-to-the-vendor error available. Where a free tier
+      exists beneath a recorded paid floor, the per-app page says so.
+    </p>
+
+    <h3 style="font-size:1.15rem;color:#fff;font-weight:700;margin-top:2rem;margin-bottom:.75rem;">Promotions</h3>
+    <p style={body}>
+      Never recorded. A promotional price is a fact about a date, not about the product, and an index
+      whose figures expire silently is worse than one with gaps. When a pricing page shows only a
+      discounted price and the list price cannot be read unambiguously beside it, the record is held and
+      the reason is published. That is not hypothetical — it is exactly what happened to Omnisend on{" "}
+      {heldCheckedDate}, and it is the first entry in the holds above.
+    </p>
+
+    <h3 style="font-size:1.15rem;color:#fff;font-weight:700;margin-top:2rem;margin-bottom:.75rem;">Currency, and what gets no figure at all</h3>
+    <p style={body}>
+      USD, as published. A vendor who does not publish in USD is recorded as not publishing a USD price
+      rather than converted, because a conversion is our arithmetic on their number and it is stale the
+      day after. An app whose vendor publishes no price at all reads “Not publicly listed” and emits no
+      structured price — that is a statement about the vendor's disclosure, not about affordability.
+      A record marked <em>not yet checked</em> is a statement about us.
+    </p>
+
+    <!-- ───────────────────────── revisions ───────────────────────── -->
+    <h2 id="revisions" style={h2}>How this index has been revised</h2>
+
+    <p style={body}>
+      Every change to a recorded figure since the index was populated, {revisions.length} in total.
+      <strong style="color:#fff;"> Read the labels carefully, because this is not a price history.</strong>{" "}
+      Not one row below is a vendor moving its price. All {revisions.length} are us revising our own record
+      after reading a source — {revisionCounts.corrected} figures corrected, {revisionCounts.withdrawn} withdrawn
+      once it turned out the vendor publishes no such price, {revisionCounts.narrowed} narrowed from an
+      open-ended floor to an exact entry price, and {revisionCounts.added} app added. A genuine
+      vendor-side change would be labelled <em>vendor change</em>; the first one has yet to happen on our watch.
+    </p>
+
+    <p style={body}>
+      {revisedUp} of those revisions moved a figure up and {revisedDown} moved it down. Both directions are
+      published. Katana went from an open-ended guess to a higher, sourced figure, which makes the app we
+      recommend replacing look more expensive than we had been saying and makes our own earlier number
+      look careless — that is the entry most worth having here, and a clean table would not contain it.
+    </p>
+
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+        <caption class="text-sm" style="caption-side:top;text-align:left;padding-bottom:8px;color:var(--text-3);">
+          Newest first. “Was” is what this site published before the change.
+        </caption>
+        <thead>
+          <tr style="border-bottom:1px solid var(--border);">
+            <th scope="col" style={th}>Date</th>
+            <th scope="col" style={th}>App</th>
+            <th scope="col" style={th}>Was</th>
+            <th scope="col" style={th}>Now</th>
+            <th scope="col" style={th}>Change</th>
+          </tr>
+        </thead>
+        <tbody>
+          {revisions.map((r) => (
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style={td + "font-family:var(--mono);white-space:nowrap;"}>{r.date}</td>
+              <td style={td}>
+                <a href={`/apps/${r.id}/`} style="color:#fff;text-decoration:none;font-weight:600;">{r.name}</a>
+              </td>
+              <td style={td + "font-family:var(--mono);color:var(--text-3);"}>{r.from ?? "—"}</td>
+              <td style={td + "font-family:var(--mono);color:#fff;"}>{r.to ?? "no figure"}</td>
+              <td style={td + "font-size:13px;"}>
+                {r.kind === "corrected" && (
+                  <span style="color:var(--text-2);">
+                    corrected{r.direction ? ` (${r.direction})` : ""}
+                  </span>
+                )}
+                {r.kind === "withdrawn" && <span style="color:var(--text-2);">withdrawn — vendor publishes no such price</span>}
+                {r.kind === "narrowed" && <span style="color:var(--text-2);">narrowed to an exact entry price</span>}
+                {r.kind === "added" && <span style="color:var(--text-2);">added to the index</span>}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ───────────────────────── downloads ───────────────────────── -->
+    <h2 id="download" style={h2}>Download the dataset</h2>
+
+    <p style={body}>
+      Both files carry all {total} records with the status, source URL, check date and hold reason for
+      each. They are generated from the same data this page renders, at build time, so they cannot drift
+      from the table above. {indexMeta.licenseName} — use them, including commercially, with attribution.
+    </p>
+
+    <p style={body}>
+      <a href={CSV} style="color:#34d377;text-decoration:underline;font-family:var(--mono);">{CSV}</a>{" "}
+      <span style="color:var(--text-4);">— one row per app, CRLF, quoted</span><br />
+      <a href={JSON_URL} style="color:#34d377;text-decoration:underline;font-family:var(--mono);">{JSON_URL}</a>{" "}
+      <span style="color:var(--text-4);">— the same rows, plus the coverage counts and the full revision log</span>
+    </p>
+
+    <h3 style="font-size:1.15rem;color:#fff;font-weight:700;margin-top:2rem;margin-bottom:.75rem;">Fields</h3>
+    <p style={body}>
+      Read this before treating a null as missing data. Nulls in the date and source columns are
+      load-bearing: they mark the {unchecked.length} records nobody has checked, and they are the honest
+      encoding of that rather than an export bug.
+    </p>
+
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+        <thead>
+          <tr style="border-bottom:1px solid var(--border);">
+            <th scope="col" style={th}>Field</th>
+            <th scope="col" style={th}>Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          {fieldNotes.map(([field, note]) => (
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style={td + "font-family:var(--mono);white-space:nowrap;color:#fff;"}>{field}</td>
+              <td style={td}>{note}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ───────────────────────── citation ───────────────────────── -->
+    <h2 id="cite" style={h2}>Cite this</h2>
+
+    <p style={body}>
+      If you quote a figure from this index, quote the date with it — a price without a date is not a
+      fact, and every record here carries one precisely so that it can be repeated honestly.
+    </p>
+
+    <div style="border:1px solid var(--border);border-radius:10px;padding:16px 18px;background:rgba(255,255,255,.02);margin-bottom:1rem;">
+      <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-4);margin-bottom:10px;">Suggested attribution</div>
+      <p style="margin:0;font-family:var(--mono);font-size:13px;line-height:1.7;color:var(--text-2);">
+        {indexMeta.author}. “{indexMeta.name}.” Stack Architect,{" "}
+        {latestVerified}. {indexMeta.canonical} ({indexMeta.licenseName}).
+      </p>
+    </div>
+
+    <p style={body}>
+      The “as of” date above is {latestVerified}, the most recent verification sweep — not today's date,
+      and not the date the page was last edited. Records verified on {oldestVerified} are older than that
+      and the table says so per row. If you need a figure to be current, the source link in each row is
+      the page to re-read; if a record has moved since we checked it, we would rather hear about it than
+      have it sit here. Corrections go to the address on{" "}
       <a href="/how-we-test/" style="color:#34d377;text-decoration:underline;">how we test</a>.
+    </p>
+
+    <p style="color:var(--text-3);margin-top:2rem;font-size:.9rem;border-top:1px solid var(--border);padding-top:1rem;line-height:1.7;">
+      <strong style="color:#fff;">On these figures:</strong> vendors change prices without notice, and
+      {" "}{sweepDates.length} sweeps across {total} apps is not continuous monitoring. A date in the Source
+      column links to the page the figure was read from on that date. Rows marked
+      <em> not yet checked</em> have never been read against a live vendor page and may be stale — treat
+      them as indicative. Re-check before making a purchasing decision.
     </p>
   </main>
 
@@ -295,12 +707,17 @@ const schema = {
       let sortKey = 'name';
       let asc = true;
 
+      // Sort order for the status column is meaningful, not alphabetical:
+      // verified first, then held, then unchecked.
+      const STATUS_RANK = { verified: '0', held: '1', unchecked: '2' };
+
       const value = (row, key) => {
         const raw = row.getAttribute('data-' + key) || '';
         if (key === 'cost') {
           const n = parseFloat(raw);
           return Number.isFinite(n) ? n : Number.POSITIVE_INFINITY;
         }
+        if (key === 'status') return STATUS_RANK[raw] || '9';
         // empty verification dates sort last in both directions
         if (key === 'verified' && raw === '') return asc ? '￿' : '';
         return raw;
