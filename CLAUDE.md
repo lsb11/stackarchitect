@@ -8,17 +8,24 @@ Spec: docs/RUNBOOK-consolidation-v1.md — read it before any structural change.
 That runbook is a record of completed work, **not a to-do list**. Do not re-cut
 pages it describes; they are already cut.
 
-Verified against the build on 2026-08-17:
+Measured against the build on 2026-09-05:
 
 | Metric | Value |
 |---|---|
-| HTML pages built | 120 |
-| `noindex` pages | 60 (54 × `/apps/*`, 3 × `/embed/*`, privacy/terms/refund) |
-| **Indexable pages** | **59** |
-| **URLs in sitemap-0.xml** | **58** |
+| HTML pages built | 128 |
+| `noindex` pages | 64 (54 × `/apps/*`, 4 × `/pro/*/success/`, 3 × `/embed/*`, privacy/terms/refund) |
+| **Indexable pages** | **64** |
+| **URLs in sitemap-0.xml** | **62** |
 
-The runbook's 88 → 58 target is met. An earlier version of this file said the cut
-was still to be made; that was stale and caused wasted work.
+The two indexable pages absent from the sitemap are `/404.html` and
+`/sitemap-page/`, both deliberate. Reproduce the whole table with
+`npm run build`, then count `<loc>` in `dist/sitemap-0.xml`.
+
+The runbook's 88 → 58 target was met on 17 Aug at 120 pages / 58 URLs. The set
+has since grown by four indexable URLs — see the freeze note below. An earlier
+version of this file said the cut was still to be made; that was stale and caused
+wasted work, which is why these figures now carry the date they were measured
+and the command that reproduces them.
 
 ## Commands
 
@@ -89,14 +96,41 @@ endpoints.
 - `schema-visible-guard.mjs` — runs over `dist/` and fails when JSON-LD asserts a number that
   does not appear in the page's visible text.
 
+**`apps.json` prices have three states, not two.** `statusOf()` in
+`src/data/appsIndex.js` is the definition; `/apps/`, both
+`/downloads/shopify-app-pricing-index.*` endpoints and `seo-audit.mjs` all read
+it (the audit restates it, because `appsIndex.js` imports JSON the Vite way and
+will not load in plain node — `seo-audit.test.mjs` pins the two together).
+
+| State | Test | Count, 5 Sep 2026 |
+|---|---|---|
+| `verified` | both `priceVerifiedDate` and `priceSourceUrl` | 27 |
+| `held` | `priceHeldReason` — checked, deliberately not priced | 3 |
+| `unchecked` | neither — nobody has looked | 24 |
+
+Until 5 Sep the page and the audit both said "27 verified, 27 unverified",
+which hid the holds inside the unchecked count. A hold is a decision with a
+reason attached and an absence is not; do not collapse them again. Enforcement
+does not care about the distinction — only `verified` may back a published
+figure, and that has always been the rule — but the reporting does.
+
+Every count on `/apps/` is derived from `apps.json`, never typed. The bug that
+rule exists to prevent shipped sitewide: `Nav.astro` read "All 53 apps" on all
+128 pages from 14 Aug to 5 Sep, after `apps.json` went to 54.
+
 Root-level `*.patch` files, `.archived-pages/`, `.*-backup*/` and the loose `.py`/`.cjs` scripts
 are historical artefacts, not live tooling.
 
 ### Where the indexing problem actually stands
 
 Do not assume thin content is still the cause — it was measured and it is not.
-Exactly one indexable page is under 800 words (`/apps/`, 696). 49 of 59 exceed
-1,500 words; 21 exceed 3,000. Canonicals: zero mismatches. robots.txt, sitemap
+As of 5 Sep 2026, **no indexable page is under 800 words.** The smallest is
+`/shopify-app-stack-kill-or-keep-auditor/` at 933; 52 of 62 exceed 1,500 words
+and 22 exceed 3,000. `/apps/` was the sole sub-800 page at 696 on 17 Aug and is
+now 2,972 — it did not gain filler, it gained the provenance the table always
+had and never showed. Counts are words inside `<main>` with `<script>`/`<style>`
+stripped; a different extraction gives a different number, so state the method
+before disputing a figure. Canonicals: zero mismatches. robots.txt, sitemap
 chain, redirects and internal links all verified clean.
 
 Real GSC data, 14 Aug 2026: **1 page indexed, 236 not indexed.** Of those, 177
@@ -139,6 +173,13 @@ Full analysis lives in the StackArchitect project doc `gsc-indexing-diagnosis.md
   No new pages. No new redirects. No renamed routes. A URL set that moves
   restarts Google's reassessment. Content improvements to existing pages are
   permitted and encouraged; new URLs are not.
+  **The freeze was broken once, on 29 Aug 2026** (`7d23e60`, "unbundle into four
+  single products with dedicated routes"): `/pro/[slug]/` added four indexable
+  URLs and `/pro/[slug]/success/` four noindexed ones, taking the sitemap from
+  58 to 62. Recorded here so it is documented rather than rediscovered as a
+  discrepancy. It is not a precedent and it is not to be repeated — but do not
+  "fix" it by deleting the routes either, since removing a live URL costs the
+  same reassessment as adding one. The freeze still runs to roughly 21 Oct 2026.
 - Merging content means DEDUPLICATING, never concatenating. A 4,500-word page
   assembled by stapling four 1,100-word posts together is still four thin pages.
 - **Never emit a schema.org Offer for a THIRD-PARTY price without both
@@ -168,7 +209,7 @@ Full analysis lives in the StackArchitect project doc `gsc-indexing-diagnosis.md
   tool that claims otherwise.
 - **Run `npm run a11y` before any CSS or colour-token change ships.** It builds
   nothing — run `npm run build` first — then measures every text node and every
-  link/button on all 58 indexable pages with proper alpha and gradient
+  link/button on all 62 sitemap URLs with proper alpha and gradient
   compositing. It must exit 0. Two bug classes it exists to catch, both found
   live on 23 Aug 2026:
   - **Dark Tailwind tokens used as text on a dark ground.** `#15803d`
