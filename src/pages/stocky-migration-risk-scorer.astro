@@ -238,6 +238,14 @@ const tocHeadings = [
             </div>
           </div>
           <div class="result-insight" id="sr-insight"></div>
+          <p style="font-size:12px;color:#93a09a;line-height:1.7;margin-top:16px;border-top:1px solid #222825;padding-top:14px;">
+            <strong style="color:#b6c0ba;">How this is scored.</strong> The risk score is this tool's own
+            heuristic: six weighted inputs — monthly orders, active SKUs, manual stock edits, suppliers,
+            purchase-order reliance and export habit — summed and capped at 100. The weights are a
+            judgement about which of those hurts most when data disappears, not a measured model of
+            migration outcomes, and no store's actual migration was used to fit them. Use it to rank your
+            own situation, not to predict hours.
+          </p>
         </div>
       </div>
 
@@ -358,21 +366,40 @@ const tocHeadings = [
     const pos = parseInt(document.getElementById('sr-pos').value);
     const backup = parseInt(document.getElementById('sr-backup').value);
 
+    // Six coefficients, stated rather than sourced: this is a weighting we chose
+    // to rank stores against each other, not a measured model of migration
+    // outcomes. See the note under the panel.
     const score = Math.min(100, Math.round((orders/50 + skus/30 + manual*3 + suppliers*2 + pos*4 + backup*3)));
-    let level, color, timeline, timeEst, insight;
+    let level, color, leadWeeks, timeEst, insight;
 
     if (score < 25) {
-      level = 'Low Risk'; color = '#34d377'; timeline = 'Before June 2026'; timeEst = '2–4 hrs';
-      insight = '<strong>Simple migration.</strong> Your store is a good candidate for a quick Stocky Swap setup. Export your Stocky data now as a backup, then follow the 4-minute setup guide. Run both systems in parallel for 2 weeks before switching fully.';
+      level = 'Low Risk'; color = '#34d377'; leadWeeks = 2; timeEst = '2–4 hrs';
+      insight = '<strong>Simple migration.</strong> Your store is a good candidate for a quick Stocky Swap setup. Export your Stocky data as a backup, then follow the 4-minute setup guide. Run both systems in parallel for 2 weeks before switching fully.';
     } else if (score < 50) {
-      level = 'Moderate Risk'; color = '#f5b64d'; timeline = 'Before May 2026'; timeEst = '4–8 hrs';
-      insight = '<strong>Plan your migration carefully.</strong> Export all Stocky data immediately. Map your SKUs to the new template before going live. Consider running parallel systems for at least 4 weeks to catch edge cases before the deadline.';
+      level = 'Moderate Risk'; color = '#f5b64d'; leadWeeks = 4; timeEst = '4–8 hrs';
+      insight = '<strong>Plan your migration carefully.</strong> Export all Stocky data first. Map your SKUs to the new template before going live. Allow at least 4 weeks of parallel running to catch edge cases.';
     } else if (score < 75) {
-      level = 'High Risk'; color = '#fb923c'; timeline = 'Start now — April 2026'; timeEst = '1–3 days';
+      level = 'High Risk'; color = '#fb923c'; leadWeeks = 6; timeEst = '1–3 days';
       insight = '<strong>Start immediately.</strong> Your inventory complexity means migration will take time to do correctly. Export Stocky data today. For high-volume operations, consider upgrading Make.com to the Core plan and Google Workspace to avoid rate limits.';
     } else {
-      level = 'Critical Risk'; color = '#f87171'; timeline = 'Urgent — begin this week'; timeEst = '3–5 days';
+      level = 'Critical Risk'; color = '#f87171'; leadWeeks = 8; timeEst = '3–5 days';
       insight = '<strong>Urgent action required.</strong> Your scale and complexity put you at high risk of operational disruption if migration is rushed. Export all Stocky data today. Consider professional support for the transition given the operational dependency.';
+    }
+
+    // The latest safe start date is derived from the published deletion date
+    // minus the parallel-run window the band implies — never a typed month,
+    // which is what left this cell reading "Before June 2026" long after June.
+    const DELETION = new Date('2026-08-31T23:59:59Z');
+    const now = new Date();
+    const latestStart = new Date(DELETION.getTime() - leadWeeks * 7 * 86400000);
+    let timeline;
+    if (now > DELETION) {
+      timeline = 'Deadline passed';
+      insight = '<strong>Stocky\'s deletion date of 31 August 2026 has passed.</strong> Anything still held only inside Stocky is beyond export. Stand the replacement ledger up from your Shopify order history, which is unaffected, and treat the risk score above as a measure of how much reconstruction that will take. ' + insight;
+    } else if (now > latestStart) {
+      timeline = 'Overdue';
+    } else {
+      timeline = latestStart.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
     }
 
     document.getElementById('sr-score').textContent = score + '/100';
@@ -388,21 +415,16 @@ const tocHeadings = [
   // Run once on load so the panel shows a real result rather than placeholders,
   // and recalculate as the visitor types rather than making them find the button.
   (function () {
-    var ids = [];
+    var ids = ["sr-orders","sr-skus","sr-manual","sr-suppliers","sr-pos","sr-backup"];
+    var st = document.getElementById('sr-state');
     ids.forEach(function (id) {
       var el = document.getElementById(id);
-      if (el) el.addEventListener('input', calcStocky);
+      if (!el) return;
+      el.addEventListener('change', function () {
+        calcStocky();
+        if (st) { st.textContent = 'Your answers'; st.classList.add('live'); }
+      });
     });
     try { calcStocky(); } catch (e) {}
-    var st = document.getElementById('sr-state');
-    if (st) {
-      ids.forEach(function (id) {
-        var el = document.getElementById(id);
-        if (el) el.addEventListener('input', function () {
-          st.textContent = 'Your numbers';
-          st.classList.add('live');
-        });
-      });
-    }
   })();
 </script>

@@ -44,10 +44,19 @@ import EmbedLayout from '../../layouts/EmbedLayout.astro';
         </div>
       </div>
 
+      <div class="scw-scenario">
+        <label class="scw-scenario-label" for="scw-rate">Replacement scenario</label>
+        <select id="scw-rate" class="scw-select">
+          <option value="0.5">Conservative — core overlaps only (50%)</option>
+          <option value="0.85" selected>Aggressive — full free stack (85%)</option>
+          <option value="1">Full reset — every category moves (100%)</option>
+        </select>
+      </div>
+
       <div class="scw-result-box">
-        <div class="scw-result-label">Your Annual App Waste</div>
+        <div class="scw-result-label">Annual spend the selected scenario replaces</div>
         <div class="scw-num">$<span id="scw-total">8,160</span></div>
-        <div class="scw-sub">Recoverable for $0 using server-side automation.</div>
+        <div class="scw-sub">Your annual app spend of $<span id="scw-annual">9,600</span> &times; the replacement rate you chose above &mdash; an assumption you set, not a measured recovery.</div>
       </div>
     </div>
     
@@ -67,7 +76,15 @@ import EmbedLayout from '../../layouts/EmbedLayout.astro';
       var values = {};
       var totalEl = document.getElementById('scw-total');
       
-      // Calculate Waste (assuming 85% is recoverable, as per canonical calculator)
+      var rateEl = document.getElementById('scw-rate');
+      var annualEl = document.getElementById('scw-annual');
+
+      // The replacement rate is the reader's choice, matching the three
+      // scenarios on the canonical calculator. It was hardcoded at 0.85 here
+      // with the control removed and the output labelled "85% average
+      // recovery" — an assumption presented as a measurement, on a widget that
+      // ships to third-party sites where none of the canonical page's framing
+      // travels with it.
       function updateCalculation() {
         var totalMonthly = 0;
         inputs.forEach(function(key) {
@@ -75,9 +92,11 @@ import EmbedLayout from '../../layouts/EmbedLayout.astro';
           values[key].textContent = val.toLocaleString();
           totalMonthly += val;
         });
-        
+
         var annualWaste = totalMonthly * 12;
-        var recoverable = Math.round(annualWaste * 0.85); // 85% average recovery
+        var rate = parseFloat(rateEl.value) || 0.85;
+        var recoverable = Math.round(annualWaste * rate);
+        annualEl.textContent = annualWaste.toLocaleString();
         
         // Animate the number slightly
         totalEl.style.opacity = '0.5';
@@ -93,6 +112,7 @@ import EmbedLayout from '../../layouts/EmbedLayout.astro';
         
         ranges[key].addEventListener('input', updateCalculation);
       });
+      rateEl.addEventListener('change', updateCalculation);
       
       // Initial calculation
       updateCalculation();
@@ -116,6 +136,30 @@ import EmbedLayout from '../../layouts/EmbedLayout.astro';
       box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
     
+    .scw-scenario {
+      margin: 0 0 1rem;
+    }
+
+    .scw-scenario-label {
+      display: block;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #93a09a;
+      margin-bottom: 0.4rem;
+    }
+
+    .scw-select {
+      width: 100%;
+      background: rgba(11, 15, 20, 0.9);
+      color: #e8eef4;
+      border: 1px solid rgba(52, 211, 119, 0.28);
+      border-radius: 8px;
+      padding: 0.55rem 0.6rem;
+      font-size: 0.8rem;
+      font-family: inherit;
+    }
+
     .scw-head {
       display: flex;
       flex-direction: column;

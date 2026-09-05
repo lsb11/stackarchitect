@@ -418,21 +418,13 @@ const tocHeadings = [
   // Run once on load so the panel shows a real result rather than placeholders,
   // and recalculate as the visitor types rather than making them find the button.
   (function () {
-    var ids = [];
-    ids.forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el) el.addEventListener('input', calcApps);
+    var st = document.getElementById('app-state');
+    [].slice.call(document.querySelectorAll('#app-checks input[type=checkbox]')).forEach(function (el) {
+      el.addEventListener('change', function () {
+        calcApps();
+        if (st) { st.textContent = 'Your stack'; st.classList.add('live'); }
+      });
     });
     try { calcApps(); } catch (e) {}
-    var st = document.getElementById('app-state');
-    if (st) {
-      ids.forEach(function (id) {
-        var el = document.getElementById(id);
-        if (el) el.addEventListener('input', function () {
-          st.textContent = 'Your numbers';
-          st.classList.add('live');
-        });
-      });
-    }
   })();
 </script>

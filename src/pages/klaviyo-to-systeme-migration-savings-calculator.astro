@@ -174,29 +174,10 @@ const tocHeadings = [
             <input type="number" id="kl-subs" placeholder="e.g. 4500" / value="1800" >
           </div>
           <div class="calc-field">
-            <label>Monthly email sends</label>
-            <input type="number" id="kl-sends" placeholder="e.g. 25000" />
-          </div>
-          <div class="calc-field">
             <label>Do you use Klaviyo SMS?</label>
             <select id="kl-sms">
               <option value="0">No</option>
               <option value="1">Yes — this may affect migration</option>
-            </select>
-          </div>
-          <div class="calc-field">
-            <label>Number of active automations / flows</label>
-            <select id="kl-flows">
-              <option value="3">1–5 (basic: welcome, cart, post-purchase)</option>
-              <option value="10">6–15 (intermediate)</option>
-              <option value="20">15+ (advanced)</option>
-            </select>
-          </div>
-          <div class="calc-field">
-            <label>Klaviyo contract type</label>
-            <select id="kl-contract">
-              <option value="monthly">Month-to-month</option>
-              <option value="annual">Annual contract</option>
             </select>
           </div>
         </div>
@@ -386,10 +367,13 @@ const tocHeadings = [
   // Run once on load so the panel shows a real result rather than placeholders,
   // and recalculate as the visitor types rather than making them find the button.
   (function () {
-    var ids = ["kl-cost","kl-subs","kl-sms","kl-sends"];
+    // kl-sends, kl-flows and kl-contract were collected and never read by
+    // calcKlaviyo. Asking for an input and ignoring it invites the reader to
+    // believe it moved the answer, so the fields are gone rather than decorative.
+    var ids = ["kl-cost","kl-subs","kl-sms"];
     ids.forEach(function (id) {
       var el = document.getElementById(id);
-      if (el) el.addEventListener('input', calcKlaviyo);
+      if (el) { el.addEventListener('input', calcKlaviyo); el.addEventListener('change', calcKlaviyo); }
     });
     try { calcKlaviyo(); } catch (e) {}
     var st = document.getElementById('kl-state');

@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 
-const schemas = [{"@context":"https://schema.org","@type":"WebApplication","name":"Meta EMQ Score Estimator","url":"https://stackarchitect.xyz/meta-emq-score-estimator/","description":"Estimate your Meta Event Match Quality (EMQ) score instantly. Understand which customer data signals are raising or lowering your EMQ and how to fix low scores with server-side tracking.","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{ "@id": "https://stackarchitect.xyz/#org" }},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a good Meta EMQ score?","acceptedAnswer":{"@type":"Answer","text":"Meta rates EMQ from 0–10. A score of 7.0 or above is considered strong. Scores of 4–6 indicate moderate match quality with room for improvement. Below 4 means you are likely losing significant attribution and your Meta ad performance data is unreliable."}},{"@type":"Question","name":"What fields improve EMQ score the most?","acceptedAnswer":{"@type":"Answer","text":"Email address and phone number are the highest-impact fields, each contributing significantly to match quality. External ID (your Shopify customer ID) and Click ID (fbc) also add material lift. Hashing these server-side via the Meta Conversions API gives you the highest possible EMQ."}},{"@type":"Question","name":"How do I fix a low Meta EMQ score for Shopify?","acceptedAnswer":{"@type":"Answer","text":"The fastest fix is implementing server-side tracking via the Meta Conversions API using Make.com. This sends Purchase events with hashed customer data (email, phone, external_id) directly from your server, bypassing iOS restrictions and ad blockers. Full setup guide at stackarchitect.xyz/capi-shield."}},{"@type":"Question","name":"Does a higher EMQ score improve my Meta ROAS?","acceptedAnswer":{"@type":"Answer","text":"Yes. Higher EMQ means more of your conversions are matched back to Meta ad clicks. This improves your reported ROAS, gives Meta's algorithm better signals to optimise bidding, and allows Advantage+ campaigns to work more effectively. Raising Event Match Quality from 4 to 7+ means more of your events match to a Meta account, so more conversions become attributable. We publish no uplift percentage; measure your own result as Additional Conversions Reported in Meta Events Manager."}},{"@type":"Question","name":"Is the Meta Conversions API free to use?","acceptedAnswer":{"@type":"Answer","text":"Yes. Meta's Events API has no direct cost. You need a way to send server-side events — Make.com's free tier (1,000 credits/month) is sufficient for most Shopify stores under 500 orders/month. There is no Meta charge for using the API."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://stackarchitect.xyz/tools/"},{"@type":"ListItem","position":3,"name":"Meta EMQ Score Estimator","item":"https://stackarchitect.xyz/meta-emq-score-estimator/"}]}];
+const schemas = [{"@context":"https://schema.org","@type":"WebApplication","name":"Meta EMQ Score Estimator","url":"https://stackarchitect.xyz/meta-emq-score-estimator/","description":"Score the customer-data signals that feed your Meta Event Match Quality (EMQ) rating. Meta reports the real score in Events Manager; this tool weighs which parameters you send and how to fix gaps with server-side tracking.","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{ "@id": "https://stackarchitect.xyz/#org" }},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a good Meta EMQ score?","acceptedAnswer":{"@type":"Answer","text":"Meta rates EMQ from 0–10. A score of 7.0 or above is considered strong. Scores of 4–6 indicate moderate match quality with room for improvement. Below 4 means you are likely losing significant attribution and your Meta ad performance data is unreliable."}},{"@type":"Question","name":"What fields improve EMQ score the most?","acceptedAnswer":{"@type":"Answer","text":"Email address and phone number are the highest-impact fields, each contributing significantly to match quality. External ID (your Shopify customer ID) and Click ID (fbc) also add material lift. Hashing these server-side via the Meta Conversions API gives you the highest possible EMQ."}},{"@type":"Question","name":"How do I fix a low Meta EMQ score for Shopify?","acceptedAnswer":{"@type":"Answer","text":"The fastest fix is implementing server-side tracking via the Meta Conversions API using Make.com. This sends Purchase events with hashed customer data (email, phone, external_id) directly from your server, bypassing iOS restrictions and ad blockers. Full setup guide at stackarchitect.xyz/capi-shield."}},{"@type":"Question","name":"Does a higher EMQ score improve my Meta ROAS?","acceptedAnswer":{"@type":"Answer","text":"Yes. Higher EMQ means more of your conversions are matched back to Meta ad clicks. This improves your reported ROAS, gives Meta's algorithm better signals to optimise bidding, and allows Advantage+ campaigns to work more effectively. Raising Event Match Quality from 4 to 7+ means more of your events match to a Meta account, so more conversions become attributable. We publish no uplift percentage; measure your own result as Additional Conversions Reported in Meta Events Manager."}},{"@type":"Question","name":"Is the Meta Conversions API free to use?","acceptedAnswer":{"@type":"Answer","text":"Yes. Meta's Events API has no direct cost. You need a way to send server-side events — Make.com's free tier (1,000 credits/month) is sufficient for most Shopify stores under 500 orders/month. There is no Meta charge for using the API."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://stackarchitect.xyz/tools/"},{"@type":"ListItem","position":3,"name":"Meta EMQ Score Estimator","item":"https://stackarchitect.xyz/meta-emq-score-estimator/"}]}];
 
 const breadcrumb = [
   { label: 'Home', href: '/' },
@@ -164,7 +164,7 @@ const tocHeadings = [
       <div class="tool-badge"><span class="dot"></span>FREE TOOL // Meta Attribution</div>
       <h1>Meta <span class="green">EMQ Score</span> Estimator</h1>
 
-    <p id="answer">Meta's Event Match Quality score rates how well the customer data attached to your conversion events matches Meta's own user records, on a scale of one to ten. This estimator shows which parameters — hashed email, phone, name, IP address, user agent — are raising or lowering yours, and what adding each one is worth.</p>
+    <p id="answer">Meta's Event Match Quality score rates how well the customer data attached to your conversion events matches Meta's own user records, on a scale of one to ten. Meta reports your real score in Events Manager; this tool scores the inputs that feed it — which parameters you send, and how.</p>
 
   <TableOfContents headings={tocHeadings} />
 
@@ -240,7 +240,7 @@ const tocHeadings = [
           </div>
         </div>
 
-        <div class="calc-grid" style="grid-template-columns:1fr 1fr;">
+        <div class="calc-grid" style="grid-template-columns:1fr;">
           <div class="calc-field">
             <label>Tracking method</label>
             <select id="emq-method">
@@ -249,34 +249,33 @@ const tocHeadings = [
               <option value="serveronly">Server-side API only</option>
             </select>
           </div>
-          <div class="calc-field">
-            <label>Monthly Meta ad spend (£/$/€)</label>
-            <input type="number" id="emq-spend" placeholder="e.g. 3000" min="0" />
-          </div>
         </div>
 
-        <button class="calc-btn" onclick="calcEMQ()">ESTIMATE MY EMQ SCORE →</button>
+        <button class="calc-btn" onclick="calcEMQ()">SCORE MY EVENT SIGNALS →</button>
 
         <div class="calc-result" id="emq-result">
-          <span class="calc-state" id="emq-state">Worked example · tick the parameters you already send to see your estimated score</span>
+          <span class="calc-state" id="emq-state">Tick the parameters you already send to score your setup</span>
           <div class="result-grid">
             <div class="result-cell">
-              <div class="result-label">Estimated EMQ Score</div>
+              <div class="result-label">Signal completeness score</div>
               <div class="result-value" id="emq-score">0.0</div>
               <div class="result-sub" id="emq-grade">Calculating...</div>
             </div>
             <div class="result-cell">
-              <div class="result-label">Match Rate</div>
+              <div class="result-label">Signal coverage</div>
               <div class="result-value" style="font-size:28px;" id="emq-match">0%</div>
-              <div class="result-sub">Estimated signal coverage</div>
-            </div>
-            <div class="result-cell">
-              <div class="result-label">Missing Attribution</div>
-              <div class="result-value" style="font-size:28px;color:#f87171;" id="emq-missing">--</div>
-              <div class="result-sub">Conversions invisible to Meta</div>
+              <div class="result-sub">Share of the weighted checklist you send</div>
             </div>
           </div>
           <div class="result-insight" id="emq-insight"></div>
+          <p style="font-size:12px;color:#93a09a;line-height:1.7;margin-top:16px;border-top:1px solid #222825;padding-top:14px;">
+            <strong style="color:#b6c0ba;">What this score is.</strong> It is this tool's own heuristic —
+            a weighted checklist of the customer parameters you send, scaled by whether you send them
+            from the browser, the server, or both. It is not a prediction of Meta's Event Match Quality
+            and it does not read anything from your ad account. Meta's actual EMQ is reported per event
+            in Events Manager → Data Sources → your pixel → Event Match Quality; this estimates the
+            inputs that feed it, not the number Meta returns.
+          </p>
         </div>
       </div>
 
@@ -463,8 +462,6 @@ const tocHeadings = [
   function calcEMQ() {
     const signals = [...document.querySelectorAll('[data-signal]:checked')].map(el => el.dataset.signal);
     const method = document.getElementById('emq-method').value;
-    const spend = parseFloat(document.getElementById('emq-spend').value) || 0;
-
     // EMQ score calculation based on signal weights
     const weights = { email: 3.0, phone: 2.5, external_id: 1.2, fbc: 1.2, ip: 0.5, ua: 0.3, fbp: 0.8 };
     const multipliers = { pixel: 0.65, hybrid: 1.0, serveronly: 1.05 };
@@ -473,20 +470,23 @@ const tocHeadings = [
     let score = Math.min(10, raw * (multipliers[method] || 1));
     score = Math.round(score * 10) / 10;
 
+    // A "missing attribution" figure of spend * (1 - matchRate) * 0.15 was
+    // printed here in pounds. The 0.15 was an unsourced constant and ad spend
+    // is not a quantity that attribution loss scales with, so the output was
+    // arithmetic on two numbers that do not multiply. There is no honest
+    // replacement from these inputs. Do not reintroduce a money figure here.
     const matchRate = Math.min(98, Math.round(score * 10 + (method === 'serveronly' ? 5 : method === 'hybrid' ? 3 : 0)));
-    const missing = spend > 0 ? Math.round(spend * (1 - matchRate / 100) * 0.15) : null;
 
     let grade, gradeColor;
-    if (score >= 8) { grade = 'Excellent — top attribution quality'; gradeColor = '#34d377'; }
-    else if (score >= 6) { grade = 'Good — minor improvements possible'; gradeColor = '#a3e635'; }
-    else if (score >= 4) { grade = 'Moderate — significant lift available'; gradeColor = '#f5b64d'; }
-    else { grade = 'Low — attribution data unreliable'; gradeColor = '#f87171'; }
+    if (score >= 8) { grade = 'Near-complete signal set'; gradeColor = '#34d377'; }
+    else if (score >= 6) { grade = 'Good — minor gaps remain'; gradeColor = '#a3e635'; }
+    else if (score >= 4) { grade = 'Moderate — high-impact parameters missing'; gradeColor = '#f5b64d'; }
+    else { grade = 'Low — most identifiers are not being sent'; gradeColor = '#f87171'; }
 
     document.getElementById('emq-score').textContent = score.toFixed(1);
     document.getElementById('emq-score').style.color = gradeColor;
     document.getElementById('emq-grade').textContent = grade;
     document.getElementById('emq-match').textContent = matchRate + '%';
-    document.getElementById('emq-missing').textContent = missing ? '~£' + missing.toLocaleString() + '/mo' : 'Enter spend';
 
     let insight = '';
     if (!signals.includes('email')) insight += '<strong>Add email address</strong> — the highest-impact single signal. Hashed SHA256, sent server-side. ';
@@ -503,21 +503,17 @@ const tocHeadings = [
   // Run once on load so the panel shows a real result rather than placeholders,
   // and recalculate as the visitor types rather than making them find the button.
   (function () {
-    var ids = [];
-    ids.forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el) el.addEventListener('input', calcEMQ);
+    var els = [].slice.call(document.querySelectorAll('[data-signal]'));
+    var method = document.getElementById('emq-method');
+    if (method) els.push(method);
+    var st = document.getElementById('emq-state');
+    els.forEach(function (el) {
+      el.addEventListener('input', function () {
+        calcEMQ();
+        if (st) { st.textContent = 'Your setup'; st.classList.add('live'); }
+      });
+      el.addEventListener('change', calcEMQ);
     });
     try { calcEMQ(); } catch (e) {}
-    var st = document.getElementById('emq-state');
-    if (st) {
-      ids.forEach(function (id) {
-        var el = document.getElementById(id);
-        if (el) el.addEventListener('input', function () {
-          st.textContent = 'Your numbers';
-          st.classList.add('live');
-        });
-      });
-    }
   })();
 </script>
