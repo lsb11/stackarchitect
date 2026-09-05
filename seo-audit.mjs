@@ -139,6 +139,35 @@ export function loadApps(path = APPS_JSON) {
   return { arr, byName };
 }
 
+// Three price states, not two. This mirrors statusOf() in src/data/appsIndex.js,
+// which is the definition the /apps/ page and both download endpoints render
+// from; it is restated here because appsIndex.js imports JSON the Vite way and
+// is not loadable from plain node. The two must not drift — see the
+// "three states" cases in seo-audit.test.mjs.
+//
+//   verified  — a human read the figure on the vendor's page, and the record
+//               carries both the date and the URL it was read from.
+//   held      — somebody checked and deliberately did not record a figure.
+//   unchecked — nobody has looked.
+//
+// The audit previously printed "verified N | unverified M", which folded held
+// into unchecked. That contradicted the page, which states all three, and it
+// hid the more informative of the two: a held record is a decision, not a gap.
+// Enforcement is unaffected — the UNVERIFIED PRICE PUBLISHED check has always
+// required both fields, and held and unchecked records are equally ineligible
+// to carry a published figure. This is a reporting fix.
+export function priceStatusOf(a) {
+  if (a.priceVerifiedDate != null && a.priceSourceUrl != null) return 'verified';
+  if (a.priceHeldReason != null) return 'held';
+  return 'unchecked';
+}
+
+export function priceStatusCounts(arr) {
+  const c = { verified: 0, held: 0, unchecked: 0 };
+  for (const a of arr) c[priceStatusOf(a)]++;
+  return c;
+}
+
 // savings === monthlyCost * 12 implies savings was generated from monthlyCost
 // rather than sourced independently.
 export function savingsDerivation(arr) {
@@ -306,7 +335,7 @@ export function auditPrices({ appsPath = APPS_JSON, pagesDir = PAGES_DIR, indexa
   // pages that are actually indexable. Without it, every scanned page counts.
   const isIndexable = (file) => indexablePaths == null || indexablePaths.has(pageUrlFor(file));
 
-  const verified = arr.filter((a) => a.priceVerifiedDate != null).length;
+  const status = priceStatusCounts(arr);
 
   // 1 + 2: contradiction against the canonical record
   const buckets = { exact: 0, lt10: 0, lt50: 0, lt100: 0, over2x: 0, incomparable: 0 };
@@ -439,7 +468,7 @@ export function auditPrices({ appsPath = APPS_JSON, pagesDir = PAGES_DIR, indexa
 
   return {
     stats: {
-      records: arr.length, verified, unverified: arr.length - verified,
+      records: arr.length, status,
       savings: savingsDerivation(arr),
       claims: claims.length,
       byKind: claims.reduce((o, c) => ((o[c.kind] = (o[c.kind] || 0) + 1), o), {}),
@@ -715,7 +744,7 @@ else {
   const mode = PRICE_GUARD_ENFORCE ? 'ENFORCED' : 'REPORT-ONLY — not counted toward exit code';
 
   console.log(`\n===== PRICE GUARD (${mode}) =====`);
-  console.log(`apps.json          : ${s.records} records | verified ${s.verified} | unverified ${s.unverified}`);
+  console.log(`apps.json          : ${s.records} records | verified ${s.status.verified} | checked, not recorded ${s.status.held} | not yet checked ${s.status.unchecked}`);
   console.log(`savings derivation : ${s.savings.derived}/${s.savings.priced} priced records have savings === monthlyCost × 12 ` +
               `(${pct(s.savings.derived, s.savings.priced)}%) — indicates generated, not sourced` +
               (s.savings.nonNumeric ? ` [${s.savings.nonNumeric} non-numeric savings]` : ''));

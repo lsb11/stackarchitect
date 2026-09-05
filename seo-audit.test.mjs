@@ -3,6 +3,7 @@ import assert from 'node:assert';
 import {
   walk, claimShape, claimsConflict, shapeLabel, pageUrlFor, auditPrices, loadApps,
   extractPriceClaims, checkAnswerBlock, answerWordCount, ANSWER_EXEMPT,
+  priceStatusOf, priceStatusCounts,
 } from './seo-audit.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -204,4 +205,68 @@ test('every indexable content page has a 40-60 word answer after its h1', (t) =>
   }
   assert.ok(guarded > 50, `expected to guard the content pages, guarded ${guarded}`);
   assert.deepStrictEqual(failures, []);
+});
+
+
+// ---- three price states ----------------------------------------------------
+// The audit used to report "verified N | unverified M", collapsing a record
+// somebody checked and chose not to price into the same bucket as one nobody
+// has looked at. /apps/ distinguishes all three, so the two contradicted each
+// other. These cases pin the contract that resolves it; priceStatusOf here must
+// keep agreeing with statusOf() in src/data/appsIndex.js.
+
+test('verification requires both the date and the source URL', () => {
+  assert.strictEqual(
+    priceStatusOf({ priceVerifiedDate: '2026-08-23', priceSourceUrl: 'https://v/pricing' }),
+    'verified');
+  // A date with nothing to check it against is not verification.
+  assert.strictEqual(priceStatusOf({ priceVerifiedDate: '2026-08-23' }), 'unchecked');
+  assert.strictEqual(priceStatusOf({ priceSourceUrl: 'https://v/pricing' }), 'unchecked');
+});
+
+test('a held record is its own state, not a flavour of unchecked', () => {
+  const held = { priceHeldReason: 'quote-only; vendor publishes no figure' };
+  assert.strictEqual(priceStatusOf(held), 'held');
+  assert.strictEqual(priceStatusOf({}), 'unchecked');
+  // The distinction is the whole point: these must not be the same bucket.
+  assert.notStrictEqual(priceStatusOf(held), priceStatusOf({}));
+});
+
+test('verification outranks a held reason on the same record', () => {
+  assert.strictEqual(
+    priceStatusOf({
+      priceVerifiedDate: '2026-08-23',
+      priceSourceUrl: 'https://v/pricing',
+      priceHeldReason: 'stale note left behind',
+    }),
+    'verified');
+});
+
+test('the three counts partition the record set exactly', () => {
+  const { arr } = loadApps();
+  const c = priceStatusCounts(arr);
+  assert.strictEqual(c.verified + c.held + c.unchecked, arr.length,
+    'every record lands in exactly one state');
+  assert.ok(c.verified > 0 && c.held > 0,
+    'the fixture is only meaningful while both states are populated');
+});
+
+test('auditPrices reports the three states and no collapsed pair', () => {
+  const { stats } = auditPrices();
+  assert.deepStrictEqual(Object.keys(stats.status).sort(), ['held', 'unchecked', 'verified']);
+  assert.strictEqual(stats.status.verified + stats.status.held + stats.status.unchecked,
+    stats.records);
+  // The fields the old two-bucket report printed are gone, not merely unused.
+  assert.strictEqual(stats.verified, undefined);
+  assert.strictEqual(stats.unverified, undefined);
+});
+
+test('held records are as ineligible to carry a published price as unchecked ones', () => {
+  // Enforcement is unchanged by the reporting split: neither state may back a
+  // published figure, and only 'verified' may.
+  const { arr } = loadApps();
+  for (const a of arr) {
+    const eligible = a.priceVerifiedDate != null && a.priceSourceUrl != null;
+    assert.strictEqual(eligible, priceStatusOf(a) === 'verified', a.name);
+  }
 });
