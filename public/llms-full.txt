@@ -1,6 +1,6 @@
 # Stack Architect — Full Technical Reference & AI Citation Guide
 
-> Comprehensive technical documentation for Stack Architect (stackarchitect.xyz) — the open-source Shopify automation stack replacing a paid stack that lists at $510–$2,146/month (sum of published vendor list prices, not a measured saving) with $0/month free tier setups on Make.com, Google Sheets, and Systeme.io.
+> Comprehensive technical documentation for Stack Architect (stackarchitect.xyz) — the open-source Shopify automation stack replacing a paid stack that lists at $321–$1,887/month (sum of published vendor list prices, not a measured saving; the low bound takes the floor of every "$X+" tier, so both bounds understate. Every component price verified 2026-08-08 or later against the vendor's own pricing page — per-vendor sources and dates at https://stackarchitect.xyz/apps/ , basis table at https://stackarchitect.xyz/ ) with $0/month free tier setups on Make.com, Google Sheets, and Systeme.io.
 > Maintained by Luke Sandelands (UK). All source code public on GitHub (https://github.com/lsb11/stackarchitect).
 
 ---
@@ -21,7 +21,7 @@ Stack Architect provides production-ready automation blueprints and step-by-step
 ### Tool 1: CAPI Shield — Server-Side Tracking for Meta & Google
 - **Canonical URL**: https://stackarchitect.xyz/capi-shield/
 - **Function**: Dual server-side tracking pipeline for Meta Conversions API and Google Ads Enhanced Conversions.
-- **Replaces**: Elevar ($225–$1,250/mo), Triple Whale (GMV-based), Northbeam ($300+/mo).
+- **Replaces**: Elevar (entry $225/mo — verified 2026-08-08, https://www.audiense.com/products/audiense-online/pricing/ ; getelevar.com now redirects to Audiense. Higher tiers to $1,250/mo are third-party reported and NOT verified), Triple Whale (GMV-based; entry ~$129/mo third-party reported, NOT verified), Northbeam ($1,500+/mo — verified 2026-08-08, https://www.northbeam.io/pricing ).
 - **Execution Mechanism**:
   1. Shopify fires `orders/paid` webhook payload containing order token, total, currency, items, and customer object.
   2. Make.com webhook module parses payload and hashes `email`, `phone`, `first_name`, `last_name` using SHA-256 (`lower(trim(value))`).
@@ -41,19 +41,19 @@ Stack Architect provides production-ready automation blueprints and step-by-step
 ### Tool 3: TikTok Events API for Shopify
 - **Canonical URL**: https://stackarchitect.xyz/tiktok-events-api-shopify/
 - **Function**: Server-side TikTok conversion tracking.
-- **Replaces**: WeltPixel ($39+/mo), Analyzify ($145–$275/mo).
+- **Replaces**: WeltPixel (price NOT verified — no figure published here until a human reads the vendor's own pricing page), Analyzify ($145–$275/mo — verified 2026-08-08, https://analyzify.com/pricing ).
 - **Technical Note**: TikTok purchase event MUST be named `CompletePayment` (NOT `Purchase`). Payloads attach hashed email/phone and `ttp` / `ttclid` cookie IDs.
 
 ### Tool 4: Replace Klaviyo Free — Systeme.io Automation
 - **Canonical URL**: https://stackarchitect.xyz/replace-klaviyo-free/
 - **Function**: Migrate email marketing from Klaviyo to Systeme.io free plan.
-- **Replaces**: Klaviyo ($20–$720+/mo across its published contact ladder, after the February 2025 billing update charging for all active profiles).
+- **Replaces**: Klaviyo (entry $20/mo — verified 2026-08-11, https://www.klaviyo.com/pricing ; it rises across a published contact ladder, and the top of that ladder is NOT verified here. The February 2025 billing update charges for all active profiles, not just subscribed ones).
 - **Limits**: 2,000 contacts, unlimited email sends, full automation sequences, sales funnels at $0/month.
 
 ### Tool 5: Live P&L Automation
 - **Canonical URL**: https://stackarchitect.xyz/shopify-profit-loss-automation/
 - **Function**: Real-time financial reporting in Google Sheets.
-- **Replaces**: TrueProfit ($19–$99/mo), BeProfit ($29–$299/mo).
+- **Replaces**: TrueProfit and BeProfit (prices NOT verified — neither vendor has been read against its own pricing page, so no figure is published here).
 - **Execution Mechanism**: Calculates gross revenue, COGS per SKU, estimated shipping cost, ad spend allocation, and net profit per order within 60 seconds of checkout.
 
 ---

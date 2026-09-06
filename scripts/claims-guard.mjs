@@ -172,6 +172,102 @@ function lineOf(source, index) {
   return source.slice(0, index).split('\n').length;
 }
 
+/**
+ * SEVENTH CHECK — public/llms.txt and public/llms-full.txt.
+ *
+ * These two files are written expressly to be quoted verbatim by AI systems,
+ * which makes an unsourced price in them worse than the same price on a page:
+ * a model repeats it without the surrounding hedge. They were the only content
+ * on the site outside the verification regime.
+ *
+ * They were NOT, as an audit claimed, skipped wholesale. contentFiles() already
+ * walks public/, so checkCanonical() has always guarded them — claims.json's
+ * stockLogPrice._scope says so explicitly. The gap was the ratchet, scan(),
+ * which reads src/pages/*.astro and src/content/blog/*.md and nothing else.
+ *
+ * WHY NOT JUST ADD THEM TO scan()
+ * The ratchet's proof-of-verification is a `verifiedDate` — a <Base> prop, or
+ * a frontmatter key. These files have neither, and cannot: they are plain text
+ * served to models, with no component and no frontmatter. Both would fail on
+ * sight with no route to ever clearing them.
+ *
+ * A per-file date would be the wrong instrument anyway. One date covering eight
+ * vendors' prices asserts eight checks that did not happen — the "lie with a
+ * timestamp" this file's header warns about, in its most concentrated form.
+ *
+ * So the rule here is per-claim: every third-party price must carry a source
+ * and the date it was read, on its own line. That also makes true a promise
+ * llms.txt already prints in its own header — "Pricing claims carry a
+ * verification date and a source link where verified; unverified figures are
+ * labelled as such" — which was false in the same file that made it.
+ *
+ * There is no quarantine for this check. A quarantine is for outstanding work
+ * across many files; two files with nine claims between them is not a backlog,
+ * and quarantining them would have failed the build on the intermediate commit
+ * anyway (rule 3 fails an entry that has since lost its claims).
+ */
+const LLM_FILES = ['public/llms.txt', 'public/llms-full.txt'];
+
+/** "verified 2026-08-08" — the date a human read the vendor's own page. */
+const VERIFIED_DATE = /\bverified\s+(20\d\d-[01]\d-[0-3]\d)\b/i;
+/** A bare domain or URL on the same line, as the source that date refers to. */
+const SOURCE_URL = /https?:\/\/[^\s)]+|\b[a-z0-9-]+(?:\.[a-z0-9-]+)+\/[^\s)]*/i;
+/** An explicit refusal to publish a figure, which needs no source. */
+const NOT_VERIFIED = /\bNOT verified\b/;
+
+function checkLlmClaims() {
+  const problems = [];
+
+  for (const rel of LLM_FILES) {
+    const full = path.join(ROOT, rel);
+    if (!fs.existsSync(full)) continue;
+    const src = fs.readFileSync(full, 'utf8');
+
+    for (const m of src.matchAll(PRICE)) {
+      const price = m[0].trim();
+      if (OURS.test(price)) continue;
+
+      // Provenance is judged per LINE, not per file: these are prose files
+      // where one line names one vendor.
+      const start = src.lastIndexOf('\n', m.index) + 1;
+      const endRaw = src.indexOf('\n', m.index);
+      const end = endRaw === -1 ? src.length : endRaw;
+      const line = src.slice(start, end);
+
+      // A wrapped paragraph puts the source on a following line. Widen to the
+      // blank-line-delimited block before failing, so the check does not force
+      // these files to stop wrapping.
+      let scope = line;
+      if (!(VERIFIED_DATE.test(scope) && SOURCE_URL.test(scope))) {
+        let bStart = src.lastIndexOf('\n\n', m.index);
+        bStart = bStart === -1 ? 0 : bStart + 2;
+        let bEnd = src.indexOf('\n\n', m.index);
+        bEnd = bEnd === -1 ? src.length : bEnd;
+        scope = src.slice(bStart, bEnd);
+      }
+
+      if (NOT_VERIFIED.test(scope)) continue;
+      const hasDate = VERIFIED_DATE.test(scope);
+      const hasSource = SOURCE_URL.test(scope);
+      if (hasDate && hasSource) continue;
+
+      problems.push({
+        file: rel,
+        line: lineOf(src, m.index),
+        price,
+        why: !hasDate && !hasSource
+          ? 'no source and no verification date'
+          : !hasDate
+            ? 'has a source but no "verified YYYY-MM-DD"'
+            : 'has a verification date but no source URL',
+        excerpt: line.trim().slice(0, 110),
+      });
+    }
+  }
+
+  return problems;
+}
+
 function checkCanonical() {
   const problems = [];
   const entries = [
@@ -581,6 +677,27 @@ if (listMode) {
 }
 
 let failed = false;
+
+const llmClaims = checkLlmClaims();
+if (llmClaims.length) {
+  failed = true;
+  console.error(
+    '\n✗ claims-guard: unsourced third-party price in a file written to be quoted by AI\n'
+  );
+  for (const c of llmClaims) {
+    console.error(`  ${c.file}:${c.line}`);
+    console.error(`    ${c.price} — ${c.why}`);
+    console.error(`    …${c.excerpt}…`);
+  }
+  console.error(
+    '\n  These two files are quoted verbatim by models, so every third-party\n' +
+      '  price needs its provenance inline. Put a source URL and the date you\n' +
+      '  read it on the same line: "$225/mo — verified 2026-08-08,\n' +
+      '  https://vendor.example/pricing". If nobody has read the vendor page,\n' +
+      '  drop the figure and write "price NOT verified" instead. Do not stamp\n' +
+      '  a date you did not check.\n'
+  );
+}
 
 const contradictions = checkCanonical();
 if (contradictions.length) {
