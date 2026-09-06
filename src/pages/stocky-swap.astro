@@ -293,7 +293,7 @@ const jsonLd = {
         {
           "@type": "Question",
           name: "When does Shopify Stocky shut down?",
-          acceptedAnswer: { "@type": "Answer", text: "Shopify Stocky shuts down permanently on August 31, 2026. Shopify removed Stocky from the App Store on February 2, 2026. After the shutdown date, the app stops functioning and Stocky's purchase order history, supplier records, stocktake data, and demand forecasts are permanently deleted. Your Shopify Admin inventory levels are not affected — only data stored inside the Stocky app." }
+          acceptedAnswer: { "@type": "Answer", text: "Shopify Stocky became unusable on August 31, 2026 — you can no longer use it to manage inventory. Shopify removed Stocky from the App Store on February 2, 2026. Two things happened on the shutdown date and they are not the same: Stocky's APIs stopped dead with no grace period, breaking every third-party integration instantly, while read-only access to export your purchase order history, supplier records, stocktake data and demand forecasts continues for at least 90 days after that date. Shopify has published no deletion date. Your Shopify Admin inventory levels are not affected — only data stored inside the Stocky app. Source: help.shopify.com/en/manual/products/inventory/transitioning-from-stocky, read 5 September 2026." }
         },
         {
           "@type": "Question",
@@ -1188,7 +1188,7 @@ const tocHeadings = [
 <div class="urgency-banner" role="alert" aria-label="Stocky shutdown countdown">
   <span class="dot-red" aria-hidden="true"></span>
   <strong>STOCKY — END OF SERVICE AUG 31, 2026</strong>
-  — <span id="stocky-countdown">calculating…</span> —
+  — <span id="stocky-countdown">{shutdownPassed ? "service ended" : "counting down"}</span> —
   replace it free
   <span class="dot-red" aria-hidden="true"></span>
 </div>
@@ -1238,7 +1238,7 @@ const tocHeadings = [
       </h1>
 
       <p id="answer">{shutdownPassed
-        ? "Stocky Swap is the free replacement for Shopify Stocky, which shut down on August 31, 2026. It's a public Make.com scenario that logs every order to a Google Sheet you own — order tracking, not full inventory management. It starts logging from your next order and cannot recover data Shopify already deleted."
+        ? "Stocky Swap is the free replacement for Shopify Stocky, which became unusable on August 31, 2026. It's a public Make.com scenario that logs every order to a Google Sheet you own — order tracking, not full inventory management. It logs forward only; export your Stocky archive yourself, read-only for at least 90 days."
         : "Stocky Swap is the free replacement for Shopify Stocky, which shuts down on August 31, 2026. It's a public Make.com scenario that logs every order to a Google Sheet you own — order tracking, not full inventory management. It starts logging from your next order, so switch it on before the shutdown."}</p>
 
       {/* The scenario cannot be cloned without a Make.com account, so the
@@ -1270,28 +1270,38 @@ const tocHeadings = [
           below the fold — the countdown under two paragraphs, the video under
           everything. */}
       <aside class="hero-urgency">
-        <div class="countdown-strip" id="cd-strip-post" aria-label="Stocky end of service" hidden>
-          <div class="countdown-label">⚠ Stocky — end of service</div>
-          <div style="font-family:var(--mono);font-size:var(--fs-xl);font-weight:700;letter-spacing:-.03em;color:var(--text);">31 August 2026</div>
-        </div>
-        <div class="countdown-strip" id="cd-strip" aria-label="Time remaining until Stocky shuts down">
-          <div class="countdown-label" id="cd-strip-label">⚠ Stocky shuts down in</div>
-          <div class="countdown-nums">
-            <div class="cd-unit"><div class="cd-val" id="cd-days">--</div><div class="cd-l">days</div></div>
-            <div class="cd-sep">:</div>
-            <div class="cd-unit"><div class="cd-val" id="cd-hours">--</div><div class="cd-l">hrs</div></div>
-            <div class="cd-sep">:</div>
-            <div class="cd-unit"><div class="cd-val" id="cd-mins">--</div><div class="cd-l">min</div></div>
-            <div class="cd-sep">:</div>
-            <div class="cd-unit"><div class="cd-val" id="cd-secs">--</div><div class="cd-l">sec</div></div>
+        {/* One strip, chosen at BUILD time. This used to ship both — the
+            countdown visible with "--" in every slot and the post-shutdown
+            panel `hidden` — and swap them in a setInterval. A crawler that
+            renders no JS saw "Stocky shuts down in -- days" forever. The
+            trade-off is the one stockyDeadline.ts documents: a static build
+            does not re-evaluate itself, so this is correct for the date it
+            was built on. */}
+        {shutdownPassed ? (
+          <div class="countdown-strip" id="cd-strip-post" aria-label="Stocky end of service">
+            <div class="countdown-label">⚠ Stocky — end of service</div>
+            <div style="font-family:var(--mono);font-size:var(--fs-xl);font-weight:700;letter-spacing:-.03em;color:var(--text);">31 August 2026</div>
           </div>
-        </div>
+        ) : (
+          <div class="countdown-strip" id="cd-strip" aria-label="Time remaining until Stocky shuts down">
+            <div class="countdown-label" id="cd-strip-label">⚠ Stocky shuts down in</div>
+            <div class="countdown-nums">
+              <div class="cd-unit"><div class="cd-val" id="cd-days">--</div><div class="cd-l">days</div></div>
+              <div class="cd-sep">:</div>
+              <div class="cd-unit"><div class="cd-val" id="cd-hours">--</div><div class="cd-l">hrs</div></div>
+              <div class="cd-sep">:</div>
+              <div class="cd-unit"><div class="cd-val" id="cd-mins">--</div><div class="cd-l">min</div></div>
+              <div class="cd-sep">:</div>
+              <div class="cd-unit"><div class="cd-val" id="cd-secs">--</div><div class="cd-l">sec</div></div>
+            </div>
+          </div>
+        )}
 
         <p class="hero-sub">
           {shutdownPassed ? (
-            <>Your supplier records and stocktake history went with the app — there was no export button waiting, and there is no recovery path. <strong>What matters now is that every order from today forward lands somewhere you own.</strong></>
+            <>Stocky is read-only, not closed: Shopify says export access to your supplier records and stocktake history continues for at least 90 days past 31 August. <strong>Export that archive today, and get every order from now on landing somewhere you own.</strong></>
           ) : (
-            <>When the deadline passes, your supplier records and stocktake history go with it — there is no export button waiting for you. <strong>Whatever has not been moved out by then is gone for good.</strong></>
+            <>When the deadline passes you can no longer <em>use</em> Stocky, and its APIs stop dead — but read-only export access continues for at least 90 days. <strong>Export the archive, and make sure new orders have somewhere to go.</strong></>
           )}
         </p>
       </aside>
@@ -1389,7 +1399,7 @@ const tocHeadings = [
       </div>
 
       <p>
-        On <strong>February 2, 2026</strong>, Shopify removed Stocky from the App Store. On <strong>{SHUTDOWN_DATE}</strong>, Stocky stops working entirely — purchase orders, supplier records, stocktake history, and demand forecasts are deleted. Your Shopify Admin inventory levels survive (those live in Shopify, not in Stocky), but everything that lived inside the Stocky app is gone.
+        On <strong>February 2, 2026</strong>, Shopify removed Stocky from the App Store. On <strong>{SHUTDOWN_DATE}</strong>, Stocky stopped being usable for inventory management, and <strong>Stocky's APIs stopped at the same moment with no grace period</strong> — every third-party tool wired into them broke that day. Your archive is on a different clock: Shopify says read-only access to export purchase orders, supplier records, stocktake history and demand forecasts continues for <strong>at least 90 days</strong> after the shutdown, with no deletion date published. Your Shopify Admin inventory levels were never affected — those live in Shopify, not in Stocky. (<a href="https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky" rel="nofollow">Shopify, "Transitioning from Stocky"</a>, read 5 September 2026.)
       </p>
 
       <p>
@@ -1411,8 +1421,8 @@ const tocHeadings = [
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="m10 11 4 4M14 11l-4 4"/></svg>
           </span>
           <div>
-            <div class="split-title">{shutdownPassed ? "Deleted on 31 August" : "Deleted on 31 August"}</div>
-            <div class="split-note">Lived inside the Stocky app. No export button, no recovery.</div>
+            <div class="split-title">Export-only since 31 August</div>
+            <div class="split-note">Lives inside the Stocky app. Read-only for at least 90 days past the shutdown — export it yourself, nothing migrates.</div>
           </div>
         </div>
         <ul class="split-list">
@@ -1445,14 +1455,14 @@ const tocHeadings = [
       </div>
       <figcaption id="split-cap" class="split-cap">
         {shutdownPassed
-          ? "If you did not export before the deadline, the left column is gone and no tool can bring it back — including this one. The right column was never at risk. Stocky Swap rebuilds forward history from the moment you switch it on."
-          : "The left column is what you have days to export. The right column was never at risk. Stocky Swap does not migrate the left column — it makes sure the right column keeps growing after 31 August."}
+          ? "If you did not export before the deadline, go and look now — the left column is very likely still readable, because Shopify's read-only export window runs for at least 90 days past 31 August. No tool can pull it out for you, including this one. The right column was never at risk. Stocky Swap builds forward history from the moment you switch it on."
+          : "The left column is what you export yourself, from inside Stocky. The right column was never at risk. Stocky Swap does not migrate the left column — it makes sure the right column keeps growing after 31 August."}
       </figcaption>
     </figure>
 
       <div class="callout warn">
         <div class="callout-label">⚠ Time-sensitive</div>
-        <p>Stocky's export functions may be restricted before the official shutdown date. <a href="/blog/shopify-stocky-data-export-before-shutdown/">Export your Stocky data now</a> while every function still works — see the <a href="/blog/shopify-stocky-data-export-before-shutdown/">step-by-step export guide</a> — and set up Stocky Swap in parallel so you're verified before September 1.</p>
+        <p>Shopify states the read-only export window as "at least 90 days" after 31 August 2026 — a floor with no published end date, which is a reason to move rather than to count. <a href="/blog/shopify-stocky-data-export-before-shutdown/">Export your Stocky data now</a> — see the <a href="/blog/shopify-stocky-data-export-before-shutdown/">step-by-step export guide</a> — and set up Stocky Swap in parallel.</p>
       </div>
     </div>
   </section>
@@ -1511,7 +1521,7 @@ const tocHeadings = [
           <div class="timeline-date">August 31, 2026</div>
           <div class="timeline-title">Stocky shuts down</div>
           <div class="timeline-desc">
-            App stops working. Stocky data is permanently deleted. Stocky Swap continues running unchanged. Your Google Sheet keeps logging every new order. You don't lift a finger that day — that's the entire point of doing this in May rather than August.
+            App stops working and Stocky's APIs stop dead — anything integrated with them breaks that day. Data moves to read-only export access, which Shopify says lasts at least 90 days. Stocky Swap continues running unchanged. Your Google Sheet keeps logging every new order. You don't lift a finger that day — that's the entire point of doing this in May rather than August.
           </div>
         </div>
       </div>
@@ -2105,7 +2115,7 @@ const tocHeadings = [
         </div>
         <div class="glossary-item">
           <div class="glossary-term">Stocky shutdown</div>
-          <p class="glossary-def">Shopify's permanent retirement of the Stocky app on {SHUTDOWN_DATE}. App stops working; data is deleted. <a href="/stocky-shutdown/">Full timeline →</a></p>
+          <p class="glossary-def">Shopify's permanent retirement of the Stocky app on {SHUTDOWN_DATE}. App and APIs stop; data stays exportable read-only for at least 90 days. <a href="/stocky-shutdown/">Full timeline →</a></p>
         </div>
         <div class="glossary-item">
           <div class="glossary-term">CAPI</div>
@@ -2127,7 +2137,7 @@ const tocHeadings = [
         <a href="/stocky-shutdown/" class="crosslink-card">
           <div class="crosslink-tag">↳ Background</div>
           <div class="crosslink-name">Shopify Stocky Shutdown — what happens August 31</div>
-          <div class="crosslink-desc">The full shutdown timeline, what data gets deleted, and what survives in Shopify Admin.</div>
+          <div class="crosslink-desc">The full shutdown timeline, what is stranded behind the read-only export window, and what survives in Shopify Admin.</div>
           <div class="crosslink-arrow">Read the timeline →</div>
         </a>
 
@@ -2189,7 +2199,7 @@ const tocHeadings = [
         <details class="faq-item-s">
           <summary>When does Shopify Stocky shut down? <span class="faq-ico" aria-hidden="true"></span></summary>
           <div class="faq-ans-s">
-            <p>Shopify Stocky shuts down permanently on <strong>{SHUTDOWN_DATE}</strong>. Shopify removed Stocky from the App Store on February 2, 2026. After the shutdown, the app stops working and Stocky's purchase order history, supplier records, stocktake data, and demand forecasts are permanently deleted. <a href="/stocky-shutdown/">Read the full shutdown timeline →</a></p>
+            <p>Shopify Stocky became unusable on <strong>{SHUTDOWN_DATE}</strong>; Shopify removed it from the App Store on February 2, 2026. Two separate things happened on the shutdown date. Stocky's <strong>APIs stopped dead, with no grace period</strong>, so any third-party integration broke instantly. Your <strong>purchase order history, supplier records, stocktake data and demand forecasts remain exportable read-only for at least 90 days</strong> after that date — Shopify has published no deletion date. <a href="/stocky-shutdown/">Read the full shutdown timeline →</a></p>
           </div>
         </details>
 
@@ -2343,7 +2353,7 @@ const tocHeadings = [
   { title: "How to export Stocky data while the app still opens", href: "/blog/shopify-stocky-data-export-before-shutdown/" },
   { title: "Stocky Migration Checklist", href: "/stocky-alternative/" },
   { title: "Stocky Alternative 2026 — Free Replacement", href: "/stocky-alternative/" },
-  { title: "Stocky Shutdown — What Gets Deleted Aug 31", href: "/stocky-shutdown/" },
+  { title: "Stocky Shutdown — What Stopped on Aug 31", href: "/stocky-shutdown/" },
   { title: "What Replaces Stocky After August 2026?", href: "/stocky-alternative/" },
   { title: "Live Shopify P&L Automation — Free", href: "/shopify-profit-loss-automation/" },
 ]} />
@@ -2375,6 +2385,12 @@ const tocHeadings = [
   </div>
 
 
+{/* The live countdown ships only while there is something to count down to.
+    Past the deadline the banner text and the end-of-service strip are both
+    rendered at build time above, so this script would have nothing to do but
+    write the same strings again — and shipping it meant a no-JS crawler saw
+    the pre-deadline markup it was supposed to correct. */}
+{!shutdownPassed && (
 <script is:inline>
   (function() {
     var deadline = new Date('2026-08-31T23:59:59Z').getTime();
@@ -2383,17 +2399,13 @@ const tocHeadings = [
     function tick() {
       var now = Date.now();
       var diff = deadline - now;
-      // Past the deadline: state it plainly and relabel the strip, rather than
-      // leaving "Stocky shuts down in" above a row of zeros.
+      // The date passed while this tab was open. Say so and stop; the built
+      // markup for the other side of the date comes from the next deploy.
       if (diff <= 0) {
-        var banner = document.getElementById('stocky-countdown');
-        if (banner) banner.textContent = 'service ended';
+        var b = document.getElementById('stocky-countdown');
+        if (b) b.textContent = 'service ended';
         var strip = document.getElementById('cd-strip');
-        var stripPost = document.getElementById('cd-strip-post');
         if (strip) strip.hidden = true;
-        if (stripPost) stripPost.hidden = false;
-        var stickyDays = document.getElementById('sticky-days');
-        if (stickyDays) stickyDays.textContent = '0';
         return;
       }
       var d = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -2404,15 +2416,20 @@ const tocHeadings = [
       var setEl = function(id, val) { var el = document.getElementById(id); if (el) el.textContent = pad(val); };
       setEl('cd-days', d); setEl('cd-hours', h); setEl('cd-mins', m); setEl('cd-secs', s);
 
-      var stickyDays = document.getElementById('sticky-days');
-      if (stickyDays) stickyDays.textContent = d;
+      // There is no #sticky-days element on this page and there never was;
+      // the two writes that targeted it here were a dead branch.
 
       var banner = document.getElementById('stocky-countdown');
       if (banner) banner.textContent = d + 'd ' + pad(h) + 'h ' + pad(m) + 'm';
     }
     tick();
     setInterval(tick, 1000);
+  })();
+</script>
+)}
 
+<script is:inline>
+  (function() {
     // Sticky CTA — show after 50% scroll OR 30 seconds, whichever first
     var stickyCta = document.getElementById('stickyCta');
     var stickyClose = document.getElementById('stickyCtaClose');

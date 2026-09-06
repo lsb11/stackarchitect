@@ -202,7 +202,7 @@ const graphSchema = {
   <!-- ═══════ THE MATRIX — the citable artefact ═══════ -->
   <div class="sec-mark" id="matrix">01 &mdash; The matrix: who is eligible for what</div>
   <div class="prose">
-    <h2>Eligibility and capability, per channel</h2>
+    <h2 id="eligibility-and-capability-per-channel">Eligibility and capability, per channel</h2>
     <p>Eligibility is not one rule. It stacks two independent conditions &mdash; where your store is based, and where you sell &mdash; and they differ by channel. A merchant in Manchester is eligible for three of the four channels and, for the fourth, eligible to appear but not to take checkout from most of their customers. That is genuinely hard to work out from Shopify&rsquo;s documentation, because it is spread across four pages.</p>
     <p>Every cell below is sourced. The linked page is Shopify&rsquo;s, not ours.</p>
   </div>
@@ -252,7 +252,7 @@ const graphSchema = {
   <!-- ═══════ LIMITS ═══════ -->
   <div class="sec-mark" id="limits">02 &mdash; What breaks, and only where</div>
   <div class="prose">
-    <h2>Direct-checkout restrictions</h2>
+    <h2 id="direct-checkout-restrictions">Direct-checkout restrictions</h2>
     <p>These apply to {directChannels.map((c) => c.name).join(', ')}. They do not apply to ChatGPT.</p>
   </div>
 
@@ -287,7 +287,7 @@ const graphSchema = {
   <!-- ═══════ ATTRIBUTION ═══════ -->
   <div class="sec-mark" id="attribution">03 &mdash; The attribution gap, and what to do about it</div>
   <div class="prose">
-    <h2>Your agentic orders will look like they came from nowhere</h2>
+    <h2 id="your-agentic-orders-will-look-like-they-came-from-nowhere">Your agentic orders will look like they came from nowhere</h2>
     <p>This is the limitation with real money attached, and it is the one every competing guide quotes without operationalising. Shopify states it plainly:</p>
   </div>
 
@@ -299,7 +299,7 @@ const graphSchema = {
   <div class="prose">
     <p>Read carefully, that means an order placed inside Google AI Mode, Copilot or Meta AI reaches your Shopify admin correctly &mdash; revenue is not lost &mdash; but arrives in GA4 and in Meta Ads Manager with no client-side event behind it. Only two server-to-server events fire: <code>started</code> and <code>completed</code>.</p>
     <p>If you buy ads and measure return on ad spend from browser pixels, the consequence is specific: the AI channels will appear to convert at zero while quietly taking revenue, and the campaigns that fed them will be under-credited. Optimisation algorithms fed under-reported conversions bid down. You are not just missing a number in a dashboard; you are training your ad accounts on a false signal.</p>
-    <h3>What actually closes it</h3>
+    <h3 id="what-actually-closes-it">What actually closes it</h3>
     <ul>
       <li><strong>Shopify&rsquo;s native Customer events pixels</strong> fire server-side and will capture agentic orders once configured under <strong>Settings &rarr; Customer events</strong>. This is the baseline and it costs nothing.</li>
       <li><strong>Meta Conversions API</strong> needs to be sending Purchase events server-side rather than relying on the browser pixel. Our free <a href="/capi-shield/">CAPI Shield</a> build does this through a Make.com webhook.</li>
@@ -310,7 +310,7 @@ const graphSchema = {
 
   <div class="inline-cta green">
     <div class="ict-text">
-      <h4>Close the gap before you enable the channels</h4>
+      <h4 id="close-the-gap-before-you-enable-the-channels">Close the gap before you enable the channels</h4>
       <p>CAPI Shield is free server-side tracking for Meta and Google, built on Make.com&rsquo;s free tier. Roughly an hour to deploy, and it is the difference between attributed and invisible agentic revenue.</p>
     </div>
     <a href="/capi-shield/" class="btn btn-g">Deploy CAPI Shield &mdash; free &rarr;</a>
@@ -319,7 +319,7 @@ const graphSchema = {
   <!-- ═══════ SETUP ═══════ -->
   <div class="sec-mark" id="setup">04 &mdash; Setup, in the order that avoids rework</div>
   <div class="prose">
-    <h2>How to set up Shopify Agentic Storefronts</h2>
+    <h2 id="how-to-set-up-shopify-agentic-storefronts">How to set up Shopify Agentic Storefronts</h2>
     <p>Around 45 minutes if your catalog is already clean, longer if product descriptions need work. Agentic storefronts are active by default for eligible stores, so step one is often confirmation rather than activation.</p>
   </div>
 
@@ -377,40 +377,40 @@ const graphSchema = {
   <!-- ═══════ KNOWLEDGE BASE ═══════ -->
   <div class="sec-mark" id="knowledge-base">05 &mdash; The Knowledge Base app</div>
   <div class="prose">
-    <h2>What to actually write in the Knowledge Base</h2>
+    <h2 id="what-to-actually-write-in-the-knowledge-base">What to actually write in the Knowledge Base</h2>
     <div class="vbox green">
       <strong>It is free.</strong> {kb.priceNote} Published by Shopify on {prettyDate(kb.launched)}: <a href={kb.source} target="_blank" rel="noopener">App Store listing &#8599;</a>
     </div>
     <p>Shopify describes it precisely: &ldquo;{kb.quote}&rdquo; Nothing you write appears on your storefront. It exists solely to be read by machines &mdash; which makes it the only place you get to speak directly to the model that will paraphrase you to a customer.</p>
-    <h3>FAQs &mdash; 15 to 20, written for the purchase decision</h3>
+    <h3 id="faqs-15-to-20-written-for-the-purchase-decision">FAQs &mdash; 15 to 20, written for the purchase decision</h3>
     <p>Cover shipping times and costs, the return process in specifics rather than generalities, sizing and fit, materials and care, warranty, and what actually differentiates you. Write plainly. AI assistants paraphrase, and marketing tone survives paraphrasing badly &mdash; clarity survives it well.</p>
-    <h3>The customer-friendly version of your returns policy</h3>
+    <h3 id="the-customer-friendly-version-of-your-returns-policy">The customer-friendly version of your returns policy</h3>
     <p>Your policies page is a legal document. This entry should be what the process actually involves: how long a refund takes, what &ldquo;free returns&rdquo; means in practice, the exceptions. This is what gets cited when a shopper asks whether you are safe to buy from.</p>
-    <h3>Brand voice, and compliance language</h3>
+    <h3 id="brand-voice-and-compliance-language">Brand voice, and compliance language</h3>
     <p>Specify tone, phrases to use or avoid, and how to describe your core benefits. For supplements, medical devices or anything regulated this stops being a branding exercise: paraphrasing by an AI assistant can produce claims you are not allowed to make, and this is where you constrain that.</p>
-    <h3>Shipping and fulfilment specifics</h3>
+    <h3 id="shipping-and-fulfilment-specifics">Shipping and fulfilment specifics</h3>
     <p>Processing times, carriers, tracked versus untracked, delivery estimates by region, international availability, and what happens when an order is late. &ldquo;3&ndash;5 business days&rdquo; is usable. &ldquo;Fast shipping&rdquo; is not.</p>
   </div>
 
   <!-- ═══════ PRODUCT DATA ═══════ -->
   <div class="sec-mark" id="product-data">06 &mdash; Product data for AI discovery</div>
   <div class="prose">
-    <h2>Writing product data an assistant can match</h2>
+    <h2 id="writing-product-data-an-assistant-can-match">Writing product data an assistant can match</h2>
     <p>AI assistants interpret intent rather than matching keywords, and they answer with whichever product they can most confidently describe. Thin data does not rank badly &mdash; it fails to be selected at all, because the model has nothing to say about it.</p>
-    <h3>Titles</h3>
+    <h3 id="titles">Titles</h3>
     <p><strong>Brand + product type + key differentiator + size or variant.</strong> Sixty to eighty characters. Use the words customers say out loud, not internal SKU language.</p>
-    <h3>Descriptions</h3>
+    <h3 id="descriptions">Descriptions</h3>
     <p>Two hundred words minimum. What it is in a plain first sentence, materials and specifications, who it is for and in what situation, how it compares to the obvious alternatives, care, and any certification. Short paragraphs and lists parse more reliably than dense prose.</p>
-    <h3>Variants and stock</h3>
+    <h3 id="variants-and-stock">Variants and stock</h3>
     <p>Assistants will not recommend what shows as out of stock. Five colours and eight sizes means forty defined combinations with real counts &mdash; &ldquo;multiple options available&rdquo; is invisible to a model trying to answer &ldquo;do they have it in a 10?&rdquo;.</p>
-    <h3>Metafields</h3>
+    <h3 id="metafields">Metafields</h3>
     <p>Material composition, care instructions, suitability, country of manufacture, certifications, compatible products. Metafields answer the specific question your description did not anticipate.</p>
   </div>
 
   <!-- ═══════ TIMELINE ═══════ -->
   <div class="sec-mark" id="timeline">07 &mdash; How this feature got here</div>
   <div class="prose">
-    <h2>Timeline</h2>
+    <h2 id="timeline">Timeline</h2>
     <p>Useful mainly for dating other people&rsquo;s advice: if a guide describes in-conversation ChatGPT checkout, it was written against the arrangement that ended on 24 March 2026.</p>
   </div>
   <ol class="tl">
@@ -425,7 +425,7 @@ const graphSchema = {
   <!-- ═══════ NOT ELIGIBLE ═══════ -->
   <div class="sec-mark" id="not-eligible">08 &mdash; Not eligible yet</div>
   <div class="prose">
-    <h2>Four things worth doing before you qualify</h2>
+    <h2 id="four-things-worth-doing-before-you-qualify">Four things worth doing before you qualify</h2>
     <p>Discovery is already happening. AI assistants crawl the web and read Shopify Catalog regardless of your agentic settings &mdash; the feature adds checkout, not visibility. Everything below improves how you are described today, whether or not you can switch a channel on.</p>
   </div>
 
@@ -456,7 +456,7 @@ const graphSchema = {
 
   <div class="inline-cta">
     <div class="ict-text">
-      <h4>Everything here runs on one free Make.com account</h4>
+      <h4 id="everything-here-runs-on-one-free-makecom-account">Everything here runs on one free Make.com account</h4>
       <p>Server-side tracking, inventory logging and live P&amp;L all come off a single Shopify order webhook. The free plan covers 1,000 credits a month, with no card.</p>
     </div>
     <a href="/go/make/?source=shopify-agentic-storefronts-setup-guide--agentic-mid" class="btn btn-p" target="_blank" rel="noopener sponsored" data-cta-position="agentic-mid">Start free on Make.com &rarr; <span class="aff-mark">affiliate</span></a>
@@ -464,7 +464,7 @@ const graphSchema = {
 
   <!-- ═══════ FAQ ═══════ -->
   <div class="sec-mark" id="faq">FAQ &mdash; {FAQ.length} questions</div>
-  <div class="prose"><h2>Shopify Agentic Storefronts &mdash; questions merchants actually ask</h2></div>
+  <div class="prose"><h2 id="shopify-agentic-storefronts-questions-merchants-actually-ask">Shopify Agentic Storefronts &mdash; questions merchants actually ask</h2></div>
   <div class="faq-list">
     {FAQ.map((item) => (
       <details class="faq-item">

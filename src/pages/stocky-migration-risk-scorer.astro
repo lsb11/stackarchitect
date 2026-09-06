@@ -4,7 +4,52 @@ import Disclosure from '../components/Disclosure.astro';
 import StockLogPromo from '../components/StockLogPromo.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 
-const schemas = [{"@context":"https://schema.org","@type":"WebApplication","name":"Stocky Migration Risk Scorer","url":"https://stackarchitect.xyz/stocky-migration-risk-scorer/","description":"Assess your risk of disruption when migrating away from Shopify Stocky before its August 2026 shutdown. Get a personalised migration plan and timeline in 60 seconds.","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{ "@id": "https://stackarchitect.xyz/#org" }},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"When is Shopify Stocky shutting down?","acceptedAnswer":{"@type":"Answer","text":"Shopify is shutting down the Stocky app on 31 August 2026. After that date, all Stocky data will be deleted and the app will no longer function. Any Shopify store still using Stocky for inventory management after this date will lose access to their historical inventory data."}},{"@type":"Question","name":"What is the best free Stocky replacement in 2026?","acceptedAnswer":{"@type":"Answer","text":"Stocky Swap at stackarchitect.xyz/stocky-swap. It routes every Shopify order through a Make.com webhook to a Google Sheets inventory ledger in real time — stock levels, fulfilment status, order history, and low-stock alerts. Free forever, no app fee, deploys in 4 minutes."}},{"@type":"Question","name":"How long does it take to migrate from Stocky?","acceptedAnswer":{"@type":"Answer","text":"Most stores can migrate in 4–8 hours of active work spread over 1–2 days. The Stocky Swap setup itself takes 4 minutes. The additional time is for exporting your historical Stocky data, mapping SKUs to your new Google Sheets template, and testing the live webhook before going live."}},{"@type":"Question","name":"Will I lose my Stocky historical data if I wait?","acceptedAnswer":{"@type":"Answer","text":"Yes. Shopify has confirmed all Stocky data will be deleted after 31 August 2026. You must export your purchase orders, inventory levels, and supplier data before that date using Stocky's export function. Once deleted, this data cannot be recovered."}},{"@type":"Question","name":"Can I use Google Sheets as a full Stocky replacement?","acceptedAnswer":{"@type":"Answer","text":"For the majority of Shopify stores, yes. Stocky Swap gives you real-time order logging, current stock levels, and fulfilment tracking in Google Sheets. What it does not replicate is Stocky's purchase order creation workflow — for complex multi-supplier operations with frequent POs, you may want to evaluate Shopify's native purchase orders feature alongside the free stack."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://stackarchitect.xyz/tools/"},{"@type":"ListItem","position":3,"name":"Stocky Migration Risk Scorer","item":"https://stackarchitect.xyz/stocky-migration-risk-scorer/"}]}];
+const schemas = [{"@context":"https://schema.org","@type":"WebApplication","name":"Stocky Migration Risk Scorer","url":"https://stackarchitect.xyz/stocky-migration-risk-scorer/","description":"Assess your risk of disruption in moving off Shopify Stocky after its 31 August 2026 shutdown. Get a personalised migration plan and timeline in 60 seconds.","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{ "@id": "https://stackarchitect.xyz/#org" }},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"When is Shopify Stocky shutting down?","acceptedAnswer":{"@type":"Answer","text":"Shopify shut the Stocky app down on 31 August 2026 — it can no longer be used to manage inventory. Two things happened that day and they are not the same. Stocky's APIs stopped dead, with no grace period, so every third-party tool wired into them broke instantly. Read-only access to export your data continues for at least 90 days after that date, and Shopify has published no deletion date. Source: help.shopify.com/en/manual/products/inventory/transitioning-from-stocky, read 5 September 2026."}},{"@type":"Question","name":"What is the best free Stocky replacement in 2026?","acceptedAnswer":{"@type":"Answer","text":"Stocky Swap at stackarchitect.xyz/stocky-swap. It routes every Shopify order through a Make.com webhook to a Google Sheets inventory ledger in real time — stock levels, fulfilment status, order history, and low-stock alerts. Free forever, no app fee, deploys in 4 minutes."}},{"@type":"Question","name":"How long does it take to migrate from Stocky?","acceptedAnswer":{"@type":"Answer","text":"Most stores can migrate in 4–8 hours of active work spread over 1–2 days. The Stocky Swap setup itself takes 4 minutes. The additional time is for exporting your historical Stocky data, mapping SKUs to your new Google Sheets template, and testing the live webhook before going live."}},{"@type":"Question","name":"Can I still get my Stocky historical data out?","acceptedAnswer":{"@type":"Answer","text":"Probably, if you go now. Shopify says read-only access to export Stocky data continues for at least 90 days after 31 August 2026, so open Stocky and export your purchase orders, inventory levels and supplier data using its export function. \"At least 90 days\" is a floor Shopify stated, not an end date it published, so it is not something to plan around. Source: help.shopify.com/en/manual/products/inventory/transitioning-from-stocky, read 5 September 2026."}},{"@type":"Question","name":"Can I use Google Sheets as a full Stocky replacement?","acceptedAnswer":{"@type":"Answer","text":"For the majority of Shopify stores, yes. Stocky Swap gives you real-time order logging, current stock levels, and fulfilment tracking in Google Sheets. What it does not replicate is Stocky's purchase order creation workflow — for complex multi-supplier operations with frequent POs, you may want to evaluate Shopify's native purchase orders feature alongside the free stack."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://stackarchitect.xyz/tools/"},{"@type":"ListItem","position":3,"name":"Stocky Migration Risk Scorer","item":"https://stackarchitect.xyz/stocky-migration-risk-scorer/"}]}];
+
+// ── SCORING MODEL — one definition, used twice ────────────────────────────
+// The result panel used to ship empty ("--" in every cell) and fill itself in
+// on load, so a crawler that runs no JS saw a calculator with no output. Every
+// other calculator on the site server-renders a worked example; this one was
+// the sole outlier. The bands and the default answers now live here and are
+// handed to the inline script via define:vars, so the example rendered at build
+// time and the number the visitor gets cannot drift apart.
+const SCORE_WEIGHTS = { orders: 1 / 50, skus: 1 / 30, manual: 3, suppliers: 2, pos: 4, backup: 3 };
+
+// `max` is an exclusive upper bound; the last band's 101 catches the capped 100.
+const SCORE_BANDS = [
+  { max: 25, level: 'Low Risk', color: '#34d377', leadWeeks: 2, timeEst: '2–4 hrs',
+    insight: '<strong>Simple migration.</strong> Your store is a good candidate for a quick Stocky Swap setup. Export your Stocky data while the read-only window is open, then follow the 4-minute setup guide. Run both systems in parallel for 2 weeks before switching fully.' },
+  { max: 50, level: 'Moderate Risk', color: '#f5b64d', leadWeeks: 4, timeEst: '4–8 hrs',
+    insight: '<strong>Plan your migration carefully.</strong> Export all Stocky data first. Map your SKUs to the new template before going live. Allow at least 4 weeks of parallel running to catch edge cases.' },
+  { max: 75, level: 'High Risk', color: '#fb923c', leadWeeks: 6, timeEst: '1–3 days',
+    insight: '<strong>Start immediately.</strong> Your inventory complexity means migration will take time to do correctly. Export Stocky data today. For high-volume operations, consider upgrading Make.com to the Core plan and Google Workspace to avoid rate limits.' },
+  { max: 101, level: 'Critical Risk', color: '#f87171', leadWeeks: 8, timeEst: '3–5 days',
+    insight: '<strong>Urgent action required.</strong> Your scale and complexity put you at high risk of operational disruption if migration is rushed. Export all Stocky data today. Consider professional support for the transition given the operational dependency.' },
+];
+
+// The `selected` option value of each field, so the worked example below is
+// literally the form's own default state rather than a second set of numbers.
+const SCORE_DEFAULTS = { orders: 300, skus: 100, manual: 2, suppliers: 3, pos: 3, backup: 3 };
+
+function scoreOf(a: Record<string, number>) {
+  return Math.min(100, Math.round(
+    a.orders * SCORE_WEIGHTS.orders + a.skus * SCORE_WEIGHTS.skus +
+    a.manual * SCORE_WEIGHTS.manual + a.suppliers * SCORE_WEIGHTS.suppliers +
+    a.pos * SCORE_WEIGHTS.pos + a.backup * SCORE_WEIGHTS.backup
+  ));
+}
+
+import { isPostShutdown } from '../utils/stockyDeadline';
+const postShutdown = isPostShutdown();
+
+const exampleScore = scoreOf(SCORE_DEFAULTS);
+const exampleBand = SCORE_BANDS.find(b => exampleScore < b.max)!;
+
+// Post-shutdown there is no "latest safe start date" left to compute — the
+// meaningful figure is the export window Shopify actually stated.
+const exampleTimeline = postShutdown ? 'Export now' : 'See below';
+const POST_SHUTDOWN_NOTE =
+  '<strong>Stocky stopped working on 31 August 2026, and its APIs stopped that day with no grace period</strong> — anything that integrated with them is already broken and needs repointing at Shopify\'s own inventory data. Your archive is a separate matter: Shopify says read-only export access continues for at least 90 days after that date, with no end date published. Export it before you rebuild, and read the score above as how much reconstruction is left if you cannot. ';
 
 const breadcrumb = [
   { label: 'Home', href: '/' },
@@ -223,21 +268,21 @@ const tocHeadings = [
           <div class="result-grid">
             <div class="result-cell">
               <div class="result-label">Risk Score</div>
-              <div class="result-value" id="sr-score">--</div>
-              <div class="result-sub" id="sr-level">--</div>
+              <div class="result-value" id="sr-score" style={`color:${exampleBand.color}`}>{exampleScore}/100</div>
+              <div class="result-sub" id="sr-level">{exampleBand.level}</div>
             </div>
             <div class="result-cell">
               <div class="result-label">Recommended Migration</div>
-              <div class="result-value" style="font-size:22px;" id="sr-timeline">--</div>
-              <div class="result-sub">Latest safe start date</div>
+              <div class="result-value" style="font-size:22px;" id="sr-timeline">{exampleTimeline}</div>
+              <div class="result-sub">{postShutdown ? "Read-only export window is open" : "Latest safe start date"}</div>
             </div>
             <div class="result-cell">
               <div class="result-label">Est. Setup Time</div>
-              <div class="result-value" style="font-size:22px;" id="sr-time">--</div>
+              <div class="result-value" style="font-size:22px;" id="sr-time">{exampleBand.timeEst}</div>
               <div class="result-sub">Active work hours</div>
             </div>
           </div>
-          <div class="result-insight" id="sr-insight"></div>
+          <div class="result-insight" id="sr-insight" set:html={(postShutdown ? POST_SHUTDOWN_NOTE : '') + exampleBand.insight}></div>
           <p style="font-size:12px;color:#93a09a;line-height:1.7;margin-top:16px;border-top:1px solid #222825;padding-top:14px;">
             <strong style="color:#b6c0ba;">How this is scored.</strong> The risk score is this tool's own
             heuristic: six weighted inputs — monthly orders, active SKUs, manual stock edits, suppliers,
@@ -266,9 +311,9 @@ const tocHeadings = [
 
   <section class="editorial">
     <div class="editorial-inner">
-      <h2 id="why-you-cannot-wait-until-july-2026">Why You Cannot Wait Until July 2026</h2>
-      <p>Shopify announced the Stocky shutdown with a specific deletion date: <strong>31 August 2026</strong>. All purchase orders, inventory history, supplier data, and stock levels stored in Stocky will be permanently deleted after this date with no recovery option. The practical consequence is that stores with complex inventory data need to export everything before migration — not after. For the complete deadline breakdown and what gets deleted, see the <a href="/stocky-shutdown/">full Stocky shutdown timeline</a>.</p>
-      <p>The migration risk is not just technical. Stores that migrate under time pressure are more likely to make configuration errors, skip data validation, or go live without adequate testing. Starting at least 60–90 days before the deadline gives you time to run the new system in parallel with Stocky before switching over completely.</p>
+      <h2 id="why-you-cannot-wait-until-july-2026">Why the Clock Did Not Stop on 31 August</h2>
+      <p>Shopify shut Stocky down on <strong>31 August 2026</strong>, and the single most useful thing to know is that the shutdown had two halves running on different clocks. <strong>Stocky's APIs stopped dead that day, with no grace period</strong> — so if your reordering, dashboards or spreadsheets pulled from Stocky's API, they broke instantly and need repointing at Shopify's own inventory data. Your <strong>archive</strong> did not go with them: Shopify says <strong>read-only access to export your data continues for at least 90 days</strong> after the shutdown date. That is a floor Shopify stated, not an end date it published, so it cannot be turned into a deadline on your calendar and should not be treated as time in hand. Export first, migrate second. For the complete timeline, see the <a href="/stocky-shutdown/">full Stocky shutdown record</a>. (<a href="https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky" rel="nofollow">Shopify, "Transitioning from Stocky"</a>, read 5 September 2026.)</p>
+      <p>The migration risk is not just technical. Stores that migrate under time pressure are more likely to make configuration errors, skip data validation, or go live without adequate testing. The score below ranks how much of that pressure your store is carrying.</p>
 
       <h2 id="what-stocky-swap-replaces">What Stocky Swap Replaces</h2>
       <p>The free <a href="/stocky-swap/">Stocky Swap</a> replacement covers the core inventory functions most Shopify stores use daily:</p>
@@ -296,7 +341,7 @@ const tocHeadings = [
     <details class="faq-item">
       <summary><span>When is Shopify Stocky shutting down?</span><span class="faq-arrow">▼</span></summary>
       <div class="faq-answer">
-        <p>Shopify is shutting down the Stocky app on 31 August 2026. After that date, all Stocky data will be deleted and the app will no longer function. Any Shopify store still using Stocky for inventory management after this date will lose access to their historical inventory data.</p>
+        <p>Shopify shut the Stocky app down on <strong>31 August 2026</strong> — it can no longer be used to manage inventory. Two things happened that day and they are not the same. Stocky's <strong>APIs stopped dead, with no grace period</strong>, so every third-party tool wired into them broke instantly. <strong>Read-only access to export your data continues for at least 90 days</strong> after that date, and Shopify has published no deletion date. (<a href="https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky" rel="nofollow">Shopify, "Transitioning from Stocky"</a>, read 5 September 2026.)</p>
       </div>
     </details>
     <details class="faq-item">
@@ -312,9 +357,9 @@ const tocHeadings = [
       </div>
     </details>
     <details class="faq-item">
-      <summary><span>Will I lose my Stocky historical data if I wait?</span><span class="faq-arrow">▼</span></summary>
+      <summary><span>Can I still get my Stocky historical data out?</span><span class="faq-arrow">▼</span></summary>
       <div class="faq-answer">
-        <p>Yes. Shopify has confirmed all Stocky data will be deleted after 31 August 2026. You must export your purchase orders, inventory levels, and supplier data before that date using Stocky's export function. Once deleted, this data cannot be recovered.</p>
+        <p>Probably, if you go now. Shopify says read-only access to export Stocky data continues for <strong>at least 90 days</strong> after 31 August 2026 — so open Stocky and export your purchase orders, inventory levels and supplier data using its export function. "At least 90 days" is a floor Shopify stated, not an end date it published, which is a reason to move today rather than a window to plan inside.</p>
       </div>
     </details>
     <details class="faq-item">
@@ -347,7 +392,7 @@ const tocHeadings = [
   </div>
 </Base>
 
-<script is:inline>
+<script is:inline define:vars={{ SCORE_WEIGHTS, SCORE_BANDS, postShutdown, POST_SHUTDOWN_NOTE }}>
   // Reading progress bar
   const bar = document.getElementById('reading-progress');
   if (bar) {
@@ -359,43 +404,35 @@ const tocHeadings = [
 
 
   function calcStocky() {
-    const orders = parseInt(document.getElementById('sr-orders').value);
-    const skus = parseInt(document.getElementById('sr-skus').value);
-    const manual = parseInt(document.getElementById('sr-manual').value);
-    const suppliers = parseInt(document.getElementById('sr-suppliers').value);
-    const pos = parseInt(document.getElementById('sr-pos').value);
-    const backup = parseInt(document.getElementById('sr-backup').value);
+    const a = {
+      orders: parseInt(document.getElementById('sr-orders').value),
+      skus: parseInt(document.getElementById('sr-skus').value),
+      manual: parseInt(document.getElementById('sr-manual').value),
+      suppliers: parseInt(document.getElementById('sr-suppliers').value),
+      pos: parseInt(document.getElementById('sr-pos').value),
+      backup: parseInt(document.getElementById('sr-backup').value)
+    };
 
-    // Six coefficients, stated rather than sourced: this is a weighting we chose
-    // to rank stores against each other, not a measured model of migration
-    // outcomes. See the note under the panel.
-    const score = Math.min(100, Math.round((orders/50 + skus/30 + manual*3 + suppliers*2 + pos*4 + backup*3)));
-    let level, color, leadWeeks, timeEst, insight;
+    // Weights and bands come from the frontmatter via define:vars, so this and
+    // the worked example rendered at build time cannot disagree.
+    const score = Math.min(100, Math.round(
+      a.orders * SCORE_WEIGHTS.orders + a.skus * SCORE_WEIGHTS.skus +
+      a.manual * SCORE_WEIGHTS.manual + a.suppliers * SCORE_WEIGHTS.suppliers +
+      a.pos * SCORE_WEIGHTS.pos + a.backup * SCORE_WEIGHTS.backup
+    ));
+    const band = SCORE_BANDS.find(function (b) { return score < b.max; }) ||
+                 SCORE_BANDS[SCORE_BANDS.length - 1];
 
-    if (score < 25) {
-      level = 'Low Risk'; color = '#34d377'; leadWeeks = 2; timeEst = '2–4 hrs';
-      insight = '<strong>Simple migration.</strong> Your store is a good candidate for a quick Stocky Swap setup. Export your Stocky data as a backup, then follow the 4-minute setup guide. Run both systems in parallel for 2 weeks before switching fully.';
-    } else if (score < 50) {
-      level = 'Moderate Risk'; color = '#f5b64d'; leadWeeks = 4; timeEst = '4–8 hrs';
-      insight = '<strong>Plan your migration carefully.</strong> Export all Stocky data first. Map your SKUs to the new template before going live. Allow at least 4 weeks of parallel running to catch edge cases.';
-    } else if (score < 75) {
-      level = 'High Risk'; color = '#fb923c'; leadWeeks = 6; timeEst = '1–3 days';
-      insight = '<strong>Start immediately.</strong> Your inventory complexity means migration will take time to do correctly. Export Stocky data today. For high-volume operations, consider upgrading Make.com to the Core plan and Google Workspace to avoid rate limits.';
-    } else {
-      level = 'Critical Risk'; color = '#f87171'; leadWeeks = 8; timeEst = '3–5 days';
-      insight = '<strong>Urgent action required.</strong> Your scale and complexity put you at high risk of operational disruption if migration is rushed. Export all Stocky data today. Consider professional support for the transition given the operational dependency.';
-    }
-
-    // The latest safe start date is derived from the published deletion date
-    // minus the parallel-run window the band implies — never a typed month,
-    // which is what left this cell reading "Before June 2026" long after June.
-    const DELETION = new Date('2026-08-31T23:59:59Z');
+    // The latest safe start date is derived from the shutdown date minus the
+    // parallel-run window the band implies — never a typed month, which is what
+    // left this cell reading "Before June 2026" long after June.
+    const SHUTDOWN = new Date('2026-08-31T23:59:59Z');
     const now = new Date();
-    const latestStart = new Date(DELETION.getTime() - leadWeeks * 7 * 86400000);
-    let timeline;
-    if (now > DELETION) {
-      timeline = 'Deadline passed';
-      insight = '<strong>Stocky\'s deletion date of 31 August 2026 has passed.</strong> Anything still held only inside Stocky is beyond export. Stand the replacement ledger up from your Shopify order history, which is unaffected, and treat the risk score above as a measure of how much reconstruction that will take. ' + insight;
+    const latestStart = new Date(SHUTDOWN.getTime() - band.leadWeeks * 7 * 86400000);
+    let timeline, insight = band.insight;
+    if (now > SHUTDOWN) {
+      timeline = 'Export now';
+      insight = POST_SHUTDOWN_NOTE + insight;
     } else if (now > latestStart) {
       timeline = 'Overdue';
     } else {
@@ -403,10 +440,10 @@ const tocHeadings = [
     }
 
     document.getElementById('sr-score').textContent = score + '/100';
-    document.getElementById('sr-score').style.color = color;
-    document.getElementById('sr-level').textContent = level;
+    document.getElementById('sr-score').style.color = band.color;
+    document.getElementById('sr-level').textContent = band.level;
     document.getElementById('sr-timeline').textContent = timeline;
-    document.getElementById('sr-time').textContent = timeEst;
+    document.getElementById('sr-time').textContent = band.timeEst;
     document.getElementById('sr-insight').innerHTML = insight;
     document.getElementById('sr-result').classList.add('show');
   }
@@ -425,6 +462,8 @@ const tocHeadings = [
         if (st) { st.textContent = 'Your answers'; st.classList.add('live'); }
       });
     });
-    try { calcStocky(); } catch (e) {}
+    // No calcStocky() on load: the panel already holds the worked example,
+    // rendered at build time from the same weights and bands. Recalculating it
+    // here would only overwrite identical values.
   })();
 </script>

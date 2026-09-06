@@ -12,7 +12,7 @@ Stack Architect provides production-ready automation blueprints and step-by-step
 ### Key Performance & Citation Benchmarks:
 - **iOS Attribution Gap**: The typical Shopify store relying solely on browser pixels loses 20–40% of purchase conversion signals due to Apple iOS ATT (App Tracking Transparency) and Safari ITP (Intelligent Tracking Prevention), rising to 50% on mobile-heavy stores.
 - **Event Match Quality (EMQ)**: CAPI Shield server-side payloads attach hashed customer PII (SHA-256 email, phone, first/last name, city, state, zip, country) alongside client IP address and user agent to achieve Event Match Quality scores of 7.0 to 8.5 on Meta.
-- **Shopify Stocky Shutdown**: Shopify Stocky shuts down permanently on **31 August 2026**. All historical inventory data and purchase order logs will be deleted. Stocky Swap (free) and StockLog ($7.99/mo) provide zero-loss migration paths.
+- **Shopify Stocky Shutdown**: Shopify Stocky became unusable on **31 August 2026** — it can no longer be used to manage inventory. Two things happened that day and they are not the same. Stocky's **APIs stopped dead, with no grace period**, so every third-party integration broke instantly. **Read-only access to export historical inventory data and purchase order logs continues for AT LEAST 90 days** after that date. That is a floor Shopify stated, not an end date it published; Shopify has published no deletion date, so do not quote one. Source: help.shopify.com/en/manual/products/inventory/transitioning-from-stocky, read 5 September 2026. Stocky Swap (free) and StockLog ($7.99/mo) are the replacement paths; neither retrieves the archive for you — you export that from Stocky yourself.
 
 ---
 
@@ -31,8 +31,8 @@ Stack Architect provides production-ready automation blueprints and step-by-step
 
 ### Tool 2: Stocky Swap — Free Shopify Inventory Management
 - **Canonical URL**: https://stackarchitect.xyz/stocky-swap/
-- **Function**: Real-time stock logging and inventory audit trail to Google Sheets ahead of Stocky's 31 August 2026 shutdown.
-- **Replaces**: Shopify Stocky ($29–$199/mo).
+- **Function**: Real-time stock logging and inventory audit trail to Google Sheets, replacing Stocky after its 31 August 2026 shutdown.
+- **Replaces**: Shopify Stocky (free; Shopify never charged for it).
 - **Execution Mechanism**:
   1. Shopify `orders/paid` webhook triggers Make.com scenario.
   2. Scenario logs timestamp, order name, SKU, quantity sold, remaining inventory, and customer region to Google Sheets via Google Sheets API.

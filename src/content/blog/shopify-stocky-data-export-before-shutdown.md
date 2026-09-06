@@ -1,8 +1,8 @@
 ---
 title: "Shopify Stocky Data Export Before the Shutdown"
 heading: "Shopify Stocky Data Export — What to Save Before the August 31, 2026 Shutdown"
-description: "Shopify Stocky's end of service was 31 August 2026. What Stocky holds, how to export it while the app still opens, and what is recoverable if it does not."
-answer: "Shopify set 31 August 2026 as Stocky's end of service. Every purchase order, stocktake, transfer and supplier record held inside the app is deleted rather than migrated. Your Shopify inventory levels are safe, because they live in Shopify Admin rather than in Stocky. Anything Stocky owns has to be exported by hand while the app still opens."
+description: "Shopify Stocky's end of service was 31 August 2026, but read-only export access continues for at least 90 days. What Stocky holds, how to get it out, and what is recoverable if the app will not open."
+answer: "Shopify set 31 August 2026 as Stocky's end of service, and nothing inside the app was migrated to Shopify Admin. Shopify says read-only export access continues for at least 90 days, so purchase orders, stocktakes and supplier records may still be retrievable. Stocky's APIs are the exception: they stopped dead that day."
 publishDate: "2026-04-16"
 updatedDate: "2026-04-16"
 category: "inventory"
@@ -12,17 +12,17 @@ readTime: 10
 canonical: "https://stackarchitect.xyz/blog/shopify-stocky-data-export-before-shutdown/"
 faqs:
   - question: "What data will I lose when Shopify Stocky shuts down?"
-    answer: "When Shopify Stocky shuts down on August 31, 2026, all data stored in Stocky will be permanently and irreversibly deleted. This includes: all purchase orders (supplier names, quantities ordered, costs, delivery dates), stocktake history (historical stock count records), transfer records (inventory movements between locations), demand forecasting data, and supplier contact information stored in Stocky. Shopify's own inventory levels in the Shopify Admin are not affected — only the data held specifically within the Stocky app."
+    answer: "Nothing is lost automatically on the shutdown date, and this is the distinction that decided outcomes. Stocky became unusable on August 31, 2026, and Stocky's APIs stopped dead the same day with no grace period — so any third-party tool wired into them broke instantly. The data itself moved to read-only: Shopify says export access continues for at least 90 days after that date, covering purchase orders (supplier names, quantities, costs, delivery dates), stocktake history, transfer records, demand forecasting data and supplier contacts. Shopify has published no deletion date, and \"at least 90 days\" is a floor rather than a deadline. Shopify's own inventory levels in the Shopify Admin were never affected. (Source: Shopify, \"Transitioning from Stocky\", help.shopify.com/en/manual/products/inventory/transitioning-from-stocky, read 5 September 2026.)"
   - question: "How do I export my data from Shopify Stocky before it shuts down?"
-    answer: "In Shopify Admin, open the Stocky app. Go to Purchase orders → select all purchase orders → Export as CSV. Repeat for Stocktakes → Export as CSV, and Transfers → Export as CSV. Download all exported files and save them to Google Drive or a local backup immediately. Do not wait until August — Shopify may restrict Stocky functionality before the official shutdown date."
+    answer: "In Shopify Admin, open the Stocky app. Go to Purchase orders → select all purchase orders → Export as CSV. Repeat for Stocktakes → Export as CSV, and Transfers → Export as CSV. Download all exported files and save them to Google Drive or a local backup immediately. Read-only export access continues for at least 90 days after August 31, 2026, but Shopify has not published the date it ends, so do it in the session you are reading this."
   - question: "Does Shopify Stocky data export include supplier information?"
-    answer: "Yes, but incompletely. Stocky's purchase order exports include supplier names and order details. However, Stocky's supplier database (contact details, lead times, payment terms stored within Stocky) may not export fully via CSV. Before the shutdown, manually copy all supplier contact information, payment terms, and lead time data from Stocky's supplier records into a separate spreadsheet."
+    answer: "Yes, but incompletely. Stocky's purchase order exports include supplier names and order details. However, Stocky's supplier database (contact details, lead times, payment terms stored within Stocky) may not export fully via CSV. Manually copy all supplier contact information, payment terms, and lead time data from Stocky's supplier records into a separate spreadsheet while read-only access lasts."
   - question: "Will my Shopify inventory levels be deleted when Stocky shuts down?"
-    answer: "No. Shopify's native inventory levels — the stock quantities shown in Shopify Admin under Products → Inventory — are separate from Stocky data and are not affected by the shutdown. Only the data stored within the Stocky app itself (purchase orders, stocktakes, transfers, supplier records) will be permanently deleted."
+    answer: "No. Shopify's native inventory levels — the stock quantities shown in Shopify Admin under Products → Inventory — are separate from Stocky data and are not affected by the shutdown. Only the data stored within the Stocky app itself (purchase orders, stocktakes, transfers, supplier records) is stranded behind the read-only export window."
   - question: "What replaces Stocky after the August 2026 shutdown?"
-    answer: "Stocky Swap is the free replacement — a Make.com webhook that automatically logs every Shopify order to a Google Sheet you own entirely. It deploys in 4 minutes, costs $0/month, and works on every Shopify plan. Unlike Stocky, the data lives in a Google Sheet you control permanently — no vendor lock-in and no shutdown risk. The complete free inventory management system is covered in the Ultimate Guide to Shopify Inventory Management."
+    answer: "Stocky Swap is the free replacement — a Make.com webhook that automatically logs every Shopify order to a Google Sheet you own entirely. It deploys in 4 minutes, costs $0/month, and works on every Shopify plan. It logs forward from the moment you switch it on; it does not pull your Stocky archive out, which you export from Stocky yourself. Unlike Stocky, the data lives in a Google Sheet you control permanently — no vendor lock-in and no shutdown risk. The complete free inventory management system is covered in the Ultimate Guide to Shopify Inventory Management."
   - question: "Is the Shopify Stocky shutdown confirmed or is it a rumour?"
-    answer: "The shutdown is confirmed and official. Shopify removed Stocky from the App Store on February 2, 2026. The August 31, 2026 shutdown date has been officially communicated by Shopify. After this date, the app will stop functioning and all data will be permanently deleted. There is no indication Shopify will extend this deadline."
+    answer: "The shutdown is confirmed and official, and it has happened. Shopify removed Stocky from the App Store on February 2, 2026 and ended the service on August 31, 2026; the app no longer functions for inventory management and its APIs stopped that day with no grace period. Shopify's own guidance states that read-only access to export your data continues for at least 90 days after the shutdown date. (Source: Shopify, \"Transitioning from Stocky\", help.shopify.com/en/manual/products/inventory/transitioning-from-stocky, read 5 September 2026.)"
 relatedGuides:
   - title: "Stocky Swap — Free Shopify Stocky Replacement (Deploy in 4 Minutes)"
     href: "/stocky-swap"
@@ -35,24 +35,26 @@ relatedGuides:
     href: "/blog/shopify-automation-stack-for-small-stores"
 ---
 
-Shopify set August 31, 2026 as Stocky's end of service. Every purchase order, stocktake record, transfer history and supplier detail stored in Stocky is permanently and irreversibly deleted rather than migrated to Shopify Admin. [Shopify removed Stocky from the App Store on February 2, 2026](https://apps.shopify.com/stocky) — the August 31 shutdown date is confirmed and official.
+Shopify set August 31, 2026 as Stocky's end of service, and nothing held inside the app was migrated to Shopify Admin. [Shopify removed Stocky from the App Store on February 2, 2026](https://apps.shopify.com/stocky) — the August 31 date is confirmed and it has passed.
 
-Your Shopify inventory levels are safe — they live in Shopify Admin, not in Stocky. But years of purchase order history, stocktake records, supplier contacts and demand data exist only inside Stocky, and once the app stops there is no recovery route back into it.
+What happened on that date came in two halves, and almost everything written about the shutdown collapses them into one. **Stocky's APIs stopped dead on August 31 with no grace period** — any third-party tool, dashboard or automation reading from them broke that day rather than degrading. **Your data did not go with them.** Shopify's own transition guidance says read-only access to export it continues for **at least 90 days** after the shutdown date. That is a floor Shopify stated, not an end date it published, so it cannot be turned into a deadline on your calendar — and it is a reason to export today, not a reason to relax. ([Shopify, "Transitioning from Stocky"](https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky), read 5 September 2026.)
+
+Your Shopify inventory levels are safe — they live in Shopify Admin, not in Stocky. But years of purchase order history, stocktake records, supplier contacts and demand data exist only inside Stocky.
 
 This guide tells you exactly what to export, how to export it, and what to do with the data afterwards.
 
-## What Data Stocky Holds — and What Gets Deleted
+## What Data Stocky Holds — and What Is Stranded
 
 First, understand the distinction between Shopify-owned data and Stocky-owned data. They are stored separately.
 
-**Data that lives in Shopify Admin (NOT deleted by Stocky shutdown):**
+**Data that lives in Shopify Admin (never affected by the Stocky shutdown):**
 - Current inventory levels per variant per location
 - Product details, SKUs, barcodes
 - Order history in Shopify
 - Customer records
 - Shopify Analytics reports
 
-**Data that lives in Stocky (PERMANENTLY DELETED August 31, 2026):**
+**Data that lives in Stocky (export-only since August 31, 2026 — at least 90 days, end date unpublished):**
 
 - **Purchase orders:** Every purchase order you've created in Stocky — supplier name, products ordered, quantities, unit costs, expected delivery dates, received quantities, outstanding balances. This is your entire supplier procurement history.
 - **Stocktake records:** All historical stock counts you've recorded in Stocky. If you've been using Stocky to document periodic inventory counts, this history disappears entirely.
@@ -62,7 +64,7 @@ First, understand the distinction between Shopify-owned data and Stocky-owned da
 
 ## How to Export Your Stocky Data — Step by Step
 
-Do this in the session you are reading this, if Stocky still opens for you. Shopify restricted functionality in stages ahead of the end-of-service date, so export features can become unavailable before the app itself does.
+Do this in the session you are reading this. Stocky is read-only now rather than closed, and read-only is enough to export — Shopify puts that window at "at least 90 days" past August 31, 2026 without naming the day it shuts.
 
 ### Export 1 — Purchase Orders
 
@@ -115,7 +117,7 @@ If you have entered cost prices (COGS) into Stocky, verify these are also reflec
 
 **In Shopify Admin:** Products → select a product → Cost per item field.
 
-Stocky and Shopify sync cost prices in most cases, but verify your top 20–30 SKUs by value have accurate costs in Shopify Admin before August 31. This matters for your P&L reporting going forward.
+Stocky and Shopify sync cost prices in most cases, but verify your top 20–30 SKUs by value have accurate costs in Shopify Admin. This matters for your P&L reporting going forward.
 
 ## What to Do With Your Exported Data
 
@@ -173,7 +175,7 @@ For stores where these advanced features are essential, paid alternatives worth 
 
 ## If you only do one thing
 
-Shopify set **31 August 2026** as Stocky's end of service. The test that matters is not what today's date is — it is whether Stocky still opens in your admin, because stores that uninstalled after the 2 February 2026 delisting could not reinstall it and were on the far side of this months early.
+Shopify set **31 August 2026** as Stocky's end of service. The test that matters is not what today's date is — it is whether Stocky still opens in your admin. Read-only export access is meant to run for at least 90 days past that date, but stores that uninstalled after the 2 February 2026 delisting could not reinstall it and were on the far side of this months early.
 
 **If Stocky still opens, do this now:**
 
@@ -181,9 +183,9 @@ Shopify set **31 August 2026** as Stocky's end of service. The test that matters
 2. Export your Purchase Orders as CSV
 3. Save the file to Google Drive
 
-That single action preserves your most valuable Stocky data. Everything else — deploying a replacement, importing historical data, setting up your new workflow — can follow. The export is the only step with no recovery path.
+That single action preserves your most valuable Stocky data. Everything else — deploying a replacement, importing historical data, setting up your new workflow — can follow. The export is the only step on a clock nobody outside Shopify can see the end of.
 
-**If Stocky no longer opens,** rather more is reconstructible than most people assume: current stock levels, order history, products and customers all live in Shopify and were never at risk. The [Stocky recovery path](/stocky-alternative/) covers what survives, what is permanently gone, and the order to rebuild it in.
+**If Stocky no longer opens,** rather more is reconstructible than most people assume: current stock levels, order history, products and customers all live in Shopify and were never at risk. The [Stocky recovery path](/stocky-alternative/) covers what survives, what is genuinely gone, and the order to rebuild it in.
 
 [Deploy Stocky Swap in 4 minutes →](/stocky-swap/)
 

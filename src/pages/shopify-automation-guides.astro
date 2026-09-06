@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { isPostShutdown } from '../utils/stockyDeadline';
 import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 // src/pages/shopify-automation-guides.astro
@@ -15,6 +16,11 @@ const CANONICAL = `${SITE_URL}${PAGE_PATH}`;
 // hardcode any of them, or the three drift apart (they previously read
 // 2026-07-17, "July 2026" and "2026.06.20" respectively).
 const DATE_MODIFIED = "2026-08-08";
+
+// Build-time, not client-side: the urgency block below used to ship
+// "-- Days : -- Hours" and swap it in a setInterval, so a crawler that runs no
+// JS saw the placeholder. See src/utils/stockyDeadline.ts.
+const postShutdown = isPostShutdown();
 const UPDATED_LABEL = new Date(DATE_MODIFIED).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
 
 const seo = {
@@ -354,18 +360,25 @@ const tocHeadings = [
       <div class="gpu-left">
         <div class="gpu-icon" aria-hidden="true">⚠️</div>
         <div>
-          <div class="gpu-title">Shopify Stocky shuts down August 31, 2026 — 200,000+ merchants affected</div>
+          <div class="gpu-title">{postShutdown ? "Shopify Stocky ended 31 August 2026 — read-only export for at least 90 days" : "Shopify Stocky shuts down August 31, 2026"}</div>
           <div class="gpu-desc">The free replacement deploys in 4 minutes, before or after the date.</div>
         </div>
       </div>
-      <div class="gpu-cd" aria-label="Countdown to shutdown">
-        <div class="gpu-cd-unit"><span class="gpu-cd-val" id="cd-d">--</span><div class="gpu-cd-label">Days</div></div>
-        <div class="gpu-cd-sep" aria-hidden="true">:</div>
-        <div class="gpu-cd-unit"><span class="gpu-cd-val" id="cd-h">--</span><div class="gpu-cd-label">Hours</div></div>
-        <div class="gpu-cd-sep" aria-hidden="true">:</div>
-        <div class="gpu-cd-unit"><span class="gpu-cd-val" id="cd-m">--</span><div class="gpu-cd-label">Mins</div></div>
-        <a href="https://stackarchitect.xyz/stocky-swap/" class="btn-g" style="margin-left:14px;background:var(--amber);color:#000;">Replace Free →</a>
-      </div>
+      {postShutdown ? (
+        <div class="gpu-cd" aria-label="Stocky end of service">
+          <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--amber);">Ended 31 Aug 2026</div>
+          <a href="https://stackarchitect.xyz/stocky-alternative/" class="btn-g" style="margin-left:14px;background:var(--amber);color:#000;">What to do now →</a>
+        </div>
+      ) : (
+        <div class="gpu-cd" aria-label="Countdown to shutdown">
+          <div class="gpu-cd-unit"><span class="gpu-cd-val" id="cd-d">--</span><div class="gpu-cd-label">Days</div></div>
+          <div class="gpu-cd-sep" aria-hidden="true">:</div>
+          <div class="gpu-cd-unit"><span class="gpu-cd-val" id="cd-h">--</span><div class="gpu-cd-label">Hours</div></div>
+          <div class="gpu-cd-sep" aria-hidden="true">:</div>
+          <div class="gpu-cd-unit"><span class="gpu-cd-val" id="cd-m">--</span><div class="gpu-cd-label">Mins</div></div>
+          <a href="https://stackarchitect.xyz/stocky-swap/" class="btn-g" style="margin-left:14px;background:var(--amber);color:#000;">Replace Free →</a>
+        </div>
+      )}
     </div>
   </div>
 
@@ -577,11 +590,11 @@ const tocHeadings = [
       <div class="gpc-cta"><a href="https://stackarchitect.xyz/stocky-swap/" class="btn-g" style="background:var(--sky);color:#000;">Deploy Stocky Swap →</a></div>
     </div>
     <div class="gpc-prose">
-      <p>Shopify Stocky was removed from the App Store on February 2, 2026 and will stop functioning entirely on August 31, 2026. Any purchase order history, stocktake records, and inventory data not exported before that date will be permanently deleted. <strong>Stocky Swap automatically logs every order to a Google Sheet you own entirely</strong> — no vendor lock-in, no monthly fees, never shuts down. The Ultimate Inventory Guide extends this into a complete free inventory management system with live stock calculations, low-stock alerts, supplier tracking, and sales velocity analysis.</p>
+      <p>Shopify Stocky was removed from the App Store on February 2, 2026 and stopped functioning on August 31, 2026, taking its APIs with it that day with no grace period. Purchase order history, stocktake records and inventory data remain exportable read-only for at least 90 days after that date — Shopify has published no deletion date. <strong>Stocky Swap automatically logs every order to a Google Sheet you own entirely</strong> — no vendor lock-in, no monthly fees, never shuts down. The Ultimate Inventory Guide extends this into a complete free inventory management system with live stock calculations, low-stock alerts, supplier tracking, and sales velocity analysis.</p>
     </div>
     <nav class="gp-list" aria-label="Inventory guides">
       <a href="https://stackarchitect.xyz/stocky-alternative/" class="gp-item gpi-hl" style="background:rgba(245,182,77,.04);border-color:rgba(245,182,77,.2);">
-        <div class="gpi-left"><span class="gpi-arrow arr-sky" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Shopify Stocky Is Shutting Down August 2026 — Replace It Free Before the Deadline</div><div class="gpi-desc">Countdown, data export checklist, supplier data warning, free 4-minute replacement</div></div></div>
+        <div class="gpi-left"><span class="gpi-arrow arr-sky" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Shopify Stocky Has Shut Down — Replace It Free, and Export While You Still Can</div><div class="gpi-desc">Timeline, data export checklist, supplier data warning, free 4-minute replacement</div></div></div>
         <div class="gpi-right"><span class="gpi-pill pill-urgent">Deadline Aug 31</span><span class="gpi-time">10 min</span></div>
       </a>
       <a href="https://stackarchitect.xyz/blog/the-ultimate-guide-to-shopify-inventory-management/" class="gp-item gpi-new">
@@ -589,11 +602,11 @@ const tocHeadings = [
         <div class="gpi-right"><span class="gpi-pill pill-new">New · Complete</span><span class="gpi-time">18 min</span></div>
       </a>
       <a href="https://stackarchitect.xyz/blog/shopify-stocky-data-export-before-shutdown/" class="gp-item gpi-hl" style="background:rgba(245,182,77,.03);border-color:rgba(245,182,77,.15);">
-        <div class="gpi-left"><span class="gpi-arrow arr-sky" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Shopify Stocky Data Export — What to Save Before the August 31, 2026 Shutdown</div><div class="gpi-desc">Exactly what data gets permanently deleted, how to export purchase orders, stocktakes, and supplier records before the deadline</div></div></div>
+        <div class="gpi-left"><span class="gpi-arrow arr-sky" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Shopify Stocky Data Export — What to Save Before the August 31, 2026 Shutdown</div><div class="gpi-desc">Exactly what is stranded behind the read-only export window, and how to export purchase orders, stocktakes and supplier records now</div></div></div>
         <div class="gpi-right"><span class="gpi-pill pill-urgent">Deadline Aug 31</span><span class="gpi-time">10 min</span></div>
       </a>
       <a href="https://stackarchitect.xyz/stocky-shutdown/" class="gp-item">
-        <div class="gpi-left"><span class="gpi-arrow arr-sky" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Shopify Stocky Shutdown — What Happens on August 31, 2026</div><div class="gpi-desc">The full timeline, what data is permanently deleted, and your options before the deadline</div></div></div>
+        <div class="gpi-left"><span class="gpi-arrow arr-sky" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Shopify Stocky Shutdown — What Happens on August 31, 2026</div><div class="gpi-desc">The full timeline, what stopped versus what is still exportable, and your options now</div></div></div>
         <div class="gpi-right"><span class="gpi-pill pill-urgent">Deadline Aug 31</span><span class="gpi-time">7 min</span></div>
       </a>
       <a href="https://stackarchitect.xyz/stocky-alternative/" class="gp-item">
@@ -778,7 +791,7 @@ const tocHeadings = [
       </div>
       <div class="faq-item">
         <div class="faq-q">What replaces Shopify Stocky after it shuts down August 31 2026?</div>
-        <div class="faq-a"><strong>Stocky Swap</strong> is a free Make.com webhook that automatically logs every Shopify order to a Google Sheet you own — no vendor lock-in, no monthly fees. Deploys in 4 minutes on any Shopify plan. Shopify Stocky was removed from the App Store February 2, 2026. Any inventory data not exported before August 31 will be permanently deleted. The <a href="https://stackarchitect.xyz/blog/the-ultimate-guide-to-shopify-inventory-management/">Ultimate Inventory Guide</a> covers the complete free system including stock alerts, supplier tracking, and velocity analysis.</div>
+        <div class="faq-a"><strong>Stocky Swap</strong> is a free Make.com webhook that automatically logs every Shopify order to a Google Sheet you own — no vendor lock-in, no monthly fees. Deploys in 4 minutes on any Shopify plan. Shopify Stocky was removed from the App Store February 2, 2026 and ended service August 31; inventory data stays exportable read-only for at least 90 days after that. The <a href="https://stackarchitect.xyz/blog/the-ultimate-guide-to-shopify-inventory-management/">Ultimate Inventory Guide</a> covers the complete free system including stock alerts, supplier tracking, and velocity analysis.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q">What is the best free Klaviyo alternative for Shopify in 2026?</div>

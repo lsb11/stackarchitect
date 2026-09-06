@@ -136,7 +136,7 @@ const FAQ = [
   },
   {
     q: 'What happens to my Stocky data after the 31 August 2026 shutdown?',
-    a: "All Stocky data — purchase orders, stocktakes, transfers, supplier records, demand forecasts and SKU history — is permanently deleted after August 31, 2026 per Shopify's official shutdown notice. There is no migration path provided by Shopify. Store owners must export their data and migrate to a replacement before the deadline. <a href='/stocky-swap/'>Stocky Swap</a> is a free replacement that logs orders to Google Sheets via Make.com and deploys in 4 minutes. Score your migration complexity with the <a href='/stocky-migration-risk-scorer/'>Stocky Migration Risk Scorer</a>.",
+    a: "Stocky became unusable on August 31, 2026 and its APIs stopped dead that day, with no grace period — so any third-party tool wired into them broke instantly. Your data did not go with them: Shopify says read-only access to export purchase orders, stocktakes, transfers, supplier records, demand forecasts and SKU history continues for at least 90 days after that date, and it has published no deletion date. Shopify provides no migration path, so the export is yours to run — do it now rather than against a window whose end nobody outside Shopify knows. <a href='/stocky-swap/'>Stocky Swap</a> is a free replacement that logs orders to Google Sheets via Make.com and deploys in 4 minutes. Score your migration complexity with the <a href='/stocky-migration-risk-scorer/'>Stocky Migration Risk Scorer</a>.",
   },
   {
     q: 'How much does a typical Shopify store save with the free automation stack?',
@@ -144,7 +144,7 @@ const FAQ = [
   },
   {
     q: 'Does Shopify officially support replacing its Stocky app with third-party tools?',
-    a: "Yes. Shopify's own shutdown notice directs merchants to the Shopify App Store and third-party inventory management tools. Shopify does not provide a first-party migration path — the Stocky database will be deleted after August 31, 2026. Any tool that can ingest Shopify order webhooks can replace Stocky's core inventory tracking functionality, including free webhook-to-Sheets workflows like <a href='/stocky-swap/'>Stocky Swap</a>.",
+    a: "Yes. Shopify's own shutdown notice directs merchants to the Shopify App Store and third-party inventory management tools. Shopify does not provide a first-party migration path — Stocky's database is read-only after August 31, 2026, exportable by you for at least 90 days. Any tool that can ingest Shopify order webhooks can replace Stocky's core inventory tracking functionality, including free webhook-to-Sheets workflows like <a href='/stocky-swap/'>Stocky Swap</a>.",
   },
   {
     q: 'Why is Stack Architect free and how does it make money?',
@@ -265,7 +265,7 @@ const kitSchema = {
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "CAPI Shield — Free Server-Side Tracking", "url": "https://stackarchitect.xyz/capi-shield/", "description": "Free Meta Conversions API and Google Ads Enhanced Conversions server-side tracking for Shopify. Sends hashed email, phone, name, IP and user-agent as match keys. A free alternative to Elevar, Triple Whale and Northbeam. Addresses the conversion data lost to iOS privacy restrictions and ad blockers. Runs on Make.com free tier." },
         { "@type": "ListItem", "position": 2, "name": "Google Ads Conversion Tracking — Free Enhanced Conversions", "url": "https://stackarchitect.xyz/shopify-google-ads-conversion-tracking/", "description": "Free Google Ads Enhanced Conversions for Shopify via Make.com server-side webhook. Addresses purchase events lost to iOS Link Tracking Protection stripping gclid. A free alternative to Stape ($29+/mo) and Littledata ($159+/mo)." },
-        { "@type": "ListItem", "position": 3, "name": "Stocky Swap — Free Inventory Management", "url": "https://stackarchitect.xyz/stocky-swap/", "description": "Free Shopify inventory management replacing Shopify Stocky which is shutting down permanently on August 31, 2026. All Stocky data will be deleted. Stocky Swap logs every order to Google Sheets in real time via Make.com. Deploys in 4 minutes. Free forever." },
+        { "@type": "ListItem", "position": 3, "name": "Stocky Swap — Free Inventory Management", "url": "https://stackarchitect.xyz/stocky-swap/", "description": "Free Shopify inventory management replacing Shopify Stocky, which became unusable on August 31, 2026. Stocky data stays exportable read-only for at least 90 days after that date; Stocky's APIs stopped dead on the day. Stocky Swap logs every order to Google Sheets in real time via Make.com. Deploys in 4 minutes. Free forever." },
         { "@type": "ListItem", "position": 4, "name": "TikTok Events API — Free Server-Side Tracking", "url": "https://stackarchitect.xyz/tiktok-events-api-shopify/", "description": "Free TikTok server-side tracking for Shopify via Make.com. Sends CompletePayment events server-to-server, bypassing iOS ITP and ad blockers. A free alternative to WeltPixel ($39+/mo) and Analyzify ($145–$275/mo)." },
         { "@type": "ListItem", "position": 5, "name": "Replace Klaviyo Free — Systeme.io", "url": "https://stackarchitect.xyz/replace-klaviyo-free/", "description": "Replace Klaviyo with Systeme.io free plan: 2,000 contacts, unlimited email sends, full automation sequences, sales funnels, CRM. Saves $20+/month. Klaviyo changed billing in February 2025 to charge for all active profiles." },
         { "@type": "ListItem", "position": 6, "name": "Shopify P&L Automation", "url": "https://stackarchitect.xyz/shopify-profit-loss-automation/", "description": "Free live profit and loss reporting in Google Sheets. Every order auto-calculates revenue, COGS, ad spend, fees, and net profit within 60 seconds of payment. A free alternative to TrueProfit, BeProfit and Glew.io." },
@@ -523,12 +523,12 @@ const kitSchema = {
           <div style="margin-bottom:10px;"><span class="tag tag-sky">Inventory</span></div>
           <div class="sol-urgent-name">Stocky Swap</div>
           <div class="sol-urgent-hl">{stockyGone
-            ? "Shopify Deleted All Stocky Data on Aug 31. Here Is What Replaces It."
-            : "Shopify Permanently Deletes All Stocky Data Aug 31. Replace It Now."}</div>
+            ? "Stocky Stopped on Aug 31. Your Export Window Has Not."
+            : "Shopify Shuts Stocky Down Aug 31. Replace It Now."}</div>
           {stockyGone ? (
-            <p class="sol-urgent-desc">Stocky's purchase orders, stocktakes, transfers, supplier records and SKU history were permanently deleted after August 31, 2026, and Shopify provided no migration path. If you did not export before the deadline, that history is gone — but the ongoing tracking is replaceable today. Stocky Swap logs every new order to Google Sheets in real time via a Make.com webhook and starts building fresh inventory history the moment you deploy. Four minutes, no app install, $0. <a href="/stocky-alternative/" style="color:var(--sky)">See all Stocky alternatives →</a></p>
+            <p class="sol-urgent-desc">Stocky stopped working on August 31, 2026 and its APIs stopped dead the same day — anything integrated with them broke instantly. Your archive is on a different clock: Shopify says read-only access to export purchase orders, stocktakes, transfers, supplier records and SKU history continues for at least 90 days, with no end date published. Export it today, then replace the tracking. Stocky Swap logs every new order to Google Sheets in real time via a Make.com webhook. Four minutes, no app install, $0. <a href="/stocky-alternative/" style="color:var(--sky)">See all Stocky alternatives →</a></p>
           ) : (
-            <p class="sol-urgent-desc">Per Shopify's official shutdown notice, all Stocky data — purchase orders, stocktakes, transfers, SKU history — is permanently deleted after August 31, 2026. No migration path. Stocky Swap logs every order to Google Sheets in real time via Make.com webhook. Deploys in 4 minutes. Your data is safe the moment you deploy. <a href="/stocky-alternative/" style="color:var(--sky)">See all Stocky alternatives →</a></p>
+            <p class="sol-urgent-desc">Shopify ends Stocky on August 31, 2026: the app stops, and its APIs stop with no grace period. Read-only export access continues for at least 90 days afterwards, but Shopify provides no migration path — the export is yours to run. Stocky Swap logs every order to Google Sheets in real time via Make.com webhook. Deploys in 4 minutes. <a href="/stocky-alternative/" style="color:var(--sky)">See all Stocky alternatives →</a></p>
           )}
           <div class="sol-urgent-reps"><span class="sol-rep">Stocky</span><span class="sol-rep">Linnworks</span><span class="sol-rep">Skubana</span><span class="sol-rep">Inventory Planner</span></div>
           <div class="sol-urgent-meta"><span class="sol-urgent-save">Saves $29–$500/mo</span><span class="sol-urgent-time">~4 min setup</span></div>
@@ -1002,8 +1002,8 @@ const kitSchema = {
 
       <div class="mech-card">
         <div class="mech-num">Mechanism 02</div>
-        <p class="mech-claim-c"><strong>Shopify is permanently shutting down Stocky on August 31, 2026</strong> with no automatic data migration. All purchase orders, stocktakes, transfers, and SKU history will be deleted.</p>
-        <div class="mech-source">Source: <a href="https://help.shopify.com/en/manual/products/inventory/getting-started/transitioning-from-stocky" target="_blank" rel="noopener">Shopify Help Center — transitioning from Stocky ↗</a></div>
+        <p class="mech-claim-c"><strong>Shopify shut Stocky down on August 31, 2026</strong> with no automatic data migration, and its APIs stopped the same day with no grace period. Purchase orders, stocktakes, transfers and SKU history stay exportable read-only for at least 90 days after that date.</p>
+        <div class="mech-source">Source: <a href="https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky" target="_blank" rel="noopener">Shopify Help Center — transitioning from Stocky ↗</a></div>
       </div>
 
       <div class="mech-card">

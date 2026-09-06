@@ -463,9 +463,9 @@ const datasetSchema = {
   </ul>
 
   <div class="decision-grid">
-    <div class="decision-card"><h4>Light use</h4><p>Simple scripts under 100 rows/day usually stay inside quota with basic monitoring.</p></div>
-    <div class="decision-card"><h4>Growing use</h4><p>Once volume scales past a few hundred rows per day, batching and timing become essential.</p></div>
-    <div class="decision-card"><h4>High volume</h4><p>When the workflow is mission-critical and volume is unpredictable, shared Apps Script limits are the wrong architecture.</p></div>
+    <div class="decision-card"><h4 id="light-use">Light use</h4><p>Simple scripts under 100 rows/day usually stay inside quota with basic monitoring.</p></div>
+    <div class="decision-card"><h4 id="growing-use">Growing use</h4><p>Once volume scales past a few hundred rows per day, batching and timing become essential.</p></div>
+    <div class="decision-card"><h4 id="high-volume">High volume</h4><p>When the workflow is mission-critical and volume is unpredictable, shared Apps Script limits are the wrong architecture.</p></div>
   </div>
 
   <div class="quote">
@@ -700,14 +700,14 @@ function scheduleNextChunk_() {
 
   <div class="autocrat-section" id="autocrat">
     <p class="section-eyebrow">Autocrat &middot; Document Automation &middot; Quota Fix</p>
-    <h2>Why Autocrat Specifically Hits Quota Limits &mdash; and the Structural Fix</h2>
+    <h2 id="why-autocrat-specifically-hits-quota-limits-and-the-structural-fix">Why Autocrat Specifically Hits Quota Limits &mdash; and the Structural Fix</h2>
 
     <p>Autocrat is one of the most popular document generation tools for Google Sheets &mdash; and one of the most quota-sensitive. If you are generating contracts, invoices, certificates, or any templated document from Sheets rows, you will hit quota limits earlier than almost any other Apps Script workflow.</p>
 
-    <h3>Why Autocrat Is Quota-Intensive</h3>
+    <h3 id="why-autocrat-is-quota-intensive">Why Autocrat Is Quota-Intensive</h3>
     <p>Each Autocrat document generation triggers multiple service calls in sequence: it opens Google Drive, reads the template, creates a new document, writes merged data into it, converts to PDF if needed, saves to Drive, and optionally sends via Gmail. That is <strong>5&ndash;8 service calls per row</strong>. At 30 document service calls per minute (consumer limit), Autocrat can reliably process around 4&ndash;5 documents per minute &mdash; or roughly 25&ndash;30 in a single run before the service rate limit triggers.</p>
 
-    <h3>The Four Autocrat Quota Failure Patterns</h3>
+    <h3 id="the-four-autocrat-quota-failure-patterns">The Four Autocrat Quota Failure Patterns</h3>
     <ul>
       <li><strong>Mid-batch timeout</strong> &mdash; a run of 100+ rows hits the 6-minute ceiling. Documents for rows 1&ndash;40 generate correctly; rows 41&ndash;100 are skipped silently.</li>
       <li><strong>Service rate throttling</strong> &mdash; rapid document creation trips the &ldquo;Service invoked too many times&rdquo; error mid-run.</li>
@@ -715,7 +715,7 @@ function scheduleNextChunk_() {
       <li><strong>Daily cap exhaustion</strong> &mdash; at 250 document creates per day (consumer limit), a busy day exhausts the allowance before afternoon.</li>
     </ul>
 
-    <h3>The Structural Fix: Move Document Generation Off Shared Scripts</h3>
+    <h3 id="the-structural-fix-move-document-generation-off-shared-scripts">The Structural Fix: Move Document Generation Off Shared Scripts</h3>
     <p>The reliable solution is moving document generation off Google&apos;s shared execution environment entirely. Instead of Autocrat running inside Apps Script on Google&apos;s public quota pool, the workflow runs through a <strong>dedicated Make.com scenario</strong> that calls the Google Docs API directly via a private HTTP connection.</p>
 
     <ul>
@@ -784,7 +784,7 @@ function scheduleNextChunk_() {
     </div>
   </div>
 
-  <h2>Final Takeaway</h2>
+  <h2 id="final-takeaway">Final Takeaway</h2>
   <p>Google Apps Script quotas in 2026 are not a mystery once you know the numbers: <strong>6 minutes per execution, 90 minutes per day, 20,000 UrlFetch calls</strong> on a consumer account. They are clear, fixed, and cannot be negotiated with. If your automation is stable, the limits are irrelevant. If your workflow is growing, the limits become the ceiling.</p>
 
   <div class="cta-block">
@@ -793,7 +793,7 @@ function scheduleNextChunk_() {
   </div>
 
   <section class="related-articles">
-    <h2>Related Articles</h2>
+    <h2 id="related-articles">Related Articles</h2>
     <ul>
       <li><a href="https://stackarchitect.xyz/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script/">How to Fix &ldquo;Service Invoked Too Many Times&rdquo; in Google Apps Script</a></li>
       <li><a href="https://stackarchitect.xyz/blog/scalable-google-sheets-automation-for-high-volume-workflows/">Scalable Google Sheets Automation for High-Volume Workflows</a></li>
