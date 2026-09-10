@@ -149,7 +149,7 @@ Meta's reported ROAS is simultaneously inflated by attribution overlap and defla
 
 **Blended ROAS = Total Shopify revenue ÷ Total ad spend across all channels**
 
-Example: £5,000 Meta ad spend, £25,000 total Shopify revenue = 5× blended ROAS.
+Example: 5,000 Meta ad spend, 25,000 total Shopify revenue — same currency on both sides — = 5× blended ROAS.
 
 This uses ground-truth revenue data from Shopify — which counts every order regardless of attribution. Before making any budget decisions based on Meta's reported ROAS, calculate blended ROAS first. The most expensive mistake during a tracking crisis is pausing campaigns that are actually working because Meta can't see the conversions.
 

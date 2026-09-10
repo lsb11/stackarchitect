@@ -222,21 +222,17 @@ const tocHeadings = [
               <option value="neither">Neither (evaluating)</option>
             </select>
           </div>
-          <div class="calc-field">
-            <label>Current monthly cost £/$</label>
-            <input type="number" id="mz-cost" placeholder="e.g. 49" />
-          </div>
         </div>
         <button class="calc-btn" onclick="calcMakeZapier()">COMPARE PLATFORM COSTS →</button>
         <div class="calc-result" id="mz-result">
           <span class="calc-state" id="mz-state">Worked example · {EG.runs} runs/month × {EG.steps} steps — change any field to use your own</span>
           <div class="result-grid">
-            <div class="result-cell"><div class="result-label">Make.com Monthly Cost</div><div class="result-value" id="mz-make">{egMake.cost === 0 ? 'FREE' : '£' + egMake.cost + '/mo'}</div><div class="result-sub" id="mz-make-plan">{egMake.plan} ({egOps.toLocaleString('en-GB')} ops needed)</div></div>
-            <div class="result-cell"><div class="result-label">Zapier Monthly Cost</div><div class="result-value" id="mz-zapier" style="font-size:28px;color:#f87171;">{egZapier.cost === 0 ? 'FREE' : '£' + egZapier.cost + '/mo'}</div><div class="result-sub" id="mz-zapier-plan">{egZapier.plan}</div></div>
-            <div class="result-cell"><div class="result-label">Monthly Saving (Make)</div><div class="result-value" id="mz-saving" style="font-size:28px;">{egSaving > 0 ? '£' + egSaving + '/mo' : '£0'}</div><div class="result-sub">Annual: <span id="mz-annual">{egSaving > 0 ? '£' + (egSaving * 12).toLocaleString('en-GB') : '£0'}</span></div></div>
+            <div class="result-cell"><div class="result-label">Make.com Monthly Cost</div><div class="result-value" id="mz-make">{egMake.cost === 0 ? 'FREE' : '$' + egMake.cost + '/mo'}</div><div class="result-sub" id="mz-make-plan">{egMake.plan} ({egOps.toLocaleString('en-GB')} ops needed)</div></div>
+            <div class="result-cell"><div class="result-label">Zapier Monthly Cost</div><div class="result-value" id="mz-zapier" style="font-size:28px;color:#f87171;">{egZapier.cost === 0 ? 'FREE' : '$' + egZapier.cost + '/mo'}</div><div class="result-sub" id="mz-zapier-plan">{egZapier.plan}</div></div>
+            <div class="result-cell"><div class="result-label">Monthly Saving (Make)</div><div class="result-value" id="mz-saving" style="font-size:28px;">{egSaving > 0 ? '$' + egSaving + '/mo' : '$0'}</div><div class="result-sub">Annual: <span id="mz-annual">{egSaving > 0 ? '$' + (egSaving * 12).toLocaleString('en-GB') : '$0'}</span></div></div>
           </div>
           <div class="result-insight" id="mz-insight">
-            <strong>At {EG.runs} orders a month on a {EG.steps}-module scenario, Make.com costs £{egMake.cost} and Zapier costs £{egZapier.cost} — a £{egSaving * 12} difference over a year.</strong>
+            <strong>At {EG.runs} orders a month on a {EG.steps}-module scenario, Make.com costs ${egMake.cost} and Zapier costs ${egZapier.cost} — a ${egSaving * 12} difference over a year.</strong>
             {' '}The gap comes from how the two count usage: Zapier bills a task per action step, so a five-step Zap run {EG.runs} times is {egOps.toLocaleString('en-GB')} tasks and lands on {egZapier.plan}. Make.com counts operations the same way but its tiers are far wider, so the same volume sits inside {egMake.plan}. Enter your own numbers above to see where your store falls.
           </div>
         </div>
@@ -319,6 +315,10 @@ const tocHeadings = [
     <p>1,000 credits/month. All integrations. No credit card.</p>
     <a href="/go/make/?source=make-vs-zapier-cost-calculator-n2" target="_blank" rel="noopener sponsored">Start Free on Make.com →</a>
   </section>
+  <!-- Byline inside <main>: the Article/Person schema describes the content
+       region, so the visible attribution for it belongs in the same region.
+       This card used to sit after </main>, in the footer block. -->
+  <div class="sa-byline-wrap"><AuthorCard /></div>
   </main>
 
   <div style="max-width:860px;margin:0 auto;padding:0 24px;margin-bottom:60px;">
@@ -329,10 +329,10 @@ const tocHeadings = [
     <li><a href="/apps/zapier/" style="color:#34d377;text-decoration:none;hover:underline;">Zapier Pricing & Alternatives</a></li>
   </ul>
 </div>
-<AuthorCard />
   </div>
 </Base>
 
+<script type="application/json" id="sa-tiers" set:html={tiersJson}></script>
 <script is:inline>
   // Reading progress bar
   const bar = document.getElementById('reading-progress');
@@ -347,40 +347,42 @@ const tocHeadings = [
   function calcMakeZapier() {
     const runs = parseInt(document.getElementById('mz-runs').value) || 0;
     const steps = parseInt(document.getElementById('mz-steps').value);
-    const currentCost = parseFloat(document.getElementById('mz-cost').value) || 0;
 
     const ops = runs * steps;
 
-    // Make.com pricing (GBP approx)
-    let makeCost, makePlan;
-    if (ops <= 1000) { makeCost = 0; makePlan = 'Free tier'; }
-    else if (ops <= 10000) { makeCost = 9; makePlan = 'Core — 10k ops'; }
-    else if (ops <= 40000) { makeCost = 16; makePlan = 'Pro — 40k ops'; }
-    else if (ops <= 150000) { makeCost = 29; makePlan = 'Teams — 150k ops'; }
-    else { makeCost = 99; makePlan = 'Enterprise'; }
-
-    // Zapier pricing (GBP approx)
-    let zapierCost, zapierPlan;
-    if (ops <= 100) { zapierCost = 0; zapierPlan = 'Free tier'; }
-    else if (ops <= 750) { zapierCost = 17; zapierPlan = 'Starter — 750 tasks'; }
-    else if (ops <= 2000) { zapierCost = 44; zapierPlan = 'Professional — 2k tasks'; }
-    else if (ops <= 50000) { zapierCost = 89; zapierPlan = 'Team — 50k tasks'; }
-    else { zapierCost = 299; zapierPlan = 'Company'; }
+    // Tiers come from MAKE_TIERS / ZAPIER_TIERS in this page's frontmatter, read
+    // from the SA_TIERS script tag. The frontmatter comment always claimed the
+    // server figure and the client figure could not drift; until now that was
+    // untrue — tiersJson was computed and never emitted, and this function kept
+    // its own hardcoded copy. Two copies that happened to agree.
+    //
+    // Both vendors publish these tiers in USD. They were rendered with a pound
+    // sign and labelled "GBP approx" — a mislabel, not a conversion: no rate was
+    // ever applied. The figures are unchanged; the symbol now matches them.
+    var tiers = JSON.parse(document.getElementById('sa-tiers').textContent);
+    var pickTier = function (list) {
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].maxOps === null || ops <= list[i].maxOps) return list[i];
+      }
+      return list[list.length - 1];
+    };
+    var mk = pickTier(tiers.make), zp = pickTier(tiers.zapier);
+    var makeCost = mk.cost, makePlan = mk.plan;
+    var zapierCost = zp.cost, zapierPlan = zp.plan;
 
     const saving = zapierCost - makeCost;
 
-    document.getElementById('mz-make').textContent = makeCost === 0 ? 'FREE' : '£' + makeCost + '/mo';
+    document.getElementById('mz-make').textContent = makeCost === 0 ? 'FREE' : '$' + makeCost + '/mo';
     document.getElementById('mz-make').style.color = '#34d377';
     document.getElementById('mz-make-plan').textContent = makePlan + ' (' + ops.toLocaleString() + ' ops needed)';
-    document.getElementById('mz-zapier').textContent = zapierCost === 0 ? 'FREE' : '£' + zapierCost + '/mo';
+    document.getElementById('mz-zapier').textContent = zapierCost === 0 ? 'FREE' : '$' + zapierCost + '/mo';
     document.getElementById('mz-zapier-plan').textContent = zapierPlan;
-    // Was '$0' while every other figure on the page is in £.
-    document.getElementById('mz-saving').textContent = saving > 0 ? '£' + saving + '/mo' : '£0';
+    document.getElementById('mz-saving').textContent = saving > 0 ? '$' + saving + '/mo' : '$0';
     document.getElementById('mz-saving').style.color = saving > 0 ? '#34d377' : '#93a09a';
-    document.getElementById('mz-annual').textContent = saving > 0 ? '£' + (saving*12).toLocaleString() : '£0';
+    document.getElementById('mz-annual').textContent = saving > 0 ? '$' + (saving*12).toLocaleString() : '$0';
 
     let insight = saving > 0
-      ? '<strong>Switch to Make.com saves £' + saving + '/month</strong> (£' + (saving*12) + '/year) at your automation volume. Make.com also handles the multi-path routing required for Shopify CAPI, TikTok Events API, and Google Sheets simultaneously — which Zapier cannot do in a single workflow.'
+      ? '<strong>Switch to Make.com saves $' + saving + '/month</strong> ($' + (saving*12) + '/year) at your automation volume. Make.com also handles the multi-path routing required for Shopify CAPI, TikTok Events API, and Google Sheets simultaneously — which Zapier cannot do in a single workflow.'
       : 'At this volume both platforms are in a similar price bracket. Make.com\'s advantage is in capability — complex multi-path scenarios, data transformation, and the ability to run the full $0 Shopify automation stack in a single scenario.';
     document.getElementById('mz-insight').innerHTML = insight;
     document.getElementById('mz-result').classList.add('show');

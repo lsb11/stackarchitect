@@ -5,6 +5,7 @@ description: "Recover Shopify abandoned carts free: a Make.com webhook on checko
 answer: "Shopify abandoned cart recovery runs free by catching the native checkouts/create webhook in Make.com and routing it into a Systeme.io email sequence. There is no app to install and no monthly fee, on any Shopify plan. Stores abandon 70-80% of checkouts, and a three-email sequence typically recovers 5-15% of them."
 publishDate: "2026-04-21"
 updatedDate: "2026-04-21"
+verifiedDate: "2026-08-11"
 category: "email"
 badge: "Free Setup"
 badgeType: "new"
@@ -16,7 +17,7 @@ faqs:
   - question: "Does Shopify have built-in abandoned cart recovery?"
     answer: "Yes, but with significant limitations. Shopify's built-in abandoned checkout notification sends one email to customers who reached the checkout and provided their email address. It has no sequence capability (only one email), no timing customisation beyond basic delays, and no segmentation. The Make.com + Systeme.io approach supports a full 3-email sequence with custom timing, subject line A/B testing, and segmentation by cart value or product category."
   - question: "How much revenue does abandoned cart recovery generate?"
-    answer: "Most Shopify stores recover 5–15% of abandoned checkouts with a well-configured email sequence. On a store with 100 abandoned checkouts per month at an average order value of £80, a 10% recovery rate adds £800/month in additional revenue. The three-email sequence (1 hour, 24 hours, 72 hours) consistently outperforms single-email approaches in recovery rate."
+    answer: "Most Shopify stores recover 5–15% of abandoned checkouts with a well-configured email sequence. On a store with 100 abandoned checkouts per month at an average order value of 80 — in whatever currency you sell in — a 10% recovery rate adds 800/month in additional revenue. The three-email sequence (1 hour, 24 hours, 72 hours) consistently outperforms single-email approaches in recovery rate."
   - question: "What is the difference between Shopify's abandoned cart email and server-side recovery?"
     answer: "Shopify's native abandoned checkout email fires only when a customer has provided their email address before abandoning. Make.com webhooks fire on all checkout abandonment events, including cases where Shopify has a pre-existing customer email on file from a previous order. This captures abandonment from returning customers even if they did not enter their email in the current checkout session."
   - question: "Is Systeme.io free for abandoned cart automation?"
@@ -34,7 +35,7 @@ relatedGuides:
     href: "/"
 ---
 
-The average Shopify store abandons 70–80% of checkouts. Most stores pay £30–£100/month to recover them via Klaviyo, Omnisend, or a dedicated cart recovery app. The free alternative — a Make.com webhook routing to a Systeme.io automation sequence — does the same job at $0/month.
+The average Shopify store abandons 70–80% of checkouts. The usual way to recover them is a paid email tool — Klaviyo starts at $20/month ([klaviyo.com/pricing](https://www.klaviyo.com/pricing), read 11 August 2026) and rises with your contact count. The "£30–£100/month" range this sentence used to give covered no named vendor, carried no source, and was in the wrong currency for every vendor it implied. The free alternative — a Make.com webhook routing to a Systeme.io automation sequence — does the same job at $0/month.
 
 This guide covers the complete free setup in 30 minutes.
 
@@ -154,9 +155,9 @@ Recovery rate depends on four factors: email timing, subject lines, average orde
 
 | Scenario | Typical recovery rate |
 |---|---|
-| High AOV (£150+), well-written emails | 10–15% |
-| Mid AOV (£40–£150), standard emails | 5–10% |
-| Low AOV (under £40), impulse products | 3–7% |
+| High AOV (150+), well-written emails | 10–15% |
+| Mid AOV (40–150), standard emails | 5–10% |
+| Low AOV (under 40), impulse products | 3–7% |
 | No recovery emails at all | 0% |
 
 The 1-hour email almost always has the highest open rate. Many stores see 30–40% of total recoveries from the first email alone. Don't skip it.
@@ -167,7 +168,7 @@ Worth keeping the arithmetic in view, though: recovery works on carts that were 
 
 Klaviyo's abandoned cart flow is more feature-rich: it supports dynamic product blocks showing the exact abandoned items with images, price drop triggers, and deep Shopify property access.
 
-The free stack gives you: email content, checkout link, total cart value, and the customer's name. No product images in the email (unless you build them manually), no dynamic blocks. For most Shopify stores — particularly under £500k/year revenue — this difference does not materially affect recovery rates.
+The free stack gives you: email content, checkout link, total cart value, and the customer's name. No product images in the email (unless you build them manually), no dynamic blocks. For most Shopify stores — particularly smaller ones — this difference does not materially affect recovery rates.
 
 The sequence logic (timing, conditions, stopping after purchase) is functionally equivalent on Systeme.io's free plan.
 

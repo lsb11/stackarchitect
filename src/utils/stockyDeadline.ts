@@ -2,8 +2,10 @@
  * Stocky end of service — one date, one predicate, evaluated at BUILD time.
  *
  * WHY BUILD TIME AND NOT CLIENT SIDE
- * pro.astro and Countdown.astro previously swapped their post-deadline copy in
- * a `setInterval` after hydration. A crawler that renders no JS — which is the
+ * pro.astro previously swapped its post-deadline copy in a `setInterval` after
+ * hydration (so did a Countdown.astro component, deleted on 10 September 2026:
+ * nothing imported it, and it was the last thing in the repo still shipping
+ * "-- Days" placeholders). A crawler that renders no JS — which is the
  * common case for the LLM fetchers this site is written for — sees only the
  * pre-deadline markup, so on 1 September the indexed copy still reads "Stocky
  * shuts down in -- Days". Rendering the branch at build time means the served

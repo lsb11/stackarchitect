@@ -164,9 +164,10 @@ const tocHeadings = [
     <div class="calc-inner">
       <div class="calc-card">
         <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#93a09a;margin-bottom:20px;">MIGRATION_SAVINGS_CALCULATOR</div>
+        <p class="calc-currency-note" style="margin-bottom:16px;">Systeme.io publishes its plan prices in USD, and this tool subtracts one of them from your Klaviyo bill — so enter that bill in USD too, or the difference is not a number. Nothing here converts between currencies.</p>
         <div class="calc-grid">
           <div class="calc-field">
-            <label>Current monthly Klaviyo cost £/$</label>
+            <label>Current monthly Klaviyo cost (USD)</label>
             <input type="number" id="kl-cost" placeholder="e.g. 150" / value="60" >
           </div>
           <div class="calc-field">
@@ -183,16 +184,16 @@ const tocHeadings = [
         </div>
         <button class="calc-btn" onclick="calcKlaviyo()">CALCULATE MY SAVINGS →</button>
         <div class="calc-result" id="kl-result">
-          <span class="calc-state" id="kl-state">Worked example · £60/month Klaviyo bill, 1,800 contacts</span>
+          <span class="calc-state" id="kl-state">Worked example · $60/month Klaviyo bill, 1,800 contacts</span>
           <div class="result-grid">
             <div class="result-cell">
               <div class="result-label">Monthly Saving</div>
-              <div class="result-value" id="kl-monthly" style="color:#34d377;">£60/mo</div>
+              <div class="result-value" id="kl-monthly" style="color:#34d377;">$60/mo</div>
               <div class="result-sub">vs current Klaviyo cost</div>
             </div>
             <div class="result-cell">
               <div class="result-label">Annual Saving</div>
-              <div class="result-value" id="kl-annual" style="font-size:28px;color:#34d377;">£720/yr</div>
+              <div class="result-value" id="kl-annual" style="font-size:28px;color:#34d377;">$720/yr</div>
               <div class="result-sub">12-month projection</div>
             </div>
             <div class="result-cell">
@@ -306,6 +307,10 @@ const tocHeadings = [
     <a href="/replace-klaviyo-free/">Read the full Klaviyo migration guide →</a>
   </section>
     <section style="max-width:1140px;margin:48px auto 0;padding:0 24px;box-sizing:border-box;max-width:760px;margin:0 auto;padding:40px 24px;border-top:1px solid #222825;"><h2 id="related-guides-tools" style="font-size:15px;font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:4px;">Related guides & tools</h2><p style="font-size:12px;color:#93a09a;margin-bottom:18px;">Related free Shopify tools and guides.</p><div style="display:grid;gap:10px;"><a href="/replace-klaviyo-free/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:14px;font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Replace Klaviyo Free — full guide →</a><a href="/replace-klaviyo-free/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:14px;font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Klaviyo vs Systeme.io comparison →</a><a href="/make-vs-zapier-cost-calculator/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:14px;font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Make vs Zapier Cost Calculator →</a></div></section>
+  <!-- Byline inside <main>: the Article/Person schema describes the content
+       region, so the visible attribution for it belongs in the same region.
+       This card used to sit after </main>, in the footer block. -->
+  <div class="sa-byline-wrap"><AuthorCard /></div>
   </main>
 
   <div style="max-width:860px;margin:0 auto;padding:0 24px;margin-bottom:60px;">
@@ -317,7 +322,6 @@ const tocHeadings = [
     <li><a href="/apps/zapier/" style="color:#34d377;text-decoration:none;hover:underline;">Zapier Pricing & Alternatives</a></li>
   </ul>
 </div>
-<AuthorCard />
   </div>
 </Base>
 
@@ -346,16 +350,16 @@ const tocHeadings = [
     const monthly = cost - systemeMonthly;
     const annual = monthly * 12;
 
-    document.getElementById('kl-monthly').textContent = '£' + monthly.toLocaleString() + '/mo';
+    document.getElementById('kl-monthly').textContent = '$' + monthly.toLocaleString() + '/mo';
     document.getElementById('kl-monthly').style.color = monthly > 0 ? '#34d377' : '#f87171';
-    document.getElementById('kl-annual').textContent = '£' + annual.toLocaleString() + '/yr';
+    document.getElementById('kl-annual').textContent = '$' + annual.toLocaleString() + '/yr';
     document.getElementById('kl-annual').style.color = annual > 0 ? '#34d377' : '#f87171';
     document.getElementById('kl-plan').textContent = systemePlan;
     document.getElementById('kl-plan-detail').textContent = planDetail;
 
     let insight = '';
     if (sms) insight += '<strong>Note on SMS:</strong> Systeme.io does not include SMS. Factor in a separate SMS tool cost if SMS is core to your flows. ';
-    if (monthly > 200) insight += '<strong>High saving opportunity.</strong> At this Klaviyo spend level, migration should be a priority. Your annual saving of £' + annual.toLocaleString() + ' covers significant other business investments. ';
+    if (monthly > 200) insight += '<strong>High saving opportunity.</strong> At this Klaviyo spend level, migration should be a priority. Your annual saving of $' + annual.toLocaleString() + ' covers significant other business investments. ';
     else if (monthly > 0) insight += 'Solid saving for migrating the core email function. Most Shopify stores can complete migration in a weekend without losing capability. ';
     else insight += 'At your contact volume, a paid Systeme.io plan is needed — but it likely still represents a saving vs Klaviyo. Verify current Klaviyo pricing for your active profile count. ';
     insight += '<a href="/replace-klaviyo-free/">Full migration guide →</a>';

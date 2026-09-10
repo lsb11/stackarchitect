@@ -5,6 +5,7 @@ description: "The complete free Shopify email setup: Systeme.io in place of Klav
 answer: "Shopify email marketing runs free on Systeme.io: 2,000 contacts with unlimited sends, covering the four automations that generate almost all email revenue — welcome, abandoned cart, post-purchase and broadcast campaigns. Klaviyo's February 2025 billing change pushed equivalent lists onto a paid tier, and those four flows do not require it."
 publishDate: "2026-04-21"
 updatedDate: "2026-04-21"
+verifiedDate: "2026-08-11"
 category: "email"
 badge: "Free Forever"
 badgeType: "new"
@@ -32,7 +33,7 @@ relatedGuides:
     href: "/replace-klaviyo-free/"
 ---
 
-Email marketing generates more revenue per pound spent than any other channel for Shopify stores — typically £3–£6 back for every £1 of platform cost. But that equation only holds if the platform cost is justified. Klaviyo's February 2025 billing change made every active profile chargeable, so bills now climb with list size from a $20/month entry plan. Systeme.io's permanently free plan covers the same core workflows at $0.
+Email marketing is routinely the cheapest revenue channel a Shopify store has, because the list is an asset you already own rather than inventory you rent each month. The "£3–£6 back for every £1" this sentence used to quote is an industry figure with no source attached, and it is not one we have measured. Klaviyo's February 2025 billing change made every active profile chargeable, so bills now climb with list size from a $20/month entry plan. Systeme.io's permanently free plan covers the same core workflows at $0.
 
 This guide covers the complete free Shopify email setup: platform choice, Shopify connection, the four essential automations, and campaign structure.
 
@@ -176,7 +177,7 @@ Systeme.io's free plan is a genuine replacement for Klaviyo for stores that prim
 | SMS marketing | No | Yes (paid add-on) |
 | Monthly cost at 2,000 contacts | $0 | ~$60–70/month |
 
-For the typical Shopify store under £500k/year revenue running welcome, abandoned cart, and post-purchase flows: the free stack delivers equivalent outcomes at $0 vs £720–840/year.
+For a Shopify store running welcome, abandoned cart and post-purchase flows, the free stack delivers those three flows at $0. The paid comparison depends on your contact count: Klaviyo starts at $20/month and scales with active profiles ([klaviyo.com/pricing](https://www.klaviyo.com/pricing), read 11 August 2026). The "£720–840/year" figure that stood here was a conversion of an unstated tier at an unstated rate.
 
 ---
 

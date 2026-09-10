@@ -115,9 +115,9 @@ At 500 orders/month with a 5-branch scenario running server-side tracking, inven
 
 - Time saved by automated inventory vs manual logging: approximately 2 hours/week
 - Time saved by automated P&L vs manual calculation: approximately 1 hour/week
-- At a conservative operator value of £25/hour: 3 hours × £25 × 4.3 weeks = £322.50/month saved
+- What those three hours a week are worth is your own number, and this guide does not have it. The £25/hour "conservative operator value" that stood here was invented, and multiplying by it produced a £322.50/month return that looked measured and was not.
 
-Against roughly £322/month of recovered time, a two-line subscription bill is not the deciding variable — which is the point. At this volume the upgrade is not a close call, and whatever Google is charging in your region this quarter does not change the answer. If it *is* a close call for you, that is the signal you have not actually hit a ceiling yet.
+Against three hours a week of recovered time, a two-line subscription bill is not usually the deciding variable — which is the point. At this volume the upgrade is not a close call, and whatever Google is charging in your region this quarter does not change the answer. If it *is* a close call for you, that is the signal you have not actually hit a ceiling yet.
 
 ## Migration — Zero Downtime
 

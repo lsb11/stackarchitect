@@ -38,10 +38,6 @@ const { embed = false } = Astro.props;
           <option value="neither">Neither (evaluating)</option>
         </select>
       </div>
-      <div class="calc-field">
-        <label for="mz-cost">Current monthly cost £/$</label>
-        <input type="number" id="mz-cost" placeholder="e.g. 49" inputmode="numeric" min="0" />
-      </div>
     </div>
     <button class="calc-btn" type="button" id="mz-go">COMPARE PLATFORM COSTS →</button>
     <div class="calc-result" id="mz-result">
@@ -105,6 +101,9 @@ const { embed = false } = Astro.props;
     const steps = parseInt(stepsEl.value);
     const ops = runs * steps;
 
+    // Both vendors publish these tiers in USD. Nothing here is converted. The
+    // output below used to mix a dollar sign for the figure with a pound sign
+    // for the zero case, inside one expression — a symbol slip, not a currency.
     let makeCost, makePlan;
     if (ops <= 1000) { makeCost = 0; makePlan = 'Free tier'; }
     else if (ops <= 10000) { makeCost = 9; makePlan = 'Core — 10k ops'; }
@@ -129,11 +128,11 @@ const { embed = false } = Astro.props;
     set('mz-zapier-plan', zapierPlan);
 
     const savingEl = document.getElementById('mz-saving');
-    if (savingEl) { savingEl.textContent = saving > 0 ? '$' + saving + '/mo' : '£0'; (savingEl as HTMLElement).style.color = saving > 0 ? '#34d377' : '#93a09a'; }
-    set('mz-annual', saving > 0 ? '$' + (saving * 12).toLocaleString() : '£0');
+    if (savingEl) { savingEl.textContent = saving > 0 ? '$' + saving + '/mo' : '$0'; (savingEl as HTMLElement).style.color = saving > 0 ? '#34d377' : '#93a09a'; }
+    set('mz-annual', saving > 0 ? '$' + (saving * 12).toLocaleString() : '$0');
 
     const insight = saving > 0
-      ? '<strong>Switching to Make.com saves £' + saving + '/month</strong> (£' + (saving * 12) + '/year) at your automation volume. Make.com also handles the multi-path routing required for Shopify CAPI, TikTok Events API, and Google Sheets simultaneously — which Zapier cannot do in a single workflow.'
+      ? '<strong>Switching to Make.com saves $' + saving + '/month</strong> ($' + (saving * 12) + '/year) at your automation volume. Make.com also handles the multi-path routing required for Shopify CAPI, TikTok Events API, and Google Sheets simultaneously — which Zapier cannot do in a single workflow.'
       : 'At this volume both platforms are in a similar price bracket. Make.com\'s advantage is in capability — complex multi-path scenarios, data transformation, and running the full $0 Shopify automation stack in a single scenario.';
     const insightEl = document.getElementById('mz-insight');
     if (insightEl) insightEl.innerHTML = insight;

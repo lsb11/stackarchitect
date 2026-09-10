@@ -5,6 +5,7 @@ description: "Install Tidio on Shopify, configure Lyro AI to resolve 70% of quer
 answer: "Tidio installs on Shopify from the App Store, and its Lyro AI answers order-status, shipping and product questions automatically — roughly 60-70% of a typical store's support volume. The free plan covers live chat, a basic bot and Shopify order lookup. Full setup, including Lyro training, takes about 30 minutes."
 publishDate: "2026-03-20"
 updatedDate: "2026-04-14"
+verifiedDate: "2026-08-11"
 category: "support"
 badge: "Free Setup"
 badgeType: "new"
@@ -38,11 +39,11 @@ This guide covers the complete setup: installation, widget configuration, Lyro A
 
 ## Why Tidio Works for Shopify Stores
 
-Most Shopify merchants overpay for customer support infrastructure. Gorgias costs £60–£300/month. Zendesk costs more. Both assume a human agent is in the loop for most conversations.
+Most Shopify merchants overpay for customer support infrastructure. Gorgias starts at $40/month ([gorgias.com/pricing](https://www.gorgias.com/pricing), read 11 August 2026) and Zendesk at $19/month ([zendesk.com/pricing](https://www.zendesk.com/pricing/), read 23 August 2026). Both assume a human agent is in the loop for most conversations. The "£60–£300/month" this paragraph used to quote for Gorgias was an undated figure in the wrong currency, and it disagreed with our own verified record on the same site.
 
 Tidio's Lyro AI reads and responds to queries using a generative language model trained on your FAQ content and Shopify product catalogue — resolving approximately 70% of inbound queries without human intervention, and escalating the remainder automatically.
 
-The free tier covers 50 Lyro AI conversations per month. For stores under £30,000/month GMV, this handles the full support volume. Above that threshold, paid plans extend the conversation limit.
+The free tier covers 50 Lyro AI conversations. Whether that is enough is a question about conversation volume, not revenue: it depends on how many shoppers ask Lyro something, which is not a fixed share of GMV. The "£30,000/month GMV" threshold that stood here was invented — no source states it, and no mechanism produces it.
 
 ## Installation — 10 Minutes
 
@@ -152,9 +153,9 @@ Those escalation logs are worth more than the support time they save. Every repe
 
 **When to upgrade:**
 
-At 50 Lyro conversations/month, stores processing more than approximately 300–400 orders/month will exceed the free limit. The Tidio Starter plan at £29/month gives 200 Lyro conversations. The Tidio Growth plan at £59/month gives 2,000 conversations.
+Tidio lists Starter at $24.17/month and Growth from $49.17/month, both shown against an "Annually (2 months free)" toggle — so these are the annual-billing monthly equivalents, not the month-to-month price ([tidio.com/pricing](https://www.tidio.com/pricing/), read 10 September 2026). Starter lists 50 Lyro AI Agent conversations as a one-off rather than a monthly allowance, and Growth lists an upgradeable limit rather than a fixed number. The "£29/month for 200 conversations" and "£59/month for 2,000" that stood here were wrong on the currency, the price and the allowance at once. Check the current tiers against your own conversation volume before committing.
 
-Compare this to Gorgias: £60–£300/month for a system that requires more human agent time. For the same or lower cost, Tidio's paid plans extend AI coverage.
+Compare this to Gorgias, from $40/month ([gorgias.com/pricing](https://www.gorgias.com/pricing), read 11 August 2026), for a system that assumes more human agent time.
 
 ## Getting Started Today
 

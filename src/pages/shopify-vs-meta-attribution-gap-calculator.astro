@@ -158,17 +158,18 @@ const tocHeadings = [
     <div class="calc-inner">
       <div class="calc-card">
         <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#93a09a;margin-bottom:20px;">ATTRIBUTION_GAP_CALCULATOR</div>
+        <p class="calc-currency-note" style="margin-bottom:16px;">Enter all three figures in the same currency. The tool compares them against each other, so it never needs to know which one — and it does not convert.</p>
         <div class="calc-grid">
           <div class="calc-field">
-            <label>Shopify revenue (last 30 days) £/$</label>
+            <label>Shopify revenue (last 30 days)</label>
             <input type="number" id="ag-shopify" placeholder="e.g. 45000" / value="50000" >
           </div>
           <div class="calc-field">
-            <label>Meta Ads reported revenue (last 30 days) £/$</label>
+            <label>Meta Ads reported revenue (last 30 days)</label>
             <input type="number" id="ag-meta" placeholder="e.g. 52000" / value="42000" >
           </div>
           <div class="calc-field">
-            <label>Meta ad spend (last 30 days) £/$</label>
+            <label>Meta ad spend (last 30 days)</label>
             <input type="number" id="ag-spend" placeholder="e.g. 12000" / value="15000" >
           </div>
           <div class="calc-field">
@@ -182,7 +183,7 @@ const tocHeadings = [
         </div>
         <button class="calc-btn" onclick="calcAttrib()">CALCULATE ATTRIBUTION GAP →</button>
         <div class="calc-result" id="ag-result">
-          <span class="calc-state" id="ag-state">Worked example · £50,000 Shopify revenue, £42,000 reported by Meta, £15,000 ad spend, browser pixel only</span>
+          <span class="calc-state" id="ag-state">Worked example · 50,000 Shopify revenue, 42,000 reported by Meta, 15,000 ad spend, browser pixel only</span>
           <div class="result-grid">
             <div class="result-cell">
               <div class="result-label">Attribution Gap</div>
@@ -200,7 +201,7 @@ const tocHeadings = [
               <div class="result-sub">Meta dashboard figure</div>
             </div>
           </div>
-          <div class="result-insight" id="ag-insight"><strong>Tracking loss confirmed.</strong> Meta is reporting less revenue than Shopify recorded. The difference is £8,000/month in orders Shopify attributes and Meta does not see. Server-side CAPI addresses the part of that gap caused by the browser pixel not firing; the part caused by consent refusal or by genuinely non-Meta orders it will not. <a href="/capi-shield/">Free CAPI setup guide →</a></div>
+          <div class="result-insight" id="ag-insight"><strong>Tracking loss confirmed.</strong> Meta is reporting less revenue than Shopify recorded. The difference is 8,000/month in orders Shopify attributes and Meta does not see. Server-side CAPI addresses the part of that gap caused by the browser pixel not firing; the part caused by consent refusal or by genuinely non-Meta orders it will not. <a href="/capi-shield/">Free CAPI setup guide →</a></div>
         </div>
 
         <GapContribute source="gap-calculator" />
@@ -285,10 +286,13 @@ const tocHeadings = [
     <p>Server-side Meta tracking. 6 minutes. $0 forever.</p>
     <a href="/capi-shield/">Deploy CAPI Shield Free →</a>
   </section>
+  <!-- Byline inside <main>: the Article/Person schema describes the content
+       region, so the visible attribution for it belongs in the same region.
+       This card used to sit after </main>, in the footer block. -->
+  <div class="sa-byline-wrap"><AuthorCard /></div>
   </main>
 
   <div style="max-width:860px;margin:0 auto;padding:0 24px;margin-bottom:60px;">
-    <AuthorCard />
   </div>
 </Base>
 
@@ -342,7 +346,7 @@ const tocHeadings = [
       // with — and printed to the pound. How much of this gap server-side
       // delivery recovers depends on which loss produced it, which this tool
       // cannot see. Do not reintroduce a recovery rate without a source.
-      insight = '<strong>Tracking loss confirmed.</strong> Meta is reporting less revenue than Shopify recorded. The difference is £' + Math.round(shopify - meta).toLocaleString() + '/month in orders Shopify attributes and Meta does not see. ' + (tracking === 'pixel' ? 'Server-side CAPI addresses the part of that gap caused by the browser pixel not firing; the part caused by consent refusal or by genuinely non-Meta orders it will not. ' : 'You are already sending events server-side, so a browser pixel that never fired is not the whole explanation: check event deduplication, the customer parameters on your Purchase payload, and whether every paid order reaches Meta at all. ') + '<a href="/capi-shield/">Free CAPI setup guide →</a>';
+      insight = '<strong>Tracking loss confirmed.</strong> Meta is reporting less revenue than Shopify recorded. The difference is ' + Math.round(shopify - meta).toLocaleString() + '/month in orders Shopify attributes and Meta does not see. ' + (tracking === 'pixel' ? 'Server-side CAPI addresses the part of that gap caused by the browser pixel not firing; the part caused by consent refusal or by genuinely non-Meta orders it will not. ' : 'You are already sending events server-side, so a browser pixel that never fired is not the whole explanation: check event deduplication, the customer parameters on your Purchase payload, and whether every paid order reaches Meta at all. ') + '<a href="/capi-shield/">Free CAPI setup guide →</a>';
     } else if (ratio > 2.0) {
       insight = '<strong>High over-attribution.</strong> Meta\'s reported ROAS is significantly above your true business ROAS. This often indicates heavy view-through attribution counting low-intent impressions. Consider switching to 7-day click only attribution to get a cleaner signal.';
     } else {

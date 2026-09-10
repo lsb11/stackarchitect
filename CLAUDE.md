@@ -132,7 +132,7 @@ is now the method rather than a description of one: words inside `<main>` with
 `<script>`, `<style>` and comments stripped, over all 62 sitemap URLs. **Floor
 510. Four pages under 800, all four the single-product routes:**
 `/pro/pnl-auto/` 510, `/pro/tiktok-capi/` 518, `/pro/capi-shield/` 535,
-`/pro/stocky-swap/` 547. 53 of 62 exceed 1,500 words and 19 exceed 3,000.
+`/pro/stocky-swap/` 547. 53 of 62 exceed 1,500 words and 21 exceed 3,000.
 
 Those four are not new thin pages and they did not shrink. They had no `<main>`
 until 10 Sep, so the method could not see them at all — the 5 Sep reading of
@@ -142,8 +142,17 @@ from the sample, including `/stack/` and `/stocky-shutdown/`, two of the larger
 money pages. A method that silently drops the pages it cannot parse reports the
 floor of its sample, not of the site.
 
-The auditor page now measures 886, not 933. That is a real loss, not extraction
-drift: `0020349` retracted invented constants from it. `/apps/` was the sole
+The auditor page measures 886 under this method and 933 under the one used on
+5 Sep. **That gap is extraction drift, not lost content** — an earlier commit
+message here said it was a real loss from `0020349`, and that was wrong:
+`0020349` changed only `<script>` code on that page, which both methods strip.
+The 5 Sep method was a plain whitespace split with HTML entities left as text,
+so it counted 47 punctuation-only tokens — em dashes, arrows, middots — as
+words. `scripts/word-count.mjs` drops any token with no letter or digit in it.
+Reconciled across all 62 URLs: the old method gives floor 529 / 4 under 800 /
+53 over 1,500 / 21 over 3,000; this one gives 510 / 4 / 53 / 21. **The four
+sub-800 pages are sub-800 under either method** — that finding does not depend
+on the choice. `/apps/` was the sole
 sub-800 page at 696 on 17 Aug and is now 2,886 — it did not gain filler, it
 gained the provenance the table always had and never showed. Canonicals: zero
 mismatches. robots.txt, sitemap chain, redirects and internal links all

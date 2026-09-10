@@ -5,6 +5,7 @@ description: "AI across 7 Shopify stages: product research, ad creative, email, 
 answer: "The practical AI stack for a Shopify store spans seven stages: product research, ad creative, email, server-side tracking, customer support, generative-engine optimisation and agentic storefronts. Most stages have a free route that matches a paid tool at small scale, so the useful question is which stage is actually costing your store money."
 publishDate: "2026-03-01"
 updatedDate: "2026-04-14"
+verifiedDate: "2026-09-10"
 category: "ai"
 badge: "Playbook"
 badgeType: "new"
@@ -107,7 +108,7 @@ This is the AI-adjacent investment with the clearest ROI on this list. Better pu
 
 **Free approach:** [Tidio's Lyro AI](/blog/tidio-for-shopify-complete-setup-guide/) on the free plan (50 AI conversations/month). With proper knowledge base configuration, resolves approximately 70% of inbound queries automatically. Setup takes 30 minutes.
 
-**The operational leverage:** a properly configured Lyro AI setup running on Tidio's £29/month plan (200 conversations) can reduce human support hours by 60–70%. At a conservative operator value of £25/hour, 3 hours/week saved = £325/month in time value vs £29/month in cost.
+**The operational leverage:** Tidio lists Starter at $24.17/month against an "Annually (2 months free)" toggle — the annual-billing monthly equivalent ([tidio.com/pricing](https://www.tidio.com/pricing/), read 10 September 2026). How much human support time Lyro removes depends on your query mix, and we have not measured it. This line used to multiply an invented £25/hour operator value by an invented 3 hours a week to produce a £325/month return; neither input came from anywhere.
 
 **When human agents are still essential:** complex order disputes, product technical questions, customer complaints that require empathy and judgment, and high-value customer relationships. AI handles volume; humans handle nuance.
 

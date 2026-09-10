@@ -32,7 +32,7 @@ relatedGuides:
     href: "/"
 ---
 
-The most common CRO mistake Shopify store owners make is spending £50–200/month on conversion apps before fixing the fundamentals. Most stores have a tracking gap that makes their conversion rate look worse than it is, checkout friction that no app can fix, and missing retention flows that paid apps claim to solve.
+The most common CRO mistake Shopify store owners make is paying for conversion apps before fixing the fundamentals. Most stores have a tracking gap that makes their conversion rate look worse than it is, checkout friction that no app can fix, and missing retention flows that paid apps claim to solve.
 
 This guide covers 12 free tools and tactics that address the real levers — in the right order.
 
@@ -143,7 +143,7 @@ Not all of these have equal impact. In order of ROI for most Shopify stores:
 5. **Set up post-purchase email sequence** — reviews and repeat purchases are the cheapest revenue.
 6. **Check PageSpeed** — slow mobile load times kill conversion rates on paid social traffic.
 
-The total cost of implementing all six: $0/month. Most paid CRO apps target the same problems at £50–200/month per tool.
+The total cost of implementing all six: $0/month. Paid CRO apps target the same problems for a monthly fee per tool — the amount varies too much by vendor and tier to quote as one range, and the "£50–200/month" that stood here named no vendor and cited nothing.
 
 ---
 

@@ -848,6 +848,23 @@ main#main-content { min-width: 0; }
    up one level. */
 [style*="overflow-x"] { max-width: 100%; }
 
+/* The author byline sits inside <main> on every page that carries one, so the
+   visible attribution lives in the same region the Article schema describes.
+   It used to be nested in the 860px footer block and inherited that block's
+   width; this is that width, declared once rather than inlined 26 times. */
+.sa-byline-wrap { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+/* Calculators that work on numbers the visitor types cannot know what currency
+   those numbers are in. Where the tool only adds or compares the visitor's own
+   figures it prints no symbol at all; where it subtracts a vendor's published
+   USD price it says so. This is the line that says which. */
+.calc-currency-note {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-3, #93a09a);
+  margin: 12px 0 0;
+}
+
 @media (max-width: 700px) {
   /* Some pages put a section straight on <body> rather than inside <main>,
      with its own max-width in a scoped stylesheet that outranks the rule
