@@ -74,6 +74,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { PRICE, findUnsourcedPrices } from './lib/llm-price-provenance.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const QUARANTINE = path.join(ROOT, 'docs', 'claims-unverified.json');
@@ -100,9 +101,6 @@ const OURS = new RegExp(
   `^\\$(0|${ourPrices.map((v) => String(v).replace('.', '\\.')).join('|')})` +
     `(\\/(mo|month|yr|year))?[,.]?$`
 );
-
-const PRICE =
-  /\$[0-9][0-9,]*(?:\.[0-9]{2})?(?:\s*[–—-]\s*\$?[0-9][0-9,]*(?:\.[0-9]{2})?)?(?:\s*\/\s*(?:mo|month|yr|year))?\+?/g;
 
 function claimsIn(source) {
   return [...source.matchAll(PRICE)].map((m) => m[0].trim()).filter((p) => !OURS.test(p));
@@ -196,8 +194,11 @@ function lineOf(source, index) {
  * timestamp" this file's header warns about, in its most concentrated form.
  *
  * So the rule here is per-claim: every third-party price must carry a source
- * and the date it was read, on its own line. That also makes true a promise
- * llms.txt already prints in its own header — "Pricing claims carry a
+ * and the date it was read, in its own clause — not merely somewhere on the
+ * same line, which is what this check used to accept and which let one
+ * vendor's citation vouch for a second vendor's price. The scoping rule and
+ * why it is drawn where it is live in scripts/lib/llm-price-provenance.mjs.
+ * That also makes true a promise llms.txt already prints in its own header — "Pricing claims carry a
  * verification date and a source link where verified; unverified figures are
  * labelled as such" — which was false in the same file that made it.
  *
@@ -208,13 +209,6 @@ function lineOf(source, index) {
  */
 const LLM_FILES = ['public/llms.txt', 'public/llms-full.txt'];
 
-/** "verified 2026-08-08" — the date a human read the vendor's own page. */
-const VERIFIED_DATE = /\bverified\s+(20\d\d-[01]\d-[0-3]\d)\b/i;
-/** A bare domain or URL on the same line, as the source that date refers to. */
-const SOURCE_URL = /https?:\/\/[^\s)]+|\b[a-z0-9-]+(?:\.[a-z0-9-]+)+\/[^\s)]*/i;
-/** An explicit refusal to publish a figure, which needs no source. */
-const NOT_VERIFIED = /\bNOT verified\b/;
-
 function checkLlmClaims() {
   const problems = [];
 
@@ -222,46 +216,8 @@ function checkLlmClaims() {
     const full = path.join(ROOT, rel);
     if (!fs.existsSync(full)) continue;
     const src = fs.readFileSync(full, 'utf8');
-
-    for (const m of src.matchAll(PRICE)) {
-      const price = m[0].trim();
-      if (OURS.test(price)) continue;
-
-      // Provenance is judged per LINE, not per file: these are prose files
-      // where one line names one vendor.
-      const start = src.lastIndexOf('\n', m.index) + 1;
-      const endRaw = src.indexOf('\n', m.index);
-      const end = endRaw === -1 ? src.length : endRaw;
-      const line = src.slice(start, end);
-
-      // A wrapped paragraph puts the source on a following line. Widen to the
-      // blank-line-delimited block before failing, so the check does not force
-      // these files to stop wrapping.
-      let scope = line;
-      if (!(VERIFIED_DATE.test(scope) && SOURCE_URL.test(scope))) {
-        let bStart = src.lastIndexOf('\n\n', m.index);
-        bStart = bStart === -1 ? 0 : bStart + 2;
-        let bEnd = src.indexOf('\n\n', m.index);
-        bEnd = bEnd === -1 ? src.length : bEnd;
-        scope = src.slice(bStart, bEnd);
-      }
-
-      if (NOT_VERIFIED.test(scope)) continue;
-      const hasDate = VERIFIED_DATE.test(scope);
-      const hasSource = SOURCE_URL.test(scope);
-      if (hasDate && hasSource) continue;
-
-      problems.push({
-        file: rel,
-        line: lineOf(src, m.index),
-        price,
-        why: !hasDate && !hasSource
-          ? 'no source and no verification date'
-          : !hasDate
-            ? 'has a source but no "verified YYYY-MM-DD"'
-            : 'has a verification date but no source URL',
-        excerpt: line.trim().slice(0, 110),
-      });
+    for (const p of findUnsourcedPrices(src, (price) => OURS.test(price))) {
+      problems.push({ file: rel, ...p });
     }
   }
 
