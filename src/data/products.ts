@@ -80,6 +80,22 @@ export interface Faq {
 export interface Product {
   slug: string;
   name: string;
+  /**
+   * The <title> for /pro/<slug>/. Written per product rather than templated
+   * from `name`, because the four titles used to be
+   * `${name} — $9.99 Make.com blueprint for Shopify` and differed only by a
+   * product code name — "Stocky Swap", "CAPI Shield" — which carries no
+   * meaning to anyone who has not already read the site. Four near-identical
+   * titles on a four-page cluster is a query-level collision the page text
+   * does not have (the four share ~109 words and zero 8-grams with their free
+   * guides).
+   *
+   * Each leads with the job, and none of them competes with the free guide on
+   * the same topic: those own the "free"/"$0" framing, and the difference
+   * being sold here is a file you import rather than a build you follow.
+   * Keep them under 60 characters.
+   */
+  pageTitle: string;
   blueprint: string;
   tagline: string;
   /** The question the buyer is asking. This is the H1 of the single page. */
@@ -106,6 +122,7 @@ export const UPGRADE_STRIPE_URL = '';
 export const PRODUCTS: Product[] = [
   {
     slug: 'stocky-swap',
+    pageTitle: 'Shopify Inventory to Sheets — Import-Ready Blueprint',
     name: 'Stocky Swap',
     blueprint: 'Blueprint 03',
     tagline: 'Live inventory to Google Sheets',
@@ -167,6 +184,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     slug: 'capi-shield',
+    pageTitle: 'Meta + Google CAPI — Import-Ready Shopify Blueprint',
     name: 'CAPI Shield',
     blueprint: 'Blueprint 01',
     tagline: 'Meta Conversions API + Google Ads Enhanced Conversions, server-side',
@@ -225,6 +243,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     slug: 'tiktok-capi',
+    pageTitle: 'TikTok Events API — Import-Ready Shopify Blueprint',
     name: 'TikTok CAPI',
     blueprint: 'Blueprint 02',
     tagline: 'TikTok Events API v1.3 CompletePayment, server-side',
@@ -281,6 +300,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     slug: 'pnl-auto',
+    pageTitle: 'Shopify P&L to Sheets — Import-Ready Blueprint',
     name: 'P&L Auto',
     blueprint: 'Blueprint 04',
     tagline: 'Per-order revenue, fees, COGS and gross profit into Google Sheets',
