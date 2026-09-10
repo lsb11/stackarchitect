@@ -17,6 +17,11 @@
  *     that param name            network set, referral credential included
  *   - anything throws         -> next(), so the static rule still earns
  *
+ * Click counting (see _clicks.js) hangs off waitUntil, so it runs after the
+ * 302 is already on its way back and cannot delay or fail a click. Both exit
+ * paths log — the no-source path too, because a /go/ hit with no ?source= is
+ * an old link or a hand-typed URL and that is worth seeing.
+ *
  * Both /go/x and /go/x/ land here: functions/_middleware.js exempts /go/*
  * from trailing-slash normalisation, so the catch-all sees either shape and
  * empty segments are filtered out.
@@ -25,10 +30,11 @@
  * a cached 301 on an affiliate cloak is unfixable in the reader's browser.
  */
 import { CLOAKS, sanitiseSource } from './_cloaks.js';
+import { landingFrom, recordClick, NO_REFERER } from './_clicks.js';
 
 export async function onRequest(context) {
   try {
-    const { params, request, next } = context;
+    const { params, request, next, env, waitUntil } = context;
 
     const segments = Array.isArray(params.slug) ? params.slug : [params.slug];
     const slug = segments.filter(Boolean).join('/').toLowerCase();
@@ -36,7 +42,20 @@ export async function onRequest(context) {
     const cloak = CLOAKS[slug];
     if (!cloak) return next();
 
-    const source = sanitiseSource(new URL(request.url).searchParams.get('source'));
+    const url = new URL(request.url);
+    const source = sanitiseSource(url.searchParams.get('source'));
+
+    // Counted before either return, so the two exit paths cannot drift.
+    // waitUntil is not guaranteed present (it is absent in the unit tests, and
+    // in any runtime that does not implement it), so the call is optional and
+    // its absence costs a statistic rather than throwing on the revenue path.
+    const count = recordClick(env?.DB, {
+      slug,
+      source: source || NO_REFERER,
+      landing: landingFrom(request.headers.get('Referer'), url.origin),
+    });
+    if (typeof waitUntil === 'function') waitUntil(count);
+
     if (!source) return Response.redirect(cloak.destination, 302);
 
     const target = new URL(cloak.destination);

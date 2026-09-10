@@ -47,6 +47,7 @@ and the command that reproduces them.
 | `npm run gsc:weekly` | One tab-separated line appended to `gsc-weekly.tsv`: indexed, crawled-not-indexed, and impressions on any non-homepage URL over a 7-day window ending 3 days back. Needs `GSC_KEY_JSON`. |
 | `node scripts/redirect-smoke.mjs --parse-only` | Lint `public/_redirects` offline (chains, loops, truncation) |
 | `node scripts/moderate-gap.mjs list\|approve\|reject\|stats` | Moderate D1 benchmark submissions via wrangler |
+| `npx wrangler d1 execute attribution-gap --remote --command "…"` | Read affiliate click counts. Queries are in `schema/003-affiliate-clicks.sql`. |
 
 `seo-audit.mjs` has its own tests (`seo-audit.test.mjs`), also picked up by `npm test`.
 
