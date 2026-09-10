@@ -832,6 +832,7 @@ img, svg, video, canvas, iframe { max-width: 100%; height: auto; }
    `min-width: 0` is the standard release valve and restores the intended
    behaviour of every overflow rule below. */
 body > *,
+main > *,
 main#main-content { min-width: 0; }
 /* NOTE: do not add `max-width: 100%` here. This block is unlayered, and
    unlayered CSS beats every rule inside Tailwind's @layer utilities no matter
@@ -850,8 +851,13 @@ main#main-content { min-width: 0; }
 @media (max-width: 700px) {
   /* Some pages put a section straight on <body> rather than inside <main>,
      with its own max-width in a scoped stylesheet that outranks the rule
-     above. Nothing at the top level should be able to exceed the viewport. */
-  body > * { max-width: 100% !important; }
+     above. Nothing at the top level should be able to exceed the viewport.
+     `main > *` is here because wrapping those pages' top-level sections in a
+     <main> moved them out of `body > *` — the clamp has to follow them down a
+     level or the wrap silently removes the protection it never had a reason
+     to lose. */
+  body > *,
+  main > * { max-width: 100% !important; }
 
   /* A wide table scrolls inside its own box instead of widening the page.
      Tables already inside an overflow-x wrapper keep that wrapper's

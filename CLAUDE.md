@@ -39,6 +39,7 @@ and the command that reproduces them.
 | `npm run a11y` | Playwright contrast audit over `dist/` (needs a build first). Mandatory before any CSS/token change. |
 | `npm run claims` / `npm run claims:burndown` | List unverified price claims / burndown report |
 | `npm run claims:register` | Regenerate `docs/CLAIMS-REGISTER.md` |
+| `node scripts/word-count.mjs` | Per-page word count inside `<main>` over the sitemap (needs a build first). Reports; never fails. |
 | `npm run schema:check` | Schema-vs-visible-text report without failing |
 | `npm run seo:audit` / `npm run seo:crawl` | `seo-audit.mjs` over `dist/`; crawl audit against production |
 | `npm run pricing-audit` | Cross-check asserted vendor prices |
@@ -123,15 +124,30 @@ are historical artefacts, not live tooling.
 
 ### Where the indexing problem actually stands
 
-Do not assume thin content is still the cause — it was measured and it is not.
-As of 5 Sep 2026, **no indexable page is under 800 words.** The smallest is
-`/shopify-app-stack-kill-or-keep-auditor/` at 933; 52 of 62 exceed 1,500 words
-and 22 exceed 3,000. `/apps/` was the sole sub-800 page at 696 on 17 Aug and is
-now 2,972 — it did not gain filler, it gained the provenance the table always
-had and never showed. Counts are words inside `<main>` with `<script>`/`<style>`
-stripped; a different extraction gives a different number, so state the method
-before disputing a figure. Canonicals: zero mismatches. robots.txt, sitemap
-chain, redirects and internal links all verified clean.
+Do not assume thin content is still the cause — but the "no page under 800
+words" line is no longer true, and it was never measured over the whole set.
+
+Re-measured 10 Sep 2026 with `node scripts/word-count.mjs` (build first), which
+is now the method rather than a description of one: words inside `<main>` with
+`<script>`, `<style>` and comments stripped, over all 62 sitemap URLs. **Floor
+510. Four pages under 800, all four the single-product routes:**
+`/pro/pnl-auto/` 510, `/pro/tiktok-capi/` 518, `/pro/capi-shield/` 535,
+`/pro/stocky-swap/` 547. 53 of 62 exceed 1,500 words and 19 exceed 3,000.
+
+Those four are not new thin pages and they did not shrink. They had no `<main>`
+until 10 Sep, so the method could not see them at all — the 5 Sep reading of
+"smallest is `/shopify-app-stack-kill-or-keep-auditor/` at 933" was taken over
+the 52 of 62 sitemap URLs that happened to have a `<main>` — 10 were missing
+from the sample, including `/stack/` and `/stocky-shutdown/`, two of the larger
+money pages. A method that silently drops the pages it cannot parse reports the
+floor of its sample, not of the site.
+
+The auditor page now measures 886, not 933. That is a real loss, not extraction
+drift: `0020349` retracted invented constants from it. `/apps/` was the sole
+sub-800 page at 696 on 17 Aug and is now 2,886 — it did not gain filler, it
+gained the provenance the table always had and never showed. Canonicals: zero
+mismatches. robots.txt, sitemap chain, redirects and internal links all
+verified clean.
 
 Real GSC data, 14 Aug 2026: **1 page indexed, 236 not indexed.** Of those, 177
 are "Crawled – currently not indexed", attributed to *Google systems*, and a
