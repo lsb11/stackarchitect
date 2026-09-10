@@ -44,6 +44,7 @@ and the command that reproduces them.
 | `npm run seo:audit` / `npm run seo:crawl` | `seo-audit.mjs` over `dist/`; crawl audit against production |
 | `npm run pricing-audit` | Cross-check asserted vendor prices |
 | `npm run gsc:coverage` | GSC URL Inspection sweep (needs `GSC_KEY_JSON`) |
+| `npm run gsc:weekly` | One tab-separated line appended to `gsc-weekly.tsv`: indexed, crawled-not-indexed, and impressions on any non-homepage URL over a 7-day window ending 3 days back. Needs `GSC_KEY_JSON`. |
 | `node scripts/redirect-smoke.mjs --parse-only` | Lint `public/_redirects` offline (chains, loops, truncation) |
 | `node scripts/moderate-gap.mjs list\|approve\|reject\|stats` | Moderate D1 benchmark submissions via wrangler |
 
