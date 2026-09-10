@@ -184,10 +184,16 @@ if (lastmodCache.size > 0) {
  * Google asks to be qualified and which are exactly the wrong signal on a
  * domain under a site-level quality assessment.
  *
- * Every /go/* href in Markdown now gets rel="sponsored noopener" and
- * target="_blank", matching how the .astro pages already mark theirs. Doing it
- * in the pipeline rather than per-link means new blog posts are covered by
- * default and cannot regress.
+ * Every /go/* href in Markdown now gets rel="sponsored nofollow noopener" and
+ * target="_blank", matching how the .astro pages mark theirs. Doing it in the
+ * pipeline rather than per-link means new blog posts are covered by default
+ * and cannot regress.
+ *
+ * nofollow added 2026-09-10. "sponsored" alone is what Google asks for and
+ * implies nofollow, so this changes nothing for Google — but six links on the
+ * site already carried both and 111 did not, and a rel value that varies by
+ * where the link was written is the kind of inconsistency an audit has to
+ * re-derive every time. One value everywhere.
  *
  * No new dependency: a plain recursive walk, no unist-util-visit.
  */
@@ -197,7 +203,7 @@ function rehypeSponsorAffiliateLinks() {
       if (node.type === 'element' && node.tagName === 'a') {
         const href = node.properties?.href;
         if (typeof href === 'string' && href.startsWith('/go/')) {
-          node.properties.rel = ['sponsored', 'noopener'];
+          node.properties.rel = ['sponsored', 'nofollow', 'noopener'];
           node.properties.target = '_blank';
         }
       }
