@@ -13,8 +13,11 @@
  *
  * THE TRADE-OFF THIS BUYS: a static build does not re-evaluate itself. A site
  * built on 30 August and not redeployed keeps pre-deadline copy indefinitely.
- * Schedule a deploy for 1 September 2026 — the same caveat stocky-swap.astro
- * already documents at its own `shutdownPassed`.
+ * This is now handled rather than only documented:
+ * .github/workflows/scheduled-redeploy.yml POSTs a Cloudflare Pages deploy
+ * hook daily at 00:15 UTC, so a boundary is crossed by the build within a day
+ * of the date itself. stocky-swap.astro documents the same caveat at its own
+ * `shutdownPassed`; that workflow covers it too.
  *
  * Not every page should consume this. stocky-alternative.astro is deliberately
  * evergreen: it refers to the shutdown by date rather than tense and forks the

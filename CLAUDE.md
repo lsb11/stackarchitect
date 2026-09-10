@@ -83,6 +83,14 @@ on a non-primary host get `X-Robots-Tag: noindex`. `public/_redirects` (290 line
 affiliate cloaks and legacy URLs. Redirect edits are covered by `.github/workflows/redirect-smoke.yml`
 (parse-only on PR, live assertions after deploy, plus nightly).
 
+**Build-time date branches need a scheduled build.** `isPostShutdown()` in
+`src/utils/stockyDeadline.ts` resolves at build time — 7 pages plus `Nav.astro`
+branch on it — and a static build never re-evaluates itself.
+`.github/workflows/scheduled-redeploy.yml` POSTs a Cloudflare Pages deploy hook
+daily at 00:15 UTC so a date boundary is crossed by the build within a day.
+Needs the repo secret `CF_PAGES_DEPLOY_HOOK`; without it the run fails loudly
+rather than passing silently.
+
 **Pages Functions + D1.** `functions/api/{submit-gap,gap-stats,gap-badge}.js` back the iOS
 Attribution Gap Benchmark, writing to the `attribution-gap` D1 database (`binding = "DB"`,
 schema in `schema/`). The gap is computed server-side, submissions land `pending`, and

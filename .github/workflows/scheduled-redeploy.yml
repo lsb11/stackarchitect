@@ -1,0 +1,66 @@
+# Daily redeploy — keeps build-time date branches honest.
+#
+# WHY THIS EXISTS
+# src/utils/stockyDeadline.ts resolves `isPostShutdown()` at BUILD time, and 7
+# pages plus Nav.astro branch on it. That is the right call — a crawler that
+# runs no JS must see the correct side of the date — but it buys a problem the
+# file documents and nothing in the repo solved: a static build does not
+# re-evaluate itself. A site built before a date boundary and not redeployed
+# keeps the pre-boundary copy indefinitely, however wrong it has become.
+#
+# THIS IS INSURANCE, NOT A FIX FOR A LIVE BUG
+# There is no pending boundary today. The only build-time date branch is
+# `isPostShutdown`, whose boundary passed on 31 August 2026, so the current
+# build is already on the correct side of it. It is correct because the site
+# happened to be rebuilt since — which is precisely the failure mode
+# stockyDeadline.ts warns about. This workflow makes the next boundary a
+# non-event instead of a discovery.
+#
+# WHY A GITHUB ACTION AND NOT A CLOUDFLARE CRON
+# Pages Functions take no cron triggers; only Workers do. A Cloudflare cron
+# would mean standing up a separate Worker whose entire job is POSTing the same
+# deploy hook this workflow POSTs — strictly more moving parts for an identical
+# effect, and one more thing to hold credentials.
+#
+# SETUP (one-time)
+#   Cloudflare dashboard → Pages → stackarchitect2 → Settings → Builds &
+#   deployments → Deploy hooks → Add deploy hook (branch: main). Copy the URL
+#   into a repo secret named CF_PAGES_DEPLOY_HOOK.
+#
+#   The hook URL is a bearer credential: anyone holding it can trigger a build.
+#   It is not printed by this workflow, and must not be echoed into logs.
+#
+# Daily rather than weekly because the branches are day-granular: a weekly
+# cadence can leave the site up to six days wrong on the far side of a
+# boundary. 00:15 UTC rather than 00:00 to stay off the hour, when GitHub's
+# scheduler is most contended and runs are most likely to be delayed.
+name: Scheduled Redeploy
+
+on:
+  schedule:
+    - cron: '15 0 * * *' # daily, 00:15 UTC
+  workflow_dispatch: {}
+
+# A queued run is pointless once a newer one exists — they do the same thing.
+concurrency:
+  group: scheduled-redeploy
+  cancel-in-progress: false
+
+jobs:
+  redeploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Cloudflare Pages deploy hook
+        env:
+          HOOK: ${{ secrets.CF_PAGES_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::error::CF_PAGES_DEPLOY_HOOK is not set. See the setup notes at the top of this workflow."
+            exit 1
+          fi
+          # --fail so a non-2xx is a failed run rather than a green tick over a
+          # deploy that never happened. Output is discarded: the response body
+          # is uninteresting and the URL must not reach the log.
+          curl --fail --silent --show-error --retry 3 --retry-delay 10 \
+            -X POST "$HOOK" -o /dev/null
+          echo "Deploy hook accepted."
