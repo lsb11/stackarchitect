@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Disclosure from '../../components/Disclosure.astro';
+import AuthorCard from '../../components/AuthorCard.astro';
 // src/pages/blog/shopify-server-side-tracking-complete-setup-guide.astro
 // Self-contained — no layout, no component imports
 
@@ -801,6 +802,11 @@ const articleSchema = {
     <details class="sa-faq"><summary>Shopify server-side tracking vs Elevar &mdash; what&rsquo;s the difference?</summary><div class="faq-body"><p>Both send the same server-side events to the same destinations (Meta CAPI, Google, TikTok) &mdash; the difference is who builds and maintains the pipeline. <strong>Elevar</strong> is a managed service from $200/month: it provisions a server-side GTM container, supplies a pre-built Shopify data layer, monitors delivery with alerts, and handles refunds and order edits automatically. The <strong>free Make.com webhook method</strong> delivers the same events and the same Event Match Quality ceiling, but you build the scenario yourself in ~18 minutes and maintain it. Choose Make.com for zero cost and full control; choose Elevar if managed monitoring, automatic edge-case handling, and a reporting dashboard justify the monthly fee at your ad spend. For most stores under 1,000 orders/month, the Make.com method delivers the tracking quality without the recurring cost.</p></div></details>
     <details class="sa-faq"><summary>Do I need server-side GTM (sGTM) for Shopify server-side tracking?</summary><div class="faq-body"><p>No. Server-side Google Tag Manager is <em>one</em> way to do server-side tracking, but it requires provisioning and paying for a Google Cloud tagging server and configuring containers &mdash; overkill for most Shopify stores. The Make.com webhook method skips GTM entirely: Shopify fires an order webhook directly to Make.com, which POSTs to each platform&rsquo;s API. You get the same server-to-server delivery with no server to host or maintain. sGTM earns its complexity only for large stores with dedicated analytics engineers needing custom tag logic across many destinations; for everyone else, the webhook method is simpler, free, and equally effective for conversion tracking.</p></div></details>
   </div>
+
+  <!-- BYLINE — this post's Article schema names #luke as author. BlogPost.astro
+       renders the same card for every collection post; these hand-built posts
+       predate it and never got one. -->
+  <AuthorCard />
 
   <!-- RELATED -->
   <div class="sec-mark">RELATED GUIDES</div>

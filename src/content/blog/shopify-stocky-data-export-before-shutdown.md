@@ -35,7 +35,7 @@ relatedGuides:
     href: "/blog/shopify-automation-stack-for-small-stores"
 ---
 
-Shopify set August 31, 2026 as Stocky's end of service, and nothing held inside the app was migrated to Shopify Admin. [Shopify removed Stocky from the App Store on February 2, 2026](https://apps.shopify.com/stocky) — the August 31 date is confirmed and it has passed.
+Shopify set August 31, 2026 as Stocky's end of service, and nothing held inside the app was migrated to Shopify Admin. [Shopify removed Stocky from the App Store on February 2, 2026](https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky) — the August 31 date is confirmed and it has passed.
 
 What happened on that date came in two halves, and almost everything written about the shutdown collapses them into one. **Stocky's APIs stopped dead on August 31 with no grace period** — any third-party tool, dashboard or automation reading from them broke that day rather than degrading. **Your data did not go with them.** Shopify's own transition guidance says read-only access to export it continues for **at least 90 days** after the shutdown date. That is a floor Shopify stated, not an end date it published, so it cannot be turned into a deadline on your calendar — and it is a reason to export today, not a reason to relax. ([Shopify, "Transitioning from Stocky"](https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky), read 5 September 2026.)
 
@@ -175,7 +175,7 @@ For stores where these advanced features are essential, paid alternatives worth 
 
 ## If you only do one thing
 
-Shopify set **31 August 2026** as Stocky's end of service. The test that matters is not what today's date is — it is whether Stocky still opens in your admin. Read-only export access is meant to run for at least 90 days past that date, but stores that uninstalled after the 2 February 2026 delisting could not reinstall it and were on the far side of this months early.
+Shopify set **31 August 2026** as Stocky's end of service. The test that matters is not what today's date is — it is whether Stocky still opens in your admin. Read-only export access is meant to run for at least 90 days past that date, but stores that uninstalled after the 2 February 2026 delisting ([Shopify, "Transitioning from Stocky"](https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky), read 10 September 2026) could not reinstall it and were on the far side of this months early.
 
 **If Stocky still opens, do this now:**
 

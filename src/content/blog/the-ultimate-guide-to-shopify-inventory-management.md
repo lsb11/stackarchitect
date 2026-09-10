@@ -15,7 +15,7 @@ faqs:
   - question: "Does Shopify have free inventory management?"
     answer: "Shopify has basic inventory tracking built in — stock levels, variant quantities, and low-stock alerts. What it does not provide is automatic order logging to an external system, supplier purchase order management, or a live inventory ledger across multiple locations. The free Make.com and Google Sheets approach provides all of these at no cost."
   - question: "What replaces Shopify Stocky after August 2026?"
-    answer: "Stocky Swap is the free replacement — a Make.com webhook that logs every Shopify order to a Google Sheet automatically. It deploys in 4 minutes and works on every Shopify plan. Stocky was removed from the Shopify App Store on February 2, 2026 and stops functioning entirely on August 31, 2026."
+    answer: "Stocky Swap is the free replacement — a Make.com webhook that logs every Shopify order to a Google Sheet automatically. It deploys in 4 minutes and works on every Shopify plan. Stocky was removed from the Shopify App Store on February 2, 2026 and stopped functioning entirely on August 31, 2026. (Source: Shopify, \"Transitioning from Stocky\", help.shopify.com/en/manual/products/inventory/transitioning-from-stocky, read 10 September 2026.)"
   - question: "How do I track Shopify inventory in Google Sheets for free?"
     answer: "Create a Make.com account, set up a Shopify Order Payment webhook, and configure a Google Sheets module to append a row for every order. Each row captures: order ID, date, product title, variant, quantity, price, customer name, fulfilment status, and any custom fields. Setup takes approximately 20 minutes and requires no code."
   - question: "How do I get low stock alerts for Shopify for free?"
@@ -172,7 +172,7 @@ This gives you a live multi-location view without any additional paid tools.
 
 ## The Urgent August 2026 Situation
 
-Shopify removed Stocky from the App Store on February 2, 2026. On August 31, 2026, Stocky stops functioning entirely. Any purchase order history, stocktake records, and inventory data held in Stocky will be permanently deleted.
+Shopify removed Stocky from the App Store on February 2, 2026. On August 31, 2026, Stocky stopped functioning entirely, and its APIs stopped the same day with no grace period. Purchase order history, stocktake records and inventory data held in Stocky are not deleted with it: Shopify says read-only access to export them continues for at least 90 days after that date, and it has published no deletion date. ([Shopify, "Transitioning from Stocky"](https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky), read 10 September 2026.)
 
 **If you are currently using Stocky:**
 
