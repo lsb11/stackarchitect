@@ -84,8 +84,9 @@ affiliate cloaks and legacy URLs. Redirect edits are covered by `.github/workflo
 (parse-only on PR, live assertions after deploy, plus nightly).
 
 **Build-time date branches need a scheduled build.** `isPostShutdown()` in
-`src/utils/stockyDeadline.ts` resolves at build time — 7 pages plus `Nav.astro`
-branch on it — and a static build never re-evaluates itself.
+`src/utils/stockyDeadline.ts` resolves at build time — six files branch on it: `Nav.astro` plus
+five page files (`index`, `pro`, `pro/[slug]` — four routes — `stocky-swap`
+and `stocky-migration-risk-scorer`) — and a static build never re-evaluates itself.
 `.github/workflows/scheduled-redeploy.yml` POSTs a Cloudflare Pages deploy hook
 daily at 00:15 UTC so a date boundary is crossed by the build within a day.
 Needs the repo secret `CF_PAGES_DEPLOY_HOOK`; without it the run fails loudly

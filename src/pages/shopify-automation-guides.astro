@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
-import { isPostShutdown } from '../utils/stockyDeadline';
+import { STOCKY_EOL_SHORT } from '../utils/stockyDeadline';
+import { PRODUCTS } from '../data/products';
 import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 // src/pages/shopify-automation-guides.astro
@@ -15,22 +16,76 @@ const CANONICAL = `${SITE_URL}${PAGE_PATH}`;
 // meta description and the visible hero tag all derive from this — never
 // hardcode any of them, or the three drift apart (they previously read
 // 2026-07-17, "July 2026" and "2026.06.20" respectively).
-const DATE_MODIFIED = "2026-08-08";
+const DATE_MODIFIED = "2026-09-14";
 
-// Build-time, not client-side: the urgency block below used to ship
-// "-- Days : -- Hours" and swap it in a setInterval, so a crawler that runs no
-// JS saw the placeholder. See src/utils/stockyDeadline.ts.
-const postShutdown = isPostShutdown();
 const UPDATED_LABEL = new Date(DATE_MODIFIED).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
 
+// ── Guide rows ──
+// The single source for the ten cluster lists, the ItemList JSON-LD and every
+// guide count on the page. A guide listed under two clusters (abandoned cart,
+// under Email and CRO) is two rows but one guide, so `guides` dedupes by href.
+// Never type the count: the ItemList declared 30 while the lists showed a
+// different set, and the title said "40+" against 34.
+type GuideRow = {
+  cluster: string; href: string; title: string; desc: string; time: string;
+  item?: string; arrow?: string; pill?: [string, string]; style?: string;
+};
+const rows: GuideRow[] = [
+  { cluster: 'ai', href: '/blog/shopify-ai-playbook-2026/', item: 'gpi-ai', arrow: 'arr-ai', title: 'The Complete Shopify AI Playbook 2026 — How to Use AI to Run Your Entire Store', desc: '7 operational stages, free tools first — product research, ads, email, tracking, support, GEO', pill: ['Playbook', 'pill-ai'], time: '20 min' },
+  { cluster: 'ai', href: '/blog/shopify-agentic-storefronts-setup-guide-2026/', item: 'gpi-ai', arrow: 'arr-ai', title: 'Shopify Agentic Storefronts: Complete Setup Guide 2026 — Sell on ChatGPT, Google AI Mode & Copilot', desc: 'Eligibility requirements, Knowledge Base App setup, product data optimisation, what to do if not eligible yet', pill: ['Guide', 'pill-ai'], time: '18 min' },
+  { cluster: 'ai', href: '/best-ai-tools-shopify/', item: 'gpi-hl', arrow: 'arr-ai', title: 'Best AI Tools for Shopify 2026 — 9 Tools Ranked by ROI', desc: 'GetResponse, Writesonic, AdCreative.ai and 6 more — honest verdicts with free options noted', pill: ['Comparison', 'pill-level'], time: '15 min' },
+
+  { cluster: 'support', href: '/blog/tidio-for-shopify-complete-setup-guide/', item: 'gpi-support', arrow: 'arr-support', title: 'Tidio for Shopify: Complete Setup Guide 2026 — Install Lyro AI, Automate Order Queries, Replace Gorgias Free', desc: 'Step-by-step: install, widget config, Lyro AI training, chatbot flows, Shopify order sync — live in 30 minutes', pill: ['Setup Guide', 'pill-support'], time: '12 min' },
+  { cluster: 'support', href: '/blog/tidio-vs-gorgias-shopify/', item: 'gpi-support', arrow: 'arr-support', title: 'Tidio vs Gorgias for Shopify 2026: Which Customer Support Tool Is Actually Worth It?', desc: 'Full feature table, pricing breakdown, decision framework by store size — honest verdict', pill: ['Comparison', 'pill-support'], time: '12 min' },
+
+  { cluster: 'tracking', href: '/blog/shopify-meta-roas-dropped-2026-fix/', item: 'gpi-roas', arrow: 'arr-red', title: "Shopify Meta ROAS Dropped in 2026? Here's Exactly Why — and the Free Fix", desc: 'iOS 26 + Shopify pixel change + Meta algorithm: diagnose your gap and fix it free in 2–3 hours', pill: ['Q1 2026 Changes', 'pill-alert'], time: '18 min' },
+  { cluster: 'tracking', href: '/blog/shopify-server-side-tracking-complete-setup-guide/', item: 'gpi-hl', title: 'Shopify Server-Side Tracking: Complete Setup Guide 2026 (Meta, Google & TikTok)', desc: 'One Make.com scenario, three platform branches — the complete free setup guide', pill: ['Intermediate', 'pill-level'], time: '12 min' },
+  { cluster: 'tracking', href: '/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/', item: 'gpi-new', title: 'How to Fix Shopify Conversion Tracking After iOS Updates 2026 — Complete Diagnosis Guide', desc: 'iOS 14.5 ATT → iOS 17 Link Tracking → iOS 26: the full timeline, your exact gap, specific fix for each cause', time: '14 min' },
+  { cluster: 'tracking', href: '/blog/recover-lost-shopify-conversions-capi-shield/', item: 'gpi-new', title: 'Recover Lost Shopify Conversions with CAPI Shield — Free Server-Side Fix 2026', desc: 'How CAPI covers the events browser tracking loses, what it can and cannot recover, and how to measure the improvement', time: '10 min' },
+  { cluster: 'tracking', href: '/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026/', item: 'gpi-new', title: 'How to Fix Shopify Google Ads Conversion Tracking Free 2026 — No GTM Required', desc: 'Google Enhanced Conversions via Make.com webhook — covers the Google Ads purchase events browser tracking loses, at $0', time: '14 min' },
+  { cluster: 'tracking', href: '/shopify-google-ads-conversion-tracking/', item: 'gpi-hl', title: 'Free Shopify Google Ads Conversion Tracking — GCLID + Enhanced Conversions (Product Page)', desc: 'Full product guide: why Google Ads misses Shopify purchases, how server-side Enhanced Conversions fixes it, comparison vs Stape and Littledata', time: '10 min' },
+  { cluster: 'tracking', href: '/blog/shopify-google-analytics-4-setup-free-2026/', item: 'gpi-new', title: 'How to Set Up Google Analytics 4 on Shopify Free 2026 — No Apps, No Code', desc: 'Native GA4 via Google & YouTube channel plus Make.com server-side purchase events — complete tracking at $0', time: '16 min' },
+
+  { cluster: 'tiktok', href: '/tiktok-events-api-shopify/', item: 'gpi-tiktok', arrow: 'arr-tiktok', title: 'TikTok Events API for Shopify — Free Server-Side Tracking (Product Guide + Make.com Scenario)', desc: 'Pixel mode warning, CompletePayment event name, Advanced Matching, deduplication — full free setup with scenario blueprint', pill: ['Free', 'pill-new'], time: '8 min' },
+
+  { cluster: 'inventory', href: '/stocky-alternative/', item: 'gpi-hl', arrow: 'arr-sky', style: 'background:rgba(245,182,77,.04);border-color:rgba(245,182,77,.2);', title: 'Shopify Stocky Has Shut Down — Replace It Free, and Export While You Still Can', desc: 'Timeline, data export checklist, supplier data warning, free 4-minute replacement', pill: ['Ended 31 Aug', 'pill-urgent'], time: '10 min' },
+  { cluster: 'inventory', href: '/blog/the-ultimate-guide-to-shopify-inventory-management/', item: 'gpi-new', arrow: 'arr-sky', title: 'The Ultimate Guide to Shopify Inventory Management 2026 — Free Systems That Scale', desc: 'Complete inventory system: order logging, live stock calculations, low-stock alerts, supplier management, velocity analysis — all free', time: '18 min' },
+  { cluster: 'inventory', href: '/blog/shopify-stocky-data-export-before-shutdown/', item: 'gpi-hl', arrow: 'arr-sky', style: 'background:rgba(245,182,77,.03);border-color:rgba(245,182,77,.15);', title: 'Shopify Stocky Data Export — What to Save While the Read-Only Export Lasts', desc: 'Exactly what is stranded behind the read-only export window, and how to export purchase orders, stocktakes and supplier records now', pill: ['Read-only export', 'pill-urgent'], time: '10 min' },
+  { cluster: 'inventory', href: '/stocky-shutdown/', arrow: 'arr-sky', title: 'Shopify Stocky Shutdown — What Happened on August 31, 2026', desc: 'The full timeline, what stopped versus what is still exportable, and your options now', pill: ['Ended 31 Aug', 'pill-urgent'], time: '7 min' },
+  { cluster: 'inventory', href: '/stocky-migration-risk-scorer/', arrow: 'arr-sky', title: 'Stocky Migration Risk Scorer — Free Calculator', desc: "Score your store's migration risk in 60 seconds and get a prioritised action list", pill: ['Tool', 'pill-new'], time: '2 min' },
+
+  { cluster: 'email', href: '/replace-klaviyo-free/', item: 'gpi-email', arrow: 'arr-email', title: 'Replace Klaviyo Free 2026 — Pricing, UK Costs, and the Migration Path', desc: 'The Feb 2025 active-profile billing change, real tier pricing including UK £ and VAT, Systeme.io and GetResponse compared, and the 30-minute migration', pill: ['Pillar Guide', 'pill-level'], time: '22 min' },
+  { cluster: 'email', href: '/blog/shopify-email-marketing-free-2026/', item: 'gpi-email', arrow: 'arr-email', title: 'Shopify Email Marketing Free 2026 — Full Setup Without Klaviyo', desc: 'Welcome flows, abandoned cart, post-purchase, win-back — 4 essential automations, 2,000 contacts, unlimited sends, $0/month on Systeme.io', time: '12 min' },
+  { cluster: 'email', href: '/blog/shopify-abandoned-cart-recovery-free-2026/', item: 'gpi-email', arrow: 'arr-email', title: 'Shopify Abandoned Cart Recovery Free 2026 — Make.com + Systeme.io', desc: 'No app, no monthly fees — full 3-email sequence via Make.com webhook + Systeme.io automation. Complete 30-minute setup guide.', time: '10 min' },
+
+  { cluster: 'profit', href: '/shopify-profit-loss-automation/', item: 'gpi-profit', arrow: 'arr-profit', title: 'Shopify P&L Automation — Live Profit and Loss in Google Sheets Free (2026)', desc: 'Complete template, field mapping reference, Looker Studio dashboard — auto-updates every order with net profit calculated', pill: ['Product Guide', 'pill-level'], time: '8 min' },
+
+  { cluster: 'cro', href: '/blog/shopify-conversion-rate-optimisation-free-2026/', item: 'gpi-new', title: 'Shopify Conversion Rate Optimisation Free 2026 — 12 Free CRO Tools in Priority Order', desc: 'Fix the tracking gap first, then: abandoned cart, Tidio live chat, Microsoft Clarity, GA4 funnels, post-purchase email, PageSpeed — all at $0', time: '11 min' },
+  { cluster: 'cro', href: '/blog/shopify-abandoned-cart-recovery-free-2026/', item: 'gpi-new', title: 'Shopify Abandoned Cart Recovery Free 2026 — Make.com + Systeme.io', desc: '3-email recovery sequence with no app, no monthly fees — set up in 30 minutes', time: '10 min' },
+  { cluster: 'cro', href: '/capi-shield/', title: 'CAPI Shield — Fix the Tracking Gap Before Any CRO Work', desc: 'Server-side Meta + Google tracking — covers the purchase events browser tracking loses, which make conversion rate look artificially low', pill: ['Start Here', 'pill-level'], time: '6 min' },
+
+  { cluster: 'make', href: '/make-com-shopify/', item: 'gpi-make', arrow: 'arr-make', title: 'Make.com for Shopify 2026 — Setup, Free-Tier Limits, and Zapier vs Shopify Flow', desc: 'What Make.com does for Shopify, connecting in 3 min, the scenarios every store needs, free-plan credit limits, and the honest comparison against Zapier and Shopify Flow', pill: ['Start Here', 'pill-make'], time: '20 min' },
+  { cluster: 'make', href: '/blog/when-to-upgrade-free-make-google-workspace/', item: 'gpi-workspace', arrow: 'arr-workspace', title: "When to Upgrade from Free Make.com to Google Workspace — Shopify Operator's Guide 2026", desc: 'The 7 upgrade signals, the $15/month cost calculation, 5-step migration with zero downtime', pill: ['Decision Guide', 'pill-workspace'], time: '14 min' },
+  { cluster: 'make', href: '/blog/the-lean-shopify-tech-stack-2026/', item: 'gpi-new', title: 'The Lean Shopify Tech Stack 2026 — Replace $700/Month of Apps for Free', desc: 'Layer-by-layer breakdown: which paid tools to cut, which free tools replace them, exact savings per category', time: '12 min' },
+  { cluster: 'make', href: '/best-free-shopify-apps-2026/', item: 'gpi-new', title: 'Best Free Shopify Apps 2026 — What Apps Really Cost and What to Cut', desc: 'Real monthly cost of common app stacks, which paid apps are genuinely replaceable and which are not, and the free replacement for every category', pill: ['Pillar Guide', 'pill-new'], time: '18 min' },
+  { cluster: 'make', href: '/blog/shopify-automation-stack-for-small-stores/', item: 'gpi-new', title: 'Shopify Automation Stack for Small Stores 2026 — The $0 Setup Under 1,000 Orders/Month', desc: 'Minimum viable free stack: what to deploy first, what to skip, how to scale as volume grows', time: '10 min' },
+  { cluster: 'make', href: '/blog/shopify-bfcm-automation-checklist-2026/', item: 'gpi-new', title: 'Shopify BFCM Automation Checklist 2026 — 14 Things to Set Up Before Black Friday', desc: 'Tracking setup, a Make.com budget check in October — the complete BFCM preparation checklist', pill: ['BFCM 2026', 'pill-alert'], time: '14 min' },
+
+  { cluster: 'workflow', href: '/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/', item: 'gpi-hl', title: 'Google Apps Script Quotas & Limits 2026 — Every Error, Every Fix (Free)', desc: 'The definitive guide to every quota limit, error code, and fix strategy', time: '9 min' },
+  { cluster: 'workflow', href: '/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script/', item: 'gpi-new', title: 'How to Fix "Service Invoked Too Many Times" in Google Apps Script 2026', desc: 'Exact causes (Sheets, Docs, Drive, Gmail), specific code fixes including batching and exponential backoff', time: '8 min' },
+  { cluster: 'workflow', href: '/blog/the-complete-guide-to-reliable-shopify-automations/', item: 'gpi-new', title: "The Complete Guide to Reliable Shopify Automations 2026 — Architecture That Doesn't Break", desc: 'Error handling, deduplication, reconciliation, monitoring — the patterns that separate production-grade from fragile', time: '14 min' },
+  { cluster: 'workflow', href: '/blog/scalable-google-sheets-automation-for-high-volume-workflows/', item: 'gpi-new', title: 'Scalable Google Sheets Automation for High-Volume Shopify Workflows 2026', desc: 'Batching, checkpointing, hybrid Make.com approaches — handles thousands of orders without hitting quota limits', time: '12 min' },
+];
+const listRows = (cluster: string) => rows.filter((r) => r.cluster === cluster);
+const guides = rows.filter((r, i) => rows.findIndex((x) => x.href === r.href) === i);
+const GUIDE_COUNT = guides.length;
+
 const seo = {
-  title: "Free Shopify Automation Guides 2026 — 40+ Guides",
+  title: `Free Shopify Automation Guides 2026 — ${GUIDE_COUNT} Guides`,
   description:
-    `40+ free Shopify automation guides: server-side tracking, Google Ads, TikTok CAPI, email, inventory and P&L. No code, $0. Updated ${UPDATED_LABEL}.`,
+    `${GUIDE_COUNT} free Shopify automation guides: server-side tracking, Google Ads, TikTok CAPI, email, inventory and P&L. No code, $0. Updated ${UPDATED_LABEL}.`,
   ogImage: "https://stackarchitect.xyz/og.png",
   author: "Stack Architect",
-  keywords:
-    "shopify automation guides 2026, free shopify tools, shopify meta roas fix, shopify server side tracking, shopify google ads conversion tracking free, tiktok events api shopify, replace klaviyo free, klaviyo pricing uk 2026, shopify bfcm checklist 2026, shopify ai tools 2026, shopify agentic storefronts, stocky alternative 2026, shopify automation free, shopify inventory management free, shopify apps waste of money, make.com shopify guide, reliable shopify automation, shopify google enhanced conversions free",
 };
 
 // ── Affiliate links — all routed through /go/ for Brave safety ──
@@ -43,133 +98,101 @@ const aff = {
   workspace:   "/go/workspace/",
 };
 
+// ── FAQ ──
+// One array feeds both the rendered grid and the FAQPage JSON-LD. `a` is the
+// visible answer HTML; the schema text is that HTML with the tags stripped, so
+// the two cannot disagree (they did: the schema had 10 questions to the grid's
+// 12, with different wording and a different GMV figure).
+//
+// One deliberate difference: a parenthetical vendor price such as
+// "Elevar ($225/mo)" is dropped from the schema text. Those prices are
+// quarantined as unverified in docs/claims-unverified.json, and an unverified
+// third-party figure does not go into structured data. Once a human has
+// checked them against the vendor pages, remove dropParentheticalPrices.
+// (Do not write the verification prop's name in a comment on this page:
+// claims-guard matches it anywhere in the source and would treat the page as
+// verified, failing the build on a stale quarantine entry.)
+const faqs = [
+  {
+    q: "How do I fix Shopify Meta ROAS dropping in 2026?",
+    a: `Three changes converged in Q1 2026 to break Meta tracking: iOS 26's Link Tracking Protection, Shopify's January 13 pixel default switching to Optimized mode, and Meta's algorithm shift. Fix: switch App Pixel to Always On in Settings → Customer Events, set Meta data sharing to Maximum, and implement server-side CAPI via Make.com. <strong>Measure your own result as Additional Conversions Reported in Meta Events Manager, typically within 7–14 days.</strong> The full guide is <a href="https://stackarchitect.xyz/blog/shopify-meta-roas-dropped-2026-fix/">free here</a>.`,
+  },
+  {
+    q: "What replaces Shopify Stocky now that it shut down on 31 August 2026?",
+    a: `<strong>Stocky Swap</strong> is a free Make.com webhook that automatically logs every Shopify order to a Google Sheet you own — no vendor lock-in, no monthly fees. Deploys in 4 minutes on any Shopify plan. Shopify Stocky was removed from the App Store February 2, 2026 and ended service August 31; inventory data stays exportable read-only for at least 90 days after that. (Source: <a href="https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky" rel="nofollow">Shopify, &ldquo;Transitioning from Stocky&rdquo;</a>, read 10 September 2026.) The <a href="https://stackarchitect.xyz/blog/the-ultimate-guide-to-shopify-inventory-management/">Ultimate Inventory Guide</a> covers the complete free system including stock alerts, supplier tracking, and velocity analysis.`,
+  },
+  {
+    q: "What is the best free Klaviyo alternative for Shopify in 2026?",
+    a: `<strong>Systeme.io provides 2,000 contacts and unlimited email sends permanently at $0/month</strong> — including sales funnels, CRM, and affiliate management. For stores over 2,000 contacts, GetResponse starts at $19/month, well under the equivalent Klaviyo tier at the same list size, with equivalent abandoned cart, welcome, and post-purchase flows.`,
+  },
+  {
+    q: "How does TikTok Events API work with Shopify?",
+    a: `TikTok's Events API sends purchase events server-to-server via Make.com, bypassing iOS restrictions. <strong>The critical detail: TikTok's purchase event is called CompletePayment — not "Purchase".</strong> Using the wrong name sends events to the wrong category in Events Manager. You cannot change pixel mode after creation, so verify before starting.`,
+  },
+  {
+    q: "Is Make.com actually free for Shopify automation?",
+    a: `Yes. Make.com's free plan gives 1,000 credits/month (formerly called operations) — 10× more than Zapier's 100 free tasks — including webhook triggers and HTTP modules. <strong>One Shopify Order Payment webhook can simultaneously branch to Meta CAPI, Google Enhanced Conversions, TikTok Events API, Google Sheets inventory, and P&amp;L.</strong> Most stores under 250 orders/month run the complete stack free indefinitely.`,
+  },
+  {
+    q: "Can Tidio replace Gorgias for Shopify customer support?",
+    a: `Yes. Tidio reports Lyro resolves up to 70% of queries automatically — order status, shipping, product FAQs — without human intervention. Gorgias costs $40+/month. Tidio's permanently functional free tier covers 50 Lyro AI conversations/month. Setup takes 30 minutes.`,
+  },
+  {
+    q: "What are Shopify Agentic Storefronts?",
+    a: `Shopify Agentic Storefronts enable your products to be purchased directly inside ChatGPT, Google AI Mode, and Microsoft Copilot without the customer leaving those AI interfaces. <strong>Currently US-only and in early access.</strong> Preparation steps — Knowledge Base App, product data optimisation, FAQ schema — apply to all stores immediately and improve AI search discoverability regardless of eligibility.`,
+  },
+  {
+    q: "How do I track Shopify profit and loss for free?",
+    a: `A Make.com webhook auto-populates revenue, COGS, Shopify transaction fees, and net profit into a Google Sheet for every order within 60 seconds of purchase. <strong>Every P&amp;L app charges $25–$299/month.</strong> If CAPI Shield or Stocky Swap is already deployed, this adds a single branch to your existing scenario — setup takes under 3 minutes.`,
+  },
+  {
+    q: "How do I fix iOS conversion tracking on Shopify in 2026?",
+    a: `iOS updates since 2021 have cumulatively broken browser-based conversion tracking. The fix is server-side tracking via Conversions API — purchase events sent server-to-server bypass iOS restrictions entirely. <strong>Switch your Shopify App Pixel to Always On mode (5 minutes), then implement CAPI Shield for full server-side coverage (2–3 hours).</strong> The full diagnosis guide covers each iOS change specifically: <a href="https://stackarchitect.xyz/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/">How to Fix Shopify Conversion Tracking After iOS Updates</a>.`,
+  },
+  {
+    q: "Which Shopify apps are a waste of money in 2026?",
+    a: `The most commonly overpaid-for apps: <strong>Elevar ($225/mo) and Triple Whale (GMV-based)</strong> for server-side tracking — replaced free by CAPI Shield. <strong>Zapier ($19.99+/mo)</strong> for automation — replaced free by Make.com with 10× more operations. <strong>Klaviyo ($20+/mo)</strong> for email under 2,000 contacts — replaced free by Systeme.io. <strong>BeProfit and TrueProfit ($19–$299/mo)</strong> for P&amp;L — replaced free by P&amp;L Auto. Full breakdown: <a href="https://stackarchitect.xyz/best-free-shopify-apps-2026/">Shopify Apps That Are a Waste of Money</a>.`,
+  },
+  {
+    q: "How do I recover abandoned carts on Shopify for free?",
+    a: `The free method uses Make.com and Systeme.io — no Shopify app required. Create a Shopify <code>checkouts/create</code> webhook pointing to a Make.com scenario. Make.com extracts the customer email and cart data, sends it to Systeme.io via API, and triggers a 3-email recovery sequence (1 hour, 24 hours, 72 hours) that stops automatically after purchase. <strong>Setup takes 30 minutes and costs $0/month.</strong> Full setup: <a href="https://stackarchitect.xyz/blog/shopify-abandoned-cart-recovery-free-2026/">Shopify Abandoned Cart Recovery Free 2026</a>.`,
+  },
+  {
+    q: "How do I improve my Shopify conversion rate for free?",
+    a: `<strong>Before any CRO work, verify your tracking is accurate</strong> — iOS restrictions and ad blockers hide real purchases, making conversion rates look artificially low. Fix this first with CAPI Shield (free, 6 minutes). Then: abandoned cart recovery via Make.com + Systeme.io, Tidio Lyro AI for live chat, Microsoft Clarity for session recordings, GA4 funnel analysis for drop-off diagnosis. All free. Full priority-order guide: <a href="https://stackarchitect.xyz/blog/shopify-conversion-rate-optimisation-free-2026/">Shopify CRO Free 2026 — 12 Free Tools</a>.`,
+  },
+];
+const stripHtml = (s: string) =>
+  s.replace(/<[^>]+>/g, '').replace(/&ldquo;|&rdquo;/g, '"').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
+const dropParentheticalPrices = (s: string) => s.replace(/\s*\((?=[^)]*\$)[^)]*\)/g, '');
+
 // ── Schema.org structured data ──
 const schemaItemList = {
   "@context": "https://schema.org",
   "@type": "ItemList",
   "name": "Free Shopify Automation & AI Guides 2026",
-  "description": "40+ step-by-step guides covering every operational layer of a Shopify store. Server-side tracking, Meta ROAS recovery, Google Ads Enhanced Conversions, TikTok CAPI, AI customer support, Klaviyo replacement, email marketing, abandoned cart recovery, CRO, Make.com automation, inventory, P&L, and agentic storefronts.",
+  "description": `${GUIDE_COUNT} step-by-step guides covering every operational layer of a Shopify store. Server-side tracking, Meta ROAS recovery, Google Ads Enhanced Conversions, TikTok CAPI, AI customer support, Klaviyo replacement, email marketing, abandoned cart recovery, CRO, Make.com automation, inventory, P&L, and agentic storefronts.`,
   "url": CANONICAL,
-  "numberOfItems": 30,
-  "itemListElement": [
-    { "@type": "ListItem", "position": 1, "name": "The Complete Shopify AI Playbook 2026", "url": `${SITE_URL}/blog/shopify-ai-playbook-2026/` },
-    { "@type": "ListItem", "position": 2, "name": "Shopify Meta ROAS Dropped in 2026? Here's the Free Fix", "url": `${SITE_URL}/blog/shopify-meta-roas-dropped-2026-fix/` },
-    { "@type": "ListItem", "position": 3, "name": "Make.com for Shopify 2026 — Setup, Free Limits, vs Zapier and Flow", "url": `${SITE_URL}/make-com-shopify/` },
-    { "@type": "ListItem", "position": 4, "name": "Tidio for Shopify: Complete Setup Guide 2026", "url": `${SITE_URL}/blog/tidio-for-shopify-complete-setup-guide/` },
-    { "@type": "ListItem", "position": 5, "name": "Shopify Server-Side Tracking: Complete Setup Guide 2026", "url": `${SITE_URL}/blog/shopify-server-side-tracking-complete-setup-guide/` },
-    { "@type": "ListItem", "position": 6, "name": "TikTok Events API for Shopify — Free Server-Side Setup 2026", "url": `${SITE_URL}/tiktok-events-api-shopify/` },
-    { "@type": "ListItem", "position": 7, "name": "Free Klaviyo Alternative for Shopify in 2026", "url": `${SITE_URL}/replace-klaviyo-free/` },
-    { "@type": "ListItem", "position": 8, "name": "Shopify Agentic Storefronts Setup Guide 2026", "url": `${SITE_URL}/blog/shopify-agentic-storefronts-setup-guide-2026/` },
-    { "@type": "ListItem", "position": 9, "name": "The Ultimate Guide to Shopify Inventory Management 2026", "url": `${SITE_URL}/blog/the-ultimate-guide-to-shopify-inventory-management/` },
-    { "@type": "ListItem", "position": 10, "name": "How to Fix Shopify Conversion Tracking After iOS Updates 2026", "url": `${SITE_URL}/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/` },
-    { "@type": "ListItem", "position": 11, "name": "Recover Lost Shopify Conversions with CAPI Shield", "url": `${SITE_URL}/blog/recover-lost-shopify-conversions-capi-shield/` },
-    { "@type": "ListItem", "position": 12, "name": "The Lean Shopify Tech Stack 2026", "url": `${SITE_URL}/blog/the-lean-shopify-tech-stack-2026/` },
-    { "@type": "ListItem", "position": 13, "name": "Best Free Shopify Apps 2026 — What Apps Cost and What to Cut", "url": `${SITE_URL}/best-free-shopify-apps-2026/` },
-    { "@type": "ListItem", "position": 14, "name": "Tidio vs Gorgias for Shopify 2026", "url": `${SITE_URL}/blog/tidio-vs-gorgias-shopify/` },
-    { "@type": "ListItem", "position": 15, "name": "When to Upgrade from Free Make.com to Google Workspace", "url": `${SITE_URL}/blog/when-to-upgrade-free-make-google-workspace/` },
-    { "@type": "ListItem", "position": 16, "name": "Shopify Automation Stack for Small Stores 2026", "url": `${SITE_URL}/blog/shopify-automation-stack-for-small-stores/` },
-    { "@type": "ListItem", "position": 17, "name": "The Complete Guide to Reliable Shopify Automations 2026", "url": `${SITE_URL}/blog/the-complete-guide-to-reliable-shopify-automations/` },
-    { "@type": "ListItem", "position": 18, "name": "Scalable Google Sheets Automation for High-Volume Workflows", "url": `${SITE_URL}/blog/scalable-google-sheets-automation-for-high-volume-workflows/` },
-    { "@type": "ListItem", "position": 19, "name": "How to Fix Service Invoked Too Many Times in Google Apps Script", "url": `${SITE_URL}/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script/` },
-    { "@type": "ListItem", "position": 20, "name": "Google Apps Script Quotas Explained 2026", "url": `${SITE_URL}/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/` },
-    { "@type": "ListItem", "position": 21, "name": "Replace Shopify Stocky Free Before August 2026 Shutdown", "url": `${SITE_URL}/stocky-alternative/` },
-    { "@type": "ListItem", "position": 22, "name": "How to Fix Shopify Google Ads Conversion Tracking Free 2026", "url": `${SITE_URL}/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026/` },
-    { "@type": "ListItem", "position": 23, "name": "Shopify Stocky Data Export — What to Save Before August 31 Shutdown", "url": `${SITE_URL}/blog/shopify-stocky-data-export-before-shutdown/` },
-    { "@type": "ListItem", "position": 24, "name": "How to Set Up Google Analytics 4 on Shopify Free 2026", "url": `${SITE_URL}/blog/shopify-google-analytics-4-setup-free-2026/` },
-    { "@type": "ListItem", "position": 25, "name": "Free Shopify Google Ads Conversion Tracking — GCLID + Enhanced Conversions", "url": `${SITE_URL}/shopify-google-ads-conversion-tracking/` },
-    { "@type": "ListItem", "position": 26, "name": "Shopify BFCM Automation Checklist 2026", "url": `${SITE_URL}/blog/shopify-bfcm-automation-checklist-2026/` },
-    { "@type": "ListItem", "position": 27, "name": "Shopify Abandoned Cart Recovery Free 2026 — Make.com + Systeme.io", "url": `${SITE_URL}/blog/shopify-abandoned-cart-recovery-free-2026/` },
-    { "@type": "ListItem", "position": 28, "name": "Shopify Email Marketing Free 2026 — Full Setup Without Klaviyo", "url": `${SITE_URL}/blog/shopify-email-marketing-free-2026/` },
-    { "@type": "ListItem", "position": 29, "name": "Shopify CRO Free 2026 — 12 Free Conversion Rate Optimisation Tools", "url": `${SITE_URL}/blog/shopify-conversion-rate-optimisation-free-2026/` },
-    { "@type": "ListItem", "position": 30, "name": "Shopify to Google Sheets Automation Guide 2026", "url": `${SITE_URL}/shopify-google-sheets-automation/` }
-  ]
+  "numberOfItems": guides.length,
+  // The name is the row title up to its first em dash: the visible title's
+  // subtitle carries figures (the Lean Stack's monthly saving, for one) that
+  // stay out of schema.
+  "itemListElement": guides.map((g, i) => ({
+    "@type": "ListItem",
+    "position": i + 1,
+    "name": g.title.split(' — ')[0],
+    "url": `${SITE_URL}${g.href}`,
+  })),
 };
 
 const schemaFAQ = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How do I fix Shopify Meta ROAS dropping in 2026?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Three changes converged in Q1 2026 to break Meta tracking: iOS 26's Link Tracking Protection, Shopify's January 13 pixel default switching to Optimized mode, and Meta's algorithm shift. Fix: switch App Pixel to Always On in Settings → Customer Events, set Meta data sharing to Maximum, and implement server-side CAPI via Make.com. Browser-only tracking loses purchase events to these restrictions; server-side delivery is not subject to that loss. Measure your own result as Additional Conversions Reported in Meta Events Manager, typically within 7–14 days."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What replaces Shopify Stocky after it shuts down August 31 2026?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Stocky Swap is a free Make.com webhook that automatically logs every Shopify order to a Google Sheet you own entirely — no vendor lock-in, no monthly fees. It deploys in 4 minutes and works on every Shopify plan. Shopify Stocky was removed from the App Store February 2, 2026 and stopped functioning entirely August 31, 2026. (Source: Shopify, \"Transitioning from Stocky\", help.shopify.com/en/manual/products/inventory/transitioning-from-stocky, read 10 September 2026.)"
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is the best free Klaviyo alternative for Shopify in 2026?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Systeme.io provides 2,000 contacts and unlimited email sends permanently at $0/month — plus sales funnels, CRM, course hosting, and affiliate management that Klaviyo never included. For stores over 2,000 contacts, GetResponse starts at $19/month, well under the equivalent Klaviyo tier at the same list size."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How does TikTok Events API work with Shopify?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "TikTok's Events API sends CompletePayment events (not 'Purchase' — this is the critical naming detail) server-to-server via Make.com, bypassing iOS restrictions. It sends full Advanced Matching data and is a free alternative to WeltPixel ($39/mo). You cannot change pixel mode after creation, so verify before starting."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is Make.com free for Shopify automation?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Make.com's free plan gives 1,000 credits/month (formerly called operations) — 10× more than Zapier's 100 free tasks — and includes webhook triggers and HTTP modules. One Shopify Order Payment webhook can branch to Meta CAPI, Google Enhanced Conversions, TikTok Events API, Google Sheets inventory, and P&L simultaneously. Most stores under 250 orders/month run the complete stack on the free plan indefinitely."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can Tidio replace Gorgias for Shopify customer support?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. Tidio's Lyro AI resolves approximately 70% of inbound Shopify support queries automatically — order status, shipping, FAQs — without human intervention. Gorgias costs $40+/month. Tidio's free tier covers 50 Lyro AI conversations per month, sufficient for most stores under $40k/month GMV. Setup takes 30 minutes with no code required."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What are agentic storefronts on Shopify?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Shopify Agentic Storefronts enable your products to be purchased directly inside ChatGPT, Google AI Mode, and Microsoft Copilot without leaving those AI interfaces. Currently US-only and in early access. Preparation steps including the Knowledge Base App, product data optimisation, and FAQ schema apply to all stores immediately and improve AI search discoverability."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How do I track Shopify profit and loss for free?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "A Make.com webhook auto-populates revenue, COGS, Shopify transaction fees, and net profit into a Google Sheet you own for every order within 60 seconds of purchase. Every P&L app charges $25–$299/month. If you already have CAPI Shield or Stocky Swap deployed, this adds a single branch to your existing scenario — setup takes under 3 minutes."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How do I fix iOS conversion tracking on Shopify in 2026?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "iOS updates have progressively broken browser-based tracking since 2021. The cumulative effect is purchase events missing from Meta and Google — how many depends on your own traffic, since the loss falls on mobile, iOS and consent-declining visitors. The fix is server-side tracking via Conversions API: purchase events sent server-to-server bypass iOS restrictions entirely. Switch your Shopify App Pixel to Always On mode first (5 minutes), then implement CAPI Shield for full server-side coverage (2–3 hours)."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Which Shopify apps are a waste of money in 2026?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The most commonly overpaid-for Shopify apps in 2026 are: Elevar and Triple Whale for server-side tracking (replaced free by CAPI Shield), Zapier for automation (replaced free by Make.com with 10× more operations), Klaviyo for email under 2,000 contacts (replaced free by Systeme.io), P&L apps like BeProfit and TrueProfit (replaced free by Shopify P&L Auto), and TikTok tracking apps like WeltPixel (replaced free by TikTok Events API via Make.com)."
-      }
-    }
-  ]
+  "mainEntity": faqs.map((f) => ({
+    "@type": "Question",
+    "name": f.q,
+    "acceptedAnswer": { "@type": "Answer", "text": dropParentheticalPrices(stripHtml(f.a)) },
+  })),
 };
 
 const schemaBreadcrumb = {
@@ -310,7 +333,7 @@ const tocHeadings = [
 
   <TableOfContents headings={tocHeadings} />
     <div class="gp-stats" role="list" aria-label="Key statistics">
-      <div class="gp-stat" role="listitem"><span class="gs-val">40+</span><span class="gs-label">Live guides</span></div>
+      <div class="gp-stat" role="listitem"><span class="gs-val">{GUIDE_COUNT}</span><span class="gs-label">Live guides</span></div>
       <div class="gp-stat" role="listitem"><span class="gs-val">$700+</span><span class="gs-label">Saved / month</span></div>
       <div class="gp-stat" role="listitem"><span class="gs-val">$0</span><span class="gs-label">Monthly cost</span></div>
       <div class="gp-stat" role="listitem"><span class="gs-val">$0</span><span class="gs-label">Cost to implement</span></div>
@@ -333,7 +356,7 @@ const tocHeadings = [
   <div style="background:rgba(52,211,119,.04);border-top:1px solid rgba(52,211,119,.15);border-bottom:1px solid rgba(52,211,119,.15);padding:16px 24px;" role="note" aria-label="Quick answer">
     <div style="max-width:1100px;margin:0 auto;display:flex;align-items:flex-start;gap:16px;">
       <span style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--g);letter-spacing:.15em;white-space:nowrap;margin-top:3px;opacity:.7;">DIRECT ANSWER</span>
-      <p style="font-size:13px;color:var(--text-3);line-height:1.7;margin:0;">Stack Architect provides 40+ free Shopify automation guides covering server-side tracking (Meta CAPI, Google Enhanced Conversions, TikTok Events API), inventory management (Stocky replacement before August 31 2026 shutdown), email marketing (Klaviyo alternatives, abandoned cart recovery), CRO (free conversion rate optimisation), Make.com automation, AI tools, and P&amp;L reporting — all free, no code required, replacing $700+/month of paid Shopify apps.</p>
+      <p style="font-size:13px;color:var(--text-3);line-height:1.7;margin:0;">Stack Architect provides {GUIDE_COUNT} free Shopify automation guides covering server-side tracking (Meta CAPI, Google Enhanced Conversions, TikTok Events API), inventory management (Stocky replacement after its 31 August 2026 shutdown), email marketing (Klaviyo alternatives, abandoned cart recovery), CRO (free conversion rate optimisation), Make.com automation, AI tools, and P&amp;L reporting — all free, no code required, replacing $700+/month of paid Shopify apps.</p>
     </div>
   </div>
 
@@ -360,36 +383,14 @@ const tocHeadings = [
       <div class="gpu-left">
         <div class="gpu-icon" aria-hidden="true">⚠️</div>
         <div>
-          <div class="gpu-title">{postShutdown ? "Shopify Stocky ended 31 August 2026 — read-only export for at least 90 days" : "Shopify Stocky shuts down August 31, 2026"}</div>
-          <div class="gpu-desc">The free replacement deploys in 4 minutes, before or after the date.</div>
+          <div class="gpu-title">Shopify Stocky ended 31 August 2026 — read-only export for at least 90 days</div>
+          <div class="gpu-desc">The free replacement deploys in 4 minutes.</div>
         </div>
       </div>
-      {postShutdown ? (
-        <div class="gpu-cd" aria-label="Stocky end of service">
-          <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--amber);">Ended 31 Aug 2026</div>
-          <a href="https://stackarchitect.xyz/stocky-alternative/" class="btn-g" style="margin-left:14px;background:var(--amber);color:#000;">What to do now →</a>
-        </div>
-      ) : (
-        <div class="gpu-cd" aria-label="Countdown to shutdown">
-          <div class="gpu-cd-unit"><span class="gpu-cd-val" id="cd-d">--</span><div class="gpu-cd-label">Days</div></div>
-          <div class="gpu-cd-sep" aria-hidden="true">:</div>
-          <div class="gpu-cd-unit"><span class="gpu-cd-val" id="cd-h">--</span><div class="gpu-cd-label">Hours</div></div>
-          <div class="gpu-cd-sep" aria-hidden="true">:</div>
-          <div class="gpu-cd-unit"><span class="gpu-cd-val" id="cd-m">--</span><div class="gpu-cd-label">Mins</div></div>
-          <a href="https://stackarchitect.xyz/stocky-swap/" class="btn-g" style="margin-left:14px;background:var(--amber);color:#000;">Replace Free →</a>
-        </div>
-      )}
-    </div>
-  </div>
-
-  <!-- ══ NEW CONTENT BANNER ══ -->
-  <div class="gp-banner">
-    <div class="gp-banner-inner">
-      <span class="gp-banner-badge">Recently Added</span>
-      <span class="gp-banner-text">
-        <strong>16 guides recently added:</strong> Google Ads Conversion Tracking Fix, Stocky Data Export Guide, GA4 Free Setup, Ultimate Inventory Guide, iOS Conversion Tracking Fix, Recover Lost Conversions, Lean Tech Stack, App Cost Analysis, Apps That Waste Money, Service Invoked Fix, Scalable Sheets Automation, Small Store Stack, Reliable Automations Guide, <strong>Abandoned Cart Recovery Free</strong>, <strong>Email Marketing Free 2026</strong>, and <strong>CRO Free — 12 Free Tools</strong>.
-      </span>
-      <a href="#workflow" class="btn-outline" style="font-size:12px;padding:7px 14px;min-height:34px;">See New Guides →</a>
+      <div class="gpu-cd" aria-label="Stocky end of service">
+        <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--amber);">Ended {STOCKY_EOL_SHORT}</div>
+        <a href="https://stackarchitect.xyz/stocky-alternative/" class="btn-g" style="margin-left:14px;background:var(--amber);color:#000;">What to do now →</a>
+      </div>
     </div>
   </div>
 
@@ -407,7 +408,7 @@ const tocHeadings = [
       </a>
 
       <a href="https://stackarchitect.xyz/blog/shopify-meta-roas-dropped-2026-fix/" class="gfc gfc-roas">
-        <span class="gfc-badge alert">Urgent · Q1 2026</span>
+        <span class="gfc-badge alert">Q1 2026 Changes</span>
         <span class="gfc-tag tag-roas">Meta Tracking · ROAS Fix</span>
         <div class="gfc-title">Shopify Meta ROAS Dropped in 2026? Here's Exactly Why — and the Free Fix</div>
         <div class="gfc-desc">Three converging changes are costing stores conversion data. Diagnose your exact gap, fix App Pixel mode, and implement server-side CAPI free in 2–3 hours.</div>
@@ -425,7 +426,7 @@ const tocHeadings = [
       <a href="https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide/" class="gfc gfc-support">
         <span class="gfc-badge support">Free Setup</span>
         <span class="gfc-tag tag-support">Customer Support · AI</span>
-        <div class="gfc-title">Tidio for Shopify: Complete Setup Guide 2026 — Free AI Live Chat That Resolves 70% of Queries</div>
+        <div class="gfc-title">Tidio for Shopify: Complete Setup Guide 2026 — Free AI Live Chat (Tidio reports Lyro resolves up to 70% of queries)</div>
         <div class="gfc-desc">Install Lyro AI, build order status flows, sync Shopify order data, and replace Gorgias at $0. Step-by-step in 30 minutes with no code required.</div>
         <div class="gfc-foot"><span class="gfc-read">12 min read</span><span class="gfc-arrow" style="color:var(--support);">↗</span></div>
       </a>
@@ -438,9 +439,8 @@ const tocHeadings = [
       </a>
 
       <a href="https://stackarchitect.xyz/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/" class="gfc">
-        <span class="gfc-tag tag-tracking" style="background:rgba(100,116,139,.08);border-color:rgba(100,116,139,.2);color:#93a09a;">Workflow · High Traffic</span>
         <div class="gfc-title">Google Apps Script Quotas &amp; Limits 2026 — Every Error, Every Fix (Free)</div>
-        <div class="gfc-desc">Every quota limit, every error code, every fix. The most-viewed guide on this site with 11,000+ impressions — covers 6-minute execution, daily runtime, and service rate limits.</div>
+        <div class="gfc-desc">Every quota limit, every error code, every fix — covers the 6-minute execution limit, daily runtime quotas, and service rate limits.</div>
         <div class="gfc-foot"><span class="gfc-read">9 min read</span><span class="gfc-arrow">↗</span></div>
       </a>
 
@@ -461,7 +461,7 @@ const tocHeadings = [
       <div class="gpc-left">
         <span class="gpc-label label-ai">AI_Tools · Agentic_Commerce · GEO · 2026</span>
         <h2 class="gpc-title" id="ai-heading">AI Tools &amp; Agentic Commerce — The Complete 2026 Picture</h2>
-        <p class="gpc-desc">AI-driven traffic to Shopify stores grew 8× year-over-year in 2025. These guides cover how to use AI across every operational stage of your store — from product research and ad creative to email, tracking, and the new AI search channel (GEO). Free tools first throughout.</p>
+        <p class="gpc-desc">These guides cover how to use AI across every operational stage of your store — from product research and ad creative to email, tracking, and the new AI search channel (GEO). Free tools first throughout.</p>
       </div>
       <div class="gpc-cta"><a href="https://stackarchitect.xyz/blog/shopify-ai-playbook-2026/" class="btn-g" style="background:var(--ai);color:#0c0f0d;">Read AI Playbook →</a></div>
     </div>
@@ -470,18 +470,7 @@ const tocHeadings = [
       <p>The Agentic Storefronts guide covers the most important new Shopify feature of 2026: enabling your products to be purchased directly inside ChatGPT, Google AI Mode, and Microsoft Copilot. Currently US-only and in early access. The preparation steps (Knowledge Base App, product data, FAQ schema) apply to all stores regardless of eligibility and improve AI discoverability immediately.</p>
     </div>
     <nav class="gp-list" aria-label="AI and automation guides">
-      <a href="https://stackarchitect.xyz/blog/shopify-ai-playbook-2026/" class="gp-item gpi-ai">
-        <div class="gpi-left"><span class="gpi-arrow arr-ai" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">The Complete Shopify AI Playbook 2026 — How to Use AI to Run Your Entire Store</div><div class="gpi-desc">7 operational stages, free tools first — product research, ads, email, tracking, support, GEO</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-ai">Playbook</span><span class="gpi-time">20 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/blog/shopify-agentic-storefronts-setup-guide-2026/" class="gp-item gpi-ai">
-        <div class="gpi-left"><span class="gpi-arrow arr-ai" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Shopify Agentic Storefronts: Complete Setup Guide 2026 — Sell on ChatGPT, Google AI Mode &amp; Copilot</div><div class="gpi-desc">Eligibility requirements, Knowledge Base App setup, product data optimisation, what to do if not eligible yet</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-ai">Guide</span><span class="gpi-time">18 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/best-ai-tools-shopify/" class="gp-item gpi-hl">
-        <div class="gpi-left"><span class="gpi-arrow arr-ai" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Best AI Tools for Shopify 2026 — 9 Tools Ranked by ROI</div><div class="gpi-desc">GetResponse, Writesonic, AdCreative.ai and 6 more — honest verdicts with free options noted</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-level">Comparison</span><span class="gpi-time">15 min</span></div>
-      </a>
+      {listRows('ai').map((r) => <a href={SITE_URL + r.href} class={r.item ? `gp-item ${r.item}` : 'gp-item'} style={r.style}><div class="gpi-left"><span class={r.arrow ? `gpi-arrow ${r.arrow}` : 'gpi-arrow'} aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">{r.title}</div><div class="gpi-desc">{r.desc}</div></div></div><div class="gpi-right">{r.pill && <span class={`gpi-pill ${r.pill[1]}`}>{r.pill[0]}</span>}<span class="gpi-time">{r.time}</span></div></a>)}
     </nav>
   </section>
 
@@ -494,21 +483,14 @@ const tocHeadings = [
         <h2 class="gpc-title" id="support-heading">AI Customer Support — Replace Gorgias Free with Tidio</h2>
         <p class="gpc-desc">Order status, shipping questions, and product FAQs account for 60–70% of all Shopify support volume. Tidio's Lyro AI resolves them automatically — without a human agent, without a monthly helpdesk fee. The free tier is permanently functional, not a crippled trial.</p>
       </div>
-      <div class="gpc-cta"><a href={`${aff.tidio}?source=shopify-automation-guides-map-n1`} rel="sponsored nofollow noopener" class="btn-support">Get Tidio free — Lyro AI resolves up to 70% of tickets →</a></div>
+      <div class="gpc-cta"><a href={`${aff.tidio}?source=shopify-automation-guides-map-n1`} rel="sponsored nofollow noopener" class="btn-support">Get Tidio free — Lyro resolves up to 70%, per Tidio →</a></div>
     </div>
     <div class="gpc-prose">
-      <p>Most Shopify stores overpay for customer support. Gorgias costs $40+/month. Zendesk costs more. Both assume a human is in the loop for every conversation. <strong>Tidio's Lyro AI reads and responds to queries using a generative language model trained on your FAQ content and Shopify product catalogue</strong> — resolving approximately 70% of inbound queries without human intervention, and escalating the remainder automatically.</p>
-      <p>The free tier covers 50 Lyro AI conversations per month — sufficient for most stores under $30k/month GMV. The native Shopify integration pulls live order data directly into the chat sidebar. Default settings typically achieve only 25–35% resolution rates — the setup guide covers the knowledge base architecture and weekly tuning routine that gets you to 70%+.</p>
+      <p>Most Shopify stores overpay for customer support. Gorgias costs $40+/month. Zendesk costs more. Both assume a human is in the loop for every conversation. <strong>Tidio's Lyro AI reads and responds to queries using a generative language model trained on your FAQ content and Shopify product catalogue</strong> — Tidio reports Lyro resolves up to 70% of queries without human intervention, escalating the remainder automatically.</p>
+      <p>The free tier covers 50 Lyro AI conversations per month — sufficient for most stores under $30k/month GMV. The native Shopify integration pulls live order data directly into the chat sidebar. The setup guide covers the knowledge base architecture and the weekly tuning routine that the resolution rate depends on.</p>
     </div>
     <nav class="gp-list" aria-label="Customer support guides">
-      <a href="https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide/" class="gp-item gpi-support">
-        <div class="gpi-left"><span class="gpi-arrow arr-support" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Tidio for Shopify: Complete Setup Guide 2026 — Install Lyro AI, Automate Order Queries, Replace Gorgias Free</div><div class="gpi-desc">Step-by-step: install, widget config, Lyro AI training, chatbot flows, Shopify order sync — live in 30 minutes</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-support">Setup Guide</span><span class="gpi-time">12 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/blog/tidio-vs-gorgias-shopify/" class="gp-item gpi-support">
-        <div class="gpi-left"><span class="gpi-arrow arr-support" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Tidio vs Gorgias for Shopify 2026: Which Customer Support Tool Is Actually Worth It?</div><div class="gpi-desc">Full feature table, pricing breakdown, decision framework by store size — honest verdict</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-support">Comparison</span><span class="gpi-time">12 min</span></div>
-      </a>
+      {listRows('support').map((r) => <a href={SITE_URL + r.href} class={r.item ? `gp-item ${r.item}` : 'gp-item'} style={r.style}><div class="gpi-left"><span class={r.arrow ? `gpi-arrow ${r.arrow}` : 'gpi-arrow'} aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">{r.title}</div><div class="gpi-desc">{r.desc}</div></div></div><div class="gpi-right">{r.pill && <span class={`gpi-pill ${r.pill[1]}`}>{r.pill[0]}</span>}<span class="gpi-time">{r.time}</span></div></a>)}
     </nav>
   </section>
 
@@ -527,34 +509,7 @@ const tocHeadings = [
       <p>The fix: switch your App Pixel to "Always on" (Settings → Customer Events), set Meta data sharing to Maximum, and implement full server-side CAPI via <a href="https://stackarchitect.xyz/capi-shield/">CAPI Shield</a>. CAPI sends purchase events server-to-server — bypassing browsers, iOS restrictions, and Shopify's throttling entirely. Browser-only tracking loses purchase events to iOS, ITP and ad blockers; server-side delivery avoids that loss. Measure your own result as Additional Conversions Reported in Meta Events Manager, typically within 7–14 days.</p>
     </div>
     <nav class="gp-list" aria-label="Ad tracking guides">
-      <a href="https://stackarchitect.xyz/blog/shopify-meta-roas-dropped-2026-fix/" class="gp-item gpi-roas">
-        <div class="gpi-left"><span class="gpi-arrow arr-red" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Shopify Meta ROAS Dropped in 2026? Here's Exactly Why — and the Free Fix</div><div class="gpi-desc">iOS 26 + Shopify pixel change + Meta algorithm: diagnose your gap and fix it free in 2–3 hours</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-alert">Urgent · Q1 2026</span><span class="gpi-time">18 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/blog/shopify-server-side-tracking-complete-setup-guide/" class="gp-item gpi-hl">
-        <div class="gpi-left"><span class="gpi-arrow" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Shopify Server-Side Tracking: Complete Setup Guide 2026 (Meta, Google &amp; TikTok)</div><div class="gpi-desc">One Make.com scenario, three platform branches — the complete free setup guide</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-level">Intermediate</span><span class="gpi-time">12 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/" class="gp-item gpi-new">
-        <div class="gpi-left"><span class="gpi-arrow" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">How to Fix Shopify Conversion Tracking After iOS Updates 2026 — Complete Diagnosis Guide</div><div class="gpi-desc">iOS 14.5 ATT → iOS 17 Link Tracking → iOS 26: the full timeline, your exact gap, specific fix for each cause</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-new">New</span><span class="gpi-time">14 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/blog/recover-lost-shopify-conversions-capi-shield/" class="gp-item gpi-new">
-        <div class="gpi-left"><span class="gpi-arrow" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Recover Lost Shopify Conversions with CAPI Shield — Free Server-Side Fix 2026</div><div class="gpi-desc">How CAPI covers the events browser tracking loses, what it can and cannot recover, and how to measure the improvement</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-new">New</span><span class="gpi-time">10 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026/" class="gp-item gpi-new">
-        <div class="gpi-left"><span class="gpi-arrow" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">How to Fix Shopify Google Ads Conversion Tracking Free 2026 — No GTM Required</div><div class="gpi-desc">Google Enhanced Conversions via Make.com webhook — covers the Google Ads purchase events browser tracking loses, at $0</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-new">New</span><span class="gpi-time">14 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/shopify-google-ads-conversion-tracking/" class="gp-item gpi-hl">
-        <div class="gpi-left"><span class="gpi-arrow" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Free Shopify Google Ads Conversion Tracking — GCLID + Enhanced Conversions (Product Page)</div><div class="gpi-desc">Full product guide: why Google Ads misses 25% of Shopify purchases, how server-side Enhanced Conversions fixes it, comparison vs Stape and Littledata</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-new">New</span><span class="gpi-time">10 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/blog/shopify-google-analytics-4-setup-free-2026/" class="gp-item gpi-new">
-        <div class="gpi-left"><span class="gpi-arrow" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">How to Set Up Google Analytics 4 on Shopify Free 2026 — No Apps, No Code</div><div class="gpi-desc">Native GA4 via Google &amp; YouTube channel plus Make.com server-side purchase events — complete tracking at $0</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-new">New</span><span class="gpi-time">16 min</span></div>
-      </a>
+      {listRows('tracking').map((r) => <a href={SITE_URL + r.href} class={r.item ? `gp-item ${r.item}` : 'gp-item'} style={r.style}><div class="gpi-left"><span class={r.arrow ? `gpi-arrow ${r.arrow}` : 'gpi-arrow'} aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">{r.title}</div><div class="gpi-desc">{r.desc}</div></div></div><div class="gpi-right">{r.pill && <span class={`gpi-pill ${r.pill[1]}`}>{r.pill[0]}</span>}<span class="gpi-time">{r.time}</span></div></a>)}
     </nav>
   </section>
 
@@ -572,10 +527,7 @@ const tocHeadings = [
       <p>TikTok advertising audiences skew younger and more iPhone-native — meaning the iOS tracking gap is proportionally larger for TikTok campaigns than for Meta. The critical detail every other guide misses: <strong>TikTok's purchase event is called CompletePayment — not "Purchase"</strong>. Using the wrong name sends events to the wrong category in Events Manager and they will not feed into campaign optimisation. Check your pixel mode before starting — you cannot change it after creation.</p>
     </div>
     <nav class="gp-list" aria-label="TikTok CAPI guides">
-      <a href="https://stackarchitect.xyz/tiktok-events-api-shopify/" class="gp-item gpi-tiktok">
-        <div class="gpi-left"><span class="gpi-arrow arr-tiktok" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">TikTok Events API for Shopify — Free Server-Side Tracking (Product Guide + Make.com Scenario)</div><div class="gpi-desc">Pixel mode warning, CompletePayment event name, Advanced Matching, deduplication — full free setup with scenario blueprint</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-new">Free</span><span class="gpi-time">8 min</span></div>
-      </a>
+      {listRows('tiktok').map((r) => <a href={SITE_URL + r.href} class={r.item ? `gp-item ${r.item}` : 'gp-item'} style={r.style}><div class="gpi-left"><span class={r.arrow ? `gpi-arrow ${r.arrow}` : 'gpi-arrow'} aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">{r.title}</div><div class="gpi-desc">{r.desc}</div></div></div><div class="gpi-right">{r.pill && <span class={`gpi-pill ${r.pill[1]}`}>{r.pill[0]}</span>}<span class="gpi-time">{r.time}</span></div></a>)}
     </nav>
   </section>
 
@@ -583,9 +535,9 @@ const tocHeadings = [
   <section class="gp-cluster cluster-inventory" id="inventory" aria-labelledby="inventory-heading">
     <div class="gpc-header">
       <div class="gpc-left">
-        <span class="gpc-label" style="color:var(--sky);">Inventory · Stocky_Swap · Ultimate_Guide · ⚠ Deadline Aug 31 2026</span>
+        <span class="gpc-label" style="color:var(--sky);">Inventory · Stocky_Swap · Ultimate_Guide · ⚠ Ended {STOCKY_EOL_SHORT}</span>
         <h2 class="gpc-title" id="inventory-heading">Inventory — Replace Stocky and Build a Free System That Scales</h2>
-        <p class="gpc-desc">Shopify Stocky stops working August 31, 2026. Every paid alternative charges $29–$199/month. Stocky Swap logs every order to Google Sheets automatically in real time — free, 4 minutes, works on every Shopify plan. The Ultimate Inventory Guide covers the complete system from basic logging through supplier management and velocity analysis.</p>
+        <p class="gpc-desc">Shopify Stocky stopped working on August 31, 2026. Every paid alternative charges $29–$199/month. Stocky Swap logs every order to Google Sheets automatically in real time — free, 4 minutes, works on every Shopify plan. The Ultimate Inventory Guide covers the complete system from basic logging through supplier management and velocity analysis.</p>
       </div>
       <div class="gpc-cta"><a href="https://stackarchitect.xyz/stocky-swap/" class="btn-g" style="background:var(--sky);color:#000;">Deploy Stocky Swap →</a></div>
     </div>
@@ -593,30 +545,7 @@ const tocHeadings = [
       <p>Shopify Stocky was removed from the App Store on February 2, 2026 and stopped functioning on August 31, 2026, taking its APIs with it that day with no grace period. Purchase order history, stocktake records and inventory data remain exportable read-only for at least 90 days after that date — Shopify has published no deletion date. (Source: <a href="https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky" rel="nofollow">Shopify, &ldquo;Transitioning from Stocky&rdquo;</a>, read 10 September 2026.) <strong>Stocky Swap automatically logs every order to a Google Sheet you own entirely</strong> — no vendor lock-in, no monthly fees, never shuts down. The Ultimate Inventory Guide extends this into a complete free inventory management system with live stock calculations, low-stock alerts, supplier tracking, and sales velocity analysis.</p>
     </div>
     <nav class="gp-list" aria-label="Inventory guides">
-      <a href="https://stackarchitect.xyz/stocky-alternative/" class="gp-item gpi-hl" style="background:rgba(245,182,77,.04);border-color:rgba(245,182,77,.2);">
-        <div class="gpi-left"><span class="gpi-arrow arr-sky" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Shopify Stocky Has Shut Down — Replace It Free, and Export While You Still Can</div><div class="gpi-desc">Timeline, data export checklist, supplier data warning, free 4-minute replacement</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-urgent">Deadline Aug 31</span><span class="gpi-time">10 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/blog/the-ultimate-guide-to-shopify-inventory-management/" class="gp-item gpi-new">
-        <div class="gpi-left"><span class="gpi-arrow arr-sky" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">The Ultimate Guide to Shopify Inventory Management 2026 — Free Systems That Scale</div><div class="gpi-desc">Complete inventory system: order logging, live stock calculations, low-stock alerts, supplier management, velocity analysis — all free</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-new">New · Complete</span><span class="gpi-time">18 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/blog/shopify-stocky-data-export-before-shutdown/" class="gp-item gpi-hl" style="background:rgba(245,182,77,.03);border-color:rgba(245,182,77,.15);">
-        <div class="gpi-left"><span class="gpi-arrow arr-sky" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Shopify Stocky Data Export — What to Save Before the August 31, 2026 Shutdown</div><div class="gpi-desc">Exactly what is stranded behind the read-only export window, and how to export purchase orders, stocktakes and supplier records now</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-urgent">Deadline Aug 31</span><span class="gpi-time">10 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/stocky-shutdown/" class="gp-item">
-        <div class="gpi-left"><span class="gpi-arrow arr-sky" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Shopify Stocky Shutdown — What Happens on August 31, 2026</div><div class="gpi-desc">The full timeline, what stopped versus what is still exportable, and your options now</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-urgent">Deadline Aug 31</span><span class="gpi-time">7 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/stocky-alternative/" class="gp-item">
-        <div class="gpi-left"><span class="gpi-arrow arr-sky" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Best Free Stocky Alternative for Shopify (2026)</div><div class="gpi-desc">Every paid Stocky replacement compared against the free Google Sheets system — honest verdict on what fits your store size</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-new">Compare</span><span class="gpi-time">9 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/stocky-migration-risk-scorer/" class="gp-item">
-        <div class="gpi-left"><span class="gpi-arrow arr-sky" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Stocky Migration Risk Scorer — Free Calculator</div><div class="gpi-desc">Score your store's migration risk in 60 seconds and get a prioritised action list before August 31</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-new">Tool</span><span class="gpi-time">2 min</span></div>
-      </a>
+      {listRows('inventory').map((r) => <a href={SITE_URL + r.href} class={r.item ? `gp-item ${r.item}` : 'gp-item'} style={r.style}><div class="gpi-left"><span class={r.arrow ? `gpi-arrow ${r.arrow}` : 'gpi-arrow'} aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">{r.title}</div><div class="gpi-desc">{r.desc}</div></div></div><div class="gpi-right">{r.pill && <span class={`gpi-pill ${r.pill[1]}`}>{r.pill[0]}</span>}<span class="gpi-time">{r.time}</span></div></a>)}
     </nav>
   </section>
 
@@ -634,22 +563,7 @@ const tocHeadings = [
       <p>Every "free Klaviyo alternative" guide recommends Omnisend (250 contacts), Brevo (300 emails/day cap), or Mailchimp (500 contacts). None are genuinely functional for a Shopify store with real email volume. <strong>Systeme.io provides 2,000 contacts and unlimited email sends permanently</strong> — plus sales funnels, CRM, course hosting, and affiliate management that Klaviyo never included. For stores over 2,000 contacts, GetResponse starts at $19/month, well under the equivalent Klaviyo tier at the same list size — the same abandoned cart, welcome, and post-purchase flows at a fraction of the cost.</p>
     </div>
     <nav class="gp-list" aria-label="Email marketing guides">
-      <a href="https://stackarchitect.xyz/replace-klaviyo-free/" class="gp-item gpi-email">
-        <div class="gpi-left"><span class="gpi-arrow arr-email" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Replace Klaviyo Free 2026 — Pricing, UK Costs, and the Migration Path</div><div class="gpi-desc">The Feb 2025 active-profile billing change, real tier pricing including UK £ and VAT, Systeme.io and GetResponse compared, and the 30-minute migration</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-level">Pillar Guide</span><span class="gpi-time">22 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/blog/shopify-email-marketing-free-2026/" class="gp-item gpi-email">
-        <div class="gpi-left"><span class="gpi-arrow arr-email" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Shopify Email Marketing Free 2026 — Full Setup Without Klaviyo</div><div class="gpi-desc">Welcome flows, abandoned cart, post-purchase, win-back — 4 essential automations, 2,000 contacts, unlimited sends, $0/month on Systeme.io</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-new">New</span><span class="gpi-time">12 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/blog/shopify-abandoned-cart-recovery-free-2026/" class="gp-item gpi-email">
-        <div class="gpi-left"><span class="gpi-arrow arr-email" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Shopify Abandoned Cart Recovery Free 2026 — Make.com + Systeme.io</div><div class="gpi-desc">No app, no monthly fees — full 3-email sequence via Make.com webhook + Systeme.io automation. Recovers 5–15% of abandoned checkouts. Complete 30-minute setup guide.</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-new">New</span><span class="gpi-time">10 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/replace-klaviyo-free/" class="gp-item">
-        <div class="gpi-left"><span class="gpi-arrow arr-email" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Replace Klaviyo Free — Full Product Guide with Savings Calculator</div><div class="gpi-desc">Exact annual saving by contact tier, migration guide, feature comparison</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-level">Product Page</span><span class="gpi-time">8 min</span></div>
-      </a>
+      {listRows('email').map((r) => <a href={SITE_URL + r.href} class={r.item ? `gp-item ${r.item}` : 'gp-item'} style={r.style}><div class="gpi-left"><span class={r.arrow ? `gpi-arrow ${r.arrow}` : 'gpi-arrow'} aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">{r.title}</div><div class="gpi-desc">{r.desc}</div></div></div><div class="gpi-right">{r.pill && <span class={`gpi-pill ${r.pill[1]}`}>{r.pill[0]}</span>}<span class="gpi-time">{r.time}</span></div></a>)}
     </nav>
   </section>
 
@@ -667,10 +581,7 @@ const tocHeadings = [
       <p>The difference between this and a static template: a Make.com webhook populates a new row automatically every time a Shopify order is paid. Revenue, COGS, Shopify transaction fees, and net profit appear within 60 seconds of every purchase. <strong>If you already have CAPI Shield or Stocky Swap deployed, this is a single additional branch on your existing scenario — setup takes under 3 minutes.</strong></p>
     </div>
     <nav class="gp-list" aria-label="Profit reporting guides">
-      <a href="https://stackarchitect.xyz/shopify-profit-loss-automation/" class="gp-item gpi-profit">
-        <div class="gpi-left"><span class="gpi-arrow arr-profit" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Shopify P&amp;L Automation — Live Profit and Loss in Google Sheets Free (2026)</div><div class="gpi-desc">Complete template, field mapping reference, Looker Studio dashboard — auto-updates every order with net profit calculated</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-level">Product Guide</span><span class="gpi-time">8 min</span></div>
-      </a>
+      {listRows('profit').map((r) => <a href={SITE_URL + r.href} class={r.item ? `gp-item ${r.item}` : 'gp-item'} style={r.style}><div class="gpi-left"><span class={r.arrow ? `gpi-arrow ${r.arrow}` : 'gpi-arrow'} aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">{r.title}</div><div class="gpi-desc">{r.desc}</div></div></div><div class="gpi-right">{r.pill && <span class={`gpi-pill ${r.pill[1]}`}>{r.pill[0]}</span>}<span class="gpi-time">{r.time}</span></div></a>)}
     </nav>
   </section>
 
@@ -688,18 +599,7 @@ const tocHeadings = [
       <p>The highest-impact free CRO tools are in order: server-side tracking (CAPI Shield + Google Enhanced Conversions), abandoned cart recovery (Make.com + Systeme.io), Tidio Lyro AI live chat, Microsoft Clarity session recordings, GA4 funnel analysis, post-purchase email sequence, and Google PageSpeed optimisation. Total cost: $0/month. Most paid CRO apps target the same problems at $50–200/month per tool.</p>
     </div>
     <nav class="gp-list" aria-label="CRO guides">
-      <a href="https://stackarchitect.xyz/blog/shopify-conversion-rate-optimisation-free-2026/" class="gp-item gpi-new">
-        <div class="gpi-left"><span class="gpi-arrow" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Shopify Conversion Rate Optimisation Free 2026 — 12 Free CRO Tools in Priority Order</div><div class="gpi-desc">Fix the tracking gap first, then: abandoned cart, Tidio live chat, Microsoft Clarity, GA4 funnels, post-purchase email, PageSpeed — all at $0</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-new">New</span><span class="gpi-time">11 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/blog/shopify-abandoned-cart-recovery-free-2026/" class="gp-item gpi-new">
-        <div class="gpi-left"><span class="gpi-arrow" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Shopify Abandoned Cart Recovery Free 2026 — Make.com + Systeme.io</div><div class="gpi-desc">3-email recovery sequence with no app, no monthly fees — recovers 5–15% of abandoned checkouts in 30 minutes</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-new">New</span><span class="gpi-time">10 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/capi-shield/" class="gp-item">
-        <div class="gpi-left"><span class="gpi-arrow" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">CAPI Shield — Fix the Tracking Gap Before Any CRO Work</div><div class="gpi-desc">Server-side Meta + Google tracking — covers the purchase events browser tracking loses, which make conversion rate look artificially low</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-level">Start Here</span><span class="gpi-time">6 min</span></div>
-      </a>
+      {listRows('cro').map((r) => <a href={SITE_URL + r.href} class={r.item ? `gp-item ${r.item}` : 'gp-item'} style={r.style}><div class="gpi-left"><span class={r.arrow ? `gpi-arrow ${r.arrow}` : 'gpi-arrow'} aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">{r.title}</div><div class="gpi-desc">{r.desc}</div></div></div><div class="gpi-right">{r.pill && <span class={`gpi-pill ${r.pill[1]}`}>{r.pill[0]}</span>}<span class="gpi-time">{r.time}</span></div></a>)}
     </nav>
   </section>
 
@@ -718,30 +618,7 @@ const tocHeadings = [
       <p>Most stores processing under 250 orders/month run the complete automation stack on the free plan indefinitely. For stores approaching 500 orders/month, the upgrade decision has a specific trigger point — Make.com Core at $9/month plus Google Workspace at $6/user/month = $15/month total, which pays for itself in saved manual time within the first week.</p>
     </div>
     <nav class="gp-list" aria-label="Make.com and app stack guides">
-      <a href="https://stackarchitect.xyz/make-com-shopify/" class="gp-item gpi-make">
-        <div class="gpi-left"><span class="gpi-arrow arr-make" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Make.com for Shopify 2026 — Setup, Free-Tier Limits, and Zapier vs Shopify Flow</div><div class="gpi-desc">What Make.com does for Shopify, connecting in 3 min, the scenarios every store needs, free-plan credit limits, and the honest comparison against Zapier and Shopify Flow</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-make">Start Here</span><span class="gpi-time">20 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/blog/when-to-upgrade-free-make-google-workspace/" class="gp-item gpi-workspace">
-        <div class="gpi-left"><span class="gpi-arrow arr-workspace" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">When to Upgrade from Free Make.com to Google Workspace — Shopify Operator's Guide 2026</div><div class="gpi-desc">The 7 upgrade signals, the $15/month cost calculation, 5-step migration with zero downtime</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-workspace">Decision Guide</span><span class="gpi-time">14 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/blog/the-lean-shopify-tech-stack-2026/" class="gp-item gpi-new">
-        <div class="gpi-left"><span class="gpi-arrow" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">The Lean Shopify Tech Stack 2026 — Replace $700/Month of Apps for Free</div><div class="gpi-desc">Layer-by-layer breakdown: which paid tools to cut, which free tools replace them, exact savings per category</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-new">New</span><span class="gpi-time">12 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/best-free-shopify-apps-2026/" class="gp-item gpi-new">
-        <div class="gpi-left"><span class="gpi-arrow" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Best Free Shopify Apps 2026 — What Apps Really Cost and What to Cut</div><div class="gpi-desc">Real monthly cost of common app stacks, which paid apps are genuinely replaceable and which are not, and the free replacement for every category</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-new">Pillar Guide</span><span class="gpi-time">18 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/blog/shopify-automation-stack-for-small-stores/" class="gp-item gpi-new">
-        <div class="gpi-left"><span class="gpi-arrow" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Shopify Automation Stack for Small Stores 2026 — The $0 Setup Under 1,000 Orders/Month</div><div class="gpi-desc">Minimum viable free stack: what to deploy first, what to skip, how to scale as volume grows</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-new">New · Beginner</span><span class="gpi-time">10 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/blog/shopify-bfcm-automation-checklist-2026/" class="gp-item gpi-new">
-        <div class="gpi-left"><span class="gpi-arrow" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Shopify BFCM Automation Checklist 2026 — 14 Things to Set Up Before Black Friday</div><div class="gpi-desc">Hard deadlines: Stocky shutdown Aug 31, tracking setup by September, Make.com budget check in October — the complete BFCM preparation checklist</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-alert">BFCM 2026</span><span class="gpi-time">14 min</span></div>
-      </a>
+      {listRows('make').map((r) => <a href={SITE_URL + r.href} class={r.item ? `gp-item ${r.item}` : 'gp-item'} style={r.style}><div class="gpi-left"><span class={r.arrow ? `gpi-arrow ${r.arrow}` : 'gpi-arrow'} aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">{r.title}</div><div class="gpi-desc">{r.desc}</div></div></div><div class="gpi-right">{r.pill && <span class={`gpi-pill ${r.pill[1]}`}>{r.pill[0]}</span>}<span class="gpi-time">{r.time}</span></div></a>)}
     </nav>
   </section>
 
@@ -756,22 +633,7 @@ const tocHeadings = [
       <div class="gpc-cta"><a href="https://stackarchitect.xyz/autocrat-quota-fix/" class="btn-outline">Get Autocrat Fix →</a></div>
     </div>
     <nav class="gp-list" aria-label="Workflow stability guides">
-      <a href="https://stackarchitect.xyz/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/" class="gp-item gpi-hl">
-        <div class="gpi-left"><span class="gpi-arrow" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Google Apps Script Quotas &amp; Limits 2026 — Every Error, Every Fix (Free)</div><div class="gpi-desc">11,000+ impressions — the definitive guide to every quota limit, error code, and fix strategy</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-level">High Traffic</span><span class="gpi-time">9 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script/" class="gp-item gpi-new">
-        <div class="gpi-left"><span class="gpi-arrow" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">How to Fix "Service Invoked Too Many Times" in Google Apps Script 2026</div><div class="gpi-desc">Exact causes (Sheets, Docs, Drive, Gmail), specific code fixes including batching and exponential backoff</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-new">New</span><span class="gpi-time">8 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/blog/the-complete-guide-to-reliable-shopify-automations/" class="gp-item gpi-new">
-        <div class="gpi-left"><span class="gpi-arrow" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">The Complete Guide to Reliable Shopify Automations 2026 — Architecture That Doesn't Break</div><div class="gpi-desc">Error handling, deduplication, reconciliation, monitoring — the patterns that separate production-grade from fragile</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-new">New · Architecture</span><span class="gpi-time">14 min</span></div>
-      </a>
-      <a href="https://stackarchitect.xyz/blog/scalable-google-sheets-automation-for-high-volume-workflows/" class="gp-item gpi-new">
-        <div class="gpi-left"><span class="gpi-arrow" aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">Scalable Google Sheets Automation for High-Volume Shopify Workflows 2026</div><div class="gpi-desc">Batching, checkpointing, hybrid Make.com approaches — handles thousands of orders without hitting quota limits</div></div></div>
-        <div class="gpi-right"><span class="gpi-pill pill-new">New · Advanced</span><span class="gpi-time">12 min</span></div>
-      </a>
+      {listRows('workflow').map((r) => <a href={SITE_URL + r.href} class={r.item ? `gp-item ${r.item}` : 'gp-item'} style={r.style}><div class="gpi-left"><span class={r.arrow ? `gpi-arrow ${r.arrow}` : 'gpi-arrow'} aria-hidden="true">→</span><div class="gpi-content"><div class="gpi-title">{r.title}</div><div class="gpi-desc">{r.desc}</div></div></div><div class="gpi-right">{r.pill && <span class={`gpi-pill ${r.pill[1]}`}>{r.pill[0]}</span>}<span class="gpi-time">{r.time}</span></div></a>)}
     </nav>
   </section>
 
@@ -785,54 +647,7 @@ const tocHeadings = [
       Answers to the most common questions Shopify merchants have about automation, tracking, and free tool replacements in 2026.
     </p>
     <div class="gp-faq-grid">
-      <div class="faq-item">
-        <div class="faq-q">How do I fix Shopify Meta ROAS dropping in 2026?</div>
-        <div class="faq-a">Three changes converged in Q1 2026 to break Meta tracking: iOS 26's Link Tracking Protection, Shopify's January 13 pixel default switching to Optimized mode, and Meta's algorithm shift. Fix: switch App Pixel to Always On in Settings → Customer Events, set Meta data sharing to Maximum, and implement server-side CAPI via Make.com. <strong>Measure your own result as Additional Conversions Reported in Meta Events Manager, typically within 7–14 days.</strong> The full guide is <a href="https://stackarchitect.xyz/blog/shopify-meta-roas-dropped-2026-fix/">free here</a>.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">What replaces Shopify Stocky after it shuts down August 31 2026?</div>
-        <div class="faq-a"><strong>Stocky Swap</strong> is a free Make.com webhook that automatically logs every Shopify order to a Google Sheet you own — no vendor lock-in, no monthly fees. Deploys in 4 minutes on any Shopify plan. Shopify Stocky was removed from the App Store February 2, 2026 and ended service August 31; inventory data stays exportable read-only for at least 90 days after that. (Source: <a href="https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky" rel="nofollow">Shopify, &ldquo;Transitioning from Stocky&rdquo;</a>, read 10 September 2026.) The <a href="https://stackarchitect.xyz/blog/the-ultimate-guide-to-shopify-inventory-management/">Ultimate Inventory Guide</a> covers the complete free system including stock alerts, supplier tracking, and velocity analysis.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">What is the best free Klaviyo alternative for Shopify in 2026?</div>
-        <div class="faq-a"><strong>Systeme.io provides 2,000 contacts and unlimited email sends permanently at $0/month</strong> — including sales funnels, CRM, and affiliate management. For stores over 2,000 contacts, GetResponse starts at $19/month, well under the equivalent Klaviyo tier at the same list size, with equivalent abandoned cart, welcome, and post-purchase flows.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">How does TikTok Events API work with Shopify?</div>
-        <div class="faq-a">TikTok's Events API sends purchase events server-to-server via Make.com, bypassing iOS restrictions. <strong>The critical detail: TikTok's purchase event is called CompletePayment — not "Purchase".</strong> Using the wrong name sends events to the wrong category in Events Manager. You cannot change pixel mode after creation, so verify before starting.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">Is Make.com actually free for Shopify automation?</div>
-        <div class="faq-a">Yes. Make.com's free plan gives 1,000 credits/month (formerly called operations) — 10× more than Zapier's 100 free tasks — including webhook triggers and HTTP modules. <strong>One Shopify Order Payment webhook can simultaneously branch to Meta CAPI, Google Enhanced Conversions, TikTok Events API, Google Sheets inventory, and P&amp;L.</strong> Most stores under 250 orders/month run the complete stack free indefinitely.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">Can Tidio replace Gorgias for Shopify customer support?</div>
-        <div class="faq-a">Yes. Tidio's Lyro AI resolves approximately 70% of inbound Shopify support queries automatically — order status, shipping, product FAQs — without human intervention. Gorgias costs $40+/month. Tidio's permanently functional free tier covers 50 Lyro AI conversations/month. Setup takes 30 minutes.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">What are Shopify Agentic Storefronts?</div>
-        <div class="faq-a">Shopify Agentic Storefronts enable your products to be purchased directly inside ChatGPT, Google AI Mode, and Microsoft Copilot without the customer leaving those AI interfaces. <strong>Currently US-only and in early access.</strong> Preparation steps — Knowledge Base App, product data optimisation, FAQ schema — apply to all stores immediately and improve AI search discoverability regardless of eligibility.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">How do I track Shopify profit and loss for free?</div>
-        <div class="faq-a">A Make.com webhook auto-populates revenue, COGS, Shopify transaction fees, and net profit into a Google Sheet for every order within 60 seconds of purchase. <strong>Every P&amp;L app charges $25–$299/month.</strong> If CAPI Shield or Stocky Swap is already deployed, this adds a single branch to your existing scenario — setup takes under 3 minutes.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">How do I fix iOS conversion tracking on Shopify in 2026?</div>
-        <div class="faq-a">iOS updates since 2021 have cumulatively broken browser-based conversion tracking. The fix is server-side tracking via Conversions API — purchase events sent server-to-server bypass iOS restrictions entirely. <strong>Switch your Shopify App Pixel to Always On mode (5 minutes), then implement CAPI Shield for full server-side coverage (2–3 hours).</strong> The full diagnosis guide covers each iOS change specifically: <a href="https://stackarchitect.xyz/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/">How to Fix Shopify Conversion Tracking After iOS Updates</a>.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">Which Shopify apps are a waste of money in 2026?</div>
-        <div class="faq-a">The most commonly overpaid-for apps: <strong>Elevar ($225/mo) and Triple Whale (GMV-based)</strong> for server-side tracking — replaced free by CAPI Shield. <strong>Zapier ($19.99+/mo)</strong> for automation — replaced free by Make.com with 10× more operations. <strong>Klaviyo ($20+/mo)</strong> for email under 2,000 contacts — replaced free by Systeme.io. <strong>BeProfit and TrueProfit ($19–$299/mo)</strong> for P&amp;L — replaced free by P&amp;L Auto. Full breakdown: <a href="https://stackarchitect.xyz/best-free-shopify-apps-2026/">Shopify Apps That Are a Waste of Money</a>.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">How do I recover abandoned carts on Shopify for free?</div>
-        <div class="faq-a">The free method uses Make.com and Systeme.io — no Shopify app required. Create a Shopify <code>checkouts/create</code> webhook pointing to a Make.com scenario. Make.com extracts the customer email and cart data, sends it to Systeme.io via API, and triggers a 3-email recovery sequence (1 hour, 24 hours, 72 hours) that stops automatically after purchase. <strong>Setup takes 30 minutes and costs $0/month.</strong> Recovery rates: 5–15% of abandoned checkouts depending on AOV and niche. Full setup: <a href="https://stackarchitect.xyz/blog/shopify-abandoned-cart-recovery-free-2026/">Shopify Abandoned Cart Recovery Free 2026</a>.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">What is a good Shopify conversion rate and how do I improve it for free?</div>
-        <div class="faq-a">The average Shopify store converts at 1.4–2.1%. Above 2% is good; above 3% is excellent for most niches. <strong>Before any CRO work, verify your tracking is accurate</strong> — iOS restrictions and ad blockers hide real purchases, making conversion rates look artificially low. Fix this first with CAPI Shield (free, 6 minutes). Then: abandoned cart recovery via Make.com + Systeme.io, Tidio Lyro AI for live chat, Microsoft Clarity for session recordings, GA4 funnel analysis for drop-off diagnosis. All free. Full priority-order guide: <a href="https://stackarchitect.xyz/blog/shopify-conversion-rate-optimisation-free-2026/">Shopify CRO Free 2026 — 12 Free Tools</a>.</div>
-      </div>
+      {faqs.map((f) => <div class="faq-item"><div class="faq-q">{f.q}</div><div class="faq-a" set:html={f.a} /></div>)}
     </div>
   </section>
 
@@ -851,88 +666,10 @@ const tocHeadings = [
     </div>
   </section>
 
-  <!-- ══ KEYWORD CLOUD ══ -->
-  <section class="gp-keywords" aria-label="Related topics and guides">
-    <span class="gp-section-label">Related Topics — 40+ Live Guides</span>
-    <div class="gp-kw-grid">
-      <a href="https://stackarchitect.xyz/blog/shopify-ai-playbook-2026/" class="gp-kw">shopify ai playbook 2026</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-ai-playbook-2026/" class="gp-kw">how to use ai for shopify</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-ai-playbook-2026/" class="gp-kw">shopify ai tools 2026</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-agentic-storefronts-setup-guide-2026/" class="gp-kw">shopify agentic storefronts</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-agentic-storefronts-setup-guide-2026/" class="gp-kw">shopify sell on chatgpt</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-agentic-storefronts-setup-guide-2026/" class="gp-kw">shopify google ai mode</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-agentic-storefronts-setup-guide-2026/" class="gp-kw">shopify knowledge base app</a>
-      <a href="https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide/" class="gp-kw">tidio for shopify 2026</a>
-      <a href="https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide/" class="gp-kw">tidio shopify setup guide</a>
-      <a href="https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide/" class="gp-kw">lyro ai shopify free</a>
-      <a href="https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide/" class="gp-kw">shopify live chat free 2026</a>
-      <a href="https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide/" class="gp-kw">shopify ai customer support free</a>
-      <a href="https://stackarchitect.xyz/blog/tidio-vs-gorgias-shopify/" class="gp-kw">tidio vs gorgias shopify</a>
-      <a href="https://stackarchitect.xyz/blog/tidio-vs-gorgias-shopify/" class="gp-kw">gorgias alternative shopify free</a>
-      <a href="https://stackarchitect.xyz/blog/tidio-vs-gorgias-shopify/" class="gp-kw">replace gorgias shopify</a>
-      <a href="https://stackarchitect.xyz/make-com-shopify/" class="gp-kw">make.com shopify guide 2026</a>
-      <a href="https://stackarchitect.xyz/make-com-shopify/" class="gp-kw">make.com shopify beginner guide</a>
-      <a href="https://stackarchitect.xyz/make-com-shopify/" class="gp-kw">how to connect make.com to shopify</a>
-      <a href="https://stackarchitect.xyz/make-com-shopify/" class="gp-kw">make.com shopify webhook</a>
-      <a href="https://stackarchitect.xyz/make-com-shopify/" class="gp-kw">make.com free plan shopify</a>
-      <a href="https://stackarchitect.xyz/blog/when-to-upgrade-free-make-google-workspace/" class="gp-kw">when to upgrade make.com shopify</a>
-      <a href="https://stackarchitect.xyz/blog/when-to-upgrade-free-make-google-workspace/" class="gp-kw">google workspace shopify 2026</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-meta-roas-dropped-2026-fix/" class="gp-kw">shopify meta roas dropped 2026</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-meta-roas-dropped-2026-fix/" class="gp-kw">meta ads not tracking shopify</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-meta-roas-dropped-2026-fix/" class="gp-kw">shopify roas fix 2026</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-meta-roas-dropped-2026-fix/" class="gp-kw">ios 26 shopify tracking</a>
-      <a href="https://stackarchitect.xyz/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/" class="gp-kw">shopify conversion tracking ios fix 2026</a>
-      <a href="https://stackarchitect.xyz/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/" class="gp-kw">ios 17 shopify tracking broken</a>
-      <a href="https://stackarchitect.xyz/blog/recover-lost-shopify-conversions-capi-shield/" class="gp-kw">recover lost shopify conversions</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-server-side-tracking-complete-setup-guide/" class="gp-kw">shopify server-side tracking</a>
-      <a href="https://stackarchitect.xyz/capi-shield/" class="gp-kw">free shopify meta capi setup</a>
-      <a href="https://stackarchitect.xyz/capi-shield/" class="gp-kw">shopify google enhanced conversions free</a>
-      <a href="https://stackarchitect.xyz/tiktok-events-api-shopify/" class="gp-kw">tiktok events api shopify</a>
-      <a href="https://stackarchitect.xyz/tiktok-events-api-shopify/" class="gp-kw">tiktok capi shopify free</a>
-      <a href="https://stackarchitect.xyz/tiktok-events-api-shopify/" class="gp-kw">tiktok completepayment shopify</a>
-      <a href="https://stackarchitect.xyz/replace-klaviyo-free/" class="gp-kw">klaviyo vs getresponse shopify 2026</a>
-      <a href="https://stackarchitect.xyz/replace-klaviyo-free/" class="gp-kw">klaviyo alternative 2026</a>
-      <a href="https://stackarchitect.xyz/replace-klaviyo-free/" class="gp-kw">free klaviyo alternative shopify</a>
-      <a href="https://stackarchitect.xyz/replace-klaviyo-free/" class="gp-kw">replace klaviyo free shopify</a>
-      <a href="https://stackarchitect.xyz/stocky-alternative/" class="gp-kw">shopify stocky alternative 2026</a>
-      <a href="https://stackarchitect.xyz/stocky-alternative/" class="gp-kw">stocky shutting down august 2026</a>
-      <a href="https://stackarchitect.xyz/blog/the-ultimate-guide-to-shopify-inventory-management/" class="gp-kw">shopify inventory management free 2026</a>
-      <a href="https://stackarchitect.xyz/blog/the-ultimate-guide-to-shopify-inventory-management/" class="gp-kw">shopify inventory google sheets free</a>
-      <a href="https://stackarchitect.xyz/blog/the-ultimate-guide-to-shopify-inventory-management/" class="gp-kw">shopify inventory tracking without apps</a>
-      <a href="https://stackarchitect.xyz/shopify-profit-loss-automation/" class="gp-kw">shopify profit loss free 2026</a>
-      <a href="https://stackarchitect.xyz/shopify-profit-loss-automation/" class="gp-kw">shopify p&amp;l google sheets automation</a>
-      <a href="https://stackarchitect.xyz/blog/the-lean-shopify-tech-stack-2026/" class="gp-kw">lean shopify tech stack 2026</a>
-      <a href="https://stackarchitect.xyz/best-free-shopify-apps-2026/" class="gp-kw">how much do shopify apps cost 2026</a>
-      <a href="https://stackarchitect.xyz/best-free-shopify-apps-2026/" class="gp-kw">shopify apps waste of money</a>
-      <a href="https://stackarchitect.xyz/best-free-shopify-apps-2026/" class="gp-kw">replace elevar shopify free</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-automation-stack-for-small-stores/" class="gp-kw">shopify automation small store 2026</a>
-      <a href="https://stackarchitect.xyz/make-com-shopify/" class="gp-kw">zapier vs make shopify</a>
-      <a href="https://stackarchitect.xyz/blog/the-complete-guide-to-reliable-shopify-automations/" class="gp-kw">reliable shopify automation 2026</a>
-      <a href="https://stackarchitect.xyz/blog/scalable-google-sheets-automation-for-high-volume-workflows/" class="gp-kw">google sheets automation high volume shopify</a>
-      <a href="https://stackarchitect.xyz/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script/" class="gp-kw">service invoked too many times google apps script</a>
-      <a href="https://stackarchitect.xyz/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/" class="gp-kw">google apps script quota limits 2026</a>
-      <a href="https://stackarchitect.xyz/tools/" class="gp-kw">free shopify tools 2026</a>
-      <a href="https://stackarchitect.xyz/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026/" class="gp-kw">shopify google ads conversion tracking free 2026</a>
-      <a href="https://stackarchitect.xyz/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026/" class="gp-kw">shopify google enhanced conversions no gtm</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-stocky-data-export-before-shutdown/" class="gp-kw">shopify stocky data export before shutdown</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-stocky-data-export-before-shutdown/" class="gp-kw">what data does shopify stocky delete august 2026</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-google-analytics-4-setup-free-2026/" class="gp-kw">shopify google analytics 4 setup free 2026</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-google-analytics-4-setup-free-2026/" class="gp-kw">how to connect shopify to ga4 free</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-abandoned-cart-recovery-free-2026/" class="gp-kw">shopify abandoned cart recovery free 2026</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-abandoned-cart-recovery-free-2026/" class="gp-kw">how to recover abandoned carts shopify free</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-abandoned-cart-recovery-free-2026/" class="gp-kw">shopify abandoned cart make.com systeme.io</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-email-marketing-free-2026/" class="gp-kw">shopify email marketing free 2026</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-email-marketing-free-2026/" class="gp-kw">free shopify email marketing without klaviyo</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-email-marketing-free-2026/" class="gp-kw">shopify email automation free systeme.io</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-conversion-rate-optimisation-free-2026/" class="gp-kw">shopify conversion rate optimisation free 2026</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-conversion-rate-optimisation-free-2026/" class="gp-kw">shopify cro free tools 2026</a>
-      <a href="https://stackarchitect.xyz/blog/shopify-conversion-rate-optimisation-free-2026/" class="gp-kw">how to improve shopify conversion rate free</a>
-    </div>
-  </section>
-  <section style="max-width:1140px;margin:48px auto 0;padding:0 24px;box-sizing:border-box;max-width:760px;margin:0 auto;padding:40px 24px;border-top:1px solid #222825;"><h2 id="related-guides-tools" style="font-size:15px;font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:4px;">Related guides & tools</h2><p style="font-size:12px;color:#93a09a;margin-bottom:18px;">Start here for Shopify automation.</p><div style="display:grid;gap:10px;"><a href="/make-com-shopify/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:14px;font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Make.com for Shopify — setup hub →</a><a href="/shopify-app-stack-kill-or-keep-auditor/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:14px;font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Shopify Automation Scanner →</a><a href="/ultimate-shopify-automation-guide/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:14px;font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Ultimate Shopify Automation Guide →</a></div></section>
+  <section style="max-width:1140px;margin:48px auto 0;padding:0 24px;box-sizing:border-box;max-width:760px;margin:0 auto;padding:40px 24px;border-top:1px solid #222825;"><h2 id="related-guides-tools" style="font-size:15px;font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:4px;">Related guides & tools</h2><p style="font-size:12px;color:#93a09a;margin-bottom:18px;">Start here for Shopify automation.</p><div style="display:grid;gap:10px;"><a href="/shopify-app-stack-kill-or-keep-auditor/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:14px;font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Shopify App Stack Kill or Keep Auditor →</a><a href="/ultimate-shopify-automation-guide/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:14px;font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Ultimate Shopify Automation Guide →</a></div></section>
   <section class="pro-cta" style="margin: 64px auto; max-width: 860px; padding: 40px; background: linear-gradient(135deg, rgba(52,211,119,0.1), rgba(12,15,13,0.9)); border: 2px solid var(--g); border-radius: 16px; text-align: center;">
     <h2 style="font-size: 28px; color: var(--text); margin-bottom: 16px; font-weight: 800;">The Complete Shopify Automation Kit (Pro)</h2>
-    <p style="font-size: 16px; color: var(--text-2); margin-bottom: 32px; max-width: 600px; margin-inline: auto;">Skip the setup and get all 40+ systems pre-built. Includes the exact Make.com blueprints, CAPI templates, and AI prompts we use for 7-figure stores.</p>
+    <p style="font-size: 16px; color: var(--text-2); margin-bottom: 32px; max-width: 600px; margin-inline: auto;">Skip the setup and get all {PRODUCTS.length} blueprints pre-built. Includes the exact Make.com blueprints, CAPI templates, and AI prompts we use for 7-figure stores.</p>
     <a href="/pro/" class="btn-g" style="font-size: 18px; padding: 16px 32px;">Get the Pro Bundle →</a>
   </section>
 
@@ -994,35 +731,6 @@ const tocHeadings = [
   window.addEventListener('scroll', () => {
     bar.classList.toggle('visible', window.scrollY > 400);
   }, { passive: true });
-})();
-
-// ── COUNTDOWN TO AUGUST 31 2026 ──
-(function () {
-  function tick() {
-    const t = new Date('2026-08-31T23:59:59Z') - new Date();
-    const cdD = document.getElementById('cd-d');
-    const cdH = document.getElementById('cd-h');
-    const cdM = document.getElementById('cd-m');
-    if (!cdD) return;
-    // Past the deadline, replace the whole countdown block with the date
-    // rather than showing zeros beneath "Countdown to shutdown".
-    if (t <= 0) {
-      const wrap = document.querySelector('.gpu-cd');
-      if (wrap && !wrap.dataset.ended) {
-        wrap.dataset.ended = '1';
-        wrap.setAttribute('aria-label', 'Stocky end of service');
-        wrap.innerHTML =
-          '<div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--amber);">Ended 31 Aug 2026</div>' +
-          '<a href="https://stackarchitect.xyz/stocky-alternative/" class="btn-g" style="margin-left:14px;background:var(--amber);color:#000;">What to do now →</a>';
-      }
-      return;
-    }
-    cdD.textContent = Math.floor(t / 864e5);
-    cdH.textContent = String(Math.floor(t % 864e5 / 36e5)).padStart(2, '0');
-    cdM.textContent = String(Math.floor(t % 36e5 / 6e4)).padStart(2, '0');
-  }
-  tick();
-  setInterval(tick, 30000);
 })();
 
 // ── EMAIL CAPTURE ──
@@ -1330,25 +1038,6 @@ document.getElementById('guides-submit')?.addEventListener('click', function () 
     .gpu-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 3px; line-height: 1.2; }
     .gpu-desc { font-size: 13px; color: var(--text-3); line-height: 1.4; }
     .gpu-cd { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-    .gpu-cd-unit { text-align: center; }
-    .gpu-cd-val { font-family: var(--mono); font-size: clamp(18px,3vw,26px); font-weight: 700; color: var(--amber); line-height: 1; display: block; }
-    .gpu-cd-label { font-size: 10px; color: var(--text-4); font-family: var(--mono); }
-    .gpu-cd-sep { font-family: var(--mono); font-size: 18px; font-weight: 700; color: var(--amber); padding-bottom: 12px; }
-
-    .gp-banner { max-width: 1100px; margin: 16px auto 0; padding: 0 24px; }
-    .gp-banner-inner {
-      background: rgba(52,211,119,.04); border: 1.5px solid rgba(52,211,119,.18);
-      border-radius: var(--radius); padding: 14px 20px; display: flex;
-      align-items: center; gap: 14px; flex-wrap: wrap;
-    }
-    .gp-banner-badge {
-      font-family: var(--mono); font-size: 9px; font-weight: 700;
-      letter-spacing: .14em; text-transform: uppercase; color: var(--g);
-      background: var(--g-bg); border: 1px solid var(--g-border);
-      padding: 3px 10px; border-radius: 3px; white-space: nowrap; flex-shrink: 0;
-    }
-    .gp-banner-text { font-size: 13px; color: var(--text-2); flex: 1; line-height: 1.5; }
-    .gp-banner-text strong { color: var(--text); }
 
     /* ════════════ FEATURED GRID ════════════ */
     .gp-featured { padding: 48px 24px 0; max-width: 1100px; margin: 0 auto; }
@@ -1596,19 +1285,8 @@ document.getElementById('guides-submit')?.addEventListener('click', function () 
       line-height: 1.3; letter-spacing: -.01em;
     }
     .faq-a { font-size: 14px; color: var(--text-3); line-height: 1.8; }
-    .faq-a strong { color: var(--text-2); }
-    .faq-a a { color: var(--g); text-decoration: underline; }
-
-    /* ════════════ KEYWORD CLOUD ════════════ */
-    .gp-keywords { max-width: 1100px; margin: 0 auto; padding: 32px 24px 56px; border-top: 1px solid var(--border); }
-    .gp-kw-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-    .gp-kw {
-      font-family: var(--mono); font-size: 11px; color: var(--text-4);
-      background: rgba(255,255,255,.02); border: 1px solid var(--border);
-      padding: 5px 12px; border-radius: 4px; text-decoration: none;
-      transition: color .2s, border-color .2s, background .2s;
-    }
-    .gp-kw:hover { color: var(--g); border-color: var(--g-border); background: var(--g-bg); }
+    .faq-a :global(strong) { color: var(--text-2); }
+    .faq-a :global(a) { color: var(--g); text-decoration: underline; }
 
     /* ════════════ FOOTER ════════════ */
     .architect-footer {
@@ -1692,7 +1370,7 @@ document.getElementById('guides-submit')?.addEventListener('click', function () 
       .gp-featured-grid .gfc-span2 { grid-column: span 1; }
       .gp-cluster { padding: 36px 16px; }
       .gpc-header { flex-direction: column; }
-      .gp-banner-inner,.gp-roas-inner,.gp-urgent-inner { flex-direction: column; gap: 10px; }
+      .gp-roas-inner,.gp-urgent-inner { flex-direction: column; gap: 10px; }
       .gpu-cd { justify-content: center; }
       .gpi-desc { display: none; }
       .gpi-pill.pill-level { display: none; }
