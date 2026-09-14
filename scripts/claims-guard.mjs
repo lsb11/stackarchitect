@@ -106,6 +106,26 @@ function claimsIn(source) {
   return [...source.matchAll(PRICE)].map((m) => m[0].trim()).filter((p) => !OURS.test(p));
 }
 
+/**
+ * Whether an .astro page passes verifiedDate as an attribute on <Base> — the
+ * page's equivalent of a frontmatter key, and the only place the date counts.
+ *
+ * This used to be /verifiedDate/ over the whole file, so the word anywhere
+ * satisfied it: a code comment on shopify-automation-guides made a quarantined
+ * page read as verified and failed the build as stale, and the same looseness
+ * would let a page with no date pass on a sentence that merely mentions one.
+ * The frontmatter fence and comments are stripped first; attribute values may
+ * hold quotes or braces nested one level (breadcrumb={[{ … }]}).
+ */
+function passesVerifiedDate(source) {
+  const template = source
+    .replace(/^---\n[\s\S]*?\n---/, '')
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
+  const attr = String.raw`(?:"[^"]*"|'[^']*'|\{(?:[^{}]|\{[^{}]*\})*\}|[^>"'{}])*?`;
+  return new RegExp(String.raw`<Base\b${attr}\sverifiedDate\s*=`).test(template);
+}
+
 function scan() {
   const out = [];
 
@@ -113,7 +133,7 @@ function scan() {
   for (const f of fs.readdirSync(pagesDir).filter((f) => f.endsWith('.astro'))) {
     const rel = `src/pages/${f}`;
     const src = fs.readFileSync(path.join(pagesDir, f), 'utf8');
-    out.push({ file: rel, claims: claimsIn(src), dated: /verifiedDate/.test(src) });
+    out.push({ file: rel, claims: claimsIn(src), dated: passesVerifiedDate(src) });
   }
 
   const blogDir = path.join(ROOT, 'src', 'content', 'blog');
