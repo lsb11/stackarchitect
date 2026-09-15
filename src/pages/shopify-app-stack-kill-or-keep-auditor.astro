@@ -407,17 +407,23 @@ const tocHeadings = [
     document.getElementById('app-annual').textContent = (freeTotal * 12).toLocaleString() + '/yr';
 
     let killHTML = '';
+    // Hrefs are set as DOM properties after render, not concatenated into the
+    // markup: a crawler reading this script took the string literal as a link.
+    const killLinks = [];
     if (killItems.length) {
       killHTML = '<div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#93a09a;margin-bottom:12px;">YOUR_KILL_LIST</div>';
       killItems.forEach(item => {
         killHTML += '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border:1px solid rgba(52,211,119,.2);background:rgba(52,211,119,.04);margin-bottom:6px;gap:12px;">';
         killHTML += '<div><div style="font-size:11px;font-weight:700;color:#fff;">' + item.name.split('(')[0].trim() + '</div>';
         killHTML += '<div style="font-size:10px;color:#93a09a;">Replace with: ' + item.replace + '</div></div>';
-        if (item.link) killHTML += '<a href="' + item.link + '" style="font-size:10px;font-weight:700;letter-spacing:.08em;color:#34d377;text-decoration:none;white-space:nowrap;border:1px solid rgba(52,211,119,.3);padding:6px 12px;">SET UP FREE →</a>';
+        if (item.link) killLinks.push(item.link);
+        if (item.link) killHTML += '<a class="kill-link" style="font-size:10px;font-weight:700;letter-spacing:.08em;color:#34d377;text-decoration:none;white-space:nowrap;border:1px solid rgba(52,211,119,.3);padding:6px 12px;">SET UP FREE →</a>';
         killHTML += '</div>';
       });
     }
-    document.getElementById('app-kill-list').innerHTML = killHTML;
+    const killList = document.getElementById('app-kill-list');
+    killList.innerHTML = killHTML;
+    killList.querySelectorAll('a.kill-link').forEach((a, i) => { a.href = killLinks[i]; });
     document.getElementById('app-result').classList.add('show');
   }
   

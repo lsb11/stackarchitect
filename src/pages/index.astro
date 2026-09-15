@@ -1597,9 +1597,14 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
     P.forEach(function(p) { if (sel.indexOf(p.id) !== -1) { tot += p.cost; items.push(p); } });
     var ph = document.getElementById('sc-plan-h'); if(ph) ph.textContent = 'You are losing ~$' + tot + '/mo';
     var pi = document.getElementById('sc-plan-items');
-    if(pi) pi.innerHTML = items.map(function(p, i) {
-      return '<div class="plan-item"><div class="plan-num">' + (i + 1) + '</div><div><div class="plan-sol">' + p.sol + '</div><div class="plan-fix">Fixes: ' + p.label + '</div><div class="plan-rec">Recovers ~$' + p.cost + '/mo → <a href="' + p.url + '" style="color:var(--g)">Deploy now →</a></div></div></div>';
-    }).join('');
+    if(pi) {
+      // The href is set as a DOM property, not concatenated into the markup:
+      // a crawler reading this script took the string literal as a link.
+      pi.innerHTML = items.map(function(p, i) {
+        return '<div class="plan-item"><div class="plan-num">' + (i + 1) + '</div><div><div class="plan-sol">' + p.sol + '</div><div class="plan-fix">Fixes: ' + p.label + '</div><div class="plan-rec">Recovers ~$' + p.cost + '/mo → <a class="plan-deploy" style="color:var(--g)">Deploy now →</a></div></div></div>';
+      }).join('');
+      pi.querySelectorAll('a.plan-deploy').forEach(function(a, i) { a.href = items[i].url; });
+    }
     var ss = document.getElementById('sc-scan'); if(ss) ss.style.display = 'none';
     var sp = document.getElementById('sc-plan'); if(sp) sp.style.display = 'block';
   };

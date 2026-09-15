@@ -78,7 +78,11 @@ disclosed by the pipeline, not by hand.
 
 **Edge behaviour, in order.** `functions/_middleware.js` runs first: https, strip `www.`,
 redirect any non-primary host (including `*.pages.dev` previews) to the apex, then add a
-trailing slash — exempting `/api/*`, `/go/*` and anything with a file extension. Responses served
+trailing slash — exempting `/api/*`, `/go/*` and anything with a file extension. **A second
+trailing-slash redirect lives outside the repo**, in the Cloudflare dashboard as a zone Redirect
+Rule ("enforce trailing slash"). It runs before the middleware and excludes `/api/*` and `/go/*`.
+Those exclusions are what stop it from 301ing Function POSTs and adding a hop to affiliate
+cloaks, and nothing in this repo shows they exist. Responses served
 on a non-primary host get `X-Robots-Tag: noindex`. `public/_redirects` (290 lines) then handles
 affiliate cloaks and legacy URLs. Redirect edits are covered by `.github/workflows/redirect-smoke.yml`
 (parse-only on PR, live assertions after deploy, plus nightly).
@@ -231,9 +235,15 @@ Full analysis lives in the StackArchitect project doc `gsc-indexing-diagnosis.md
 - Organization @id is always #org, never #organization.
 - Person name is always "Luke Sandelands", never "Luke".
 - Every indexable page opens with a self-contained 40–60 word answer paragraph.
-- **Pages Functions have no trailing slash.** `trailingSlash: 'always'` governs
-  pages, not `functions/`. Fetch `/api/gap-stats`, never `/api/gap-stats/`. A
-  trailing slash there returns a Cloudflare 502, silently. This shipped twice.
+- **Pages Functions are written without a trailing slash.** `trailingSlash: 'always'`
+  governs pages, not `functions/`. Fetch `/api/gap-stats`, not `/api/gap-stats/`.
+  A trailing slash there used to fail silently (a Cloudflare 502, and before
+  that a 301 that turned a POST into a GET), which shipped twice. Checked live
+  15 Sep 2026: `/api/gap-stats/` now returns 200, and a POST to
+  `/api/capture-email/` reaches the Function (400 on an empty body) with no
+  redirect. That is because the zone-level trailing-slash rule excludes `/api/*`
+  (see Edge behaviour). Keep writing the slashless form anyway, so nothing
+  depends on that exclusion.
 - **The `tools.` and `audit.` subdomain redirects are 301 and were checked on
   23 Aug — do not "fix" them.** Cloudflare Redirect Rules 2, 4 and 6 all emit
   301, and the second hop (`/app-audit/` → `/shopify-app-stack-kill-or-keep-auditor/`)
@@ -270,7 +280,12 @@ Full analysis lives in the StackArchitect project doc `gsc-indexing-diagnosis.md
 - **`/go/*` affiliate cloaks are revenue-critical.** Both slash variants must be
   declared in `public/_redirects`, both 302, and `functions/_middleware.js` must
   keep exempting `/go/*` from slash-adding. Audited 17 Aug: 9 cloaks, 18 rules,
-  no extra hop, tracking params preserved.
+  tracking params preserved. That audit's "no extra hop" was true of the repo
+  but not of the edge: the Cloudflare "enforce trailing slash" Redirect Rule
+  also matched `/go/*` and added a 301 before the 302. That rule now excludes
+  `/go/*`. Checked live 15 Sep 2026: `/go/make` and `/go/make/` are each a
+  single 302 to the vendor. If a cloak ever shows two hops, check that
+  Redirect Rule before `_redirects`.
 
 ### Highest-leverage open work
 

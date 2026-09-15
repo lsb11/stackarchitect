@@ -81,7 +81,7 @@ The native Shopify Product Reviews app is free and adds star ratings and review 
 
 ### 5. Tidio Live Chat Free Plan (Free)
 
-[Tidio — free live chat with Lyro AI](https://stackarchitect.xyz/go/tidio/?source=shopify-conversion-rate-optimisation-fre-n2) that automatically resolves approximately 70% of pre-purchase queries that automatically resolves approximately 70% of pre-purchase queries. Unanswered questions at checkout are a top conversion killer. Lyro handles "Do you ship to X?", "What's your returns policy?", "When will this arrive?" without any human response needed.
+[Tidio — free live chat with Lyro AI](/go/tidio/?source=shopify-conversion-rate-optimisation-fre-n2) that automatically resolves approximately 70% of pre-purchase queries that automatically resolves approximately 70% of pre-purchase queries. Unanswered questions at checkout are a top conversion killer. Lyro handles "Do you ship to X?", "What's your returns policy?", "When will this arrive?" without any human response needed.
 
 Tidio's free plan covers most Shopify stores. It installs via the Shopify App Store in 2 minutes.
 
@@ -104,7 +104,7 @@ This built-in single email fires 10 hours after abandonment by default. It's fre
 
 ## Free Email and Retention Tools
 
-### 8. [Systeme.io free plan — 2,000 contacts with unlimited sends](https://stackarchitect.xyz/go/systeme/?source=shopify-conversion-rate-optimisation-fre-n3) (0–2,000 Contacts)
+### 8. [Systeme.io free plan — 2,000 contacts with unlimited sends](/go/systeme/?source=shopify-conversion-rate-optimisation-fre-n3) (0–2,000 Contacts)
 
 The complete free email marketing stack: welcome sequence, abandoned cart recovery, post-purchase sequence, and win-back campaign. [Full setup guide →](/blog/shopify-email-marketing-free-2026/)
 
