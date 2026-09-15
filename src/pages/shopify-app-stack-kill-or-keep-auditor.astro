@@ -423,7 +423,12 @@ const tocHeadings = [
     }
     const killList = document.getElementById('app-kill-list');
     killList.innerHTML = killHTML;
-    killList.querySelectorAll('a.kill-link').forEach((a, i) => { a.href = killLinks[i]; });
+    killList.querySelectorAll('a.kill-link').forEach((a, i) => {
+      a.href = killLinks[i];
+      // Affiliate cloaks are disclosed like every other /go/ link on the site;
+      // internal links are not.
+      if (killLinks[i].startsWith('/go/')) a.rel = 'sponsored nofollow noopener';
+    });
     document.getElementById('app-result').classList.add('show');
   }
   
