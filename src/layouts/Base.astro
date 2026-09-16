@@ -278,7 +278,9 @@ if (!alreadyHasBreadcrumbSchema && !noindex && canonicalPath !== '/') {
 const routeSlug = canonicalPath === '/' ? 'home' : canonicalPath.replace(/^\/|\/$/g, '');
 const computedOgImage = ogImage 
   ? (ogImage.startsWith('http') ? ogImage : 'https://stackarchitect.xyz' + ogImage) 
-  : `https://stackarchitect.xyz/og/${routeSlug}.png`;
+  : routeSlug === 'home'
+    ? 'https://stackarchitect.xyz/og.png' // hand-made design-pack card
+    : `https://stackarchitect.xyz/og/${routeSlug}.png`;
 
 const articleSchema = pageType === 'article' ? {
   '@context': 'https://schema.org',
