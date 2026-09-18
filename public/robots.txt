@@ -25,7 +25,6 @@ User-agent: MistralAI-User
 User-agent: meta-externalagent
 Allow: /
 Disallow: /go/
-Disallow: /embed/
 
 # ─────────────────────────────────────────────────────────────
 # Everyone else
@@ -34,7 +33,23 @@ User-agent: *
 Allow: /
 
 Disallow: /go/
-Disallow: /embed/
+
+# /embed/ IS DELIBERATELY NOT DISALLOWED (2026-09-18)
+#
+# The three /embed/* pages carry <meta name="robots" content="noindex">, and
+# they were ALSO disallowed here. Those two instructions contradict each other:
+# a crawler forbidden to fetch a URL cannot read the noindex inside it, so the
+# URL sits in limbo — eligible to be listed from third-party links, never
+# eligible to be dropped on the site's own instruction. GSC reported two URLs
+# under "Blocked by robots.txt" and /embed/* is one of only two disallowed
+# paths on the site.
+#
+# The noindex is the stronger and more precise signal, so it is the one kept.
+# Letting crawlers fetch these pages is what makes it enforceable. Do not
+# re-add the Disallow without first removing the noindex — pick one.
+#
+# /go/ stays disallowed: those are affiliate cloaks that 302 off-site, they
+# carry no noindex of their own, and there is nothing at the URL to index.
 
 # Tracking parameters are deliberately NOT disallowed.
 #

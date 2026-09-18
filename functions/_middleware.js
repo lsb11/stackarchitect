@@ -24,6 +24,28 @@
 //                     networks drop tracking parameters across extra hops.
 //   • paths with a file extension (.xml, .txt, .json, .png, .csv …) — these
 //     must NOT gain a trailing slash or they 404.
+//
+// WHY THIS CHANGED (2026-09-18) — LEGACY REDIRECTS RESOLVE HERE NOW
+// This middleware is the ONLY slash enforcer. The zone-level "enforce trailing
+// slash" Cloudflare Redirect Rule has been deleted from the dashboard, because
+// it ran upstream of this Worker and nothing in the repo could preempt it.
+//
+// Both that rule and this file appended the slash BEFORE public/_redirects was
+// consulted — the Pages asset server that serves _redirects runs last. So a
+// slashless legacy URL cost two 301s: one to add the slash, one to reach the
+// real destination. 110 of 231 literal legacy sources behaved that way, and
+// every slashless line in _redirects was unreachable dead code.
+//
+// The fix is ordering: consult the compiled legacy map FIRST, and only append a
+// slash when the path is not a legacy source. Host, protocol and destination
+// are then resolved together into a single 301.
+//
+// public/_redirects is still deployed and is still the source of truth. It is
+// the fallback if this Function fails to run, and /go/* cloaks still rely on it.
+// functions/_legacy-redirects.js is generated from it by
+// scripts/gen-legacy-redirects.mjs; tests/legacy-redirects.test.js fails if the
+// two drift.
+import { resolveLegacy } from './_legacy-redirects.js';
 
 const PRIMARY_HOST = 'stackarchitect.xyz';
 const FILE_RE = /\.[a-zA-Z0-9]{2,5}$/;
@@ -53,6 +75,22 @@ export async function onRequest(context) {
   const isApi = p.startsWith('/api/');
   const isGo = p.startsWith('/go/');   // affiliate cloaks — must not gain a slash hop
   const isFile = FILE_RE.test(p.split('/').pop() || '');
+
+  // LEGACY MAP FIRST, slash second. Reversing these two is what produced the
+  // two-hop chains. /go/* and /api/* are never looked up: the cloaks belong to
+  // the asset server, and /api/* are live Functions, not legacy paths.
+  if (!isApi && !isGo) {
+    const hit = resolveLegacy(p);
+    // A rule whose destination is the request we already have would loop.
+    if (hit && hit.to !== p) {
+      const dest = new URL(hit.to, url);
+      // Carry the query string across. Inbound legacy links arrive with utm_*
+      // and ?ref= attached, and dropping those loses the attribution that made
+      // the link worth preserving.
+      if (url.search && !dest.search) dest.search = url.search;
+      return Response.redirect(dest.toString(), hit.status);
+    }
+  }
 
   if (!isApi && !isGo && !isFile && !p.endsWith('/')) {
     url.pathname = p + '/';
