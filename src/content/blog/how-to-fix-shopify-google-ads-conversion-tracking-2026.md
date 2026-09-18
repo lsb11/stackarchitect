@@ -133,13 +133,15 @@ In your Make.com scenario, after the webhook trigger, add an **HTTP → Make a r
 
 **Step 4 — Format the request body**
 
-Use this JSON structure, mapping your Shopify webhook fields:
+Use this JSON structure, mapping your Shopify webhook fields.
+
+Shopify's order data has no `gclid` field. The only place one can appear is inside the `landing_site` URL, when the shopper's first page carried it, and you have to parse it out yourself; `landing_site_ref` holds the `ref` parameter, not the gclid. With no gclid the upload has only the hashed email to match on, and whether Google accepts that depends on how your conversion action is set up. Set any consent fields to match your own consent setup.
 
 ```json
 {
   "conversions": [
     {
-      "gclid": "{{webhook.landing_site_ref}}",
+      "gclid": "GCLID_PARSED_FROM_LANDING_SITE",
       "conversionAction": "customers/CUSTOMER_ID/conversionActions/CONVERSION_LABEL",
       "conversionDateTime": "{{formatDate(webhook.created_at, 'YYYY-MM-DD HH:mm:ssZ')}}",
       "conversionValue": {{webhook.total_price}},

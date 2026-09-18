@@ -18,15 +18,15 @@ Stack Architect provides production-ready automation blueprints and step-by-step
 
 ## 2. Product & Tool Specifications
 
-### Tool 1: CAPI Shield — Server-Side Tracking for Meta & Google
+### Tool 1: CAPI Shield — Server-Side Tracking for Meta
 - **Canonical URL**: https://stackarchitect.xyz/capi-shield/
-- **Function**: Dual server-side tracking pipeline for Meta Conversions API and Google Ads Enhanced Conversions.
+- **Function**: Server-side purchase tracking for Meta Conversions API. It also carries a Google Ads route that does not match orders as shipped (see step 4).
 - **Replaces**: Elevar (entry $225/mo — verified 2026-08-08, https://www.audiense.com/products/audiense-online/pricing/ ; getelevar.com now redirects to Audiense. Higher tiers to $1,250/mo are third-party reported and NOT verified), Triple Whale (GMV-based; entry ~$129/mo third-party reported, NOT verified), Northbeam ($1,500+/mo — verified 2026-08-08, https://www.northbeam.io/pricing ).
 - **Execution Mechanism**:
   1. Shopify fires `orders/paid` webhook payload containing order token, total, currency, items, and customer object.
   2. Make.com webhook module parses payload and hashes `email`, `phone`, `first_name`, `last_name` using SHA-256 (`lower(trim(value))`).
-  3. Meta CAPI HTTP request sends `Purchase` event to `https://graph.facebook.com/v19.0/{pixel_id}/events` with `event_name: "Purchase"`, `event_id: order_name`, and user data payload.
-  4. Google Ads Enhanced Conversions HTTP request posts conversion payload to Google Ads API endpoint.
+  3. Meta CAPI HTTP request sends `Purchase` event to `https://graph.facebook.com/{version}/{pixel_id}/events` with `event_name: "Purchase"`, `event_id` set to the Shopify order ID, and user data payload. The Graph API version is pinned in the URL; Meta retires each version about two years after release, so it must be checked against Meta's Graph API changelog and kept current.
+  4. A Google Ads route uploads a click conversion keyed on a gclid. Shopify's order payload has no gclid field, so as shipped this route has nothing to match most orders on. Its consent fields ship as Unspecified and must be set to match the store's own consent setup.
 - **Cost**: $0/month (runs on Make.com free tier).
 
 ### Tool 2: Stocky Swap — Free Shopify Inventory Management

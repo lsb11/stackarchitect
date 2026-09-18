@@ -94,7 +94,11 @@ and `stocky-migration-risk-scorer`) — and a static build never re-evaluates it
 `.github/workflows/scheduled-redeploy.yml` POSTs a Cloudflare Pages deploy hook
 daily at 00:15 UTC so a date boundary is crossed by the build within a day.
 Needs the repo secret `CF_PAGES_DEPLOY_HOOK`; without it the run fails loudly
-rather than passing silently.
+rather than passing silently. **As of 18 Sep 2026 the secret was not set:** every
+scheduled run from 11 to 18 Sep failed on that guard, and Cloudflare shows no
+hook-triggered deploy at all, so the date branches were only re-evaluated when
+someone pushed. Before relying on the daily build, check that the latest run of
+this workflow succeeded, not just that the file exists.
 
 **Pages Functions + D1.** `functions/api/{submit-gap,gap-stats,gap-badge}.js` back the iOS
 Attribution Gap Benchmark, writing to the `attribution-gap` D1 database (`binding = "DB"`,
@@ -111,6 +115,80 @@ endpoints.
   passing that date as `verifiedDate` — never by stamping today's date.
 - `schema-visible-guard.mjs` — runs over `dist/` and fails when JSON-LD asserts a number that
   does not appear in the page's visible text.
+
+**What neither guard checks — capability claims.** Both guards are about
+numbers: third-party prices, the canonical figures in `claims.json`, numbers
+in schema. Nothing checks a sentence that says what a product *does*, and a
+passing build says nothing about those. Found 18 Sep 2026: `/pro/stocky-swap/`
+says the buyer pays for "the error handling already wired in", but every step
+that writes data out in the free blueprints is set to Make's `Ignore` error
+handler, and the Meta and TikTok requests also set `stopOnHttpError: false`,
+so a rejected call finishes as a green run. The guard missed it for two
+separate reasons:
+1. `claims-guard.mjs` only matches numbers in price or figure context. A
+   sentence with no number in it can never trigger it.
+2. Its file walker, `contentFiles()`, covers `src/pages`, `src/content`,
+   `src/components`, `src/layouts` and `public`. It does **not** cover
+   `src/data/`, and `src/data/products.ts` holds all the copy for the four
+   `/pro/<slug>/` pages: FAQs, steps, taglines. Even a numeric claim there is
+   only caught indirectly, through `schema-visible-guard` on the built page.
+
+Until a check exists, a claim about what a blueprint does gets verified
+against the blueprint JSON before it ships. The paid files are not in this
+repo; the free versions are in `~/Downloads/*-blueprint-FREE.json`.
+
+### Shipped blueprints that pin a third-party API version need a recurring check
+
+**What happened.** CAPI Shield's Meta request, in both `FILE_00` and
+`Blueprint 01`, was hardcoded to `graph.facebook.com/v19.0/`. Meta's changelog
+says v19.0 was released 23 Jan 2024 and available until 21 May 2026. From then
+on every Meta request returned 400. Nobody saw it for four months, because
+three settings hid it: `stopOnHttpError: false`, the `Ignore` error handler,
+and `dlq: false`, which means a failed run is not stored for retry. Found
+18 Sep 2026. The blueprints now use v25.0. In the same review, the Google
+branch was found reading `{{1.gclid}}`, a field Shopify's order payload does
+not have, with both consent fields hardcoded to `GRANTED`; consent now ships
+as `UNSPECIFIED`.
+
+**Rules for page copy.** Never write a pinned version number in prose. It
+goes stale without anyone noticing. Say that the blueprint names a version in
+its URL, that Meta retires versions about two years after release, and point
+the buyer at Meta's Graph API changelog. Code samples that need a real URL
+are the exception, and they belong in the registry below.
+
+**Proposal, not yet built.** Make the pins testable the way prices are:
+1. A registry, `src/data/pinned-apis.json`, with one entry per pin: API
+   name, pinned version, the shipped files that contain it, the vendor's
+   published retirement date, the changelog URL, and the date a human read
+   that changelog. That last date means the same as `verifiedDate` for
+   prices: a date someone actually read it, never today's date stamped on.
+2. `tests/pinned-apis.test.js`, run by `npm test`, fails when any entry is
+   within 90 days of its retirement date, or has no retirement date or source.
+   **Do not put it in `npm run build`.** A check that fails on a date would
+   block every deploy, including the daily redeploy, on a day nobody is
+   watching.
+3. A weekly GitHub Actions workflow runs that test by itself, so a failure
+   arrives as a failed-run email with no push needed. This is the recurring
+   part.
+4. `scripts/check-blueprint-pins.mjs <dir>` extracts every versioned endpoint
+   (`graph.facebook.com/vNN`, `open_api/vN.N`, `googleads.googleapis.com/vNN`)
+   from a folder of blueprint JSON and compares them with the registry. The
+   paid files are not in this repo, so run it by hand whenever a blueprint is
+   changed or re-exported.
+
+The registry should start with: Meta Graph API (the CAPI Shield blueprints
+and the free public scenario), TikTok Events API v1.3 (TikTok CAPI), and
+the versions written into guide code samples. As of 18 Sep 2026 those are
+`graph.facebook.com/v24.0` in
+`src/pages/blog/shopify-server-side-tracking-complete-setup-guide.astro`, and
+`googleads.googleapis.com/v17` in
+`src/content/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026.md`.
+Check v17 first; it may already be past its retirement date.
+
+Remember that the `/pro/<slug>/` copy lives in `src/data/products.ts`, and
+`claims-guard`'s file walker does not read that directory (see above). A
+version number or capability claim written there gets no automated check
+at all.
 
 **`apps.json` prices have three states, not two.** `statusOf()` in
 `src/data/appsIndex.js` is the definition; `/apps/`, both
@@ -206,6 +284,58 @@ plus a literal rank-tracker operator string. Most of that volume is machine
 retrieval, not people. Treat "recover the 11,000 impressions" as a bad goal.
 
 Full analysis lives in the StackArchitect project doc `gsc-indexing-diagnosis.md`.
+
+### IndexNow: deliberately silent until the freeze lifts (~21 Oct 2026)
+
+Bing's IndexNow export (checked 18 Sep 2026) shows **~55,000 URLs submitted since
+22 Apr for a 62-page site**. Peaks were 4,886 (23 Jul), 2,508 (22 Jul),
+2,392 (21 Jul), 1,929 (29 Jul) and 1,208 (6 Jul), with a baseline still at
+20–77 a day. Bing indexed **33** URLs in that whole period, all before 24 Jul,
+and has indexed or crawled nothing for eight weeks. Two submitters caused this,
+and neither is in `main`:
+
+1. **The `astro-indexnow` integration, 28 Apr – 6 Aug 2026** (`aa4f25d` added
+   it; `6ce7f4e` removed it and its key file `b953….txt`). On `astro:build:done`
+   it submitted every `index.html` in `dist/` as an apex trailing-slash URL,
+   which meant the full built set: noindex pages, and pages that are now
+   legacy redirect sources. It never sent slashless URLs. It ran on **every
+   Cloudflare Pages build, preview builds included**, and preview builds sent
+   the production URLs. Its change detection never worked in CI: it keeps a
+   hash cache in `.astro-indexnow-cache.json` in the project root, which is
+   gitignored, so every CI build started from a fresh clone with an empty cache
+   and re-sent every page. There were 355 successful builds between 28 Apr and
+   6 Aug, about 50 of them previews of `google-labs-jules[bot]` branches. At
+   roughly 80–190 URLs per build that accounts for the total, and the peaks
+   match build clusters. Those bot branches still exist on `origin` with the
+   integration in `astro.config.mjs`. That is why preview deploys are now
+   limited to `main`.
+2. **Cloudflare Crawler Hints**, a zone setting outside the repo, enabled
+   2026-04-21 10:44 UTC (the Bing export starts the next day). It sends IndexNow
+   notices whenever Cloudflare sees cached content change, based on the URLs
+   traffic requests rather than the sitemap. Every deploy changes the HTML, so
+   it kept firing. It was the only live submitter after 6 Aug and explains the
+   baseline. **It was turned off in the dashboard (Caching → Configuration) on
+   18 Sep 2026.** Check with the zone flag
+   `GET /zones/<id>/flags/products/cache/changes` (`crawlhints_enabled`).
+
+The slashless legacy URLs that Bing Site Explorer lists did **not** come from
+either submitter. The integration only ever sent trailing-slash URLs. The
+likely source is pre-April history and backlinks.
+
+**Decision, 18 Sep 2026: submit nothing until the freeze lifts.** Zero
+submissions is the right state while Bing's trust recovers. Do not add a
+submitter, integration, workflow step or hook before then.
+`scripts/indexnow.mjs` (key `5da5f….txt`, which is live) stays **manual-only**.
+Do not wire it to a build, a workflow or a cron. After ~21 Oct it gets
+rebuilt with these rules:
+- **URLs:** only the canonical trailing-slash URLs in `dist/sitemap-0.xml` (62
+  today). Never legacy redirect sources, noindex pages, `/go/*` or `/embed/*`.
+- **Change detection:** a URL counts as changed when its sitemap `lastmod`
+  differs from the live production sitemap. Do not hash the HTML: every build
+  changes it, and a cache stored on the CI runner does not survive between
+  builds.
+- **Runs:** on production deploys only, with a hard cap per run, and every URL
+  sent is logged.
 
 ### Hard rules — still in force
 

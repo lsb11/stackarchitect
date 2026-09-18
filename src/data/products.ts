@@ -178,17 +178,17 @@ export const PRODUCTS: Product[] = [
       },
       {
         q: 'What if I would rather build it myself?',
-        a: 'The free guide at /stocky-swap/ walks through the same scenario module by module and the result is identical on day one. You are paying here for the finished file and the error handling already wired in.',
+        a: 'The free guide at /stocky-swap/ walks through the same scenario module by module and the result is identical on day one. You are paying for the finished file: the line-item loop, the column mapping and the Sheet layout already done, and the afternoon it takes to get them right.',
       },
     ],
   },
   {
     slug: 'capi-shield',
-    pageTitle: 'Meta + Google CAPI — Import-Ready Shopify Blueprint',
+    pageTitle: 'Meta CAPI — Import-Ready Shopify Blueprint',
     name: 'CAPI Shield',
     blueprint: 'Blueprint 01',
-    tagline: 'Meta Conversions API + Google Ads Enhanced Conversions, server-side',
-    problem: 'iOS and ad blockers are eating my Meta and Google conversions.',
+    tagline: 'Meta Conversions API purchase events, server-side',
+    problem: 'iOS and ad blockers are eating my Meta conversions.',
     files: ['Blueprint 01_CAPI_Shield.json'],
     replaces: [
       { name: 'Elevar', price: '$225/mo' },
@@ -212,7 +212,7 @@ export const PRODUCTS: Product[] = [
       {
         time: '~3 min',
         title: 'Paste your own API credentials',
-        body: 'The blueprint ships with placeholders where your secrets go: Meta pixel ID and Conversions API access token, Google Ads conversion action. Paste yours in — nothing is shared, nothing is proxied through us.',
+        body: 'The blueprint ships with placeholders where your secrets go: Meta pixel ID and Conversions API access token, Google Ads conversion action. Paste yours in — nothing is shared, nothing is proxied through us. If you keep the Google Ads route, its two consent fields ship as Unspecified; set them to match your own consent setup.',
         tool: 'Meta Events Manager · Google Ads',
       },
       {
@@ -233,11 +233,11 @@ export const PRODUCTS: Product[] = [
       },
       {
         q: 'Does it send to Google Ads as well?',
-        a: 'Yes — one router in the same scenario sends Enhanced Conversions to Google Ads off the same order event, so you are not maintaining two separate builds.',
+        a: 'Not reliably, as shipped. The Google step uploads a click conversion keyed on a Google click ID, and Shopify’s order data has no field for one, so most orders reach Google with nothing to match on. Treat CAPI Shield as a Meta product until the Google branch is rebuilt; the Meta branch does not depend on it. If you keep the Google step, its two consent fields ship as Unspecified: set them to match your own consent setup.',
       },
       {
-        q: 'What happens when Meta bumps the Graph API version?',
-        a: 'You get the updated blueprint. Silent tracking failure after an API deprecation is the expensive part of running this yourself, and it is the part a static guide cannot help with.',
+        q: 'What happens when Meta retires the Graph API version it uses?',
+        a: 'The Meta request names a Graph API version in its URL, and Meta retires each version about two years after it is released; once it is retired, every request to it fails. Check the version in the URL against Meta’s Graph API changelog, move it to a current version before yours expires, then send one test order to confirm events still arrive.',
       },
     ],
   },
