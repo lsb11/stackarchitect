@@ -1,6 +1,6 @@
 <svg role="img" aria-labelledby="capiFlowTitle capiFlowDesc" viewBox="0 0 1120 520" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;font-family:var(--mono,ui-monospace,Menlo,monospace);">
   <title id="capiFlowTitle">How CAPI Shield routes Shopify conversion data server-side</title>
-  <desc id="capiFlowDesc">A Shopify order webhook triggers a Make.com scenario that hashes customer data and forwards a server-side conversion event in parallel to Meta Conversions API, Google Enhanced Conversions, and TikTok Events API — bypassing the browser pixel that iOS and ad blockers break.</desc>
+  <desc id="capiFlowDesc">A Shopify order webhook triggers a Make.com scenario that hashes customer data and forwards a server-side purchase event to Meta Conversions API, bypassing the browser pixel that iOS and ad blockers break. A TikTok Events API branch can be added from a separate blueprint. The Google Ads route needs a Google click ID that Shopify orders do not carry, so it does not match most orders.</desc>
 
   <defs>
     <linearGradient id="capiGreen" x1="0" y1="0" x2="1" y2="1">
@@ -97,7 +97,7 @@
 
   <!-- three destination tracks -->
   <path d="M632 260 C 700 210, 740 190, 812 190" fill="none" stroke="url(#capiTrack)" stroke-width="2.4" marker-end="url(#capiArrow)"/>
-  <path d="M634 272 C 720 272, 740 272, 812 272" fill="none" stroke="url(#capiTrack)" stroke-width="2.4" marker-end="url(#capiArrow)"/>
+  <path d="M634 272 C 720 272, 740 272, 812 272" fill="none" stroke="#5b6660" stroke-width="2" stroke-dasharray="6 6" marker-end="url(#capiArrow)"/>
   <path d="M632 284 C 700 334, 740 354, 812 354" fill="none" stroke="url(#capiTrack)" stroke-width="2.4" marker-end="url(#capiArrow)"/>
 
   <!-- destinations -->
@@ -107,14 +107,14 @@
     <text x="836" y="204" fill="#93a09a" font-size="10.5">Conversions API</text>
     <text x="1056" y="196" text-anchor="end" fill="#34d377" font-size="11" font-weight="800">EMQ ↑</text>
 
-    <rect x="812" y="244" width="268" height="56" rx="10" fill="#0f0f0f" stroke="#ea4335" stroke-width="1.6"/>
-    <text x="836" y="268" fill="#ea4335" font-size="13" font-weight="800">Google</text>
-    <text x="836" y="286" fill="#93a09a" font-size="10.5">Enhanced Conversions</text>
-    <text x="1056" y="278" text-anchor="end" fill="#34d377" font-size="11" font-weight="800">Smart Bidding ↑</text>
+    <rect x="812" y="244" width="268" height="56" rx="10" fill="#0f0f0f" stroke="#5b6660" stroke-width="1.6" stroke-dasharray="5 4"/>
+    <text x="836" y="268" fill="#b6c0ba" font-size="13" font-weight="800">Google Ads</text>
+    <text x="836" y="286" fill="#93a09a" font-size="10.5">click-conversion route</text>
+    <text x="1056" y="278" text-anchor="end" fill="#b6c0ba" font-size="11" font-weight="800">needs gclid</text>
 
     <rect x="812" y="326" width="268" height="56" rx="10" fill="#0f0f0f" stroke="#e2e8f0" stroke-width="1.6"/>
     <text x="836" y="350" fill="#f8fafc" font-size="13" font-weight="800">TikTok</text>
-    <text x="836" y="368" fill="#93a09a" font-size="10.5">Events API</text>
+    <text x="836" y="368" fill="#93a09a" font-size="10.5">Events API · separate blueprint</text>
     <text x="1056" y="360" text-anchor="end" fill="#34d377" font-size="11" font-weight="800">ROAS ↑</text>
   </g>
   <text x="812" y="148" fill="#93a09a" font-size="10" font-weight="700" letter-spacing="1.2">03 — RECOVERED, SERVER-TO-SERVER</text>

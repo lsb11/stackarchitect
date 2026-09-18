@@ -225,7 +225,7 @@ export const PRODUCTS: Product[] = [
     faq: [
       {
         q: 'Where does the hashing happen?',
-        a: 'Inside the scenario, in your own Make.com account, before anything leaves for Meta. Email, phone and name are SHA-256 hashed and normalised first — lowercase, trimmed, punctuation stripped — which is the part that is easy to get subtly wrong by hand and quietly costs match quality.',
+        a: 'Inside the scenario, in your own Make.com account, before anything leaves for Meta. Email and first and last name are lowercased and trimmed, then SHA-256 hashed. The phone number only has its spaces removed before hashing, so a plus sign, dashes or brackets stay in and the hash will not match Meta’s digits-only format. An order with no phone number sends the hash of an empty string rather than leaving the field out.',
       },
       {
         q: 'Does this replace my Meta pixel?',
@@ -340,11 +340,11 @@ export const PRODUCTS: Product[] = [
     faq: [
       {
         q: 'Where do the product costs come from?',
-        a: 'From you. The COGS_Table tab is where you enter unit cost per SKU, and the scenario looks each order line up against it. Nothing guesses your margins.',
+        a: 'From you. You enter a unit cost for each variant in the COGS_Table tab, keyed on Shopify’s variant ID rather than the SKU. The scenario looks up the first line item’s variant only and takes its unit cost once, so an order with several items, or a quantity above one, is under-costed. Nothing guesses your margins, but multi-item orders need checking by hand.',
       },
       {
         q: 'Does it include Shopify payment fees?',
-        a: 'Yes — the per-order fee comes through on the order payload and lands in its own column, so gross profit is after fees rather than a revenue-minus-COGS approximation.',
+        a: 'It includes an estimate, not your actual fee. The scenario calculates 2.9% of the order total plus $0.30 for every order and writes that to the fee column; the separate payment-fee column is left at 0. Your real rate depends on your Shopify plan, country, card type and payment provider, so check the column against your payouts report and change the rate in the scenario if it differs.',
       },
       {
         q: 'Does it work in my currency?',
