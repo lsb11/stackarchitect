@@ -47,11 +47,11 @@ const stickyHref = buildStripeUrl(KIT_STRIPE_URL, 'pro_sticky');
 const faqs = [
   {
     q: 'What is the Stack Architect Complete Kit?',
-    a: `The Stack Architect Complete Kit is a ${kit} one-time purchase containing eight files: an all-in-one JSON blueprint that runs all four automations in a single scenario, the same four automations as separate ready-to-import Make.com JSON blueprints (CAPI Shield for Meta + Google server-side tracking, TikTok CAPI for TikTok Events API v1.3, Stocky Swap for inventory management replacing Shopify Stocky, and P&L Auto for live profit and loss reporting), two pre-configured Google Sheets templates, and a PDF setup guide. One direct support question is also included. Access is instant via Stripe — you are redirected to a Google Drive folder with all files immediately after payment.`,
+    a: `The Stack Architect Complete Kit is a ${kit} one-time purchase containing eight files: an all-in-one JSON blueprint that runs all four automations in a single scenario, the same four automations as separate ready-to-import Make.com JSON blueprints (CAPI Shield for Meta server-side purchase tracking, TikTok CAPI for TikTok Events API v1.3, Stocky Swap for inventory management replacing Shopify Stocky, and P&L Auto for live profit and loss reporting), two pre-configured Google Sheets templates, and a PDF setup guide. One direct support question is also included. Access is instant via Stripe — you are redirected to a Google Drive folder with all files immediately after payment.`,
   },
   {
     q: 'Can I buy just one blueprint?',
-    a: `Yes. Each of the four is sold on its own at ${single}: ${PRODUCTS.map((p) => p.name).join(', ')}. The kit is ${kit} for all four plus both Sheets templates, the setup PDF and one support question — cheaper than three singles.`,
+    a: `Yes. Each of the four is sold on its own at ${single}: ${PRODUCTS.map((p) => p.name).join(', ')}. The kit is ${kit} for all four plus both Sheets templates, the setup PDF and one support question . The kit is one scenario instead of four, so it fits inside Make’s free plan with a slot to spare and uses about a third fewer credits per order.`,
   },
   {
     q: 'What is a Make.com JSON blueprint and how does importing it work?',
@@ -67,7 +67,7 @@ const faqs = [
   },
   {
     q: 'Do I need a paid Make.com plan?',
-    a: `Make’s free plan allows two active scenarios, so any two of the four run free (1,000 credits/month, enough for roughly 300 orders a month). Running all four at once needs Make Core, about $9/month, which also lifts the credit ceiling to 10,000. Checked against make.com/pricing on 29 August 2026.`,
+    a: `Not to start. Make’s free plan allows two active scenarios and 1,000 credits a month. FILE_00 runs all four automations as one scenario, so it fits with a slot to spare, and each order uses about a third fewer credits than the four separate files would. Running the four separate files together needs Make Core, about $9/month, which also lifts the credit ceiling to 10,000. Check Make → History after a few real orders to see your own usage. Checked against make.com/pricing on 29 August 2026.`,
   },
   {
     q: 'What Shopify apps does the Complete Kit replace?',
@@ -133,7 +133,7 @@ const proSchema = [
   },
   // ProductGroup rather than a bare Product: there are five things for sale
   // here — the kit and the four singles — and hasVariant is how that is said.
-  // The AggregateOffer spans them, $9.99 to $24 across 5 offers.
+  // The AggregateOffer spans them, SINGLE_PRICE to KIT_PRICE across 5 offers.
   {
     '@context': 'https://schema.org',
     '@type': 'ProductGroup',
@@ -265,12 +265,12 @@ const proSchema = [
 
       <h1>Your Shopify backend, already built.<br><span class="green">Import the file. Live in ten minutes.</span></h1>
 
-      <p id="answer" class="hero-sub">Four finished Make.com blueprints — server-side Meta, Google and TikTok tracking, live inventory, and per-order profit. Every module and field mapping is built; you paste your own API credentials and switch it on. <strong>{kit} once, or {single} for the one you actually need.</strong> No subscription.</p>
+      <p id="answer" class="hero-sub">Four finished Make.com blueprints — server-side Meta and TikTok purchase tracking, a live inventory log, and per-order profit. Every module and field mapping is built; you paste your own API credentials and switch it on. <strong>{kit} once, or {single} for the one you actually need.</strong> No subscription.</p>
 
       <div class="price-row">
         <div class="price-main">{kit}</div>
       </div>
-      <div class="price-anchor">Less than one month of the cheapest app it replaces — and you own it forever.</div>
+      <p class="price-anchor">Four blueprints at {single} each, or all four in the kit for {kit}. The kit is one scenario instead of four, so it fits inside Make’s free plan with a slot to spare and uses about a third fewer credits per order.</p>
 
       <div class="hero-ctas">
         <a href={heroHref} data-cta="pro_hero" class="btn pulse">Get the Complete Kit — {kit} <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a>
@@ -281,7 +281,7 @@ const proSchema = [
       <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;margin-top:18px;margin-bottom:4px;">
         <div style="display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10px;color:var(--g);background:rgba(52,211,119,.06);border:1px solid rgba(52,211,119,.2);padding:7px 13px;border-radius:5px;">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          30-day money-back guarantee
+          30-day money-back guarantee — <a href="/refund-policy/" class="guarantee-link">refund policy</a>
         </div>
         <div style="font-family:var(--mono);font-size:10px;color:var(--text-4);display:flex;align-items:center;gap:6px;">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Stripe secure checkout
@@ -312,14 +312,7 @@ const proSchema = [
         <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"></path></svg>1 direct support question included</span>
       </div>
 
-      <div class="make-tier-note" role="note">Runs on Make's free tier — any two scenarios free (Make's free plan allows two active scenarios). All four needs Make Core, about $9/mo. <span class="make-tier-date">Checked against make.com/pricing, 29 Aug 2026.</span></div>
-
-      <div class="urgency" role="note">
-        <span class="dot" style="background:var(--red);animation:none;"></span>
-        {postShutdown
-          ? "Stocky's data was deleted August 31, 2026 — Stocky Swap JSON deploys in 60 seconds"
-          : "Stocky shuts down August 31, 2026 — Stocky Swap JSON deploys in 60 seconds"}
-      </div>
+      <div class="make-tier-note" role="note">Make's free plan allows two active scenarios. FILE_00 runs all four automations as one, so it fits with a slot to spare; the four separate files need Make Core, about $9/mo, to run together. <span class="make-tier-date">Checked against make.com/pricing, 29 Aug 2026.</span></div>
     </div>
   </section>
 
@@ -334,37 +327,6 @@ const proSchema = [
 
   <!-- WHICH PROBLEM ARE YOU FIXING? — the page's primary interactive element -->
   <ProductChooser />
-
-  <!-- STOCKY URGENCY BAND -->
-  <div style="background:rgba(239,68,68,.05);border-top:1px solid rgba(239,68,68,.15);border-bottom:1px solid rgba(239,68,68,.15);padding:20px 24px;" role={postShutdown ? "note" : "alert"} aria-label={postShutdown ? "Shopify Stocky end of service" : "Shopify Stocky shutdown warning"}>
-    <div style="max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
-      <div>
-        <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--red);letter-spacing:.12em;margin-bottom:6px;">{postShutdown ? "SHOPIFY STOCKY — SERVICE ENDED 31 AUG 2026" : "⚠ TIME-SENSITIVE // SHOPIFY STOCKY SHUTDOWN — AUGUST 31, 2026"}</div>
-        {postShutdown ? (
-          <p style="font-size:13px;color:var(--text-3);line-height:1.65;max-width:560px;">Stocky's data was deleted, not migrated to Shopify Admin. <strong style="color:var(--text-2);">Stocky Swap</strong> starts logging from your next order — timestamp, SKU, quantity, order ID and product, straight into Google Sheets. No migration to do, because there's nothing left to migrate.</p>
-        ) : (
-          <p style="font-size:13px;color:var(--text-3);line-height:1.65;max-width:560px;">Shopify set August 31, 2026 as Stocky's end of service — its data is deleted rather than migrated to Shopify Admin. The <strong style="color:var(--text-2);">Stocky Swap scenario</strong> in this kit imports in 60 seconds and starts capturing live inventory data immediately — no data loss, no manual migration.</p>
-        )}
-      </div>
-      {postShutdown ? (
-        <div class="countdown-box" style="min-width:190px;">
-          <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--red);text-align:center;">Ended 31 Aug 2026</div>
-          <div style="font-family:var(--mono);font-size:10px;color:var(--text-4);text-align:center;line-height:1.6;margin-top:8px;">Every day without it is inventory history you're not capturing.</div>
-        </div>
-      ) : (
-        <div class="countdown-box" id="cd-box" style="min-width:190px;">
-          <div class="countdown-label">Stocky shuts down in</div>
-          <div class="countdown-nums">
-            <div class="cd-unit"><span class="cd-val" id="cd-d">--</span><div class="cd-l">Days</div></div>
-            <div class="cd-sep">:</div>
-            <div class="cd-unit"><span class="cd-val" id="cd-h">--</span><div class="cd-l">Hrs</div></div>
-            <div class="cd-sep">:</div>
-            <div class="cd-unit"><span class="cd-val" id="cd-m">--</span><div class="cd-l">Min</div></div>
-          </div>
-        </div>
-      )}
-    </div>
-  </div>
 
   <!-- CTA STRIP 1 -->
   <div class="cta-strip">
@@ -389,32 +351,26 @@ const proSchema = [
         <p>Not instructions. The actual files. Import the JSON — it is already built. No configuration screens. No field mapping. No guesswork.</p>
       </div>
 
-      <!-- STOCKY SWAP — URGENT -->
-      <article class="sol-urgent" aria-label="Stocky Swap scenario — urgent replacement for Shopify Stocky">
+      <!-- STOCKY SWAP — kept as the wide card, without the countdown or the
+           red "urgent" styling: nothing about this product is scarce. -->
+      <article class="sol-urgent" aria-label="Stocky Swap scenario — replacement for Shopify Stocky">
         <div class="sol-urgent-bar"></div>
         <div class="sol-urgent-inner">
           <div style="flex:1;min-width:240px;">
-            <div class="sol-urgent-badge">⚠ Blueprint 03 // MAKE.COM JSON — STOCKY END OF SERVICE 31 AUG 2026</div>
+            <div class="sol-urgent-badge">Blueprint 03 // MAKE.COM JSON</div>
             <span class="tag tag-sky" style="margin-bottom:10px;display:inline-flex;">Inventory Management</span>
             <div class="sol-urgent-name">Stocky Swap Scenario</div>
             <div class="sol-urgent-hl">{postShutdown ? "Live inventory to Google Sheets — the Shopify Stocky replacement" : "Live inventory to Google Sheets — replaces Shopify Stocky before shutdown"}</div>
             {postShutdown ? (
-              <p class="sol-urgent-desc">Every Shopify order line item auto-logged to Google Sheets in real time — timestamp, SKU, quantity sold, order ID and product. Shopify closed Stocky on August 31, 2026 and deleted all data. This JSON file imports in 60 seconds and starts logging from your next order. No migration to do, because there's nothing left to migrate.</p>
+              <p class="sol-urgent-desc">Every Shopify order line item auto-logged to Google Sheets in real time — timestamp, SKU, quantity sold, order ID and product. Shopify closed Stocky on August 31, 2026 and deleted its data. This file starts logging from your next order. No migration to do, because there's nothing left to migrate.</p>
             ) : (
-              <p class="sol-urgent-desc">Every Shopify order line item auto-logged to Google Sheets in real time — timestamp, SKU, quantity sold, order ID and product. Shopify closes Stocky on August 31, 2026 and deletes all data. This JSON file is ready to import today — 60 seconds from download to data capture. No data loss. No manual migration.</p>
+              <p class="sol-urgent-desc">Every Shopify order line item auto-logged to Google Sheets in real time — timestamp, SKU, quantity sold, order ID and product. Shopify closes Stocky on August 31, 2026 and deletes its data. This file starts logging from your next order.</p>
             )}
             <div class="sol-reps" style="margin-bottom:12px;"><span class="sol-rep">Shopify Stocky</span><span class="sol-rep">Linnworks</span><span class="sol-rep">Skubana</span><span class="sol-rep">Inventory Planner</span></div>
             <div class="sol-urgent-meta"><span class="sol-urgent-save">Saves $29–$199/mo</span><span class="sol-urgent-time">~4 min after import</span></div>
-            <div style="display:flex;gap:12px;flex-wrap:wrap;">
-              <a href="/pro/stocky-swap/" class="btn btn-sm">Stocky Swap on its own — {single} →</a>
-              <a href="/stocky-swap/" class="btn-outline btn-outline-sm">Free setup guide ↗</a>
-            </div>
-          </div>
-          <div class="sol-urgent-right">
-            <div class="countdown-box">
-              <div class="countdown-label">JSON imports in</div>
-              <div style="font-family:var(--mono);font-size:13px;font-weight:800;color:var(--sky);text-align:center;padding:8px 0;">60 seconds</div>
-              <div style="font-family:var(--mono);font-size:10px;color:var(--text-4);text-align:center;line-height:1.6;">vs ~2 hours building<br>from the free guide</div>
+            <div class="sol-foot sol-foot-flat">
+              <a href="/pro/stocky-swap/" class="sol-single" data-cta="pro_card_stocky-swap">On its own — {single} →</a>
+              <a href="/stocky-swap/" class="sol-guide">Free guide ↗</a>
             </div>
           </div>
         </div>
@@ -428,13 +384,14 @@ const proSchema = [
           <div class="sol-body">
             <span class="tag" style="font-size:9px;">Blueprint 01 // MAKE.COM JSON</span>
             <div class="sol-name">CAPI Shield Scenario</div>
-            <div class="sol-hl">Meta + Google server-side tracking — instant</div>
-            <p class="sol-desc">Meta Conversions API, server-side via Shopify webhook. Bypasses iOS restrictions and ad blockers. Sends hashed email, phone, name, IP and user-agent for high Event Match Quality. One click to import.</p>
+            <div class="sol-hl">Meta purchase events, server-side</div>
+            <p class="sol-desc">Meta Conversions API, server-side via Shopify webhook. Bypasses iOS restrictions and ad blockers. Sends hashed email, phone and name, plus IP and user agent, for Meta to match against. Its Google Ads route cannot match Shopify orders as shipped; delete it.</p>
             <div class="sol-rep-label">Replaces</div>
             <div class="sol-reps"><span class="sol-rep">Elevar $225/mo</span><span class="sol-rep">Triple Whale GMV-based</span><span class="sol-rep">Stape $29+/mo</span><span class="sol-rep">Littledata $159+/mo</span></div>
             <div class="sol-meta"><span class="sol-save">$145–$650/mo saved</span><span class="sol-time">~6 min after import</span></div>
           </div>
           <div class="sol-foot">
+            <a href="/pro/capi-shield/" class="sol-single" data-cta="pro_card_capi-shield">On its own — {single} →</a>
             <a href="/capi-shield/" class="sol-guide">Free guide ↗</a>
           </div>
         </article>
@@ -446,12 +403,13 @@ const proSchema = [
             <span class="tag tag-tiktok" style="font-size:9px;">Blueprint 02 // MAKE.COM JSON</span>
             <div class="sol-name">TikTok CAPI Scenario</div>
             <div class="sol-hl">TikTok Events API v1.3 — server-side events iOS cannot strip</div>
-            <p class="sol-desc">CompletePayment events sent server-side to TikTok's Events API via Make.com. iOS restrictions and ad blockers cannot intercept the signal. Full Advanced Matching data on every event.</p>
+            <p class="sol-desc">CompletePayment events sent server-side to TikTok's Events API via Make.com. iOS restrictions and ad blockers cannot intercept the signal. Hashed email and phone, plus IP and user agent, on every event.</p>
             <div class="sol-rep-label">Replaces</div>
             <div class="sol-reps"><span class="sol-rep">WeltPixel $39+/mo</span><span class="sol-rep">Analyzify $145–$275/mo</span><span class="sol-rep">Elevar TikTok</span></div>
             <div class="sol-meta"><span class="sol-save t">$39–$299/mo saved</span><span class="sol-time">~6 min after import</span></div>
           </div>
           <div class="sol-foot">
+            <a href="/pro/tiktok-capi/" class="sol-single" data-cta="pro_card_tiktok-capi">On its own — {single} →</a>
             <a href="/tiktok-events-api-shopify/" class="sol-guide">Free guide ↗</a>
           </div>
         </article>
@@ -463,12 +421,13 @@ const proSchema = [
             <span class="tag tag-amber" style="font-size:9px;">Blueprint 04 // MAKE.COM JSON</span>
             <div class="sol-name">P&amp;L Auto Scenario</div>
             <div class="sol-hl">Live profit &amp; loss — every order, automatically</div>
-            <p class="sol-desc">Every Shopify order auto-populates a Google Sheets P&L dashboard — revenue, COGS, ad spend, fees, and net profit calculated the instant payment confirms. Real-time profitability at $0/mo.</p>
+            <p class="sol-desc">Every paid Shopify order writes a row to a Google Sheets P&L — revenue, an estimated processing fee, COGS from your own cost table, and gross profit. Ad spend you enter by hand.</p>
             <div class="sol-rep-label">Replaces</div>
             <div class="sol-reps"><span class="sol-rep">TrueProfit $19+/mo</span><span class="sol-rep">BeProfit $29+/mo</span><span class="sol-rep">Glew.io</span></div>
             <div class="sol-meta"><span class="sol-save a">$19–$299/mo saved</span><span class="sol-time">~8 min after import</span></div>
           </div>
           <div class="sol-foot">
+            <a href="/pro/pnl-auto/" class="sol-single" data-cta="pro_card_pnl-auto">On its own — {single} →</a>
             <a href="/shopify-profit-loss-automation/" class="sol-guide">Free guide ↗</a>
           </div>
         </article>
@@ -496,8 +455,8 @@ const proSchema = [
         <div class="how-step">
           <div class="how-n" style="color:var(--sky)">Step 02 // ~3 min</div>
           <div class="how-title">Import JSON blueprints</div>
-          <p class="how-body">In Make.com, click Create new scenario → Import Blueprint → upload each JSON file. Every module, API connection, and field mapping is pre-configured inside the file. Nothing to set up manually.</p>
-          <span class="how-tool">Make.com · two scenarios free · one click</span>
+          <p class="how-body">In Make.com, click Create new scenario → Import Blueprint → upload FILE_00, which holds all four automations as one scenario. Every module and field mapping is pre-configured inside the file; delete any branch you do not want.</p>
+          <span class="how-tool">Make.com · one scenario · one click</span>
         </div>
         <div class="how-step">
           <div class="how-n" style="color:var(--vio)">Step 03 // ~2 min</div>
@@ -534,7 +493,7 @@ const proSchema = [
           <div class="compare-head-cell" role="columnheader">Paid Apps ($60–$180+/mo)</div>
         </div>
         <div class="compare-row" role="row">
-          <div class="compare-cell">Server-side tracking (Meta + Google)</div>
+          <div class="compare-cell">Server-side purchase tracking (Meta, TikTok)</div>
           <div class="compare-cell"><span class="yes">✓</span></div>
           <div class="compare-cell hl"><span class="yes">✓</span></div>
           <div class="compare-cell"><span class="yes">✓</span></div>
@@ -642,7 +601,7 @@ const proSchema = [
           <div class="rep-cell" role="columnheader">Monthly saving</div>
         </div>
         <div class="rep-row" role="row">
-          <div class="rep-cell"><strong>CAPI Shield</strong> — Meta Ads + Google Ads Enhanced Conversions + GA4</div>
+          <div class="rep-cell"><strong>CAPI Shield</strong> — Meta Conversions API</div>
           <div class="rep-cell">Elevar ($225), Triple Whale (GMV-based), Stape ($29+), Littledata ($159+)</div>
           <div class="rep-cell"><span class="rep-saving">$145–$650/mo</span></div>
         </div>
@@ -653,7 +612,7 @@ const proSchema = [
         </div>
         <div class="rep-row" role="row">
           <div class="rep-cell"><strong>Stocky Swap</strong> — Inventory tracking</div>
-          <div class="rep-cell">Shopify Stocky (shutting down), Linnworks, Skubana</div>
+          <div class="rep-cell">Shopify Stocky (retired), Linnworks, Skubana</div>
           <div class="rep-cell"><span class="rep-saving">$29–$199/mo</span></div>
         </div>
         <div class="rep-row" role="row">
@@ -689,7 +648,7 @@ const proSchema = [
           <div class="for-item"><span class="for-dot y">✓</span><span>You use or plan to use Meta Ads, Google Ads, or TikTok Ads and want accurate attribution</span></div>
           <div class="for-item"><span class="for-dot y">✓</span><span>You used Shopify Stocky and need a replacement after the August 2026 shutdown</span></div>
           <div class="for-item"><span class="for-dot y">✓</span><span>You want no platform lock-in — everything runs in your own Google and Make.com accounts</span></div>
-          <div class="for-item"><span class="for-dot y">✓</span><span>You are happy running any two scenarios on Make's free plan, or paying about $9/mo for Make Core to run all four</span></div>
+          <div class="for-item"><span class="for-dot y">✓</span><span>You are happy running all four as one scenario on Make's free plan, or paying about $9/mo for Make Core to run the four separate files</span></div>
         </div>
         <div class="for-card no-card">
           <div class="for-card-label">— THIS IS NOT FOR YOU IF...</div>
@@ -845,33 +804,6 @@ const proSchema = [
       var el = document.getElementById('footer-copyright');
       if (el) el.textContent = '© ' + new Date().getFullYear() + ' STACK_ARCHITECT // COMPLETE_KIT';
     })();
-
-    // Countdown — Shopify Stocky shutdown August 31, 2026
-    function updateCountdown() {
-      var target = new Date('2026-08-31T23:59:59Z');
-      var now = new Date();
-      var diff = target - now;
-      var dEls = document.querySelectorAll('#cd-d');
-      var hEls = document.querySelectorAll('#cd-h');
-      var mEls = document.querySelectorAll('#cd-m');
-      // The post-deadline copy is rendered at build time (isPostShutdown in
-      // src/utils/stockyDeadline.ts), so #cd-box is simply absent past the
-      // date and there is nothing to tick. This only has to avoid painting
-      // zeros in the window between the deadline and the next deploy.
-      if (diff <= 0) {
-        var box = document.getElementById('cd-box');
-        if (box) box.hidden = true;
-        return;
-      }
-      var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      var mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      dEls.forEach(function(e){e.textContent=days});
-      hEls.forEach(function(e){e.textContent=String(hours).padStart(2,'0')});
-      mEls.forEach(function(e){e.textContent=String(mins).padStart(2,'0')});
-    }
-    updateCountdown();
-    setInterval(updateCountdown, 30000);
 
     // Scroll bar
     var shown = false, gone = false;
@@ -1077,12 +1009,11 @@ const proSchema = [
     }
     .make-tier-date { display: block; margin-top: 4px; font-family: var(--mono); font-size: 10.5px; color: var(--text-4); }
     /* NEW: price anchor below note */
+    /* The two ways to buy, stated plainly under the price. A sentence, not a
+       pill: it carries the reason to buy the kit, and that has to be readable. */
     .price-anchor {
-      font-family: var(--mono); font-size: 11px;
-      color: var(--g); font-weight: 700; letter-spacing: .04em;
-      background: var(--g-dim); border: 1px solid var(--g-border);
-      display: inline-block; padding: 5px 14px; border-radius: 3px;
-      margin-bottom: 22px;
+      font-size: 15px; line-height: 1.65; color: var(--text-2);
+      max-width: 580px; margin: 4px auto 22px;
     }
 
     .btn {
@@ -1203,6 +1134,12 @@ const proSchema = [
     .sol-urgent-meta { display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 11px; margin-bottom: 16px; }
     .sol-urgent-save { color: var(--sky); font-weight: 700; }
     .sol-urgent-time { color: var(--text-4); }
+    /* Per-card single price. A quiet text link, not a filled button: the kit
+       CTA is the page's one primary action. */
+    .sol-single { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
+    .sol-single:hover { color: var(--g); }
+    .sol-foot-flat { padding: 0; border: 0; background: none; display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+    .guarantee-link { color: inherit; text-decoration: underline; }
     .sol-urgent-right { display: flex; flex-direction: column; align-items: center; gap: 12px; min-width: 180px; }
     .countdown-box { background: rgba(239,68,68,.07); border: 1px solid var(--red-border); border-radius: 8px; padding: 18px 20px; text-align: center; width: 100%; }
     .countdown-label { font-family: var(--mono); font-size: 10px; color: var(--text-4); margin-bottom: 12px; letter-spacing: .06em; }

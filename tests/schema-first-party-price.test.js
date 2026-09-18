@@ -23,7 +23,6 @@ import {
 import {
   KIT_PRICE,
   SINGLE_PRICE,
-  UPGRADE_PRICE,
   STOCKLOG_PRICE,
   STOCKLOG_UNIT,
 } from '../src/data/products.ts';
@@ -48,9 +47,11 @@ const brokenKitNode = {
 };
 
 test('claims.json ours mirrors the products.ts constants', () => {
+  // Two things are for sale: one blueprint, or the kit. The $14 upgrade was
+  // removed on 18 Sep 2026; its pin must not come back without a constant.
+  assert.equal(claims.ours.upgradePrice, undefined);
   assert.equal(claims.ours.kitPrice.value, KIT_PRICE);
   assert.equal(claims.ours.singlePrice.value, SINGLE_PRICE);
-  assert.equal(claims.ours.upgradePrice.value, UPGRADE_PRICE);
   assert.equal(claims.ours.stockLogPrice.value, STOCKLOG_PRICE);
 });
 

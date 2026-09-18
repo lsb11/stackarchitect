@@ -4,9 +4,9 @@
  * purchase.
  *
  * Two jobs, in order: get the buyer to their file without a support email, and
- * offer the remaining three blueprints at the upgrade price while they are
- * still in a buying frame of mind. A single buyer who upgrades here recovers
- * most of the bundle margin the unbundle gives away.
+ * point anyone who wants the other three at the Complete Kit. There is no
+ * upgrade price: two things are for sale, one blueprint or the kit, and this
+ * page offers the kit at the same price as /pro/ does.
  *
  * noindex — a thank-you page has nothing to rank for, and one that ranks leaks
  * the fulfilment link to people who have not paid. Also filtered out of the
@@ -15,10 +15,7 @@
 import Base from '../../../layouts/Base.astro';
 import {
   PRODUCTS,
-  SINGLE_PRICE,
-  UPGRADE_PRICE,
-  UPGRADE_STRIPE_URL,
-  buildStripeUrl,
+  KIT_PRICE,
   formatPrice,
   type Product,
 } from '../../../data/products';
@@ -38,9 +35,7 @@ const { product } = Astro.props;
 const { slug, name, blueprint, files, driveUrl, accent, deployTime, guideUrl } = product;
 
 const others = PRODUCTS.filter((p) => p.slug !== slug);
-const upgradeHref = buildStripeUrl(UPGRADE_STRIPE_URL, `thanks_${slug}_upgrade`);
-const upgrade = formatPrice(UPGRADE_PRICE);
-const single = formatPrice(SINGLE_PRICE);
+const kit = formatPrice(KIT_PRICE);
 ---
 <Base
   title={`${name} — your files | Stack Architect`}
@@ -75,26 +70,20 @@ const single = formatPrice(SINGLE_PRICE);
       Stuck on a step? Email <a href="mailto:support@stackarchitect.xyz">support@stackarchitect.xyz</a>.
     </p>
 
-    <!-- UPGRADE -->
+    <!-- THE OTHER THREE — a plain pointer to the kit, not an upsell price. -->
     <div class="upgrade">
-      <div class="upgrade-label">add the other three</div>
-      <h2>The rest of the kit, for {upgrade}</h2>
+      <div class="upgrade-label">want the other three?</div>
+      <h2>They are all in the Complete Kit</h2>
       <p>
-        You have one blueprint. The other three, both Google Sheets templates and the setup
-        PDF are {upgrade} from here — the price of one and a half singles at {single} each.
+        The Complete Kit has all four blueprints as one Make scenario, both Google Sheets
+        templates and the setup PDF, for {kit}.
       </p>
       <ul class="others">
         {others.map((p) => (
           <li><strong>{p.name}</strong> — {p.tagline}</li>
         ))}
       </ul>
-      {upgradeHref
-        ? <a href={upgradeHref} class="btn btn-kit" data-cta={`thanks_${slug}_upgrade`}>Add the other three blueprints — {upgrade} →</a>
-        : <div class="pending">
-            Want the other three? Email <a href="mailto:support@stackarchitect.xyz">support@stackarchitect.xyz</a>
-            and we will send you the {upgrade} upgrade link.
-          </div>
-      }
+      <a href="/pro/" class="btn btn-kit" data-cta={`thanks_${slug}_kit_page`}>See the Complete Kit →</a>
     </div>
 
   </section>

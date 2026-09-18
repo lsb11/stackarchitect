@@ -100,7 +100,15 @@ test('our own prices need no vendor source', () => {
 });
 
 test('the shipped files carry provenance for every third-party price', () => {
-  const ours = /^\$(0|24|9\.99|14|7\.99)(\/(mo|month|yr|year))?[,.]?$/;
+  // Our own figures come from claims.json rather than being restated here: a
+  // hand-written list went stale when the kit moved from $24 to $19.99 and the
+  // $14 upgrade was dropped. $0 is the free stack.
+  const claims = JSON.parse(fs.readFileSync(path.join(ROOT, 'src', 'data', 'claims.json'), 'utf8'));
+  const figures = ['0', ...Object.values(claims.ours)
+    .map((c) => c.value)
+    .filter((v) => typeof v === 'number')
+    .map((v) => String(v).replace('.', '\\.'))];
+  const ours = new RegExp(`^\\$(${figures.join('|')})(\\/(mo|month|yr|year))?[,.]?$`);
   for (const rel of ['public/llms.txt', 'public/llms-full.txt']) {
     const src = fs.readFileSync(path.join(ROOT, rel), 'utf8');
     assert.deepEqual(findUnsourcedPrices(src, (p) => ours.test(p)), [], rel);

@@ -3,8 +3,14 @@
  * /pro/{slug}/ — one page per blueprint, for the single-problem buyer.
  *
  * The kit page sells four things to someone who came for one. These four pages
- * are the unbundle: the H1 is the buyer's problem, the price is $9.99, and the
- * bundle is offered once, on the way out, rather than as the entry price.
+ * are the unbundle: the H1 is the buyer's problem, the answer under it says
+ * what the file does before it says what the file is called, the price is
+ * SINGLE_PRICE, and the bundle is offered once, on the way out, rather than as
+ * the entry price.
+ *
+ * One primary action per page: buy this blueprint. The kit and the free guide
+ * are named honestly in "Which one is right for you" and in the upsell, but as
+ * quieter links, never a second filled button competing in the hero.
  *
  * All copy, prices and file names come from src/data/products.ts. Nothing here
  * is per-slug except what that file provides — a template that forks on slug is
@@ -39,13 +45,20 @@ interface Props {
 
 const { product } = Astro.props;
 const {
-  slug, name, pageTitle, blueprint, tagline, problem, files, replaces,
-  savingRange, guideUrl, stripeUrl, accent, deployTime, steps, faq,
+  slug, name, pageTitle, blueprint, tagline, problem, job, buyIf, guideIf,
+  files, replaces, savingRange, guideUrl, stripeUrl, accent, deployTime, steps,
+  replacesNote, prerequisites, setup, failureModes, faq,
 } = product;
 
 const single = formatPrice(SINGLE_PRICE);
 const kit = formatPrice(KIT_PRICE);
-const twoSingles = formatPrice(SINGLE_PRICE * 2);
+// Why the kit, stated as what it is rather than as a saving. Two singles cost
+// a cent less than the kit, so a savings pitch would read as a trick. What the
+// kit actually changes is how it runs in Make: FILE_00 puts all four
+// automations in one scenario. Source: README_Complete_Kit.pdf, "Which file
+// should you import?" and its credits table (10 credits vs 15 for a two-item
+// order), checked against the module counts in FILE_00 and FILE_01–04.
+const kitWhy = `The kit is one scenario instead of four, so it fits inside Make’s free plan with a slot to spare and uses about a third fewer credits per order.`;
 
 const heroHref = buildStripeUrl(stripeUrl, `single_${slug}_hero`);
 const bottomHref = buildStripeUrl(stripeUrl, `single_${slug}_bottom`);
@@ -138,7 +151,7 @@ const quote = PRESS[0];
   <!-- HERO -->
   <section class="hero" aria-labelledby="ph1">
     <div class="hero-inner">
-      <div class="hero-dateline">{blueprint} · one-time {single} · instant access via Stripe</div>
+      <div class="hero-dateline">Import-ready Make.com file · {name} · {blueprint}</div>
 
       <h1 id="ph1">{problem}</h1>
 
@@ -146,16 +159,14 @@ const quote = PRESS[0];
           indexable page. It has to stand on its own when a model quotes it
           away from the H1, so it names the product rather than saying "it". */}
       <p id="answer" class="hero-sub">
-        <strong>{name}</strong> ({blueprint}) is a finished Make.com blueprint for Shopify:
-        {' '}{tagline}. Import the file, paste your own API credentials, and it is live in
-        {' '}<strong>{deployTime}</strong> — no developer to hire and no monthly app to install.
-        {' '}{single} once, no subscription.
+        {job} <strong>{name}</strong> is the finished Make.com file: import it, add your own
+        {' '}credentials, and it is live in <strong>{deployTime}</strong>. {single} once, no subscription.
       </p>
 
       {stockyLine && <div class="urgency" style="margin-bottom:22px;">{stockyLine}</div>}
 
       <div class="price-row"><div class="price-main">{single}</div></div>
-      <div class="price-note">one-time · instant access · no subscription</div>
+      <div class="price-note">this blueprint on its own · one-time · no subscription</div>
 
       <div class="hero-ctas">
         {heroHref
@@ -163,6 +174,11 @@ const quote = PRESS[0];
           : <button class="btn" type="button" disabled aria-disabled="true">Coming this week</button>
         }
       </div>
+
+      <p class="guarantee-line">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        30-day money-back guarantee — email within 30 days for a full refund. <a href="/refund-policy/">Refund policy</a>
+      </p>
 
       <a class="quiet-link" href={guideUrl}>Build it yourself free →</a>
 
@@ -187,6 +203,36 @@ const quote = PRESS[0];
     </section>
   )}
 
+  <!-- WHICH ONE — the buying decision, stated plainly. Sending the wrong-fit
+       reader to the free guide is the point, not a leak. -->
+  <section class="section" aria-labelledby="fit-h">
+    <div class="inner">
+      <div class="sec-head">
+        <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">before you buy</span>
+        <h2 id="fit-h">Which one is right for you</h2>
+      </div>
+      <div class="fit-grid">
+        <div class="fit-card fit-primary">
+          <div class="fit-name">{name} on its own</div>
+          <div class="fit-price">{single}</div>
+          <p class="fit-body">{buyIf}</p>
+        </div>
+        <div class="fit-card">
+          <div class="fit-name">The Complete Kit</div>
+          <div class="fit-price">{kit}</div>
+          <p class="fit-body">You want two or more of the four automations. {kitWhy}</p>
+          <a class="fit-link" href="#bundle-h">What the kit includes ↓</a>
+        </div>
+        <div class="fit-card">
+          <div class="fit-name">The free guide</div>
+          <div class="fit-price">$0</div>
+          <p class="fit-body">{guideIf}</p>
+          <a class="fit-link" href={guideUrl}>Open the free guide →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- WHAT YOU GET -->
   <section class="section-alt" aria-labelledby="get-h">
     <div class="inner-sm">
@@ -205,6 +251,19 @@ const quote = PRESS[0];
           ))}
         </ul>
       </div>
+    </div>
+  </section>
+
+  <!-- BEFORE YOU START -->
+  <section class="section" aria-labelledby="pre-h">
+    <div class="inner-sm">
+      <div class="sec-head">
+        <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">prerequisites</span>
+        <h2 id="pre-h">Before you start</h2>
+      </div>
+      <ul class="pre-list">
+        {prerequisites.map((p) => <li>{p}</li>)}
+      </ul>
     </div>
   </section>
 
@@ -228,13 +287,33 @@ const quote = PRESS[0];
     </div>
   </section>
 
-  <!-- REPLACES -->
-  <section class="section-alt" aria-labelledby="rep-h">
+  <!-- FULL SETUP -->
+  <section class="section-alt" aria-labelledby="setup-h">
+    <div class="inner-sm">
+      <div class="sec-head">
+        <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">full setup</span>
+        <h2 id="setup-h">Setup, click by click</h2>
+      </div>
+      <ol class="setup-list">
+        {setup.map((s) => (
+          <li class="setup-step">
+            <h3 class="setup-title">{s.title}</h3>
+            <p class="setup-body">{s.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- REPLACES — the limits come first, so a buyer knows what the file does
+       not do before they see what it replaces. -->
+  <section class="section" aria-labelledby="rep-h">
     <div class="inner-sm">
       <div class="sec-head">
         <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">what it replaces</span>
-        <h2 id="rep-h">Apps that charge monthly for this</h2>
+        <h2 id="rep-h">What it replaces, and what it does not do</h2>
       </div>
+      <p class="rep-note">{replacesNote}</p>
       <div class="rep-table" role="table" aria-label={`Apps ${name} replaces`}>
         <div class="rep-row rep-head" role="row">
           <div class="rep-cell" role="columnheader">App</div>
@@ -254,6 +333,26 @@ const quote = PRESS[0];
     </div>
   </section>
 
+  <!-- FAILURE MODES -->
+  <section class="section-alt" aria-labelledby="fail-h">
+    <div class="inner-sm">
+      <div class="sec-head">
+        <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">when it breaks</span>
+        <h2 id="fail-h">When it breaks, and how you will know</h2>
+        <p>Every automation fails sometimes. These are the ways this one does, what causes each, and where to look.</p>
+      </div>
+      <div class="fail-list">
+        {failureModes.map((f) => (
+          <div class="fail-item">
+            <h3 class="fail-symptom">{f.symptom}</h3>
+            <p class="fail-line"><span class="fail-label">Why</span>{f.cause}</p>
+            <p class="fail-line"><span class="fail-label">Check</span>{f.check}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <!-- BUNDLE UPSELL -->
   <section class="section" aria-labelledby="bundle-h">
     <div class="inner-sm">
@@ -262,7 +361,8 @@ const quote = PRESS[0];
           <div class="value-callout-label">fixing more than one thing?</div>
           <div class="value-callout-title" id="bundle-h">All four blueprints, both Sheets templates and the setup PDF</div>
           <div class="value-callout-desc">
-            Two singles cost {twoSingles}. The Complete Kit is {kit} and includes one support question.
+            Four blueprints at {single} each, or all four in the kit for {kit}. {kitWhy}
+            {' '}The kit also includes one support question.
           </div>
         </div>
         <div class="value-callout-price">
@@ -272,6 +372,7 @@ const quote = PRESS[0];
       </div>
       <div style="text-align:center;">
         <a href={bundleHref} class="btn btn-sm btn-kit" data-cta={`single_${slug}_bundle_upsell`}>Get the Complete Kit — {kit} →</a>
+        <p class="guarantee-line" style="margin-top:12px;">Same 30-day money-back guarantee. <a href="/pro/">See everything in the kit</a></p>
       </div>
     </div>
   </section>
@@ -309,7 +410,7 @@ const quote = PRESS[0];
 
       <div class="guarantee-badge">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        30-day money-back guarantee — full refund, no questions.
+        30-day money-back guarantee — full refund, no questions. <a href="/refund-policy/" class="guarantee-link">Refund policy</a>
       </div>
 
       <div class="risk-strip">
@@ -413,6 +514,13 @@ const quote = PRESS[0];
   .press-line a { color: #93a09a; text-decoration: underline; }
   .press-line a:hover { color: #34d377; }
 
+  /* Guarantee beside the buy button. --text-3 on the dark ground; see CLAUDE.md
+     on contrast. The link is underlined so it reads as one without colour. */
+  .guarantee-line { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; font-size: 13px; line-height: 1.5; color: var(--text-3); margin: 0 auto 12px; }
+  .guarantee-line svg { color: var(--g); flex-shrink: 0; }
+  .guarantee-line a, .guarantee-link { color: var(--text-2); text-decoration: underline; }
+  .guarantee-line a:hover, .guarantee-link:hover { color: var(--g); }
+
   .quiet-link { font-family: var(--mono); font-size: 12px; color: var(--text-4); text-decoration: none; }
   .quiet-link:hover { color: var(--text-3); }
 
@@ -492,6 +600,35 @@ const quote = PRESS[0];
   .value-callout-price { text-align: center; flex-shrink: 0; }
   .value-callout-num { font-family: var(--mono); font-size: 48px; font-weight: 800; color: var(--g); line-height: 1; }
   .value-callout-sub { font-family: var(--mono); font-size: 10px; color: var(--text-4); margin-top: 4px; }
+
+  /* WHICH ONE */
+  .fit-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  @media (max-width: 760px) { .fit-grid { grid-template-columns: 1fr; } }
+  .fit-card { background: var(--bg-3); border: 1px solid var(--border); border-radius: 10px; padding: 22px 20px; display: flex; flex-direction: column; }
+  .fit-primary { border-color: var(--acc-border); background: var(--acc-dim); }
+  .fit-name { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: -.01em; margin-bottom: 4px; }
+  .fit-price { font-family: var(--mono); font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 10px; }
+  .fit-body { font-size: 14px; line-height: 1.65; color: var(--text-2); margin: 0 0 12px; flex: 1; }
+  .fit-link { font-family: var(--mono); font-size: 12px; color: var(--text-2); text-decoration: underline; }
+  .fit-link:hover { color: var(--g); }
+
+  /* PREREQUISITES / SETUP / FAILURE MODES — long-form sections. Text on the
+     dark ground uses the --text-2/3 ramp only; see CLAUDE.md on contrast. */
+  .pre-list { margin: 0; padding-left: 20px; color: var(--text-2); font-size: 15px; line-height: 1.7; }
+  .pre-list li { margin-bottom: 10px; }
+  .pre-list li::marker { color: var(--acc); }
+  .setup-list { margin: 0; padding-left: 22px; }
+  .setup-step { margin-bottom: 22px; color: var(--text-3); }
+  .setup-step::marker { color: var(--acc); font-family: var(--mono); font-weight: 700; }
+  .setup-title { font-size: 16px; font-weight: 700; color: var(--text); margin: 0 0 6px; letter-spacing: -.01em; }
+  .setup-body { font-size: 15px; line-height: 1.7; color: var(--text-2); margin: 0; }
+  .rep-note { margin: 0 0 22px; font-size: 15px; line-height: 1.7; color: var(--text-2); }
+  .fail-list { display: grid; gap: 14px; }
+  .fail-item { background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--acc); border-radius: 8px; padding: 18px 20px; }
+  .fail-symptom { font-size: 16px; font-weight: 700; color: var(--text); margin: 0 0 10px; letter-spacing: -.01em; }
+  .fail-line { font-size: 14.5px; line-height: 1.65; color: var(--text-2); margin: 0 0 6px; }
+  .fail-line:last-child { margin-bottom: 0; }
+  .fail-label { display: inline-block; min-width: 52px; margin-right: 8px; font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
 
   /* FAQ */
   .faq-list-c { display: flex; flex-direction: column; gap: 3px; }

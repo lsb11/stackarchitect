@@ -227,9 +227,9 @@ Start with the [Make.com free account — 1,000 ops/month, no card](/go/make/?so
 
 ## Get the pre-built Google Ads tracking file
 
-The Complete Kit includes a ready-to-import Make.com JSON blueprint for Google Enhanced Conversions — plus Meta CAPI, TikTok CAPI, Stocky Swap, and P&L Auto. Import and deploy all four in 10 minutes instead of building each from scratch. $24 one-time.
+The Complete Kit includes a ready-to-import Make.com JSON blueprint for Google Enhanced Conversions — plus Meta CAPI, TikTok CAPI, Stocky Swap, and P&L Auto. Import and deploy all four in 10 minutes instead of building each from scratch. $19.99 one-time.
 
-**[Get the Complete Kit — $24 →](/pro/)**
+**[Get the Complete Kit — $19.99 →](/pro/)**
 
 ---
 

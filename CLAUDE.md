@@ -215,6 +215,38 @@ rule exists to prevent shipped sitewide: `Nav.astro` read "All 53 apps" on all
 Root-level `*.patch` files, `.archived-pages/`, `.*-backup*/` and the loose `.py`/`.cjs` scripts
 are historical artefacts, not live tooling.
 
+### Pricing: two products, two constants
+
+Since 18 Sep 2026 there are exactly two things to buy: one blueprint at
+`SINGLE_PRICE` ($9.99) or the Complete Kit at `KIT_PRICE` ($19.99), both in
+`src/data/products.ts`. The kit was $29 until 29 Aug and $24 until 18 Sep; both
+are `retired` in `claims.json`, so `claims-guard` fails the build on either
+figure next to the kit's name anywhere it scans, code comments included. The
+$14 single → kit upgrade was removed rather than repriced: it never had a
+Stripe link, and at a $19.99 kit it would have cost a single buyer more than
+the kit.
+
+- `.astro` files render the constants (`formatPrice(KIT_PRICE)`), never a
+  literal. Raw `<script type="application/ld+json">` blocks cannot
+  interpolate, so they either move into `<Base schema={...}>` or leave the
+  price out.
+- Markdown, `public/llms.txt`, `public/.well-known/ai-plugin.json` and
+  `public/videos/hero-long.vtt` cannot import, so they carry the literal and
+  rely on the retired-price ratchet. A price change means sweeping those by hand.
+- **Do not sell the kit on saving.** Two singles cost $19.98 against a $19.99
+  kit. The reason to buy it is that `FILE_00` is one scenario instead of four:
+  it fits Make's free plan with a slot to spare and uses about a third fewer
+  credits per order (kit README, credits table: 10 vs 15 for a two-item order,
+  which matches the module counts in `FILE_00` against `FILE_01`–`04`).
+- The 30-day guarantee covers singles as well as the kit. The single pages
+  promised it from 29 Aug, and `/refund-policy/` was widened to match on
+  18 Sep. `/terms/` still mentions only the kit.
+
+**The hero video's audio is stale.** `hero-long` says "$24" out loud. The
+caption (`hero-long.vtt`) and the on-page transcript in `index.astro` say
+$19.99, because a wrong caption is worse than one that does not match the audio.
+The video needs re-recording.
+
 ### Where the indexing problem actually stands
 
 Do not assume thin content is still the cause — but the "no page under 800
@@ -226,6 +258,11 @@ is now the method rather than a description of one: words inside `<main>` with
 510. Four pages under 800, all four the single-product routes:**
 `/pro/pnl-auto/` 510, `/pro/tiktok-capi/` 518, `/pro/capi-shield/` 535,
 `/pro/stocky-swap/` 547. 53 of 62 exceed 1,500 words and 21 exceed 3,000.
+
+**Update, 18 Sep 2026:** the four `/pro/<slug>/` pages gained prerequisites, a
+click-by-click setup, failure modes and a "which one is right for you" block,
+and now measure 1,517–1,817 words. **Floor 950, none under 800**; 57 of 62
+exceed 1,500. The paragraph below is the history of the 10 Sep reading.
 
 Those four are not new thin pages and they did not shrink. They had no `<main>`
 until 10 Sep, so the method could not see them at all — the 5 Sep reading of

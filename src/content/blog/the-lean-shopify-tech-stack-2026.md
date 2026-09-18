@@ -152,9 +152,9 @@ One caveat on timing. Tracking is first in that order for a reason that gets sha
 
 ## Get the entire lean stack pre-built
 
-The Complete Kit is the lean stack in file form — four Make.com JSON blueprints covering tracking (CAPI Shield + Google Ads), inventory (Stocky Swap), and P&L (P&L Auto), plus two pre-configured Google Sheets templates. $24 one-time, 10 minutes to deploy.
+The Complete Kit is the lean stack in file form — four Make.com JSON blueprints covering tracking (CAPI Shield + Google Ads), inventory (Stocky Swap), and P&L (P&L Auto), plus two pre-configured Google Sheets templates. $19.99 one-time, 10 minutes to deploy.
 
-**[Get the Complete Kit — $24 →](/pro/)**
+**[Get the Complete Kit — $19.99 →](/pro/)**
 
 
 ## Related App Alternatives
