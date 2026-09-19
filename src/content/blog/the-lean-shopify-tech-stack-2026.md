@@ -52,7 +52,7 @@ The result: lower monthly costs, faster store performance (fewer app scripts loa
 
 **What these do:** send server-side conversion events to Meta and Google, providing more reliable attribution than browser pixels alone.
 
-**Free replacement:** [CAPI Shield](/capi-shield/) — a Make.com scenario that receives a Shopify Order Payment webhook and sends purchase events directly to Meta's Conversions API and Google's Enhanced Conversions. Same server-side result. Zero monthly cost.
+**Free replacement:** [CAPI Shield](/capi-shield/) — a Make.com scenario that receives a Shopify Order Payment webhook and sends purchase events directly to Meta's Conversions API. Its Google branch cannot match Shopify orders as shipped. Same server-side result for Meta. Zero monthly cost.
 
 The only ongoing cost is Make.com's free plan (sufficient for most stores) or Core plan at $9/month for higher volumes. Versus $225/month for Elevar Core — the saving is $216/month minimum.
 

@@ -128,7 +128,7 @@ Follow the DNS verification or meta tag verification steps. Once verified, go to
 
 ### Cause 3 — No Server-Side Conversions API
 
-**Fix time: 2–3 hours. Covers the purchase events browser tracking loses.**
+**Fix time: about 6 minutes once your Make.com account and Meta access are in place. Covers the purchase events browser tracking loses.**
 
 This is the most impactful fix. The Conversions API (CAPI) sends purchase events directly from Shopify's server to Meta — bypassing the browser, iOS restrictions, ITP, ad blockers, and Shopify's pixel throttling entirely.
 
@@ -136,7 +136,7 @@ Server-to-server communication is not subject to any browser privacy setting or 
 
 **How to implement free:**
 
-[CAPI Shield](/capi-shield/) is the free implementation guide. It uses Make.com to receive a Shopify order webhook and forward a formatted purchase event to Meta's Conversions API endpoint. Setup takes 2–3 hours and covers Meta CAPI. Its Google branch cannot match Shopify orders as shipped.
+[CAPI Shield](/capi-shield/) is the free implementation guide. It uses Make.com to receive a Shopify order webhook and forward a formatted purchase event to Meta's Conversions API endpoint. Setup takes about 6 minutes once your Make.com account and Meta access are in place, and covers Meta CAPI. Its Google branch cannot match Shopify orders as shipped.
 
 **Critical: deduplication**
 
@@ -190,7 +190,7 @@ Work through these in order — each builds on the previous:
 - [ ] Verify domain in Meta Business Suite (10 minutes)
 - [ ] Set data sharing to Maximum in Facebook & Instagram channel (5 minutes)
 - [ ] Configure Aggregated Event Measurement with Purchase as priority 1 (15 minutes)
-- [ ] Implement CAPI via CAPI Shield (2–3 hours) — this is the fix that moves the needle
+- [ ] Implement CAPI via CAPI Shield (about 6 minutes) — this is the fix that moves the needle
 - [ ] Verify deduplication overlap in Meta Events Manager after 7 days (10 minutes)
 - [ ] Check Event Match Quality score — target 6 or above (ongoing)
 

@@ -94,7 +94,7 @@ This second effect is often more valuable than the reporting improvement. More c
 
 ## Deploying CAPI Shield
 
-CAPI Shield is free and deploys in approximately 2–3 hours. It sends purchase events to Meta's Conversions API from a single Make.com scenario. Its Google branch cannot match Shopify orders as shipped.
+CAPI Shield is free and deploys in about 6 minutes once your Make.com account and Meta access are in place. It sends purchase events to Meta's Conversions API from a single Make.com scenario. Its Google branch cannot match Shopify orders as shipped.
 
 The full step-by-step setup is at [CAPI Shield](/capi-shield/). The overview:
 

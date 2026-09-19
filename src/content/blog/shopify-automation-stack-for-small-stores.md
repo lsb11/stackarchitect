@@ -78,7 +78,7 @@ Place a test order in Shopify (use a 100% discount code on any product). Go back
 
 If you run Meta or Google ads and are not running server-side tracking, your ad algorithms are working from incomplete data. iOS restrictions and browser limitations mean browser pixels miss purchase events for many stores. Campaigns are optimising blind.
 
-[CAPI Shield](/capi-shield/) adds a branch to your Make.com scenario that sends each purchase event directly to Meta's Conversions API and Google's Enhanced Conversions endpoint. No browser involved. No iOS restriction applies.
+[CAPI Shield](/capi-shield/) adds a branch to your Make.com scenario that sends each purchase event directly to Meta's Conversions API. Its Google branch cannot match Shopify orders as shipped. No browser involved. No iOS restriction applies.
 
 **Why this is first:** the improvement in tracking data quality has compounding returns over time. Every week of better data means better algorithmic optimisation, better ROAS, lower effective CPAs. Starting this as early as possible maximises the compounding period.
 

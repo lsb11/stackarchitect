@@ -265,7 +265,7 @@ GA4 covers the traffic and behaviour layer. Two additional free tools complete y
 
 **[Shopify P&L Automation](/shopify-profit-loss-automation/)** — GA4 shows revenue but not profit. P&L Auto writes COGS, Shopify transaction fees, and net profit for every order to a Google Sheet automatically. Revenue from GA4 plus profit from P&L Auto gives you a complete financial picture.
 
-**[CAPI Shield](/capi-shield/)** — If you run Meta or Google Ads, CAPI Shield sends server-side purchase events to Meta's Conversions API and Google's Enhanced Conversions simultaneously — giving your ad platforms the complete conversion data they need to optimise campaigns. This is the ad attribution layer that complements GA4's organic analytics layer.
+**[CAPI Shield](/capi-shield/)** — If you run Meta Ads, CAPI Shield sends server-side purchase events to Meta's Conversions API — giving Meta the conversion data it needs to optimise campaigns. Its Google branch cannot match Shopify orders as shipped. This is the ad attribution layer that complements GA4's organic analytics layer.
 
 **[Make.com — free, 1,000 ops/month](/go/make/?source=shopify-google-analytics-4-setup-free-20-n2)** — the automation engine connecting all three. One Shopify Order Payment webhook fans out to: GA4 Measurement Protocol, Meta CAPI, Google Enhanced Conversions, and your P&L spreadsheet — simultaneously, at $0/month on the free plan for stores under 250 orders per month.
 

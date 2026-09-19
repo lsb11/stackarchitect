@@ -130,7 +130,7 @@ Meta Conversions API (CAPI) sends conversion events directly from your server to
 
 **Implementation:** Google Tag Manager server-side container + Shopify webhooks. GTM is free. Server container hosting is approximately $10–30/month — the only non-free component in this guide.
 
-[CAPI Shield](/capi-shield/) is the free step-by-step implementation guide. It covers Meta CAPI and Google Ads server-side conversion tracking simultaneously in a single implementation.
+[CAPI Shield](/capi-shield/) is the free step-by-step implementation guide. It covers Meta CAPI. Its Google branch cannot match Shopify orders as shipped.
 
 ### Step 6 — Verify Deduplication and Event Match Quality (10 minutes, after 7 days)
 
