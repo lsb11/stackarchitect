@@ -42,7 +42,7 @@ Before analysing your conversion rate, verify you're measuring it accurately.
 
 **The tracking gap problem:** iOS restrictions, Safari ITP, and ad blockers mean browser-based tracking misses real purchases on most Shopify stores. The size of the miss is your store's, not the industry's — it scales with your iOS traffic and your consent rate — and you can read it straight off your own dashboards. If your GA4 shows 80 purchases and Shopify shows 100, your GA4 conversion rate is 20% artificially low. Every CRO decision based on this data is wrong.
 
-**Free fix:** Server-side tracking via [Make.com — free, 1,000 ops/month](/go/make/?source=shopify-conversion-rate-optimisation-fre-n1) recovers the missing purchase events. [CAPI Shield](/capi-shield/) covers Meta and Google simultaneously. [Google Enhanced Conversions](/shopify-google-ads-conversion-tracking/) fixes Google Ads attribution specifically. Both deploy in under 10 minutes at $0.
+**Free fix:** Server-side tracking via [Make.com — free, 1,000 ops/month](/go/make/?source=shopify-conversion-rate-optimisation-fre-n1) recovers the missing purchase events. [CAPI Shield](/capi-shield/) covers Meta. [Google Enhanced Conversions](/shopify-google-ads-conversion-tracking/) is a separate setup for Google Ads attribution. Both deploy in under 10 minutes at $0.
 
 Only after fixing tracking does your conversion rate become a reliable number to optimise against.
 
@@ -149,7 +149,7 @@ The total cost of implementing all six: $0/month. Paid CRO apps target the same 
 
 ## The foundation of CRO: accurate tracking data
 
-Before optimising your conversion rate, ensure your tracking is accurate. If your Google Ads and Meta Ads are optimising on part of your real conversion data (due to iOS blocking), your CRO efforts are working with a corrupted signal. The Complete Kit deploys server-side tracking (CAPI Shield + Google Enhanced Conversions + TikTok CAPI), inventory management (Stocky Swap), and P&L reporting — four pre-built Make.com JSON blueprints, $19.99 one-time.
+Before optimising your conversion rate, ensure your tracking is accurate. If your Google Ads and Meta Ads are optimising on part of your real conversion data (due to iOS blocking), your CRO efforts are working with a corrupted signal. The Complete Kit deploys server-side tracking (CAPI Shield for Meta + TikTok CAPI), inventory management (Stocky Swap), and P&L reporting — four pre-built Make.com JSON blueprints, $19.99 one-time.
 
 **[Get the Complete Kit — $19.99 →](/pro/)**
 

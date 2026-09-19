@@ -59,7 +59,7 @@ const YR_RANGE = `${money(SAVINGS.yrLow)}–${money(SAVINGS.yrHigh)}/year`;
  * produce a figure that contradicts the rest of the page.
  * ------------------------------------------------------------------------ */
 const PAINS = [
-  { id: 't',  label: 'Losing ad attribution after iOS updates — Meta/Google', cost: 650, badge: 'Most common',     sol: 'CAPI Shield',          url: '/capi-shield/' },
+  { id: 't',  label: 'Losing Meta ad attribution after iOS updates', cost: 650, badge: 'Most common',     sol: 'CAPI Shield',          url: '/capi-shield/' },
   { id: 'k',  label: 'Paying Klaviyo $20+/mo for email marketing',            cost: 20,  badge: 'Replace free',    sol: 'Replace Klaviyo Free', url: '/replace-klaviyo-free/' },
   { id: 'tk', label: 'Running TikTok ads — losing conversions to iOS',           cost: 299, badge: 'TikTok CAPI',     sol: 'TikTok Events API',    url: '/tiktok-events-api-shopify/' },
   { id: 'i',  label: 'Paying for inventory or stock sync apps',               cost: 500, badge: 'Aug 2026 urgent', sol: 'Stocky Swap',          url: '/stocky-swap/' },
@@ -81,7 +81,7 @@ const FAQ = [
   },
   {
     q: 'How do I replace Elevar for free on Shopify?',
-    a: "<a href='/capi-shield/'>CAPI Shield</a> replaces Elevar for free. It routes Shopify purchase events server-side to Meta Conversions API and Google Enhanced Conversions via a Make.com webhook, using the same delivery mechanism Elevar uses — a server-to-server event feed rather than a browser pixel. We have not measured CAPI Shield's Event Match Quality against Elevar's, so we do not claim the two score alike; EMQ depends on which customer parameters you send, and the <a href='/meta-emq-score-estimator/'>EMQ estimator</a> projects a range from your parameter set rather than reporting a measurement. Elevar lists at $225/mo (<a href='/shopify-attribution-tools-compared/'>pricing checked 8 Aug 2026</a>); CAPI Shield is $0. Deploys in 6 minutes with no code required on Make.com's free tier. See the full <a href='/shopify-attribution-tools-compared/'>Elevar alternative comparison</a>.",
+    a: "<a href='/capi-shield/'>CAPI Shield</a> replaces Elevar for free. It routes Shopify purchase events server-side to Meta's Conversions API via a Make.com webhook, using the same delivery mechanism Elevar uses — a server-to-server event feed rather than a browser pixel. Its Google branch cannot match Shopify orders as shipped. We have not measured CAPI Shield's Event Match Quality against Elevar's, so we do not claim the two score alike; EMQ depends on which customer parameters you send, and the <a href='/meta-emq-score-estimator/'>EMQ estimator</a> projects a range from your parameter set rather than reporting a measurement. Elevar lists at $225/mo (<a href='/shopify-attribution-tools-compared/'>pricing checked 8 Aug 2026</a>); CAPI Shield is $0. Deploys in 6 minutes with no code required on Make.com's free tier. See the full <a href='/shopify-attribution-tools-compared/'>Elevar alternative comparison</a>.",
   },
   {
     q: 'What is the best free Klaviyo alternative for Shopify in 2026?',
@@ -101,7 +101,7 @@ const FAQ = [
   },
   {
     q: 'How much does Triple Whale cost and is there a free alternative?',
-    a: "Triple Whale uses GMV-based pricing that scales with your store's revenue and chosen package, with a limited free plan. The free alternative for server-side tracking is <a href='/capi-shield/'>CAPI Shield</a>, which provides server-side conversion events to Meta and Google Ads at $0 per month, sending the same match-key set Meta scores EMQ against. We have not compared its attribution accuracy with Triple Whale's CAPI component. Full breakdown: <a href='/shopify-attribution-tools-compared/'>Shopify attribution tools compared</a>.",
+    a: "Triple Whale uses GMV-based pricing that scales with your store's revenue and chosen package, with a limited free plan. The free alternative for server-side tracking is <a href='/capi-shield/'>CAPI Shield</a>, which sends server-side purchase events to Meta's Conversions API at $0 per month, sending the same match-key set Meta scores EMQ against. We have not compared its attribution accuracy with Triple Whale's CAPI component. Full breakdown: <a href='/shopify-attribution-tools-compared/'>Shopify attribution tools compared</a>.",
   },
   {
     q: 'What is server-side tracking for Shopify and why does it matter in 2026?',
@@ -206,13 +206,13 @@ const kitSchema = {
     priceValidUntil: '2026-12-31',
     url: 'https://stackarchitect.xyz/pro/',
   },
-  description: `Four ready-to-import Make.com JSON blueprints for Shopify server-side tracking (Meta Conversions API + Google Enhanced Conversions), TikTok Events API, inventory management (Stocky replacement via Google Sheets), and live P&L reporting. Includes two Google Sheets templates. ${formatPrice(KIT_PRICE)} one-time, no subscription ever. 30-day money-back guarantee.`,
+  description: `Four ready-to-import Make.com JSON blueprints for Shopify server-side tracking (Meta Conversions API), TikTok Events API, inventory management (Stocky replacement via Google Sheets), and live P&L reporting. Includes two Google Sheets templates. ${formatPrice(KIT_PRICE)} one-time, no subscription ever. 30-day money-back guarantee.`,
   provider: { '@id': 'https://stackarchitect.xyz/#org' },
 };
 ---
 <Base 
   title="Free Shopify Automation Stack 2026 — Replace Paid Apps" 
-  description="Replace six paid Shopify apps with free tools: Meta CAPI, Google Enhanced Conversions, Stocky replacement, Klaviyo alternative, TikTok CAPI and live P&L."
+  description="Replace six paid Shopify apps with free tools: Meta CAPI, TikTok CAPI, Stocky replacement, Klaviyo alternative, live P&L and an Apps Script quota fix."
   schema={kitSchema}
 >
   <Fragment slot="head">
@@ -239,7 +239,7 @@ const kitSchema = {
       "@id": "https://stackarchitect.xyz/#webpage",
       "url": "https://stackarchitect.xyz/",
       "name": "Free Shopify Automation Stack 2026 — Replace $321–$1,887/Month of Paid Apps",
-      "description": "Free tools replacing paid Shopify apps: server-side tracking (Meta CAPI + Google Enhanced Conversions), inventory management (Stocky replacement), email marketing (Klaviyo alternative), TikTok Events API, and P&L reporting. Replaces $321–$1,887/month of paid apps using Make.com free tier. No code. Deploy in 6 minutes. A pre-built Complete Kit is available.",
+      "description": "Free tools replacing paid Shopify apps: server-side tracking (Meta CAPI), inventory management (Stocky replacement), email marketing (Klaviyo alternative), TikTok Events API, and P&L reporting. Replaces $321–$1,887/month of paid apps using Make.com free tier. No code. Deploy in 6 minutes. A pre-built Complete Kit is available.",
       "inLanguage": "en-GB",
       "datePublished": "2026-02-01",
       "dateModified": "2026-08-21",
@@ -287,7 +287,7 @@ const kitSchema = {
       "estimatedCost": { "@type": "MonetaryAmount", "currency": "USD", "value": "0" },
       "step": [
         { "@type": "HowToStep", "position": 1, "name": "Connect Shopify via webhook", "text": "Add a webhook in Shopify Admin that fires the instant an order is placed or paid. No app install required — it's a built-in Shopify feature. Takes 2 minutes." },
-        { "@type": "HowToStep", "position": 2, "name": "Route and enrich order data with Make.com", "text": "Make.com receives the webhook and routes order data simultaneously: to Google Sheets for inventory and P&L, and to Meta Conversions API, Google Enhanced Conversions, and TikTok Events API for server-side conversion events." },
+        { "@type": "HowToStep", "position": 2, "name": "Route and enrich order data with Make.com", "text": "Make.com receives the webhook and routes order data simultaneously: to Google Sheets for inventory and P&L, and to Meta Conversions API and TikTok Events API for server-side conversion events." },
         { "@type": "HowToStep", "position": 3, "name": "Report in real time across platforms", "text": "Accurate attribution appears in Google Ads, Meta Ads Manager, and TikTok Ads Manager. Live P&L populates in Google Sheets. Low-stock alerts fire automatically. Entire system runs without maintenance on Make.com free tier." }
       ]
     },
@@ -346,7 +346,7 @@ const kitSchema = {
 
   <h1 itemprop="headline">Klaviyo. Triple Whale. Stocky.<br><span class="green">Replaced — free.</span></h1>
 
-  <p id="answer" class="hero-sub" itemprop="description">Six of the most expensive Shopify app categories have free replacements built on Make.com's free tier: server-side Meta and Google tracking, inventory logging, email marketing, TikTok Events API and live profit reporting. Each runs from one Shopify order webhook, needs no code, and deploys in about six minutes. Full walkthrough: <a href="/ultimate-shopify-automation-guide/">Ultimate Shopify Automation Guide</a>.</p>
+  <p id="answer" class="hero-sub" itemprop="description">Six of the most expensive Shopify app categories have free replacements built on Make.com's free tier: server-side Meta tracking, inventory logging, email marketing, TikTok Events API and live profit reporting. Each runs from one Shopify order webhook, needs no code, and deploys in about six minutes. Full walkthrough: <a href="/ultimate-shopify-automation-guide/">Ultimate Shopify Automation Guide</a>.</p>
 
   <div class="hero-primary-cta">
     <a href="#sa-scanner" class="btn btn-lg btn-g">See What Your Store Is Overpaying <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
@@ -563,10 +563,10 @@ const kitSchema = {
       <article class="sol-card g">
         <div class="sol-bar" style="background:linear-gradient(90deg,var(--g),#f5b64d);"></div>
         <div class="sol-body">
-          <span class="tag">Meta + Google Ads Tracking</span>
+          <span class="tag">Meta Ads Tracking</span>
           <h3 class="sol-name">CAPI Shield</h3>
-          <p class="sol-hl">Fix Broken Meta + Google Ads Attribution</p>
-          <p class="sol-desc">iOS strips ad click IDs and blocks pixels before checkout — Meta and Google Ads both <a href="/shopify-ios-attribution-gap-benchmark/">under-report purchases</a> as a result. One Make.com webhook sends server-side events to Meta CAPI and Google Ads Enhanced Conversions, with hashed email, phone, name, IP and user-agent as match keys. Meta scores Event Match Quality from those parameters — <a href="/meta-emq-score-estimator/">estimate yours</a>.</p>
+          <p class="sol-hl">Fix Broken Meta Ads Attribution</p>
+          <p class="sol-desc">iOS strips ad click IDs and blocks pixels before checkout — Meta and Google Ads both <a href="/shopify-ios-attribution-gap-benchmark/">under-report purchases</a> as a result. One Make.com webhook sends server-side purchase events to Meta CAPI, with hashed email, phone, name, IP and user-agent as match keys. Its Google branch cannot match Shopify orders as shipped; the Google Ads guide below covers that setup separately. Meta scores Event Match Quality from those parameters — <a href="/meta-emq-score-estimator/">estimate yours</a>.</p>
           <div class="sol-rep-label">Replaces</div>
           <div class="sol-reps"><span class="sol-rep">Elevar</span><span class="sol-rep">Triple Whale</span><span class="sol-rep">Stape</span><span class="sol-rep">Littledata</span><span class="sol-rep">Analyzify</span></div>
           <div class="sol-meta"><span class="sol-save">$145–$650/mo saved</span><span class="sol-time">~6 min</span></div>
@@ -878,7 +878,7 @@ const kitSchema = {
           <span class="tag tag-sky">Server-Side Tracking</span>
           <h3 class="sol-name">Server-Side Tracking Setup</h3>
           <p class="sol-hl">The Complete Shopify CAPI Setup Guide</p>
-          <p class="sol-desc">End-to-end: what server-side tracking is, why iOS made it mandatory, and the exact Make.com build that feeds Meta CAPI and Google Enhanced Conversions from one event stream.</p>
+          <p class="sol-desc">End-to-end: what server-side tracking is, why iOS made it mandatory, and the exact Make.com build that feeds Meta CAPI from one event stream.</p>
         </div>
         <div class="sol-foot">
           <a href="/blog/shopify-server-side-tracking-complete-setup-guide/" class="sol-cta">Read the setup guide →</a>
@@ -996,7 +996,7 @@ const kitSchema = {
     <div class="mech-grid">
       <div class="mech-card">
         <div class="mech-num">Mechanism 01</div>
-        <p class="mech-claim-c"><strong>Make.com's free tier includes 1,000 credits/month (formerly called operations)</strong> — enough to run the entire stack as a single consolidated scenario: one Shopify orders/paid webhook with router branches feeding Meta CAPI, Google Enhanced Conversions, TikTok Events API, P&amp;L logging and inventory logging &mdash; comfortably inside the free plan's two-active-scenario limit, on a store processing up to ~250 orders/month (4 credits per order).</p>
+        <p class="mech-claim-c"><strong>Make.com's free tier includes 1,000 credits/month (formerly called operations)</strong> — enough to run the entire stack as a single consolidated scenario: one Shopify orders/paid webhook with router branches feeding Meta CAPI, TikTok Events API, P&amp;L logging and inventory logging &mdash; comfortably inside the free plan's two-active-scenario limit, on a store processing up to ~250 orders/month (4 credits per order).</p>
         <div class="mech-source">Source: <a href="https://www.make.com/en/pricing" target="_blank" rel="noopener">Make.com pricing page ↗</a></div>
         <div class="mech-act"><a href="/go/make/?source=home-mech-make" target="_blank" rel="sponsored nofollow noopener" data-cta-position="mech-make">Start free on Make.com →</a> <span class="aff-mark">affiliate</span></div>
       </div>
@@ -1365,7 +1365,7 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
     <p>The core problem most Shopify stores face is that the app ecosystem is structured around recurring revenue. Tracking apps charge $145–$650/month for server-side conversion data. Inventory apps charge $29–$500/month for real-time stock syncing. Email platforms like Klaviyo charge $20+/mo for email automations that most stores never use at full capability. <strong>The $0 stack covers the same jobs — server-side tracking, live inventory, email automation, TikTok Events API, and real-time P&amp;L — using free tiers of tools built for automation at scale.</strong> Where it is worse than the paid app, we say so on the tool's own page. See the <a href="/stack/">full recommended stack — 7 free tools vetted and ranked</a>, or use the <a href="/shopify-app-cost-calculator/">App Cost Calculator</a> to see your exact recoverable spend.</p>
 
     <h3>Free Shopify Tracking — How CAPI Shield Replaces Elevar and Triple Whale</h3>
-    <p><a href="/capi-shield/">CAPI Shield</a> uses Make.com to route Shopify order webhooks directly to Meta Conversions API and Google Enhanced Conversions server-to-server. iOS restrictions, ad blockers, and cookie expiry cannot intercept server-side signals. Browser-only tracking loses purchase events to iOS ATT, Safari ITP, ad blockers and consent rejection, and server-side delivery is not subject to that loss. <a href="/how-we-test/#the-20-40-figure">We publish no figure for how much is lost</a>: the share is set by a store's own traffic mix and consent rate. How much any one store gains is measurable in your own Meta Events Manager as Additional Conversions Reported. <a href="/shopify-attribution-tools-compared/">Elevar charges $225/mo</a> and delivers events by the same server-to-server mechanism. <strong>We have not run CAPI Shield and Elevar side by side on the same store, so we make no claim about how their Event Match Quality compares.</strong> What we can say is what CAPI Shield sends: hashed email, phone, name, IP and user-agent, which is the parameter set Meta scores EMQ against. <a href="/shopify-attribution-tools-compared/">Triple Whale uses GMV-based pricing that scales with your store's revenue</a> for attribution data that server-side tracking provides natively. Estimate your current EMQ with the <a href="/meta-emq-score-estimator/">Meta EMQ Score Estimator</a>.</p>
+    <p><a href="/capi-shield/">CAPI Shield</a> uses Make.com to route Shopify order webhooks directly to Meta's Conversions API server-to-server. Its Google branch cannot match Shopify orders as shipped. iOS restrictions, ad blockers, and cookie expiry cannot intercept server-side signals. Browser-only tracking loses purchase events to iOS ATT, Safari ITP, ad blockers and consent rejection, and server-side delivery is not subject to that loss. <a href="/how-we-test/#the-20-40-figure">We publish no figure for how much is lost</a>: the share is set by a store's own traffic mix and consent rate. How much any one store gains is measurable in your own Meta Events Manager as Additional Conversions Reported. <a href="/shopify-attribution-tools-compared/">Elevar charges $225/mo</a> and delivers events by the same server-to-server mechanism. <strong>We have not run CAPI Shield and Elevar side by side on the same store, so we make no claim about how their Event Match Quality compares.</strong> What we can say is what CAPI Shield sends: hashed email, phone, name, IP and user-agent, which is the parameter set Meta scores EMQ against. <a href="/shopify-attribution-tools-compared/">Triple Whale uses GMV-based pricing that scales with your store's revenue</a> for attribution data that server-side tracking provides natively. Estimate your current EMQ with the <a href="/meta-emq-score-estimator/">Meta EMQ Score Estimator</a>.</p>
 
     <h3>Free Google Ads Enhanced Conversions for Shopify</h3>
     <p>iOS 26 Link Tracking Protection strips the Google Click ID (gclid) from ad URLs opened in Safari Private Browsing, Mail, and Messages. Without gclid, Google Ads cannot attribute the purchase to the ad, so Shopify's reported Google Ads conversions understate what the ads actually drove. We have not found a published figure for how large that gap is, and have not measured it ourselves, so this page does not put a number on it. <a href="/shopify-google-ads-conversion-tracking/">Google Ads Enhanced Conversions via Make.com</a> can send hashed customer email to Google Ads; whether Google accepts it without a click ID depends on how the conversion action is set up.</p>
@@ -1410,7 +1410,7 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
         <div class="guide-specs">
           <span class="gs"><span class="gs-dot"></span>6 Logic Blueprints</span>
           <span class="gs"><span class="gs-dot"></span>Step-by-step deployment manuals</span>
-          <span class="gs"><span class="gs-dot"></span>TikTok + Meta + Google tracking</span>
+          <span class="gs"><span class="gs-dot"></span>TikTok + Meta tracking</span>
           <span class="gs"><span class="gs-dot"></span>v2.026 Stable Build</span>
         </div>
         <div class="gf-wrap" id="gf-form">

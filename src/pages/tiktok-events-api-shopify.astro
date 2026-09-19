@@ -43,7 +43,7 @@ const SCENARIO_URL  = "https://eu1.make.com/public/shared-scenario/7wEszC7SRAl/s
 
 // ─── Nav data ─────────────────────────────────────────────────────────────────
 const products = [
-  { href: "/capi-shield/",                    label: "CAPI Shield",          desc: "Free Meta + Google server-side tracking"                               },
+  { href: "/capi-shield/",                    label: "CAPI Shield",          desc: "Free Meta server-side tracking"                               },
   { href: "/stocky-swap/",                    label: "Stocky Swap",       desc: "Free inventory — replaces Stocky Aug 2026"                             },
   { href: "/tiktok-events-api-shopify/",      label: "TikTok Events API",    desc: "Free TikTok server-side tracking",              active: true           },
   { href: "/replace-klaviyo-free/",           label: "Replace Klaviyo Free", desc: "Free email automation via Systeme.io"                                   },
@@ -100,14 +100,14 @@ const compRows = [
   { feature: "Advanced Matching (hashed PII)",      free: "Yes — full",         welt: "Yes",           anal: "Yes",          elev: "Yes",        freeWin: true },
   { feature: "Webhook-triggered (not browser)",     free: "Yes",                welt: "Partial",       anal: "Partial",      elev: "Partial",    freeWin: true },
   { feature: "Data in your own account",            free: "Yes — Make.com",     welt: "Their servers", anal: "Their servers", elev: "Their servers", freeWin: true },
-  { feature: "Also covers Meta + Google",           free: "Yes — same webhook", welt: "Separate setup",anal: "Separate setup",elev: "Yes (paid)", freeWin: true },
+  { feature: "Also covers Meta",                    free: "Yes — same webhook", welt: "Separate setup",anal: "Separate setup",elev: "Yes (paid)", freeWin: true },
   { feature: "Annual cost",                         free: "$0",                 welt: "$468+",         anal: "$1,188+",      elev: "$1,800+",    freeWin: true, highlight: true }
 ];
 
 
 // ─── Cross-links ──────────────────────────────────────────────────────────────
 const crosslinks = [
-  { href: "/capi-shield/",                    hoverClass: "green",  tag: "Ad tracking — same webhook", tagClass: "tag-g",    name: "CAPI Shield",       desc: "Add Meta CAPI and Google Enhanced Conversions to the same Make.com scenario. One Shopify webhook, three platforms recovered. No extra setup, no extra cost.", save: "Saves $150–$299/mo",  saveColor: "var(--g)"    },
+  { href: "/capi-shield/",                    hoverClass: "green",  tag: "Ad tracking — same webhook", tagClass: "tag-g",    name: "CAPI Shield",       desc: "Add Meta CAPI to the same Make.com scenario. One Shopify webhook covers TikTok and Meta at no extra cost. Its Google branch cannot match Shopify orders as shipped.", save: "Saves $150–$299/mo",  saveColor: "var(--g)"    },
   { href: "/stocky-swap/",                    hoverClass: "sky",    tag: "Inventory ⚠ Aug 2026",       tagClass: "tag-sky",  name: "Stocky Swap",       desc: "Stocky shut down on August 31, 2026. Stocky Swap is the free replacement — real-time inventory tracking in Google Sheets via Make.com.", save: "Free forever",  saveColor: "var(--sky)"    },
   { href: "/replace-klaviyo-free/",           hoverClass: "",       tag: "Email marketing",             tagClass: "tag-g",    name: "Replace Klaviyo",   desc: "Systeme.io replaces Klaviyo entirely — unlimited emails, automations, and CRM on the free plan. 2,000 contacts, unlimited sends, $0/month forever.", save: "Saves $20+/mo", saveColor: "var(--g)"      },
   { href: "/shopify-profit-loss-automation/", hoverClass: "sky",    tag: "P&L reporting",               tagClass: "tag-sky",  name: "P&L Auto",          desc: "The same webhook that powers TikTok tracking branches to a live P&L Google Sheets dashboard. Revenue, ad spend, and net profit updated on every order — $0/month.", save: "Saves $19–$299/mo",  saveColor: "var(--sky)"    },
@@ -130,7 +130,7 @@ const faqs = [
 
 // ─── Related guides ───────────────────────────────────────────────────────────
 const relatedGuides = [
-  { href: "/capi-shield/",                                                label: "CAPI Shield — recover Meta and Google conversion data free" },
+  { href: "/capi-shield/",                                                label: "CAPI Shield — recover Meta conversion data free" },
   { href: "/blog/shopify-server-side-tracking-complete-setup-guide/",     label: "Shopify server-side tracking: complete setup guide 2026" },
   { href: "/stocky-swap/",                                                label: "Stocky Swap — free Stocky replacement before August 2026 shutdown ⚠" },
   { href: "https://github.com/lsb11/shopify-automation-blueprints",      label: "Free TikTok Events API blueprint on GitHub — import in 6 minutes" }
@@ -509,7 +509,7 @@ const tocHeadings = [
 
       <p>TikTok Ads Manager lets you enable Maximum data sharing under Web Events settings. Most guides stop there. The limitation: <strong>TikTok's native integration is still partially browser-triggered</strong>. If the thank-you page Web Pixel does not execute — because of an ad blocker, slow connection, or the user navigating away — the server event may not fire even though the purchase completed in Shopify's backend.</p>
 
-      <p>The Make.com webhook approach fixes this at the root. The Shopify webhook fires from Shopify's server the moment payment is confirmed — completely independent of what happens in any browser. No pixel, no JavaScript, no browser dependency. The same webhook also powers <a href="/capi-shield/">CAPI Shield for Meta and Google</a> simultaneously — one Shopify webhook trigger feeds all three ad platforms at once.</p>
+      <p>The Make.com webhook approach fixes this at the root. The Shopify webhook fires from Shopify's server the moment payment is confirmed — completely independent of what happens in any browser. No pixel, no JavaScript, no browser dependency. The same webhook also powers <a href="/capi-shield/">CAPI Shield for Meta</a> — one Shopify webhook trigger feeds TikTok and Meta at once.</p>
 
       <div class="callout green">
         <div class="callout-label">Same webhook — three platforms</div>
@@ -636,7 +636,7 @@ const tocHeadings = [
 
     <div class="callout green" style="margin-top:24px;">
       <div class="callout-label">Also running Meta or Google Ads?</div>
-      <p>Add a Router module to your Make.com scenario and branch to Meta Conversions API and Google Enhanced Conversions simultaneously — no additional Shopify setup needed. The same Order Payment webhook feeds all three platforms. <a href="/capi-shield/">Deploy CAPI Shield for Meta + Google free →</a></p>
+      <p>Add a Router module to your Make.com scenario and branch to Meta Conversions API and Google Enhanced Conversions simultaneously — no additional Shopify setup needed. The same Order Payment webhook feeds all three platforms. <a href="/capi-shield/">Deploy CAPI Shield for Meta free →</a></p>
     </div>
 
     <div class="callout info" style="max-width:680px;margin-left:auto;margin-right:auto;">
@@ -645,7 +645,7 @@ const tocHeadings = [
     </div>
 
     <div style="text-align:center;margin-top:32px;display:flex;flex-wrap:wrap;gap:14px;justify-content:center;">
-      <a href="/capi-shield/" class="btn-outline" aria-label="Deploy CAPI Shield for Meta and Google too">Add Meta + Google CAPI too</a>
+      <a href="/capi-shield/" class="btn-outline" aria-label="Deploy CAPI Shield for Meta too">Add Meta CAPI too</a>
       <a href={SCENARIO_URL} target="_blank" rel="noopener" class="btn pulse" aria-label="Import TikTok Events API scenario into Make.com">Import scenario free →</a>
     </div>
   </div>
@@ -779,7 +779,7 @@ const tocHeadings = [
       Stop losing TikTok conversion data to iOS and ad blockers. Deploy server-side CompletePayment events free — 6 minutes, no code, no paid apps.
     </p>
     <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-bottom:16px;">
-      <a href="/capi-shield/" class="btn-outline" aria-label="Also add Meta and Google CAPI with CAPI Shield">Also add Meta + Google CAPI</a>
+      <a href="/capi-shield/" class="btn-outline" aria-label="Also add Meta CAPI with CAPI Shield">Also add Meta CAPI</a>
       <a href={SCENARIO_URL} target="_blank" rel="noopener" class="btn pulse" aria-label="Import TikTok Events API scenario free into Make.com">
         Import scenario free →
       </a>
@@ -801,9 +801,9 @@ const tocHeadings = [
   <p style="letter-spacing:.18em;font-size:12px;color:#34d399;font-weight:700;margin:0 0 16px;text-transform:uppercase;">Related free tools</p>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;">
     <a href="/capi-shield/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
-      <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">CAPI Shield — Fix Meta + Google Ads Tracking Too
+      <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">CAPI Shield — Fix Meta Ads Tracking Too
             Same Make</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $145–$650/mo</span></span>
-      <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">com scenario branches to Meta CAPI and Google Enhanced Conversions simultaneously</span>
+      <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">com scenario also sends purchases to Meta CAPI</span>
     </a>
     <a href="/shopify-google-ads-conversion-tracking/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
       <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Fix Google Ads Conversion Tracking — Free

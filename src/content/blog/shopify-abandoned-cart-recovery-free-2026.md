@@ -29,7 +29,7 @@ relatedGuides:
     href: "/replace-klaviyo-free"
   - title: "Make.com for Shopify: Complete Beginner's Guide"
     href: "/make-com-shopify/"
-  - title: "CAPI Shield — Free Meta + Google Server-Side Tracking"
+  - title: "CAPI Shield — Free Meta Server-Side Tracking"
     href: "/capi-shield"
   - title: "The Complete Free Shopify Automation Stack"
     href: "/"

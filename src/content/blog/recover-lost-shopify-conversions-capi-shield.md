@@ -13,11 +13,11 @@ faqs:
   - question: "How many Shopify conversions am I losing to iOS tracking restrictions?"
     answer: "Shopify stores lose conversion events to iOS restrictions, ad blockers, and browser privacy settings. There is no industry figure worth quoting, because the amount depends on your traffic mix — stores with high iOS traffic from Instagram and email campaigns are most affected. You can calculate your specific gap by comparing Shopify order count against Meta Ads Manager reported purchases for the same 30-day period."
   - question: "What is CAPI Shield and how does it work?"
-    answer: "CAPI Shield is a free Make.com scenario that receives a Shopify Order Payment webhook and forwards a formatted purchase event directly to Meta's Conversions API and Google's Enhanced Conversions endpoint. Because the event travels server-to-server, iOS restrictions, Safari ITP, and ad blockers cannot interfere. The result is that purchase events reach Meta and Google regardless of what browser or device the customer used."
+    answer: "CAPI Shield is a free Make.com scenario that receives a Shopify Order Payment webhook and forwards a formatted purchase event directly to Meta's Conversions API. Because the event travels server-to-server, iOS restrictions, Safari ITP, and ad blockers cannot interfere. The result is that purchase events reach Meta regardless of what browser or device the customer used. Its Google branch cannot match Shopify orders as shipped."
   - question: "How much does CAPI Shield cost?"
     answer: "CAPI Shield is free. It runs on Make.com's free plan which includes 1,000 credits per month — sufficient for most stores under 500 orders per month given that server-side tracking uses approximately 2 operations per order. The only potential cost is a Google Tag Manager server-side container for advanced configurations, which runs approximately $10–30 per month — though the basic CAPI Shield setup does not require this."
   - question: "Will CAPI Shield double-count my conversions?"
-    answer: "No, when properly configured with deduplication. CAPI Shield includes an event_id that matches the event_id sent by the browser pixel. Meta and Google use this matching ID to identify that the pixel event and the CAPI event represent the same purchase and count it once. The CAPI Shield setup guide covers deduplication configuration in detail."
+    answer: "No, when properly configured with deduplication. CAPI Shield includes an event_id that matches the event_id sent by the browser pixel. Meta uses this matching ID to identify that the pixel event and the CAPI event represent the same purchase and count it once. The CAPI Shield setup guide covers deduplication configuration in detail."
   - question: "How long before CAPI Shield shows an effect?"
     answer: "The CAPI events start flowing immediately after setup. However, the impact on reported ROAS and campaign performance typically becomes visible 7–14 days after implementation, as Meta's and Google's algorithms adjust their optimisation models based on the more complete conversion data."
 relatedGuides:
@@ -94,14 +94,14 @@ This second effect is often more valuable than the reporting improvement. More c
 
 ## Deploying CAPI Shield
 
-CAPI Shield is free and deploys in approximately 2–3 hours. It covers Meta Conversions API and Google Enhanced Conversions simultaneously in a single Make.com scenario.
+CAPI Shield is free and deploys in approximately 2–3 hours. It sends purchase events to Meta's Conversions API from a single Make.com scenario. Its Google branch cannot match Shopify orders as shipped.
 
 The full step-by-step setup is at [CAPI Shield](/capi-shield/). The overview:
 
 1. Create a free [Make.com — free, 1,000 ops/month](/go/make/?source=recover-lost-shopify-conversions-capi-sh-n1) account
 2. Set up a Shopify Order Payment webhook pointing to Make.com
 3. Configure the Make.com HTTP module to call Meta's CAPI endpoint with order data
-4. Add a second branch for Google Enhanced Conversions
+4. Optional: a Google Ads branch. As shipped it cannot match Shopify orders, because Shopify's order data has no gclid
 5. Configure deduplication event IDs
 6. Verify in Meta Events Manager that CAPI events are arriving alongside pixel events
 

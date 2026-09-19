@@ -88,7 +88,7 @@ Meta's Advantage+ AI, Google's Performance Max, and TikTok's Smart Campaigns all
 
 **The fix is server-side tracking:** sending purchase events directly from Shopify's server to Meta, Google, and TikTok via their Conversions APIs. This bypasses browsers entirely. Meta's [Conversions API](https://developers.facebook.com/docs/marketing-api/conversions-api) and Google's [Enhanced Conversions](https://support.google.com/google-ads/answer/9888656) both support server-side event submission with hashed first-party data — the mechanism that makes tracking reliable regardless of browser privacy settings.
 
-**Free approach:** [CAPI Shield](/capi-shield/) — Make.com scenario that handles Meta CAPI, Google Enhanced Conversions, and TikTok Events API in one setup. Covers the purchase events browser tracking loses. Deploys in under an hour. $0/month.
+**Free approach:** [CAPI Shield](/capi-shield/) — Make.com scenario that sends purchase events to Meta's Conversions API. Its Google branch cannot match Shopify orders as shipped. TikTok is a [separate setup](/tiktok-events-api-shopify/). Covers the purchase events browser tracking loses. Deploys in under an hour. $0/month.
 
 This is the AI-adjacent investment with the clearest ROI on this list. Better purchase data → better AI ad optimisation → better ROAS.
 

@@ -120,7 +120,7 @@ Not everything has a free replacement that matches quality. These are worth keep
 
 | Layer | Paid app replaced | Paid cost | Free replacement | Free cost |
 |---|---|---|---|---|
-| Ad tracking (Meta + Google) | Elevar | $225/month | CAPI Shield | $0 |
+| Ad tracking (Meta) | Elevar | $225/month | CAPI Shield | $0 |
 | TikTok tracking | WeltPixel | $39/month | TikTok Events API | $0 |
 | Inventory | Inventory Planner | $99/month | Stocky Swap | $0 |
 | Email marketing | Klaviyo (entry plan) | $20+/month | Systeme.io | $0 |

@@ -20,7 +20,7 @@ faqs:
   - question: "Should I use Klaviyo or Systeme.io for my BFCM email campaigns?"
     answer: "For BFCM broadcast campaigns, both work. The key consideration is your contact list size and sending volume. Systeme.io's free plan supports 2,000 contacts with unlimited sends — sufficient for most small stores. For stores with 5,000+ contacts running complex abandoned cart and browse abandonment sequences during BFCM, Klaviyo's advanced segmentation may justify its cost during the peak period. Either way, set up your abandonment sequences at least 6 weeks before BFCM to allow time for testing."
   - question: "How do I make sure my Google Ads and Meta Ads tracking is accurate during BFCM?"
-    answer: "Deploy server-side tracking before BFCM. Set up CAPI Shield for Meta Conversions API and Google Enhanced Conversions via Make.com — this ensures every purchase event is captured server-to-server regardless of iOS restrictions or ad blockers. During BFCM, 35–50% of purchases on typical Shopify stores are made on iOS devices. Without server-side tracking, your ad platforms spend your biggest budgets of the year on the conversions they can still see, which is not all of them."
+    answer: "Deploy server-side tracking before BFCM. Set up CAPI Shield for Meta Conversions API via Make.com — this ensures every purchase event is captured server-to-server regardless of iOS restrictions or ad blockers. During BFCM, 35–50% of purchases on typical Shopify stores are made on iOS devices. Without server-side tracking, your ad platforms spend your biggest budgets of the year on the conversions they can still see, which is not all of them."
 relatedGuides:
   - title: "CAPI Shield — Free server-side tracking"
     href: "/capi-shield"

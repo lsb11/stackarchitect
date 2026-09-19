@@ -27,7 +27,7 @@ relatedGuides:
   - title: "Meta One-Click Conversions API for Shopify — What It Fixes"
     href: "/blog/meta-one-click-conversions-api-shopify"
     badge: "New for 2026"
-  - title: "CAPI Shield — Free Meta + Google Server-Side Tracking"
+  - title: "CAPI Shield — Free Meta Server-Side Tracking"
     href: "/capi-shield"
     badge: "Deploy Free"
   - title: "Shopify Server-Side Tracking — Complete Setup Guide"
@@ -199,7 +199,7 @@ Router module (branches simultaneously):
 
 Three platforms. One webhook. One Make.com scenario. $0/month.
 
-[CAPI Shield](/capi-shield/) covers the Meta and Google setup simultaneously if you prefer a guided implementation. The [TikTok Events API guide](/tiktok-events-api-shopify/) covers the TikTok branch — including the critical `CompletePayment` event name that every other guide gets wrong.
+[CAPI Shield](/capi-shield/) covers the Meta side if you prefer a guided implementation. Its Google branch cannot match Shopify orders as shipped. The [TikTok Events API guide](/tiktok-events-api-shopify/) covers the TikTok branch — including the critical `CompletePayment` event name that every other guide gets wrong.
 
 ## The No-GTM Advantage
 
@@ -227,7 +227,7 @@ Start with the [Make.com free account — 1,000 ops/month, no card](/go/make/?so
 
 ## Get the pre-built Google Ads tracking file
 
-The Complete Kit includes a ready-to-import Make.com JSON blueprint for Google Enhanced Conversions — plus Meta CAPI, TikTok CAPI, Stocky Swap, and P&L Auto. Import and deploy all four in 10 minutes instead of building each from scratch. $19.99 one-time.
+The Complete Kit includes ready-to-import Make.com JSON blueprints for Meta CAPI (CAPI Shield), TikTok CAPI, Stocky Swap, and P&L Auto. It does not include a working Google Enhanced Conversions upload: CAPI Shield's Google branch cannot match Shopify orders as shipped. Import and deploy all four in 10 minutes instead of building each from scratch. $19.99 one-time.
 
 **[Get the Complete Kit — $19.99 →](/pro/)**
 

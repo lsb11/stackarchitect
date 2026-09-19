@@ -16,7 +16,7 @@ faqs:
   - question: "Does iOS 17 Link Tracking Protection affect all Safari traffic?"
     answer: "No. iOS 17 Link Tracking Protection strips click identifiers (fbclid, gclid, ttclid) when links are opened from Private Browsing mode, Mail app, and Messages app. Standard Safari browsing sessions are not affected. The impact is highest for stores that drive traffic via email campaigns and social media direct messages where links open in Private Browsing."
   - question: "What is the free fix for iOS conversion tracking on Shopify?"
-    answer: "The free fix is server-side tracking via the Conversions API (CAPI). Server-side events are sent directly from Shopify's server to Meta, Google, and TikTok — bypassing the browser entirely. iOS restrictions, ad blockers, and ITP cannot interfere with server-to-server communication. CAPI Shield provides the free implementation for Meta and Google simultaneously."
+    answer: "The free fix is server-side tracking via the Conversions API (CAPI). Server-side events are sent directly from Shopify's server to Meta, Google, and TikTok — bypassing the browser entirely. iOS restrictions, ad blockers, and ITP cannot interfere with server-to-server communication. CAPI Shield provides the free implementation for Meta. Its Google branch cannot match Shopify orders as shipped."
   - question: "How do I know if iOS updates have broken my Shopify tracking?"
     answer: "Compare Shopify order count against Meta Ads Manager reported purchases for the same 30-day period using the same attribution window. A gap above 35% indicates a tracking problem. You can also check Meta Events Manager — if your Event Match Quality score for the Purchase event is below 5, tracking is degraded."
   - question: "What is Shopify's App Pixel Optimized mode and how does it affect tracking?"
@@ -30,7 +30,7 @@ relatedGuides:
   - title: "iOS Attribution Gap Benchmark — How Much Conversion Data You Lose"
     href: "/shopify-ios-attribution-gap-benchmark"
     badge: "Data"
-  - title: "CAPI Shield — Free Shopify Server-Side Tracking (Meta + Google)"
+  - title: "CAPI Shield — Free Shopify Server-Side Tracking (Meta)"
     href: "/capi-shield"
     badge: "Free Fix"
   - title: "Shopify Meta ROAS Dropped in 2026 — Diagnosis and Fix"
@@ -136,7 +136,7 @@ Server-to-server communication is not subject to any browser privacy setting or 
 
 **How to implement free:**
 
-[CAPI Shield](/capi-shield/) is the free implementation guide. It uses Make.com to receive a Shopify order webhook and forward a formatted purchase event to Meta's Conversions API endpoint. Setup takes 2–3 hours and covers both Meta CAPI and Google Enhanced Conversions simultaneously.
+[CAPI Shield](/capi-shield/) is the free implementation guide. It uses Make.com to receive a Shopify order webhook and forward a formatted purchase event to Meta's Conversions API endpoint. Setup takes 2–3 hours and covers Meta CAPI. Its Google branch cannot match Shopify orders as shipped.
 
 **Critical: deduplication**
 
@@ -180,7 +180,7 @@ The iOS tracking problem affects TikTok and Google Ads as well, not just Meta. I
 
 **For TikTok:** [TikTok Events API](/tiktok-events-api-shopify/) is the server-side fix. Critical detail — TikTok's purchase event name is `CompletePayment`, not `Purchase`. Using the wrong name sends events to the wrong category.
 
-**For Google:** Google Enhanced Conversions is the server-side equivalent of Meta CAPI. It is configured simultaneously as part of the [CAPI Shield](/capi-shield/) setup, so implementing one covers both.
+**For Google:** Google Enhanced Conversions is the server-side equivalent of Meta CAPI. It is a separate setup: [CAPI Shield](/capi-shield/)'s Google branch cannot match Shopify orders as shipped, so use the [Google Ads conversion tracking guide](/shopify-google-ads-conversion-tracking/), which covers the gclid it needs.
 
 ## The Complete Fix Checklist
 
