@@ -407,7 +407,7 @@ export const PRODUCTS: Product[] = [
       },
       {
         q: 'Does it send to Google Ads as well?',
-        a: 'Not reliably, as shipped. The Google step uploads a click conversion keyed on a Google click ID, and Shopify’s order data has no field for one, so most orders reach Google with nothing to match on. Treat CAPI Shield as a Meta product until the Google branch is rebuilt; the Meta branch does not depend on it. If you keep the Google step, its two consent fields ship as Unspecified: set them to match your own consent setup.',
+        a: 'Not reliably, as shipped. The Google step uploads a click conversion keyed on a Google click ID, and Shopify’s order data has no field for one, so most orders reach Google with nothing to match on. Google is also moving this upload method, offline click conversion import, out of the Google Ads API and into its Data Manager API, and Make’s Google Ads module now warns that uploads may fail for developer tokens that have not recently sent click conversions. Treat CAPI Shield as a Meta product until the Google branch is rebuilt; the Meta branch does not depend on it. If you keep the Google step, its two consent fields ship as Unspecified: set them to match your own consent setup.',
       },
       {
         q: 'What happens when Meta retires the Graph API version it uses?',
@@ -533,8 +533,8 @@ export const PRODUCTS: Product[] = [
         a: 'Not if the event IDs match, which is what deduplication is for. The blueprint sends an event ID derived from the Shopify order so TikTok can collapse the browser event and the server event into one.',
       },
       {
-        q: 'Which API version does it use?',
-        a: 'TikTok Events API v1.3, sending CompletePayment with Advanced Matching. If TikTok moves off v1.3, you get the updated blueprint rather than a guide you have to re-follow.',
+        q: 'What happens when TikTok retires the API version it uses?',
+        a: 'Every request to it starts failing, and because the request step carries on past errors, the runs still look green in Make. The version is part of the TikTok step’s address. Check it against TikTok’s Events API documentation, change the address to a current version before yours is retired, and push one order through to check that TikTok still answers with code 0.',
       },
       {
         q: 'Can I build this from the free guide instead?',

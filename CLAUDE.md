@@ -181,9 +181,39 @@ and the free public scenario), TikTok Events API v1.3 (TikTok CAPI), and
 the versions written into guide code samples. As of 18 Sep 2026 those are
 `graph.facebook.com/v24.0` in
 `src/pages/blog/shopify-server-side-tracking-complete-setup-guide.astro`, and
-`googleads.googleapis.com/v17` in
-`src/content/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026.md`.
-Check v17 first; it may already be past its retirement date.
+`googleads.googleapis.com/v25` in
+`src/content/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026.md`
+(Google lists its sunset as August 2027). That sample was on v17 until
+18 Sep 2026. Google sunset v17 on 4 June 2025, so the sample had been
+failing on every request for about 15 months before anyone noticed. It is
+the second case of this failure, after the Meta v19.0 one.
+
+**Third case, and a wider one: the upload method itself is being retired, not
+just a version.** Found 18 Sep 2026 in the warning on Make's Google Ads
+Conversions module, then checked against Google's sources. On 15 May 2026
+Google announced that offline click conversion import, including enhanced
+conversions for leads, is moving from the Google Ads API
+(`ConversionUploadService.UploadClickConversions`) to the **Data Manager API**.
+From 15 June 2026, a developer token that had not uploaded click conversions
+between Dec 2025 and May 2026 gets `CUSTOMER_NOT_ALLOWLISTED_FOR_THIS_FEATURE`.
+Tokens that were already uploading keep working for now. Google calls that
+access transitional and has **not published an end date**. A version bump does
+not fix this, so the v25 sample above is on a current version of a method that
+is being retired. It is exactly what a first-time reader would hit.
+CAPI Shield's Google branch uses the same method through Make's module, so it
+now has two separate faults: no gclid in Shopify's payload, and an upload path
+that is being retired. Both are stated on `/capi-shield/` and
+`/pro/capi-shield/`.
+
+For the registry, this means an entry has to be able to pin a **method**, not
+just a version. Put `UploadClickConversions` in as its own entry, with the
+15 May 2026 announcement as its source. Leave the retirement date empty, and
+make the test report "retiring, no date" as its own state, not a pass. The
+Data Manager API is on `datamanager.googleapis.com/v1`.
+Sources: ads-developers.googleblog.com/2026/05/changes-to-offline-click-conversion.html
+(the allowlist error and date window are as reported by ppc.land; the blog body
+did not render for a fetch),
+developers.google.com/data-manager/api/devguides/events/send-events.
 
 Remember that the `/pro/<slug>/` copy lives in `src/data/products.ts`, and
 `claims-guard`'s file walker does not read that directory (see above). A
@@ -240,7 +270,7 @@ the kit.
   which matches the module counts in `FILE_00` against `FILE_01`–`04`).
 - The 30-day guarantee covers singles as well as the kit. The single pages
   promised it from 29 Aug, and `/refund-policy/` was widened to match on
-  18 Sep. `/terms/` still mentions only the kit.
+  18 Sep. `/terms/` was widened the same day.
 
 **The hero video's audio is stale.** `hero-long` says "$24" out loud. The
 caption (`hero-long.vtt`) and the on-page transcript in `index.astro` say

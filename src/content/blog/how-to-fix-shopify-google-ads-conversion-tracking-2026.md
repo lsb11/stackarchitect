@@ -4,7 +4,7 @@ heading: "How to Fix Shopify Google Ads Conversion Tracking in 2026 — Free Ser
 description: "Google Ads misses Shopify purchases whenever cookies are blocked or iOS clears attribution. Free server-side Enhanced Conversions via Make.com — no GTM, no paid app, no code, 6 minutes."
 answer: "Google Ads reports fewer purchases than Shopify because browser conversion pixels miss real orders — iOS, Safari ITP and ad blockers stop them firing. The free fix has two layers: Shopify's native Google and YouTube channel for baseline tracking, then server-side Enhanced Conversions sent through a Make.com webhook. No Google Tag Manager, no paid app, no code."
 publishDate: "2026-04-16"
-updatedDate: "2026-04-16"
+updatedDate: "2026-09-18"
 category: "tracking"
 badge: "Free Fix"
 badgeType: "urgent"
@@ -122,7 +122,7 @@ Save. Place a test order in Shopify (use a 100% discount code). In Make.com, cli
 
 In your Make.com scenario, after the webhook trigger, add an **HTTP → Make a request** module with these settings:
 
-- **URL:** `https://googleads.googleapis.com/v17/customers/CUSTOMER_ID:uploadClickConversions`
+- **URL:** `https://googleads.googleapis.com/v25/customers/CUSTOMER_ID:uploadClickConversions`
   (replace `CUSTOMER_ID` with your 10-digit Google Ads customer ID, no hyphens)
 - **Method:** POST
 - **Headers:**
