@@ -13,7 +13,7 @@
  * on remembering to fix both.
  *
  * WHAT IT CHECKS
- * Runs over dist/ after the build, and makes two separate checks.
+ * Runs over dist/ after the build, and makes three separate checks.
  *
  *  1. Numeric claims. For every page, extracts numeric claims from JSON-LD
  *     string values and from the rendered visible text, then fails on any
@@ -23,6 +23,9 @@
  *     (pinned in src/data/claims.json). Check 1 cannot do this — see the long
  *     note above firstPartyPrices for why. Added after the homepage shipped
  *     the Complete Kit at a retired $29.
+ *  3. Third-party Offers. Fails when a competitor's Offer has no
+ *     priceVerifiedDate, no vendor source URL, or a price that is not shown
+ *     next to the product's name. See CHECK 3 below.
  *
  * Numbers are normalised (thousands separators, en/em dashes, $ and %
  * retained) so "$1,500" and "$1500" compare equal, and a range written
@@ -306,6 +309,90 @@ export function firstPartyPriceViolations(graph, claims) {
     }));
 }
 
+/* =========================================================================
+ * CHECK 3 — third-party Offers must be sourced, dated and shown.
+ *
+ * WHY
+ * Check 2 skips every Offer that is not ours, and check 1 cannot see an Offer
+ * price at all (a bare "145" carries no $). So until Sep 2026 none of the ~30
+ * competitor Offers the site emits was checked by anything. The page templates
+ * gate on apps.json at build time, but a gate in a template is not a guard:
+ * /shopify-attribution-tools-compared/ was dropping priceVerifiedDate from all
+ * four of its Offers, and its Analyzify Offer asserted $145–$275 on a page
+ * whose visible copy prices Analyzify per year.
+ *
+ * RULES, per non-zero third-party Offer (the CLAUDE.md hard rule, made testable)
+ *  1. it carries priceVerifiedDate;
+ *  2. it cites a vendor source — priceSourceUrl, or `url` — off our domain;
+ *  3. every price it asserts (price / lowPrice / highPrice) appears in the
+ *     visible text as a $ figure within NAME_WINDOW characters of the product's
+ *     name. Presence anywhere on the page is not enough: "$29" is on most pages
+ *     as somebody's price, which is what let check 1's presence test pass a
+ *     retired Kit price.
+ * ====================================================================== */
+
+const THIRD_PARTY_OFFER_TYPES = new Set(['Offer', 'AggregateOffer']);
+const NAME_WINDOW = 600;
+
+/** Every non-zero Offer in a graph that check 2 does not treat as ours. */
+export function thirdPartyOffers(graph) {
+  const mine = new Set(firstPartyPrices(graph).map((p) => p.path));
+  const out = [];
+  (function walk(node, p, owner) {
+    if (Array.isArray(node)) return node.forEach((v, i) => walk(v, `${p}[${i}]`, owner));
+    if (!node || typeof node !== 'object') return;
+    const types = typesOf(node);
+    if (types.some((t) => THIRD_PARTY_OFFER_TYPES.has(t))) {
+      const keys = PRICE_KEYS.filter((k) => k in node);
+      const values = keys.map((k) => Number(node[k])).filter((v) => Number.isFinite(v) && v > 0);
+      if (values.length && !keys.some((k) => mine.has(`${p}.${k}`))) {
+        out.push({ path: p, owner, node, values });
+      }
+    }
+    const next = types.some((t) => PRODUCT_TYPES.has(t)) ? node.name ?? owner : owner;
+    for (const [k, v] of Object.entries(node)) {
+      if (k !== '@type') walk(v, `${p}.${k}`, next);
+    }
+  })(graph, '$', null);
+  return out;
+}
+
+/** Offsets of every case-insensitive occurrence of `needle` in `hay`. */
+function offsetsOf(hay, needle) {
+  const at = [];
+  if (!needle) return at;
+  const h = hay.toLowerCase();
+  const n = needle.toLowerCase();
+  for (let i = h.indexOf(n); i !== -1; i = h.indexOf(n, i + 1)) at.push(i);
+  return at;
+}
+
+/**
+ * Problems with each third-party Offer in `graph`, judged against `visible`,
+ * the page's visible text as visibleText() returns it.
+ */
+export function thirdPartyOfferViolations(graph, visible) {
+  const text = visible.replace(/,/g, '');
+  const out = [];
+  for (const o of thirdPartyOffers(graph)) {
+    const problems = [];
+    if (!o.node.priceVerifiedDate) problems.push('no priceVerifiedDate');
+    const src = o.node.priceSourceUrl ?? o.node.url;
+    if (typeof src !== 'string' || OUR_DOMAIN.test(src)) problems.push('no vendor source URL');
+    const names = offsetsOf(text, o.owner);
+    for (const v of o.values) {
+      const re = new RegExp(`\\$\\s?${String(v).replace('.', '\\.')}(?![0-9])`, 'g');
+      const at = [...text.matchAll(re)].map((m) => m.index);
+      if (!at.length) problems.push(`$${v} is not on the page`);
+      else if (!o.owner || !at.some((a) => names.some((n) => Math.abs(a - n) <= NAME_WINDOW))) {
+        problems.push(`$${v} is not shown near "${o.owner ?? '(unnamed)'}"`);
+      }
+    }
+    if (problems.length) out.push({ path: o.path, owner: o.owner, values: o.values, problems });
+  }
+  return out;
+}
+
 /* The checks above are pure and are imported by
  * tests/schema-first-party-price.test.js. Everything below is the CLI: it
  * reads dist/ and exits non-zero, so it must not run on import. The body is
@@ -341,6 +428,16 @@ const violations = [];
 const claims = JSON.parse(fs.readFileSync(path.join(ROOT, 'src', 'data', 'claims.json'), 'utf8'));
 const priceViolations = [];
 
+// Check 3's quarantine lives in the same file under its own key, keyed
+// "url|product name". Same ratchet: it may only shrink, and a stale entry fails.
+const offerQuarantine = new Map(
+  (fs.existsSync(QUARANTINE_PATH)
+    ? JSON.parse(fs.readFileSync(QUARANTINE_PATH, 'utf8')).thirdPartyOffers ?? []
+    : []
+  ).map((e) => [e.key, e.why])
+);
+const offerViolations = [];
+
 for (const f of files) {
   const html = fs.readFileSync(f, 'utf8');
   const url = '/' + path.relative(DIST, f).replace(/index\.html$/, '').replace(/\\/g, '/');
@@ -359,6 +456,9 @@ for (const f of files) {
     }
     for (const v of firstPartyPriceViolations(graph, claims)) {
       priceViolations.push({ url, ...v });
+    }
+    for (const v of thirdPartyOfferViolations(graph, vis)) {
+      offerViolations.push({ url, key: `${url}|${v.owner}`, ...v });
     }
     for (const s of stringsFrom(graph)) {
       for (const claim of numericClaims(s)) {
@@ -427,7 +527,36 @@ if (process.argv.includes('--list')) {
   }
   console.log(`\nschema-visible-guard: ${uniquePrice.length} first-party price mismatch(es)`);
   for (const v of uniquePrice) console.log(`  ${v.url}\n    ${v.path} = ${JSON.stringify(v.raw)}`);
+  console.log(`\nschema-visible-guard: ${offerViolations.length} third-party Offer problem(s)`);
+  for (const v of offerViolations) {
+    const q = offerQuarantine.has(v.key) ? ' [quarantined]' : '';
+    console.log(`  ${v.url} ${v.owner}${q}\n    ${v.problems.join('; ')}`);
+  }
   process.exit(0);
+}
+
+const liveOffers = offerViolations.filter((v) => !offerQuarantine.has(v.key));
+const clearedOffers = [...offerQuarantine.keys()].filter(
+  (k) => !offerViolations.some((v) => v.key === k)
+);
+if (clearedOffers.length) {
+  console.error('\n\u2717 schema-visible-guard: stale third-party Offer quarantine entries\n');
+  for (const k of clearedOffers) console.error(`  ${k} \u2014 no longer violates; remove it from docs/schema-claims-unverified.json`);
+  console.error('');
+  process.exit(1);
+}
+if (liveOffers.length) {
+  console.error('\n\u2717 schema-visible-guard: third-party Offer is unsourced, undated or not shown\n');
+  for (const v of liveOffers) {
+    console.error(`  ${v.url}  ${v.owner}  (${v.values.map((x) => '$' + x).join('\u2013')})`);
+    for (const p of v.problems) console.error(`    ${p}`);
+  }
+  console.error(
+    '\n  A competitor price in structured data needs priceVerifiedDate, a vendor\n' +
+      '  source URL, and the same figure visible next to the product name. Fix the\n' +
+      '  record in src/data/apps.json, or drop the Offer from the schema.\n'
+  );
+  process.exit(1);
 }
 
 if (cleared.length) {
@@ -453,6 +582,7 @@ if (live.length) {
 
 console.log(
   `\u2713 schema-visible-guard: ${files.length} pages, no new schema-only numeric claims ` +
-    `(${quarantine.size} quarantined), first-party prices match their constants.`
+    `(${quarantine.size} quarantined), first-party prices match their constants, ` +
+    `${offerViolations.length - liveOffers.length} third-party Offer(s) quarantined.`
 );
 }

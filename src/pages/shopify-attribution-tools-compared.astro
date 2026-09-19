@@ -45,6 +45,7 @@ function offerFor(app: AppProfile) {
     priceCurrency: "USD",
     availability: "https://schema.org/InStock",
     url: app.priceSourceUrl,
+    priceVerifiedDate: app.priceVerifiedDate,
   };
   if (nums.length === 1 && !openEnded) return { "@type": "Offer", ...base, price: String(nums[0]) };
   const agg: Record<string, unknown> = { "@type": "AggregateOffer", ...base, lowPrice: String(nums[0]) };
