@@ -47,6 +47,7 @@ and the command that reproduces them.
 | `npm run gsc:weekly` | One tab-separated line appended to `gsc-weekly.tsv`: indexed, crawled-not-indexed, and impressions on any non-homepage URL over a 7-day window ending 3 days back. Needs `GSC_KEY_JSON`. |
 | `node scripts/redirect-smoke.mjs --parse-only` | Lint `public/_redirects` offline (chains, loops, truncation) |
 | `node scripts/moderate-gap.mjs list\|approve\|reject\|stats` | Moderate D1 benchmark submissions via wrangler |
+| `.venv-og/bin/python scripts/og/make_page_og.py` | Re-render the generated OG cards and their `og-images.json` entries (setup: `python3 -m venv .venv-og && .venv-og/bin/pip install -r scripts/og/requirements.txt`) |
 | `npx wrangler d1 execute attribution-gap --remote --command "…"` | Read affiliate click counts. Queries are in `schema/003-affiliate-clicks.sql`. |
 
 `seo-audit.mjs` has its own tests (`seo-audit.test.mjs`), also picked up by `npm test`.
@@ -287,6 +288,9 @@ the kit.
 - Markdown, `public/llms.txt`, `public/.well-known/ai-plugin.json` and
   `public/videos/hero-long.vtt` cannot import, so they carry the literal and
   rely on the retired-price ratchet. A price change means sweeping those by hand.
+  It also means re-running `scripts/og/make_page_og.py`, which draws
+  `KIT_PRICE` into `og-complete-kit.png` (see Images below); `npm test` fails
+  until you do.
 - **Do not sell the kit on saving.** Two singles cost $19.98 against a $19.99
   kit. The reason to buy it is that `FILE_00` is one scenario instead of four:
   it fits Make's free plan with a slot to spare and uses about a third fewer
@@ -300,6 +304,62 @@ the kit.
 caption (`hero-long.vtt`) and the on-page transcript in `index.astro` say
 $19.99, because a wrong caption is worse than one that does not match the audio.
 The video needs re-recording.
+
+### Images carry claims that no text check reads
+
+Found 19 Sep 2026: `og-complete-kit.png` still said **"$29 one-time"** three
+weeks after the kit left $29, and `og-capi-shield.png` still said **"Meta &
+Google"** after every page had dropped Google. Both are `og:image`s, so every
+social share showed them. The per-page cards in `public/og/` were drawn on
+14 Jul (`0e928b0`) by a script that never entered the repo. With no way to
+re-render them and no way for a grep to read them, they went stale without
+anyone seeing it.
+
+- **`scripts/og/og-images.json` lists every raster image** under `public/` and
+  `src/assets/`, with the text each one carries. `tests/og-images.test.js`
+  (in `npm test`) fails when:
+  - an image has no entry;
+  - a generated card no longer matches its recorded sha256;
+  - a card that `depicts` a constant (today `KIT_PRICE`) shows a value
+    `products.ts` no longer has;
+  - any image states a retired kit price near the kit (the same
+    `retired-near-anchor` rule claims-guard uses);
+  - any image states a withdrawn tracking claim ("no gclid needed", or
+    CAPI Shield with Meta + Google).
+- **`scripts/og/make_page_og.py` renders `og-capi-shield.png` and
+  `og-complete-kit.png`** onto `scripts/og/card-template.png` and rewrites
+  their manifest entries. Setup:
+  `python3 -m venv .venv-og && .venv-og/bin/pip install -r scripts/og/requirements.txt`.
+  Never edit a generated PNG or its entry by hand; change `cards()` and
+  re-run.
+- **Every other card is still a 14 Jul bitmap.** Its entry is a hand
+  transcription dated when someone read it. Adding a card to `cards()` is the
+  way to bring it under the generator; after that, change its text with a
+  re-run.
+- **SVGs are not the gap.** SVG text is plain text, so a grep does find it (`shopify-server-side-tracking-flow-2026.svg` said
+  "no gclid needed" until 19 Sep 2026 and nobody looked). PNG, JPG and WebP
+  text is invisible to every check except this manifest.
+
+**Known problems in image text, recorded 19 Sep 2026 and not fixed.** Each one
+is also listed under `concerns` in the manifest.
+- `og-tiktok-events-api.png`: "Recover 20–40% of lost TikTok conversions", the
+  figure `/how-we-test/#the-20-40-figure` says the site does not publish.
+- `og-home.png`: "$514–$1,895/mo" and "Save $6,168–$22,740 / year", against
+  "$321–$1,887/month" in the homepage schema.
+- `og-how-we-test.png`: "Every number on this site has a source and a date",
+  while claims-guard is quarantining 43 claims.
+- `og-server-side-tracking-guide.png`: "$149–$399/mo", which appears nowhere on
+  the site.
+- `og-stocky-swap.png`, `og-stocky-shutdown.png`: future tense after 31 Aug.
+  `isPostShutdown()` branches the pages, but it cannot change a bitmap.
+  `og-stocky-shutdown.png` is not referenced by any page, but it is still
+  served.
+- `public/videos/poster-*.jpg`: the mock billing rows sum to **$847.32**, but
+  the "Total this month" reads **$702.47**. Elevar is shown at $199, while the
+  site cites $225.
+- The struck "was" ranges on the other cards (`$49–$99`, `$19–$299`,
+  `$150–$400`, `$29–$99`, `$29–$199`, `$39–$299`) have not been reconciled
+  with their pages.
 
 ### Where the indexing problem actually stands
 
