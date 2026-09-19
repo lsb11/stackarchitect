@@ -75,6 +75,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { PRICE, findUnsourcedPrices } from './lib/llm-price-provenance.mjs';
+import { retiredNearAnchor } from './lib/retired-near-anchor.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const QUARANTINE = path.join(ROOT, 'docs', 'claims-unverified.json');
@@ -277,6 +278,24 @@ function checkCanonical() {
               ? `verified at ${claim.source} on ${claim.verifiedDate}`
               : `ours to set — see ${claim.mirrors}`,
             excerpt: m[0].replace(/\s+/g, ' ').trim().slice(0, 90),
+          });
+        }
+      }
+
+      // (a2) a retired figure near an anchor, either side, across lines
+      if (claim.near) {
+        const already = new Set(problems.filter((p) => p.file === rel && p.id === id).map((p) => `${p.line}|${p.found}`));
+        for (const hit of retiredNearAnchor(src, { retired: claim.retired, ...claim.near })) {
+          const line = lineOf(src, hit.index);
+          if (already.has(`${line}|$${hit.value}`)) continue;
+          problems.push({
+            file: rel,
+            line,
+            id,
+            found: `$${hit.value}`,
+            expected: `$${claim.value}`,
+            why: `retired, within ${claim.near.window} chars of the kit's name or a /pro/ link — see ${claim.mirrors}`,
+            excerpt: hit.excerpt.slice(0, 90),
           });
         }
       }
