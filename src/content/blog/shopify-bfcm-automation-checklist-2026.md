@@ -93,7 +93,7 @@ BFCM is when attribution window mismatches cause the most confusion. Check:
 
 Shopify closed Stocky on August 31, 2026, and its APIs stopped that day with no grace period. Read-only access to export your data continues for at least 90 days after that date, with no end date published — so if you relied on Stocky, export now and migrate.
 
-[Stocky Swap](/stocky-swap/) deploys in 4 minutes — a Make.com JSON blueprint that logs every order to Google Sheets in real time. It captures stock levels, SKU data, fulfilment status, and full order history. The Complete Kit includes the pre-built JSON file you can import in 60 seconds.
+[Stocky Swap](/stocky-swap/) deploys in 4 minutes — a Make.com JSON blueprint that logs every order to Google Sheets in real time. It captures stock levels, SKU data, fulfilment status, and full order history. The Complete Kit includes the pre-built JSON file, ready to import.
 
 **For BFCM specifically:** Having real-time inventory data in Google Sheets during BFCM is essential for preventing overselling on high-demand SKUs. The Sheets dashboard gives you live visibility across all variants without needing to refresh Shopify admin constantly.
 

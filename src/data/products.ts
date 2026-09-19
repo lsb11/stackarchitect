@@ -428,7 +428,7 @@ export const PRODUCTS: Product[] = [
     pageTitle: 'TikTok Events API — Import-Ready Shopify Blueprint',
     name: 'TikTok CAPI',
     blueprint: 'Blueprint 02',
-    tagline: 'TikTok Events API v1.3 CompletePayment, server-side',
+    tagline: 'CompletePayment to TikTok’s Events API, server-side',
     problem: 'My TikTok ads report fewer purchases than Shopify does.',
     job:
       "Sends every paid Shopify order to TikTok’s Events API from the server, with email and phone hashed for matching, so the purchase can reach TikTok even when the browser pixel is blocked.",
@@ -451,7 +451,7 @@ export const PRODUCTS: Product[] = [
       {
         time: '~1 min',
         title: 'Import the blueprint',
-        body: 'In Make.com: Create a new scenario → Import Blueprint → upload Blueprint 02_TikTok_CAPI.json. The Events API v1.3 payload shape and the CompletePayment mapping arrive built.',
+        body: 'In Make.com: Create a new scenario → Import Blueprint → upload Blueprint 02_TikTok_CAPI.json. The Events API payload shape and the CompletePayment mapping arrive built.',
         tool: 'Make.com · one click',
       },
       {

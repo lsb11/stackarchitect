@@ -65,7 +65,7 @@ export const SCENARIO_SHOTS: Record<string, ProofShot> = {
   },
   'tiktok-capi': {
     file: 'scenario-tiktok-capi.png',
-    alt: 'The TikTok CAPI scenario in the Make.com canvas: a Shopify order webhook, an Advanced Matching field mapping, and an HTTP module posting CompletePayment to the TikTok Events API v1.3.',
+    alt: 'The TikTok CAPI scenario in the Make.com canvas: a Shopify order webhook, an Advanced Matching field mapping, and an HTTP module posting CompletePayment to TikTok’s Events API.',
     caption: 'Blueprint 02 on the Make.com canvas, as it imports.',
     width: 1600,
     height: 900,
@@ -95,7 +95,7 @@ export const RESULT_SHOTS: Record<string, ProofShot> = {
   },
   'tiktok-capi': {
     file: 'proof-tiktok-200.png',
-    alt: 'TikTok Events Manager showing a CompletePayment test event received over the Events API v1.3, alongside the HTTP 200 returned to Make.com. Pixel code and access token are redacted.',
+    alt: 'TikTok Events Manager showing a CompletePayment test event received over TikTok’s Events API, alongside the HTTP 200 returned to Make.com. Pixel code and access token are redacted.',
     caption:
       'A 200 back from the TikTok Events API, and the CompletePayment event in Events Manager. IDs redacted.',
     width: 1600,

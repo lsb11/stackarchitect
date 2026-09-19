@@ -193,7 +193,7 @@ That single action preserves your most valuable Stocky data. Everything else —
 
 ---
 
-## Replace Stocky in 60 seconds
+## Replace Stocky with Stocky Swap
 
 After you export your data, deploy Stocky Swap to start capturing live inventory data immediately — no manual migration, no data loss. The Complete Kit includes the Stocky Swap Make.com JSON blueprint plus CAPI Shield, TikTok CAPI, and P&L Auto. $19.99 one-time.
 

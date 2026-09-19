@@ -114,7 +114,15 @@ endpoints.
   shrink; a stale entry also fails. Clear one by reading the vendor's live pricing page and
   passing that date as `verifiedDate` — never by stamping today's date.
 - `schema-visible-guard.mjs` — runs over `dist/` and fails when JSON-LD asserts a number that
-  does not appear in the page's visible text.
+  does not appear in the page's visible text. Since 19 Sep 2026 it also fails
+  when a **third-party** Offer (non-zero, not ours) has no `priceVerifiedDate`,
+  no vendor source URL (`priceSourceUrl` or `url`, off our domain), or a price
+  not shown as a `$` figure within 600 characters of the product's name.
+  Before that, no check looked at the ~30 competitor Offers at all: check 2
+  skips them and a bare `"price": "145"` carries no `$` for check 1 to see.
+  Quarantine: `thirdPartyOffers` in `docs/schema-claims-unverified.json`,
+  same ratchet. It holds one entry, Analyzify on
+  `/shopify-attribution-tools-compared/` (see the apps.json problems below).
 
 **What neither guard checks — capability claims.** Both guards are about
 numbers: third-party prices, the canonical figures in `claims.json`, numbers
@@ -241,6 +249,22 @@ figure, and that has always been the rule — but the reporting does.
 Every count on `/apps/` is derived from `apps.json`, never typed. The bug that
 rule exists to prevent shipped sitewide: `Nav.astro` read "All 53 apps" on all
 128 pages from 14 Aug to 5 Sep, after `apps.json` went to 54.
+
+**apps.json data problems — logged 19 Sep 2026 for a later pass, not fixed.**
+Each needs someone to read the vendor's page. Do not settle them by editing
+the JSON to make a guard pass.
+- **Elevar.** `priceSourceUrl` points at audiense.com. It was reported as a
+  different company. The record's own `brandChange` note says getelevar.com
+  redirects to Audiense and the page is titled "Audiense Online Pricing —
+  Powered by Elevar", which would make it a rebrand. Settle which it is, and
+  whether $225 is an Elevar price, before the Offer stays.
+- **Triple Whale.** `apps.json` says `$219+`, and so does the schema.
+  `/shopify-attribution-tools-compared/` shows `~$129/mo` in one table and
+  `$219–$749/mo` in another.
+- **Analyzify.** `apps.json` and the schema say `$145–$275`. The page says
+  `~$749/yr` and `~$62–$79/mo equivalent`, and its own "billing basis"
+  paragraph says the figures do not reconcile. This is the quarantined
+  third-party Offer; clearing it means resolving this.
 
 Root-level `*.patch` files, `.archived-pages/`, `.*-backup*/` and the loose `.py`/`.cjs` scripts
 are historical artefacts, not live tooling.
