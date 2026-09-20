@@ -14,7 +14,7 @@ faqs:
   - question: "Why does Shopify show more sales than Meta Ads Manager in 2026?"
     answer: "Three changes converged: iOS 26's Link Tracking Protection strips Meta's fbclid click identifier in Private Browsing, Mail, and Messages; Shopify changed its App Pixel default to Optimized mode on January 13, 2026, which throttles data sent to Meta when no attribution signals are detected; and Meta's shift toward Advantage+ campaigns reduced targeting control. Meta's pixel receives incomplete conversion data, so Ads Manager underreports purchases while Shopify records every order regardless of source."
   - question: "What is the free fix for Meta ROAS dropping on Shopify?"
-    answer: "The free fix is implementing Meta Conversions API (CAPI) — server-side tracking that sends conversion events directly from your server to Meta, bypassing browser restrictions entirely. The quickest partial fix (5 minutes) is switching your App Pixel from Optimized to Always on mode. Full server-side CAPI implementation takes 2–3 hours and covers the purchase events browser tracking loses."
+    answer: "The free fix is implementing Meta Conversions API (CAPI) — server-side tracking that sends conversion events directly from your server to Meta, bypassing browser restrictions entirely. The quickest partial fix (5 minutes) is switching your App Pixel from Optimized to Always on mode. The free server-side route is a single Make.com scenario, about 6 minutes once your Make.com account and Meta access are in place, and it covers the purchase events browser tracking loses. A Google Tag Manager server-side container does the same job in 2–3 hours and costs $10–30/month in hosting."
   - question: "Does iOS 26 strip fbclid from all Safari browsing?"
     answer: "Not from all browsing. iOS 26's Link Tracking Protection strips fbclid primarily when links are opened from Private Browsing mode, Mail, and Messages — not from standard Safari browsing sessions. For stores with significant iOS traffic from Instagram or email campaigns, this represents a meaningful attribution gap."
   - question: "What is the Shopify App Pixel Optimized mode change?"
@@ -41,7 +41,7 @@ relatedGuides:
 
 Three converging changes in Q1 2026 are causing Shopify stores to lose Meta conversion data. The result: Meta's algorithm optimises on incomplete data, ROAS reported in Ads Manager drops, and budgets get cut from campaigns that are actually working.
 
-**3** converging causes · **iOS 26 + App Pixel throttle** what changed · **2–3 hours** fix time · **$0** ongoing cost
+**3** converging causes · **iOS 26 + App Pixel throttle** what changed · **~45 minutes** fix time · **$0** ongoing cost
 
 ## Why Shopify Shows More Sales Than Meta
 
@@ -124,13 +124,15 @@ This enables Shopify's native Conversions API integration. It is a meaningful im
 
 Ensure the Purchase event is listed and prioritised as **#1.** Set attribution window to 7-day click, 1-day view. Required for attribution to work for iOS users post-iOS 26.
 
-### Step 5 — Implement Full Server-Side CAPI (2–3 hours)
+### Step 5 — Implement Full Server-Side CAPI (6 minutes)
 
 Meta Conversions API (CAPI) sends conversion events directly from your server to Meta — bypassing the browser, iOS tracking restrictions, ad blockers, and Shopify's pixel throttling entirely. The [Meta Conversions API documentation](https://developers.facebook.com/docs/marketing-api/conversions-api) covers all required parameters — the key fields for Shopify are `event_name`, `event_time`, `event_id` (for deduplication), `user_data.em` (SHA-256 hashed email), and `custom_data.value`.
 
-**Implementation:** Google Tag Manager server-side container + Shopify webhooks. GTM is free. Server container hosting is approximately $10–30/month — the only non-free component in this guide.
+**Implementation:** a Make.com scenario that receives the Shopify order webhook and forwards a formatted purchase event to Meta's Conversions API endpoint. No server to host and no GTM container, so the ongoing cost stays $0 on Make.com's free plan.
 
-[CAPI Shield](/capi-shield/) is the free step-by-step implementation guide. It covers Meta CAPI. Its Google branch cannot match Shopify orders as shipped.
+[CAPI Shield](/capi-shield/) is the free step-by-step implementation guide for that route — about 6 minutes once your Make.com account and Meta access are in place. It covers Meta CAPI. Its Google branch cannot match Shopify orders as shipped.
+
+**The other route.** A Google Tag Manager server-side container plus Shopify webhooks reaches the same place and is worth it if you already run one. GTM itself is free, but container hosting is approximately $10–30/month and the build takes 2–3 hours. That is the only non-free option in this guide.
 
 ### Step 6 — Verify Deduplication and Event Match Quality (10 minutes, after 7 days)
 
