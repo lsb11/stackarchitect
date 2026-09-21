@@ -82,7 +82,7 @@ If you run Meta or Google ads and are not running server-side tracking, your ad 
 
 **Why this is first:** the improvement in tracking data quality has compounding returns over time. Every week of better data means better algorithmic optimisation, better ROAS, lower effective CPAs. Starting this as early as possible maximises the compounding period.
 
-At low order volume, the impact per order is larger in percentage terms — if you're doing 100 orders a month and tracking is missing 40 of them, that's 40% of your conversion signal gone. For a small store where every order is carefully tracked, this matters more, not less.
+At low order volume, every untracked order is a larger share of the whole. If you are doing 100 orders a month, each one the pixel misses is a full percentage point of your conversion signal gone, and a handful of them is enough to make a working campaign look unprofitable. We publish no figure for how many get missed — that is what the [attribution gap calculator](/shopify-vs-meta-attribution-gap-calculator/) is for. For a small store where every order is carefully tracked, this matters more, not less.
 
 ## Step 3 — Order Logging to Google Sheets (20 Minutes)
 

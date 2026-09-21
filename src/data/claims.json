@@ -200,6 +200,148 @@
           "why": "a quantified per-match-key EMQ lift (\"+3 EMQ\", \"+1.0 EMQ point\"). Meta publishes no such weighting and we have not measured one — rank the keys without numbers."
         }
       ]
+    },
+    "attributionLossFigure": {
+      "value": "unmeasured — no loss or recovery percentage is published",
+      "unit": "share of purchase-conversion signal lost to ATT/ITP/ad blockers, or recovered by server-side",
+      "source": "https://stackarchitect.xyz/how-we-test/#the-20-40-figure",
+      "verifiedDate": "2026-09-04",
+      "retired": [],
+      "contexts": [],
+      "_scope": [
+        "The 20–40% figure was retracted on 4 Sep 2026 — withdrawn, not revised. Two",
+        "weeks later it was still being published as 35% in /capi-shield/'s hero, 40%",
+        "on /tools/, 15–35% on /make-com-shopify/ and eleven separate figures in",
+        "/blog/shopify-server-side-tracking-complete-setup-guide/. A retraction that",
+        "lives in one page's prose is a note, not a retraction.",
+        "",
+        "The patterns are deliberately plain: a loss/recovery verb, a percentage and a",
+        "noun the figure is denominated in, in any of the three orders English puts",
+        "them. Everything subtle lives in `unless`, which is checked against the line",
+        "the match sits on. The first draft encoded the exemptions as tempered tokens",
+        "inside the patterns and became unreadable; a named list is reviewable.",
+        "The filler token matches a whole HTML tag as well as plain text: the hero on",
+        "/capi-shield/ read \"losing <strong>35% of its conversion data</strong>\", and a",
+        "filler of [^<] walked straight past it. Same lesson as the EMQ entry's entity",
+        "dashes — a claim in an .astro file is rarely plain prose.",
+        "",
+        "",
+        "WHAT `unless` LETS THROUGH, and why each one has to be allowed:",
+        "  1. retract/withdraw/no longer/publishes no — the site has to name the",
+        "     figure in order to retract it. /about/, /how-we-test/, the benchmark",
+        "     page and src/data/attributionGap.js `retractions[]` all do. A guard",
+        "     that fires on the retraction notice pushes you to delete the record.",
+        "  2. documented…case / denominated in it — the benchmark's one sourced row,",
+        "     the ~40% attributable-conversion loss without CAPI. n=1, cited, dated,",
+        "     and deliberately still published; how-we-test says exactly what it is",
+        "     worth. THIS IS THE SOFT SPOT: the words 'documented case' beside a",
+        "     number are enough to pass. The guard stops a retracted figure creeping",
+        "     back. It cannot certify a new one — that still needs a human to open",
+        "     the citation.",
+        "  3. abandoned cart / checkout — cart-recovery rates are a different",
+        "     quantity with real industry sourcing, not tracking signal loss.",
+        "  4. cumulative miss rate / silently drops — the 99.5%-of-orders reliability",
+        "     arithmetic in the automations guide, which is about scenario failure.",
+        "  5. the CSS tokens — `.pro-block { background: linear-gradient(…0%…)` is a",
+        "     class name and a gradient stop, not a claim.",
+        "",
+        "NOT exempted, and not needing to be: bands for reading a reader's OWN",
+        "measurement ('a gap above 35% indicates a problem', 'under 20% is normal')",
+        "carry no loss verb next to the figure. App-COST recovery (the 50/85/100%",
+        "levels on the cost calculator) and affiliate commission rates are money, not",
+        "signal, so the noun list excludes them by construction.",
+        "",
+        "Every VERB alternative is anchored with \\b. Without it `miss` matched inside",
+        "`commission` and the guard failed the build on an affiliate commission rate.",
+        "",
+        "The rest of `unless` is mechanical rather than editorial: CSS declarations",
+        "(`display: block`, `width: 100%`), the cost calculator's <option> labels, a",
+        "scroll-depth note, the gap calculator's innerHTML template — which prints the",
+        "READER's own computed gap and must keep doing so — and the cart post's",
+        "'total recoveries' line. None of them is a published loss figure."
+      ],
+      "forbid": [
+        {
+          "pattern": "\\b(?:los(?:e|es|ing|t)|loss|miss(?:es|ed|ing)?|recover(?:s|ed|ing|y)?|invisible|never (?:reach|report|fire)\\w*|block(?:s|ed|ing)?|under-?report\\w*|understate[sd]?|unattributed|not (?:tracked|captured|seen))\\s(?:[^\\n<]|<[^>]{0,120}>){0,60}?\\d{1,2}(?:\\.\\d)?\\s*(?:(?:[-–—]|&(?:ndash|mdash|#8211|#8212);|\\s+to\\s+)\\s*\\d{1,2}(?:\\.\\d)?\\s*)?%\\s*(?:of\\s+)?(?:[^\\n<]|<[^>]{0,120}>){0,60}?\\b(?:conversion|purchase|order|attribution|signal|pixel|event|tracking|ROAS|revenue|sale|data)s?\\b",
+          "why": "a quantified conversion-loss or recovery percentage. The 20–40% figure was retracted on 4 Sep 2026 and nothing replaced it: the loss is a function of a store's own mobile/iOS mix and consent rate, so no industry range describes a reader. State the mechanism and send them to the gap calculator. See /how-we-test/#the-20-40-figure.",
+          "unless": [
+            "retract|withdraw|withdrew|withdrawn",
+            "no longer|used to (?:carry|say|answer|be)|publish(?:es)? no|do(?:es)? not publish|assert(?:s)? no gap|state(?:s)? no",
+            "documented[^.]{0,30}case|denominated in it",
+            "abandoned (?:cart|checkout)|cart recovery|abandonment",
+            "cumulative miss rate|silently drops",
+            "linear-gradient|border-radius|display:\\s*block|width:\\s*\\d+%|height:\\s*\\d+%|max-width",
+            "free stack deployment|recovery percentages|<option|Replace core overlaps",
+            "%\\s*depth",
+            "innerHTML",
+            "total recoveries|open rate"
+          ]
+        },
+        {
+          "pattern": "\\d{1,2}(?:\\.\\d)?\\s*(?:(?:[-–—]|&(?:ndash|mdash|#8211|#8212);|\\s+to\\s+)\\s*\\d{1,2}(?:\\.\\d)?\\s*)?%\\s*(?:[^\\n<]|<[^>]{0,120}>){0,60}?\\b(?:conversion|purchase|order|attribution|signal|pixel|event|tracking|ROAS|revenue|sale|data)s?\\b(?:[^\\n<]|<[^>]{0,120}>){0,40}?\\b(?:los(?:e|es|ing|t)|loss|miss(?:es|ed|ing)?|recover(?:s|ed|ing|y)?|invisible|never (?:reach|report|fire)\\w*|block(?:s|ed|ing)?|under-?report\\w*|understate[sd]?|unattributed|not (?:tracked|captured|seen))",
+          "why": "a quantified conversion-loss or recovery percentage. The 20–40% figure was retracted on 4 Sep 2026 and nothing replaced it: the loss is a function of a store's own mobile/iOS mix and consent rate, so no industry range describes a reader. State the mechanism and send them to the gap calculator. See /how-we-test/#the-20-40-figure.",
+          "unless": [
+            "retract|withdraw|withdrew|withdrawn",
+            "no longer|used to (?:carry|say|answer|be)|publish(?:es)? no|do(?:es)? not publish|assert(?:s)? no gap|state(?:s)? no",
+            "documented[^.]{0,30}case|denominated in it",
+            "abandoned (?:cart|checkout)|cart recovery|abandonment",
+            "cumulative miss rate|silently drops",
+            "linear-gradient|border-radius|display:\\s*block|width:\\s*\\d+%|height:\\s*\\d+%|max-width",
+            "free stack deployment|recovery percentages|<option|Replace core overlaps",
+            "%\\s*depth",
+            "innerHTML",
+            "total recoveries|open rate"
+          ]
+        },
+        {
+          "pattern": "\\b(?:conversion|purchase|order|attribution|signal|pixel|event|tracking|ROAS|revenue|sale|data)s?\\b\\s(?:[^\\n<]|<[^>]{0,120}>){0,25}?\\b(?:los(?:e|es|ing|t)|loss|miss(?:es|ed|ing)?|recover(?:s|ed|ing|y)?|invisible|never (?:reach|report|fire)\\w*|block(?:s|ed|ing)?|under-?report\\w*|understate[sd]?|unattributed|not (?:tracked|captured|seen))\\w*(?:[^\\n<]|<[^>]{0,120}>){0,120}?\\d{1,2}(?:\\.\\d)?\\s*(?:(?:[-–—]|&(?:ndash|mdash|#8211|#8212);|\\s+to\\s+)\\s*\\d{1,2}(?:\\.\\d)?\\s*)?%",
+          "why": "a quantified conversion-loss or recovery percentage. The 20–40% figure was retracted on 4 Sep 2026 and nothing replaced it: the loss is a function of a store's own mobile/iOS mix and consent rate, so no industry range describes a reader. State the mechanism and send them to the gap calculator. See /how-we-test/#the-20-40-figure.",
+          "unless": [
+            "retract|withdraw|withdrew|withdrawn",
+            "no longer|used to (?:carry|say|answer|be)|publish(?:es)? no|do(?:es)? not publish|assert(?:s)? no gap|state(?:s)? no",
+            "documented[^.]{0,30}case|denominated in it",
+            "abandoned (?:cart|checkout)|cart recovery|abandonment",
+            "cumulative miss rate|silently drops",
+            "linear-gradient|border-radius|display:\\s*block|width:\\s*\\d+%|height:\\s*\\d+%|max-width",
+            "free stack deployment|recovery percentages|<option|Replace core overlaps",
+            "%\\s*depth",
+            "innerHTML",
+            "total recoveries|open rate"
+          ]
+        },
+        {
+          "pattern": "\\d{1,2}(?:\\.\\d)?\\s*(?:(?:[-–—]|&(?:ndash|mdash|#8211|#8212);|\\s+to\\s+)\\s*\\d{1,2}(?:\\.\\d)?\\s*)?%\\s*(?:[^\\n<]|<[^>]{0,120}>){0,25}?\\b(?:los(?:e|es|ing|t)|loss|miss(?:es|ed|ing)?|recover(?:s|ed|ing|y)?|invisible|never (?:reach|report|fire)\\w*|block(?:s|ed|ing)?|under-?report\\w*|understate[sd]?|unattributed|not (?:tracked|captured|seen))",
+          "why": "a quantified conversion-loss or recovery percentage. The 20–40% figure was retracted on 4 Sep 2026 and nothing replaced it: the loss is a function of a store's own mobile/iOS mix and consent rate, so no industry range describes a reader. State the mechanism and send them to the gap calculator. See /how-we-test/#the-20-40-figure. (a percentage stated as the loss or the recovery itself)",
+          "unless": [
+            "retract|withdraw|withdrew|withdrawn",
+            "no longer|used to (?:carry|say|answer|be)|publish(?:es)? no|do(?:es)? not publish|assert(?:s)? no gap|state(?:s)? no",
+            "documented[^.]{0,30}case|denominated in it",
+            "abandoned (?:cart|checkout)|cart recovery|abandonment",
+            "cumulative miss rate|silently drops",
+            "linear-gradient|border-radius|display:\\s*block|width:\\s*\\d+%|height:\\s*\\d+%|max-width",
+            "free stack deployment|recovery percentages|<option|Replace core overlaps",
+            "%\\s*depth",
+            "innerHTML",
+            "total recoveries|open rate"
+          ]
+        },
+        {
+          "pattern": "attribution gap(?:[^\\n<]|<[^>]{0,120}>){0,60}?(?:ranges?|reach\\w*|is|sits?|runs?|now)(?:[^\\n<]|<[^>]{0,120}>){0,30}?\\d{1,2}(?:\\.\\d)?\\s*(?:(?:[-–—]|&(?:ndash|mdash|#8211|#8212);|\\s+to\\s+)\\s*\\d{1,2}(?:\\.\\d)?\\s*)?%",
+          "why": "a quantified conversion-loss or recovery percentage. The 20–40% figure was retracted on 4 Sep 2026 and nothing replaced it: the loss is a function of a store's own mobile/iOS mix and consent rate, so no industry range describes a reader. State the mechanism and send them to the gap calculator. See /how-we-test/#the-20-40-figure. (the gap's own magnitude — the figure the 4 Sep retraction was about)",
+          "unless": [
+            "retract|withdraw|withdrew|withdrawn",
+            "no longer|used to (?:carry|say|answer|be)|publish(?:es)? no|do(?:es)? not publish|assert(?:s)? no gap|state(?:s)? no",
+            "documented[^.]{0,30}case|denominated in it",
+            "abandoned (?:cart|checkout)|cart recovery|abandonment",
+            "cumulative miss rate|silently drops",
+            "linear-gradient|border-radius|display:\\s*block|width:\\s*\\d+%|height:\\s*\\d+%|max-width",
+            "free stack deployment|recovery percentages|<option|Replace core overlaps",
+            "%\\s*depth",
+            "innerHTML",
+            "total recoveries|open rate"
+          ]
+        }
+      ]
     }
   },
   "press": {

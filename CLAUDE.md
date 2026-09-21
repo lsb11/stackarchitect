@@ -174,6 +174,45 @@ Two lessons for the next `forbid` pattern:
   belongs in `claims.json` and in this file, both of which the guard's
   walker deliberately does not read, and not in page source.
 
+**A second retracted figure is now guarded: the 20–40% loss estimate.**
+`claims.json` gained `thirdParty.attributionLossFigure` on 21 Sep 2026. Same
+shape as the EMQ entry — empty `retired`/`contexts`, all the work in `forbid`
+— and it fails the build on a quantified conversion-loss or recovery
+percentage. The retraction was made on 4 Sep and was still not true of the
+site on 21 Sep: `/capi-shield/`'s hero said 35%, `/tools/` said 40%,
+`/make-com-shopify/` said 15–35%, and the server-side tracking guide carried
+eleven separate figures.
+
+`forbid` rules now take an optional **`unless`**: regexes checked against the
+line a match sits on, which suppress it. This site has to be able to name the
+figure in order to retract it — `/about/`, `/how-we-test/`, the benchmark page
+and `attributionGap.js`'s `retractions[]` all state "20–40%" precisely to say
+it is gone — and a guard that fires on the retraction notice pushes you to
+delete the record. The exemptions were first written as negative lookarounds
+inside the patterns and became unreadable; a named list is reviewable in a
+diff. The soft spot is deliberate and documented in the entry: "documented
+case" beside a number passes, because the benchmark's one sourced n=1 row has
+to stay published. The guard stops a retracted figure creeping back; it cannot
+certify a new one.
+
+**`contentFiles()` now also reads root-level `*.md`.** Everything at root is
+scanned except a named RECORDS list (`CLAUDE.md`, `README.md`, `AUDIT.md`,
+`STACKARCHITECT_PRO_BUILD_BRIEF.md`) whose job is to state what a figure used
+to be. The default is "scan" on purpose: a draft named something nobody
+predicted still gets checked, where an include-list keyed on `dev_to_*` or on
+`published:` front matter would quietly skip it.
+
+This is how the syndication drafts were found. They are not served by this
+site, so nothing checked them, and on 21 Sep 2026 `dev_to_sst_guide.md` — a
+dev.to post with `canonical_url` pointing back here — still led with "Recover
+20–40% of invisible Shopify conversions", carried the EMQ figures retracted
+that same week, claimed "stores at EMQ 8+ consistently report 12–28% lower
+cost-per-purchase", and priced **Make Core at $12 in four places**. That last
+one is the drift `claims.json` was built to stop, sitting in a file the guard
+could not see. `video-build-prompt.md` still said "$29 Complete Kit" and
+"EMQ 8+". Publishing either would have re-seeded every figure this repo had
+just removed, on a domain with more authority than ours. Both are corrected.
+
 ### Shipped blueprints that pin a third-party API version need a recurring check
 
 **What happened.** CAPI Shield's Meta request, in both `FILE_00` and

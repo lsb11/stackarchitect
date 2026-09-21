@@ -35,7 +35,7 @@ src/
     ReplacementGrid.tsx            # scene 3: paid → free swap animation
     ScenarioBuild.tsx              # scene 4: Make.com webhook + branches (animated)
     ProofTiles.tsx                 # scene 5: verified mechanic checkmarks + confetti
-    OfferSplit.tsx                 # scene 6: free vs $29 dual card
+    OfferSplit.tsx                 # scene 6: free vs $19.99 dual card
     LoopHook.tsx                   # scene 7: CTA + brief flash to opening frame
     Confetti.tsx                   # rendered confetti via canvas-confetti
   data/
@@ -178,8 +178,8 @@ export const SCENES = [
     id: 'offer',
     start: 645,
     end: 765,
-    voText: "Free guides and tools at stackarchitect.xyz. Or skip the build — Complete Kit, $29, ten minutes to live.",
-    captionLines: ['FREE OR $29', 'YOUR CALL'],
+    voText: "Free guides and tools at stackarchitect.xyz. Or skip the build — Complete Kit, $19.99, ten minutes to live.",
+    captionLines: ['FREE OR $19.99', 'YOUR CALL'],
     captionPosition: 'bottom',
     captionSize: 68,
     captionColor: 'text',
@@ -289,9 +289,9 @@ DON'T use a real screenshot — control the styling. Layout:
 **OfferSplit.tsx (scene: offer):**
 - Frame 645: split screen 50/50, animated divider grows from center
 - Left half: "FREE STACK" — brand.green border, brand.greenBg fill, list of 4 free tools (CAPI Shield, Stocky Swap, P&L Auto, Replace Klaviyo) with checkmarks
-- Right half: "COMPLETE KIT — $29" — brand.pro border, brand.proBg fill, "10 minutes to live", "JSON blueprints", "30-day guarantee"
+- Right half: "COMPLETE KIT — $19.99" — brand.pro border, brand.proBg fill, "10 minutes to live", "JSON blueprints", "30-day guarantee"
 - Frame 700: subtle glow pulses on both panels alternating (signals "your choice")
-- Caption "FREE OR $29 / YOUR CALL" enters frame 700, two lines stacked
+- Caption "FREE OR $19.99 / YOUR CALL" enters frame 700, two lines stacked
 
 **LoopHook.tsx (scene: cta):**
 - Frame 765: clear screen with brand.bg + radial green glow center
@@ -305,7 +305,7 @@ DON'T use a real screenshot — control the styling. Layout:
 `scripts/generate-voiceover.ts`:
 - Read script.ts SCENES[].voText, concatenate with SSML pauses:
   - 200ms pause between scenes for natural breath
-  - 150ms emphasis pause before "$700", "$0", "$29"
+  - 150ms emphasis pause before "$700", "$0", "$19.99"
 - Use Eleven Labs API endpoint POST /v1/text-to-speech/{voice_id}
 - Voice: Brian (free tier, voice_id: nPczCjzI2devNBz1zQrb)
 - Model: eleven_turbo_v2_5
@@ -472,7 +472,7 @@ array around line 100-180 in index.astro and append):
   "@type": "VideoObject",
   "@id": "https://stackarchitect.xyz/#hero-video",
   "name": "Your Shopify Store Is Leaking $700/Month — The Free Fix in 6 Minutes",
-  "description": "30-second overview of how Shopify stores replace $700+/month of paid apps (Klaviyo, Elevar, Triple Whale, Stocky) with free server-side tracking, inventory, email, and P&L tools running on Make.com's free tier. EMQ 8+, iOS-proof, no code, deploys in 6 minutes. Includes 7 free tools and an optional $29 Complete Kit.",
+  "description": "30-second overview of how Shopify stores replace $700+/month of paid apps (Klaviyo, Elevar, Triple Whale, Stocky) with free server-side tracking, inventory, email, and P&L tools running on Make.com's free tier. iOS-proof, no code, deploys in 6 minutes. Includes 7 free tools and an optional $19.99 Complete Kit.",
   "thumbnailUrl": [
     "https://stackarchitect.xyz/videos/hero-poster-1x1.jpg",
     "https://stackarchitect.xyz/videos/hero-poster-4x3.jpg",

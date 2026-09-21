@@ -1,5 +1,5 @@
 ---
-title: Recover 20–40% of invisible<br>Shopify conversions — free
+title: Recover the Shopify conversions your browser pixel never sees — free
 published: false
 canonical_url: https://stackarchitect.xyz/blog/shopify-server-side-tracking-complete-setup-guide/
 tags: shopify, webhooks, analytics, webdev
@@ -19,7 +19,7 @@ Free Setup &middot; No Code &middot; Under 20 Minutes &middot; Meta + Google + T
 &#10003; UPDATED JULY 2026 — VERIFIED FREE TIER &middot; iOS 26
 
 
-# Recover 20–40% of invisible<br>Shopify conversions — free
+# Recover the Shopify conversions your browser pixel never sees — free
 
 Your Shopify dashboard shows 68 orders. Meta shows 41. Google Ads shows 29. TikTok shows 18. **The gap is real revenue your ad algorithms are optimising blind on.** This guide fixes it free in under 20 minutes using Make.com — no code, no app, no agency.
 
@@ -30,7 +30,7 @@ Your Shopify dashboard shows 68 orders. Meta shows 41. Google Ads shows 29. TikT
 
 
 
-- **20–40%** Conversions recovered
+- **Server-side** Where the event fires
 
 - **17.8%** Lower CPA w/ CAPI (Meta, '26)
 
@@ -54,7 +54,7 @@ TL;DR — 6 Key Points
 
 01Server-side tracking sends purchase events from Shopify's backend directly to Meta, Google and TikTok — bypassing browsers, ad blockers and iOS ATT.
 
-02iOS App Tracking Transparency and Safari ITP now block 30–40% of browser pixel events. Server-side is the only reliable fix.
+02iOS App Tracking Transparency and Safari ITP block browser pixel events. How many is a property of your store, not an industry constant — server-side is the fix either way.
 
 03The Make.com webhook method costs $0/month. Elevar charges from $225/month for the same result. Triple Whale uses GMV-based pricing that scales with store revenue.
 
@@ -62,7 +62,7 @@ TL;DR — 6 Key Points
 
 05Always run browser pixel AND server events simultaneously. Use matching event_id values for deduplication so you count one purchase, not two.
 
-06TikTok requires **CompletePayment** not "Purchase". Include hashed email, phone, IP and user agent to achieve Event Match Quality score 8+.
+06TikTok requires **CompletePayment** not "Purchase". Include hashed email, phone, IP and user agent — the Advanced Matching fields TikTok calculates Event Match Quality from.
 
 
 
@@ -98,11 +98,11 @@ DIRECT ANSWER
 
 ## Shopify Server-Side Tracking Explained in 60 Seconds
 
-**Shopify server-side tracking is a method of sending purchase, checkout, and add-to-cart events from Shopify's backend directly to Meta, Google, and TikTok — bypassing the customer's browser entirely.** It is the only reliable way to track conversions in 2026 because iOS App Tracking Transparency, Safari's Intelligent Tracking Prevention, ad blockers, and consent banner rejections now combine to block 30–40% of browser pixel events on the average Shopify store.
+**Shopify server-side tracking is a method of sending purchase, checkout, and add-to-cart events from Shopify's backend directly to Meta, Google, and TikTok — bypassing the customer's browser entirely.** It is the only reliable way to track conversions in 2026 because iOS App Tracking Transparency, Safari's Intelligent Tracking Prevention, ad blockers, and consent banner rejections all block browser pixel events. This guide publishes no figure for how many: it is set by your own mobile/iOS traffic mix and consent rate, so no industry range describes your store. [Measure yours](https://stackarchitect.xyz/shopify-vs-meta-attribution-gap-calculator/).
 
 The mechanism is straightforward. When a Shopify order is paid, Shopify fires an <code>orders/paid</code> webhook. That webhook is intercepted by an automation tool — Make.com is the free standard — which receives the order payload (email, phone, total, line items, customer IP, user agent), hashes the personal data with SHA-256, and posts a signed event to three endpoints: Meta's Conversions API, Google's Enhanced Conversions endpoint, and TikTok's Events API. The browser pixel still fires alongside this for deduplication; both events share the same <code>event_id</code> so each platform counts one conversion, not two.
 
-The result is what Meta calls a higher Event Match Quality (EMQ) score — typically jumping from 4–5 (browser-only) to 8–9 (server + browser hybrid) — which feeds richer signal back into the ad platform's machine learning. Higher EMQ directly lowers cost-per-acquisition because the algorithm can find lookalikes more accurately.
+The result is a richer payload behind what Meta calls the Event Match Quality (EMQ) score: a server-side event carries match keys the browser pixel never had, and EMQ is calculated from the keys present. No EMQ figure is published here — this setup has not been sampled across stores, so read your own score in Events Manager.
 
 ### Quick answer table
 
@@ -188,7 +188,7 @@ WHY IT MATTERS IN 2026
 
 The browser tracking environment has degraded dramatically since 2021 and continues to worsen. iOS 14.5 introduced App Tracking Transparency (ATT), requiring explicit opt-in for cross-app tracking — approximately 62% of iOS users decline. iOS 17 added Link Tracking Protection, which strips UTM and click-ID parameters from URLs in Safari Private Browsing and Mail. Safari's [Intelligent Tracking Prevention](https://webkit.org/tracking-prevention/) deletes first-party cookies after 7 days and blocks all third-party cookies. Firefox Enhanced Tracking Protection blocks third-party cookies by default. Chrome's Privacy Sandbox continues its phased rollout despite delays.
 
-The cumulative effect: on a typical Shopify store with normal UK or US traffic mix, 30–40% of actual purchases are invisible to your browser pixel. Your ad platforms are optimising delivery on incomplete data — which means higher CPAs, suppressed ROAS, and budget allocated to audiences that look unprofitable but aren't.
+The cumulative effect: some share of your actual purchases is invisible to your browser pixel, and only your own numbers say how large it is. Your ad platforms are optimising delivery on incomplete data — which means higher CPAs, suppressed ROAS, and budget allocated to audiences that look unprofitable but aren't.
 
 ### How much data are you actually losing?
 
@@ -218,7 +218,7 @@ Safari's Link Tracking Protection in iOS 17+ strips **fbclid** and **gclid** par
 
 
 
-Server-side tracking does not recover every lost event — it recovers the events that were lost due to browser restrictions, not events from users who genuinely did not convert. The 20–40% recovery figure represents real purchases that happened but were invisible to your pixel. It tracks the measured iOS attribution loss documented in the [Shopify iOS attribution gap benchmark](https://stackarchitect.xyz/shopify-ios-attribution-gap-benchmark/), where every figure is individually sourced.
+Server-side tracking does not recover every lost event — it recovers the events that were lost due to browser restrictions, not events from users who genuinely did not convert. What it recovers is real purchases that happened but were invisible to your pixel. **No recovery percentage is published**: the [Shopify iOS attribution gap benchmark](https://stackarchitect.xyz/shopify-ios-attribution-gap-benchmark/) sources each input separately and explains why a single industry figure describes no particular store.
 
 
 
@@ -232,7 +232,7 @@ Server-side tracking did not become essential overnight. It became essential bec
 
 ### April 2021 — iOS 14.5 and App Tracking Transparency
 
-Apple shipped App Tracking Transparency in iOS 14.5, requiring every app to display a permission prompt before accessing the Identifier for Advertisers (IDFA). Industry opt-in rates settled at 20–25% globally and 16–18% in the US. For Shopify stores, the immediate effect was that Meta lost the ability to attribute roughly 75% of in-app Instagram and Facebook conversions on iOS devices. Meta's Aggregated Event Measurement protocol launched in response, capping each domain to eight tracked events with a 24–72 hour delayed-attribution window. Meta CAPI was Meta's recommended remediation from this date forward.
+Apple shipped App Tracking Transparency in iOS 14.5, requiring every app to display a permission prompt before accessing the Identifier for Advertisers (IDFA). Industry opt-in rates settled at 20–25% globally and 16–18% in the US. For Shopify stores, the immediate effect was that Meta lost much of its ability to attribute in-app Instagram and Facebook conversions on iOS devices. No figure is stated for how much: no primary source measuring it was found. Meta's Aggregated Event Measurement protocol launched in response, capping each domain to eight tracked events with a 24–72 hour delayed-attribution window. Meta CAPI was Meta's recommended remediation from this date forward.
 
 ### September 2021 — Safari ITP 2.3 enforcement on Shopify checkouts
 
@@ -244,7 +244,7 @@ iOS 16's Mail, Messages and Safari Private Mode began stripping known click-trac
 
 ### September 2023 — iOS 17 Link Tracking Protection
 
-iOS 17 extended parameter stripping into Mail and Messages by default for all users, not just Private Mode. Combined with iOS 17's expanded ATT prompts, average attribution loss for Shopify Meta campaigns measured by Meta's own conversion-lift studies reached 28–34% on iOS traffic.
+iOS 17 extended parameter stripping into Mail and Messages by default for all users, not just Private Mode. Combined with iOS 17's expanded ATT prompts, this removed more of the click attribution Shopify Meta campaigns had depended on. No figure is stated for the size of that loss — no primary source measuring it was found.
 
 ### 2024 — Google Consent Mode v2 mandatory in EEA
 
@@ -256,11 +256,11 @@ Google walked back its 2020 commitment to remove third-party cookies in Chrome a
 
 ### 2026 — iOS 18 advanced fingerprinting protection and Apple Intelligence
 
-iOS 18 introduced advanced fingerprinting protections in Safari Private Mode, blocking screen-resolution, canvas, audio-context and font-list reads commonly used by browser pixels for probabilistic matching. Apple Intelligence summaries also began surfacing third-party content without driving the click that would normally fire a pixel. The cumulative attribution gap on browser-only pixel setups now ranges from 30% (best case, mostly Android traffic) to 45% (DTC stores with majority iOS audiences).
+iOS 18 introduced advanced fingerprinting protections in Safari Private Mode, blocking screen-resolution, canvas, audio-context and font-list reads commonly used by browser pixels for probabilistic matching. Apple Intelligence summaries also began surfacing third-party content without driving the click that would normally fire a pixel. Each of these widens the cumulative attribution gap on browser-only pixel setups, and it widens furthest on stores with majority-iOS audiences. The size of the gap is a store property; no range for it is published here.
 
 
 What the timeline means in practice
-If your Shopify store launched before 2021 and still relies on Shopify's default Meta pixel app or a basic GTM client-side container, your reported ROAS is mathematically understated by 25–40% versus reality. You are over-paying for attribution gaps. The 18-minute Make.com setup recovers the majority of this gap at $0/month.
+If your Shopify store launched before 2021 and still relies on Shopify's default Meta pixel app or a basic GTM client-side container, your reported ROAS is understated versus reality by however much of your purchase signal the browser is losing — a figure only your own store can give you. The 18-minute Make.com setup closes the browser-side part of that gap at $0/month.
 
 
 
@@ -283,14 +283,14 @@ The native Meta Pixel app, Google Tag in <code>theme.liquid</code>, and TikTok P
 **Named failure modes:**
 
 
-- *iOS attribution gap* — 30–45% of iOS purchases never report back to Meta.
+- *iOS attribution gap* — iOS purchases that never report back to Meta. Measure your own share; this guide publishes none.
 - *Ad-blocker silence* — uBlock Origin, Brave browser, and Pi-hole networks block pixel script downloads entirely. No event fires at all.
 - *Consent rejection* — in EEA/UK markets, 30–55% of users decline marketing cookies. With Consent Mode v2 active, pixel events are conversion-modelled rather than directly observed, halving precision.
 - *Page-load drop-off* — 8–12% of purchase events fire late or not at all because the customer closed the tab or hit a thank-you page redirect before the pixel completed its network request.
 - *Bot inflation* — pixel scripts execute for any browser-like client, including the 15–25% bot share on the average Shopify store. Audiences become polluted.
 
 
-**CASE STUDY:** [CAPI Shield: how server-side events recovered 20–40% of purchases invisible to pixel-only tracking — EMQ scores and deduplication data included.](https://stackarchitect.xyz/blog/recover-lost-shopify-conversions-capi-shield/)
+**CASE STUDY:** [CAPI Shield: how server-side events recover purchases that are invisible to pixel-only tracking, and how to verify the recovery in your own Events Manager.](https://stackarchitect.xyz/blog/recover-lost-shopify-conversions-capi-shield/)
 
 ### Option 2 — Server-side CAPI only (no browser pixel)
 
@@ -324,12 +324,12 @@ Both fire. Both share an <code>event_id</code>. Meta, Google and TikTok deduplic
 ### The matrix
 
 
-- **Browser only:** simplicity 10/10, signal quality 4/10, EMQ ceiling 5/10, monthly cost $0, data loss 30–45%.
-- **CAPI only:** simplicity 6/10, signal quality 5/10, EMQ ceiling 6/10, monthly cost $0, data loss 25–35% (mid-funnel events missing).
-- **Hybrid (recommended):** simplicity 7/10, signal quality 9/10, EMQ ceiling 9/10, monthly cost $0–$500 depending on stack, data loss 5–15%.
+- **Browser only:** simplest to run, weakest signal, fewest match keys per event, monthly cost $0. Everything ITP, ATT, ad blockers and consent rejection remove is lost outright.
+- **CAPI only:** more work to build, stronger signal on the events it sends, but mid-funnel events are missing and no `fbc`/`fbp` cookies are available to match on. Monthly cost $0.
+- **Hybrid (recommended):** the browser pixel supplies `fbc` and `fbp`, the server supplies hashed email, phone, IP and user agent, deduplicated on a shared `event_id`. The largest match-key set of the three; monthly cost $0–$500 depending on stack.
 
 
-The cheapest path to hybrid in 2026 is the Make.com webhook method documented in the setup section of this guide. Make.com's free tier covers up to 1,000 credits/month, which is sufficient for any Shopify store under approximately 250 orders per month. Above that volume, the Core plan at $12/month covers 10,000 credits — [free Make.com account here](https://stackarchitect.xyz/go/make).
+The cheapest path to hybrid in 2026 is the Make.com webhook method documented in the setup section of this guide. Make.com's free tier covers up to 1,000 credits/month, which is sufficient for any Shopify store under approximately 250 orders per month. Above that volume, the Core plan at $9/month covers 10,000 credits — [free Make.com account here](https://stackarchitect.xyz/go/make).
 
 
 
@@ -339,18 +339,18 @@ EMQ BENCHMARKS
 
 ## Event Match Quality Benchmarks: What "Good" Looks Like in 2026
 
-Event Match Quality is Meta's 1–10 score for how confidently it can match an inbound CAPI event to a real Facebook or Instagram user. It is the single most actionable diagnostic in server-side tracking because it directly correlates with cost-per-acquisition in Meta's machine-learning bidding. Stores at EMQ 8+ consistently report 12–28% lower cost-per-purchase than equivalent stores at EMQ 5–6. This section gives you the benchmark ranges, the specific match keys that move each score, and the failure modes that cap your EMQ regardless of effort.
+Event Match Quality is Meta's 1–10 score for how confidently it can match an inbound CAPI event to a real Facebook or Instagram user. It is the most actionable diagnostic in server-side tracking because it is reported per event source and moves when you change the payload. This section gives you the match keys the score is calculated from and the failure modes that cap it regardless of effort. It gives you no target number and no cost-per-purchase comparison: neither has been sampled here.
 
 ### The Meta EMQ scale, decoded
 
 Meta publishes EMQ in Events Manager under each event source. The score is calculated daily on a rolling 7-day basis from the match keys present in your CAPI payloads. The bands map to this:
 
 
-- **EMQ 9–10 (excellent):** Hashed email + phone + first name + last name + city + state + zip + IP + user agent + <code>fbc</code> + <code>fbp</code> + external_id. Achievable only with logged-in customers or post-purchase events from Shopify.
-- **EMQ 7–8 (very good):** Hashed email + phone + zip + IP + user agent + <code>fbc</code> + <code>fbp</code>. The realistic ceiling for guest-checkout Shopify stores using the Make.com webhook method.
-- **EMQ 5–6 (acceptable):** Hashed email + IP + user agent only. The default for stores running CAPI without browser-pixel cookie capture.
-- **EMQ 3–4 (poor):** IP + user agent only. This is what bot traffic and malformed payloads look like; Meta will downweight your data in lookalike construction.
-- **EMQ 0–2 (broken):** Missing or malformed payloads. Investigate immediately; events are likely not being attributed.
+- **Richest:** hashed email + phone + first name + last name + city + state + zip + IP + user agent + <code>fbc</code> + <code>fbp</code> + external_id. Available only with logged-in customers or post-purchase events from Shopify.
+- **The Make.com webhook method:** hashed email + phone + zip + IP + user agent + <code>fbc</code> + <code>fbp</code>. What that scores is not stated here — it has not been sampled.
+- **Under-fed CAPI:** hashed email + IP + user agent only. The default for stores running CAPI without browser-pixel cookie capture.
+- **Poor:** IP + user agent only. This is what bot traffic and malformed payloads look like; Meta will downweight your data in lookalike construction.
+- **Broken:** missing or malformed payloads. Investigate immediately; events are likely not being attributed.
 
 
 ### Match-key impact, ranked by lift
@@ -396,7 +396,7 @@ TikTok measures event quality differently. The diagnostic appears as "Event Matc
 - **Hashing the wrong format:** emails must be lowercased and trimmed before hashing. Phones must be E.164 digits-only. <code>"User@Example.com "</code> hashed raw will not match Meta's expected hash of <code>"user@example.com"</code>.
 - **Sending Shopify's server IP:** if you use Shopify's native Meta CAPI integration, it sends the customer's IP correctly. If you use Make.com, you must explicitly map <code>order.client_details.browser_ip</code>, not the IP of the Make.com runtime.
 - **Double-hashing:** Shopify's order payload contains plaintext email and phone. Hash these once, server-side, before posting to Meta. Re-hashing already-hashed values produces a useless string.
-- **Missing external_id:** the simplest +1.0 EMQ point most Shopify stores leave on the table. Pass <code>order.customer.id</code> as <code>external_id</code> after hashing.
+- **Missing external_id:** the simplest match key most Shopify stores leave on the table. Pass <code>order.customer.id</code> as <code>external_id</code> after hashing.
 - **Stale fbp/fbc:** <code>_fbp</code> cookies expire after 90 days. If your store has a long sales cycle and the cookie has expired by purchase time, fall back to the email + phone + external_id combination.
 
 
@@ -641,16 +641,16 @@ The single most important difference between TikTok and Meta/Google: TikTok requ
 
 
 
-Critical (+3 EMQ)Email (SHA-256)
+CriticalEmail (SHA-256)
 Strongest matching signal. Send as lowercase SHA-256 hash.
 
-Critical (+3 EMQ)Phone (SHA-256)
+CriticalPhone (SHA-256)
 E.164 format, then SHA-256. Essential for mobile-first TikTok audience.
 
-High (+2 EMQ)External ID
+HighExternal ID
 Your internal customer ID from Shopify. Hashed SHA-256.
 
-Medium (+1 EMQ)IP + User Agent
+MediumIP + User Agent
 Raw IP address and full user agent string. Send unhashed from Shopify order payload.
 
 
@@ -662,7 +662,7 @@ TikTok API endpoint
 
 
 
-Sending all four high-impact signals (email, phone, external_id, IP/UA) typically achieves an EMQ score of 8–9/10. A higher match score directly improves TikTok's ability to attribute conversions and optimise delivery — the same server-side principle Meta quantified in April 2026, when it reported advertisers using the Conversions API for web events saw an average 17.8% lower cost per result than those without it. Check your EMQ score in TikTok Events Manager &rarr; your pixel &rarr; Overview &rarr; Event Match Quality.
+Send all four high-impact signals (email, phone, external_id, IP/UA); that is the full set TikTok calculates the score from, and no figure is published here for what it scores. A higher match score directly improves TikTok's ability to attribute conversions and optimise delivery — the same server-side principle Meta quantified in April 2026, when it reported advertisers using the Conversions API for web events saw an average 17.8% lower cost per result than those without it. Check your EMQ score in TikTok Events Manager &rarr; your pixel &rarr; Overview &rarr; Event Match Quality.
 
 The pre-built TikTok version is [**TikTok Events API for Shopify**](https://stackarchitect.xyz/tiktok-events-api-shopify/) — the same CompletePayment setup, ready to import in minutes.
 
@@ -682,7 +682,7 @@ Server-side tracking is a solved problem. The question is whether you need to pa
 
 
 
-The tracking quality difference between Make.com and paid solutions like Elevar is minimal for stores sending the same data fields. Elevar's premium justifies itself primarily through managed GTM setup, data layer configuration, and attribution reporting dashboards — not through superior API access. Both hit the same Meta CAPI and TikTok Events API endpoints with the same payload structure. The key advantage of paid solutions is that they handle edge cases automatically (order edits, refunds, subscription renewals). If your store processes over 1,000 orders/month, Make.com's Core plan at $12/month is still dramatically cheaper than any managed alternative.
+The tracking quality difference between Make.com and paid solutions like Elevar is minimal for stores sending the same data fields. Elevar's premium justifies itself primarily through managed GTM setup, data layer configuration, and attribution reporting dashboards — not through superior API access. Both hit the same Meta CAPI and TikTok Events API endpoints with the same payload structure. The key advantage of paid solutions is that they handle edge cases automatically (order edits, refunds, subscription renewals). If your store processes over 1,000 orders/month, Make.com's Core plan at $9/month is still dramatically cheaper than any managed alternative.
 
 **Our recommendation:** Start with Make.com free. If you grow to 300+ daily orders or need refund/edit tracking and multi-currency handling, evaluate Elevar at that point. Until then, the Make.com method gives you 95% of the tracking quality at 0% of the cost.
 
@@ -757,7 +757,7 @@ FAQ
 <details class="sa-faq"><summary>Do I need to remove my browser pixel when setting up server-side tracking?</summary>No — keep your browser pixel running alongside server-side tracking. The pixel captures upper-funnel events (ViewContent, AddToCart, InitiateCheckout) that server webhooks don't cover since they only fire on confirmed payment. Set a matching event_id in both your pixel and server events so each platform deduplicates and you see one conversion, not two.
 
 </details>
-<details class="sa-faq"><summary>How much of my lost Shopify conversion data will server-side tracking recover?</summary>Most Shopify stores recover 20–40% of previously invisible conversions after deploying server-side tracking, consistent with measured iOS attribution loss of 28–45% on browser-only pixels. Meta reported in April 2026 that advertisers running the Conversions API for web events saw an average 17.8% lower cost per result versus those without it. The exact figure depends on your traffic mix — stores with high iOS and mobile traffic typically see higher recovery rates. The gap between your Shopify dashboard and ad platform reports should narrow significantly within 24–72 hours.
+<details class="sa-faq"><summary>How much of my lost Shopify conversion data will server-side tracking recover?</summary>No recovery percentage is published here, and no honest one exists as an industry figure: what server-side tracking recovers is whatever your browser pixel was losing, which is set by your own mobile/iOS traffic mix and consent rate. Measure it as Additional Conversions Reported in Meta Events Manager, and see why the 20–40% estimate was retracted: https://stackarchitect.xyz/how-we-test/#the-20-40-figure Meta reported in April 2026 that advertisers running the Conversions API for web events saw an average 17.8% lower cost per result versus those without it. The exact figure depends on your traffic mix — stores with high iOS and mobile traffic typically see higher recovery rates. The gap between your Shopify dashboard and ad platform reports should narrow significantly within 24–72 hours.
 
 </details>
 <details class="sa-faq"><summary>Is server-side tracking GDPR compliant?</summary>The data flows through your own Make.com workspace — you control what is sent and can delete the scenario at any time. All personally identifiable information (email, phone) is SHA-256 hashed before transmission as required by each platform's API specification. Ensure your store privacy policy discloses server-side conversion data sharing with advertising platforms. For GDPR-specific advice consult a legal professional.
@@ -784,16 +784,16 @@ FAQ
 <details class="sa-faq"><summary>Does server-side tracking work with Shopify's native Maximum data sharing?</summary>Yes — the Make.com webhook method works independently of and alongside Shopify's native data sharing. You do not need to disable native CAPI. Running both adds redundancy: if one delivery method has a transient failure, the other ensures the event still reaches the platform. Use matching event_id values in both so platforms deduplicate correctly.
 
 </details>
-<details class="sa-faq"><summary>How much does Shopify server-side tracking cost?</summary>The Make.com webhook method costs $0/month for Shopify stores under approximately 250 orders per month, since each order consumes 4 Make.com credits (one per platform: Meta, Google, TikTok) and the free tier covers 1,000 credits monthly. Above 250 orders/month, the Make.com Core plan at $12/month covers 10,000 credits — sufficient for stores up to roughly 3,300 orders/month. Managed alternatives like Elevar (from $225/month) and Triple Whale (GMV-based) achieve the same tracking quality at significantly higher cost. The premium pays for managed onboarding and dashboards, not for superior API access.
+<details class="sa-faq"><summary>How much does Shopify server-side tracking cost?</summary>The Make.com webhook method costs $0/month for Shopify stores under approximately 250 orders per month, since each order consumes 4 Make.com credits (one per platform: Meta, Google, TikTok) and the free tier covers 1,000 credits monthly. Above 250 orders/month, the Make.com Core plan at $9/month covers 10,000 credits — sufficient for stores up to roughly 3,300 orders/month. Managed alternatives like Elevar (from $225/month) and Triple Whale (GMV-based) achieve the same tracking quality at significantly higher cost. The premium pays for managed onboarding and dashboards, not for superior API access.
 
 </details>
-<details class="sa-faq"><summary>What Event Match Quality (EMQ) score is good for Meta CAPI on Shopify?</summary>Meta scores Event Match Quality from 1 to 10. For Shopify stores using the Make.com webhook method, EMQ 7–8 is the realistic ceiling and represents very good performance — achieved by sending hashed email, phone, zip, IP, user agent, <code>fbc</code> and <code>fbp</code>. Scores of 9–10 are excellent but typically require logged-in customer data with full address fields. Anything below 5 indicates missing match keys: investigate email format (lowercase + trim before SHA-256), phone format (E.164 digits-only before SHA-256), and the <code>external_id</code> field (Shopify <code>customer.id</code>, hashed). Stores at EMQ 8+ consistently report 12–28% lower cost-per-purchase than equivalent stores at EMQ 5–6.
+<details class="sa-faq"><summary>What Event Match Quality (EMQ) score is good for Meta CAPI on Shopify?</summary>Meta scores Event Match Quality from 1 to 10. The score rises with the number of match keys an event carries. The Make.com webhook method sends hashed email, phone, zip, IP, user agent, <code>fbc</code> and <code>fbp</code>; what that scores is not stated here, because it has not been sampled across stores. Scores of 9–10 are excellent but typically require logged-in customer data with full address fields. Anything below 5 indicates missing match keys: investigate email format (lowercase + trim before SHA-256), phone format (E.164 digits-only before SHA-256), and the <code>external_id</code> field (Shopify <code>customer.id</code>, hashed).
 
 </details>
-<details class="sa-faq"><summary>Why is my TikTok event match quality low even with server-side tracking?</summary>The single most common cause is sending the event name "Purchase" instead of <code>CompletePayment</code>. TikTok's Events API requires <code>CompletePayment</code> as the event name for purchase events — sending "Purchase" (which works for Meta) results in low Event Match Score and prevents purchase-campaign optimisation. Other common causes: missing hashed email, missing IP address (you must map <code>order.client_details.browser_ip</code> from the Shopify webhook payload, not the Make.com runtime IP), missing TikTok Click ID (<code>ttclid</code>) for paid traffic, and missing user agent. Sending all four high-impact signals (email, phone, IP/UA, external_id) typically lifts TikTok Event Match Score to 80–100.
+<details class="sa-faq"><summary>Why is my TikTok event match quality low even with server-side tracking?</summary>The single most common cause is sending the event name "Purchase" instead of <code>CompletePayment</code>. TikTok's Events API requires <code>CompletePayment</code> as the event name for purchase events — sending "Purchase" (which works for Meta) results in low Event Match Score and prevents purchase-campaign optimisation. Other common causes: missing hashed email, missing IP address (you must map <code>order.client_details.browser_ip</code> from the Shopify webhook payload, not the Make.com runtime IP), missing TikTok Click ID (<code>ttclid</code>) for paid traffic, and missing user agent. Send all four high-impact signals (email, phone, IP/UA, external_id) — that is the full set TikTok calculates the score from. No figure is published here for what it scores; read yours in TikTok Events Manager.
 
 </details>
-<details class="sa-faq"><summary>Is Shopify server-side tracking free?</summary>Yes — the tracking itself is free to implement. The [Make.com webhook method](#setup) in this guide costs **$0/month** for stores under ~250 orders/month, because each order uses 4 Make.com credits and the free tier covers 1,000. Above that, Make.com Core is $12/month for 10,000 credits. The platform APIs — Meta CAPI, Google Enhanced Conversions, TikTok Events API — are all free to use. You only pay if you choose a *managed* tool: Elevar runs from $200/month and Triple Whale from $149/month, but they charge for dashboards and managed onboarding, not for better tracking access. The same events reach the same endpoints either way. See the [free vs paid comparison](#comparison) for the full breakdown.
+<details class="sa-faq"><summary>Is Shopify server-side tracking free?</summary>Yes — the tracking itself is free to implement. The [Make.com webhook method](#setup) in this guide costs **$0/month** for stores under ~250 orders/month, because each order uses 4 Make.com credits and the free tier covers 1,000. Above that, Make.com Core is $9/month for 10,000 credits. The platform APIs — Meta CAPI, Google Enhanced Conversions, TikTok Events API — are all free to use. You only pay if you choose a *managed* tool: Elevar runs from $200/month and Triple Whale from $149/month, but they charge for dashboards and managed onboarding, not for better tracking access. The same events reach the same endpoints either way. See the [free vs paid comparison](#comparison) for the full breakdown.
 
 </details>
 <details class="sa-faq"><summary>Shopify server-side tracking vs Elevar — what's the difference?</summary>Both send the same server-side events to the same destinations (Meta CAPI, Google, TikTok) — the difference is who builds and maintains the pipeline. **Elevar** is a managed service from $200/month: it provisions a server-side GTM container, supplies a pre-built Shopify data layer, monitors delivery with alerts, and handles refunds and order edits automatically. The **free Make.com webhook method** delivers the same events and the same Event Match Quality ceiling, but you build the scenario yourself in ~18 minutes and maintain it. Choose Make.com for zero cost and full control; choose Elevar if managed monitoring, automatic edge-case handling, and a reporting dashboard justify the monthly fee at your ad spend. For most stores under 1,000 orders/month, the Make.com method delivers the tracking quality without the recurring cost.

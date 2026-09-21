@@ -181,6 +181,33 @@ function contentFiles() {
   };
 
   for (const r of roots) walk(path.join(ROOT, ...r));
+
+  // Root-level Markdown. These are the syndication and publishing drafts —
+  // dev_to_*.md go to dev.to under a canonical_url pointing back here,
+  // video-build-prompt.md is the script the hero video is cut from. They are
+  // not served by this site, so nothing else checks them, and they had drifted
+  // badly: as of 21 Sep 2026 dev_to_sst_guide.md still led with "Recover
+  // 20-40% of invisible Shopify conversions" (retracted 4 Sep), carried EMQ
+  // score claims retracted the same week, and video-build-prompt.md still said
+  // "$29 Complete Kit" three weeks after the kit went to $19.99. Publishing
+  // any of them would have re-seeded every figure this repo had just removed,
+  // on a domain with more authority than ours.
+  //
+  // Everything at root is scanned EXCEPT the records below. The default is
+  // deliberately "scan": a draft named something nobody predicted still gets
+  // checked, where an include-list keyed on `dev_to_*` or on `published:`
+  // front matter would quietly skip it.
+  //
+  // RECORDS are the files whose job is to state what a figure USED to be —
+  // they quote retired prices and withdrawn percentages on purpose, which is
+  // the same reason claims.json excludes itself.
+  const RECORDS = new Set(['CLAUDE.md', 'README.md', 'AUDIT.md', 'STACKARCHITECT_PRO_BUILD_BRIEF.md']);
+  for (const entry of fs.readdirSync(ROOT, { withFileTypes: true })) {
+    if (!entry.isFile() || !entry.name.endsWith('.md')) continue;
+    if (RECORDS.has(entry.name)) continue;
+    found.push(path.join(ROOT, entry.name));
+  }
+
   // claims.json states the canonical values; checking it against itself would
   // flag every retired figure it deliberately records.
   return found.filter((f) => f !== CANONICAL);
@@ -301,12 +328,25 @@ function checkCanonical() {
       }
 
       // (b) phrasings we have retired outright
+      //
+      // `unless` is an escape hatch scoped to the LINE the match sits on. It
+      // exists because the site has to be able to name a figure in order to
+      // retract it: /about/, /how-we-test/ and the benchmark page all state
+      // "20-40%" precisely to say it is withdrawn, and a guard that fires on
+      // the retraction notice is a guard that pushes you to delete the record.
+      // Encoding those exemptions as negative lookarounds inside the pattern
+      // was tried first and produced regexes nobody could read or predict.
+      // A named list of line-scoped exceptions is reviewable in the diff.
       for (const f of claim.forbid || []) {
         const re = new RegExp(f.pattern, 'gi');
+        const excepts = (f.unless || []).map((u) => new RegExp(u, 'i'));
         for (const m of src.matchAll(re)) {
+          const line = lineOf(src, m.index);
+          const text = src.split('\n')[line - 1] || '';
+          if (excepts.some((u) => u.test(text))) continue;
           problems.push({
             file: rel,
-            line: lineOf(src, m.index),
+            line,
             id,
             found: m[0].replace(/\s+/g, ' ').trim().slice(0, 60),
             expected: String(claim.value),
