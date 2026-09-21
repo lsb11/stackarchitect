@@ -16,6 +16,14 @@
  * The two are checked against each other by scripts/claims-guard.mjs. A slug
  * in one and not the other, or a destination that differs, fails the build.
  *
+ * vendor / vendorUrl — the partner's plain name and its own public site, with
+ * no affiliate credential in the URL. These are never used on the redirect
+ * path. They exist only for the crawler gate in _bots.js, which answers a
+ * gated request with an ordinary page naming the vendor and linking to
+ * vendorUrl, so a crawler is never sent into the affiliate domain. A vendorUrl
+ * that carried a referral param would defeat the whole point, so it must stay
+ * the bare public URL.
+ *
  * subidParam — the query parameter the partner network reads back as a
  * sub-identifier in its dashboard. THESE ARE NOT YET CONFIRMED against the
  * partner dashboards; every one is set to the generic `source` until somebody
@@ -24,14 +32,14 @@
  * so a wrong name here costs reporting, never revenue.
  */
 export const CLOAKS = {
-  beehiiv:         { destination: 'https://www.beehiiv.com/?via=gym-extras',                           subidParam: 'source' },
-  getresponse:     { destination: 'https://try.getresponsetoday.com/gejtf3pvvf1u',                     subidParam: 'source' },
-  make:            { destination: 'https://www.make.com/en/register?pc=techie123',                     subidParam: 'source' },
-  systeme:         { destination: 'https://systeme.io/?sa=sa02742252683e3d56c853555171a010913de57be6', subidParam: 'source' },
-  tidio:           { destination: 'https://affiliate.tidio.com/5kfhrx3ot6tf',                          subidParam: 'source' },
-  'tidio-ai':      { destination: 'https://affiliate.tidio.com/6zz36w6istip-yq3nec',                   subidParam: 'source' },
-  'tidio-pricing': { destination: 'https://affiliate.tidio.com/xwzr8x1q52z5-zlvl5g',                   subidParam: 'source' },
-  workspace:       { destination: 'https://referworkspace.app.goo.gl/sy2C',                            subidParam: 'source' },
+  beehiiv:         { destination: 'https://www.beehiiv.com/?via=gym-extras',                           subidParam: 'source', vendor: 'beehiiv', vendorUrl: 'https://www.beehiiv.com/' },
+  getresponse:     { destination: 'https://try.getresponsetoday.com/gejtf3pvvf1u',                     subidParam: 'source', vendor: 'GetResponse', vendorUrl: 'https://www.getresponse.com/' },
+  make:            { destination: 'https://www.make.com/en/register?pc=techie123',                     subidParam: 'source', vendor: 'Make.com', vendorUrl: 'https://www.make.com/' },
+  systeme:         { destination: 'https://systeme.io/?sa=sa02742252683e3d56c853555171a010913de57be6', subidParam: 'source', vendor: 'Systeme.io', vendorUrl: 'https://systeme.io/' },
+  tidio:           { destination: 'https://affiliate.tidio.com/5kfhrx3ot6tf',                          subidParam: 'source', vendor: 'Tidio', vendorUrl: 'https://www.tidio.com/' },
+  'tidio-ai':      { destination: 'https://affiliate.tidio.com/6zz36w6istip-yq3nec',                   subidParam: 'source', vendor: 'Tidio', vendorUrl: 'https://www.tidio.com/' },
+  'tidio-pricing': { destination: 'https://affiliate.tidio.com/xwzr8x1q52z5-zlvl5g',                   subidParam: 'source', vendor: 'Tidio', vendorUrl: 'https://www.tidio.com/' },
+  workspace:       { destination: 'https://referworkspace.app.goo.gl/sy2C',                            subidParam: 'source', vendor: 'Google Workspace', vendorUrl: 'https://workspace.google.com/' },
 };
 
 /**

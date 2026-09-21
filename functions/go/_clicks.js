@@ -78,9 +78,23 @@ export function dayFrom(now = new Date()) {
 }
 
 /** The UPSERT, as one statement. Exported so a test can assert its shape. */
-export const UPSERT_SQL =
-  'INSERT INTO clicks (day, slug, source, landing, n) VALUES (?, ?, ?, ?, 1) ' +
-  'ON CONFLICT(day, slug, source, landing) DO UPDATE SET n = n + 1';
+export const UPSERT_SQL = upsertInto('clicks');
+
+/**
+ * The same UPSERT against `bot_hits` (schema/004-bot-hits.sql): requests the
+ * crawler gate in _bots.js answered with a 200 instead of the affiliate 302.
+ * A separate table, not a column, so `clicks` stays the count of requests that
+ * actually reached a partner and needs no filter to read correctly.
+ */
+export const BOT_UPSERT_SQL = upsertInto('bot_hits');
+
+/** Both counters are the same statement over a different table. */
+function upsertInto(table) {
+  return (
+    `INSERT INTO ${table} (day, slug, source, landing, n) VALUES (?, ?, ?, ?, 1) ` +
+    'ON CONFLICT(day, slug, source, landing) DO UPDATE SET n = n + 1'
+  );
+}
 
 /**
  * Count one click. Never throws, never returns a rejected promise.
@@ -91,10 +105,26 @@ export const UPSERT_SQL =
  * @param {{slug: string, source: string, landing: string, day?: string}} click
  */
 export async function recordClick(db, { slug, source, landing, day }) {
+  return upsert(db, UPSERT_SQL, { slug, source, landing, day });
+}
+
+/**
+ * Count one gated crawler hit. Same contract as recordClick in every respect:
+ * never throws, never returns a rejected promise, and a missing binding costs
+ * a statistic rather than the response.
+ *
+ * @param {object} db   The D1 binding (context.env.DB), or anything falsy.
+ * @param {{slug: string, source: string, landing: string, day?: string}} hit
+ */
+export async function recordBotHit(db, { slug, source, landing, day }) {
+  return upsert(db, BOT_UPSERT_SQL, { slug, source, landing, day });
+}
+
+async function upsert(db, sql, { slug, source, landing, day }) {
   if (!db || typeof db.prepare !== 'function') return false;
   try {
     await db
-      .prepare(UPSERT_SQL)
+      .prepare(sql)
       .bind(day ?? dayFrom(), slug, source || NO_REFERER, landing)
       .run();
     return true;

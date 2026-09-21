@@ -567,6 +567,18 @@ rebuilt with these rules:
   `/go/*`. Checked live 15 Sep 2026: `/go/make` and `/go/make/` are each a
   single 302 to the vendor. If a cloak ever shows two hops, check that
   Redirect Rule before `_redirects`.
+- **The `/go/*` crawler gate only catches crawlers that identify themselves.**
+  `functions/go/_bots.js` gates a request when its User-Agent is missing, or
+  when it sends no Referer *and* its User-Agent matches a known crawler token.
+  A bot that spoofs an ordinary browser User-Agent passes straight through, is
+  redirected to the affiliate destination and is counted in `clicks` like a
+  reader. That is the deliberate trade-off: the gate is allowed to miss a bot
+  and is not allowed to eat a reader, because a stripped Referer is normal for
+  real people (Safari's cross-site policy, privacy extensions, in-app
+  browsers). How much it leaves on the table is measurable rather than
+  guessed — compare `bot_hits.n` with `clicks.n` over the same days (the query
+  is in `schema/004-bot-hits.sql`) over the next few weeks. Widen the token
+  list only with a real User-Agent string someone has actually seen.
 
 ### Highest-leverage open work
 

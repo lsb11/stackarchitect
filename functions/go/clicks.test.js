@@ -11,12 +11,22 @@ import {
   landingFrom,
   dayFrom,
   recordClick,
+  recordBotHit,
   UPSERT_SQL,
+  BOT_UPSERT_SQL,
   NO_REFERER,
   EXTERNAL,
 } from './_clicks.js';
 
 const ORIGIN = 'https://stackarchitect.xyz';
+
+// Every call below must carry a browser User-Agent. /go/* answers a request
+// with no User-Agent as a crawler (see _bots.js): it returns a 200 and writes
+// to bot_hits, not clicks. Without this the assertions here would be measuring
+// the gated branch rather than the counted one.
+const BROWSER_UA =
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 ' +
+  '(KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36';
 
 /** A D1 double that records what it was asked to write. */
 function fakeDb({ throws = false } = {}) {
@@ -39,8 +49,8 @@ function fakeDb({ throws = false } = {}) {
   };
 }
 
-const call = (path, slug, { db, referer, waitUntil } = {}) => {
-  const headers = referer ? { Referer: referer } : {};
+const call = (path, slug, { db, referer, waitUntil, userAgent = BROWSER_UA } = {}) => {
+  const headers = { ...(userAgent ? { 'User-Agent': userAgent } : {}), ...(referer ? { Referer: referer } : {}) };
   return onRequest({
     params: { slug },
     request: new Request(`${ORIGIN}${path}`, { headers }),
@@ -182,5 +192,53 @@ describe('/go/* still earns while counting', () => {
     assert.equal(await call('/go/not-a-partner', ['not-a-partner'], { db, waitUntil: (p) => p }), 'NEXT');
     await new Promise((r) => setImmediate(r));
     assert.equal(db.writes.length, 0);
+  });
+});
+
+// The gated branch. Same contract as the counted one, against the other table.
+describe('gated crawler hits are counted separately', () => {
+  const GOOGLEBOT =
+    'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
+
+  it('writes to bot_hits, not clicks, and returns a 200', async () => {
+    const db = fakeDb();
+    const res = await call('/go/make/?source=home-grid-make', ['make'], {
+      db,
+      userAgent: GOOGLEBOT,
+      waitUntil: (p) => p,
+    });
+    assert.equal(res.status, 200);
+    await new Promise((r) => setImmediate(r));
+    assert.equal(db.writes.length, 1);
+    assert.equal(db.writes[0].sql, BOT_UPSERT_SQL);
+    assert.notEqual(BOT_UPSERT_SQL, UPSERT_SQL, 'the two counters must hit different tables');
+    assert.match(BOT_UPSERT_SQL, /INSERT INTO bot_hits/);
+    assert.deepEqual(db.writes[0].args.slice(1), ['make', 'home-grid-make', NO_REFERER]);
+  });
+
+  it('keeps clicks clean — a gated hit never lands in the revenue metric', async () => {
+    const db = fakeDb();
+    await call('/go/systeme/', ['systeme'], { db, userAgent: GOOGLEBOT, waitUntil: (p) => p });
+    await new Promise((r) => setImmediate(r));
+    assert.ok(
+      db.writes.every((w) => !/INSERT INTO clicks/.test(w.sql)),
+      'nothing may be written to clicks on the gated branch'
+    );
+  });
+
+  it('serves the gated page even when the binding is missing or throws', async () => {
+    for (const db of [undefined, fakeDb({ throws: true })]) {
+      const res = await call('/go/make/', ['make'], { db, userAgent: GOOGLEBOT, waitUntil: (p) => p });
+      assert.equal(res.status, 200);
+    }
+  });
+
+  it('recordBotHit has the same never-throw contract as recordClick', async () => {
+    assert.equal(await recordBotHit(undefined, { slug: 'make', source: 'x', landing: '/' }), false);
+    assert.equal(await recordBotHit({}, { slug: 'make', source: 'x', landing: '/' }), false);
+    assert.equal(
+      await recordBotHit(fakeDb({ throws: true }), { slug: 'make', source: 'x', landing: '/' }),
+      false
+    );
   });
 });
