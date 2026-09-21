@@ -114,7 +114,7 @@ After 7 days, check your Event Match Quality score in Meta Events Manager — ta
 **After CAPI Shield (wait 14 days for data to stabilise):** run the same 30-day comparison and read Meta's own metric for this. Meta reports **Additional Conversions Reported (ACR)** — how many conversions the Conversions API added on top of the Pixel — in Events Manager, and exposes it programmatically through the [Dataset Quality API](https://developers.facebook.com/docs/marketing-api/conversions-api/dataset-quality-api/). That number is measured on your data by Meta, not estimated by us.
 
 **Also check:**
-- Event Match Quality score: should move from below 5 to 6–8+
+- Event Match Quality score: should rise as the server-side events add match keys the pixel was not carrying. We publish no target figure — read yours in Events Manager
 - CAPI events visible in Meta Events Manager: should show alongside Pixel events with 80–95% deduplication overlap
 - Campaign ROAS: watch it over 2–4 weeks as the algorithm adjusts to more complete data. We publish no expected percentage — this depends on your spend, creative and audience, and we have not measured it across a sample
 

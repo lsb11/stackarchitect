@@ -140,7 +140,7 @@ Meta Conversions API (CAPI) sends conversion events directly from your server to
 
 After 7 days, check:
 
-- **Event Match Quality:** Target 6 or higher. Score of 8+ is excellent.
+- **Event Match Quality:** Read the score Meta shows for the Purchase event and track it over time. We publish no target figure for this setup.
 - **Deduplication overlap:** Healthy setup shows 80–95%.
 
 If EMQ is below 6, review the customer data signals (email, phone number, external ID) being passed with CAPI events. Missing signals are the most common cause of low EMQ.
@@ -160,7 +160,7 @@ This uses ground-truth revenue data from Shopify — which counts every order re
 | Metric | Before | After |
 |---|---|---|
 | Shopify vs Meta gap | Wide | Narrowed to expected residual |
-| Event Match Quality | Below 5 | 6–8+ |
+| Event Match Quality | Below 5 | Rises with the match keys you send — read your own score |
 | Deduplication overlap | Low or none | 80–95% |
 | Pixel mode | Optimized (throttled) | Always on |
 | CAPI events | Not visible | Visible alongside pixel |

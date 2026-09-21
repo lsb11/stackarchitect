@@ -56,7 +56,7 @@ If you are running Meta Ads without server-side tracking, your Advantage+ Shoppi
 
 [CAPI Shield](/capi-shield/) sends purchase events directly from Shopify's server to Meta Conversions API via Make.com webhook. It takes 6 minutes to deploy and costs $0/month. Every day you delay is a day of corrupted bidding signals.
 
-**What to do:** Deploy CAPI Shield. Verify in Meta Events Manager → Test Events that server Purchase events appear alongside browser events. Check your Event Match Quality score reaches 7.0+ before September.
+**What to do:** Deploy CAPI Shield. Verify in Meta Events Manager → Test Events that server Purchase events appear alongside browser events. Check your Event Match Quality score in Events Manager before September and note where it sits — we publish no target figure for this setup.
 
 ### ✅ 2. Deploy server-side Google Enhanced Conversions
 

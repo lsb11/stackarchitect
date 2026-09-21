@@ -167,7 +167,7 @@ Go to: **Meta Events Manager → Aggregated Event Measurement → Configure Web 
 | Metric | Before | After |
 |---|---|---|
 | Shopify vs Meta gap | Wide, and iOS-driven | Narrowed to residual |
-| Event Match Quality | Below 5 | 6–8+ |
+| Event Match Quality | Below 5 | Rises with the match keys you send — read your own score |
 | CAPI events visible | No | Yes — alongside pixel |
 
 A residual gap is expected and normal even with full server-side implementation. This represents orders from users who cannot be attributed due to complete ATT denial combined with no click ID — Meta genuinely cannot match these. The important thing is that server-side delivery is not subject to the browser-side loss in the first place — measure what it adds as Additional Conversions Reported in Meta Events Manager.

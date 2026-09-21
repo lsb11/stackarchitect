@@ -317,7 +317,7 @@ const tocHeadings = [
       <p><strong>Attribution windows:</strong> Meta's default attribution window is 7-day click, 1-day view. With low EMQ, conversions that happen 2–3 days after a Meta ad click may never be matched, artificially compressing your measured attribution window.</p>
 
       <h2 id="how-to-fix-low-meta-emq-on-shopify-free-method">How to Fix Low Meta EMQ on Shopify — Free Method</h2>
-      <p>The fastest way to improve EMQ on Shopify is to implement server-side tracking via the <a href="/capi-shield/">Meta Conversions API using Make.com</a>. When a Shopify order is placed, a Make.com webhook fires immediately and sends a Purchase event directly to Meta's server — with hashed email, phone, external_id, and IP address all included in the payload. This bypasses every browser-level restriction and typically moves EMQ scores from 4–5 range to 6–8+ range.</p>
+      <p>The fastest way to improve EMQ on Shopify is to implement server-side tracking via the <a href="/capi-shield/">Meta Conversions API using Make.com</a>. When a Shopify order is placed, a Make.com webhook fires immediately and sends a Purchase event directly to Meta's server — with hashed email, phone, external_id, and IP address all included in the payload. This bypasses every browser-level restriction and sends Meta more match keys than the browser pixel carries, which is what the score is calculated from. We have not sampled EMQ before and after across stores, so we publish no typical movement — read your own score in Events Manager.</p>
       <p>The full setup takes approximately 6 minutes on Make.com's free tier (1,000 credits/month). No code, no developer, no ongoing subscription. The guide at <a href="/capi-shield/">stackarchitect.xyz/capi-shield</a> covers every step.</p>
       <p>Low EMQ is one visible symptom of a wider measurement gap. For the sourced evidence on how iOS removes purchase signal — and why the size of the loss is a property of your store rather than an industry constant — see the <a href="/shopify-ios-attribution-gap-benchmark/">iOS attribution gap benchmark</a>.</p>
 
@@ -331,7 +331,7 @@ const tocHeadings = [
           </thead>
           <tbody>
             <tr><td><strong style="color:#f87171;">Poor</strong></td><td class="num">1–4</td><td>Pixel-only or a barely-configured CAPI. You are missing the majority of matchable events. Implementing the Conversions API with hashed email is the single highest-impact move available.</td></tr>
-            <tr><td><strong style="color:#f5b64d;">OK</strong></td><td class="num">5–6</td><td>CAPI is live but under-fed. You are sending too few customer parameters per event. Audit each event and add the missing fields — phone, external_id, fbc, fbp. Meta’s own internal benchmark sits around 6.</td></tr>
+            <tr><td><strong style="color:#f5b64d;">OK</strong></td><td class="num">5–6</td><td>CAPI is live but under-fed. You are sending too few customer parameters per event. Audit each event and add the missing fields — phone, external_id, fbc, fbp.</td></tr>
             <tr><td><strong style="color:#a3e635;">Good</strong></td><td class="num">7–8</td><td>Solid setup. Focus on edge cases: is fbc captured on every ad-click landing, is fbp passed on every event, is hashing consistent? This is where most well-run Shopify stores land.</td></tr>
             <tr><td><strong style="color:#34d377;">Great</strong></td><td class="num">9–10</td><td>Top tier. Maintain it — watch for regressions from theme updates, app changes, or checkout customisations that silently break the CAPI payload.</td></tr>
           </tbody>
@@ -359,22 +359,21 @@ const tocHeadings = [
       </div>
 
       <h2 id="event-specific-benchmarks-why-one-number-is-misleading">Event-specific benchmarks — why one number is misleading</h2>
-      <p>A single store-wide EMQ figure hides the real picture, because different event types <em>structurally</em> score differently. Purchase events fire at checkout where email, phone and address all exist, so they score high. PageView and Add to Cart events fire before the visitor has typed anything — and fbc only exists if they arrived from a Meta ad — so they score lower by design. Judge each event against its own benchmark, not against Purchase.</p>
+      <p>A single store-wide EMQ figure hides the real picture, because different event types <em>structurally</em> score differently. Purchase events fire at checkout where email, phone and address all exist, so they score high. PageView and Add to Cart events fire before the visitor has typed anything — and fbc only exists if they arrived from a Meta ad — so they score lower by design. Judge each event against the keys it can actually carry, not against Purchase.</p>
 
       <div class="emq-table-wrap">
         <table class="emq-table">
           <thead>
-            <tr><th>Event type</th><th class="num">Target EMQ</th><th>Why</th></tr>
+            <tr><th>Event type</th><th class="num">Where it sits</th><th>Why</th></tr>
           </thead>
           <tbody>
-            <tr><td>Purchase</td><td class="num">8.8–9.3</td><td>Checkout supplies email, phone, name and address — the richest payload you can send.</td></tr>
-            <tr><td>Add to Cart</td><td class="num">8.0+</td><td>Achievable with fbp, fbc, external_id and any logged-in customer data.</td></tr>
-            <tr><td>PageView</td><td class="num">6.5–7.5</td><td>Structurally lower — usually only fbp, fbc, IP and user agent are available.</td></tr>
-            <tr><td>Meta internal benchmark</td><td class="num">~6.0</td><td>The reference line Meta uses; below this, attribution is materially unreliable.</td></tr>
+            <tr><td>Purchase</td><td class="num">Highest</td><td>Checkout supplies email, phone, name and address — the richest payload you can send.</td></tr>
+            <tr><td>Add to Cart</td><td class="num">Middle</td><td>Usually fbp, fbc, external_id and any logged-in customer data, without checkout fields.</td></tr>
+            <tr><td>PageView</td><td class="num">Lowest</td><td>Structurally lower — usually only fbp, fbc, IP and user agent are available.</td></tr>
           </tbody>
         </table>
       </div>
-      <p style="font-size:12px;color:#93a09a;">Figures reflect Meta’s published Conversions API guidance and 2026 EMQ documentation. EMQ updates on a rolling 48-hour window, so allow two days after any change before re-reading your score in Events Manager (Data Sources → your dataset → Events).</p>
+      <p style="font-size:12px;color:#93a09a;">The ordering above follows from which match keys each event can carry; we have not sampled EMQ by event type across stores, so this page publishes no target figure for any of them — read each event’s own score in Events Manager. EMQ updates on a rolling 48-hour window, so allow two days after any change before re-reading your score in Events Manager (Data Sources → your dataset → Events).</p>
 
     </div>
   </section>
@@ -431,13 +430,11 @@ const tocHeadings = [
   "description": "Reference for interpreting Meta EMQ scores: the 0-10 band meanings, the customer-information parameters that drive the score, and event-specific target benchmarks for Shopify stores.",
   "itemListElement": [
     { "@type": "ListItem", "position": 1, "name": "Poor EMQ (1-4): pixel-only or under-configured CAPI; implement the Conversions API with hashed email as the highest-impact fix." },
-    { "@type": "ListItem", "position": 2, "name": "OK EMQ (5-6): CAPI live but sending too few parameters; add phone, external_id, fbc and fbp. Meta internal benchmark is around 6." },
+    { "@type": "ListItem", "position": 2, "name": "OK EMQ (5-6): CAPI live but sending too few parameters; add phone, external_id, fbc and fbp." },
     { "@type": "ListItem", "position": 3, "name": "Good EMQ (7-8): solid setup; ensure fbc and fbp are captured consistently and hashing is correct." },
     { "@type": "ListItem", "position": 4, "name": "Great EMQ (9-10): top tier; maintain and watch for regressions from theme or checkout changes." },
-    { "@type": "ListItem", "position": 5, "name": "Purchase event EMQ benchmark: target 8.8 to 9.3." },
-    { "@type": "ListItem", "position": 6, "name": "Add to Cart event EMQ benchmark: target 8.0 or above." },
-    { "@type": "ListItem", "position": 7, "name": "PageView event EMQ benchmark: 6.5 to 7.5 is normal." },
-    { "@type": "ListItem", "position": 8, "name": "Email is hashed (SHA-256) and adds up to 4 points; phone hashed adds about 3 points; fbc and fbp must NOT be hashed." }
+    { "@type": "ListItem", "position": 5, "name": "Per-event benchmarks: we have not sampled EMQ by event type across stores and publish no target figure. Read each event's score in Meta Events Manager." },
+    { "@type": "ListItem", "position": 6, "name": "Email and phone are the highest-impact match keys; external_id, fbc and fbp add further lift. fbc and fbp must NOT be hashed." }
   ]
 }
 </script>

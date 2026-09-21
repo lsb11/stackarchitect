@@ -137,6 +137,69 @@
       "verifiedDate": "2026-08-29",
       "retired": [],
       "contexts": []
+    },
+    "metaEmqScore": {
+      "value": "unmeasured — no EMQ figure is published",
+      "unit": "Meta/TikTok Event Match Quality, 0–10",
+      "source": "https://www.facebook.com/business/help/734453412795747",
+      "verifiedDate": "2026-09-21",
+      "retired": [],
+      "contexts": [],
+      "_scope": [
+        "EMQ is not a price, so neither guard looked at it. public/llms.txt carried",
+        "\"typical EMQ 7–8.5\" until 21 Sep 2026 — three weeks after /capi-shield/ had",
+        "already retracted it in prose — and llms.txt is the file AI assistants quote",
+        "verbatim. The same figure survived in llms-full.txt, ai-plugin.json, a diagram",
+        "<desc>, the TikTok page's stat strip (\"6–8 EMQ score typical\", contradicting",
+        "that page's own FAQ) and a fabricated per-event benchmark table on the EMQ",
+        "estimator (\"Purchase 8.8–9.3\").",
+        "",
+        "`retired` and `contexts` stay empty on purpose: there is no correct number to",
+        "drift from. The whole claim is retired, so the work is done by `forbid`.",
+        "",
+        "What is still allowed, and deliberately not matched below: describing the 0–10",
+        "scale, naming the match keys the score is calculated from, and telling a reader",
+        "to read their own score. What is forbidden is any number presented as a score",
+        "scale, naming the match keys the score is calculated from, and telling a reader",
+        "to read their own score. What is forbidden is any number presented as a score",
+        "this site's setups produce, as a benchmark to hit, or as a per-key point lift.",
+        "",
+        "Ranges are matched through HTML entities as well as literal dashes. The first",
+        "cut of these patterns only knew [-–—], so it passed the whole EMQ section of",
+        "/blog/shopify-server-side-tracking-complete-setup-guide/, where every range is",
+        "written 4&ndash;5. An .astro file is the place a claim is most likely to be",
+        "entity-encoded, so a pattern that cannot read an entity is not a guard."
+      ],
+      "forbid": [
+        {
+          "pattern": "(?:typical(?:ly)?|achiev\\w*|reach(?:es|ed|ing)?|deliver\\w*|consistent\\w*|moves?\\s+(?:it\\s+)?(?:from|to)|jump\\w*|lift(?:s|ed|ing)?\\s+(?:it\\s+)?to|we\\s+see|stores\\s+see|benchmark\\w*|target\\w*|expect\\w*|guarantee\\w*|stuck|sits?\\s+at|sitting\\s+at|stays?\\s+at|hover\\w*|ceiling)[^.\\n<]{0,45}?(?:EMQ|Event Match (?:Quality|Score))[^.\\n<]{0,35}?\\b(?:\\d{1,2}(?:\\.\\d)?(?:/10)?\\s*(?:[-–—]|&(?:ndash|mdash|#8211|#8212);|\\s+to\\s+)\\s*\\d{1,2}(?:\\.\\d)?(?:/10)?|\\d{1,2}(?:\\.\\d)?\\s*(?:\\+|/10))",
+          "why": "an EMQ score range or achieved figure — we have never sampled Event Match Quality across stores. Say which match keys are sent and point the reader at their own Events Manager reading. See CLAUDE.md, \"capability claims\"."
+        },
+        {
+          "pattern": "(?:EMQ|Event Match (?:Quality|Score))[^.\\n<]{0,45}?(?:typical(?:ly)?|achiev\\w*|reach(?:es|ed|ing)?|deliver\\w*|consistent\\w*|moves?\\s+(?:it\\s+)?(?:from|to)|jump\\w*|lift(?:s|ed|ing)?\\s+(?:it\\s+)?to|we\\s+see|stores\\s+see|benchmark\\w*|target\\w*|expect\\w*|guarantee\\w*|stuck|sits?\\s+at|sitting\\s+at|stays?\\s+at|hover\\w*|ceiling)[^.\\n<]{0,35}?\\b(?:\\d{1,2}(?:\\.\\d)?(?:/10)?\\s*(?:[-–—]|&(?:ndash|mdash|#8211|#8212);|\\s+to\\s+)\\s*\\d{1,2}(?:\\.\\d)?(?:/10)?|\\d{1,2}(?:\\.\\d)?\\s*(?:\\+|/10))",
+          "why": "an EMQ score range or achieved figure — we have never sampled Event Match Quality across stores. Say which match keys are sent and point the reader at their own Events Manager reading. See CLAUDE.md, \"capability claims\"."
+        },
+        {
+          "pattern": "(?:EMQ|Event Match (?:Quality|Score))[^.\\n<]{0,35}?\\b(?:\\d{1,2}(?:\\.\\d)?(?:/10)?\\s*(?:[-–—]|&(?:ndash|mdash|#8211|#8212);|\\s+to\\s+)\\s*\\d{1,2}(?:\\.\\d)?(?:/10)?|\\d{1,2}(?:\\.\\d)?\\s*(?:\\+|/10))[^.\\n<]{0,25}?(?:typical(?:ly)?|achiev\\w*|reach(?:es|ed|ing)?|deliver\\w*|consistent\\w*|moves?\\s+(?:it\\s+)?(?:from|to)|jump\\w*|lift(?:s|ed|ing)?\\s+(?:it\\s+)?to|we\\s+see|stores\\s+see|benchmark\\w*|target\\w*|expect\\w*|guarantee\\w*|stuck|sits?\\s+at|sitting\\s+at|stays?\\s+at|hover\\w*|ceiling)",
+          "why": "an EMQ score range or achieved figure — we have never sampled Event Match Quality across stores. Say which match keys are sent and point the reader at their own Events Manager reading. See CLAUDE.md, \"capability claims\"."
+        },
+        {
+          "pattern": "\\b(?:\\d{1,2}(?:\\.\\d)?(?:/10)?\\s*(?:[-–—]|&(?:ndash|mdash|#8211|#8212);|\\s+to\\s+)\\s*\\d{1,2}(?:\\.\\d)?(?:/10)?|\\d{1,2}(?:\\.\\d)?\\s*(?:\\+|/10))[^.\\n<]{0,40}?(?:EMQ|Event Match (?:Quality|Score))[^.\\n<]{0,30}?(?:typical(?:ly)?|achiev\\w*|reach(?:es|ed|ing)?|deliver\\w*|consistent\\w*|moves?\\s+(?:it\\s+)?(?:from|to)|jump\\w*|lift(?:s|ed|ing)?\\s+(?:it\\s+)?to|we\\s+see|stores\\s+see|benchmark\\w*|target\\w*|expect\\w*|guarantee\\w*|stuck|sits?\\s+at|sitting\\s+at|stays?\\s+at|hover\\w*|ceiling)",
+          "why": "an EMQ score range or achieved figure — we have never sampled Event Match Quality across stores. Say which match keys are sent and point the reader at their own Events Manager reading. See CLAUDE.md, \"capability claims\"."
+        },
+        {
+          "pattern": "(?:EMQ|Event Match (?:Quality|Score))\\s*(?:scores?\\s*)?\\b(?:\\d{1,2}(?:\\.\\d)?(?:/10)?\\s*(?:[-–—]|&(?:ndash|mdash|#8211|#8212);|\\s+to\\s+)\\s*\\d{1,2}(?:\\.\\d)?(?:/10)?|\\d{1,2}(?:\\.\\d)?\\s*(?:\\+|/10))",
+          "why": "an EMQ score range or achieved figure — we have never sampled Event Match Quality across stores. Say which match keys are sent and point the reader at their own Events Manager reading. See CLAUDE.md, \"capability claims\". (a bare EMQ figure or range reads as a promise even with no verb)"
+        },
+        {
+          "pattern": "\\|\\s*Event Match Quality\\s*\\|[^|\\n]*\\|[^|\\n]*\\b(?:\\d{1,2}(?:\\.\\d)?(?:/10)?\\s*(?:[-–—]|&(?:ndash|mdash|#8211|#8212);|\\s+to\\s+)\\s*\\d{1,2}(?:\\.\\d)?(?:/10)?|\\d{1,2}(?:\\.\\d)?\\s*(?:\\+|/10))",
+          "why": "an EMQ score range or achieved figure — we have never sampled Event Match Quality across stores. Say which match keys are sent and point the reader at their own Events Manager reading. See CLAUDE.md, \"capability claims\". (an \"after\" column in a before/after table is an outcome claim)"
+        },
+        {
+          "pattern": "[+＋]\\s*\\d{1,2}(?:\\.\\d)?\\s*(?:EMQ|Event Match (?:Quality|Score))|(?:EMQ|Event Match (?:Quality|Score))\\s*(?:point|score)s?\\s*[+＋]?\\s*\\d",
+          "why": "a quantified per-match-key EMQ lift (\"+3 EMQ\", \"+1.0 EMQ point\"). Meta publishes no such weighting and we have not measured one — rank the keys without numbers."
+        }
+      ]
     }
   },
   "press": {

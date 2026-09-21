@@ -65,13 +65,15 @@ const heroStats = [
   { value: "Degraded ROAS", label: "Smart bidding blind" },
   { value: "$0", label: "CAPI Shield costs" },
 ];
-// Two tiles here used to assert measurements this site has not made: a "35%
-// Avg conversions lost" (the 20-40% synthesis restated as a measured average)
-// and a "7-8.5 EMQ score achieved". The FAQ below says plainly that we have not
-// sampled EMQ across stores and do not publish a typical score, so the tiles
-// contradicted the page. Replaced with the match-key count, which is a property
-// of what CAPI Shield sends and is verifiable by reading the scenario. Restore
-// an EMQ figure here only when a measured one exists.
+// Two tiles here used to assert measurements this site has not made: an average
+// share of conversions lost (the retracted loss synthesis restated as a measured
+// average) and an achieved Event Match Quality range. The FAQ below says plainly
+// that we have not sampled EMQ across stores and do not publish a typical score,
+// so the tiles contradicted the page. Replaced with the match-key count, which is
+// a property of what CAPI Shield sends and is verifiable by reading the scenario.
+// Restore an EMQ figure here only when a measured one exists — claims.json
+// metaEmqScore now fails the build on one, including in a comment like this, so
+// the old figures are described above rather than quoted.
 const stripStats = [
   { value: "74–78%", label: "Shopify traffic that is mobile" },
   { value: "6 min",  label: "Full deployment" },
@@ -459,7 +461,7 @@ const tocHeadings = [
 
       <p>Shopify does offer a native Conversions API connection under Settings → Apps → Facebook and Instagram. Most guides tell you to set it to "Maximum" data sharing and consider the problem solved. The limitation almost no guide explains: <strong>Shopify's native CAPI is still browser-triggered</strong>.</p>
 
-      <p>When a customer completes checkout, the thank-you page must load and Shopify's Web Pixel extension must execute successfully before the server-side event fires. If the browser blocks the Web Pixel — via ad blocker, privacy extension, or slow connection — the server event is often never triggered, even though the order completed in your Shopify backend. This is why stores running Shopify's native CAPI often see Event Match Quality scores stuck at 4.0–6.0 even with Maximum data sharing enabled.</p>
+      <p>When a customer completes checkout, the thank-you page must load and Shopify's Web Pixel extension must execute successfully before the server-side event fires. If the browser blocks the Web Pixel — via ad blocker, privacy extension, or slow connection — the server event is often never triggered, even though the order completed in your Shopify backend. This is why a store running Shopify's native CAPI can see its Event Match Quality sit lower than the match keys it holds would suggest, even with Maximum data sharing enabled. We have not sampled scores across stores, so this page puts no number on either side.</p>
 
       <p>CAPI Shield fixes this at the root. Rather than relying on the browser to trigger the server event, CAPI Shield uses a Shopify webhook — a server-to-server signal that fires the moment an order is paid, entirely independent of what the customer's browser does. The same webhook simultaneously feeds <a href="/tiktok-events-api-shopify/">TikTok's Events API</a> if you advertise there, and your <a href="/shopify-profit-loss-automation/">live P&L dashboard</a> — one trigger, three platforms.</p>
     </div>

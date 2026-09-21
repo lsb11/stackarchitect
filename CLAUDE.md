@@ -146,6 +146,34 @@ Until a check exists, a claim about what a blueprint does gets verified
 against the blueprint JSON before it ships. The paid files are not in this
 repo; the free versions are in `~/Downloads/*-blueprint-FREE.json`.
 
+**One capability claim is now guarded: EMQ.** `claims.json` gained
+`thirdParty.metaEmqScore` on 21 Sep 2026 — `retired` and `contexts` empty,
+the work done entirely by `forbid`. It fails the build on any Event Match
+Quality *number* presented as a score this site's setups produce, as a
+benchmark to hit, or as a per-key point lift ("+3 EMQ"). Describing the 0–10
+scale, naming the match keys the score is calculated from, and telling a
+reader to read their own score all still pass.
+
+Why it was needed: `/capi-shield/` retracted its EMQ figures in prose weeks
+earlier, and the number carried on living in `public/llms.txt` ("typical EMQ
+7–8.5"), `llms-full.txt`, `.well-known/ai-plugin.json`, a diagram `<desc>`,
+the TikTok page's stat strip — which contradicted that same page's own FAQ —
+and a fabricated per-event benchmark table on the EMQ estimator ("Purchase
+8.8–9.3"). A prose retraction on one page is not a retraction.
+
+Two lessons for the next `forbid` pattern:
+- **Match HTML entities, not just dashes.** The first cut knew only `[-–—]`
+  and so passed the entire EMQ section of
+  `/blog/shopify-server-side-tracking-complete-setup-guide/`, where every
+  range is written `4&ndash;5`. An `.astro` file is where a claim is most
+  likely to be entity-encoded.
+- **A code comment is content to the guard.** The comment in
+  `capi-shield.astro` recording which tiles were removed quoted the retracted
+  figure, and failed the build. It now describes them instead. That is the
+  right outcome for a file that ships: the record of what a figure was
+  belongs in `claims.json` and in this file, both of which the guard's
+  walker deliberately does not read, and not in page source.
+
 ### Shipped blueprints that pin a third-party API version need a recurring check
 
 **What happened.** CAPI Shield's Meta request, in both `FILE_00` and
