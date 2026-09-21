@@ -155,7 +155,10 @@ describe('/go/* still earns while counting', () => {
       waitUntil: (p) => p,
     });
     assert.equal(res.status, 302);
-    assert.equal(new URL(res.headers.get('location')).searchParams.get('source'), 'stack-row');
+    assert.equal(
+      new URL(res.headers.get('location')).searchParams.get(CLOAKS.make.subidParam),
+      'stack-row'
+    );
     await new Promise((r) => setImmediate(r));
     assert.deepEqual(db.writes[0].args.slice(1), ['make', 'stack-row', '/stack/']);
   });

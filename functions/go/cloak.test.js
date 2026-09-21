@@ -45,7 +45,10 @@ describe('/go/* cloak resolver', () => {
     const res = await call('/go/make/?source=stocky-shutdown-step2', ['make']);
     const url = new URL(res.headers.get('location'));
     assert.equal(url.searchParams.get('pc'), 'techie123', 'referral credential must survive');
-    assert.equal(url.searchParams.get('source'), 'stocky-shutdown-step2');
+    // Our own placement tag always arrives as ?source=; the name it leaves
+    // under is the partner's, from subidParam. Make reads `affiliatesource`.
+    assert.equal(url.searchParams.get('affiliatesource'), 'stocky-shutdown-step2');
+    assert.equal(url.searchParams.get('source'), null, 'must not also send the generic name');
   });
 
   it('preserves a destination whose referral param is the only query', async () => {
