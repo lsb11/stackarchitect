@@ -22,13 +22,13 @@ faqs:
     answer: "Yes. Make.com has a native Google Sheets module that can append rows, update cells, and search sheets directly via the Google Sheets API. This completely bypasses Apps Script execution limits because Make.com runs on its own infrastructure. For high-volume order logging, Make.com writing directly to Sheets is more reliable than an Apps Script webhook receiver."
 relatedGuides:
   - title: "Google Apps Script Quotas Explained — All Limits 2026"
-    href: "/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations"
+    href: "/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/"
   - title: "How to Fix 'Service Invoked Too Many Times'"
-    href: "/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script"
+    href: "/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script/"
   - title: "Autocrat Quota Fix — Scale Document Automation"
-    href: "/autocrat-quota-fix"
+    href: "/autocrat-quota-fix/"
   - title: "When to Upgrade from Free Make.com to Google Workspace"
-    href: "/blog/when-to-upgrade-free-make-google-workspace"
+    href: "/blog/when-to-upgrade-free-make-google-workspace/"
 ---
 
 Google Sheets and Apps Script are powerful tools for Shopify automation — until volume grows into their limits. This guide covers the architecture patterns that keep Sheets-based automation reliable at scale, from basic batching through hybrid Make.com approaches that remove the execution ceiling entirely.

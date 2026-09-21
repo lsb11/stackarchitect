@@ -21,12 +21,12 @@ faqs:
     answer: "Yes. Every installed Shopify app adds JavaScript to your storefront — increasing page load time, reducing Lighthouse scores, and potentially impacting Core Web Vitals. Apps that run tracking pixels, chat widgets, and review systems are the heaviest. Replacing pixel-based tracking apps with server-side tracking removes the browser-side JavaScript entirely, which typically improves page speed scores."
 relatedGuides:
   - title: "CAPI Shield — Free Shopify Server-Side Tracking"
-    href: "/capi-shield"
+    href: "/capi-shield/"
   - title: "Stocky Swap — Free Inventory After the Stocky Shutdown"
-    href: "/stocky-swap"
+    href: "/stocky-swap/"
     badge: "Urgent"
   - title: "Replace Klaviyo Free — Systeme.io Setup Guide"
-    href: "/replace-klaviyo-free"
+    href: "/replace-klaviyo-free/"
   - title: "Shopify Apps That Are a Waste of Money"
     href: "/best-free-shopify-apps-2026/"
 ---

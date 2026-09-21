@@ -23,18 +23,18 @@ faqs:
     answer: "Deploy server-side tracking before BFCM. Set up CAPI Shield for Meta Conversions API via Make.com — this ensures every purchase event is captured server-to-server regardless of iOS restrictions or ad blockers. During BFCM, 35–50% of purchases on typical Shopify stores are made on iOS devices. Without server-side tracking, your ad platforms spend your biggest budgets of the year on the conversions they can still see, which is not all of them."
 relatedGuides:
   - title: "CAPI Shield — Free server-side tracking"
-    href: "/capi-shield"
+    href: "/capi-shield/"
     badge: "Set up now"
   - title: "Free Shopify Google Ads Conversion Tracking"
-    href: "/shopify-google-ads-conversion-tracking"
+    href: "/shopify-google-ads-conversion-tracking/"
     badge: "Set up now"
   - title: "Stocky Swap — Free inventory management"
-    href: "/stocky-swap"
+    href: "/stocky-swap/"
     badge: "Urgent — Aug 2026"
   - title: "Replace Klaviyo Free"
-    href: "/replace-klaviyo-free"
+    href: "/replace-klaviyo-free/"
   - title: "Complete Kit — All 4 automations"
-    href: "/pro"
+    href: "/pro/"
     badge: "$19.99"
 ---
 
@@ -107,7 +107,7 @@ Add a BFCM tab to your Stocky Swap Sheets that flags SKUs at risk of stockout. U
 
 **Deadline: October — upgrade before BFCM**
 
-The Make.com free tier covers 1,000 credits per month. During BFCM, your order volume may multiply 5–10x. Each order triggers 3–5 operations across your automation stack.
+The [Make.com free tier](/go/make/?source=bfcm-checklist-credits) covers 1,000 credits per month. During BFCM, your order volume may multiply 5–10x. Each order triggers 3–5 operations across your automation stack.
 
 **Calculate your BFCM operations budget:**
 - Forecast your Black Friday order count (use last year × 1.2 as a baseline)

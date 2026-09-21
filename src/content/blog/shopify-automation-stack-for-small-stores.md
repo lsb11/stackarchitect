@@ -24,11 +24,11 @@ relatedGuides:
     href: "/make-com-shopify/"
     badge: "Start Here"
   - title: "CAPI Shield — Free Server-Side Tracking"
-    href: "/capi-shield"
+    href: "/capi-shield/"
   - title: "Stocky Swap — Free Inventory Automation"
-    href: "/stocky-swap"
+    href: "/stocky-swap/"
   - title: "The Lean Shopify Tech Stack 2026"
-    href: "/blog/the-lean-shopify-tech-stack-2026"
+    href: "/blog/the-lean-shopify-tech-stack-2026/"
 ---
 
 Most Shopify automation guides are written for stores doing serious volume — the setups assume you're already paying hundreds of pounds a month on apps and want to optimise that spend. This guide is for stores earlier in the journey: under 1,000 orders per month, watching every expense, and trying to build a solid operational foundation without overcomplicating things.

@@ -23,11 +23,11 @@ faqs:
     answer: "In Shopify Admin → Analytics → Reports → Checkout funnel. This shows the percentage of sessions progressing from cart to checkout to purchase at each step. The most common drop-off points are: cart to checkout (typically 30–40% abandon), checkout to payment (15–25% abandon at payment entry). For deeper drop-off analysis, connect GA4 via the Google & YouTube sales channel and create a funnel exploration in GA4's Explore section."
 relatedGuides:
   - title: "CAPI Shield — Fix Your Tracking First"
-    href: "/capi-shield"
+    href: "/capi-shield/"
   - title: "Shopify Abandoned Cart Recovery Free 2026"
-    href: "/blog/shopify-abandoned-cart-recovery-free-2026"
+    href: "/blog/shopify-abandoned-cart-recovery-free-2026/"
   - title: "Shopify Email Marketing Free 2026"
-    href: "/blog/shopify-email-marketing-free-2026"
+    href: "/blog/shopify-email-marketing-free-2026/"
   - title: "Free Shopify Automation Stack"
     href: "/"
 ---

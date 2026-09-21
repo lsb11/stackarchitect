@@ -25,14 +25,14 @@ relatedGuides:
   - title: "Make.com for Shopify — Complete Beginner's Guide"
     href: "/make-com-shopify/"
   - title: "Scalable Google Sheets Automation for High Volume"
-    href: "/blog/scalable-google-sheets-automation-for-high-volume-workflows"
+    href: "/blog/scalable-google-sheets-automation-for-high-volume-workflows/"
   - title: "Google Apps Script Quotas — All Limits 2026"
-    href: "/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations"
+    href: "/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/"
   - title: "CAPI Shield — Server-Side Tracking Setup"
-    href: "/capi-shield"
+    href: "/capi-shield/"
 ---
 
-Getting a Make.com scenario to run once is easy. Getting it to run correctly every time — handling API failures gracefully, recovering from missed events, processing concurrent orders without data corruption — requires deliberate architecture decisions.
+Getting a [Make.com](/go/make/?source=reliable-automations-intro) scenario to run once is easy. Getting it to run correctly every time — handling API failures gracefully, recovering from missed events, processing concurrent orders without data corruption — requires deliberate architecture decisions.
 
 This guide covers the patterns that separate fragile Shopify automations from reliable ones.
 

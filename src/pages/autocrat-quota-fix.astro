@@ -27,6 +27,12 @@ const AFF = {
   tidio:     "/go/tidio/"
 };
 
+// A schema `url` is an assertion about the entity, not a place to put a CTA.
+// This HowToStep url pointed at /go/make/ — our own 302 into an affiliate
+// domain — which tells a crawler that is Make.com's canonical URL. The visible
+// CTAs still use the cloak; the schema names the vendor.
+const MAKE_VENDOR_URL = "https://www.make.com/";
+
 // ── Structured data ──────────────────────────────────────────
 const schema = JSON.stringify({
   "@context": "https://schema.org",
@@ -134,7 +140,7 @@ const schema = JSON.stringify({
       "step": [
         { "@type": "HowToStep", "position": 1, "name": "Activate Make.com free",
           "text": "Sign up for Make.com free tier — 1,000 credits/month (formerly called operations) at no cost, enough for stores processing up to 300 documents per day. This replaces Google Apps Script as the execution engine for your document workflows.",
-          "url": AFF.make },
+          "url": MAKE_VENDOR_URL },
         { "@type": "HowToStep", "position": 2, "name": "Create a webhook trigger scenario",
           "text": "In Make.com, create a new scenario. Add a Webhooks module as the trigger — this receives order data from Shopify or from your existing spreadsheet. Copy the webhook URL. Set the batch size to 50–100 rows in the scenario settings." },
         { "@type": "HowToStep", "position": 3, "name": "Connect Google Docs template generation",

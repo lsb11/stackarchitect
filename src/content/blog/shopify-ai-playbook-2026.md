@@ -24,13 +24,13 @@ faqs:
     answer: "Yes, for repetitive queries. Tidio's Lyro AI reliably handles order status questions, shipping queries, return requests, and product FAQs — which account for 60-70% of Shopify support volume. Complex queries involving order disputes, technical product issues, or customer complaints still benefit from human agent handling. A properly configured AI-first system routes appropriately."
 relatedGuides:
   - title: "Shopify Agentic Storefronts — Complete setup guide 2026"
-    href: "/blog/shopify-agentic-storefronts-setup-guide-2026"
+    href: "/blog/shopify-agentic-storefronts-setup-guide-2026/"
   - title: "Best AI tools for Shopify 2026 — 9 tools ranked by ROI"
-    href: "/best-ai-tools-shopify"
+    href: "/best-ai-tools-shopify/"
   - title: "Tidio for Shopify — Free AI customer support setup"
-    href: "/blog/tidio-for-shopify-complete-setup-guide"
+    href: "/blog/tidio-for-shopify-complete-setup-guide/"
   - title: "CAPI Shield — Free server-side tracking"
-    href: "/capi-shield"
+    href: "/capi-shield/"
 ---
 
 AI-driven traffic to Shopify stores grew 8× year-over-year in 2025. Most guides about AI for Shopify are written by SaaS companies ranking their own products first. This playbook is written for operators — covering which AI applications generate measurable return, which are overhyped, and what the free alternative is before recommending any subscription.

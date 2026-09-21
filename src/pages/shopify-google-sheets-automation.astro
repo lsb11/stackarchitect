@@ -17,6 +17,12 @@ const AFF = {
   workspace: "/go/workspace/",
 };
 
+// A schema `url` is an assertion about the entity, not a place to put a CTA.
+// This HowToStep url pointed at /go/make/ — our own 302 into an affiliate
+// domain — which tells a crawler that is Make.com's canonical URL. The visible
+// CTAs still use the cloak; the schema names the vendor.
+const MAKE_VENDOR_URL = "https://www.make.com/";
+
 const QUOTAS_GUIDE = "/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/";
 
 // ── Structured data ──────────────────────────────────────────
@@ -125,7 +131,7 @@ const schema = JSON.stringify({
         { "@type": "HowToStep", "position": 1, "name": "Create your Google Sheet",
           "text": "Create a Google Sheet with two tabs: Orders and Inventory. In Orders add columns: Order_ID, Date, Customer_Email, SKU, Product_Title, Quantity, Line_Price, Order_Total, Fulfilment_Status. In Inventory add: SKU, Product_Title, Location, Available_Qty, Last_Updated." },
         { "@type": "HowToStep", "position": 2, "name": "Activate Make.com free",
-          "text": "Sign up for Make.com free tier — 1,000 credits/month at no cost. Create a new scenario with a Webhooks module as the trigger.", "url": AFF.make },
+          "text": "Sign up for Make.com free tier — 1,000 credits/month at no cost. Create a new scenario with a Webhooks module as the trigger.", "url": MAKE_VENDOR_URL },
         { "@type": "HowToStep", "position": 3, "name": "Add the Shopify order payment webhook",
           "text": "In Shopify Admin go to Settings → Notifications → Webhooks. Create a webhook for Order payment pointing at your Make.com webhook URL, format JSON." },
         { "@type": "HowToStep", "position": 4, "name": "Add an Iterator and write order rows",

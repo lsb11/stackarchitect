@@ -24,10 +24,10 @@ faqs:
     answer: "Custom events beyond Meta's standard web set (quiz completions, subscription renewals, upsell views), offline conversions, CRM events, and anything on other ad platforms. It is Meta-only: Google Enhanced Conversions and TikTok Events API each require their own server-side connection."
 relatedGuides:
   - title: "Shopify Server-Side Tracking — Complete Setup Guide 2026"
-    href: "/blog/shopify-server-side-tracking-complete-setup-guide"
+    href: "/blog/shopify-server-side-tracking-complete-setup-guide/"
     badge: "Full build"
   - title: "Fix Shopify Conversion Tracking After iOS Updates"
-    href: "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates"
+    href: "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/"
     badge: "iOS"
 ---
 > **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-attribution-tools-compared/).
@@ -56,7 +56,7 @@ Meta rolls features out gradually, so if the button isn't visible on your accoun
 
 **It mirrors the Pixel — it doesn't replace it.** The Meta-enabled CAPI creates a server-side connection *to your Pixel data*. When the Pixel fires, Meta now also receives the event server-side, immune to anything that happens after the browser sends it. But when the Pixel never fires at all — an ad blocker stripped the script, a strict content blocker on iOS 26 killed it, the customer closed the tab before the thank-you page finished loading — there is nothing to mirror. One-click CAPI recovers the portion where the Pixel fired but delivery failed, not the portion where the Pixel never ran — and how those two portions divide is a property of your store and its traffic, not something an industry figure can tell you.
 
-That second portion is what a **Shopify webhook** fixes. Shopify's `orders/paid` webhook fires from Shopify's server the moment payment is confirmed — no browser, no script, no dependency on the customer's device. That's the architecture behind [CAPI Shield](/capi-shield/): one Make.com scenario receives the webhook and posts the purchase server-to-server, with the same `event_id` deduplication, at $0/month on Make.com's free tier (~250 orders/month at 4 credits per order).
+That second portion is what a **Shopify webhook** fixes. Shopify's `orders/paid` webhook fires from Shopify's server the moment payment is confirmed — no browser, no script, no dependency on the customer's device. That's the architecture behind [CAPI Shield](/capi-shield/): one Make.com scenario receives the webhook and posts the purchase server-to-server, with the same `event_id` deduplication, at $0/month on [Make.com's free tier](/go/make/?source=meta-one-click-capi-shield) (~250 orders/month at 4 credits per order).
 
 **It's Meta-only.** Google Enhanced Conversions and TikTok Events API are separate systems with their own endpoints. If you advertise on more than Meta, one-click CAPI covers one platform of three. The same webhook that feeds Meta can branch to [Google](/shopify-google-ads-conversion-tracking/) and [TikTok](/tiktok-events-api-shopify/) from a single trigger.
 

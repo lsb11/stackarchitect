@@ -24,9 +24,9 @@ faqs:
     answer: "Tidio reports an average Lyro AI resolution rate of approximately 70% of inbound queries. However, the actual rate depends heavily on knowledge base quality and query routing configuration. Default settings typically achieve 25–35% resolution. The performance guide in this post covers the configuration required to reach 70%."
 relatedGuides:
   - title: "Tidio vs Gorgias for Shopify — Full comparison 2026"
-    href: "/blog/tidio-vs-gorgias-shopify"
+    href: "/blog/tidio-vs-gorgias-shopify/"
   - title: "CAPI Shield — Free server-side tracking for Shopify"
-    href: "/capi-shield"
+    href: "/capi-shield/"
   - title: "The $0 automation stack — all free tools"
     href: "/"
   - title: "Make.com for Shopify — Free automation guide"

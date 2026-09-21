@@ -23,13 +23,13 @@ faqs:
     answer: "Yes. These are two different quota errors. 'Service invoked too many times' is a service call rate limit — too many API calls in a short window. 'Exceeded maximum execution time' is an execution time limit — your script ran for longer than the 6-minute limit that applies to both consumer and Workspace accounts (the 30-minute Workspace limit cited by older guides no longer applies). Each requires a different fix. See the Google Apps Script quotas guide for the full breakdown."
 relatedGuides:
   - title: "Google Apps Script Quotas Explained — All Limits for 2026"
-    href: "/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations"
+    href: "/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/"
   - title: "Autocrat Quota Fix — Move Document Automation to Make.com"
-    href: "/autocrat-quota-fix"
+    href: "/autocrat-quota-fix/"
   - title: "Scalable Google Sheets Automation for High-Volume Workflows"
-    href: "/blog/scalable-google-sheets-automation-for-high-volume-workflows"
+    href: "/blog/scalable-google-sheets-automation-for-high-volume-workflows/"
   - title: "When to Upgrade from Free Make.com to Google Workspace"
-    href: "/blog/when-to-upgrade-free-make-google-workspace"
+    href: "/blog/when-to-upgrade-free-make-google-workspace/"
 ---
 
 "Service invoked too many times" is one of the most common Google Apps Script errors. It means your script is calling a Google service (Sheets, Docs, Drive, Gmail) faster than Google's rate limits allow. The fix depends on which service is being called and how your script is structured.

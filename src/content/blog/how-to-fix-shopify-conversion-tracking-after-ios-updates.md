@@ -25,20 +25,20 @@ faqs:
     answer: "Server-side tracking significantly reduces the tracking gap but does not eliminate it entirely. Browser pixels handle the first-party tracking layer including page views, add-to-cart, and checkout events. Server-side CAPI handles the purchase conversion event reliably regardless of browser settings. Running both simultaneously with proper deduplication is the standard approach. A residual gap remains even then — orders from visitors who denied ATT and arrived with no click ID, which Meta genuinely cannot match — and its size is a property of your own traffic, not a figure we can quote for you."
 relatedGuides:
   - title: "Meta One-Click Conversions API for Shopify — What It Fixes"
-    href: "/blog/meta-one-click-conversions-api-shopify"
+    href: "/blog/meta-one-click-conversions-api-shopify/"
     badge: "New for 2026"
   - title: "iOS Attribution Gap Benchmark — How Much Conversion Data You Lose"
-    href: "/shopify-ios-attribution-gap-benchmark"
+    href: "/shopify-ios-attribution-gap-benchmark/"
     badge: "Data"
   - title: "CAPI Shield — Free Shopify Server-Side Tracking (Meta)"
-    href: "/capi-shield"
+    href: "/capi-shield/"
     badge: "Free Fix"
   - title: "Shopify Meta ROAS Dropped in 2026 — Diagnosis and Fix"
-    href: "/blog/shopify-meta-roas-dropped-2026-fix"
+    href: "/blog/shopify-meta-roas-dropped-2026-fix/"
   - title: "Shopify Server-Side Tracking — Complete Setup Guide"
-    href: "/blog/shopify-server-side-tracking-complete-setup-guide"
+    href: "/blog/shopify-server-side-tracking-complete-setup-guide/"
   - title: "TikTok Events API — Free Server-Side Setup"
-    href: "/tiktok-events-api-shopify"
+    href: "/tiktok-events-api-shopify/"
 ---
 > **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-attribution-tools-compared/).
 
@@ -136,7 +136,7 @@ Server-to-server communication is not subject to any browser privacy setting or 
 
 **How to implement free:**
 
-[CAPI Shield](/capi-shield/) is the free implementation guide. It uses Make.com to receive a Shopify order webhook and forward a formatted purchase event to Meta's Conversions API endpoint. Setup takes about 6 minutes once your Make.com account and Meta access are in place, and covers Meta CAPI. Its Google branch cannot match Shopify orders as shipped.
+[CAPI Shield](/capi-shield/) is the free implementation guide. It uses Make.com to receive a Shopify order webhook and forward a formatted purchase event to Meta's Conversions API endpoint. Setup takes about 6 minutes once your [Make.com account](/go/make/?source=ios-updates-capi-shield) and Meta access are in place, and covers Meta CAPI. Its Google branch cannot match Shopify orders as shipped.
 
 **Critical: deduplication**
 

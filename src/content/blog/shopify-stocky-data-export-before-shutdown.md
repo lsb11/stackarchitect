@@ -26,14 +26,14 @@ faqs:
     answer: "The shutdown is confirmed and official, and it has happened. Shopify removed Stocky from the App Store on February 2, 2026 and ended the service on August 31, 2026; the app no longer functions for inventory management and its APIs stopped that day with no grace period. Shopify's own guidance states that read-only access to export your data continues for at least 90 days after the shutdown date. (Source: Shopify, \"Transitioning from Stocky\", help.shopify.com/en/manual/products/inventory/transitioning-from-stocky, read 10 September 2026.)"
 relatedGuides:
   - title: "Stocky Swap — Free Shopify Stocky Replacement (Deploy in 4 Minutes)"
-    href: "/stocky-swap"
+    href: "/stocky-swap/"
     badge: "Free replacement"
   - title: "The Ultimate Guide to Shopify Inventory Management 2026"
-    href: "/blog/the-ultimate-guide-to-shopify-inventory-management"
+    href: "/blog/the-ultimate-guide-to-shopify-inventory-management/"
   - title: "Make.com for Shopify — Complete Beginner's Guide"
     href: "/make-com-shopify/"
   - title: "Shopify Automation Stack for Small Stores"
-    href: "/blog/shopify-automation-stack-for-small-stores"
+    href: "/blog/shopify-automation-stack-for-small-stores/"
 ---
 
 Shopify set August 31, 2026 as Stocky's end of service, and nothing held inside the app was migrated to Shopify Admin. [Shopify removed Stocky from the App Store on February 2, 2026](https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky) — the August 31 date is confirmed and it has passed.
@@ -155,7 +155,7 @@ There is a tempting sequence error here: export first, then deal with the replac
 
 The correct sequence:
 
-1. **Deploy Stocky Swap now** — [4-minute setup](/stocky-swap/). This starts logging every new order immediately.
+1. **Deploy Stocky Swap now** — [4-minute setup](/stocky-swap/), on a [free Make.com account](/go/make/?source=stocky-data-export-next-steps). This starts logging every new order immediately.
 2. **Export all Stocky data** — using the steps above. Do this within the next 30 days.
 3. **Import historical data** — use your exports to populate the opening stock figures in your new Sheet.
 4. **Cancel Stocky** — once your replacement is running and your historical data is exported.

@@ -24,9 +24,9 @@ faqs:
     answer: "The essential four: welcome sequence (set expectations, drive first purchase), abandoned cart recovery (recover 5–15% of abandoned checkouts), post-purchase sequence (reduce refunds, build loyalty, request reviews), and win-back campaign (re-engage lapsed customers). All four run on Systeme.io's free plan. Combined, these four automations typically generate 20–35% of total email revenue for Shopify stores that implement them correctly."
 relatedGuides:
   - title: "Replace Klaviyo Free — Systeme.io Migration Guide"
-    href: "/replace-klaviyo-free"
+    href: "/replace-klaviyo-free/"
   - title: "Shopify Abandoned Cart Recovery Free 2026"
-    href: "/blog/shopify-abandoned-cart-recovery-free-2026"
+    href: "/blog/shopify-abandoned-cart-recovery-free-2026/"
   - title: "Klaviyo Pricing UK 2026 — Exact Costs"
     href: "/replace-klaviyo-free/"
   - title: "Klaviyo vs GetResponse for Shopify 2026"

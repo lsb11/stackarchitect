@@ -27,6 +27,12 @@ const AFF = {
   tidio:     "/go/tidio/"
 };
 
+// A schema `url` is an assertion about the entity, not a place to put a CTA.
+// This HowToStep url pointed at /go/make/ — our own 302 into an affiliate
+// domain — which tells a crawler that is Make.com's canonical URL. The visible
+// CTAs still use the cloak; the schema names the vendor.
+const MAKE_VENDOR_URL = "https://www.make.com/";
+
 const SCENARIO_URL = "https://eu1.make.com/public/shared-scenario/nztRUIXWcg6/shopify-live-p-l-to-google-sheets";
 
 // ── Structured data ──────────────────────────────────────────
@@ -145,7 +151,7 @@ const schema = JSON.stringify({
         { "@type": "HowToStep", "position": 1, "name": "Create your P&L Google Sheet",
           "text": "Create a Google Sheet with three tabs: Order Data, P&L Summary, and COGS Table. Add column headers in Order Data: Order_ID, Date, Channel, Revenue, Discount, Shipping_Rev, Shopify_Fee, Payment_Fee, COGS, Gross_Profit." },
         { "@type": "HowToStep", "position": 2, "name": "Activate Make.com free",
-          "text": "Sign up for Make.com free tier — 1,000 credits/month (formerly called operations) at no cost. Create a new scenario with a Webhooks trigger.", "url": AFF.make },
+          "text": "Sign up for Make.com free tier — 1,000 credits/month (formerly called operations) at no cost. Create a new scenario with a Webhooks trigger.", "url": MAKE_VENDOR_URL },
         { "@type": "HowToStep", "position": 3, "name": "Add Shopify order payment webhook",
           "text": "In Shopify Admin go to Settings → Notifications → Webhooks. Create a webhook for Order payment pointing to your Make.com webhook URL." },
         { "@type": "HowToStep", "position": 4, "name": "Map order data to Google Sheets",
@@ -179,7 +185,12 @@ const schema = JSON.stringify({
 });
 import TableOfContents from '../components/TableOfContents.astro';
 import InlineOffer from '../components/InlineOffer.astro';
-import { KIT_PRICE, formatPrice } from '../data/products';
+import { KIT_PRICE, SINGLE_PRICE, formatPrice } from '../data/products';
+// The single blueprint this page's free method builds. The related-tools
+// card below points at /pro/<slug>/ and not the four-product hub: a reader
+// who has just followed THIS guide is choosing whether to buy THIS one, and
+// /pro/ makes them choose again between four.
+const singlePrice = formatPrice(SINGLE_PRICE);
 
 const tocHeadings = [
   {
@@ -650,7 +661,6 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
   </div>
 </div>
 </section>
-  <InlineOffer slug="pnl-auto" source="guide_shopify_profit_loss_automation_inline_top" />
 
 <div class="divider"></div>
 
@@ -868,6 +878,8 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
 </section>
 
 <div class="divider"></div>
+
+  <InlineOffer slug="pnl-auto" source="guide_shopify_profit_loss_automation_inline_top" />
 
 <!-- ══ AFFILIATE TOOLS SECTION ══ -->
 <section class="section-alt" aria-labelledby="tools-h">
@@ -1124,10 +1136,10 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
             P&amp;L accuracy requires accurate ad attribution</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $29–$99/mo</span></span>
       <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">Fix Google Enhanced Conversions free</span>
     </a>
-    <a href="/pro/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
-      <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Complete Kit — P&amp;L Auto Pre-Built ({formatPrice(KIT_PRICE)})
-            Blueprint 04 is the pre-configured P&amp;L Auto blueprint with Sheets templates included</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">{formatPrice(KIT_PRICE)} one-time</span></span>
-      <span style="font-size:14px;line-height:1.55;color:#8FA6BD;"></span>
+    <a href="/pro/pnl-auto/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
+      <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">P&amp;L Auto — Pre-Built Blueprint ({singlePrice})
+            The per-order profit scenario on this page, with the Sheets templates</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">{singlePrice} one-time</span></span>
+      <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">Import in 6 minutes · or all four in the Complete Kit for {formatPrice(KIT_PRICE)}</span>
     </a>
   </div>
 </section>

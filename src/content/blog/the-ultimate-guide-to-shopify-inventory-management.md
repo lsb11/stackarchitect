@@ -24,14 +24,14 @@ faqs:
     answer: "Shopify's built-in inventory tracking records stock levels and deducts quantities when orders are placed. Inventory management goes further — tracking the full product lifecycle from supplier purchase order through receiving, storage, sales velocity analysis, reorder point calculation, and multi-location management. The Make.com and Google Sheets approach covers the full management layer at zero cost."
 relatedGuides:
   - title: "Stocky Swap — Free Shopify Stocky Replacement (Deploy in 4 Minutes)"
-    href: "/stocky-swap"
+    href: "/stocky-swap/"
     badge: "Urgent — Aug 31"
   - title: "Make.com for Shopify — Complete Beginner's Guide"
     href: "/make-com-shopify/"
   - title: "Shopify P&L Automation — Live Profit Reporting Free"
-    href: "/shopify-profit-loss-automation"
+    href: "/shopify-profit-loss-automation/"
   - title: "Shopify Automation Stack for Small Stores"
-    href: "/blog/shopify-automation-stack-for-small-stores"
+    href: "/blog/shopify-automation-stack-for-small-stores/"
 ---
 
 Most Shopify inventory management guides end with a recommendation to pay $29–$199/month for an app. This one doesn't. Every system described here costs $0 and runs on tools you likely already have access to.

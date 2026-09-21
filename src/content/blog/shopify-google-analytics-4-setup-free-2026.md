@@ -27,12 +27,12 @@ faqs:
     answer: "The native GA4 setup via the Google & YouTube sales channel takes approximately 5 minutes. The additional server-side Make.com layer for complete purchase data recovery takes approximately 10 minutes. The full setup — native layer plus server-side layer plus verification — is complete in under 20 minutes with no technical skills required."
 relatedGuides:
   - title: "How to Fix Shopify Google Ads Conversion Tracking Free 2026"
-    href: "/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026"
+    href: "/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026/"
     badge: "Related"
   - title: "CAPI Shield — Free Meta Server-Side Tracking"
-    href: "/capi-shield"
+    href: "/capi-shield/"
   - title: "Shopify P&L Automation — Live Profit in Google Sheets Free"
-    href: "/shopify-profit-loss-automation"
+    href: "/shopify-profit-loss-automation/"
   - title: "Make.com for Shopify — Complete Beginner's Guide"
     href: "/make-com-shopify/"
 ---

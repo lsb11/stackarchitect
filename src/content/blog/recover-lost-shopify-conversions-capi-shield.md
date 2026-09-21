@@ -22,17 +22,17 @@ faqs:
     answer: "The CAPI events start flowing immediately after setup. However, the impact on reported ROAS and campaign performance typically becomes visible 7–14 days after implementation, as Meta's and Google's algorithms adjust their optimisation models based on the more complete conversion data."
 relatedGuides:
   - title: "Meta One-Click Conversions API for Shopify — What It Fixes"
-    href: "/blog/meta-one-click-conversions-api-shopify"
+    href: "/blog/meta-one-click-conversions-api-shopify/"
     badge: "New for 2026"
   - title: "CAPI Shield — Full Product Guide and Setup Instructions"
-    href: "/capi-shield"
+    href: "/capi-shield/"
     badge: "Deploy Free"
   - title: "How to Fix Shopify Conversion Tracking After iOS Updates"
-    href: "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates"
+    href: "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/"
   - title: "Shopify Meta ROAS Dropped in 2026 — The Free Fix"
-    href: "/blog/shopify-meta-roas-dropped-2026-fix"
+    href: "/blog/shopify-meta-roas-dropped-2026-fix/"
   - title: "Shopify Server-Side Tracking — Complete Setup Guide"
-    href: "/blog/shopify-server-side-tracking-complete-setup-guide"
+    href: "/blog/shopify-server-side-tracking-complete-setup-guide/"
 ---
 > **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-attribution-tools-compared/).
 

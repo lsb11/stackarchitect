@@ -25,17 +25,17 @@ faqs:
     answer: "Standard Google Ads conversion tracking uses a browser-based pixel (gTag) that fires when the customer's browser loads your order confirmation page. It is subject to iOS restrictions, ad blockers, and cookie clearing. Google Enhanced Conversions is a supplementary layer that sends hashed customer data server-to-server, independently of browser state. Running both simultaneously — browser pixel plus server-side Enhanced Conversions — gives Google the most complete picture of your actual purchase volume."
 relatedGuides:
   - title: "Meta One-Click Conversions API for Shopify — What It Fixes"
-    href: "/blog/meta-one-click-conversions-api-shopify"
+    href: "/blog/meta-one-click-conversions-api-shopify/"
     badge: "New for 2026"
   - title: "CAPI Shield — Free Meta Server-Side Tracking"
-    href: "/capi-shield"
+    href: "/capi-shield/"
     badge: "Deploy Free"
   - title: "Shopify Server-Side Tracking — Complete Setup Guide"
-    href: "/blog/shopify-server-side-tracking-complete-setup-guide"
+    href: "/blog/shopify-server-side-tracking-complete-setup-guide/"
   - title: "Shopify Meta ROAS Dropped 2026 — The Free Fix"
-    href: "/blog/shopify-meta-roas-dropped-2026-fix"
+    href: "/blog/shopify-meta-roas-dropped-2026-fix/"
   - title: "How to Fix Shopify Conversion Tracking After iOS Updates"
-    href: "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates"
+    href: "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/"
 ---
 > **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-attribution-tools-compared/).
 

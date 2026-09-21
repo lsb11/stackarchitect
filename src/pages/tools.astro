@@ -156,6 +156,11 @@ const tocHeadings = [
       .hero-pill strong{color:#f2f5f3;}
       .btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:var(--obsidian);text-decoration:none;padding:18px 44px;border-radius:10px;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.5px;transition:all .3s ease;}
       .btn-primary:hover{background:#00c464;transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,168,84,.4);}
+      /* Hero secondary. #34d377 on the obsidian ground, not a dark Tailwind
+         token — see the contrast rule in CLAUDE.md. */
+      .btn-hero-secondary{display:inline-flex;align-items:center;gap:8px;background:transparent;color:#34d377;text-decoration:none;padding:18px 36px;border-radius:10px;border:1px solid var(--green-border);font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.5px;transition:all .3s ease;}
+      .btn-hero-secondary:hover{background:var(--green-dim);border-color:var(--green);}
+      .hero-cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
       .hub-stats{background:rgba(15,23,42,.8);border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05);padding:32px 40px;display:grid;grid-template-columns:repeat(4,1fr);}
       .hub-stat{text-align:center;border-right:1px solid rgba(255,255,255,.05);padding:0 20px;}
       .hub-stat:last-child{border-right:none;}
@@ -288,7 +293,13 @@ const tocHeadings = [
             <div class="hero-pill"><span class="pill-dot"></span><strong>21</strong>&nbsp;free tools</div>
             <div class="hero-pill"><span class="pill-dot"></span><strong>$0</strong>&nbsp;monthly fees — forever</div>
           </div>
-          <a href="#how-heading" class="btn-primary">See How It Works &rarr;</a>
+          <!-- Make.com is the engine behind every tool on this page, and its
+               link used to appear nowhere until two thirds of the way down.
+               It is the hero action now; the tour is the secondary. -->
+          <div class="hero-cta-row">
+            <a href="/go/make/?source=tools-hero" class="btn-primary" target="_blank" rel="sponsored nofollow noopener">Start free on Make.com &rarr;</a>
+            <a href="#how-heading" class="btn-hero-secondary">See How It Works</a>
+          </div>
           <p style="font-family:var(--mono);font-size:11px;color:#93a09a;letter-spacing:1.5px;text-transform:uppercase;margin-top:16px;">No credit card &middot; No monthly fees &middot; Live in 5 minutes</p>
         </div>
       </section>

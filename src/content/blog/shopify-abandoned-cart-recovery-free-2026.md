@@ -26,11 +26,11 @@ faqs:
     answer: "No. The Make.com + Systeme.io approach uses Shopify's native checkout abandonment webhook — a built-in feature available on every Shopify plan. No app installation is required on Shopify. Make.com receives the webhook and Systeme.io sends the emails. The entire system runs externally to Shopify with no app permissions required."
 relatedGuides:
   - title: "Replace Klaviyo Free — Systeme.io Migration Guide"
-    href: "/replace-klaviyo-free"
+    href: "/replace-klaviyo-free/"
   - title: "Make.com for Shopify: Complete Beginner's Guide"
     href: "/make-com-shopify/"
   - title: "CAPI Shield — Free Meta Server-Side Tracking"
-    href: "/capi-shield"
+    href: "/capi-shield/"
   - title: "The Complete Free Shopify Automation Stack"
     href: "/"
 ---

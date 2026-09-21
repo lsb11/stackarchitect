@@ -23,18 +23,18 @@ faqs:
     answer: "Browser-only tracking loses purchase events to iOS ATT, Safari ITP, ad blockers and consent rejection; server-side CAPI is not subject to that loss. Measure what it adds as Additional Conversions Reported in Meta Events Manager. Two effects follow: reported ROAS increases as more purchases appear in Ads Manager, and Meta's algorithm improves its targeting and bidding decisions because it now has more complete purchase data to learn from."
 relatedGuides:
   - title: "Meta One-Click Conversions API for Shopify — What It Fixes"
-    href: "/blog/meta-one-click-conversions-api-shopify"
+    href: "/blog/meta-one-click-conversions-api-shopify/"
     badge: "New for 2026"
   - title: "iOS Attribution Gap Benchmark — the sourced loss figures"
-    href: "/shopify-ios-attribution-gap-benchmark"
+    href: "/shopify-ios-attribution-gap-benchmark/"
   - title: "CAPI Shield — Free Server-Side Tracking"
-    href: "/capi-shield"
+    href: "/capi-shield/"
   - title: "TikTok Events API — Free Setup Guide"
-    href: "/tiktok-events-api-shopify"
+    href: "/tiktok-events-api-shopify/"
   - title: "Shopify Server-Side Tracking — Complete Setup Guide"
-    href: "/blog/shopify-server-side-tracking-complete-setup-guide"
+    href: "/blog/shopify-server-side-tracking-complete-setup-guide/"
   - title: "The Ultimate Shopify Automation Guide"
-    href: "/ultimate-shopify-automation-guide"
+    href: "/ultimate-shopify-automation-guide/"
 ---
 > **Deep Dive:** This article is part of our comprehensive tracking series. For the full masterclass on CAPI, GA4, and Server-Side tracking, see [The Ultimate Shopify Tracking Hub](/shopify-attribution-tools-compared/).
 
@@ -128,7 +128,7 @@ Ensure the Purchase event is listed and prioritised as **#1.** Set attribution w
 
 Meta Conversions API (CAPI) sends conversion events directly from your server to Meta — bypassing the browser, iOS tracking restrictions, ad blockers, and Shopify's pixel throttling entirely. The [Meta Conversions API documentation](https://developers.facebook.com/docs/marketing-api/conversions-api) covers all required parameters — the key fields for Shopify are `event_name`, `event_time`, `event_id` (for deduplication), `user_data.em` (SHA-256 hashed email), and `custom_data.value`.
 
-**Implementation:** a Make.com scenario that receives the Shopify order webhook and forwards a formatted purchase event to Meta's Conversions API endpoint. No server to host and no GTM container, so the ongoing cost stays $0 on Make.com's free plan.
+**Implementation:** a Make.com scenario that receives the Shopify order webhook and forwards a formatted purchase event to Meta's Conversions API endpoint. No server to host and no GTM container, so the ongoing cost stays $0 on [Make.com's free plan](/go/make/?source=meta-roas-dropped-implementation).
 
 [CAPI Shield](/capi-shield/) is the free step-by-step implementation guide for that route — about 6 minutes once your Make.com account and Meta access are in place. It covers Meta CAPI. Its Google branch cannot match Shopify orders as shipped.
 
