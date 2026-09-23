@@ -165,14 +165,21 @@ const faq = [
     q: 'What happens to my data if I uninstall?',
     a: 'Shopify sends a deletion request about 48 hours after uninstall, and StockLog deletes the shop’s ledger and settings when it arrives.',
   },
-  // TODO(Luke): "Does it work with multiple locations?" Answer to be confirmed
-  // before it is published. For reference when you do: as of 23 Sep 2026 the
-  // app keeps one ledger row per variant (VariantSettings is unique on shop +
-  // variantId) and nothing in ~/stocklog/app mentions a location, so the
-  // ledger appears to hold one total per variant, not a figure per location.
+  // Checked 23 Sep 2026: one ledger row per variant (VariantSettings is unique
+  // on shop + variantId), and the sync reads ProductVariant.inventoryQuantity,
+  // Shopify's total for the variant across all locations.
+  {
+    q: 'Does it work with multiple locations?',
+    a: 'StockLog keeps one ledger row per variant, so it records a single stock total for each variant rather than a separate figure for each location. That total is the quantity Shopify reports for the variant across all your locations, so the ledger shows how much stock moved and why, but not which location it moved in.',
+  },
+  // Same export window the homepage, /stocky-migration-risk-scorer/ and
+  // llms-full.txt state: at least 90 days after 31 Aug, no end date published.
+  // Source: help.shopify.com/en/manual/products/inventory/transitioning-from-stocky
+  // (read 5 Sep 2026, per llms-full.txt).
+  // After about 29 Nov 2026, re-check this answer against Shopify.
   {
     q: 'Can I still import Stocky data?',
-    a: 'Yes, if you exported a CSV before Stocky closed.',
+    a: 'Yes. Stocky shut down on 31 August 2026, but Shopify says read-only export stays open for at least 90 days after that date and has published no end date. Export your stock levels as a CSV now, then paste the rows into StockLog.',
   },
 ];
 
