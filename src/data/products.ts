@@ -70,6 +70,13 @@ export const STOCKLOG_TRIAL_DAYS = 7;
 /** Where the app lives until the App Store listing is approved. */
 export const STOCKLOG_URL = 'https://stocklog.onrender.com/';
 
+/**
+ * StockLog's Shopify App Store listing. Every install button on the site reads
+ * this: /stocklog/ and StockLogPromo.astro. PLACEHOLDER: this is the App Store
+ * root, not the listing. Swap in the real listing URL here and nowhere else.
+ */
+export const STOCKLOG_APP_STORE_URL = 'https://apps.shopify.com/';
+
 export type Accent = 'green' | 'sky' | 'tiktok' | 'amber';
 
 export interface HowStep {

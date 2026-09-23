@@ -8,21 +8,21 @@ Spec: docs/RUNBOOK-consolidation-v1.md — read it before any structural change.
 That runbook is a record of completed work, **not a to-do list**. Do not re-cut
 pages it describes; they are already cut.
 
-Measured against the build on 2026-09-05:
+Measured against the build on 2026-09-23:
 
 | Metric | Value |
 |---|---|
-| HTML pages built | 128 |
+| HTML pages built | 129 |
 | `noindex` pages | 64 (54 × `/apps/*`, 4 × `/pro/*/success/`, 3 × `/embed/*`, privacy/terms/refund) |
-| **Indexable pages** | **64** |
-| **URLs in sitemap-0.xml** | **62** |
+| **Indexable pages** | **65** |
+| **URLs in sitemap-0.xml** | **63** |
 
 The two indexable pages absent from the sitemap are `/404.html` and
 `/sitemap-page/`, both deliberate. Reproduce the whole table with
 `npm run build`, then count `<loc>` in `dist/sitemap-0.xml`.
 
 The runbook's 88 → 58 target was met on 17 Aug at 120 pages / 58 URLs. The set
-has since grown by four indexable URLs — see the freeze note below. An earlier
+has since grown by five indexable URLs — see the freeze note below. An earlier
 version of this file said the cut was still to be made; that was stale and caused
 wasted work, which is why these figures now carry the date they were measured
 and the command that reproduces them.
@@ -568,6 +568,13 @@ rebuilt with these rules:
   discrepancy. It is not a precedent and it is not to be repeated — but do not
   "fix" it by deleting the routes either, since removing a live URL costs the
   same reassessment as adding one. The freeze still runs to roughly 21 Oct 2026.
+  **It was broken a second time, by decision, on 23 Sep 2026: `/stocklog/`.**
+  One indexable URL, sitemap 62 → 63. StockLog needed a home on this domain
+  that the App Store listing and press pitches could link to, and the owner
+  chose to ship it before the freeze lifted rather than wait four weeks.
+  `tests/legacy-redirects.test.js` pins the sitemap count and was moved to 63
+  in the same commit; that pin is the tripwire, so moving it is the record.
+  Two exceptions are two too many. The next new URL waits for ~21 Oct.
 - Merging content means DEDUPLICATING, never concatenating. A 4,500-word page
   assembled by stapling four 1,100-word posts together is still four thin pages.
 - **Never emit a schema.org Offer for a THIRD-PARTY price without both

@@ -1,0 +1,553 @@
+---
+/**
+ * /stocklog/ is the home page for StockLog, our Shopify app.
+ *
+ * It is the page the App Store listing, press pitches and the rest of this
+ * site link to, so it has to answer a merchant's questions on its own. The
+ * app's own landing page at stocklog.onrender.com carries similar copy; this
+ * page goes further (how it works, limits, FAQ) and does not reuse its
+ * sentences beyond the H1 and subhead.
+ *
+ * Every capability claim here was checked against the app source
+ * (~/stocklog) on 23 Sep 2026, because neither build guard reads a sentence
+ * about what a product does:
+ *   - order dedupe: webhooks.orders.create.tsx skips an orderId already recorded
+ *   - refunds: webhooks.refunds.create.tsx ignores no_restock lines and does
+ *     not credit units a cancellation already returned
+ *   - timezone: catalog.server.ts formats dates in the shop's ianaTimezone
+ *   - deletion: webhooks.shop.redact.tsx deletes movements and settings
+ *   - read only: shopify.app.toml scopes are read_orders,read_products
+ * Change the app, re-check this list.
+ *
+ * Prices and the trial length come from src/data/products.ts. The install
+ * button reads STOCKLOG_APP_STORE_URL there, shared with StockLogPromo.astro.
+ *
+ * The screenshots in src/assets/stocklog/ are crops of the app running in a
+ * dev store, cut down to the StockLog card so the tables stay legible on a
+ * phone. Their text is transcribed in scripts/og/og-images.json.
+ */
+import Base from '../layouts/Base.astro';
+import { Image, getImage } from 'astro:assets';
+import {
+  STOCKLOG_PRICE,
+  STOCKLOG_UNIT,
+  STOCKLOG_TRIAL_DAYS,
+  STOCKLOG_URL,
+  STOCKLOG_APP_STORE_URL,
+  formatMonthly,
+  formatPrice,
+} from '../data/products';
+
+import icon from '../assets/stocklog/icon.png';
+import movementHistory from '../assets/stocklog/movement-history.png';
+import dashboard from '../assets/stocklog/dashboard.png';
+import refundsRestocks from '../assets/stocklog/refunds-restocks.png';
+import inventoryReorder from '../assets/stocklog/inventory-reorder.png';
+import importSync from '../assets/stocklog/import-sync.png';
+
+const PAGE_URL = 'https://stackarchitect.xyz/stocklog/';
+const monthly = formatMonthly(STOCKLOG_PRICE);
+const trial = `${STOCKLOG_TRIAL_DAYS}-day free trial`;
+
+const schemaIcon = await getImage({ src: icon, width: 512, height: 512, format: 'png' });
+const schemaShot = await getImage({ src: movementHistory, width: 1280, format: 'png' });
+const abs = (src: string) => new URL(src, 'https://stackarchitect.xyz').href;
+
+const howSteps = [
+  {
+    title: 'Sync your current stock',
+    body: 'Install StockLog and press Sync stock from Shopify. It reads the on-hand quantity of every variant and opens your ledger at those numbers.',
+  },
+  {
+    title: 'StockLog records every change',
+    body: 'From then on, each order, cancellation and restocked refund is written to the ledger as Shopify reports it. Stocky imports and manual corrections go in too, each with its reason.',
+  },
+  {
+    title: 'Check the history when a number looks wrong',
+    body: 'Open the movement history and read down the rows for that SKU. Each one shows when the change happened, how many units moved and why.',
+  },
+];
+
+// Feature copy: `heading` and `body` are the supplied copy, unedited. `detail`
+// is the supporting fact, each one checked against the app source (see top).
+type Feature = {
+  id: string;
+  heading: string;
+  body: string;
+  detail: string;
+  shot?: { src: ImageMetadata; alt: string };
+};
+
+const features: Feature[] = [
+  {
+    id: 'orders-counted-once',
+    heading: 'Each order counted once',
+    body: 'Shopify sometimes sends the same order notification twice. StockLog spots the repeat and skips it, so your counts stay right.',
+    detail: 'The repeat usually comes from Shopify retrying a delivery that timed out. Before StockLog writes anything, it checks whether that order is already in the ledger, so a second copy changes nothing.',
+    shot: {
+      src: dashboard,
+      alt: 'StockLog home screen: 13 SKUs tracked, 23 movements in the last 7 days, 2 low stock items, and a table of recent movements with the reason for each.',
+    },
+  },
+  {
+    id: 'refunds-and-cancellations',
+    heading: 'Refunds and cancellations put stock back',
+    body: 'Cancel an order and its units return. Refund with restock ticked and those units go back into your ledger.',
+    detail: 'A refund without restock leaves the ledger alone, because nothing came back to the shelf. If an order is cancelled and later refunded, units the cancellation already returned are not added a second time.',
+    shot: {
+      src: refundsRestocks,
+      alt: 'StockLog movement rows showing manual adjustments of minus 2, opening balances, a restock of 12 units and a refund of 3 units, each with its date and SKU.',
+    },
+  },
+  {
+    id: 'full-record',
+    heading: 'A full record for every product',
+    body: 'Every order, refund, import and correction is logged with the time and the reason, in your store’s timezone.',
+    detail: 'The time is shown in the timezone set in your Shopify admin, so a sale at 8:38 pm reads 8:38 pm and not the server’s clock.',
+  },
+  {
+    id: 'low-stock',
+    heading: 'Low stock before you run out',
+    body: 'Set a reorder point on any variant and StockLog flags it when stock drops below.',
+    detail: 'Flagged variants are listed on the StockLog home screen with the on-hand figure beside the reorder point. A variant with no reorder point set is never flagged.',
+    shot: {
+      src: inventoryReorder,
+      alt: 'StockLog stock on hand table with a reorder point field per variant. Canvas Tote, Black at 3 units against a reorder point of 10 and Stoneware Mug, Slate at 5 against 8 are both marked Low stock.',
+    },
+  },
+  {
+    id: 'start-from-where-you-are',
+    heading: 'Start from where you are',
+    body: 'Sync your current Shopify stock in one click. If you kept a Stocky CSV export, paste it in and each SKU starts from its Stocky quantity.',
+    detail: 'Paste the rows as SKU and quantity. Extra columns are ignored and the last one is read as the quantity. Run the sync first, so your SKUs already exist in the ledger when the import matches them.',
+    shot: {
+      src: importSync,
+      alt: 'StockLog Import and Sync screen: a Sync stock from Shopify button with a confirmation that 13 variants were synced, and a box for pasting a Stocky export as SKU and quantity rows.',
+    },
+  },
+];
+
+// The reasons a ledger row can carry, with the labels reasonTag() in
+// ~/stocklog/app/catalog.server.ts gives them. Restock and Manual adjustment
+// are the two choices on the app's adjustment form.
+const reasons = [
+  ['Order', 'units sold, one row per order line'],
+  ['Cancelled order', 'units returned when an order is cancelled'],
+  ['Refund', 'units returned by a refund with restock ticked'],
+  ['Restock', 'new stock you logged as arrived'],
+  ['Manual adjustment', 'a correction you logged by hand'],
+  ['Stocky import', 'a quantity set from your Stocky export'],
+  ['Shopify sync', 'the difference a sync found against Shopify'],
+  ['Opening balance', 'where a variant started when StockLog first saw it'],
+];
+
+const limits = [
+  {
+    title: 'It doesn’t change your Shopify stock levels.',
+    body: 'StockLog only asks Shopify for read access to orders and products. Shopify stays the source of truth for quantities.',
+  },
+  {
+    title: 'It doesn’t forecast demand.',
+    body: 'It tells you what happened and flags what is low. It does not predict what you will sell next month.',
+  },
+  {
+    title: 'It doesn’t raise purchase orders.',
+    body: 'A low stock flag tells you to reorder. Placing the order with your supplier is still done outside StockLog.',
+  },
+];
+
+const faq = [
+  {
+    q: 'Does StockLog change my Shopify stock levels?',
+    a: 'No. It records what happened; Shopify stays the source of truth for quantities.',
+  },
+  {
+    q: 'What happens to my data if I uninstall?',
+    a: 'Shopify sends a deletion request about 48 hours after uninstall, and StockLog deletes the shop’s ledger and settings when it arrives.',
+  },
+  // TODO(Luke): "Does it work with multiple locations?" Answer to be confirmed
+  // before it is published. For reference when you do: as of 23 Sep 2026 the
+  // app keeps one ledger row per variant (VariantSettings is unique on shop +
+  // variantId) and nothing in ~/stocklog/app mentions a location, so the
+  // ledger appears to hold one total per variant, not a figure per location.
+  {
+    q: 'Can I still import Stocky data?',
+    a: 'Yes, if you exported a CSV before Stocky closed.',
+  },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    // Same @id as the node on /about/, so the two merge into one entity.
+    '@id': 'https://stocklog.onrender.com/#app',
+    name: 'StockLog',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Shopify',
+    url: STOCKLOG_URL,
+    mainEntityOfPage: PAGE_URL,
+    description:
+      'A stock ledger for Shopify. StockLog records every order, cancellation, restocked refund, import and manual correction with the time and the reason, and flags variants that drop below their reorder point.',
+    image: abs(schemaIcon.src),
+    screenshot: abs(schemaShot.src),
+    author: { '@id': 'https://stackarchitect.xyz/#luke' },
+    publisher: { '@id': 'https://stackarchitect.xyz/#org' },
+    offers: {
+      '@type': 'Offer',
+      url: PAGE_URL,
+      price: String(STOCKLOG_PRICE),
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      seller: { '@id': 'https://stackarchitect.xyz/#org' },
+      priceSpecification: [
+        {
+          '@type': 'UnitPriceSpecification',
+          name: 'Free trial',
+          price: '0',
+          priceCurrency: 'USD',
+          billingDuration: { '@type': 'QuantitativeValue', value: STOCKLOG_TRIAL_DAYS, unitCode: 'DAY' },
+        },
+        {
+          '@type': 'UnitPriceSpecification',
+          price: String(STOCKLOG_PRICE),
+          priceCurrency: 'USD',
+          unitText: STOCKLOG_UNIT,
+          billingStart: STOCKLOG_TRIAL_DAYS,
+        },
+      ],
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://stackarchitect.xyz/' },
+      { '@type': 'ListItem', position: 2, name: 'StockLog', item: PAGE_URL },
+    ],
+  },
+];
+---
+<Base title="StockLog: stock history and inventory ledger for Shopify" description="StockLog is a Shopify app that explains stock numbers that look wrong, by recording every order, refund, import and correction with the time and the reason." pageType="product" publishDate="2026-09-23" updatedDate="2026-09-23" schema={schema} breadcrumb={[{ label: 'Home', href: '/' }, { label: 'StockLog' }]}>
+<div class="sl">
+<main id="main-content">
+
+  <!-- 1. HERO -->
+  <section class="hero" aria-labelledby="sl-h1">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="brand">
+          <Image src={icon} alt="" width={64} height={64} densities={[1, 2]} loading="eager" class="brand-icon" />
+          <h1 id="sl-h1">StockLog</h1>
+        </div>
+        <p class="hero-sub">A stock ledger for Shopify. Every change to your stock, with the reason behind it.</p>
+        <p id="answer" class="hero-intro">
+          Shopify tells you what your stock is now. StockLog tells you how it got there.
+          Orders take units off, restocked refunds put them back, and every manual count
+          is logged with the date and a reason. When a number looks wrong, you can see why.
+        </p>
+        <div class="cta-block">
+          <a class="btn" href={STOCKLOG_APP_STORE_URL} rel="noopener">Install from the Shopify App Store</a>
+          <p class="cta-note">{monthly}, {trial}</p>
+        </div>
+      </div>
+      <figure class="shot hero-shot">
+        <Image
+          src={movementHistory}
+          alt="StockLog movement history: each row shows the date and time, product, SKU, the change in units and the reason, such as Order #1012 taking one unit off and a Shopify sync setting opening quantities."
+          widths={[640, 960, 1280, 1600]}
+          sizes="(min-width: 960px) 560px, calc(100vw - 32px)"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <!-- 2. HOW IT WORKS -->
+  <section class="section" aria-labelledby="how-it-works">
+    <div class="inner">
+      <h2 id="how-it-works" class="sec-h">How it works</h2>
+      <ol class="how">
+        {howSteps.map((s, i) => (
+          <li class="how-step">
+            <span class="how-n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{s.title}</h3>
+            <p>{s.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 3. FEATURES -->
+  <section class="section section-alt" aria-labelledby="what-it-records">
+    <div class="inner">
+      <h2 id="what-it-records" class="sec-h">What StockLog records</h2>
+      <div class="features">
+        {features.map((f, i) => (
+          <article class={`feature ${i % 2 === 1 ? 'feature-flip' : ''}`} aria-labelledby={f.id}>
+            <div class="feature-copy">
+              <h3 id={f.id}>{f.heading}</h3>
+              <p>{f.body}</p>
+              <p class="feature-detail">{f.detail}</p>
+            </div>
+            {f.shot ? (
+              <figure class="shot">
+                <Image
+                  src={f.shot.src}
+                  alt={f.shot.alt}
+                  widths={[640, 960, 1280]}
+                  sizes="(min-width: 960px) 520px, calc(100vw - 32px)"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+            ) : (
+              <div class="reasons">
+                <p class="reasons-label">Every row carries one of these reasons</p>
+                <dl>
+                  {reasons.map(([name, meaning]) => (
+                    <div class="reason-row">
+                      <dt>{name}</dt>
+                      <dd>{meaning}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. LIMITS -->
+  <section class="section" aria-labelledby="what-it-doesnt-do">
+    <div class="inner inner-sm">
+      <h2 id="what-it-doesnt-do" class="sec-h">What StockLog doesn&rsquo;t do</h2>
+      <p class="sec-lede">It is a ledger. Knowing where it stops saves you installing it for the wrong job.</p>
+      <ul class="limits">
+        {limits.map((l) => (
+          <li><strong>{l.title}</strong> {l.body}</li>
+        ))}
+      </ul>
+      <p class="related">
+        Not ready for a paid app? <a href="/stocky-swap/">Stocky Swap</a> is our free way to log
+        orders to Google Sheets with Make.com. Weighing up every option?
+        See the <a href="/stocky-alternative/">Stocky alternatives compared</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- 5. PRICING -->
+  <section class="section section-alt" aria-labelledby="pricing">
+    <div class="inner inner-sm">
+      <h2 id="pricing" class="sec-h">Pricing</h2>
+      <div class="price-card">
+        <p class="price-plan">One plan</p>
+        <p class="price"><span class="price-num">{formatPrice(STOCKLOG_PRICE)}</span><span class="price-per">/month</span></p>
+        <ul class="price-list">
+          <li>{trial}</li>
+          <li>Billed through Shopify, on your usual Shopify invoice</li>
+          <li>Cancel any time from the Shopify admin</li>
+          <li>No tiers and no per-SKU charges</li>
+        </ul>
+        <a class="btn" href={STOCKLOG_APP_STORE_URL} rel="noopener">Install from the Shopify App Store</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. FAQ -->
+  <section class="section" aria-labelledby="faq">
+    <div class="inner inner-sm">
+      <h2 id="faq" class="sec-h">Questions merchants ask</h2>
+      <div class="faq">
+        {faq.map((f) => (
+          <details>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. FINAL CTA -->
+  <section class="final" aria-labelledby="final-h">
+    <div class="inner inner-sm">
+      <h2 id="final-h">See where every unit went</h2>
+      <p>Install StockLog, sync once, and the next number that looks wrong comes with its reason.</p>
+      <a class="btn" href={STOCKLOG_APP_STORE_URL} rel="noopener">Install from the Shopify App Store</a>
+      <p class="cta-note">{monthly}, {trial}</p>
+      <p class="disc">StockLog is built by Stack Architect. It is our own product, not an affiliate recommendation.</p>
+    </div>
+  </section>
+
+</main>
+</div>
+</Base>
+
+<style>
+  /* Tokens are scoped to the page wrapper rather than :root, so nothing here
+     leaks into Nav or Footer. Values are the site ramp from pro/[slug].astro;
+     the one addition is --sl-acc, the middle green of the StockLog icon, used
+     only for buttons and small highlights. Text on the dark ground stays on
+     the --text-2/3/4 ramp (see CLAUDE.md on contrast). */
+  .sl {
+    --bg: #0c0f0d;
+    --bg-3: #121614;
+    --border: rgba(255,255,255,0.06);
+    --border-2: rgba(255,255,255,0.11);
+    --text: #f2f5f3;
+    --text-2: #b6c0ba;
+    --text-3: #93a09a;
+    --text-4: #7f8b85;
+    --sl-acc: #34d399;
+    --sl-acc-dim: rgba(52,211,153,0.1);
+    --sl-acc-border: rgba(52,211,153,0.25);
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+    --sans: 'Inter', -apple-system, 'Helvetica Neue', sans-serif;
+    background: var(--bg); color: var(--text); font-family: var(--sans);
+  }
+  .sl *, .sl *::before, .sl *::after { box-sizing: border-box; }
+  /* :where() keeps this reset at zero specificity, so every class margin below wins. */
+  :where(.sl) :where(p, h1, h2, h3, ul, ol, dl, dd, figure) { margin: 0; }
+
+  /* BUTTON: accent fill, dark ink (about 10:1). No transform on hover, so
+     nothing moves, reduced motion or not. */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 48px; padding: 14px 26px;
+    background: var(--sl-acc); color: #0c0f0d;
+    font-family: var(--sans); font-size: 15px; font-weight: 700; letter-spacing: -.01em;
+    border-radius: 8px; text-decoration: none; text-align: center;
+    transition: background-color .15s;
+  }
+  .btn:hover { background: #6ee7b7; }
+  .btn:focus-visible { outline: 2px solid #6ee7b7; outline-offset: 3px; }
+  .cta-note { margin-top: 10px; font-family: var(--mono); font-size: 13px; color: var(--text-3); }
+
+  /* HERO */
+  .hero {
+    padding: 56px 16px 64px; border-bottom: 1px solid var(--border);
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.015) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,.015) 40px),
+      var(--bg);
+  }
+  .hero-grid { max-width: 1100px; margin: 0 auto; display: grid; gap: 40px; align-items: center; }
+  @media (min-width: 960px) {
+    .hero { padding: 80px 24px 88px; }
+    .hero-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 560px); gap: 56px; }
+  }
+  .brand { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
+  .brand-icon { width: 64px; height: 64px; border-radius: 14px; flex-shrink: 0; }
+  .hero h1 {
+    font-size: clamp(38px, 6vw, 56px); font-weight: 700; line-height: 1;
+    letter-spacing: -.035em; color: var(--text);
+  }
+  .hero-sub { font-size: clamp(19px, 2.4vw, 23px); line-height: 1.4; color: var(--text); font-weight: 600; letter-spacing: -.015em; margin-bottom: 18px; max-width: 34ch; }
+  .hero-intro { font-size: 17px; line-height: 1.7; color: var(--text-2); max-width: 56ch; margin-bottom: 30px; }
+
+  /* SCREENSHOT FRAME: the app screenshots are white, so each sits in a light
+     bordered, rounded frame with a soft shadow instead of floating on the
+     dark page. min-width: 0 lets it shrink inside a grid track, so a wide
+     table in an image can never force a horizontal scroll. */
+  .shot {
+    min-width: 0; background: #f6f6f7;
+    border: 1px solid rgba(255,255,255,.14); border-radius: 12px; overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0,0,0,.4), 0 18px 48px -12px rgba(0,0,0,.6);
+  }
+  .shot img { display: block; width: 100%; height: auto; }
+
+  /* SECTIONS */
+  .section { padding: 72px 16px; }
+  .section-alt { background: var(--bg-3); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  @media (min-width: 700px) { .section { padding: 96px 24px; } }
+  .inner { max-width: 1040px; margin: 0 auto; }
+  .inner-sm { max-width: 680px; }
+  .sec-h { font-size: clamp(26px, 3.6vw, 34px); font-weight: 700; letter-spacing: -.03em; line-height: 1.15; color: var(--text); margin-bottom: 36px; }
+  .sec-lede { font-size: 16px; line-height: 1.7; color: var(--text-2); margin: -20px 0 24px; }
+
+  /* HOW IT WORKS */
+  .how { list-style: none; padding: 0; display: grid; gap: 16px; }
+  @media (min-width: 800px) { .how { grid-template-columns: repeat(3, 1fr); } }
+  .how-step { background: var(--bg-3); border: 1px solid var(--border); border-radius: 12px; padding: 26px 24px; }
+  .how-n { display: block; font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--sl-acc); letter-spacing: .1em; margin-bottom: 12px; }
+  .how-step h3 { font-size: 18px; font-weight: 700; letter-spacing: -.02em; line-height: 1.3; color: var(--text); margin-bottom: 10px; }
+  .how-step p { font-size: 15px; line-height: 1.7; color: var(--text-2); }
+
+  /* FEATURES: stacked on mobile, alternating two columns from 900px. */
+  .features { display: grid; gap: 72px; }
+  .feature { display: grid; gap: 28px; align-items: center; }
+  @media (min-width: 900px) {
+    .features { gap: 96px; }
+    .feature { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 56px; }
+    .feature-flip { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); }
+    .feature-flip .feature-copy { order: 2; }
+  }
+  .feature h3 { font-size: clamp(21px, 2.6vw, 25px); font-weight: 700; letter-spacing: -.025em; line-height: 1.2; color: var(--text); margin-bottom: 14px; }
+  .feature h3::before { content: ''; display: block; width: 28px; height: 3px; border-radius: 2px; background: var(--sl-acc); margin-bottom: 16px; }
+  .feature-copy p { font-size: 17px; line-height: 1.7; color: var(--text-2); }
+  .feature-copy .feature-detail { margin-top: 14px; font-size: 15px; color: var(--text-3); }
+
+  .reasons { min-width: 0; background: var(--bg); border: 1px solid var(--border-2); border-radius: 12px; padding: 22px 22px 10px; }
+  .reasons-label { font-family: var(--mono); font-size: 12px; color: var(--text-3); letter-spacing: .06em; margin-bottom: 14px; }
+  .reason-row { display: grid; grid-template-columns: minmax(0, 150px) minmax(0, 1fr); gap: 12px; padding: 11px 0; border-top: 1px solid var(--border); }
+  .reason-row dt { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--sl-acc); }
+  .reason-row dd { font-size: 14px; line-height: 1.55; color: var(--text-2); }
+  @media (max-width: 420px) { .reason-row { grid-template-columns: 1fr; gap: 2px; } }
+
+  /* LIMITS */
+  .limits { list-style: none; padding: 0; display: grid; gap: 12px; }
+  .limits li { background: var(--bg-3); border: 1px solid var(--border); border-left: 3px solid var(--text-4); border-radius: 8px; padding: 16px 20px; font-size: 15px; line-height: 1.65; color: var(--text-2); }
+  .limits strong { color: var(--text); font-weight: 700; }
+  .related { margin-top: 28px; font-size: 15px; line-height: 1.7; color: var(--text-3); }
+  .related a, .faq a { color: var(--text-2); text-decoration: underline; text-underline-offset: 3px; }
+  .related a:hover { color: var(--sl-acc); }
+
+  /* PRICING */
+  .price-card { background: var(--bg); border: 1px solid var(--sl-acc-border); border-radius: 14px; padding: 32px 28px; }
+  .price-plan { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--sl-acc); margin-bottom: 10px; }
+  .price { display: flex; align-items: baseline; gap: 4px; margin-bottom: 22px; }
+  .price-num { font-family: var(--mono); font-size: 52px; font-weight: 800; letter-spacing: -.04em; line-height: 1; color: var(--text); }
+  .price-per { font-family: var(--mono); font-size: 16px; color: var(--text-3); }
+  .price-list { list-style: none; padding: 0; display: grid; gap: 10px; margin-bottom: 28px; }
+  .price-list li { position: relative; padding-left: 26px; font-size: 15px; line-height: 1.55; color: var(--text-2); }
+  .price-list li::before { content: ''; position: absolute; left: 2px; top: 6px; width: 12px; height: 7px; border-left: 2px solid var(--sl-acc); border-bottom: 2px solid var(--sl-acc); transform: rotate(-45deg); }
+
+  /* FAQ: native details/summary, so it opens with the keyboard and is
+     announced as expandable without any script. */
+  .faq { border-top: 1px solid var(--border-2); }
+  .faq details { border-bottom: 1px solid var(--border-2); }
+  .faq summary {
+    list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    padding: 20px 2px; font-size: 17px; font-weight: 600; line-height: 1.4; color: var(--text);
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: '+'; font-family: var(--mono); font-size: 20px; font-weight: 400; color: var(--sl-acc); flex-shrink: 0; }
+  .faq details[open] summary::after { content: '\2212'; }
+  .faq summary:focus-visible { outline: 2px solid var(--sl-acc); outline-offset: 2px; border-radius: 4px; }
+  .faq details p { padding: 0 2px 22px; font-size: 16px; line-height: 1.7; color: var(--text-2); max-width: 60ch; }
+
+  /* FINAL CTA */
+  .final { padding: 80px 16px 96px; text-align: center; border-top: 1px solid var(--border); background: radial-gradient(ellipse at 50% 0%, rgba(52,211,153,.08), transparent 60%), var(--bg); }
+  .final h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 700; letter-spacing: -.03em; color: var(--text); margin-bottom: 14px; }
+  .final p { font-size: 16px; line-height: 1.7; color: var(--text-2); margin: 0 auto 26px; max-width: 46ch; }
+  .final .cta-note { margin: 10px auto 0; }
+  .final .disc { margin-top: 28px; font-size: 13px; color: var(--text-4); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn { transition: none; }
+  }
+</style>

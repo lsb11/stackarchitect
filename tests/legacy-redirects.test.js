@@ -79,9 +79,11 @@ test('generated legacy map is in sync with public/_redirects', () => {
   });
 });
 
-test('the 62 live pages resolve in at most one 301, to their canonical URL', async (t) => {
+test('the 63 live pages resolve in at most one 301, to their canonical URL', async (t) => {
   assert.ok(sitemapPaths.length > 0, 'run `npm run build` first — dist/sitemap-0.xml is missing');
-  assert.equal(sitemapPaths.length, 62, 'sitemap URL count changed — the URL set is frozen');
+  // 62 -> 63 on 23 Sep 2026: /stocklog/, the second recorded freeze exception
+  // (see CLAUDE.md, Hard rules). Moving this number is the record of a new URL.
+  assert.equal(sitemapPaths.length, 63, 'sitemap URL count changed — the URL set is frozen');
 
   let checked = 0;
   for (const path of sitemapPaths) {

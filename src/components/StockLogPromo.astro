@@ -1,11 +1,11 @@
 ---
 // StockLog cross-promotion — first-party product block for Stocky pages.
 // Two-panel: brand + tagline + ledger visual left, description + pricing right.
-// When approved: set APP_STORE_URL to the live listing and the CTA switches
-// automatically from "Get notified" to "Install StockLog".
-import { STOCKLOG_PRICE, STOCKLOG_TRIAL_DAYS, formatMonthly } from '../data/products';
+// The install link reads STOCKLOG_APP_STORE_URL in src/data/products.ts, shared
+// with /stocklog/. Set it to "" and the CTA falls back to "Get notified".
+import { STOCKLOG_PRICE, STOCKLOG_TRIAL_DAYS, STOCKLOG_APP_STORE_URL, formatMonthly } from '../data/products';
 
-const APP_STORE_URL = ""; // e.g. "https://apps.shopify.com/stocklog" once approved
+const APP_STORE_URL = STOCKLOG_APP_STORE_URL;
 const NOTIFY_URL = "https://stackarchitect.beehiiv.com/subscribe";
 
 const ROWS = [
@@ -60,7 +60,7 @@ const ROWS = [
       ) : (
         <a class="sl-cta" href={NOTIFY_URL} rel="noopener" target="_blank">Get notified at launch &rarr;</a>
       )}
-      <a class="sl-live-link" href="https://stocklog.onrender.com/" rel="noopener" target="_blank">See StockLog live &rarr;</a>
+      <a class="sl-live-link" href="/stocklog/">See how StockLog works &rarr;</a>
       <span class="sl-alt">Want $0 instead? <a href="/stocky-swap/">Stocky Swap</a> stays free.</span>
     </div>
     <p class="sl-disc">StockLog is built by Stack Architect — a first-party product, not an affiliate recommendation.</p>
