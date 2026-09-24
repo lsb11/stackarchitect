@@ -90,7 +90,7 @@ const categoryList = (() => {
 const FAQ = [
   {
     q: 'What is the best free alternative to Shopify Stocky in 2026?',
-    a: "<a href='/stocky-swap/'>Stocky Swap</a> is the best free Stocky alternative in 2026. Shopify is permanently shutting down Stocky on August 31, 2026 and deleting all data after that date. Stocky Swap logs every Shopify order to Google Sheets in real time via a Make.com webhook, capturing stock levels, fulfilment status, SKU data, and full order history. Free forever, deploys in 4 minutes, requires no Shopify app install, and runs on Make.com's free tier of 1,000 credits per month. See the full <a href='/stocky-alternative/'>Stocky alternatives comparison</a>.",
+    a: "<a href='/stocky-swap/'>Stocky Swap</a> is the best free Stocky alternative for order logging in 2026. Shopify shut Stocky down on August 31, 2026, and says read-only export stays open for at least 90 days after that date. Stocky Swap logs every paid Shopify order to Google Sheets in real time via a Make.com webhook, with SKU data, fulfilment status and full order history. It does not calculate stock on hand, manage purchase orders or send alerts. Free, deploys in 4 minutes, requires no Shopify app install, and runs on Make.com's free tier of 1,000 credits per month. See the full <a href='/stocky-alternative/'>Stocky alternatives comparison</a>.",
   },
   {
     q: 'How do I replace Elevar for free on Shopify?',
@@ -301,7 +301,7 @@ const kitSchema = {
       "step": [
         { "@type": "HowToStep", "position": 1, "name": "Connect Shopify via webhook", "text": "Add a webhook in Shopify Admin that fires the instant an order is placed or paid. No app install required — it's a built-in Shopify feature. Takes 2 minutes." },
         { "@type": "HowToStep", "position": 2, "name": "Route and enrich order data with Make.com", "text": "Make.com receives the webhook and routes order data simultaneously: to Google Sheets for inventory and P&L, and to Meta Conversions API and TikTok Events API for server-side conversion events." },
-        { "@type": "HowToStep", "position": 3, "name": "Report in real time across platforms", "text": "Accurate attribution appears in Google Ads, Meta Ads Manager, and TikTok Ads Manager. Live P&L populates in Google Sheets. Low-stock alerts fire automatically. Entire system runs without maintenance on Make.com free tier." }
+        { "@type": "HowToStep", "position": 3, "name": "Report in real time across platforms", "text": "Server-side purchase events reach Meta Ads Manager and TikTok Ads Manager, the P&L populates in Google Sheets, and every paid order is logged to your sheet. Stock counts and low-stock alerts stay in Shopify Admin, with Shopify Flow for alerts. The whole system runs on the Make.com free tier." }
       ]
     },
     {
@@ -376,12 +376,12 @@ const kitSchema = {
   <div class="ledger reveal" aria-label="What the free stack replaces">
     <div class="ledger-row"><span class="ledger-app">Klaviyo <em>email</em></span><span class="ledger-fill"></span><span class="ledger-was">$20+/mo</span><span class="ledger-now">$0</span></div>
     <div class="ledger-row"><span class="ledger-app">Triple Whale / Elevar <em>tracking</em></span><span class="ledger-fill"></span><span class="ledger-was">$145–650/mo</span><span class="ledger-now">$0</span></div>
-    <div class="ledger-row"><span class="ledger-app">Stocky <em>inventory</em></span><span class="ledger-fill"></span><span class="ledger-was ledger-gone">$29–500/mo · deleted Aug 31</span><span class="ledger-now">$0</span></div>
+    <div class="ledger-row"><span class="ledger-app">Stocky <em>inventory</em></span><span class="ledger-fill"></span><span class="ledger-was ledger-gone">$29–500/mo · stopped Aug 31</span><span class="ledger-now">$0</span></div>
     <div class="ledger-row"><span class="ledger-app">TrueProfit / BeProfit <em>P&amp;L</em></span><span class="ledger-fill"></span><span class="ledger-was">$19–299/mo</span><span class="ledger-now">$0</span></div>
     <div class="ledger-row ledger-total"><span class="ledger-app">These four alone</span><span class="ledger-fill"></span><span class="ledger-was">$213–$1,469/mo</span><span class="ledger-now">$0</span></div>
   </div></div>
   <div class="urgency" role="note"><span class="dot" style="background:var(--amber);animation:none;"></span>{stockyGone
-    ? "Shopify deleted all Stocky data on August 31, 2026 — the free replacement deploys in 4 minutes"
+    ? "Stocky stopped on August 31, 2026. Its data is still exportable read-only, and the free replacement deploys in 4 minutes"
     : "Shopify's Stocky app shuts down August 31, 2026 — free replacement ready now"}</div>
 
   <!-- Self-hosted video with captions + transcript -->
@@ -481,11 +481,11 @@ const kitSchema = {
             <p class="plan-step0-desc">Every tool in your plan runs on one Make.com scenario. The free tier covers all of them: 1,000 credits a month, no credit card, no time limit. Set it up once and the rest of the plan is import-and-go.</p>
           </div>
         </div>
+        <p class="plan-step0-disc"><strong>Affiliate disclosure:</strong> the sign-up buttons below are affiliate links. Stack Architect earns a commission if you sign up through them, at no extra cost to you. Both tools have permanently free plans, and this plan works on them. <a href="/how-we-test/">How we test and disclose</a></p>
         <div class="plan-step0-actions">
           <a href="/go/make/?source=home-scanner-plan" target="_blank" rel="sponsored nofollow noopener" class="btn btn-sm btn-g" data-cta-position="scanner-plan">Create your free Make.com account →</a>
           <a href="/go/systeme/?source=home-scanner-plan-klaviyo" target="_blank" rel="sponsored nofollow noopener" class="plan-step0-alt" id="sc-systeme" hidden data-cta-position="scanner-plan-klaviyo">Your plan replaces Klaviyo — start free on Systeme.io →</a>
         </div>
-        <p class="plan-step0-disc"><span class="aff-mark">affiliate</span> We earn a commission if you sign up through these links, at no extra cost to you. Both tools have permanently free plans and the plan above works on them.</p>
       </div>
 
       <div class="plan-items" id="sc-plan-items"></div>
@@ -528,12 +528,13 @@ const kitSchema = {
       <h2 id="sol-h">One Stack. Every Shopify Leak Fixed.</h2>
       <p>Each targets a specific profit leak. Deploy one or all {toolCount}. Every tool costs $0 and deploys in under 6 minutes.</p>
     </div>
+    <Disclosure />
 
     <article class="sol-urgent" data-tool-card="/stocky-swap/">
       <div class="sol-urgent-bar"></div>
       <div class="sol-urgent-inner">
         <div style="flex:1;min-width:260px;">
-          <div class="sol-urgent-badge">{stockyGone ? "⚠ Stocky data deleted — August 31, 2026" : "⚠ Action required — August 31, 2026"}</div>
+          <div class="sol-urgent-badge">{stockyGone ? "⚠ Stocky stopped August 31, 2026 · export still open" : "⚠ Action required — August 31, 2026"}</div>
           <div style="margin-bottom:10px;"><span class="tag tag-sky">Inventory</span></div>
           <div class="sol-urgent-name">Stocky Swap</div>
           <div class="sol-urgent-hl">{stockyGone
@@ -548,7 +549,7 @@ const kitSchema = {
           <div class="sol-urgent-meta"><span class="sol-urgent-save">Saves $29–$500/mo</span><span class="sol-urgent-time">~4 min setup</span></div>
           <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;">
             <a href="/stocky-swap/" class="btn btn-sm">Deploy Stocky Swap Free →</a>
-            <a href="/stocky-shutdown/" class="btn-outline btn-outline-sm">What's being deleted</a>
+            <a href="/stocky-shutdown/" class="btn-outline btn-outline-sm">What you can still export</a>
             <a href="/go/make/?source=home-card-stocky" target="_blank" rel="sponsored nofollow noopener" class="sol-aff" data-cta-position="card-stocky">Needs Make.com — start free <span class="aff-mark">affiliate</span></a>
           </div>
         </div>
@@ -1384,7 +1385,7 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
     <p>iOS 26 Link Tracking Protection strips the Google Click ID (gclid) from ad URLs opened in Safari Private Browsing, Mail, and Messages. Without gclid, Google Ads cannot attribute the purchase to the ad, so Shopify's reported Google Ads conversions understate what the ads actually drove. We have not found a published figure for how large that gap is, and have not measured it ourselves, so this page does not put a number on it. <a href="/shopify-google-ads-conversion-tracking/">Google Ads Enhanced Conversions via Make.com</a> can send hashed customer email to Google Ads; whether Google accepts it without a click ID depends on how the conversion action is set up.</p>
 
     <h3>What Replaces Shopify Stocky After August 2026?</h3>
-    <p>Shopify is permanently closing Stocky on August 31, 2026 and deleting all data after that date. No first-party migration path is provided. <a href="/stocky-swap/">Stocky Swap</a> is the best free Stocky replacement — it logs every Shopify order to Google Sheets in real time via a Make.com webhook, capturing stock levels, fulfilment status, and full order history. It deploys in 4 minutes, costs $0 forever, and requires no Shopify app install. For a full comparison of <a href="/stocky-alternative/">all Stocky alternatives in 2026</a>, including paid options, see the dedicated comparison page. Use the <a href="/stocky-migration-risk-scorer/">Stocky Migration Risk Scorer</a> to assess your complexity before migrating.</p>
+    <p>Shopify shut Stocky down on August 31, 2026. Read-only export stays open for at least 90 days after that date, and no first-party migration path is provided. <a href="/stocky-swap/">Stocky Swap</a> is the best free replacement for its order log: it logs every paid Shopify order to Google Sheets in real time via a Make.com webhook, with fulfilment status and full order history. It does not calculate stock on hand; Shopify Admin does. It deploys in 4 minutes, costs $0 forever, and requires no Shopify app install. For a full comparison of <a href="/stocky-alternative/">all Stocky alternatives in 2026</a>, including paid options, see the dedicated comparison page. Use the <a href="/stocky-migration-risk-scorer/">Stocky Migration Risk Scorer</a> to assess your complexity before migrating.</p>
 
     <h3>Free TikTok Server-Side Tracking for Shopify</h3>
     <p>The same Make.com scenario can branch to <a href="/tiktok-events-api-shopify/">TikTok's Events API</a> simultaneously. TikTok uses CompletePayment as its purchase event name, not Purchase. The server-side signal bypasses iOS ITP and ad blockers. We have not sampled EMQ across Shopify stores and do not publish a typical score for this setup. WeltPixel ($39/month) and Analyzify ($145–$275/mo) deliver TikTok events by the same server-side route; this one runs on Make.com's free tier at $0. For a full no-code walkthrough, see <a href="/tiktok-events-api-shopify/">how to set up TikTok Events API on Shopify without code</a>.</p>
@@ -1727,9 +1728,11 @@ window.gfGet = function() {
 .plan-step0-alt:hover{border-bottom-style:solid;}
 .plan-step0-alt[hidden]{display:none;}
 .plan-step0-disc{
-  font-size:var(--fs-sm);color:var(--text-4);line-height:1.6;
-  margin:14px 0 0;padding-left:40px;
+  font-size:var(--fs-sm);color:var(--text-3);line-height:1.6;
+  margin:14px 0 0 40px;padding-left:10px;border-left:2px solid var(--g);
 }
+.plan-step0-disc strong{color:var(--text-2);}
+.plan-step0-disc a{color:var(--text-2);text-decoration:underline;}
 
 /* Scanner terminal — the pay-to-skip offer, after the free plan */
 .plan-kit{
@@ -1800,7 +1803,8 @@ window.gfGet = function() {
   .sec-commercial .sec-head{text-align:center;}
   .sec-commercial .sec-head h2::after{margin-left:auto;margin-right:auto;}
   .sec-commercial .sec-head p{margin-left:auto;}
-  .plan-step0-actions,.plan-step0-disc{padding-left:0;}
+  .plan-step0-actions{padding-left:0;}
+  .plan-step0-disc{margin-left:0;}
   .plan-kit{flex-direction:column;align-items:stretch;}
   .aff-row{flex-direction:column;align-items:stretch;}
   .aff-row-cta{text-align:center;}

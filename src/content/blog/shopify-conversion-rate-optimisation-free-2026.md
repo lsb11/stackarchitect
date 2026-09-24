@@ -4,7 +4,7 @@ heading: "Shopify Conversion Rate Optimisation Free 2026 — 12 Tools That Cost 
 description: "12 free Shopify CRO tools and tactics, in order. Fix the tracking gap first, because every decision made on incomplete conversion data is wrong."
 answer: "Shopify conversion rate optimisation should begin with measurement, not apps. Browser tracking misses purchases, so a store's reported conversion rate reads artificially low and every decision built on it is wrong. Fix tracking first, then checkout friction, then retention flows. Twelve free tools cover all three."
 publishDate: "2026-04-21"
-updatedDate: "2026-04-21"
+updatedDate: "2026-09-24"
 category: "automation"
 badge: "Free Tools"
 badgeType: "new"
@@ -14,7 +14,7 @@ faqs:
   - question: "What is a good conversion rate for a Shopify store in 2026?"
     answer: "The average Shopify store conversion rate is 1.4–2.1% across all traffic. A conversion rate above 2% is considered good; above 3% is excellent for most niches. However, conversion rate is highly niche-dependent — fashion stores typically convert at 0.8–1.5%, while consumables and everyday products convert at 3–5%. Your conversion rate should be benchmarked against your specific category, not a universal average."
   - question: "What free tools can improve Shopify conversion rate?"
-    answer: "The highest-impact free CRO tools for Shopify in 2026 are: Tidio (free AI live chat resolving 70% of queries automatically), Google Analytics 4 (free funnel analysis showing checkout drop-off points), Hotjar free plan (500 sessions/month of heatmaps and recordings), Microsoft Clarity (unlimited free heatmaps and session recordings), CAPI Shield (server-side tracking that fixes attribution gaps which artificially lower apparent conversion rates), and Shopify's native checkout customisation tools."
+    answer: "The highest-impact free CRO tools for Shopify in 2026 are: Tidio (free AI live chat; Tidio says its Lyro AI automates around 67% of customer inquiries on average), Google Analytics 4 (free funnel analysis showing checkout drop-off points), Hotjar free plan (500 sessions/month of heatmaps and recordings), Microsoft Clarity (unlimited free heatmaps and session recordings), CAPI Shield (server-side tracking that fixes attribution gaps which artificially lower apparent conversion rates), and Shopify's native checkout customisation tools."
   - question: "Why does my Shopify conversion rate look low?"
     answer: "Many apparent conversion rate problems are actually tracking problems. If your GA4 or Meta Ads Manager is missing purchase events due to iOS restrictions or ad blockers, your reported conversion rate is artificially low. The first step before any CRO work is verifying your tracking is accurate — implement server-side Enhanced Conversions for Google Ads and Meta CAPI for Facebook to get accurate purchase data."
   - question: "Does Shopify have a free CRO tool?"
@@ -81,7 +81,7 @@ The native Shopify Product Reviews app is free and adds star ratings and review 
 
 ### 5. Tidio Live Chat Free Plan (Free)
 
-[Tidio — free live chat with Lyro AI](/go/tidio/?source=shopify-conversion-rate-optimisation-fre-n2) that automatically resolves approximately 70% of pre-purchase queries that automatically resolves approximately 70% of pre-purchase queries. Unanswered questions at checkout are a top conversion killer. Lyro handles "Do you ship to X?", "What's your returns policy?", "When will this arrive?" without any human response needed.
+[Tidio — free live chat with Lyro AI](/go/tidio/?source=shopify-conversion-rate-optimisation-fre-n2) answers pre-purchase questions automatically. Tidio says Lyro automates around 67% of customer inquiries on average, across all query types rather than pre-purchase ones alone. Unanswered questions at checkout are a top conversion killer. Lyro handles "Do you ship to X?", "What's your returns policy?", "When will this arrive?" without any human response needed.
 
 Tidio's free plan covers most Shopify stores. It installs via the Shopify App Store in 2 minutes.
 

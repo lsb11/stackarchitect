@@ -4,7 +4,7 @@ heading: "The Lean Shopify Tech Stack 2026 — Replace $700/Month of Apps for Fr
 description: "Free tools replacing Shopify tracking apps, inventory software, email platforms, and automation connectors in 2026. What to keep, cut, and replace."
 answer: "The lean Shopify stack replaces paid apps with the platform's own webhooks plus a single automation layer. Server-side tracking, inventory logging, email and profit reporting all run from one Make.com scenario on a free tier. The average store spends $400-$800 a month on apps, and most of that is replaceable."
 publishDate: "2026-03-05"
-updatedDate: "2026-07-16"
+updatedDate: "2026-09-24"
 category: "automation"
 badge: "Stack Guide"
 badgeType: "new"
@@ -64,9 +64,9 @@ The only ongoing cost is Make.com's free plan (sufficient for most stores) or Co
 
 **What these do:** track stock levels, log orders, manage purchase orders, and alert on low stock.
 
-**Free replacement:** [Stocky Swap](/stocky-swap/) + Google Sheets. Every Shopify order automatically writes to a Google Sheet you own. Add SUMIF formulas for live stock calculations, a Make.com scheduled scenario for low-stock email alerts. Full inventory management at $0.
+**Free replacement, for the part it covers:** [Stocky Swap](/stocky-swap/) + Google Sheets. Every paid Shopify order writes to a row in a Google Sheet you own. That is an order ledger, not full inventory management: Stocky Swap does not calculate stock on hand, manage purchase orders or send alerts. Shopify Admin covers stock levels and purchase orders on every plan, with Shopify Flow for low-stock alerts. You can add SUMIF formulas or an alert scenario to the sheet yourself, but a stock figure built from orders misses refunds, returns and adjustments.
 
-**Why this is urgent:** Shopify Stocky stops functioning entirely on August 31, 2026. Any store not yet using an alternative will lose inventory visibility on that date. Stocky Swap deploys in 4 minutes.
+**Why this is urgent:** Shopify Stocky stopped working on August 31, 2026. Shopify says read-only export stays open for at least 90 days after that date, so export your Stocky data now. Stocky Swap deploys in 4 minutes.
 
 ## Layer 3 — Email Marketing (Save $20+/Month)
 
@@ -102,7 +102,7 @@ The only ongoing cost is Make.com's free plan (sufficient for most stores) or Co
 
 **What these do:** manage customer support tickets, integrate with Shopify order data
 
-**Free replacement:** [Tidio — free live chat with Lyro AI](/go/tidio/?source=the-lean-shopify-tech-stack-2026-n3) — free tier includes live chat and 50 Lyro AI conversations per month. Lyro AI resolves approximately 70% of queries automatically (order status, shipping, FAQs) without human intervention. Whether the free tier covers you is a question about how many shoppers message you, not about revenue — the "£30,000/month GMV" threshold that stood here was invented, and nothing produces it.
+**Free replacement:** [Tidio — free live chat with Lyro AI](/go/tidio/?source=the-lean-shopify-tech-stack-2026-n3) — free tier includes live chat and 50 one-time Lyro AI conversations, not a monthly allowance. Tidio says Lyro automates around 67% of customer inquiries on average (order status, shipping, FAQs). Whether the free tier covers you is a question about how many shoppers message you, not about revenue — the "£30,000/month GMV" threshold that stood here was invented, and nothing produces it.
 
 ## What to Keep Paying For
 

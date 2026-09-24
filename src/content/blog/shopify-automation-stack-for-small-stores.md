@@ -4,7 +4,7 @@ heading: "Shopify Automation Stack for Small Stores 2026 — The $0 Setup Under 
 description: "The minimum viable free automation stack for Shopify stores under 1,000 orders/month. What to deploy first, what to skip, and how to scale as volume grows."
 answer: "A Shopify store under 1,000 orders a month needs four automations: server-side conversion tracking, order logging to Google Sheets, a free email platform, and live profit reporting. All four run from one Make.com scenario on a single order webhook, costing nothing below roughly 250 orders and $9 monthly above that."
 publishDate: "2026-03-22"
-updatedDate: "2026-04-16"
+updatedDate: "2026-09-24"
 category: "automation"
 badge: "Beginner Guide"
 badgeType: "new"
@@ -135,7 +135,7 @@ As your store grows, add complexity in this order:
 
 **At 250+ orders/month:** upgrade Make.com to Core ($9/month) for 10,000 credits. Everything else stays the same.
 
-**At $30,000+/month GMV:** add Tidio for customer support. The free tier (50 Lyro AI conversations/month) handles support volume at this size without human agents for most queries.
+**At $30,000+/month GMV:** add Tidio for customer support. The free tier includes live chat and 50 one-time Lyro AI conversations, not a monthly allowance, so budget for Lyro if you want AI answers beyond the trial.
 
 **At $50,000+/month GMV:** consider [GetResponse — engagement-based billing](/go/getresponse/?source=shopify-automation-stack-for-small-store-n3) ($19/month) if your email list has grown beyond Systeme.io's 2,000 free contacts. The abandoned cart and post-purchase sequences become more valuable as revenue scales.
 

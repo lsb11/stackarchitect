@@ -4,7 +4,7 @@ heading: "Shopify BFCM Automation Checklist 2026 — 14 Things to Set Up Before 
 description: "14 automation tasks to complete before Black Friday 2026, ordered by deadline. Tracking first: ad platforms need 60-90 days of clean data to calibrate."
 answer: "The BFCM automation work that matters happens months before November. Ad platforms need 60-90 days of clean conversion data to optimise, so server-side tracking has to be live by September. Inventory logging, email flows and a Make.com operations budget follow. Fourteen tasks, ordered by deadline rather than by effort."
 publishDate: "2026-04-21"
-updatedDate: "2026-04-21"
+updatedDate: "2026-09-24"
 category: "automation"
 badge: "BFCM 2026"
 badgeType: "urgent"
@@ -93,7 +93,7 @@ BFCM is when attribution window mismatches cause the most confusion. Check:
 
 Shopify closed Stocky on August 31, 2026, and its APIs stopped that day with no grace period. Read-only access to export your data continues for at least 90 days after that date, with no end date published — so if you relied on Stocky, export now and migrate.
 
-[Stocky Swap](/stocky-swap/) deploys in 4 minutes — a Make.com JSON blueprint that logs every order to Google Sheets in real time. It captures stock levels, SKU data, fulfilment status, and full order history. The Complete Kit includes the pre-built JSON file, ready to import.
+[Stocky Swap](/stocky-swap/) deploys in 4 minutes — a Make.com JSON blueprint that logs every order to Google Sheets in real time. It captures SKU data, fulfilment status and full order history. It does not calculate stock on hand or send low-stock alerts; Shopify Admin and Shopify Flow do. The Complete Kit includes the pre-built JSON file, ready to import.
 
 **For BFCM specifically:** Having real-time inventory data in Google Sheets during BFCM is essential for preventing overselling on high-demand SKUs. The Sheets dashboard gives you live visibility across all variants without needing to refresh Shopify admin constantly.
 

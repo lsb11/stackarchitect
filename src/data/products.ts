@@ -277,7 +277,7 @@ export const PRODUCTS: Product[] = [
     faq: [
       {
         q: 'Can it import my existing Stocky history?',
-        a: 'No, and nothing else can either. Stocky’s data was deleted rather than migrated into Shopify Admin. Stocky Swap starts logging from the next order it sees, so the sooner it is switched on the less history you lose.',
+        a: 'No. Stocky Swap logs forward from the next order it sees and does not import history. Export your Stocky purchase orders, stocktakes and supplier records separately: Shopify says read-only export stays open for at least 90 days after 31 August 2026, and has published no end date. The sooner Stocky Swap is switched on, the fewer new orders fall outside the log.',
       },
       {
         q: 'What exactly lands in the Sheet?',

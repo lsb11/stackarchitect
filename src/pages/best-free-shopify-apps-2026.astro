@@ -133,7 +133,7 @@ const categories = [
         description: "Shopify closed Stocky on August 31, 2026, and its APIs stopped that day with no grace period. Your data stays exportable read-only for at least 90 days afterwards — export it, then migrate to Stocky Swap, which takes 60 seconds and captures live data from the next order forward.",
         cta: "Replace Stocky free →",
         ctaHref: TOOLS.stockySwap,
-        detail: "August 31, 2026 hard shutdown. Data deleted. No migration tool provided by Shopify.",
+        detail: "August 31, 2026 hard shutdown. Data still exportable read-only for at least 90 days. No migration tool provided by Shopify.",
       },
     ],
   },
@@ -308,8 +308,8 @@ const categories = [
         price: "$0/month (free plan), then $29+/mo",
         replaces: "Intercom ($74/mo), Zendesk",
         saves: "$29–$100/mo",
-        description: "The best free live chat + AI support tool for Shopify. Tidio's free plan includes live chat, a basic chatbot, Shopify order lookup, and visitor tracking. Tidio's Lyro AI (paid) resolves approximately 70% of support queries automatically. The free plan is sufficient for stores handling under 100 conversations per month. For sites with higher volume, Tidio's paid plans are significantly cheaper than Gorgias or Zendesk.",
-        cta: "Install Tidio free — Lyro AI resolves up to 70% of tickets",
+        description: "The best free live chat + AI support tool for Shopify. Tidio's free plan includes live chat, a basic chatbot, Shopify order lookup, and visitor tracking. Tidio says its Lyro AI (paid beyond the 50 one-time free conversations) automates around 67% of customer inquiries on average. The free plan is sufficient for stores handling under 100 conversations per month. For sites with higher volume, Tidio's paid plans are significantly cheaper than Gorgias or Zendesk.",
+        cta: "Install Tidio free: Tidio says Lyro automates around 67% of inquiries",
         ctaHref: `${AFF.tidio}?source=best-free-shopify-apps-2026-map-n3`,
         ctaRel: "sponsored nofollow noopener",
         detail: "Free: 50 conversations/month, live chat, basic bot. Paid from $29/month.",
@@ -542,7 +542,7 @@ const faqs = [
   },
   {
     q: "What is the best free Shopify inventory management app after Stocky shuts down?",
-    a: "Stocky Swap by Stack Architect is the best free replacement for Shopify Stocky before its August 31, 2026 shutdown. It automatically logs every Shopify order to Google Sheets in real time via Make.com webhook, capturing stock levels, SKU data, fulfilment status, and full order history. It costs $0 forever, and runs on Make.com's free tier. For stores needing more advanced features like purchase order management, Stock Sync (free for up to 500 SKUs) or paid alternatives like Linnworks cover those use cases."
+    a: "Stocky Swap by Stack Architect is the best free replacement for Shopify Stocky's order log after its August 31, 2026 shutdown. It automatically logs every paid Shopify order to Google Sheets in real time via Make.com webhook, with SKU data, fulfilment status and full order history. It does not calculate stock on hand, manage purchase orders or send alerts. It costs $0 forever, and runs on Make.com's free tier. For stores needing more advanced features like purchase order management, Stock Sync (free for up to 500 SKUs) or paid alternatives like Linnworks cover those use cases."
   },
   {
     q: "How do I get all these free Shopify tools set up quickly?",
@@ -632,10 +632,10 @@ const tocHeadings = [
     "id": "calculate-your-monthly-savings",
     "text": "Calculate your monthly savings"
   },
-  {
-    "id": "best-free-shopify-cat-label-apps-2026",
-    "text": "{`Best Free Shopify ${cat.label} Apps 2026`}"
-  },
+  // One entry per category. This page carried three navigations for the same
+  // ten sections (a desktop sidebar, a mobile pill bar and this widget), and
+  // this entry was a template string that had been pasted in as literal text.
+  ...categories.map(c => ({ id: c.id, text: c.label })),
   {
     "id": "real-cost-h",
     "text": "Why your app bill is bigger than the invoice suggests"
@@ -749,18 +749,6 @@ const tocHeadings = [
   </div>
 </section>
 
-<!-- CATEGORY QUICK-NAV (mobile) -->
-<nav class="cat-nav" aria-label="Jump to category">
-  <div class="cat-nav-inner">
-    <span class="cat-nav-label">Jump to:</span>
-    {categories.map(c => (
-      <a href={`#${c.id}`} class="cat-pill" onclick={`event.preventDefault();document.getElementById('${c.id}').scrollIntoView({behavior:'smooth'})`}>
-        <span>{c.emoji}</span> {c.label}
-      </a>
-    ))}
-  </div>
-</nav>
-
 <!-- SAVINGS CALCULATOR -->
 <div style="max-width:1200px;margin:0 auto;padding:40px 24px 0">
   <div class="savings-widget">
@@ -796,19 +784,6 @@ const tocHeadings = [
 <!-- MAIN BODY -->
 <div class="page-body">
 
-  <!-- SIDEBAR (desktop) -->
-  <aside class="sidebar" aria-label="Category navigation">
-    <nav class="sidebar-nav">
-      <div class="sidebar-label">10 Categories</div>
-      {categories.map(c => (
-        <a href={`#${c.id}`} class="sidebar-link" onclick={`event.preventDefault();document.getElementById('${c.id}').scrollIntoView({behavior:'smooth'})`}>
-          <span class="sidebar-emoji">{c.emoji}</span>
-          {c.label}
-        </a>
-      ))}
-    </nav>
-  </aside>
-
   <!-- MAIN CONTENT -->
   <div class="main-content">
 
@@ -817,7 +792,7 @@ const tocHeadings = [
 
         <div class="cat-header">
           <span class="cat-badge">{cat.emoji} {cat.label}</span>
-          <h2 id="best-free-shopify-cat-label-apps-2026" id={`cat-${cat.id}-h`} class="cat-title">
+          <h2 id={`cat-${cat.id}-h`} class="cat-title">
             {`Best Free Shopify ${cat.label} Apps 2026`}
           </h2>
           <p class="cat-tagline">{cat.tagline}</p>
@@ -1154,19 +1129,6 @@ const tocHeadings = [
     });
   });
 
-  // Active sidebar link highlighting
-  var sections = document.querySelectorAll('.category-section');
-  var sidebarLinks = document.querySelectorAll('.sidebar-link');
-  var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        sidebarLinks.forEach(function(link) {
-          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
-        });
-      }
-    });
-  }, { rootMargin: '-20% 0px -70% 0px' });
-  sections.forEach(function(s) { observer.observe(s); });
 </script>
 
 
@@ -1225,21 +1187,9 @@ const tocHeadings = [
     .hero-note a{color:rgba(52,211,119,.82);text-decoration:underline}
 
     /* CATEGORY NAV (sticky quick-jump) */
-    .cat-nav{background:var(--bg-2);border-bottom:1px solid var(--border);padding:14px 24px;position:sticky;top:64px;z-index:90}
-    .cat-nav-inner{max-width:1200px;margin:0 auto;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-    .cat-nav-label{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--text-4);letter-spacing:.12em;text-transform:uppercase;margin-right:6px;white-space:nowrap}
-    .cat-pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:5px 12px;border-radius:20px;background:var(--bg-3);border:1px solid var(--border);color:var(--text-4);cursor:pointer;text-decoration:none;transition:all .15s;white-space:nowrap}
-    .cat-pill:hover{background:var(--g-bg);border-color:var(--g-border);color:var(--g)}
 
     /* MAIN LAYOUT */
-    .page-body{max-width:1200px;margin:0 auto;padding:0 24px 100px;display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start}
-    .sidebar{position:sticky;top:120px}
-    .sidebar-nav{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:20px}
-    .sidebar-label{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--text-4);letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px}
-    .sidebar-link{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;font-size:13px;color:var(--text-3);transition:all .15s;margin-bottom:2px;cursor:pointer;text-decoration:none}
-    .sidebar-link:hover,.sidebar-link.active{background:var(--g-bg);color:var(--text);border-color:var(--g-border)}
-    .sidebar-emoji{font-size:14px;width:20px;text-align:center}
-    .sidebar-cta{margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+    .page-body{max-width:960px;margin:0 auto;padding:0 24px 100px}
     .main-content{min-width:0}
 
     /* CATEGORY SECTIONS */
@@ -1332,9 +1282,6 @@ const tocHeadings = [
 
     /* RESPONSIVE */
     @media(max-width:900px){
-      .page-body{grid-template-columns:1fr;gap:0}
-      .sidebar{display:none}
-      .cat-nav{display:block}
     }
     @media(max-width:600px){
       .hero{padding:48px 20px 40px}
