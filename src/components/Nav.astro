@@ -2,37 +2,30 @@
 import "@fontsource/sora/600.css";
 import "@fontsource/sora/700.css";
 import "@fontsource/jetbrains-mono/500.css";
-import { KIT_PRICE, formatPrice } from '../data/products';
-// Derived, never typed. This label said "All 53 apps" on every page of the site
-// from 14 Aug to 5 Sep 2026, after Stockful took apps.json to 54 — the same
-// hand-written-count bug as the /apps/ <h1>, but in the sitewide nav.
-import appsData from '../data/apps.json';
-const APP_COUNT = appsData.length;
-// Nav.astro — Stack Architect, 2026 refresh
-// Changes vs previous version:
-//  • Fake status ticker ("PRODUCT_NODES // ACCESS_OPEN") replaced with ONE
-//    honest, dated announcement: the Stocky shutdown. Real deadline, real link.
-//  • [Brackets], ▾ carets, SNAKE_CASE labels removed.
-//  • Dropdowns trimmed to the post-prune URL set (see 01-PRUNE-MAP.md).
-//  • ONE CTA in the nav: the kit. Everything else is navigation.
-//  • Same JS behaviour (scroll state, dropdowns, hamburger) — Escape,
-//    outside-click and aria states preserved.
+import { KIT_PRICE, SINGLE_PRICE, STOCKLOG_PRICE, formatPrice } from '../data/products';
+// Nav.astro: Stack Architect sitewide header.
 //
-// STOCKY, POST-31-AUGUST-2026 (done — no further edit needed):
-// Primary nav points at /stocky-alternative/, which is written to read
-// correctly on both sides of the shutdown date. /stocky-shutdown/ stays live
-// and indexed and is still linked from /stocky-alternative/, the export guide
-// and the footer — it is simply no longer a primary-nav destination, because
-// it becomes a retrospective record on 1 September while the alternative page
-// stays evergreen.
+// 24 Sep 2026 redesign. The header went from 29 links (plus 27 in the mobile
+// menu) to 7, and every page it dropped is still linked from its section index
+// (/tools/, /shopify-automation-guides/, /pro/) and from the homepage body or the
+// footer. The rules it was cut to:
+//  • A header link either sells something (/stocklog/, /pro/), is a section
+//    index that absorbs the cut links, or has usage data behind it. No link had
+//    usage data, so the third rule kept nothing.
+//  • One primary CTA: the kit. StockLog, the only recurring product, is the
+//    secondary: first in the Products disclosure, linked to /stocklog/ and never
+//    to STOCKLOG_APP_STORE_URL, which is a placeholder until the app is listed.
+//  • Prices render the constants in products.ts. Never type one here.
+//  • Products is a disclosure, not an ARIA menu: a button with aria-expanded
+//    and aria-controls opening a panel of ordinary links. Escape closes it and
+//    returns focus to the button; tabbing out of it closes it.
 //
-// The announcement bar states the date as a fact rather than as a countdown,
-// so it never renders an expired timer. It does switch to past tense at the
-// deadline — a first-time visitor arriving on 1 September needs "recover what
-// you can", not "export it in time". Both variants are chosen at BUILD time
-// (isPostShutdown, src/utils/stockyDeadline.ts) because this bar is on every
-// page and is the first thing a non-JS crawler reads. Retire it when the
-// shutdown stops being the most useful thing to tell a first-time visitor.
+// STOCKY BANNER. The date branch below is chosen at BUILD time (isPostShutdown,
+// src/utils/stockyDeadline.ts). Every build since 31 Aug 2026 renders the
+// post-shutdown line, which makes no claim about how long Stocky's export stays
+// open, so it cannot go stale on a date and needs no scheduled rebuild. Retire
+// the bar when the shutdown stops being the most useful thing to tell a
+// first-time visitor.
 
 import { isPostShutdown } from '../utils/stockyDeadline';
 
@@ -44,38 +37,16 @@ const { showAnnouncement = true } = Astro.props;
 const postShutdown = isPostShutdown();
 
 const currentPath = Astro.url.pathname;
+const current = (href: string) =>
+  currentPath === href || currentPath.startsWith(href) ? 'page' : undefined;
 
 const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="20" height="20" fill="none" aria-hidden="true"><rect x="17" y="65" width="66" height="9" rx="2.6" fill="#34d377"/><rect x="23.5" y="52" width="53" height="9" rx="2.6" fill="#34d377"/><rect x="30" y="39" width="40" height="9" rx="2.6" fill="#34d377"/><rect x="36.5" y="26" width="27" height="9" rx="2.6" fill="#7ee2a8"/></svg>`;
 
-const products = [
-  { href: '/capi-shield/', title: 'CAPI Shield', desc: 'Meta server-side tracking, free' },
-  { href: '/shopify-google-ads-conversion-tracking/', title: 'Google Ads tracking', desc: 'Enhanced Conversions setup, free' },
-  { href: '/tiktok-events-api-shopify/', title: 'TikTok Events API', desc: 'TikTok server-side tracking, free' },
-  { href: '/stocky-swap/', title: 'Stocky Swap', desc: 'Free inventory — replaces Stocky' },
-  { href: '/replace-klaviyo-free/', title: 'Replace Klaviyo', desc: 'Free email automation via Systeme.io' },
-  { href: '/shopify-profit-loss-automation/', title: 'Live P&L', desc: 'Profit and loss in Google Sheets, free' },
-  { href: '/autocrat-quota-fix/', title: 'Autocrat Quota Fix', desc: 'Fix Apps Script quota errors, free' },
-];
-
-// /shopify-automation-scanner/ and /app-audit/ both 301 to the kill-or-keep
-// auditor as of consolidation v1, so the two entries collapse into one.
-const tools = [
-  { href: '/shopify-app-stack-kill-or-keep-auditor/', title: 'App Stack Auditor', desc: 'Find which apps you can replace for $0' },
-  { href: '/shopify-app-cost-calculator/', title: 'App Cost Calculator', desc: 'Your exact monthly app bill' },
-  { href: '/make-vs-zapier-cost-calculator/', title: 'Make vs Zapier', desc: 'Compare automation platform costs' },
-  { href: '/stocky-migration-risk-scorer/', title: 'Stocky Risk Scorer', desc: 'Score how exposed your store is to the Stocky shutdown' },
-  { href: '/shopify-ios-attribution-gap-benchmark/', title: 'iOS Attribution Gap Benchmark', desc: 'Real store data on lost ad conversion signals' },
-];
-
-const guides = [
-  { href: '/ultimate-shopify-automation-guide/', title: 'Ultimate Automation Guide', desc: 'The full playbook, start to finish' },
-  { href: '/shopify-attribution-tools-compared/', title: 'Attribution tools compared', desc: 'Elevar, Triple Whale, Northbeam & Analyzify, priced' },
-  { href: '/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/', title: 'Apps Script quotas', desc: 'Limits explained, with workarounds' },
-  { href: '/shopify-google-sheets-automation/', title: 'Google Sheets automation', desc: 'Export orders and sync inventory, free' },
-  { href: '/shopify-app-development-cost/', title: 'Custom Shopify app costs', desc: 'Real prices, and when free tools beat building' },
-  { href: '/stocky-alternative/', title: 'Stocky alternative', desc: 'Replace Stocky for $0 — export, recover, rebuild' },
-  { href: '/best-free-shopify-apps-2026/', title: 'Best free Shopify apps 2026', desc: 'Every category, ranked' },
-  { href: '/apps/', title: 'App pricing index', desc: 'Every tracked app price, with source and date' },
+// Section indexes. Each one links every page cut from the old dropdowns.
+const sections = [
+  { href: '/tools/', title: 'Tools' },
+  { href: '/shopify-automation-guides/', title: 'Guides' },
+  { href: '/apps/', title: 'App Directory' },
 ];
 ---
 
@@ -86,9 +57,9 @@ const guides = [
     <a href="/stocky-alternative/">
       <span class="sa-announce-dot" aria-hidden="true"></span>
       {postShutdown ? (
-        <Fragment>Stocky has shut down. Recover what you can and replace it free</Fragment>
+        <Fragment>Stocky shut down on <strong class="figure">31 August 2026</strong>. See your replacement options</Fragment>
       ) : (
-        <Fragment>Shopify Stocky — end of service <strong class="figure">31 Aug 2026</strong>. Export, recover and replace it free</Fragment>
+        <Fragment>Shopify Stocky end of service: <strong class="figure">31 Aug 2026</strong>. Export, recover and replace it free</Fragment>
       )}
       <span class="sa-announce-arrow" aria-hidden="true">→</span>
     </a>
@@ -106,76 +77,28 @@ const guides = [
     <div class="sa-nav-links" id="sa-nav-links">
 
       <div class="sa-drop" id="drop-products">
-        <button class="sa-drop-btn" type="button" aria-haspopup="true" aria-expanded="false" data-drop="products">
+        <button class="sa-drop-btn" type="button" aria-expanded="false" aria-controls="panel-products">
           Products
         </button>
-        <div class="sa-drop-panel" id="panel-products" role="menu">
-          {products.map((p) => (
-            <a href={p.href} class="sa-drop-item" role="menuitem">
-              <span class="sa-drop-title">{p.title}</span>
-              <span class="sa-drop-desc">{p.desc}</span>
-            </a>
-          ))}
-          <div class="sa-drop-divider"></div>
-          <a href="/stack/" class="sa-drop-item" role="menuitem">
-            <span class="sa-drop-title">The recommended stack</span>
-            <span class="sa-drop-desc">All seven tools, vetted and ranked</span>
+        <div class="sa-drop-panel" id="panel-products">
+          <a href="/stocklog/" class="sa-drop-item sa-drop-item--pro" aria-current={current('/stocklog/')}>
+            <span class="sa-drop-title">StockLog, <span class="figure">{formatPrice(STOCKLOG_PRICE)}</span>/mo <span class="sa-tag">Paid app</span></span>
+            <span class="sa-drop-desc">Our Shopify stock ledger app, launching on the Shopify App Store</span>
           </a>
-          <a href="/pro/" class="sa-drop-item sa-drop-item--pro" role="menuitem">
-            <span class="sa-drop-title">Complete kit — <span class="figure">{formatPrice(KIT_PRICE)}</span></span>
-            <span class="sa-drop-desc">Every scenario ready to import — kit import, live in 10 minutes</span>
+          <a href="/pro/" class="sa-drop-item sa-drop-item--pro" aria-current={current('/pro/')}>
+            <span class="sa-drop-title">Complete kit, <span class="figure">{formatPrice(KIT_PRICE)}</span></span>
+            <span class="sa-drop-desc">Every Make.com blueprint ready to import, or single blueprints at {formatPrice(SINGLE_PRICE)}</span>
           </a>
         </div>
       </div>
 
-      <div class="sa-drop" id="drop-tools">
-        <button class="sa-drop-btn" type="button" aria-haspopup="true" aria-expanded="false" data-drop="tools">
-          Tools
-        </button>
-        <div class="sa-drop-panel" id="panel-tools" role="menu">
-          {tools.map((t) => (
-            <a href={t.href} class="sa-drop-item" role="menuitem">
-              <span class="sa-drop-title">{t.title}</span>
-              <span class="sa-drop-desc">{t.desc}</span>
-            </a>
-          ))}
-          <div class="sa-drop-divider"></div>
-          <a href="/tools/" class="sa-drop-item" role="menuitem">
-            <span class="sa-drop-title">All free tools</span>
-            <span class="sa-drop-desc">Calculators and diagnostics, no signup</span>
-          </a>
-          <a href="/apps/" class="sa-drop-item" role="menuitem">
-            <span class="sa-drop-title">App pricing index</span>
-            <span class="sa-drop-desc">All {APP_COUNT} apps — real costs and free replacements</span>
-          </a>
-        </div>
-      </div>
-
-      <div class="sa-drop" id="drop-guides">
-        <button class="sa-drop-btn" type="button" aria-haspopup="true" aria-expanded="false" data-drop="guides">
-          Guides
-        </button>
-        <div class="sa-drop-panel" id="panel-guides" role="menu">
-          {guides.map((g) => (
-            <a href={g.href} class="sa-drop-item" role="menuitem">
-              <span class="sa-drop-title">{g.title}</span>
-              <span class="sa-drop-desc">{g.desc}</span>
-            </a>
-          ))}
-          <div class="sa-drop-divider"></div>
-          <a href="/shopify-automation-guides/" class="sa-drop-item" role="menuitem">
-            <span class="sa-drop-title">All guides</span>
-            <span class="sa-drop-desc">Everything, organised by topic</span>
-          </a>
-        </div>
-      </div>
-
-      <a href="/apps/" class="sa-nav-plain" aria-current={currentPath === '/apps/' || currentPath.startsWith('/apps/') ? 'page' : undefined}>App Directory</a>
-      <a href="/about/" class="sa-nav-plain" aria-current={currentPath === '/about/' || currentPath.startsWith('/about/') ? 'page' : undefined}>About</a>
+      {sections.map((s) => (
+        <a href={s.href} class="sa-nav-plain" aria-current={current(s.href)}>{s.title}</a>
+      ))}
     </div>
 
     <div class="sa-nav-right">
-      <a href="/pro/" class="sa-nav-cta">Get the kit — <span class="figure-inline">{formatPrice(KIT_PRICE)}</span></a>
+      <a href="/pro/" class="sa-nav-cta">Get the kit, <span class="figure-inline">{formatPrice(KIT_PRICE)}</span></a>
     </div>
 
     <button class="sa-hamburger" id="sa-hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sa-mobile-menu">
@@ -186,23 +109,13 @@ const guides = [
   <div class="sa-mobile-menu" id="sa-mobile-menu" aria-hidden="true">
     <div class="sa-mobile-group">
       <div class="sa-mobile-label">Products</div>
-      {products.map((p) => <a href={p.href}>{p.title}</a>)}
-      <a href="/stack/">The recommended stack</a>
+      <a href="/stocklog/" aria-current={current('/stocklog/')}>StockLog <span class="sa-mobile-meta">Paid app, <span class="figure">{formatPrice(STOCKLOG_PRICE)}</span>/mo</span></a>
+      <a href="/pro/" aria-current={current('/pro/')}>Complete kit <span class="sa-mobile-meta"><span class="figure">{formatPrice(KIT_PRICE)}</span></span></a>
     </div>
     <div class="sa-mobile-group">
-      <div class="sa-mobile-label">Tools</div>
-      {tools.map((t) => <a href={t.href}>{t.title}</a>)}
-      <a href="/tools/">All free tools</a>
-      <a href="/apps/">App pricing index</a>
+      {sections.map((s) => <a href={s.href} aria-current={current(s.href)}>{s.title}</a>)}
     </div>
-    <div class="sa-mobile-group">
-      <div class="sa-mobile-label">Guides</div>
-      {guides.map((g) => <a href={g.href}>{g.title}</a>)}
-      <a href="/shopify-automation-guides/">All guides</a>
-      <a href="/apps/" aria-current={currentPath === '/apps/' || currentPath.startsWith('/apps/') ? 'page' : undefined}>App Directory</a>
-      <a href="/about/" aria-current={currentPath === '/about/' || currentPath.startsWith('/about/') ? 'page' : undefined}>About</a>
-    </div>
-    <a href="/pro/" class="sa-mobile-cta">Get the complete kit — {formatPrice(KIT_PRICE)}</a>
+    <a href="/pro/" class="sa-mobile-cta">Get the complete kit, {formatPrice(KIT_PRICE)}</a>
   </div>
 </nav>
 
@@ -227,7 +140,7 @@ const guides = [
 </style>
 
 <style>
-  /* Announcement — one honest, dated line. Amber = urgency, used nowhere else. */
+  /* Announcement: one honest, dated line. Amber = urgency, used nowhere else. */
   .sa-announce {
     background: color-mix(in srgb, var(--color-urgent, #f59e0b) 9%, var(--color-surface, #0c0f0d));
     border-bottom: 1px solid color-mix(in srgb, var(--color-urgent, #f59e0b) 25%, transparent);
@@ -297,7 +210,13 @@ const guides = [
     opacity: 0; visibility: hidden; transform: translateY(-6px);
     transition: opacity .2s cubic-bezier(0.2, 0.8, 0.2, 1), transform .2s cubic-bezier(0.2, 0.8, 0.2, 1), visibility .2s;
   }
-  .sa-drop.open .sa-drop-panel { opacity: 1; visibility: visible; transform: translateY(0); }
+  /* Visibility flips instantly on open (the fade still runs on opacity), so a
+     keyboard user who presses Tab straight after Enter lands in the panel
+     instead of skipping links that are still transitioning in from hidden. */
+  .sa-drop.open .sa-drop-panel {
+    opacity: 1; visibility: visible; transform: translateY(0);
+    transition: opacity .2s cubic-bezier(0.2, 0.8, 0.2, 1), transform .2s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0s;
+  }
 
   .sa-drop-item {
     display: block; padding: 10px 12px; border-radius: 9px; text-decoration: none;
@@ -314,15 +233,23 @@ const guides = [
     font: 400 12.5px/1.4 var(--font-sans, sans-serif);
     color: var(--color-muted, #7d8a83);
   }
-  .sa-drop-divider { height: 1px; background: var(--color-border, #222825); margin: 6px 8px; }
   .sa-drop-item--pro { background: color-mix(in srgb, var(--color-accent, #34d377) 7%, transparent); }
+  .sa-drop-item--pro + .sa-drop-item--pro { margin-top: 4px; }
+  .sa-tag {
+    display: inline-block; margin-left: 6px; padding: 2px 7px; border-radius: 999px;
+    font: 600 10.5px/1.3 var(--font-sans, sans-serif); letter-spacing: .04em; text-transform: uppercase;
+    color: var(--color-accent, #34d377);
+    border: 1px solid color-mix(in srgb, var(--color-accent, #34d377) 45%, transparent);
+    vertical-align: 1px;
+  }
+  .sa-nav-plain[aria-current="page"] { color: var(--color-heading, #f2f5f3); }
 
   .figure, .figure-inline {
     font-family: var(--font-mono, monospace);
     font-variant-numeric: tabular-nums;
   }
 
-  /* The one CTA */
+  /* The one primary CTA */
   .sa-nav-cta {
     display: inline-flex; align-items: center; gap: 6px;
     font: 600 13.5px/1 var(--font-sans, sans-serif);
@@ -358,7 +285,7 @@ const guides = [
   .sa-mobile-menu.open {
     display: block;
     /* Fixed panel under the header, scrolls independently of the page so
-       every item — including the CTA — is always reachable on short viewports.
+       every item, including the CTA, is always reachable on short viewports.
        100dvh tracks the *dynamic* viewport, so iOS Safari's collapsing URL bar
        can't clip the bottom. Fallback to vh for older browsers. */
     position: fixed; left: 0; right: 0;
@@ -383,7 +310,14 @@ const guides = [
     font: 500 16px/1.3 var(--font-sans, sans-serif); color: var(--color-body, #b6c0ba);
   }
   .sa-mobile-group a:active { color: var(--color-accent, #34d377); }
+  .sa-mobile-meta {
+    margin-left: 6px; font: 400 13px/1.3 var(--font-sans, sans-serif);
+    color: var(--color-muted, #7d8a83);
+  }
+  /* Pinned to the bottom of the open panel, inside the thumb zone. */
   .sa-mobile-cta {
+    position: sticky; bottom: 0;
+    box-shadow: 0 -12px 24px 4px rgba(12, 15, 13, 0.85);
     display: block; margin-top: 18px; padding: 14px; text-align: center;
     border-radius: 12px; text-decoration: none;
     font: 600 15px/1 var(--font-sans, sans-serif);
@@ -403,7 +337,7 @@ const guides = [
 <script>
   // ── Nav initialisation ────────────────────────────────────────────────
   // Uses `astro:page-load` instead of `DOMContentLoaded` so that the
-  // dropdowns, hamburger, and scroll-state all reinitialise after every
+  // disclosure, hamburger, and scroll-state all reinitialise after every
   // Astro View-Transition swap (ClientRouter).  `astro:page-load` fires
   // on the initial load *and* on every subsequent client-side navigation.
 
@@ -419,14 +353,17 @@ const guides = [
     }
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    // ── Desktop dropdowns ────────────────────────────────────────────
-    var drops = document.querySelectorAll('.sa-drop');
+    // ── Desktop disclosures ──────────────────────────────────────────
+    // Disclosure pattern, not the ARIA menu pattern: the panel holds plain
+    // links reached with Tab, so there is no arrow-key handling to add.
+    var drops = document.querySelectorAll<HTMLElement>('.sa-drop');
+    function setDrop(drop: Element, open: boolean) {
+      drop.classList.toggle('open', open);
+      var b = drop.querySelector('.sa-drop-btn');
+      if (b) b.setAttribute('aria-expanded', String(open));
+    }
     function closeAll() {
-      drops.forEach(function (d) {
-        d.classList.remove('open');
-        var b = d.querySelector('.sa-drop-btn');
-        if (b) b.setAttribute('aria-expanded', 'false');
-      });
+      drops.forEach(function (d) { setDrop(d, false); });
     }
     drops.forEach(function (drop) {
       var btn = drop.querySelector('.sa-drop-btn');
@@ -435,20 +372,30 @@ const guides = [
         e.stopPropagation();
         var wasOpen = drop.classList.contains('open');
         closeAll();
-        if (!wasOpen) {
-          drop.classList.add('open');
-          btn.setAttribute('aria-expanded', 'true');
-        }
+        setDrop(drop, !wasOpen);
+      });
+      // Tabbing past the last link (or back past the button) closes the panel.
+      drop.addEventListener('focusout', function (e: FocusEvent) {
+        if (!drop.contains(e.relatedTarget as Node | null)) setDrop(drop, false);
       });
     });
-    document.addEventListener('click', closeAll);
+    document.addEventListener('click', function (e) {
+      drops.forEach(function (d) { if (!d.contains(e.target as Node | null)) setDrop(d, false); });
+    });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeAll();
+      if (e.key !== 'Escape') return;
+      drops.forEach(function (d) {
+        if (!d.classList.contains('open')) return;
+        var hadFocus = d.contains(document.activeElement);
+        setDrop(d, false);
+        var b = d.querySelector<HTMLElement>('.sa-drop-btn');
+        if (hadFocus && b) b.focus();
+      });
     });
 
     // ── Mobile hamburger menu ────────────────────────────────────────
-    var hamburger = document.getElementById('sa-hamburger');
-    var mobileMenu = document.getElementById('sa-mobile-menu');
+    const hamburger = document.getElementById('sa-hamburger');
+    const mobileMenu = document.getElementById('sa-mobile-menu');
 
     function setHeaderHeight() {
       if (!nav) return;
@@ -457,7 +404,7 @@ const guides = [
       document.documentElement.style.setProperty('--sa-header-h', Math.max(0, Math.round(headerBottom)) + 'px');
     }
 
-    function setMenu(open) {
+    function setMenu(open: boolean) {
       if (!hamburger || !mobileMenu) return;
       hamburger.classList.toggle('open', open);
       mobileMenu.classList.toggle('open', open);
@@ -476,11 +423,14 @@ const guides = [
       });
 
       mobileMenu.addEventListener('click', function (e) {
-        if (e.target.closest('a')) setMenu(false);
+        if ((e.target as Element | null)?.closest('a')) setMenu(false);
       });
 
       document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && hamburger.classList.contains('open')) setMenu(false);
+        if (e.key === 'Escape' && hamburger.classList.contains('open')) {
+          setMenu(false);
+          hamburger.focus();
+        }
       });
 
       window.addEventListener('resize', function () {

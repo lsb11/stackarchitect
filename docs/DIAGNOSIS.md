@@ -44,6 +44,10 @@ Also measured and clean: commercial density (median **0.7** `/go/*` links per 1,
 
 **The benchmark.** `/shopify-ios-attribution-gap-benchmark/` still contains "Placeholder" and publishes no N. It is the only page where this site would be the source rather than a summariser.
 
+**Base.astro leftovers from the 24 Sep 2026 nav redesign.** Deferred because `src/layouts/Base.astro` (and `CLAUDE.md`) held uncommitted GA4 work at the time, and hand-splitting that file was not worth the risk. Fix in a follow-up commit once the GA4 work is committed, and record the fix in `CLAUDE.md` then.
+- `siteNavSchema` (`Base.astro`, the `SiteNavigationElement` on every page) is stale. It lists `/best-ai-tools-shopify/`, which no nav has linked, and names the kill-or-keep auditor "Shopify Automation Scanner". It also no longer matches the header, which since the redesign is Products (StockLog, Complete kit), Tools, Guides and App Directory. Correct it or remove it; do not add further nav schema.
+- No skip link. `<a id="top">` at the top of `Nav.astro` is `aria-hidden` and is not one. A "Skip to content" link belongs in `Base.astro` before `<Nav />`, pointing at the page's `<main>`.
+
 ## Conclusion
 
 **The codebase is not what is suppressing indexing.**
