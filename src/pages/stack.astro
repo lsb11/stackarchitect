@@ -336,50 +336,6 @@ const schemaWebPage = {
 <!-- ─── SKIP NAV ─── -->
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
-<!-- ─── NAV — exact homepage match ─── -->
-<nav class="nav" aria-label="Primary navigation">
-  <div class="nav-inner">
-    <a href="/" class="nav-logo" aria-label="Stack Architect home">STACK_ARCHITECT</a>
-
-    <!-- Products dropdown -->
-    <div class="nav-dropdown">
-      <button class="nav-drop-btn" aria-haspopup="true" aria-expanded="false" onclick="toggleDrop(this)">Products ▾</button>
-      <div class="nav-drop-menu" role="menu">
-        <a href="/capi-shield/"                  role="menuitem"><span class="dm-title">CAPI Shield</span><span class="dm-sub">Free Meta server-side tracking</span></a>
-        <a href="/stocky-swap/"                  role="menuitem"><span class="dm-title">Stocky Swap</span><span class="dm-sub">Free inventory — replaces Stocky Aug 2026</span></a>
-        <a href="/tiktok-events-api-shopify/"    role="menuitem"><span class="dm-title">TikTok Events API</span><span class="dm-sub">Free TikTok server-side tracking</span></a>
-        <a href="/replace-klaviyo-free/"         role="menuitem"><span class="dm-title">Replace Klaviyo Free</span><span class="dm-sub">Free email automation via Systeme.io</span></a>
-        <a href="/shopify-profit-loss-automation/" role="menuitem"><span class="dm-title">Shopify P&amp;L Auto</span><span class="dm-sub">Live profit and loss in Google Sheets free</span></a>
-        <a href="/autocrat-quota-fix/"           role="menuitem"><span class="dm-title">Autocrat Quota Fix</span><span class="dm-sub">Fix Google Apps Script quota errors free</span></a>
-      </div>
-    </div>
-
-    <!-- Tools dropdown -->
-    <div class="nav-dropdown">
-      <button class="nav-drop-btn" aria-haspopup="true" aria-expanded="false" onclick="toggleDrop(this)">Tools ▾</button>
-      <div class="nav-drop-menu" role="menu">
-        <a href="/tools/"                         role="menuitem"><span class="dm-title">All Tools</span><span class="dm-sub">Free tools to audit and automate your store</span></a>
-        <a href="/shopify-app-stack-kill-or-keep-auditor/"    role="menuitem"><span class="dm-title">Automation Scanner</span><span class="dm-sub">Find which apps you can replace for $0</span></a>
-        <a href="/shopify-app-cost-calculator/"   role="menuitem"><span class="dm-title">App Cost Calculator</span><span class="dm-sub">Calculate your exact monthly app bill</span></a>
-        <a href="/shopify-app-stack-kill-or-keep-auditor/" role="menuitem"><span class="dm-title">App Audit</span><span class="dm-sub">AI audit — enter your apps, get a free savings report</span></a>
-      </div>
-    </div>
-
-    <!-- Guides dropdown -->
-    <div class="nav-dropdown">
-      <button class="nav-drop-btn" aria-haspopup="true" aria-expanded="false" onclick="toggleDrop(this)">Guides ▾</button>
-      <div class="nav-drop-menu" role="menu">
-        <a href="/shopify-automation-guides/"          role="menuitem"><span class="dm-title">All Guides</span><span class="dm-sub">Tracking, inventory, P&L and workflow guides</span></a>
-        <a href="/ultimate-shopify-automation-guide/"  role="menuitem"><span class="dm-title">Ultimate Automation Guide</span><span class="dm-sub">The complete $0 automation setup guide</span></a>
-      </div>
-    </div>
-
-    <a href="/stack/" class="nav-link nav-active" aria-current="page">Stack</a>
-
-    <a href="#stack-table" class="nav-cta">SAVE $700+/MO <span class="nav-cta-long">→ SEE ALL 7 TOOLS ↓</span></a>
-  </div>
-</nav>
-
 <!-- ─── BREADCRUMB ─── -->
 <div class="breadcrumb-bar" aria-label="Breadcrumb">
   <div class="container">
@@ -816,26 +772,8 @@ const schemaWebPage = {
 </main>
 
 
-<!-- ─── JS: dropdown + newsletter submit ─── -->
+<!-- ─── JS: newsletter submit ─── -->
 <script is:inline>
-  // Nav dropdowns
-  function toggleDrop(btn) {
-    const menu = btn.nextElementSibling;
-    const isOpen = menu.classList.contains('open');
-    document.querySelectorAll('.nav-drop-menu').forEach(m => m.classList.remove('open'));
-    document.querySelectorAll('.nav-drop-btn').forEach(b => b.setAttribute('aria-expanded','false'));
-    if (!isOpen) {
-      menu.classList.add('open');
-      btn.setAttribute('aria-expanded','true');
-    }
-  }
-  document.addEventListener('click', e => {
-    if (!e.target.closest('.nav-dropdown')) {
-      document.querySelectorAll('.nav-drop-menu').forEach(m => m.classList.remove('open'));
-      document.querySelectorAll('.nav-drop-btn').forEach(b => b.setAttribute('aria-expanded','false'));
-    }
-  });
-
   // Newsletter form — POST to /api/capture-email, show success message
   function handleNlSubmit(e) {
     e.preventDefault();
@@ -904,29 +842,6 @@ const schemaWebPage = {
   /* ─── SKIP LINK ─── */
   .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
   .skip-link:focus { position: fixed; top: 0; left: 0; width: auto; height: auto; padding: 8px 16px; background: var(--accent); color: #000; font-family: var(--font-mono); font-size: 13px; font-weight: 700; z-index: 9999; overflow: visible; }
-
-  /* ─── NAV ─── */
-  .nav { position: sticky; top: 0; z-index: 100; background: rgba(12,12,12,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
-  .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; gap: 4px; }
-  .nav-logo { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: 0.05em; white-space: nowrap; margin-right: 16px; }
-
-  /* Dropdowns */
-  .nav-dropdown { position: relative; }
-  .nav-drop-btn { font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); background: none; border: none; cursor: pointer; padding: 8px 10px; transition: color 0.15s; }
-  .nav-drop-btn:hover { color: var(--text-primary); }
-  .nav-drop-menu { display: none; position: absolute; top: calc(100% + 4px); left: 0; background: #121614; border: 1px solid var(--border); border-radius: var(--radius-lg); min-width: 280px; z-index: 200; }
-  .nav-drop-menu.open { display: block; }
-  .nav-drop-menu a { display: flex; flex-direction: column; padding: 10px 16px; transition: background 0.12s; border-bottom: 1px solid var(--border-subtle); }
-  .nav-drop-menu a:last-child { border-bottom: none; }
-  .nav-drop-menu a:hover { background: #1a1a1a; }
-  .dm-title { font-family: var(--font-mono); font-size: 12px; color: var(--text-primary); }
-  .dm-sub { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
-
-  .nav-link { font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); padding: 8px 10px; transition: color 0.15s; }
-  .nav-link:hover, .nav-active { color: var(--text-primary) !important; }
-  .nav-cta { font-family: var(--font-mono); font-size: 11px; font-weight: 700; background: var(--accent); color: #000 !important; padding: 8px 14px; border-radius: var(--radius); white-space: nowrap; margin-left: auto; transition: opacity 0.15s; letter-spacing: 0.01em; }
-  .nav-cta:hover { opacity: 0.88; }
-  @media (max-width: 600px) { .nav-cta-long { display: none; } }
 
   /* ─── BREADCRUMB ─── */
   .breadcrumb-bar { border-bottom: 1px solid var(--border-subtle); padding: 10px 0; }
@@ -1168,8 +1083,6 @@ const schemaWebPage = {
     .stats-row { grid-template-columns: repeat(2, 1fr); max-width: 100%; }
     .testi-grid { grid-template-columns: 1fr; }
     h1 { font-size: 1.9rem; }
-    .nav-dropdown { display: none; }
-    .nav-cta { font-size: 10px; padding: 7px 10px; }
     .hero { padding: 40px 0 36px; }
     .nl-input-row { flex-direction: column; }
   }
@@ -1182,7 +1095,7 @@ const schemaWebPage = {
   }
 
   @media print {
-    .nav, .nav-cta, .hero-actions, .deploy-cta-row, .email-section, .newsletter-section { display: none; }
+    .hero-actions, .deploy-cta-row, .email-section, .newsletter-section { display: none; }
     body { background: #fff; color: #000; }
   }
 </style>

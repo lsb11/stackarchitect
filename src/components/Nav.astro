@@ -3,6 +3,8 @@ import "@fontsource/sora/600.css";
 import "@fontsource/sora/700.css";
 import "@fontsource/jetbrains-mono/500.css";
 import { KIT_PRICE, SINGLE_PRICE, STOCKLOG_PRICE, formatPrice } from '../data/products';
+import { FREE_TOOLS } from '../data/freeTools';
+import { NAV_GUIDES, GUIDES_INDEX, guideIndexHrefs } from '../data/guides';
 // Nav.astro: Stack Architect sitewide header.
 //
 // 24 Sep 2026 redesign. The header went from 29 links (plus 27 in the mobile
@@ -17,9 +19,16 @@ import { KIT_PRICE, SINGLE_PRICE, STOCKLOG_PRICE, formatPrice } from '../data/pr
 //    secondary: first in the Products disclosure, linked to /stocklog/ and never
 //    to STOCKLOG_APP_STORE_URL, which is a placeholder until the app is listed.
 //  • Prices render the constants in products.ts. Never type one here.
-//  • Products is a disclosure, not an ARIA menu: a button with aria-expanded
-//    and aria-controls opening a panel of ordinary links. Escape closes it and
-//    returns focus to the button; tabbing out of it closes it.
+//  • Products, Free tools and Guides are disclosures, not ARIA menus: a
+//    button with aria-expanded and aria-controls opening a panel of ordinary
+//    links. Escape closes it and returns focus to the button; tabbing out of
+//    it closes it.
+//  • One set of links serves both widths. Below 900px the hamburger shows the
+//    same list as a panel, and each disclosure opens in place as a collapsed
+//    section, so the CTA sits after five rows and no link is rendered twice.
+//    A second mobile copy of every link is what took the chrome to 91 links.
+//  • Free tools renders src/data/freeTools.ts. Guides renders NAV_GUIDES from
+//    src/data/guides.ts, and its count comes from the index's own list.
 //
 // STOCKY BANNER. The date branch below is chosen at BUILD time (isPostShutdown,
 // src/utils/stockyDeadline.ts). Every build since 31 Aug 2026 renders the
@@ -43,16 +52,9 @@ const current = (href: string) =>
 
 const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="20" height="20" fill="none" aria-hidden="true"><rect x="17" y="65" width="66" height="9" rx="2.6" fill="#34d377"/><rect x="23.5" y="52" width="53" height="9" rx="2.6" fill="#34d377"/><rect x="30" y="39" width="40" height="9" rx="2.6" fill="#34d377"/><rect x="36.5" y="26" width="27" height="9" rx="2.6" fill="#7ee2a8"/></svg>`;
 
-// Section indexes. Each one links every page cut from the old dropdowns.
-// "Free tools" goes to /stack/, which lists the seven free setups from
-// src/data/freeTools.ts. /tools/ is labelled Calculators so the two are not
-// both called "tools" side by side.
-const sections = [
-  { href: '/stack/', title: 'Free tools' },
-  { href: '/tools/', title: 'Calculators' },
-  { href: '/shopify-automation-guides/', title: 'Guides' },
-  { href: '/apps/', title: 'App Directory' },
-];
+// /tools/ is labelled Calculators so it is not a second "tools" beside the
+// Free tools disclosure, whose last link is /stack/.
+const GUIDE_COUNT = guideIndexHrefs().length;
 ---
 
 <a id="top" class="sr-only" aria-hidden="true"></a>
@@ -97,30 +99,50 @@ const sections = [
         </div>
       </div>
 
-      {sections.map((s) => (
-        <a href={s.href} class="sa-nav-plain" aria-current={current(s.href)}>{s.title}</a>
-      ))}
+      <div class="sa-drop" id="drop-free">
+        <button class="sa-drop-btn" type="button" aria-expanded="false" aria-controls="panel-free">
+          Free tools
+        </button>
+        <div class="sa-drop-panel sa-drop-panel--wide" id="panel-free">
+          {FREE_TOOLS.map((t) => (
+            <a href={t.href} class="sa-drop-item" aria-current={current(t.href)}>
+              <span class="sa-drop-title">{t.name}</span>
+              <span class="sa-drop-desc">{t.short}</span>
+            </a>
+          ))}
+          <a href="/stack/" class="sa-drop-all" aria-current={current('/stack/')}>See the full stack <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+
+      <a href="/tools/" class="sa-nav-plain" aria-current={current('/tools/')}>Calculators</a>
+
+      <div class="sa-drop" id="drop-guides">
+        <button class="sa-drop-btn" type="button" aria-expanded="false" aria-controls="panel-guides">
+          Guides
+        </button>
+        <div class="sa-drop-panel sa-drop-panel--wide" id="panel-guides">
+          {NAV_GUIDES.map((g) => (
+            <a href={g.href} class="sa-drop-item" aria-current={current(g.href)}>
+              <span class="sa-drop-title">{g.name}</span>
+              <span class="sa-drop-desc">{g.line}</span>
+            </a>
+          ))}
+          <a href={GUIDES_INDEX} class="sa-drop-all" aria-current={current(GUIDES_INDEX)}>All {GUIDE_COUNT} guides <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+
+      <a href="/apps/" class="sa-nav-plain" aria-current={current('/apps/')}>App Directory</a>
+
+      <a href="/pro/" class="sa-menu-cta">Get the complete kit, {formatPrice(KIT_PRICE)}</a>
     </div>
 
     <div class="sa-nav-right">
       <a href="/pro/" class="sa-nav-cta">Get the kit, <span class="figure-inline">{formatPrice(KIT_PRICE)}</span></a>
     </div>
 
-    <button class="sa-hamburger" id="sa-hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sa-mobile-menu">
+    <button class="sa-hamburger" id="sa-hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sa-nav-links">
       <span></span><span></span><span></span>
     </button>
-  </div>
-
-  <div class="sa-mobile-menu" id="sa-mobile-menu" aria-hidden="true">
-    <div class="sa-mobile-group">
-      <div class="sa-mobile-label">Products</div>
-      <a href="/stocklog/" aria-current={current('/stocklog/')}>StockLog <span class="sa-mobile-meta">Paid app, <span class="figure">{formatPrice(STOCKLOG_PRICE)}</span>/mo</span></a>
-      <a href="/pro/" aria-current={current('/pro/')}>Complete kit <span class="sa-mobile-meta"><span class="figure">{formatPrice(KIT_PRICE)}</span></span></a>
-    </div>
-    <div class="sa-mobile-group">
-      {sections.map((s) => <a href={s.href} aria-current={current(s.href)}>{s.title}</a>)}
-    </div>
-    <a href="/pro/" class="sa-mobile-cta">Get the complete kit, {formatPrice(KIT_PRICE)}</a>
   </div>
 </nav>
 
@@ -166,8 +188,10 @@ const sections = [
   @keyframes sa-pulse { 0%,100% { opacity: 1 } 50% { opacity: .35 } }
 
   /* Nav shell */
+  /* Positioned so z-index applies (the open mobile panel must sit above the
+     page) and so the panel and the ::after rule anchor to the nav itself. */
   .sa-nav {
-    z-index: 100;
+    position: relative; z-index: 100;
     background: color-mix(in srgb, var(--color-surface, #0c0f0d) 82%, transparent);
     backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid transparent;
@@ -238,6 +262,16 @@ const sections = [
     font: 400 12.5px/1.4 var(--font-sans, sans-serif);
     color: var(--color-muted, #7d8a83);
   }
+  .sa-drop-panel--wide { min-width: 380px; }
+  /* The see-all link closing a panel: set apart from the items above it. */
+  .sa-drop-all {
+    display: block; margin-top: 4px; padding: 11px 12px 9px;
+    border-top: 1px solid var(--color-border, #222825);
+    font: 600 13.5px/1.3 var(--font-sans, sans-serif);
+    color: var(--color-accent, #34d377); text-decoration: none;
+  }
+  .sa-drop-all:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .sa-drop-item[aria-current="page"] .sa-drop-title { color: var(--color-accent, #34d377); }
   .sa-drop-item--pro { background: color-mix(in srgb, var(--color-accent, #34d377) 7%, transparent); }
   .sa-drop-item--pro + .sa-drop-item--pro { margin-top: 4px; }
   .sa-tag {
@@ -281,57 +315,75 @@ const sections = [
   .sa-hamburger.open span:nth-child(2) { opacity: 0; }
   .sa-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-  .sa-mobile-menu {
-    display: none; padding: 8px 24px 28px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    background: rgba(12, 15, 13, 0.85);
-    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-  }
-  .sa-mobile-menu.open {
-    display: block;
-    /* Fixed panel under the header, scrolls independently of the page so
-       every item, including the CTA, is always reachable on short viewports.
-       100dvh tracks the *dynamic* viewport, so iOS Safari's collapsing URL bar
-       can't clip the bottom. Fallback to vh for older browsers. */
-    position: fixed; left: 0; right: 0;
-    top: var(--sa-header-h, 64px);
-    height: calc(100vh - var(--sa-header-h, 64px));
-    height: calc(100dvh - var(--sa-header-h, 64px));
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
-    padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
-    z-index: 99;
-  }
+  /* Mobile: the same links as the desktop bar, shown as a panel. Hidden on
+     desktop, where the header CTA does this job. */
+  .sa-menu-cta { display: none; }
   /* Lock the page behind the open menu so touch scrolls the panel, not the body */
   :global(body.sa-menu-open) { overflow: hidden; touch-action: none; }
-  .sa-mobile-group { padding: 14px 0; border-bottom: 1px solid var(--color-border, #222825); }
-  .sa-mobile-label {
-    font: 600 11px/1 var(--font-sans, sans-serif); text-transform: uppercase;
-    letter-spacing: .08em; color: var(--color-muted, #7d8a83); margin-bottom: 10px;
-  }
-  .sa-mobile-group a {
-    display: block; padding: 16px 0; text-decoration: none;
-    font: 500 16px/1.3 var(--font-sans, sans-serif); color: var(--color-body, #b6c0ba);
-  }
-  .sa-mobile-group a:active { color: var(--color-accent, #34d377); }
-  .sa-mobile-meta {
-    margin-left: 6px; font: 400 13px/1.3 var(--font-sans, sans-serif);
-    color: var(--color-muted, #7d8a83);
-  }
-  /* Pinned to the bottom of the open panel, inside the thumb zone. */
-  .sa-mobile-cta {
-    position: sticky; bottom: 0;
-    box-shadow: 0 -12px 24px 4px rgba(12, 15, 13, 0.85);
-    display: block; margin-top: 18px; padding: 14px; text-align: center;
-    border-radius: 12px; text-decoration: none;
-    font: 600 15px/1 var(--font-sans, sans-serif);
-    background: var(--color-accent, #34d377); color: var(--color-accent-ink, #052e16);
-  }
 
   @media (max-width: 900px) {
     .sa-nav-links, .sa-nav-right { display: none; }
     .sa-hamburger { display: flex; }
+
+    .sa-nav-links.open {
+      display: block;
+      /* Panel hung from the nav's bottom edge, not position: fixed: the nav's
+         backdrop-filter makes it the containing block for fixed children, so
+         a fixed top of --sa-header-h landed a second header-height down. It
+         scrolls independently of the page so every item, including the CTA,
+         is reachable on short viewports. 100dvh tracks the *dynamic*
+         viewport, so iOS Safari's collapsing URL bar can't clip the bottom.
+         Fallback to vh for older browsers. */
+      position: absolute; left: 0; right: 0; top: 100%;
+      height: calc(100vh - var(--sa-header-h, 64px));
+      height: calc(100dvh - var(--sa-header-h, 64px));
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      padding: 8px 24px calc(28px + env(safe-area-inset-bottom, 0px));
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      /* Solid, no backdrop-filter: nested inside the nav's own filter the
+         blur has no page to sample, and the hero showed through the menu. */
+      background: var(--color-surface, #0c0f0d);
+      z-index: 99;
+    }
+
+    /* Five rows, then the CTA: each disclosure is a collapsed section. */
+    .sa-drop { border-bottom: 1px solid var(--color-border, #222825); }
+    .sa-drop-btn, .sa-nav-plain {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%; padding: 18px 0; border-radius: 0;
+      font: 500 16px/1.3 var(--font-sans, sans-serif); text-align: left;
+    }
+    .sa-nav-plain { border-bottom: 1px solid var(--color-border, #222825); }
+    .sa-drop-btn:hover, .sa-nav-plain:hover,
+    .sa-drop.open .sa-drop-btn { background: none; }
+    .sa-drop-btn::after {
+      content: ""; width: 8px; height: 8px; margin-right: 4px;
+      border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+      transform: rotate(45deg) translateY(-3px); transition: transform .2s ease;
+    }
+    .sa-drop.open .sa-drop-btn::after { transform: rotate(-135deg) translateY(-3px); }
+
+    .sa-drop-panel, .sa-drop-panel--wide {
+      position: static; display: none; min-width: 0;
+      margin: 0 0 12px; padding: 0;
+      background: none; border: 0; box-shadow: none;
+      backdrop-filter: none; -webkit-backdrop-filter: none;
+      opacity: 1; visibility: visible; transform: none; transition: none;
+    }
+    .sa-drop.open .sa-drop-panel { display: block; }
+    .sa-drop-item { padding: 10px 12px; }
+
+    /* Pinned to the bottom of the open panel, inside the thumb zone. */
+    .sa-menu-cta {
+      display: block; position: sticky; bottom: 0;
+      box-shadow: 0 -12px 24px 4px rgba(12, 15, 13, 0.85);
+      margin-top: 18px; padding: 14px; text-align: center;
+      border-radius: 12px; text-decoration: none;
+      font: 600 15px/1 var(--font-sans, sans-serif);
+      background: var(--color-accent, #34d377); color: var(--color-accent-ink, #052e16);
+    }
   }
   @media (max-width: 480px) {
     .sa-nav-inner { padding: 0 16px; height: 58px; }
@@ -358,7 +410,7 @@ const sections = [
     }
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    // ── Desktop disclosures ──────────────────────────────────────────
+    // ── Disclosures (dropdowns on desktop, sections in the mobile panel) ──
     // Disclosure pattern, not the ARIA menu pattern: the panel holds plain
     // links reached with Tab, so there is no arrow-key handling to add.
     var drops = document.querySelectorAll<HTMLElement>('.sa-drop');
@@ -387,20 +439,12 @@ const sections = [
     document.addEventListener('click', function (e) {
       drops.forEach(function (d) { if (!d.contains(e.target as Node | null)) setDrop(d, false); });
     });
-    document.addEventListener('keydown', function (e) {
-      if (e.key !== 'Escape') return;
-      drops.forEach(function (d) {
-        if (!d.classList.contains('open')) return;
-        var hadFocus = d.contains(document.activeElement);
-        setDrop(d, false);
-        var b = d.querySelector<HTMLElement>('.sa-drop-btn');
-        if (hadFocus && b) b.focus();
-      });
-    });
 
     // ── Mobile hamburger menu ────────────────────────────────────────
+    // It shows #sa-nav-links, the same element as the desktop bar.
     const hamburger = document.getElementById('sa-hamburger');
-    const mobileMenu = document.getElementById('sa-mobile-menu');
+    const mobileMenu = document.getElementById('sa-nav-links');
+    const desktop = window.matchMedia('(min-width: 901px)');
 
     function setHeaderHeight() {
       if (!nav) return;
@@ -413,7 +457,6 @@ const sections = [
       if (!hamburger || !mobileMenu) return;
       hamburger.classList.toggle('open', open);
       mobileMenu.classList.toggle('open', open);
-      mobileMenu.setAttribute('aria-hidden', String(!open));
       hamburger.setAttribute('aria-expanded', String(open));
       hamburger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
       document.body.classList.toggle('sa-menu-open', open);
@@ -428,20 +471,38 @@ const sections = [
       });
 
       mobileMenu.addEventListener('click', function (e) {
-        if ((e.target as Element | null)?.closest('a')) setMenu(false);
-      });
-
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && hamburger.classList.contains('open')) {
-          setMenu(false);
-          hamburger.focus();
-        }
+        if (hamburger.classList.contains('open') && (e.target as Element | null)?.closest('a')) setMenu(false);
       });
 
       window.addEventListener('resize', function () {
-        if (hamburger.classList.contains('open')) setHeaderHeight();
+        if (!hamburger.classList.contains('open')) return;
+        // Widening past the breakpoint hides the hamburger; don't leave the
+        // page scroll-locked behind a menu that is no longer shown.
+        if (desktop.matches) setMenu(false);
+        else setHeaderHeight();
       }, { passive: true });
     }
+
+    // ── Escape ───────────────────────────────────────────────────────
+    // One handler, innermost first: an open disclosure closes and focus
+    // returns to its button; with none open, the mobile menu closes and
+    // focus returns to the hamburger.
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      var closedDrop = false;
+      drops.forEach(function (d) {
+        if (!d.classList.contains('open')) return;
+        closedDrop = true;
+        var hadFocus = d.contains(document.activeElement);
+        setDrop(d, false);
+        var b = d.querySelector<HTMLElement>('.sa-drop-btn');
+        if (hadFocus && b) b.focus();
+      });
+      if (!closedDrop && hamburger && hamburger.classList.contains('open')) {
+        setMenu(false);
+        hamburger.focus();
+      }
+    });
   });
 
   // ── Clean up stale state before swap ────────────────────────────────
@@ -452,7 +513,7 @@ const sections = [
     document.querySelectorAll('.sa-drop.open').forEach(function (d) {
       d.classList.remove('open');
     });
-    var mobileMenu = document.getElementById('sa-mobile-menu');
+    var mobileMenu = document.getElementById('sa-nav-links');
     if (mobileMenu) mobileMenu.classList.remove('open');
     var hamburger = document.getElementById('sa-hamburger');
     if (hamburger) hamburger.classList.remove('open');
