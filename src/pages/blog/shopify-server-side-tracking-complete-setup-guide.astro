@@ -1,4 +1,5 @@
 ---
+import { pageUpdated } from '../../data/pageUpdated';
 import Base from '../../layouts/Base.astro';
 import Disclosure from '../../components/Disclosure.astro';
 import AuthorCard from '../../components/AuthorCard.astro';
@@ -8,7 +9,7 @@ import AuthorCard from '../../components/AuthorCard.astro';
 // Single source of truth for the modified date. The schema dateModified and the
 // visible freshness banner both derive from this — never hardcode either, or the
 // rendered date drifts away from what crawlers are told.
-const DATE_MODIFIED = "2026-08-08";
+const DATE_MODIFIED = pageUpdated('/blog/shopify-server-side-tracking-complete-setup-guide/')!;
 const UPDATED_LABEL = new Date(DATE_MODIFIED).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' }).toUpperCase();
 
 const articleSchema = {
@@ -205,22 +206,8 @@ const articleSchema = {
             "text": "The Make.com webhook method costs $0 per month for Shopify stores under 250 orders per month. Higher volume requires Make.com Core at $9 per month for 10,000 credits. Managed alternatives like Elevar costs from $225 per month for the same tracking outcome."
           }
         },
-        {
-          "@type": "Question",
-          "name": "What Event Match Quality score is good for Meta CAPI?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Meta Event Match Quality is scored 1 to 10. Scores of 7 to 8 are very good. Scores of 9 to 10 are excellent and require logged-in customer data. Below 5 indicates missing match keys and should be investigated, starting with email format, phone E.164 format, and external_id."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Why is TikTok event match quality low on my Shopify store?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The most common cause is sending the event name Purchase instead of CompletePayment. TikTok Events API requires CompletePayment for purchase events. Other causes include missing hashed email, missing IP address mapped from the Shopify order browser_ip field, and missing TikTok Click ID for paid traffic events."
-          }
-        },
+        
+        
         {
           "@type": "Question",
           "name": "Is Shopify server-side tracking free?",
@@ -231,7 +218,7 @@ const articleSchema = {
         },
         {
           "@type": "Question",
-          "name": "Shopify server-side tracking vs Elevar — what is the difference?",
+          "name": "Shopify server-side tracking vs Elevar — what’s the difference?",
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "Both send the same server-side events to the same destinations (Meta CAPI, Google, TikTok). The difference is who builds and maintains the pipeline. Elevar is a managed service starting at $225 per month: it provisions a server-side GTM container, supplies a pre-built Shopify data layer, monitors delivery with alerts, and handles refunds and order edits automatically. The free Make.com webhook method gives you the same event delivery and the same Event Match Quality ceiling, but you build the scenario yourself in about 18 minutes and maintain it. Choose Make.com if you want zero cost and full control; choose Elevar if you want managed monitoring, automatic edge-case handling, and a dashboard, and the monthly fee is justified by your ad spend."
@@ -276,6 +263,7 @@ const articleSchema = {
     </div>
     <h1>Shopify Server-Side Tracking Setup<br>Meta, Google &amp; TikTok &mdash; <span class="g">step by step</span></h1>
     <p id="answer">Setting up Shopify server-side tracking means connecting a Shopify orders/paid webhook to a free Make.com scenario: the webhook fires when an order is paid, Make.com hashes the customer data with SHA-256, then posts the event to Meta Conversions API, Google Enhanced Conversions, and TikTok Events API. A full three-platform build takes about 18 minutes, no code required.</p>
+<p style="font-size:14px;color:#93a09a;line-height:1.7;margin:10px 0 18px;">The pieces, in each platform&rsquo;s own words (checked 24 September 2026): Shopify sends the <a href="https://shopify.dev/docs/api/webhooks" target="_blank" rel="noopener">orders/paid webhook</a> whenever an order is paid; Meta requires contact details to be <a href="https://developers.facebook.com/documentation/ads-commerce/conversions-api/parameters/customer-information-parameters" target="_blank" rel="noopener">normalised and SHA256-hashed</a>; Google&rsquo;s <a href="https://support.google.com/google-ads/answer/9888656" target="_blank" rel="noopener">Enhanced Conversions</a> sends SHA256-hashed first-party data alongside the conversion; and TikTok recommends running the <a href="https://ads.tiktok.com/help/article/events-api" target="_blank" rel="noopener">Events API</a> alongside its Pixel.</p>
     <p class="hero-deck">Your store recorded 68 sales yesterday. The three ad platforms you pay for counted 41, 29 and 18. <strong>The gap is not a reporting quirk you can annotate away &mdash; it is the training set each of those systems uses to decide who sees you next.</strong> Bid against numbers that wrong for a quarter and the compounding is brutal.</p>
     <p style="border-left:3px solid #34d377;padding:6px 14px;margin:16px 0;font-size:13px;font-family:monospace;">Only need Meta, in 6 minutes instead of 18? See the <a href="/capi-shield/">Shopify server-side tracking setup guide</a>.</p>
     <div class="platform-strip">
@@ -465,7 +453,7 @@ const articleSchema = {
       <li><em>Bot inflation</em> &mdash; pixel scripts execute for any browser-like client, including the 15&ndash;25% bot share on the average Shopify store. Audiences become polluted.</li>
     </ul>
 
-    <p style="border-left:3px solid #2dd4bf;padding:6px 14px;margin:16px 0;font-size:13px;font-family:monospace;"><strong>CASE STUDY:</strong> <a href="/blog/recover-lost-shopify-conversions-capi-shield/">CAPI Shield: how server-side events recover purchases that are invisible to pixel-only tracking, and how to verify the recovery in your own Events Manager.</a></p>
+    <p style="border-left:3px solid #2dd4bf;padding:6px 14px;margin:16px 0;font-size:13px;font-family:monospace;"><strong>CASE STUDY:</strong> <a href="/capi-shield/">CAPI Shield: how server-side events recover purchases that are invisible to pixel-only tracking, and how to verify the recovery in your own Events Manager.</a></p>
 
     <h3 id="option-2-server-side-capi-only-no-browser-pixel">Option 2 &mdash; Server-side CAPI only (no browser pixel)</h3>
     <p>You disable the browser pixel entirely and rely solely on webhook-fired server events. This sounds clean and is occasionally recommended in privacy-focused communities. It is wrong for every commercial Shopify store.</p>
@@ -578,7 +566,7 @@ const articleSchema = {
   <!-- SECTION 4: SETUP -->
   <div class="sec-mark" id="setup">7-STEP SETUP</div>
   <div class="prose"><h2 id="complete-setup-the-makecom-webhook-method">Complete Setup: The Make.com Webhook Method</h2><p>This method fires directly from Shopify&rsquo;s backend on payment confirmation &mdash; no browser dependency, no thank-you page required, no Shopify app to install. Total time: 18 minutes.</p></div>
-  <p style="border-left:3px solid #2dd4bf;padding:6px 14px;margin:16px 0;font-size:13px;font-family:monospace;"><strong>GOOGLE ADS:</strong> <a href="/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026/">Google Enhanced Conversions via Make.com webhook for Shopify &mdash; no GTM container, no server hosting, no monthly cost.</a></p>
+  <p style="border-left:3px solid #2dd4bf;padding:6px 14px;margin:16px 0;font-size:13px;font-family:monospace;"><strong>GOOGLE ADS:</strong> <a href="/shopify-google-ads-conversion-tracking/">Google Enhanced Conversions via Make.com webhook for Shopify &mdash; no GTM container, no server hosting, no monthly cost.</a></p>
   <div class="step-cards">
     <div class="step-card">
       <div class="step-num-col"><div class="step-n">1</div></div>

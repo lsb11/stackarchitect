@@ -1,4 +1,5 @@
 ---
+import { pageUpdated, formatUpdatedMonth } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
 import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
@@ -9,7 +10,7 @@ import TableOfContents from '../components/TableOfContents.astro';
 const SITE = "https://stackarchitect.xyz";
 const PAGE = `${SITE}/shopify-google-sheets-automation/`;
 const DATE_PUBLISHED = "2026-07-23";
-const DATE_MODIFIED = "2026-08-08";
+const DATE_MODIFIED = pageUpdated('/shopify-google-sheets-automation/')!;
 const DATE_VERIFIED = "2026-08-08";
 
 const AFF = {
@@ -148,20 +149,14 @@ const schema = JSON.stringify({
       "mainEntity": [
         { "@type": "Question", "name": "Can I export Shopify orders to Google Sheets for free?",
           "acceptedAnswer": { "@type": "Answer", "text": "Yes. A Shopify Order payment webhook connected to a Make.com scenario writes every order to a Google Sheet automatically, free on Make.com's tier covering 1,000 credits/month. Google Apps Script is a second free route that runs entirely inside the Sheet itself with no external tool, at the cost of the quota limits Apps Script imposes at higher volume." } },
-        { "@type": "Question", "name": "Should I use real-time webhooks or a scheduled sync for Shopify to Sheets?",
+        { "@type": "Question", "name": "Should I use real-time webhooks or a scheduled sync?",
           "acceptedAnswer": { "@type": "Answer", "text": "Use real-time webhooks for anything where staleness has a cost — inventory levels, live P&L, fulfilment dashboards. Use a scheduled pull for bulk backfills, low-urgency reporting, and as a reconciliation safety net, since Shopify webhook delivery is not guaranteed and a periodic catch-up pass catches anything a webhook missed. Most reliable setups run both: webhooks for speed, a daily scheduled reconciliation for correctness." } },
         { "@type": "Question", "name": "How do I sync Shopify inventory levels to Google Sheets?",
           "acceptedAnswer": { "@type": "Answer", "text": "Subscribe to the Shopify Inventory levels update webhook, which fires per SKU per location — a single multi-item order can trigger several separate inventory events, not one. The payload contains inventory_item_id and location_id, not the product title, so you need a mapping step (via the Shopify API or a lookup tab) to resolve those IDs to a readable SKU. Write with an update-in-place module keyed on SKU + location rather than appending, or the sheet fills with duplicate rows instead of current stock levels." } },
         { "@type": "Question", "name": "Why does my Google Apps Script Shopify sync stop working at volume?",
           "acceptedAnswer": { "@type": "Answer", "text": "Apps Script cap depends on which sync method you use. A webhook-triggered doPost() web app hits the 30-concurrent-execution ceiling and Sheets service call rate limits first, surfacing as 'Service invoked too many times' during order bursts. A time-driven scheduled pull instead runs into the 90-minute daily trigger runtime cap on consumer accounts once order volume grows. Neither limit can be raised by upgrading — see the full breakdown in the Google Apps Script quotas guide." } },
         { "@type": "Question", "name": "Does Make.com also have rate limits when writing to Google Sheets?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Make.com writes through the Google Sheets API, which enforces its own quota independent of Apps Script: 300 read requests and 300 write requests per minute per project, with a 60-per-minute cap per user, and no daily limit, per Google's published Sheets API usage limits. A single high-volume order burst is unlikely to hit this on a typical store, but a scenario writing one row per line item on large multi-item orders, or an Iterator misconfigured to fire far more calls than expected, can." } },
-        { "@type": "Question", "name": "What is the actual Make.com scenario structure for syncing Shopify to Sheets?",
-          "acceptedAnswer": { "@type": "Answer", "text": "One scenario per webhook topic. Orders: Webhooks trigger → Iterator over line_items → Google Sheets Add a Row per item, mapped to an Orders tab. Inventory: a separate Webhooks trigger on Inventory levels update → Google Sheets Update a Row (Search Column) keyed on SKU and location, so stock stays a single current row instead of an endless log. Both scenarios share the same Google Sheets connection but write to different tabs with different write patterns — append for orders, update-in-place for inventory." } },
-        { "@type": "Question", "name": "How many Shopify orders can Google Sheets handle before I need a database?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Google Sheets caps a spreadsheet at 10 million cells total across all tabs (a beta doubling this to 20 million was announced in April 2026). For a 9-column Orders tab that's roughly 1.1 million rows before hitting the ceiling, but formula recalculation across SUMIF and VLOOKUP ranges slows well before that — most operators notice lag in the low hundreds of thousands of rows. At that point BigQuery, a hosted Postgres/Airtable base, or a purpose-built reporting layer replaces Sheets as the system of record, with Sheets kept only as a lightweight view on top." } },
-        { "@type": "Question", "name": "Do I need Google Workspace for Shopify to Google Sheets automation?",
-          "acceptedAnswer": { "@type": "Answer", "text": "No. Free Gmail accounts work for most stores. Google Workspace raises the daily Apps Script trigger-runtime ceiling from 90 minutes to 6 hours and UrlFetch calls from 20,000 to 100,000 per day — relevant only if you're running the Apps Script route at high volume, not the Google Sheets API limits Make.com uses, which are the same regardless of account type." } }
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Make.com writes through the Google Sheets API, which enforces its own quota independent of Apps Script: 300 read requests and 300 write requests per minute per project, with a 60-per-minute cap per user, and no daily limit, per Google's published Sheets API usage limits. A single high-volume order burst is unlikely to hit this on a typical store, but a scenario writing one row per line item on large multi-item orders, or an Iterator misconfigured to fire far more calls than expected, can." } }
       ]
     }
   ]
@@ -363,7 +358,7 @@ pre code{background:none;padding:0;color:inherit;}
 <div class="hero-inner">
 
   <div class="expert-byline" role="doc-subtitle">
-    <span>By <strong>Stack Architect</strong> · <time datetime={DATE_MODIFIED}>Updated August 2026</time> · ~11 min read</span>
+    <span>By <strong>Stack Architect</strong> · <time datetime={DATE_MODIFIED}>Updated {formatUpdatedMonth(pageUpdated('/shopify-google-sheets-automation/')!)}</time> · ~11 min read</span>
   </div>
 
   <div class="hero-proof">
@@ -630,6 +625,32 @@ pre code{background:none;padding:0;color:inherit;}
 
 <div class="divider"></div>
 
+<!-- ══ 7b. KEEPING A LARGE SHEET FAST ══ merged from
+     /shopify-google-sheets-automation/ on 24 Sep 2026 -->
+<section class="section" aria-labelledby="fast-h">
+<div class="inner-sm">
+  <div class="sec-head">
+    <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">At volume</span>
+    <h2 id="fast-h">Keeping the sheet fast once the order log is large</h2>
+  </div>
+  <p>A formula such as <code>=SUMIF(A:A, "SKU-001", B:B)</code> reads the whole column every time the sheet recalculates, and on a long order log that is what makes a sheet slow. Limiting the range to the rows you use helps. The bigger change is to keep formulas off the Orders tab altogether: let it be raw data that Make.com appends to, and work out totals on a separate Summary tab with a script on an hourly trigger.</p>
+  <pre><code>{`function updateSummary() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var data = ss.getSheetByName('Orders').getDataRange().getValues();
+  var totals = {};
+  for (var i = 1; i < data.length; i++) {
+    var sku = data[i][4], qty = data[i][5];   // adjust to your columns
+    totals[sku] = (totals[sku] || 0) + qty;
+  }
+  var rows = Object.keys(totals).map(function (sku) { return [sku, totals[sku]]; });
+  ss.getSheetByName('Summary').getRange(2, 1, rows.length, 2).setValues(rows);
+}`}</code></pre>
+  <p>It reads the order log once and writes the summary once, which also keeps it clear of the Apps Script rate limit. As the log grows further, split it by time: a current tab that Make.com writes to, archive tabs by quarter moved across by a monthly script, and separate tabs for the summary, for alerts and for the settings you edit by hand, such as reorder points and costs.</p>
+</div>
+</section>
+
+<div class="divider"></div>
+
 <!-- ══ 8. SETUP ══ -->
 <section class="section-alt" id="setup" aria-labelledby="setup-h">
 <div class="inner">
@@ -698,7 +719,6 @@ pre code{background:none;padding:0;color:inherit;}
 
   </div>
   <div style="text-align:center;margin-top:32px;">
-    <a href={`${AFF.make}?source=shopify-google-sheets-automation-map-n2`} target="_blank" rel="sponsored nofollow noopener" class="btn pulse" style="display:inline-flex;">Start building free on Make.com — 1,000 ops/month →</a>
   </div>
 </div>
 </section>
@@ -844,9 +864,9 @@ pre code{background:none;padding:0;color:inherit;}
 </div>
 </section>
 
-  <!-- Byline inside <main>: the Article/Person schema describes the content
+  <!-- Byline inside the main element: the Article/Person schema describes the content
        region, so the visible attribution for it belongs in the same region.
-       This card used to sit after </main>, in the footer block. -->
+       This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
 </main>
 

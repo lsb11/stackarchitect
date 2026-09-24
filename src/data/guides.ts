@@ -31,9 +31,9 @@ export const NAV_GUIDES: NavGuide[] = [
     line: 'Send orders to ad platforms from the server.',
   },
   {
-    href: '/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script/',
-    name: 'Fix "Service invoked too many times"',
-    line: 'Causes and fixes for the Apps Script quota error.',
+    href: '/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/',
+    name: 'Apps Script quotas and errors',
+    line: 'Every limit, and the fix for each quota error.',
   },
   {
     href: '/blog/the-ultimate-guide-to-shopify-inventory-management/',

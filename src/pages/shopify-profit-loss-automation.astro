@@ -1,6 +1,6 @@
 ---
+import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
-import StickyAffiliateCTA from '../components/StickyAffiliateCTA.astro';
 import Disclosure from "../components/Disclosure.astro";
 import AuthorCard from '../components/AuthorCard.astro';
 // src/pages/shopify-profit-loss-automation.astro
@@ -12,7 +12,7 @@ const SITE = "https://stackarchitect.xyz";
 const PAGE = `${SITE}/shopify-profit-loss-automation/`;
 const OG_IMAGE = "https://stackarchitect.xyz/og/og-profit-loss-automation.png";
 const DATE_PUBLISHED = "2026-01-01";
-const DATE_MODIFIED = '2026-08-08';
+const DATE_MODIFIED = pageUpdated('/shopify-profit-loss-automation/')!;
 // Visible byline is derived from DATE_MODIFIED — never hardcode it, or the
 // rendered date drifts away from the schema dateModified.
 const UPDATED_LABEL = new Date(DATE_MODIFIED).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
@@ -177,7 +177,7 @@ const schema = JSON.stringify({
           "acceptedAnswer": { "@type": "Answer", "text": "Store your cost price per variant in a COGS Table tab. Make.com pulls the variant ID from each Shopify order. A VLOOKUP formula in your Order Data tab matches each variant ID to its cost automatically. Update COGS in the table when supplier prices change and every historical order row recalculates." } },
         { "@type": "Question", "name": "How do refunds appear in the automated Shopify P&L?",
           "acceptedAnswer": { "@type": "Answer", "text": "A second Make.com scenario monitors the Shopify Refund created webhook. When a refund occurs, it writes a negative revenue row to the same Order Data tab. SUMIF formulas in your P&L Summary automatically net refunds against gross revenue with no manual adjustment needed." } },
-        { "@type": "Question", "name": "Do I need Google Workspace or does free Gmail work for Shopify P&L automation?",
+        { "@type": "Question", "name": "Do I need Google Workspace or does free Gmail work?",
           "acceptedAnswer": { "@type": "Answer", "text": "Free Gmail works for stores processing up to 500 orders per month. At higher volumes, Gmail API limits may throttle Make.com's Google Sheets write operations during peak periods. Google Workspace removes all limits and adds shared workspaces — recommended for high-volume stores or teams." } }
       ]
     }
@@ -830,10 +830,6 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
       </div>
     </div>
 
-    <div class="callout info" style="border-left-color:var(--g);background:rgba(52,211,119,.04);">
-      <div class="callout-label" style="color:var(--g);">Tested &amp; verified</div>
-      <p>This scenario is live-tested end to end: a paid order fires the webhook, the cost is looked up from your COGS table, and a complete row lands in Google Sheets with revenue, fees, COGS and a calculated gross profit. It's the exact build we run — not a mockup.</p>
-    </div>
 
     <div class="step-card" itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
       <div class="step-num" itemprop="position">3</div>
@@ -873,14 +869,12 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
 
   </div>
   <div style="text-align:center;margin-top:32px;">
-    <a href={`${AFF.make}?source=shopify-profit-loss-automation-map-n2`} target="_blank" rel="sponsored nofollow noopener" class="btn pulse" style="display:inline-flex;">Start building free on Make.com — 1,000 ops/month →</a>
   </div>
 </div>
 </section>
 
 <div class="divider"></div>
 
-  <InlineOffer slug="pnl-auto" source="guide_shopify_profit_loss_automation_inline_top" />
 
 <!-- ══ AFFILIATE TOOLS SECTION ══ -->
 <section class="section-alt" aria-labelledby="tools-h">
@@ -1102,7 +1096,6 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
   <p style="font-size:17px;color:var(--text-3);max-width:520px;margin:0 auto 32px;line-height:1.7;">Every order writes to your live Google Sheets P&amp;L automatically. Zero manual exports, zero monthly fees, deploys in 10 minutes.</p>
   <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-bottom:16px;">
     <a href="https://stackarchitect.xyz/shopify-app-cost-calculator/" class="btn-outline" aria-label="Calculate your monthly Shopify app costs">Calculate my app costs</a>
-    <a href={`${AFF.make}?source=shopify-profit-loss-automation-map-n3`} target="_blank" rel="sponsored nofollow noopener" class="btn pulse" aria-label="Build live Shopify P&L free on Make.com — no credit card required">Build my live P&amp;L free on Make.com — no credit card →</a>
   </div>
   <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:20px;margin-top:20px;">
     <span style="font-size:13px;color:var(--text-4);display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Updates on every order</span>
@@ -1137,18 +1130,13 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
             P&amp;L accuracy requires accurate ad attribution</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $29–$99/mo</span></span>
       <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">Fix Google Enhanced Conversions free</span>
     </a>
-    <a href="/pro/pnl-auto/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
-      <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">P&amp;L Auto — Pre-Built Blueprint ({singlePrice})
-            The per-order profit scenario on this page, with the Sheets templates</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">{singlePrice} one-time</span></span>
-      <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">Import in 6 minutes · or all four in the Complete Kit for {formatPrice(KIT_PRICE)}</span>
-    </a>
   </div>
 </section>
   <section style="max-width:760px;margin:0 auto;padding:40px 24px;border-top:1px solid #222825;"><h2 id="related-reading" style="font-size:15px;font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:4px;">Related reading</h2><p style="font-size:12px;color:#93a09a;margin-bottom:18px;">Related guides and tools from Stack Architect.</p><div style="display:grid;gap:10px;"><a href="/tools/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:14px;font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Shopify Scripts sunset audit →</a><a href="/shopify-app-stack-kill-or-keep-auditor/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:14px;font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Shopify app stack kill-or-keep auditor →</a></div></section>
   <InlineOffer slug="pnl-auto" source="guide_shopify_profit_loss_automation_inline_end" />
-  <!-- Byline inside <main>: the Article/Person schema describes the content
+  <!-- Byline inside the main element: the Article/Person schema describes the content
        region, so the visible attribution for it belongs in the same region.
-       This card used to sit after </main>, in the footer block. -->
+       This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
   </main>
 
@@ -1203,10 +1191,5 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
 })();
 </script>
 
-<StickyAffiliateCTA
-  href="/go/make/?source=shopify-profit-loss-automation-n1"
-  label="Start free on Make.com →"
-  context="Live P&L reporting runs on Make.com’s free tier — no monthly fee."
-/>
 </Base>
 

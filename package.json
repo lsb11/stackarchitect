@@ -10,7 +10,7 @@
   "scripts": {
     "test": "node --test",
     "dev": "astro dev",
-    "build": "node scripts/claims-guard.mjs && node scripts/stripe-links-guard.mjs && node scripts/gen-legacy-redirects.mjs --check && astro build && node scripts/schema-visible-guard.mjs && node scripts/affiliate-disclosure-guard.mjs",
+    "build": "node scripts/claims-guard.mjs && node scripts/stripe-links-guard.mjs && node scripts/gen-legacy-redirects.mjs --check && astro build && node scripts/schema-visible-guard.mjs && node scripts/content-quality-guard.mjs && node scripts/affiliate-disclosure-guard.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "generate-types": "wrangler types",
@@ -24,7 +24,8 @@
     "schema:check": "node scripts/schema-visible-guard.mjs --list",
     "claims:burndown": "node scripts/claims-burndown.mjs",
     "gsc:weekly": "node gsc-coverage.mjs --weekly",
-    "check:stripe": "node scripts/check-stripe-links.mjs"
+    "check:stripe": "node scripts/check-stripe-links.mjs",
+    "content:check": "node scripts/content-quality-guard.mjs --list"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.1.7",

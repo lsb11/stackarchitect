@@ -1,6 +1,6 @@
 ---
+import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
-import StickyAffiliateCTA from '../components/StickyAffiliateCTA.astro';
 import Disclosure from "../components/Disclosure.astro";
 import AuthorCard from '../components/AuthorCard.astro';
 /**
@@ -35,7 +35,7 @@ const OG_IMAGE  = "https://stackarchitect.xyz/og/og-replace-klaviyo-free.png";
 // Single source of truth for the modified date. Both the schema dateModified
 // and the visible dateline derive from this — never hardcode either, or the
 // rendered date drifts away from what crawlers are told.
-const DATE_MODIFIED = "2026-08-08";
+const DATE_MODIFIED = pageUpdated('/replace-klaviyo-free/')!;
 const UPDATED_LABEL = new Date(DATE_MODIFIED).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
 
 // ─── Affiliate / external URLs ────────────────────────────────────────────────
@@ -709,8 +709,27 @@ const tocHeadings = [
 
       <p>The migration is the same shape as the Systeme.io one below — export from Klaviyo, connect Shopify under Integrations, import the CSV, rebuild the flows. Two differences are worth planning for: GetResponse ships <strong>template flows</strong> for abandoned cart, welcome and post-purchase that you customise rather than build from scratch, and you should <strong>run both platforms in parallel for two to four weeks</strong> before cancelling. Export your Klaviyo campaign history and reporting first — it is not accessible after cancellation.</p>
 
-      <p style="margin-top:20px;"><a href={`${GETRESPONSE_URL}?source=replace-klaviyo-n2`} target="_blank" rel="sponsored nofollow noopener" class="btn btn-sm">Try GetResponse free — keeps Klaviyo-style flows past 2,000 contacts →</a></p>
     </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── FLOWS AND DELIVERABILITY ── merged from /blog/shopify-email-marketing-free-2026/ on 24 Sep 2026 -->
+<section class="section" aria-labelledby="flows-h">
+  <div class="inner-sm">
+    <div class="sec-head">
+      <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">What to rebuild first</span>
+      <h2 id="flows-h">The four flows to rebuild, and how to keep them out of spam</h2>
+    </div>
+    <p style="color:var(--text-2);line-height:1.75;margin-bottom:14px;">Most stores leaving Klaviyo need four automated flows running again before anything else. The timings below are starting points to adjust, not rules.</p>
+    <ul style="color:var(--text-2);line-height:1.75;margin:0 0 18px 20px;">
+      <li><strong>Welcome.</strong> Triggered by a new subscriber. Three to five emails over about ten days: who you are and your best sellers first, then reviews, then a useful guide, then an offer on a first order. In Systeme.io, trigger it from the tag your sign-up form applies.</li>
+      <li><strong>Abandoned cart.</strong> Triggered by Shopify's abandoned checkout event through Make.com, usually three emails over 72 hours. The <a href="/blog/shopify-abandoned-cart-recovery-free-2026/" style="color:var(--g);">free abandoned cart recovery guide</a> covers the full build.</li>
+      <li><strong>Post-purchase.</strong> Triggered by a completed order. What to expect, then how to get the most from the product once it arrives, then a review request, then a related product about three weeks later.</li>
+      <li><strong>Win-back.</strong> Triggered when a customer has not bought for around 90 days. Two emails a week apart; after the second, move people who did not open to a suppressed segment so they stop weighing on your sender reputation.</li>
+    </ul>
+    <p style="color:var(--text-2);line-height:1.75;margin-bottom:14px;">None of this matters if the emails land in spam. Send from your own domain, not a generic address, and set up its authentication records. Gmail's <a href="https://support.google.com/mail/answer/81126" target="_blank" rel="noopener" style="color:var(--g);">email sender guidelines</a> require SPF or DKIM from every sender, and SPF, DKIM and DMARC from anyone sending more than 5,000 messages a day to Gmail accounts. If the domain has never sent marketing email, start with small daily volumes and build up over a few weeks. Import only contacts who have engaged recently rather than your whole Klaviyo list, and add your domain to <a href="https://support.google.com/mail/answer/9981691" target="_blank" rel="noopener" style="color:var(--g);">Google Postmaster Tools</a>, which reports your spam rate and reputation with Gmail.</p>
   </div>
 </section>
 
@@ -798,7 +817,7 @@ const tocHeadings = [
         </div>
       </div>
       <div class="bee-card-right">
-        <a href="/blog/the-lean-shopify-tech-stack-2026/" class="btn-bee">Where Beehiiv fits in the stack →</a>
+        <a href="/stack/" class="btn-bee">Where Beehiiv fits in the stack →</a>
         <div class="bee-note">Best for content-led stores<br />and newsletter-first brands</div>
       </div>
     </div>
@@ -873,9 +892,6 @@ const tocHeadings = [
     </p>
     <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-bottom:16px;">
       <a href="/tools/" class="btn-outline" aria-label="See the full $0 automation stack">See the full $0 stack</a>
-      <a href={`${SYSTEME_URL}?source=replace-klaviyo-n1`} target="_blank" rel="sponsored nofollow noopener" class="btn pulse" aria-label="Replace Klaviyo free with Systeme.io">
-        Replace Klaviyo with Systeme.io free — 2,000 contacts, unlimited sends →
-      </a>
     </div>
     <p style="font-size:13px;color:var(--text-4);margin-top:16px;">Newsletter brand? Beehiiv is the better starting point — it is covered in the guide above.</p>
     <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:20px;margin-top:28px;">
@@ -920,9 +936,9 @@ const tocHeadings = [
     </a>
   </div>
 </section>
-  <!-- Byline inside <main>: the Article/Person schema describes the content
+  <!-- Byline inside the main element: the Article/Person schema describes the content
        region, so the visible attribution for it belongs in the same region.
-       This card used to sit after </main>, in the footer block. -->
+       This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
 </main>
 
@@ -1103,11 +1119,6 @@ const tocHeadings = [
 
 
 
-<StickyAffiliateCTA
-  href="/go/systeme/?source=replace-klaviyo-free-n1"
-  label="Get Systeme.io free →"
-  context="Systeme.io’s free plan covers 2,000 contacts and unlimited emails."
-/>
 </Base>
 
 <style is:global>

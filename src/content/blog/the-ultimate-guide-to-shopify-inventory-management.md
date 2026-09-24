@@ -29,8 +29,8 @@ relatedGuides:
     href: "/make-com-shopify/"
   - title: "Shopify P&L Automation — Live Profit Reporting Free"
     href: "/shopify-profit-loss-automation/"
-  - title: "Shopify Automation Stack for Small Stores"
-    href: "/blog/shopify-automation-stack-for-small-stores/"
+  - title: "The Recommended Free Shopify Stack"
+    href: "/stack/"
 ---
 
 Most Shopify inventory management guides end with a recommendation to pay $29–$199/month for an app. This one doesn't. Every system described here costs $0 and runs on tools you likely already have access to.

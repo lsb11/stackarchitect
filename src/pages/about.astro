@@ -1,4 +1,5 @@
 ---
+import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 import TableOfContents from '../components/TableOfContents.astro';
@@ -94,8 +95,7 @@ const stockLogSchema = {
 ---
 <Base title="About Luke Sandelands — Founder, Stack Architect" description="Luke Sandelands builds free, open-source Shopify automation tools that replace paid apps. Hands-on with Make.com, Meta CAPI and Google Enhanced Conversions." schema={stockLogSchema}>
 <Fragment slot="head">
-<script type="application/ld+json">
-  {
+<script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@graph": [
       {
@@ -119,15 +119,14 @@ const stockLogSchema = {
         "name": "About Luke Sandelands — Shopify Automation Specialist | Stack Architect",
         "description": "Luke is a Shopify automation specialist and the creator of Stack Architect — free, open-source automation tools that replace paid Shopify apps. Works hands-on with Make.com, Meta CAPI, Google Enhanced Conversions, and TikTok Events API.",
         "inLanguage": "en-GB",
-        "dateModified": "2026-08-11",
+        "dateModified": pageUpdated('/about/'),
         "isPartOf": { "@id": "https://stackarchitect.xyz/#website" },
         "about": { "@id": "https://stackarchitect.xyz/#luke" },
         "mainEntity": { "@id": "https://stackarchitect.xyz/#luke" },
         "mentions": { "@id": "https://stocklog.onrender.com/#app" }
       }
     ]
-  }
-  </script>
+  })}></script>
 </Fragment>
 <div class="bc">
   <a href="/">Home</a>
@@ -414,9 +413,9 @@ const stockLogSchema = {
     </div>
   </section>
 
-  <!-- Byline inside <main>: the Article/Person schema describes the content
+  <!-- Byline inside the main element: the Article/Person schema describes the content
        region, so the visible attribution for it belongs in the same region.
-       This card used to sit after </main>, in the footer block. -->
+       This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard press /></div>
 </main>
 <div class="authorcard-wrap">

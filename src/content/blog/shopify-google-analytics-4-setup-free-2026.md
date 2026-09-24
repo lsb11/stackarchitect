@@ -26,8 +26,8 @@ faqs:
   - question: "How long does it take to set up GA4 on Shopify?"
     answer: "The native GA4 setup via the Google & YouTube sales channel takes approximately 5 minutes. The additional server-side Make.com layer for complete purchase data recovery takes approximately 10 minutes. The full setup — native layer plus server-side layer plus verification — is complete in under 20 minutes with no technical skills required."
 relatedGuides:
-  - title: "How to Fix Shopify Google Ads Conversion Tracking Free 2026"
-    href: "/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026/"
+  - title: "Shopify Google Ads Conversion Tracking: Free Setup"
+    href: "/shopify-google-ads-conversion-tracking/"
     badge: "Related"
   - title: "CAPI Shield — Free Meta Server-Side Tracking"
     href: "/capi-shield/"

@@ -161,6 +161,19 @@ function indexStaticPages() {
 indexBlogPosts();
 indexStaticPages();
 
+// src/data/page-updated.json is the date each page shows as "Updated" and
+// puts in its JSON-LD dateModified (see scripts/page-updated.mjs). The
+// sitemap's lastmod must say the same thing, so it wins over everything above.
+const PAGE_UPDATED_FILE = 'src/data/page-updated.json';
+const NOINDEX_ROUTES = JSON.parse(readFileSync('src/data/noindex-routes.json', 'utf8')).routes;
+if (existsSync(PAGE_UPDATED_FILE)) {
+  const pageDates = JSON.parse(readFileSync(PAGE_UPDATED_FILE, 'utf8'));
+  for (const [route, date] of Object.entries(pageDates)) {
+    const iso = toIsoOrNull(date);
+    if (iso) lastmodCache.set(`${SITE}${route}`, iso);
+  }
+}
+
 // Brief build-time log so you can verify in your deploy output that the
 // sitemap is using real dates and not the build timestamp for everything.
 if (lastmodCache.size > 0) {
@@ -277,6 +290,10 @@ export default defineConfig({
         // Post-purchase thank-you pages are noindexed: nothing to rank for,
         // and the fulfilment link on them is for people who have paid.
         if (/^\/pro\/[^/]+\/success\/?$/.test(path)) return false;
+
+        // Deliberately noindexed pages (src/data/noindex-routes.json). A URL
+        // in the sitemap must be indexable; content-quality-guard.mjs checks.
+        if (NOINDEX_ROUTES.includes(path)) return false;
 
         // Legal pages: indexable, but no value as sitemap entries.
         if (['/privacy/', '/terms/', '/refund-policy/'].includes(path)) return false;

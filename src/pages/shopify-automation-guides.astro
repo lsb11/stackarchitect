@@ -1,4 +1,5 @@
 ---
+import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
 import { STOCKY_EOL_SHORT } from '../utils/stockyDeadline';
 import { PRODUCTS } from '../data/products';
@@ -16,7 +17,7 @@ const CANONICAL = `${SITE_URL}${PAGE_PATH}`;
 // meta description and the visible hero tag all derive from this — never
 // hardcode any of them, or the three drift apart (they previously read
 // 2026-07-17, "July 2026" and "2026.06.20" respectively).
-const DATE_MODIFIED = "2026-09-14";
+const DATE_MODIFIED = pageUpdated('/shopify-automation-guides/')!;
 
 const UPDATED_LABEL = new Date(DATE_MODIFIED).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
 
@@ -41,8 +42,6 @@ const rows: GuideRow[] = [
   { cluster: 'tracking', href: '/blog/shopify-meta-roas-dropped-2026-fix/', item: 'gpi-roas', arrow: 'arr-red', title: "Shopify Meta ROAS Dropped in 2026? Here's Exactly Why — and the Free Fix", desc: 'iOS 26 + Shopify pixel change + Meta algorithm: diagnose your gap and fix it free in about 45 minutes', pill: ['Q1 2026 Changes', 'pill-alert'], time: '18 min' },
   { cluster: 'tracking', href: '/blog/shopify-server-side-tracking-complete-setup-guide/', item: 'gpi-hl', title: 'Shopify Server-Side Tracking: Complete Setup Guide 2026 (Meta, Google & TikTok)', desc: 'One Make.com scenario, three platform branches — the complete free setup guide', pill: ['Intermediate', 'pill-level'], time: '12 min' },
   { cluster: 'tracking', href: '/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/', item: 'gpi-new', title: 'How to Fix Shopify Conversion Tracking After iOS Updates 2026 — Complete Diagnosis Guide', desc: 'iOS 14.5 ATT → iOS 17 Link Tracking → iOS 26: the full timeline, your exact gap, specific fix for each cause', time: '14 min' },
-  { cluster: 'tracking', href: '/blog/recover-lost-shopify-conversions-capi-shield/', item: 'gpi-new', title: 'Recover Lost Shopify Conversions with CAPI Shield — Free Server-Side Fix 2026', desc: 'How CAPI covers the events browser tracking loses, what it can and cannot recover, and how to measure the improvement', time: '10 min' },
-  { cluster: 'tracking', href: '/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026/', item: 'gpi-new', title: 'How to Fix Shopify Google Ads Conversion Tracking Free 2026 — No GTM Required', desc: 'Google Enhanced Conversions via Make.com webhook — covers the Google Ads purchase events browser tracking loses, at $0', time: '14 min' },
   { cluster: 'tracking', href: '/shopify-google-ads-conversion-tracking/', item: 'gpi-hl', title: 'Free Shopify Google Ads Conversion Tracking — GCLID + Enhanced Conversions (Product Page)', desc: 'Full product guide: why Google Ads misses Shopify purchases, how server-side Enhanced Conversions fixes it, comparison vs Stape and Littledata', time: '10 min' },
   { cluster: 'tracking', href: '/blog/shopify-google-analytics-4-setup-free-2026/', item: 'gpi-new', title: 'How to Set Up Google Analytics 4 on Shopify Free 2026 — No Apps, No Code', desc: 'Native GA4 via Google & YouTube channel plus Make.com server-side purchase events — complete tracking at $0', time: '16 min' },
 
@@ -51,11 +50,9 @@ const rows: GuideRow[] = [
   { cluster: 'inventory', href: '/stocky-alternative/', item: 'gpi-hl', arrow: 'arr-sky', style: 'background:rgba(245,182,77,.04);border-color:rgba(245,182,77,.2);', title: 'Shopify Stocky Has Shut Down — Replace It Free, and Export While You Still Can', desc: 'Timeline, data export checklist, supplier data warning, free 4-minute replacement', pill: ['Ended 31 Aug', 'pill-urgent'], time: '10 min' },
   { cluster: 'inventory', href: '/blog/the-ultimate-guide-to-shopify-inventory-management/', item: 'gpi-new', arrow: 'arr-sky', title: 'The Ultimate Guide to Shopify Inventory Management 2026 — Free Systems That Scale', desc: 'Complete inventory system: order logging, live stock calculations, low-stock alerts, supplier management, velocity analysis — all free', time: '18 min' },
   { cluster: 'inventory', href: '/blog/shopify-stocky-data-export-before-shutdown/', item: 'gpi-hl', arrow: 'arr-sky', style: 'background:rgba(245,182,77,.03);border-color:rgba(245,182,77,.15);', title: 'Shopify Stocky Data Export — What to Save While the Read-Only Export Lasts', desc: 'Exactly what is stranded behind the read-only export window, and how to export purchase orders, stocktakes and supplier records now', pill: ['Read-only export', 'pill-urgent'], time: '10 min' },
-  { cluster: 'inventory', href: '/stocky-shutdown/', arrow: 'arr-sky', title: 'Shopify Stocky Shutdown — What Happened on August 31, 2026', desc: 'The full timeline, what stopped versus what is still exportable, and your options now', pill: ['Ended 31 Aug', 'pill-urgent'], time: '7 min' },
   { cluster: 'inventory', href: '/stocky-migration-risk-scorer/', arrow: 'arr-sky', title: 'Stocky Migration Risk Scorer — Free Calculator', desc: "Score your store's migration risk in 60 seconds and get a prioritised action list", pill: ['Tool', 'pill-new'], time: '2 min' },
 
   { cluster: 'email', href: '/replace-klaviyo-free/', item: 'gpi-email', arrow: 'arr-email', title: 'Replace Klaviyo Free 2026 — Pricing, UK Costs, and the Migration Path', desc: 'The Feb 2025 active-profile billing change, real tier pricing including UK £ and VAT, Systeme.io and GetResponse compared, and the 30-minute migration', pill: ['Pillar Guide', 'pill-level'], time: '22 min' },
-  { cluster: 'email', href: '/blog/shopify-email-marketing-free-2026/', item: 'gpi-email', arrow: 'arr-email', title: 'Shopify Email Marketing Free 2026 — Full Setup Without Klaviyo', desc: 'Welcome flows, abandoned cart, post-purchase, win-back — 4 essential automations, 2,000 contacts, unlimited sends, $0/month on Systeme.io', time: '12 min' },
   { cluster: 'email', href: '/blog/shopify-abandoned-cart-recovery-free-2026/', item: 'gpi-email', arrow: 'arr-email', title: 'Shopify Abandoned Cart Recovery Free 2026 — Make.com + Systeme.io', desc: 'No app, no monthly fees — full 3-email sequence via Make.com webhook + Systeme.io automation. Complete 30-minute setup guide.', time: '10 min' },
 
   { cluster: 'profit', href: '/shopify-profit-loss-automation/', item: 'gpi-profit', arrow: 'arr-profit', title: 'Shopify P&L Automation — Live Profit and Loss in Google Sheets Free (2026)', desc: 'Complete template, field mapping reference, Looker Studio dashboard — auto-updates every order with net profit calculated', pill: ['Product Guide', 'pill-level'], time: '8 min' },
@@ -66,15 +63,11 @@ const rows: GuideRow[] = [
 
   { cluster: 'make', href: '/make-com-shopify/', item: 'gpi-make', arrow: 'arr-make', title: 'Make.com for Shopify 2026 — Setup, Free-Tier Limits, and Zapier vs Shopify Flow', desc: 'What Make.com does for Shopify, connecting in 3 min, the scenarios every store needs, free-plan credit limits, and the honest comparison against Zapier and Shopify Flow', pill: ['Start Here', 'pill-make'], time: '20 min' },
   { cluster: 'make', href: '/blog/when-to-upgrade-free-make-google-workspace/', item: 'gpi-workspace', arrow: 'arr-workspace', title: "When to Upgrade from Free Make.com to Google Workspace — Shopify Operator's Guide 2026", desc: 'The 7 upgrade signals, the $15/month cost calculation, 5-step migration with zero downtime', pill: ['Decision Guide', 'pill-workspace'], time: '14 min' },
-  { cluster: 'make', href: '/blog/the-lean-shopify-tech-stack-2026/', item: 'gpi-new', title: 'The Lean Shopify Tech Stack 2026 — Replace $700/Month of Apps for Free', desc: 'Layer-by-layer breakdown: which paid tools to cut, which free tools replace them, exact savings per category', time: '12 min' },
   { cluster: 'make', href: '/best-free-shopify-apps-2026/', item: 'gpi-new', title: 'Best Free Shopify Apps 2026 — What Apps Really Cost and What to Cut', desc: 'Real monthly cost of common app stacks, which paid apps are genuinely replaceable and which are not, and the free replacement for every category', pill: ['Pillar Guide', 'pill-new'], time: '18 min' },
-  { cluster: 'make', href: '/blog/shopify-automation-stack-for-small-stores/', item: 'gpi-new', title: 'Shopify Automation Stack for Small Stores 2026 — The $0 Setup Under 1,000 Orders/Month', desc: 'Minimum viable free stack: what to deploy first, what to skip, how to scale as volume grows', time: '10 min' },
   { cluster: 'make', href: '/blog/shopify-bfcm-automation-checklist-2026/', item: 'gpi-new', title: 'Shopify BFCM Automation Checklist 2026 — 14 Things to Set Up Before Black Friday', desc: 'Tracking setup, a Make.com budget check in October — the complete BFCM preparation checklist', pill: ['BFCM 2026', 'pill-alert'], time: '14 min' },
 
   { cluster: 'workflow', href: '/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/', item: 'gpi-hl', title: 'Google Apps Script Quotas & Limits 2026 — Every Error, Every Fix (Free)', desc: 'The definitive guide to every quota limit, error code, and fix strategy', time: '9 min' },
-  { cluster: 'workflow', href: '/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script/', item: 'gpi-new', title: 'How to Fix "Service Invoked Too Many Times" in Google Apps Script 2026', desc: 'Exact causes (Sheets, Docs, Drive, Gmail), specific code fixes including batching and exponential backoff', time: '8 min' },
   { cluster: 'workflow', href: '/blog/the-complete-guide-to-reliable-shopify-automations/', item: 'gpi-new', title: "The Complete Guide to Reliable Shopify Automations 2026 — Architecture That Doesn't Break", desc: 'Error handling, deduplication, reconciliation, monitoring — the patterns that separate production-grade from fragile', time: '14 min' },
-  { cluster: 'workflow', href: '/blog/scalable-google-sheets-automation-for-high-volume-workflows/', item: 'gpi-new', title: 'Scalable Google Sheets Automation for High-Volume Shopify Workflows 2026', desc: 'Batching, checkpointing, hybrid Make.com approaches — handles thousands of orders without hitting quota limits', time: '12 min' },
 ];
 const listRows = (cluster: string) => rows.filter((r) => r.cluster === cluster);
 const guides = rows.filter((r, i) => rows.findIndex((x) => x.href === r.href) === i);
@@ -118,10 +111,7 @@ const faqs = [
     q: "What replaces Shopify Stocky now that it shut down on 31 August 2026?",
     a: `<strong>Stocky Swap</strong> is a free Make.com webhook that automatically logs every Shopify order to a Google Sheet you own — no vendor lock-in, no monthly fees. Deploys in 4 minutes on any Shopify plan. Shopify Stocky was removed from the App Store February 2, 2026 and ended service August 31; inventory data stays exportable read-only for at least 90 days after that. (Source: <a href="https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky" rel="nofollow">Shopify, &ldquo;Transitioning from Stocky&rdquo;</a>, read 10 September 2026.) The <a href="https://stackarchitect.xyz/blog/the-ultimate-guide-to-shopify-inventory-management/">Ultimate Inventory Guide</a> covers the complete free system including stock alerts, supplier tracking, and velocity analysis.`,
   },
-  {
-    q: "What is the best free Klaviyo alternative for Shopify in 2026?",
-    a: `<strong>Systeme.io provides 2,000 contacts and unlimited email sends permanently at $0/month</strong> — including sales funnels, CRM, and affiliate management. For stores over 2,000 contacts, GetResponse starts at $19/month, well under the equivalent Klaviyo tier at the same list size, with equivalent abandoned cart, welcome, and post-purchase flows.`,
-  },
+  
   {
     q: "How does TikTok Events API work with Shopify?",
     a: `TikTok's Events API sends purchase events server-to-server via Make.com, bypassing iOS restrictions. <strong>The critical detail: TikTok's purchase event is called CompletePayment — not "Purchase".</strong> Using the wrong name sends events to the wrong category in Events Manager. You cannot change pixel mode after creation, so verify before starting.`,
@@ -134,10 +124,7 @@ const faqs = [
     q: "Can Tidio replace Gorgias for Shopify customer support?",
     a: `Yes. Tidio says Lyro automates around 67% of customer inquiries on average: order status, shipping, product FAQs, without human intervention. Gorgias costs $40+/month. Tidio's permanently functional free tier includes 50 one-time Lyro AI conversations. Setup takes 30 minutes.`,
   },
-  {
-    q: "What are Shopify Agentic Storefronts?",
-    a: `Shopify Agentic Storefronts enable your products to be purchased directly inside ChatGPT, Google AI Mode, and Microsoft Copilot without the customer leaving those AI interfaces. <strong>Currently US-only and in early access.</strong> Preparation steps — Knowledge Base App, product data optimisation, FAQ schema — apply to all stores immediately and improve AI search discoverability regardless of eligibility.`,
-  },
+  
   {
     q: "How do I track Shopify profit and loss for free?",
     a: `A Make.com webhook auto-populates revenue, COGS, Shopify transaction fees, and net profit into a Google Sheet for every order within 60 seconds of purchase. <strong>Every P&amp;L app charges $25–$299/month.</strong> If CAPI Shield or Stocky Swap is already deployed, this adds a single branch to your existing scenario — setup takes under 3 minutes.`,
@@ -554,7 +541,6 @@ const tocHeadings = [
         <h2 class="gpc-title" id="email-heading">Email Marketing — Replace Klaviyo at $0/Month or Save 60–70% with GetResponse</h2>
         <p class="gpc-desc">Klaviyo changed its billing in February 2025 to charge for all active profiles. Systeme.io replaces it free (2,000 contacts, unlimited sends). For larger stores, GetResponse delivers equivalent automation at 60–70% less than Klaviyo. These guides cover all three options with honest verdicts.</p>
       </div>
-      <div class="gpc-cta"><a href={`${aff.systeme}?source=shopify-automation-guides-map-n2`} rel="sponsored nofollow noopener" class="btn-g" style="background:var(--purple);color:#000;">Get Systeme.io free — 2,000 contacts, unlimited sends →</a></div>
     </div>
     <div class="gpc-prose">
       <p>Every "free Klaviyo alternative" guide recommends Omnisend (250 contacts), Brevo (300 emails/day cap), or Mailchimp (500 contacts). None are genuinely functional for a Shopify store with real email volume. <strong>Systeme.io provides 2,000 contacts and unlimited email sends permanently</strong> — plus sales funnels, CRM, course hosting, and affiliate management that Klaviyo never included. For stores over 2,000 contacts, GetResponse starts at $19/month, well under the equivalent Klaviyo tier at the same list size — the same abandoned cart, welcome, and post-purchase flows at a fraction of the cost.</p>
@@ -608,7 +594,6 @@ const tocHeadings = [
         <h2 class="gpc-title" id="make-heading">Make.com, App Costs &amp; The Free Stack — Complete Guide</h2>
         <p class="gpc-desc">Make.com powers five of the six free tools on this site. These guides cover Make.com from first scenario through scaling decisions, plus honest analysis of which Shopify apps are worth keeping and which are costing you money for no reason.</p>
       </div>
-      <div class="gpc-cta"><a href={`${aff.make}?source=shopify-automation-guides-map-n3`} rel="sponsored nofollow noopener" class="btn-make">Get Make.com free — 1,000 ops/month, no card →</a></div>
     </div>
     <div class="gpc-prose">
       <p>Make.com's free plan gives you 1,000 credits/month (formerly called operations) — 10× more than Zapier's 100 free tasks — and includes webhook triggers and HTTP modules on the free tier. <strong>The key architectural insight: one Shopify Order Payment webhook, multiple parallel branches.</strong> Meta CAPI + Google Enhanced Conversions + TikTok Events API + Google Sheets inventory + Google Sheets P&amp;L — five destinations, one webhook, $0/month.</p>
@@ -670,9 +655,9 @@ const tocHeadings = [
     <a href="/pro/" class="btn-g" style="font-size: 18px; padding: 16px 32px;">Get the Pro Bundle →</a>
   </section>
 
-  <!-- Byline inside <main>: the Article/Person schema describes the content
+  <!-- Byline inside the main element: the Article/Person schema describes the content
        region, so the visible attribution for it belongs in the same region.
-       This card used to sit after </main>, in the footer block. -->
+       This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
   </main>
 

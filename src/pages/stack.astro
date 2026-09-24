@@ -1,4 +1,5 @@
 ---
+import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 import Disclosure from '../components/Disclosure.astro';
@@ -13,7 +14,8 @@ import { KIT_PRICE, SINGLE_PRICE, formatPrice } from '../data/products';
 
 const SITE       = "https://stackarchitect.xyz";
 const CANONICAL  = `${SITE}/stack/`;
-const UPDATED    = "April 2026";
+const UPDATED_ISO = pageUpdated('/stack/')!;
+const UPDATED    = new Date(UPDATED_ISO).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
 
 // ─── NEWSLETTER CONFIG ───────────────────────────────────────────────────────
 // The newsletter form posts to /api/capture-email (Pages Function), which
@@ -196,10 +198,7 @@ const faqs = [
     q: "Do I need all the tools?",
     a: "No. Each tool is independent. Use the free diagnostic tools at stackarchitect.xyz/tools to identify which profit leaks apply to your store, then deploy only what you need.",
   },
-  {
-    q: "When does Shopify Stocky shut down?",
-    a: "Stocky retired on 31 August 2026. Every store — UK, US, AU, CA — lost the ability to use it, and its APIs stopped that day with no grace period. Inventory data was not deleted with it: Shopify says read-only export access continues for at least 90 days, with no end date published. Export now from Shopify Admin → Apps → Stocky → Settings → Export, then deploy Stocky Swap as your replacement.",
-  },
+  
   {
     q: "Is this stack GDPR compliant?",
     a: "Yes. Your data flows via secure webhooks from Shopify into tools you control — Google Sheets lives in your own Google account, Systeme.io is GDPR compliant, and Make.com offers EU data processing. Nothing is shared with third parties beyond the tools you choose to connect.",
@@ -301,7 +300,7 @@ const schemaArticle = {
   "@type": "Article",
   "headline": "Recommended Shopify Stack 2026 — 7 Free Tools, Vetted & Ranked",
   "description": "The exact free Shopify automation stack recommended by Stack Architect — 7 vetted tools replacing $700+/month of paid apps.",
-  "dateModified": "2026-07-17",
+  "dateModified": UPDATED_ISO,
   "datePublished": "2025-01-01",
   "author":    { "@id": "https://stackarchitect.xyz/#luke" },
   "publisher": { "@id": "https://stackarchitect.xyz/#org" },
@@ -483,15 +482,18 @@ const schemaWebPage = {
 
           <p class="tc-why">{tool.why}</p>
 
-          <a
-            href={tool.ctaHref}
-            class={`btn-tool-cta ${tool.ctaHref.startsWith("/go/") ? "cta-primary" : "cta-secondary"}`}
-            target={tool.ctaHref.startsWith("/go/") ? "_blank" : undefined}
-            rel={tool.ctaHref.startsWith("/go/") ? "sponsored nofollow noopener" : undefined}
-            aria-label={tool.cta}
-          >
-            {tool.cta}
-          </a>
+          {/* One affiliate button per page (the hero's). Per-tool affiliate
+              buttons were removed on 24 Sep 2026; content-quality-guard.mjs
+              enforces the cap. Internal links still render. */}
+          {!tool.ctaHref.startsWith("/go/") && (
+            <a
+              href={tool.ctaHref}
+              class="btn-tool-cta cta-secondary"
+              aria-label={tool.cta}
+            >
+              {tool.cta}
+            </a>
+          )}
         </article>
       ))}
     </div>
@@ -567,6 +569,23 @@ const schemaWebPage = {
 
     <div class="deploy-cta-row">
       <a href="/ultimate-shopify-automation-guide/" class="btn-secondary">Read the full deployment guide →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── WHAT TO DEPLOY NOW, LATER, OR KEEP PAYING FOR ───
+     Merged from /blog/shopify-automation-stack-for-small-stores/ and
+     /stack/ on 24 Sep 2026. -->
+<section class="diag-section" aria-labelledby="priority-h2">
+  <div class="container">
+    <div class="section-header">
+      <h2 id="priority-h2">What to Set Up Now, What Can Wait, and What to Keep Paying For</h2>
+    </div>
+    <div style="max-width:760px;margin:0 auto;color:#b6c0ba;line-height:1.75;">
+      <p><strong style="color:#fff;">Set up first.</strong> Server-side purchase tracking, so ad platforms see the orders the browser pixel misses. Order logging to a Google Sheet you own. A welcome email and an abandoned cart email.</p>
+      <p><strong style="color:#fff;">Add when it earns the setup time.</strong> P&amp;L reporting, once there are enough orders for the numbers to mean something. The TikTok Events API, only if you run TikTok ads. An AI chat assistant, once support volume is more than you can answer by hand.</p>
+      <p><strong style="color:#fff;">Skip while you are small.</strong> Multi-touch attribution software, where blended ROAS is enough at low volume. Advanced email segmentation, where basic sequences do most of the work. A full inventory planning system, where order logging and Shopify's own inventory tools cover a small catalogue.</p>
+      <p><strong style="color:#fff;">Keep paying for these.</strong> Not every paid app has a free equivalent worth switching to. Keep your payment processor. Keep a reviews app if reviews visibly help your conversion rate. Keep dedicated returns software once returns are too many to handle by email. Keep dedicated subscription billing if subscriptions are core to your business.</p>
     </div>
   </div>
 </section>
@@ -668,7 +687,7 @@ const schemaWebPage = {
           <li>Analytics that actually matter</li>
           <li>No % cut of your revenue</li>
         </ul>
-        <a href="/blog/the-lean-shopify-tech-stack-2026/" class="nla-cta">
+        <a href="/stack/" class="nla-cta">
           How we publish on beehiiv →
         </a>
       </aside>

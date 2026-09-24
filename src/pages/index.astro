@@ -1,8 +1,8 @@
 ---
+import { pageUpdated, formatUpdatedMonth } from '../data/pageUpdated';
+import PageUpdated from '../components/PageUpdated.astro';
 import Base from '../layouts/Base.astro';
 import Disclosure from '../components/Disclosure.astro';
-import FeaturedIn from '../components/FeaturedIn.astro';
-import StickyAffiliateCTA from '../components/StickyAffiliateCTA.astro';
 import { isPostShutdown } from '../utils/stockyDeadline';
 import { KIT_PRICE, formatPrice } from '../data/products';
 const kitPrice = formatPrice(KIT_PRICE);
@@ -81,7 +81,7 @@ const categoryList = (() => {
 })();
 
 /* ---------------------------------------------------------------------------
- * FAQ — 19 questions. The only definition.
+ * FAQ: 8 questions (cut from 19 on 24 Sep 2026). The only definition.
  *
  * `a` carries inline links for human readers. The JSON-LD `text` value is the
  * same string with tags stripped, so the marked-up answer and the visible
@@ -97,32 +97,12 @@ const FAQ = [
     a: "<a href='/capi-shield/'>CAPI Shield</a> replaces Elevar for free. It routes Shopify purchase events server-side to Meta's Conversions API via a Make.com webhook, using the same delivery mechanism Elevar uses — a server-to-server event feed rather than a browser pixel. Its Google branch cannot match Shopify orders as shipped. We have not measured CAPI Shield's Event Match Quality against Elevar's, so we do not claim the two score alike; EMQ depends on which customer parameters you send, and the <a href='/meta-emq-score-estimator/'>EMQ estimator</a> projects a range from your parameter set rather than reporting a measurement. Elevar lists at $225/mo (<a href='/shopify-attribution-tools-compared/'>pricing checked 8 Aug 2026</a>); CAPI Shield is $0. Deploys in 6 minutes with no code required on Make.com's free tier. See the full <a href='/shopify-attribution-tools-compared/'>Elevar alternative comparison</a>.",
   },
   {
-    q: 'What is the best free Klaviyo alternative for Shopify in 2026?',
-    a: "Systeme.io is the best free Klaviyo alternative for Shopify in 2026. Its permanently free plan includes 2,000 contacts, unlimited email sends, full automation sequences covering welcome, abandoned cart, post-purchase and win-back, plus sales funnels, CRM, and affiliate management. Klaviyo changed its billing model in February 2025 to charge for all active profiles, so stores now pay $20+ per month for comparable volume. Migration takes approximately 30 minutes — see the <a href='/replace-klaviyo-free/'>full Klaviyo replacement guide</a> or calculate your saving with the <a href='/klaviyo-to-systeme-migration-savings-calculator/'>Klaviyo Migration Savings Calculator</a>.",
-  },
-  {
     q: 'Does Make.com work with Shopify?',
-    a: "Yes, Make.com works natively with Shopify via webhooks and has over 100 Shopify triggers and actions. The free tier includes 1,000 credits per month, formerly called operations — ten times more than Zapier's 100 free tasks per month — which is enough for most Shopify stores processing up to several hundred orders per month. No credit card is required. Make.com is the automation engine behind every Stack Architect tool. Full answer: <a href='/make-com-shopify/'>does Make.com work with Shopify?</a>",
-  },
-  {
-    q: 'What is the Shopify Conversions API (CAPI)?',
-    a: "The Shopify Conversions API sends purchase events server-side directly to Meta and Google Ads, bypassing iOS Intelligent Tracking Prevention, ad blockers, and cookie expiry that block browser-based pixels. Since Shopify's App Pixel defaulted to Optimized mode on January 13, 2026, throttling Meta pixel data, server-side CAPI has become essential. It carries the conversion data that browser tracking loses — <a href='/how-we-test/#the-20-40-figure'>how much that is depends on your store</a>, since the loss is set by your mobile/iOS traffic mix and your consent rate — keeping it visible to ad platforms and improving ROAS attribution accuracy. Full explanation: <a href='/capi-shield/'>what is the Shopify CAPI?</a>",
-  },
-  {
-    q: 'How do I set up TikTok server-side tracking for Shopify without code?',
-    a: "Use Make.com to route Shopify order webhooks as CompletePayment events to TikTok's Events API server-to-server. TikTok uses CompletePayment as its purchase event name, not Purchase. Stack Architect provides a free step-by-step guide that completes setup in 6 minutes — no developer required, no code, running on Make.com's free tier. The setup sends full Advanced Matching data with every event. Full walkthrough: <a href='/tiktok-events-api-shopify/'>TikTok Events API Shopify setup</a>.",
-  },
-  {
-    q: 'How much does Triple Whale cost and is there a free alternative?',
-    a: "Triple Whale uses GMV-based pricing that scales with your store's revenue and chosen package, with a limited free plan. The free alternative for server-side tracking is <a href='/capi-shield/'>CAPI Shield</a>, which sends server-side purchase events to Meta's Conversions API at $0 per month, sending the same match-key set Meta scores EMQ against. We have not compared its attribution accuracy with Triple Whale's CAPI component. Full breakdown: <a href='/shopify-attribution-tools-compared/'>Shopify attribution tools compared</a>.",
+    a: "Yes. Make.com has a Shopify integration and can also receive <a href='https://shopify.dev/docs/api/webhooks'>Shopify webhooks</a> directly, such as the orders/paid event Shopify sends when an order is paid. The free tier includes 1,000 credits per month, formerly called operations — ten times more than Zapier's 100 free tasks per month — which is enough for most Shopify stores processing up to several hundred orders per month. No credit card is required. Make.com is the automation engine behind every Stack Architect tool. Full answer: <a href='/make-com-shopify/'>does Make.com work with Shopify?</a>",
   },
   {
     q: 'What is server-side tracking for Shopify and why does it matter in 2026?',
-    a: "Server-side tracking sends purchase events directly from your server to ad platforms like Meta and Google Ads, bypassing iOS privacy restrictions, Safari cookie expiry, ad blockers, and browser-based pixel limitations. Since iOS 14.5 ATT and continuing through iOS 26 Link Tracking Protection, which strips fbclid from Private Browsing, Mail, and Messages links, browser tracking has become increasingly unreliable. Server-side tracking carries the conversions that would otherwise go unmeasured. <a href='/how-we-test/#the-20-40-figure'>We publish no figure for how many</a>: the share is set by a store's own mobile/iOS traffic mix and consent rate, so it is measurable in your dashboards and not derivable from ours. For Shopify stores running paid ads it is now essential for accurate ROAS measurement. Full guide: <a href='/blog/shopify-server-side-tracking-complete-setup-guide/'>Shopify server-side tracking setup</a>.",
-  },
-  {
-    q: 'Do I have to keep paying $500+ per month on Shopify apps?',
-    a: `No. The Stack Architect $0 Automation Stack replaces seven categories of paid Shopify apps — ad tracking, inventory management, email marketing, TikTok server-side tracking, P&L profit reporting, workflow automation and automation stability — using the free tiers of Make.com, Google Sheets and Systeme.io. Adding up the seven categories on this page gives ${MO_RANGE}, or ${YR_RANGE}. Or buy the <a href='/pro/'>Complete Kit for ${kitPrice}</a> for the pre-built files.`,
+    a: "Server-side tracking sends purchase events directly from your server to ad platforms like Meta and Google Ads, bypassing iOS privacy restrictions, Safari cookie expiry, ad blockers, and browser-based pixel limitations. Safari's <a href='https://webkit.org/tracking-prevention/'>Intelligent Tracking Prevention</a> deletes cookies set by script after seven days without a visit, and Google's <a href='https://support.google.com/google-ads/answer/9888656'>Enhanced Conversions</a> sends SHA256-hashed customer data alongside each conversion for the same reason. Since iOS 14.5 ATT and continuing through iOS 26 Link Tracking Protection, which strips fbclid from Private Browsing, Mail, and Messages links, browser tracking has become increasingly unreliable. Server-side tracking carries the conversions that would otherwise go unmeasured. <a href='/how-we-test/#the-20-40-figure'>We publish no figure for how many</a>: the share is set by a store's own mobile/iOS traffic mix and consent rate, so it is measurable in your dashboards and not derivable from ours. For Shopify stores running paid ads it is now essential for accurate ROAS measurement. Full guide: <a href='/blog/shopify-server-side-tracking-complete-setup-guide/'>Shopify server-side tracking setup</a>.",
   },
   {
     q: `What is the Stack Architect Complete Kit and what does ${kitPrice} include?`,
@@ -130,39 +110,15 @@ const FAQ = [
   },
   {
     q: 'Is my Shopify data secure with this stack?',
-    a: 'Yes. All data stays inside your own Google account and Make.com workspace. Stack Architect has zero access to your Shopify orders, customer data, or ad accounts. The tools are GDPR compliant by design — you own and control everything. Data flows from Shopify to your Make.com account to your Google Sheets, with no third-party storage or intermediary.',
+    a: 'Yes. All data stays inside your own Google account and Make.com workspace. Stack Architect has zero access to your Shopify orders, customer data, or ad accounts. You own and control everything; your own GDPR obligations for that data stay with your store. Data flows from Shopify to your Make.com account to your Google Sheets, with no third-party storage or intermediary.',
   },
   {
     q: 'Can I set up Shopify automation without a developer or any code?',
     a: `Yes. Zero coding is required. Every tool in the Stack Architect stack is plug-and-play — any store owner can deploy each tool in under 10 minutes using the free step-by-step guides. The <a href='/pro/'>${kitPrice} Complete Kit</a> provides pre-configured Make.com JSON blueprint files that import in one click, requiring no manual module configuration, field mapping, or API setup.`,
   },
   {
-    q: 'Why is my Shopify Google Ads conversion tracking showing wrong numbers?',
-    a: "Shopify Google Ads conversion tracking shows wrong numbers because iOS Link Tracking Protection strips the Google Click ID from ad URLs before customers open them in Safari, Mail, or Messages. Without gclid, Google cannot attribute the purchase to the ad. Safari ITP also clears attribution cookies within 24 hours. A server-side route is <a href='/shopify-google-ads-conversion-tracking/'>Google Enhanced Conversions via Make.com</a>, which sends hashed customer email to Google Ads from Shopify's server. Shopify's order data carries no Google click ID, so whether Google accepts that upload depends on how the conversion action is set up. We have not measured how much of the lost gclid traffic this recovers, and we are not aware of a published figure for it, so we do not quote one — the gain shows up in your own Google Ads conversion count.",
-  },
-  {
-    q: 'How do I prepare my Shopify store for AI shopping and ChatGPT citations?',
-    a: "Three requirements for AI-discoverable Shopify stores in 2026: first, structured data — Product, Offer, Organization and FAQPage schema on every page; second, server-side tracking for accurate conversion signals back to ad platforms; third, an llms.txt file at your domain root describing your product catalogue for AI crawlers. Critically, all of it must be present in the server-rendered HTML, because AI crawlers do not execute JavaScript. The <a href='/blog/shopify-agentic-storefronts-setup-guide-2026/'>Agentic Storefronts setup guide</a> includes a 12-point readiness checklist.",
-  },
-  {
-    q: "What's the difference between Make.com and Zapier for Shopify automation?",
-    a: "Make.com's free tier includes 1,000 credits per month, formerly called operations. Zapier's free tier includes 100 tasks per month — ten times fewer. Make.com is also more flexible for multi-step branching workflows, such as routing one Shopify order event to Meta CAPI, Google Ads, TikTok Events API and Google Sheets simultaneously, because operations are counted per module rather than per multi-step zap. For Shopify stores with more than 100 orders per month, Make.com is usually 3–5x cheaper than Zapier at equivalent volume. Compare exactly with the <a href='/make-vs-zapier-cost-calculator/'>Make vs Zapier Calculator</a>.",
-  },
-  {
-    q: 'What happens to my Stocky data after the 31 August 2026 shutdown?',
-    a: "Stocky became unusable on August 31, 2026 and its APIs stopped dead that day, with no grace period — so any third-party tool wired into them broke instantly. Your data did not go with them: Shopify says read-only access to export purchase orders, stocktakes, transfers, supplier records, demand forecasts and SKU history continues for at least 90 days after that date, and it has published no deletion date. Shopify provides no migration path, so the export is yours to run — do it now rather than against a window whose end nobody outside Shopify knows. <a href='/stocky-swap/'>Stocky Swap</a> is a free replacement that logs orders to Google Sheets via Make.com and deploys in 4 minutes. Score your migration complexity with the <a href='/stocky-migration-risk-scorer/'>Stocky Migration Risk Scorer</a>.",
-  },
-  {
-    q: 'How much does a typical Shopify store save with the free automation stack?',
-    a: `Adding up the seven paid app categories on this page gives ${MO_RANGE}, which is ${YR_RANGE}. The low bound is the sum of every category's entry-level price and the high bound the sum of every category's ceiling, so most stores land between them depending on which apps they run. Categories quoted as "from $X" contribute their floor to both bounds, so both figures understate rather than overstate. The ${kitPrice} Complete Kit pays for itself in under a week at any point in that range. Calculate your exact figure with the <a href='/shopify-app-cost-calculator/'>App Cost Calculator</a>.`,
-  },
-  {
-    q: 'Does Shopify officially support replacing its Stocky app with third-party tools?',
-    a: "Yes. Shopify's own shutdown notice directs merchants to the Shopify App Store and third-party inventory management tools. Shopify does not provide a first-party migration path — Stocky's database is read-only after August 31, 2026, exportable by you for at least 90 days. Any tool that can ingest Shopify order webhooks can replace Stocky's core inventory tracking functionality, including free webhook-to-Sheets workflows like <a href='/stocky-swap/'>Stocky Swap</a>.",
-  },
-  {
     q: 'Why is Stack Architect free and how does it make money?',
-    a: `Stack Architect's free tools, guides and calculators are funded by two revenue streams. First, affiliate commissions from tools we use and recommend — Make.com, Systeme.io, GetResponse, Beehiiv, Tidio, Gorgias and Google Workspace — which cost you nothing extra. Second, the optional ${kitPrice} <a href='/pro/'>Complete Kit</a> for store owners who want pre-built Make.com blueprints rather than building from the free guides. No subscriptions, no upsells, no hidden fees. <a href='/how-we-test/'>How we test and disclose</a>.`,
+    a: `Stack Architect's free tools, guides and calculators are funded by two revenue streams. First, affiliate commissions from tools we use and recommend — Make.com, Systeme.io, GetResponse, Beehiiv, Tidio and Google Workspace — which cost you nothing extra. Second, the optional ${kitPrice} <a href='/pro/'>Complete Kit</a> for store owners who want pre-built Make.com blueprints rather than building from the free guides. No subscriptions, no upsells, no hidden fees. <a href='/how-we-test/'>How we test and disclose</a>.`,
   },
 ];
 
@@ -233,8 +189,7 @@ const kitSchema = {
     <!-- BUMP ON CONTENT EDIT: "dateModified" below, the itemprop
          dateModified meta further down, and article:modified_time. All three
          must carry the same date. -->
-    <script type="application/ld+json">
-{
+    <script type="application/ld+json" set:html={JSON.stringify({
   "@context": "https://schema.org",
   "@graph": [
     {
@@ -255,7 +210,7 @@ const kitSchema = {
       "description": "Free tools replacing paid Shopify apps: server-side tracking (Meta CAPI), inventory management (Stocky replacement), email marketing (Klaviyo alternative), TikTok Events API, and P&L reporting. Replaces $321–$1,887/month of paid apps using Make.com free tier. No code. Deploy in 6 minutes. A pre-built Complete Kit is available.",
       "inLanguage": "en-GB",
       "datePublished": "2026-02-01",
-      "dateModified": "2026-08-21",
+      "dateModified": pageUpdated('/'),
       "speakable": {
         "@type": "SpeakableSpecification",
         "cssSelector": [".hero h1", ".hero-sub", ".sec-head h2", ".mech-claim-c", ".calc-card-c", ".faq-ans-c p"]
@@ -313,8 +268,7 @@ const kitSchema = {
       "thumbnailUrl": "https://stackarchitect.xyz/videos/poster-16x9.jpg"
     }
   ]
-}
-</script>
+})}></script>
     <!-- FAQPage is generated from the FAQ array in this file's frontmatter, the
          same array that renders the visible <details> list below. Emitting it as
          a separate block (rather than inside the @graph literal) is what makes
@@ -322,7 +276,7 @@ const kitSchema = {
          hand. Multiple ld+json blocks on one page are valid and are merged. -->
     <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)}></script>
     <meta name="article:published_time" content="2026-02-01T00:00:00Z">
-<meta name="article:modified_time" content="2026-08-21T00:00:00Z">
+<meta name="article:modified_time" content={`${pageUpdated('/')}T00:00:00Z`}>
 <meta name="article:section" content="Shopify Automation">
 <meta name="article:tag" content="Shopify">
 <meta name="article:tag" content="automation">
@@ -355,7 +309,7 @@ const kitSchema = {
 <!-- =============================================================== -->
 <section class="hero bg-grid" aria-label="Free Shopify automation stack — Stack Architect">
 <div class="hero-inner">
-  <div class="hero-dateline">Updated August 2026 · Verified free tier · No code required</div>
+  <div class="hero-dateline">Updated {formatUpdatedMonth(pageUpdated('/')!)} · Verified free tier · No code required</div>
 
   <h1 itemprop="headline">Klaviyo. Triple Whale. Stocky.<br><span class="green">Replaced — free.</span></h1>
 
@@ -363,7 +317,6 @@ const kitSchema = {
 
   <div class="hero-primary-cta">
     <a href="#sa-scanner" class="btn btn-lg btn-g">See What Your Store Is Overpaying <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-    <div class="hero-secondary">Or <a href="/pro/">get the pre-built Complete Kit for {kitPrice} →</a></div>
   </div>
 
   <div class="trust-row">
@@ -414,7 +367,6 @@ const kitSchema = {
     </details>
   </div>
 
-  <FeaturedIn pressLine />
 
 </section>
 
@@ -478,7 +430,7 @@ const kitSchema = {
           <span class="plan-step0-num">0</span>
           <div>
             <div class="plan-step0-title">Before step 1 — create the free Make.com account</div>
-            <p class="plan-step0-desc">Every tool in your plan runs on one Make.com scenario. The free tier covers all of them: 1,000 credits a month, no credit card, no time limit. Set it up once and the rest of the plan is import-and-go.</p>
+            <p class="plan-step0-desc">Every tool in your plan runs on one Make.com scenario. The free plan covers all of them: 1,000 credits a month, per <a href="https://www.make.com/en/pricing" target="_blank" rel="noopener">Make.com's pricing page</a>. Set it up once and the rest of the plan is import-and-go.</p>
           </div>
         </div>
         <p class="plan-step0-disc"><strong>Affiliate disclosure:</strong> the sign-up buttons below are affiliate links. Stack Architect earns a commission if you sign up through them, at no extra cost to you. Both tools have permanently free plans, and this plan works on them. <a href="/how-we-test/">How we test and disclose</a></p>
@@ -493,9 +445,8 @@ const kitSchema = {
       <div class="plan-kit">
         <div>
           <div class="plan-kit-title">Or skip the build entirely</div>
-          <p class="plan-kit-desc">Your plan is built step by step from the free guides. The <a href="/pro/">Complete Kit</a> is the same four workflows pre-built — import them and you are live in 10 minutes. {kitPrice} once, 30-day money-back guarantee.</p>
+          <p class="plan-kit-desc">Your plan is built step by step from the free guides. The Complete Kit is the same four workflows pre-built — import them and you are live in 10 minutes. {kitPrice} once, 30-day money-back guarantee.</p>
         </div>
-        <a href="/pro/" class="btn-pro btn-pro-sm">Get the Complete Kit — {kitPrice} →</a>
       </div>
 
       <div class="email-block">
@@ -549,8 +500,7 @@ const kitSchema = {
           <div class="sol-urgent-meta"><span class="sol-urgent-save">Saves $29–$500/mo</span><span class="sol-urgent-time">~4 min setup</span></div>
           <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;">
             <a href="/stocky-swap/" class="btn btn-sm">Deploy Stocky Swap Free →</a>
-            <a href="/stocky-shutdown/" class="btn-outline btn-outline-sm">What you can still export</a>
-            <a href="/go/make/?source=home-card-stocky" target="_blank" rel="sponsored nofollow noopener" class="sol-aff" data-cta-position="card-stocky">Needs Make.com — start free <span class="aff-mark">affiliate</span></a>
+            <a href="/blog/shopify-stocky-data-export-before-shutdown/" class="btn-outline btn-outline-sm">What you can still export</a>
           </div>
         </div>
         <div class="sol-urgent-right">
@@ -576,9 +526,8 @@ const kitSchema = {
           <div class="sol-meta"><span class="sol-save">$145–$650/mo saved</span><span class="sol-time">~6 min</span></div>
         </div>
         <div class="sol-foot">
-          <a href="/capi-shield/" class="sol-cta">Fix Meta Ads Tracking — Free →</a>
+          <a href="/capi-shield/" class="sol-guide">Fix Meta Ads Tracking — Free →</a>
           <a href="/shopify-google-ads-conversion-tracking/" class="sol-guide">Fix Google Ads Tracking — Free →</a>
-          <a href="/go/make/?source=home-card-capi" target="_blank" rel="sponsored nofollow noopener" class="sol-aff" data-cta-position="card-capi">Needs Make.com — start free <span class="aff-mark">affiliate</span></a>
         </div>
       </article>
 
@@ -594,9 +543,7 @@ const kitSchema = {
           <div class="sol-meta"><span class="sol-save" style="color:var(--tiktok)">$39–$299/mo saved</span><span class="sol-time">~6 min</span></div>
         </div>
         <div class="sol-foot">
-          <a href="/tiktok-events-api-shopify/" class="sol-cta">Deploy TikTok CAPI — Free →</a>
           <a href="/tiktok-events-api-shopify/" class="sol-guide">No-code setup guide →</a>
-          <a href="/go/make/?source=home-card-tiktok" target="_blank" rel="sponsored nofollow noopener" class="sol-aff" data-cta-position="card-tiktok">Needs Make.com — start free <span class="aff-mark">affiliate</span></a>
         </div>
       </article>
 
@@ -612,9 +559,7 @@ const kitSchema = {
           <div class="sol-meta"><span class="sol-save">$20+/mo saved</span><span class="sol-time">~30 min</span></div>
         </div>
         <div class="sol-foot">
-          <a href="/replace-klaviyo-free/" class="sol-cta">Replace Klaviyo — Free →</a>
           <a href="/replace-klaviyo-free/" class="sol-guide">Is Klaviyo actually free? →</a>
-          <a href="/go/systeme/?source=home-card-klaviyo" target="_blank" rel="sponsored nofollow noopener" class="sol-aff" data-cta-position="card-klaviyo">Start free on Systeme.io <span class="aff-mark">affiliate</span></a>
         </div>
       </article>
 
@@ -630,9 +575,7 @@ const kitSchema = {
           <div class="sol-meta"><span class="sol-save" style="color:var(--sky)">$19–$299/mo saved</span><span class="sol-time">~8 min</span></div>
         </div>
         <div class="sol-foot">
-          <a href="/shopify-profit-loss-automation/" class="sol-cta">Deploy P&amp;L Auto — Free →</a>
           <a href="/shopify-profit-loss-automation/" class="sol-guide">Find your profit leaks first →</a>
-          <a href="/go/make/?source=home-card-pl" target="_blank" rel="sponsored nofollow noopener" class="sol-aff" data-cta-position="card-pl">Needs Make.com — start free <span class="aff-mark">affiliate</span></a>
         </div>
       </article>
 
@@ -648,9 +591,8 @@ const kitSchema = {
           <div class="sol-meta"><span class="sol-save" style="color:var(--vio)">$49–$99/mo saved</span><span class="sol-time">~3 min</span></div>
         </div>
         <div class="sol-foot">
-          <a href="/autocrat-quota-fix/" class="sol-cta">Deploy Quota Fix — Free →</a>
+          <a href="/autocrat-quota-fix/" class="sol-guide">Deploy Quota Fix — Free →</a>
           <a href="/make-com-shopify/" class="sol-guide">What is Make.com? →</a>
-          <a href="/go/make/?source=home-card-autocrat" target="_blank" rel="sponsored nofollow noopener" class="sol-aff" data-cta-position="card-autocrat">Needs Make.com — start free <span class="aff-mark">affiliate</span></a>
         </div>
       </article>
 
@@ -665,7 +607,6 @@ const kitSchema = {
             <div class="sol-reps"><span style="font-family:var(--mono);font-size:var(--fs-micro);color:var(--text-4);background:rgba(255,255,255,.03);border:1px solid var(--border);padding:3px 9px;border-radius:3px;">9 tools reviewed</span><span style="font-family:var(--mono);font-size:var(--fs-micro);color:var(--text-4);background:rgba(255,255,255,.03);border:1px solid var(--border);padding:3px 9px;border-radius:3px;">3 free options</span><span style="font-family:var(--mono);font-size:var(--fs-micro);color:var(--text-4);background:rgba(255,255,255,.03);border:1px solid var(--border);padding:3px 9px;border-radius:3px;">DTC-focused rankings</span></div>
           </div>
           <div style="display:flex;flex-direction:column;gap:10px;min-width:200px;">
-            <a href="/best-ai-tools-shopify/" class="sol-cta" style="background:#c3b8ef;">Read AI Tools Guide →</a>
             <a href="/best-ai-tools-shopify/#sa-comparison" class="sol-guide">Jump to comparison table →</a>
           </div>
         </div>
@@ -789,22 +730,6 @@ const kitSchema = {
 </style>
 
 <!-- =============================================================== -->
-<!-- CTA STRIP 1 — After solutions, before calculators                -->
-<!-- =============================================================== -->
-<div class="cta-strip">
-  <div class="cta-strip-inner">
-    <div>
-      <div class="cta-strip-title">Ready to stop the leak?</div>
-      <div class="cta-strip-sub">Deploy your first free tool in <span>~6 minutes</span>. No code, no card, no subscription.</div>
-    </div>
-    <div class="cta-strip-actions">
-      <a href="/go/make/?source=home-cta-strip" target="_blank" rel="sponsored nofollow noopener" class="btn btn-sm" data-cta-position="cta-strip">Start free on Make.com →</a>
-      <a href="#tools-h" class="btn-outline btn-outline-sm">See all platforms</a>
-    </div>
-  </div>
-</div>
-
-<!-- =============================================================== -->
 <!-- CALCULATOR SHOWCASE — Free diagnostics, AI citation magnet       -->
 <!-- =============================================================== -->
 <!-- ============================================================ -->
@@ -829,8 +754,7 @@ const kitSchema = {
           <p class="sol-desc">Why Google Apps Script silently kills high-volume automations — and how to architect around the 6-minute execution limit and daily runtime caps so your workflows scale instead of failing mid-month.</p>
         </div>
         <div class="sol-foot">
-          <a href="/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/" class="sol-cta">Read the quotas guide →</a>
-          <a href="/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script/" class="sol-guide">Fix the error now →</a>
+          <a href="/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/" class="sol-guide">Read the quotas guide →</a>
         </div>
       </article>
 
@@ -843,7 +767,6 @@ const kitSchema = {
           <p class="sol-desc">Send CompletePayment events server-side via Make.com so iOS and ad blockers can't intercept them. No code, no app install — full Advanced Matching data on every event.</p>
         </div>
         <div class="sol-foot">
-          <a href="/tiktok-events-api-shopify/" class="sol-cta">Deploy TikTok CAPI — Free →</a>
           <a href="/tiktok-events-api-shopify/" class="sol-guide">No-code setup guide →</a>
         </div>
       </article>
@@ -857,7 +780,7 @@ const kitSchema = {
           <p class="sol-desc">Move Autocrat-style document workflows off Apps Script and onto Make.com, bypassing the execution and daily-runtime limits that quietly break high-volume stores.</p>
         </div>
         <div class="sol-foot">
-          <a href="/autocrat-quota-fix/" class="sol-cta">Deploy Quota Fix — Free →</a>
+          <a href="/autocrat-quota-fix/" class="sol-guide">Deploy Quota Fix — Free →</a>
           <a href="/make-com-shopify/" class="sol-guide">What is Make.com? →</a>
         </div>
       </article>
@@ -871,7 +794,7 @@ const kitSchema = {
           <p class="sol-desc">The 2026 diagnosis: iOS attribution gaps, pixel loss, and under-reporting — plus the server-side fix that reconciles Meta's numbers with your actual revenue.</p>
         </div>
         <div class="sol-foot">
-          <a href="/blog/shopify-meta-roas-dropped-2026-fix/" class="sol-cta">Fix Meta reporting →</a>
+          <a href="/blog/shopify-meta-roas-dropped-2026-fix/" class="sol-guide">Fix Meta reporting →</a>
           <a href="/shopify-vs-meta-attribution-gap-calculator/" class="sol-guide">Measure your gap first →</a>
         </div>
       </article>
@@ -885,7 +808,6 @@ const kitSchema = {
           <p class="sol-desc">End-to-end: what server-side tracking is, why iOS made it mandatory, and the exact Make.com build that feeds Meta CAPI from one event stream.</p>
         </div>
         <div class="sol-foot">
-          <a href="/blog/shopify-server-side-tracking-complete-setup-guide/" class="sol-cta">Read the setup guide →</a>
           <a href="/blog/shopify-server-side-tracking-complete-setup-guide/" class="sol-guide">Server-side tracking, explained →</a>
         </div>
       </article>
@@ -899,14 +821,14 @@ const kitSchema = {
           <p class="sol-desc">Every workflow on the site, in deploy order — tracking, P&amp;L, inventory, email — assembled into one coherent free stack instead of scattered fixes.</p>
         </div>
         <div class="sol-foot">
-          <a href="/ultimate-shopify-automation-guide/" class="sol-cta">See the full stack →</a>
+          <a href="/ultimate-shopify-automation-guide/" class="sol-guide">See the full stack →</a>
           <a href="/shopify-automation-guides/" class="sol-guide">Browse all guides →</a>
         </div>
       </article>
     </div>
 
     <div style="text-align:center;margin-top:40px;">
-      <a href="/shopify-automation-guides/" class="sol-cta" style="display:inline-flex;">Browse all Shopify automation guides →</a>
+      <a href="/shopify-automation-guides/" class="sol-guide" style="display:inline-flex;">Browse all Shopify automation guides →</a>
     </div>
   </div>
 </section>
@@ -1111,8 +1033,6 @@ const kitSchema = {
       <div class="compare-footer">
         <div class="compare-summary">Every row above, added up: <strong>{YR_RANGE}</strong>. Categories quoted &ldquo;from $X&rdquo; contribute their floor to both bounds, so both figures understate.</div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-          <a href="/go/make/?source=home-compare-table" target="_blank" rel="sponsored nofollow noopener" class="btn btn-sm" data-cta-position="compare-table">Start free on Make.com →</a>
-          <a href="#tools-h" class="btn-outline btn-outline-sm">See all platforms</a>
         </div>
       </div>
     </div>
@@ -1150,91 +1070,6 @@ const kitSchema = {
   </div>
 </section>
 
-<!-- =============================================================== -->
-<!-- AFFILIATE CARDS — Tools that power the stack                    -->
-<!-- =============================================================== -->
-<section class="section-alt sec-major sec-commercial" aria-labelledby="tools-h">
-  <div class="inner">
-    <div class="sec-head">
-      <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Recommended platforms · Affiliate disclosure</span>
-      <h2 id="tools-h">The Platforms That Power the Stack</h2>
-      <p>Every tool below has a free plan that runs the entire $0 stack. We earn a commission if you sign up through these links — at no extra cost to you. We only recommend tools we use ourselves.</p>
-    </div>
-    <Disclosure />
-    {/* WP8 — two tiers, not seven equal cards.
-        Seven identical cards with seven identical green buttons split attention
-        seven ways. Only two of these are load-bearing: every tool on this page
-        needs Make.com, and the Klaviyo replacement IS Systeme.io. The other five
-        were competing with them for the same click.
-
-        The thesis problem mattered more. This page tells a reader to cancel
-        their paid apps, and the same grid was selling a paid Gorgias plan and a
-        Google Workspace subscription as though they were free tiers. Those two
-        now sit under an explicit paid-tools label so the $0 claim is not
-        undercut by its own recommendations. */}
-    <div class="aff-tier-label">The two accounts the stack needs</div>
-    <div class="aff-grid aff-grid-primary">
-      <div class="aff-card">
-        <div class="aff-card-tag">Automation Engine · Required</div>
-        <div class="aff-card-name">Make.com</div>
-        <p class="aff-card-desc">The engine behind <strong>every single tool on this page</strong> — CAPI Shield, TikTok Events API, Stocky Swap, P&amp;L Auto and the Autocrat Quota Fix all run on it. 1,000 free credits a month is enough to run the whole stack as one consolidated scenario: a single Shopify webhook with router branches for tracking, inventory and P&amp;L. No credit card, no time limit.</p>
-        <div class="aff-card-saving">Replaces $19.99+/mo of Zapier costs</div>
-        <a href="/go/make/?source=home-grid-make" target="_blank" rel="sponsored nofollow noopener" class="cta-primary aff-card-cta btn-g" data-cta-position="grid-make">Start free on Make.com <span class="aff-mark">affiliate</span></a>
-      </div>
-      <div class="aff-card">
-        <div class="aff-card-tag">Email Marketing &amp; CRM · Required for Klaviyo replacement</div>
-        <div class="aff-card-name">Systeme.io</div>
-        <p class="aff-card-desc"><strong>This is what &ldquo;Replace Klaviyo&rdquo; above actually means.</strong> Free plan: 2,000 contacts, unlimited email sends, full automation sequences, sales funnels and CRM. No credit card required, and most stores never need the paid plan. Klaviyo's February 2025 billing change charges for every active profile whether you email them or not.</p>
-        <div class="aff-card-saving">Replaces $20+/mo of Klaviyo costs</div>
-        <a href="/go/systeme/?source=home-grid-systeme" target="_blank" rel="sponsored nofollow noopener" class="cta-primary aff-card-cta btn-g" data-cta-position="grid-systeme">Start free on Systeme.io <span class="aff-mark">affiliate</span></a>
-      </div>
-    </div>
-
-    <div class="aff-tier-label aff-tier-label-2">Also useful — not required by anything above</div>
-    <ul class="aff-list">
-      <li class="aff-row">
-        <div class="aff-row-main">
-          <span class="aff-row-name">GetResponse</span>
-          <span class="aff-row-why">More advanced segmentation than Systeme.io's free tier, if you have outgrown it. Free plan available.</span>
-        </div>
-        <a href="/go/getresponse/?source=home-grid-getresponse" target="_blank" rel="sponsored nofollow noopener" class="aff-row-cta" data-cta-position="grid-getresponse">Try free <span class="aff-mark">affiliate</span></a>
-      </li>
-      <li class="aff-row">
-        <div class="aff-row-main">
-          <span class="aff-row-name">Beehiiv</span>
-          <span class="aff-row-why">The newsletter platform Stack Architect uses to send these guides. Free up to 2,500 subscribers.</span>
-        </div>
-        <a href="/go/beehiiv/?source=home-grid-beehiiv" target="_blank" rel="sponsored nofollow noopener" class="aff-row-cta" data-cta-position="grid-beehiiv">Start free <span class="aff-mark">affiliate</span></a>
-      </li>
-      <li class="aff-row">
-        <div class="aff-row-main">
-          <span class="aff-row-name">Tidio</span>
-          <span class="aff-row-why">AI live chat and helpdesk for Shopify. Free plan covers most small stores.</span>
-        </div>
-        <a href="/go/tidio/?source=home-grid-tidio" target="_blank" rel="sponsored nofollow noopener" class="aff-row-cta" data-cta-position="grid-tidio">Try free <span class="aff-mark">affiliate</span></a>
-      </li>
-    </ul>
-
-    <div class="aff-tier-label aff-tier-label-3">Paid tools we rate — for stores past the free tier</div>
-    <p class="aff-paid-note">These are not part of the $0 stack and nothing on this page depends on them. They are here because we use them and they are worth the money at a certain size — not because they are free.</p>
-    <ul class="aff-list">
-      <li class="aff-row">
-        <div class="aff-row-main">
-          <span class="aff-row-name">Gorgias</span>
-          <span class="aff-row-why">The leading Shopify support helpdesk. Deep Shopify integration — view and edit orders without leaving a ticket. Paid plan only, no free tier.</span>
-        </div>
-        <a href="https://www.gorgias.com/pricing" target="_blank" rel="noopener" class="aff-row-cta" data-cta-position="grid-gorgias">See pricing <span class="aff-mark">not affiliate</span></a>
-      </li>
-      <li class="aff-row">
-        <div class="aff-row-main">
-          <span class="aff-row-name">Google Workspace</span>
-          <span class="aff-row-why">Worth it past roughly 500 orders/month: removes the Gmail API limits that silently kill automations during Black Friday volumes. Paid subscription.</span>
-        </div>
-        <a href="/go/workspace/?source=home-grid-workspace" target="_blank" rel="sponsored nofollow noopener" class="aff-row-cta" data-cta-position="grid-workspace">Start trial <span class="aff-mark">affiliate</span></a>
-      </li>
-    </ul>
-  </div>
-</section>
 <!-- =============================================================== -->
 <!-- STYLES FOR CHUNK 4 SECTIONS                                      -->
 <!-- =============================================================== -->
@@ -1356,7 +1191,7 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
   <div class="seo-prose" itemscope itemtype="https://schema.org/Article">
     <meta itemprop="headline" content="Free Shopify Automation Stack 2026 — Free Tools Replacing Paid Apps at $0">
     <meta itemprop="datePublished" content="2026-02-01">
-    <meta itemprop="dateModified" content="2026-08-21">
+    <meta itemprop="dateModified" content={pageUpdated('/')}>
     {/* No itemprop="author" here. It said "Stack Architect", which
         contradicted the #luke Person node the JSON-LD above asserts as
         author of this page. The JSON-LD is the authoritative statement;
@@ -1393,7 +1228,7 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
     <p>In 2026, AI-powered shopping assistants (ChatGPT, Claude, Perplexity, Google AI Overviews) are becoming primary discovery channels for Shopify products. Three requirements to be citable by AI models: (1) structured data — Product, Offer, Organization, and FAQPage schema on every page; (2) server-side tracking for accurate conversion signals back to ad platforms; (3) an <code>llms.txt</code> file at your domain root describing your product catalogue for AI crawlers. The <a href="/blog/shopify-agentic-storefronts-setup-guide-2026/">Agentic Storefronts setup guide</a> includes a 12-point readiness checklist for your store.</p>
 
     <h3>Free Shopify Automation Guides and Resources</h3>
-    <p>The <a href="/shopify-automation-guides/">complete guide library</a> covers every tool in the stack with step-by-step setup instructions. The most-read guides are <a href="/blog/shopify-server-side-tracking-complete-setup-guide/">Shopify server-side tracking setup</a>, <a href="/blog/shopify-stocky-data-export-before-shutdown/">exporting Stocky data before the August 2026 shutdown</a>, <a href="/blog/shopify-abandoned-cart-recovery-free-2026/">free Shopify abandoned cart recovery</a>, <a href="/blog/shopify-email-marketing-free-2026/">free Shopify email marketing 2026</a>, and <a href="/blog/shopify-conversion-rate-optimisation-free-2026/">Shopify CRO with 12 free tools</a>.</p>
+    <p>The <a href="/shopify-automation-guides/">complete guide library</a> covers every tool in the stack with step-by-step setup instructions. The most-read guides are <a href="/blog/shopify-server-side-tracking-complete-setup-guide/">Shopify server-side tracking setup</a>, <a href="/blog/shopify-stocky-data-export-before-shutdown/">exporting Stocky data before the August 2026 shutdown</a>, <a href="/blog/shopify-abandoned-cart-recovery-free-2026/">free Shopify abandoned cart recovery</a>, <a href="/replace-klaviyo-free/">free Shopify email marketing 2026</a>, and <a href="/blog/shopify-conversion-rate-optimisation-free-2026/">Shopify CRO with 12 free tools</a>.</p>
   </div>
 </div>
 </section>
@@ -1461,20 +1296,9 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
   </div>
 </div>
 </section>
+<PageUpdated style="max-width:1140px;margin:0 auto 2rem;padding:0 24px;font-size:0.78rem;color:#93a09a;" />
 </main>
 
-<!-- Persistent affiliate CTA. Already used on the six tool pages; the homepage
-     is the longest page on the site and the most likely to take a cold visitor,
-     and it had none. Reveals after 28% scroll, hides while any .btn-g or
-     .scan-cta is on screen, session-dismissible, no layout shift, no new URL.
-     Reports link_position "sticky" to the GA4 listener in Base.astro, so it is
-     measurable against the in-body placements from day one. -->
-<StickyAffiliateCTA
-  href="/go/make/?source=home-n19"
-  label="Start free on Make.com"
-  context="Every free tool on this page runs on Make.com's free tier"
-  revealAt={0.28}
-/>
 <script is:inline>
 (function(){
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;

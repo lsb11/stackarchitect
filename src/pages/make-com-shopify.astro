@@ -1,4 +1,5 @@
 ---
+import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
 import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
@@ -56,8 +57,7 @@ const tocHeadings = [
 ---
 <Base title="Make.com for Shopify — Free Automation Guide 2026" description="Connect Make.com to Shopify in 3 minutes. What the free tier covers, how it compares to Zapier and Shopify Flow, and when you actually need to upgrade.">
 <Fragment slot="head">
-<script type="application/ld+json">
-  {
+<script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@graph": [
       {
@@ -84,7 +84,7 @@ const tocHeadings = [
         "name": "Make.com for Shopify — Free Automation Setup Guide 2026 | Stack Architect",
         "description": "Make.com connects to Shopify via webhook in 3 minutes. Run server-side tracking, inventory, TikTok CAPI, and P&L — all free. Complete setup guide 2026.",
         "inLanguage": "en-GB",
-        "dateModified": "2026-07-17",
+        "dateModified": pageUpdated('/make-com-shopify/'),
         "datePublished": "2026-04-22",
         "isPartOf": {
           "@id": "https://stackarchitect.xyz/#website"
@@ -148,30 +148,9 @@ const tocHeadings = [
               "text": "Make.com's free plan gives 1,000 credits/month (formerly called operations) with no time limit and no credit card required. It includes webhook triggers, HTTP modules, and multi-step scenarios with branching — enough to run server-side tracking (Meta), inventory management, TikTok CAPI, and P&L reporting simultaneously for most Shopify stores under 250 orders per month."
             }
           },
-          {
-            "@type": "Question",
-            "name": "How do I connect Make.com to Shopify?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "In Make.com, create a new scenario and add a Webhooks module as the trigger. Copy the generated webhook URL. In Shopify Admin, go to Settings → Notifications → Webhooks, create a new webhook for the Order payment event, and paste the Make.com URL. The connection takes approximately 3 minutes and requires no Shopify app installation."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "What can Make.com automate for Shopify stores?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Make.com can automate server-side conversion tracking (sending purchase events to Meta Conversions API and Google Enhanced Conversions), inventory management (logging orders to Google Sheets in real time), TikTok Events API (CompletePayment events server-side), live P&L reporting (revenue, COGS, and net profit per order to Google Sheets), and abandoned cart email sequences (via Systeme.io). All of these run on Make.com's free plan simultaneously."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "How does Make.com compare to Zapier for Shopify?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Make.com gives 1,000 free credits per month versus Zapier's 100 free tasks — 10 times more. Make.com supports multi-step scenarios where one Shopify webhook fans out to multiple destinations simultaneously (Meta CAPI, Google, TikTok, Google Sheets all at once). Zapier restricts multi-step automations to paid plans. At equivalent paid tiers, Make.com costs approximately 4 times less per operation."
-            }
-          },
+          
+          
+          
           {
             "@type": "Question",
             "name": "Does Make.com work with Shopify Basic?",
@@ -191,8 +170,7 @@ const tocHeadings = [
         ]
       }
     ]
-  }
-  </script>
+  })}></script>
 </Fragment>
 <div class="breadcrumb">
   <a href="/">Home</a><span>/</span>Make.com for Shopify
@@ -242,7 +220,7 @@ const tocHeadings = [
     <div class="inner">
       <div class="tag">The 4 Essential Scenarios</div>
       <h2 id="what-to-build-with-make-com-on-shopify">What to Build With Make.com on Shopify</h2>
-      <p>One Shopify Order Payment webhook triggers all four automations simultaneously. Build each one individually or get all four pre-configured in the <a href="/pro/" style="color:var(--amber)">Complete Kit for {kitPrice}</a>.</p>
+      <p>One Shopify Order Payment webhook triggers all four automations simultaneously. The <a href="/ultimate-shopify-automation-guide/" style="color:var(--amber)">complete Shopify automation guide</a> walks through building all four in one sitting. Build each one individually or get all four pre-configured in the <a href="/pro/" style="color:var(--amber)">Complete Kit for {kitPrice}</a>.</p>
       <div class="tool-grid">
         <a href="/capi-shield/" class="tool-card">
           <div class="tool-card-tag">Scenario 01 · Ad Tracking</div>
@@ -335,7 +313,7 @@ const tocHeadings = [
         </li>
       </ol>
       <div style="margin-top:28px;padding:20px 24px;background:rgba(245,182,77,.06);border:1px solid rgba(245,182,77,.2);border-radius:8px;">
-        <p style="margin:0;font-size:14px;color:var(--text-2);">Want the finished files instead of building from scratch? The <a href="/pro/" style="color:var(--amber);font-weight:600;">Complete Kit ({kitPrice})</a> includes all 4 pre-configured Make.com JSON blueprints — live in about 10 minutes.</p>
+        <p style="margin:0;font-size:14px;color:var(--text-2);">Want the finished files instead of building from scratch? The Complete Kit ({kitPrice}) includes all 4 pre-configured Make.com JSON blueprints — live in about 10 minutes.</p>
       </div>
     </div>
   </section>
@@ -379,7 +357,6 @@ const tocHeadings = [
       <p style="margin-top:16px;font-size:13px;color:var(--text-4);">For Shopify automation, Make.com is the clear choice at every tier. The free plan alone covers the entire Stack Architect toolset for most stores.</p>
       <p style="margin-top:12px;font-size:13px;color:var(--text-4);">Those rows use a fixed example. To put your own order volume and branch count through it, the <a href="/make-vs-zapier-cost-calculator/" style="color:var(--g);text-decoration:underline;">Make vs Zapier cost calculator</a> returns the exact monthly and annual difference for your store.</p>
       <div style="margin-top:16px;">
-        <a href="/go/make/?source=make-com-shopify-n2" target="_blank" rel="sponsored nofollow noopener" class="btn-green" style="font-size:14px;padding:12px 24px;">Start free on Make.com — 1,000 ops/month →</a>
       </div>
     </div>
   </section>
@@ -535,16 +512,14 @@ const tocHeadings = [
         <h2 id="start-free-or-get-the-pre-built-kit">Start Free or Get the Pre-Built Kit</h2>
         <p>Build from the free guides on Make.com's free plan — or import the Complete Kit and be live in about 10 minutes.</p>
         <div class="hero-ctas">
-          <a href="/pro/" class="btn-gold">Get the Complete Kit — {kitPrice} →</a>
-          <a href="/go/make/?source=make-com-shopify-n3" target="_blank" rel="sponsored nofollow noopener" class="btn-green">Start free on Make.com — no credit card →</a>
         </div>
         <p style="font-size:12px;color:var(--text-4);margin:16px 0 0;">{kitPrice} one-time · no subscription · instant access · or free forever on Make.com</p>
       </div>
     </div>
   </section>
-  <!-- Byline inside <main>: the Article/Person schema describes the content
+  <!-- Byline inside the main element: the Article/Person schema describes the content
        region, so the visible attribution for it belongs in the same region.
-       This card used to sit after </main>, in the footer block. -->
+       This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
 </main>
 

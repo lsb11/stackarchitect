@@ -26,8 +26,8 @@ relatedGuides:
     href: "/capi-shield/"
   - title: "Shopify Abandoned Cart Recovery Free 2026"
     href: "/blog/shopify-abandoned-cart-recovery-free-2026/"
-  - title: "Shopify Email Marketing Free 2026"
-    href: "/blog/shopify-email-marketing-free-2026/"
+  - title: "Replace Klaviyo Free: Email for Shopify"
+    href: "/replace-klaviyo-free/"
   - title: "Free Shopify Automation Stack"
     href: "/"
 ---
@@ -77,7 +77,7 @@ Shows sessions, add-to-carts, checkout initiations, and purchases with conversio
 
 ### 4. Shopify Product Reviews (Free App)
 
-The native Shopify Product Reviews app is free and adds star ratings and review text to product pages. More reviews → higher conversion rate, especially for new visitors from paid ads. Prioritise sending review request emails (covered in the [email marketing guide](/blog/shopify-email-marketing-free-2026/)) to generate reviews systematically.
+The native Shopify Product Reviews app is free and adds star ratings and review text to product pages. More reviews → higher conversion rate, especially for new visitors from paid ads. Prioritise sending review request emails (covered in the [email marketing guide](/replace-klaviyo-free/)) to generate reviews systematically.
 
 ### 5. Tidio Live Chat Free Plan (Free)
 
@@ -106,7 +106,7 @@ This built-in single email fires 10 hours after abandonment by default. It's fre
 
 ### 8. [Systeme.io free plan — 2,000 contacts with unlimited sends](/go/systeme/?source=shopify-conversion-rate-optimisation-fre-n3) (0–2,000 Contacts)
 
-The complete free email marketing stack: welcome sequence, abandoned cart recovery, post-purchase sequence, and win-back campaign. [Full setup guide →](/blog/shopify-email-marketing-free-2026/)
+The complete free email marketing stack: welcome sequence, abandoned cart recovery, post-purchase sequence, and win-back campaign. [Full setup guide →](/replace-klaviyo-free/)
 
 ### 9. Shopify Email (First 10,000 Emails/Month Free)
 
@@ -119,6 +119,8 @@ For broadcast campaigns — product launches, sale announcements, seasonal email
 [pagespeed.web.dev](https://pagespeed.web.dev) — measures Core Web Vitals (Largest Contentful Paint, Cumulative Layout Shift, Interaction to Next Paint) for your store. Google's [Core Web Vitals documentation](https://web.dev/articles/vitals) shows the thresholds that affect both search ranking and user experience.
 
 Most Shopify theme issues affecting speed: unoptimised images (compress all product images to WebP under 100KB), too many third-party app scripts loading on every page, and large JavaScript bundles from unused apps.
+
+Clean, complete product data now matters outside your own store too. The [Shopify agentic storefronts guide](/blog/shopify-agentic-storefronts-setup-guide-2026/) covers how Shopify lists products inside ChatGPT, Copilot and Google AI Mode, and what each channel needs.
 
 ### 11. Shopify Theme Inspector (Free, Built into Chrome DevTools)
 

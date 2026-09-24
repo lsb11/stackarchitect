@@ -1,7 +1,7 @@
 ---
+import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
 import Disclosure from '../components/Disclosure.astro';
-import StickyAffiliateCTA from '../components/StickyAffiliateCTA.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 // src/pages/autocrat-quota-fix.astro
 // Stack Architect — Autocrat Quota Fix
@@ -12,7 +12,7 @@ const SITE = "https://stackarchitect.xyz";
 const PAGE = `${SITE}/autocrat-quota-fix/`;
 const OG_IMAGE = "https://stackarchitect.xyz/og/og-autocrat-quota-fix.png";
 const DATE_PUBLISHED = "2025-01-01";
-const DATE_MODIFIED = '2026-08-08';
+const DATE_MODIFIED = pageUpdated('/autocrat-quota-fix/')!;
 // Visible byline is derived from DATE_MODIFIED — never hardcode it, or the
 // rendered date drifts away from the schema dateModified.
 const UPDATED_LABEL = new Date(DATE_MODIFIED).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
@@ -43,7 +43,7 @@ const schema = JSON.stringify({
       "@id": `${PAGE}#webpage`,
       "url": PAGE,
       "name": "Fix Google Apps Script Quota Errors Free — Autocrat Fix 2026",
-      "description": "Free fix for Google Apps Script quota errors. Autocrat Quota Fix uses Make.com to route document workflows through a dedicated API, eliminating 'service invoked too many times' errors — no 6-minute execution ceiling, no document-create cap, no code, 3 minutes. Free tier covers roughly 300 docs/day depending on your scenario's step count; scales to thousands/day on a paid Make.com plan.",
+      "description": "Free fix for Google Apps Script quota errors. Autocrat Quota Fix uses Make.com to route document workflows through a dedicated API, eliminating 'service invoked too many times' errors — not bound by Apps Script's six-minute runtime or its daily document quota, no code, 3 minutes. Free tier covers roughly 300 docs/day depending on your scenario's step count; scales to thousands/day on a paid Make.com plan.",
       "datePublished": DATE_PUBLISHED,
       "dateModified": DATE_MODIFIED,
       "inLanguage": "en-GB",
@@ -79,10 +79,10 @@ const schema = JSON.stringify({
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Web",
       "url": PAGE,
-      "description": "Free fix for Google Apps Script 'service invoked too many times' quota errors. Routes Autocrat document workflows through Make.com to bypass shared consumer quota limits — no 6-minute execution ceiling, no document-create cap. Free tier covers roughly 300 docs/day depending on your scenario's step count; scales to thousands/day on a paid Make.com plan.",
+      "description": "Free fix for Google Apps Script 'service invoked too many times' quota errors. Routes Autocrat document workflows through Make.com to bypass shared consumer quota limits — not bound by Apps Script's six-minute runtime or its daily document quota. Free tier covers roughly 300 docs/day depending on your scenario's step count; scales to thousands/day on a paid Make.com plan.",
       "featureList": [
         "Eliminates service invoked too many times errors",
-        "Removes the 6-minute execution ceiling and document-create cap",
+        "Moves document generation outside Apps Script's six-minute runtime and daily document quota",
         "Chunked processing with state persistence",
         "Exponential backoff on quota errors",
         "Free via Make.com",
@@ -103,7 +103,7 @@ const schema = JSON.stringify({
       "@type": ["Article","TechArticle"],
       "@id": `${PAGE}#article`,
       "headline": "Fix Google Apps Script Quota Errors Free — Autocrat Fix 2026",
-      "description": "How to permanently fix Google Apps Script 'service invoked too many times' quota exceeded errors using Make.com as a dedicated execution environment. Free, no code — removes the 6-minute execution ceiling and document-create cap via chunked processing, exponential backoff, and state persistence. Free tier handles ~300 docs/day; scales to thousands/day on a paid plan.",
+      "description": "How to permanently fix Google Apps Script 'service invoked too many times' quota exceeded errors using Make.com as a dedicated execution environment. Free, no code — moves document generation outside Apps Script's six-minute runtime and daily document quota via chunked processing, exponential backoff, and state persistence. Free tier handles ~300 docs/day; scales to thousands/day on a paid plan.",
       "author": { "@id": `${SITE}/#luke` },
       "publisher": { "@id": `${SITE}/#org` },
       "datePublished": DATE_PUBLISHED,
@@ -174,14 +174,10 @@ const schema = JSON.stringify({
           "acceptedAnswer": { "@type": "Answer", "text": "Your data flows through your own Make.com workspace — Stack Architect has zero access to your spreadsheet data or documents. Make.com connects to Google Sheets and Google Docs using your own Google account credentials via OAuth. Remove the integration at any time by disconnecting Make.com from Google." } },
         { "@type": "Question", "name": "How long does Autocrat Quota Fix setup take?",
           "acceptedAnswer": { "@type": "Answer", "text": "Most operators are live in 3 minutes. Make.com account creation takes 1 minute. The scenario configuration takes 2 minutes. No code, no Google Cloud Console, no developer required. A full setup manual is available as a free PDF download." } },
-        { "@type": "Question", "name": "Does Autocrat Quota Fix fix other Google Apps Script errors beyond Autocrat?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Yes. The same Make.com architecture fixes quota errors for any Google Apps Script workflow — Gmail sending limits, Google Sheets write quotas, Google Drive API limits, and any document generation pipeline. If the error message contains 'service invoked too many times' or 'exceeded maximum execution time', Autocrat Quota Fix resolves it." } },
-        { "@type": "Question", "name": "Should I upgrade to Google Workspace instead of using Autocrat Quota Fix?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Google Workspace raises Apps Script quotas approximately 10x — which helps but does not eliminate the problem at high volume. Autocrat Quota Fix is the complete solution and works on free Gmail accounts. For stores processing 500+ orders per month, combining both removes all practical limits. Workspace is not required to start." } },
-        { "@type": "Question", "name": "Why does Autocrat only show 'Help' in the Extensions menu, with the 'Open' menu missing?",
-          "acceptedAnswer": { "@type": "Answer", "text": "This is caused by a Google Apps Script service disruption or an authorization reset, not a quota limit. The fix: open Autocrat, click Manage Triggers, note the Trigger Owner email, then log out of all other Google accounts (or use an Incognito window), sign in only to that owner account, and re-authorize. If the menu is still missing, uninstall and reinstall Autocrat and clear your browser cache. Your saved merge jobs are preserved but triggers must be re-created after reinstalling." } },
-        { "@type": "Question", "name": "Why is Autocrat not triggering or not showing in Extensions?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Most often this is multi-account authorization breaking the trigger, an add-on outage on Google's side, or an ad-blocker/web-filter blocking the add-on panel. Re-authorize from the trigger owner account only, reinstall and clear cache if needed, and test in Incognito with extensions disabled. On managed Workspace domains, confirm an admin has not restricted third-party add-ons." } },
+        
+        
+        
+        
         { "@type": "Question", "name": "Why did Autocrat only merge 100 documents or stop partway through?",
           "acceptedAnswer": { "@type": "Answer", "text": "A run that stops after a fixed number of documents or partway through a batch is hitting a daily service quota or the 6-minute execution ceiling, not a permanent fault. Reduce the batch size, or for reliable high-volume generation move execution to Make.com, which processes in chunks and resumes from the exact row if interrupted rather than abandoning the remaining rows." } },
         { "@type": "Question", "name": "Why is Autocrat only doing one line or one row?",
@@ -248,7 +244,7 @@ const tocHeadings = [
 ];
 
 ---
-<Base title="Fix Google Apps Script Quota Errors Free — Autocrat Fix 2026" description="Stop">
+<Base title="Fix Google Apps Script Quota Errors Free — Autocrat Fix 2026" description="Autocrat merges stopping partway or failing on large batches? Why they hit Google Apps Script limits, and how to move document generation to Make.com free.">
 <Fragment slot="head">
 <script type="application/ld+json" set:html={schema} />
 
@@ -547,12 +543,15 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
   </div>
 
   <h1 id="hero-headline">
-    Stop "Service Invoked<br />
-    <span class="green">Too Many Times"</span><br />
-    <span class="dim">Errors. Free fix.</span>
+    Autocrat stopping<br />
+    <span class="green">mid-merge?</span><br />
+    <span class="dim">Fix the quota errors behind it.</span>
   </h1>
 
-  <p id="answer">Autocrat runs on Google Apps Script, and processing large batches of documents without delays between calls triggers the platform's per-second service quota, throwing "Service invoked too many times: exec qps" and failing silently mid-batch. Autocrat Quota Fix moves document generation to Make.com, processing rows in batches of 50–100 that stay inside Google's limits, free for most stores.</p>
+  <p id="answer">Autocrat builds your documents with Google Apps Script, so a large merge hits the same limits as any script: six minutes per run and a daily cap on documents created. When a job keeps stopping partway, move document generation to Make.com, which does not run inside Apps Script and is free at low volume.</p>
+
+  <p class="hero-sub" style="margin-top:12px;">For every Apps Script limit and the error each one produces, see the <a href="/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/" style="color:var(--g);">Google Apps Script quotas guide</a>.</p>
+  <p class="hero-sub" style="margin-top:8px;font-size:14px;">Sources, checked 24 September 2026: <a href="https://developers.google.com/apps-script/guides/services/quotas" target="_blank" rel="noopener" style="color:var(--g);">Google&rsquo;s Apps Script quotas</a> (six minutes per execution; 250 documents created a day on a consumer account, 1,500 on Workspace), the <a href="https://workspace.google.com/marketplace/app/autocrat/539341275670" target="_blank" rel="noopener" style="color:var(--g);">Autocrat listing</a> on the Google Workspace Marketplace (a document merge tool that creates PDFs or shared Docs from spreadsheet data), and <a href="https://www.make.com/en/pricing" target="_blank" rel="noopener" style="color:var(--g);">Make.com pricing</a> (up to 1,000 credits a month and five minutes per run on the free plan).</p>
 
   <TableOfContents headings={tocHeadings} />
 
@@ -632,7 +631,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
     <p>Google Apps Script imposes hard limits on every account. Free Gmail accounts are capped at <strong>6 minutes per script execution</strong> and <strong>90 minutes of total daily execution time</strong>. Google Workspace accounts receive approximately 10x higher limits, but even Workspace accounts hit ceilings when processing high-volume order data through Autocrat.</p>
     <div class="callout info">
       <div class="callout-label">First — is this actually your problem?</div>
-      <p>If your error is <strong>"service invoked too many times"</strong> and it fires partway through a loop, you most likely have a row-by-row script and the fix is <strong>free</strong>: batch your reads and writes. Our <a href="/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script/">step-by-step batching guide with code</a> resolves it in minutes — no new tools needed. The structural fix on this page is for high-volume document generation that hits the <strong>6-minute execution ceiling</strong> or the <strong>daily document-create cap</strong> — limits that batching alone cannot solve.</p>
+      <p>If your error is <strong>"service invoked too many times"</strong> and it fires partway through a loop, you most likely have a row-by-row script and the fix is <strong>free</strong>: batch your reads and writes. Our <a href="/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/">step-by-step batching guide with code</a> resolves it in minutes — no new tools needed. The structural fix on this page is for high-volume document generation that hits the <strong>6-minute execution ceiling</strong> or the <strong>daily document-create cap</strong> — limits that batching alone cannot solve.</p>
     </div>
 
 
@@ -790,7 +789,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
         <tr>
           <td>Daily execution time limit</td>
           <td class="lose">90 min (free) / 6 hr (Workspace)</td>
-          <td class="win">No execution time limit</td>
+          <td class="win">5 minutes per run on the free plan, in small batches that resume</td>
         </tr>
         <tr>
           <td>Max rows per day (free)</td>
@@ -880,9 +879,6 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
   <div style="text-align:center;margin-top:32px;display:flex;flex-wrap:wrap;gap:14px;justify-content:center;">
     <a href="https://d1yei2z3i6k35z.cloudfront.net/16370908/699c3311a6020_Manual_The_Autocrat_Quota_Fix.pdf" target="_blank" rel="noopener" class="btn-outline">
       Download setup manual (PDF)
-    </a>
-    <a href={`${AFF.make}?source=autocrat-quota-fix-map-n2`} target="_blank" rel="sponsored nofollow noopener" class="btn pulse">
-      Fix Autocrat quota errors free on Make.com — 3-minute setup →
     </a>
   </div>
 </div>
@@ -1012,7 +1008,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
 
     <details class="faq-item-a">
       <summary><span>What causes the "service invoked too many times" error in Google Apps Script?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-a"><p>"Service invoked too many times" is a <strong>rate-limit</strong> error — your script called a Google service too many times in a short window, usually a loop that reads or writes one row at a time. The free fix is batching: read all rows in one call, process them in memory, then write back in one call. See the <a href="/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script/">free batching fix with code</a>. This is separate from the 6-minute execution ceiling and the daily document-create cap — structural limits that batching cannot solve. For high-volume document generation that hits those ceilings, Autocrat Quota Fix moves execution to Make.com, which has no equivalent per-execution time limit.</p></div>
+      <div class="faq-ans-a"><p>"Service invoked too many times" is a <strong>rate-limit</strong> error — your script called a Google service too many times in a short window, usually a loop that reads or writes one row at a time. The free fix is batching: read all rows in one call, process them in memory, then write back in one call. See the <a href="/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/">free batching fix with code</a>. This is separate from the 6-minute execution ceiling and the daily document-create cap — structural limits that batching cannot solve. For high-volume document generation that hits those ceilings, Autocrat Quota Fix moves execution to Make.com, which has no equivalent per-execution time limit.</p></div>
     </details>
 
     <details class="faq-item-a">
@@ -1092,7 +1088,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
   <h2 id="related-h" style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--text-4);margin-bottom:16px;">Related guides</h2>
   <nav aria-label="Related guides">
     <div style="display:flex;flex-direction:column;gap:8px;">
-      <a href="/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script/" style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-3);border:1px solid var(--border);border-radius:8px;text-decoration:none;transition:border-color .15s;" onmouseover="this.style.borderColor='rgba(195,184,239,.3)'" onmouseout="this.style.borderColor='var(--border)'">
+      <a href="/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/" style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-3);border:1px solid var(--border);border-radius:8px;text-decoration:none;transition:border-color .15s;" onmouseover="this.style.borderColor='rgba(195,184,239,.3)'" onmouseout="this.style.borderColor='var(--border)'">
         <span style="font-size:14px;font-weight:600;color:var(--text-2);">Fix Autocrat quota errors — stop service invoked too many times failures</span>
         <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);flex-shrink:0;margin-left:12px;" aria-hidden="true">→</span>
       </a>
@@ -1100,7 +1096,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
         <span style="font-size:14px;font-weight:600;color:var(--text-2);">Google Apps Script quotas explained — how to avoid limits and scale</span>
         <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);flex-shrink:0;margin-left:12px;" aria-hidden="true">→</span>
       </a>
-      <a href="/blog/scalable-google-sheets-automation-for-high-volume-workflows/" style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-3);border:1px solid var(--border);border-radius:8px;text-decoration:none;transition:border-color .15s;" onmouseover="this.style.borderColor='rgba(195,184,239,.3)'" onmouseout="this.style.borderColor='var(--border)'">
+      <a href="/shopify-google-sheets-automation/" style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-3);border:1px solid var(--border);border-radius:8px;text-decoration:none;transition:border-color .15s;" onmouseover="this.style.borderColor='rgba(195,184,239,.3)'" onmouseout="this.style.borderColor='var(--border)'">
         <span style="font-size:14px;font-weight:600;color:var(--text-2);">How to run high-volume document automation without errors</span>
         <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);flex-shrink:0;margin-left:12px;" aria-hidden="true">→</span>
       </a>
@@ -1121,12 +1117,9 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
     Stop losing documents<br />
     <span style="color:var(--g);">to quota errors. Free fix.</span>
   </h2>
-  <p style="font-size:17px;color:var(--text-3);max-width:520px;margin:0 auto 32px;line-height:1.7;">Autocrat Quota Fix routes your document workflows through Make.com — no 6-minute execution ceiling, no document-create cap, deploys in 3 minutes, free for most stores.</p>
+  <p style="font-size:17px;color:var(--text-3);max-width:520px;margin:0 auto 32px;line-height:1.7;">Autocrat Quota Fix routes your document workflows through Make.com — not bound by Apps Script's six-minute runtime or its daily document quota, deploys in 3 minutes, free for most stores.</p>
   <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-bottom:16px;">
     <a href="https://stackarchitect.xyz/" class="btn-outline" aria-label="See the complete $0 automation stack">See the full stack</a>
-    <a href={`${AFF.make}?source=autocrat-quota-fix-map-n3`} target="_blank" rel="sponsored nofollow noopener" class="btn pulse" aria-label="Fix Autocrat quota errors free on Make.com — no credit card required">
-      Fix Autocrat quota errors free on Make.com — no credit card →
-    </a>
   </div>
   <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:20px;margin-top:20px;">
     <span style="font-size:13px;color:var(--text-4);display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Runs on Make.com's free tier</span>
@@ -1136,9 +1129,9 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
 </div>
 </section>
 
-  <!-- Byline inside <main>: the Article/Person schema describes the content
+  <!-- Byline inside the main element: the Article/Person schema describes the content
        region, so the visible attribution for it belongs in the same region.
-       This card used to sit after </main>, in the footer block. -->
+       This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
 </main>
 
@@ -1197,10 +1190,5 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
 })();
 </script>
 
-<StickyAffiliateCTA
-  href="/go/make/?source=autocrat-quota-fix-n1"
-  label="Start free on Make.com →"
-  context="Skip Apps Script quotas entirely — Make.com’s free tier has none."
-/>
 </Base>
 

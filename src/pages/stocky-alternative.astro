@@ -1,4 +1,5 @@
 ---
+import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 import TableOfContents from '../components/TableOfContents.astro';
@@ -31,7 +32,7 @@ const title = "Stocky Alternative — Replace Shopify Stocky for $0";
 const description =
   "Stocky closed on 31 August 2026. What stopped, what you can still export and how, and the $0 replacement.";
 
-const dateModified = "2026-08-14";
+const dateModified = pageUpdated('/stocky-alternative/')!;
 const datePublished = "2026-01-15";
 
 const appSlug = 'stocky';
@@ -266,6 +267,24 @@ const schema = {
     reconstruct it, what Shopify Admin now covers for nothing, and what the paid market is actually worth.
   </p>
 
+  <!-- Merged from /stocky-shutdown/ on 24 Sep 2026 (freeze exception #3). -->
+  <h2 id="what-replaces-h" class="text-2xl font-bold text-white mb-4" style="margin-top:3rem;">What Stocky Was, and What Shopify Says Replaces It</h2>
+  <p class="text-gray-300 leading-relaxed mb-4">
+    Stocky was Shopify's own inventory app: purchase orders, suppliers, stocktakes, stock adjustments and reorder
+    forecasting, inside the Shopify admin. Shopify's
+    <a href="https://help.shopify.com/en/manual/sell-in-person/shopify-pos/inventory-management/stocky" target="_blank" rel="noopener" class="text-green-400 underline">Stocky help page</a>
+    describes it as tracking inventory levels, forecasting the inventory you need and suggesting what to order.
+  </p>
+  <p class="text-gray-300 leading-relaxed mb-4">
+    Shopify's migration guide names the replacement as Shopify itself: &ldquo;You now need to manage inventory in the
+    Shopify admin and Shopify POS.&rdquo; The tasks it lists as built in are transfers between locations, tracking and
+    receiving purchase orders from suppliers, adjusting quantities and reporting on historical inventory changes, with
+    Shopify Flow for low-stock alerts. For reordering it points to Sidekick, Shopify's built-in assistant, to draft
+    purchase orders from demand forecasting suggestions. Nothing in Stocky moves across by itself: old purchase orders
+    and stocktakes have to be exported by hand
+    (<a href="https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky" target="_blank" rel="noopener" class="text-green-400 underline">Shopify, &ldquo;Migrating from Stocky to Shopify inventory management&rdquo;</a>, read 24 September 2026).
+  </p>
+
   <!-- ── the three dates ────────────────────────────────────────── -->
   <h2 id="dates-h" class="text-2xl font-bold text-white mb-4" style="margin-top:3rem;">The Three Dates That Define the Shutdown</h2>
   <p class="text-gray-300 leading-relaxed mb-4">
@@ -361,7 +380,7 @@ const schema = {
     The full button-by-button walkthrough, including the supplier workaround, lives in the
     <a href="/blog/shopify-stocky-data-export-before-shutdown/" style="color:var(--g);text-decoration:underline">Stocky data export guide</a>.
     For the deadline mechanics and a field-by-field account of what stopped and what is still exportable, see the
-    <a href="/stocky-shutdown/" style="color:var(--g);text-decoration:underline">Stocky shutdown breakdown</a>.
+    <a href="/stocky-alternative/" style="color:var(--g);text-decoration:underline">Stocky shutdown breakdown</a>.
   </p>
 
   <!-- ── PATH B ─────────────────────────────────────────────────── -->
@@ -533,7 +552,6 @@ const schema = {
 
   {parentExists && <CrossLinkCallout type="review" appSlug={appSlug} appName={appName} />}
 
-  <InlineOffer slug="stocky-swap" source="guide_stocky_alternative_inline_top" />
 
   <!-- ── market ─────────────────────────────────────────────────── -->
   <h2 id="market-h" class="text-2xl font-bold text-white mb-4" style="margin-top:3.5rem;">The Paid Market, Honestly</h2>
@@ -689,7 +707,7 @@ const schema = {
     <li class="text-gray-300">→ <a href="https://help.shopify.com/en/manual/products/inventory/stocky" rel="nofollow noopener" target="_blank" style="color:var(--g);text-decoration:underline">Shopify — Stocky app documentation</a></li>
     <li class="text-gray-300">→ <a href="https://shopify.dev/docs/api/webhooks" rel="nofollow noopener" target="_blank" style="color:var(--g);text-decoration:underline">Shopify.dev — Webhooks API reference</a></li>
     <li class="text-gray-300">→ <a href="https://www.make.com/en/pricing" rel="nofollow noopener" target="_blank" style="color:var(--g);text-decoration:underline">Make.com — pricing and free plan limits</a></li>
-    <li class="text-gray-300">→ <a href="/stocky-shutdown/" style="color:var(--g);text-decoration:underline">Stocky shutdown: what stopped and what you can still export</a></li>
+    <li class="text-gray-300">→ <a href="/stocky-alternative/" style="color:var(--g);text-decoration:underline">Stocky shutdown: what stopped and what you can still export</a></li>
     <li class="text-gray-300">→ <a href="/blog/shopify-stocky-data-export-before-shutdown/" style="color:var(--g);text-decoration:underline">The Stocky data export walkthrough</a></li>
     <li class="text-gray-300">→ <a href="/blog/the-ultimate-guide-to-shopify-inventory-management/" style="color:var(--g);text-decoration:underline">The complete guide to Shopify inventory management</a></li>
     <li class="text-gray-300">→ <a href="/apps/stocky/" style="color:var(--g);text-decoration:underline">Stocky pricing record</a></li>

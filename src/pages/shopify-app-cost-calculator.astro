@@ -1,4 +1,5 @@
 ---
+import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
 import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
@@ -6,8 +7,7 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
 ---
 <Base title="Shopify App Cost Calculator — What You Overpay" description="Enter your monthly Shopify app spend to see the annual figure, which categories have free replacements, and what switching would actually save.")>
 <Fragment slot="head">
-<script type="application/ld+json">
-  {
+<script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@graph": [
       {
@@ -26,7 +26,7 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
         "name": "Free Shopify App Cost Calculator 2026 — See Exactly How Much You Overpay",
         "description": "Free interactive tool that calculates exactly how much Shopify stores overpay on apps and identifies which apps can be replaced for $0. Enter monthly spend across marketing, inventory, and tracking categories to see annual waste, recovery potential, and a personalised free deployment plan.",
         "inLanguage": "en-GB",
-        "dateModified": "2026-07-17",
+        "dateModified": pageUpdated('/shopify-app-cost-calculator/'),
         "isPartOf": { "@id": "https://stackarchitect.xyz/#website" },
         "breadcrumb": {
           "@type": "BreadcrumbList",
@@ -46,8 +46,7 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
         "description": "Free interactive calculator that identifies Shopify app overspend and produces a personalised recovery plan. Covers marketing, inventory, tracking, and automation app categories.",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }}
     ]
-  }
-  </script>
+  })}></script>
 <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -60,27 +59,12 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
       },
       {
         "@type": "Question",
-        "name": "Which Shopify apps can be replaced for free?",
-        "acceptedAnswer": { "@type": "Answer", "text": "The three biggest categories: tracking apps — CAPI Shield replaces Northbeam, Triple Whale, and Elevar at $0 vs $225/month (Elevar Core) rising sharply on Northbeam's Starter tier. Inventory apps — Stocky Swap replaces Stocky and Linnworks at $0 vs $29–$500 per month. Automation connectors — Make.com free tier replaces Zapier at $0 vs $49–$149 per month. Together these are where most of the recoverable spend sits." }
-      },
-      {
-        "@type": "Question",
-        "name": "How much can a Shopify store save by switching to free apps?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Most Shopify stores can recover $500–$900 per month by deploying the $0 Automation Stack. The annual figure is that monthly saving multiplied by twelve — arithmetic from the vendor list prices in our pricing index, not a measured outcome. Stores replacing all six app categories save the most." }
-      },
-      {
-        "@type": "Question",
-        "name": "How do I reduce my Shopify app costs?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Use this calculator to identify your biggest spend categories, then deploy the $0 Automation Stack from Stack Architect. Replace tracking apps with CAPI Shield, inventory with Stocky Swap, and automation connectors with Make.com. Most stores are fully deployed in under 20 minutes at $0 per month ongoing." }
-      },
-      {
-        "@type": "Question",
         "name": "Is it safe to remove paid Shopify apps?",
         "acceptedAnswer": { "@type": "Answer", "text": "Yes. The $0 stack runs entirely in your own Google account and Make.com workspace. Nothing is installed on your Shopify store — everything connects via Shopify webhooks, a built-in feature available on all plans. Remove it instantly by deleting the Make.com scenario and Google Sheet. There is no data exposure or Shopify plan requirement." }
       },
       {
         "@type": "Question",
-        "name": "Does replacing apps affect Shopify store performance?",
+        "name": "Does replacing apps affect Shopify store speed?",
         "acceptedAnswer": { "@type": "Answer", "text": "Replacing installed apps with server-side webhooks typically improves store performance. Every Shopify app installed loads JavaScript on your storefront, increasing page weight and reducing Core Web Vitals scores. The $0 stack runs entirely server-side — nothing is loaded in the browser, so your store loads faster." }
       }
     ]
@@ -477,10 +461,6 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">How much do Shopify stores spend on apps per month?<span class="faq-icon">+</span></button>
         <div class="faq-a">The average Shopify store spends $500–$1,200 per month on apps. Stores in the $50k–$500k monthly GMV range typically run 10–25 apps and spend $6,000–$15,000 per year. The highest-cost categories are email marketing, server-side tracking, and inventory management.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">Which Shopify apps can be replaced for free?<span class="faq-icon">+</span></button>
-        <div class="faq-a"><a href="/capi-shield/">CAPI Shield</a> replaces Northbeam, Triple Whale, and Elevar at $0 vs $225–$1,500+/month. <a href="/stocky-swap/">Stocky Swap</a> replaces Stocky and Linnworks at $0 vs $29–$500/month. Make.com free tier replaces Zapier at $0 vs $19.99+/month. <a href="/replace-klaviyo-free/">Systeme.io</a> replaces Klaviyo at $0 vs $20+/month for stores under 2,000 contacts.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">How do I reduce my Shopify app bill immediately?<span class="faq-icon">+</span></button>

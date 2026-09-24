@@ -33,9 +33,6 @@ relatedGuides:
     badge: "Urgent — Aug 2026"
   - title: "Replace Klaviyo Free"
     href: "/replace-klaviyo-free/"
-  - title: "Complete Kit — All 4 automations"
-    href: "/pro/"
-    badge: "$19.99"
 ---
 
 Black Friday Cyber Monday 2026 starts in approximately 7 months. That sounds like plenty of time. It isn't — not if you want your tracking, inventory, email, and automation infrastructure to be fully calibrated before you start spending serious money on ads.

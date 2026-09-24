@@ -1,9 +1,10 @@
 ---
+import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
 import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 
-const schemas = [{"@context":"https://schema.org","@type":"WebApplication","name":"Meta EMQ Score Estimator","url":"https://stackarchitect.xyz/meta-emq-score-estimator/","description":"Score the customer-data signals that feed your Meta Event Match Quality (EMQ) rating. Meta reports the real score in Events Manager; this tool weighs which parameters you send and how to fix gaps with server-side tracking.","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{ "@id": "https://stackarchitect.xyz/#org" }},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a good Meta EMQ score?","acceptedAnswer":{"@type":"Answer","text":"Meta rates EMQ from 0–10. A score of 7.0 or above is considered strong. Scores of 4–6 indicate moderate match quality with room for improvement. Below 4 means you are likely losing significant attribution and your Meta ad performance data is unreliable."}},{"@type":"Question","name":"What fields improve EMQ score the most?","acceptedAnswer":{"@type":"Answer","text":"Email address and phone number are the highest-impact fields, each contributing significantly to match quality. External ID (your Shopify customer ID) and Click ID (fbc) also add material lift. Hashing these server-side via the Meta Conversions API gives you the highest possible EMQ."}},{"@type":"Question","name":"How do I fix a low Meta EMQ score for Shopify?","acceptedAnswer":{"@type":"Answer","text":"The fastest fix is implementing server-side tracking via the Meta Conversions API using Make.com. This sends Purchase events with hashed customer data (email, phone, external_id) directly from your server, bypassing iOS restrictions and ad blockers. Full setup guide at stackarchitect.xyz/capi-shield."}},{"@type":"Question","name":"Does a higher EMQ score improve my Meta ROAS?","acceptedAnswer":{"@type":"Answer","text":"Yes. Higher EMQ means more of your conversions are matched back to Meta ad clicks. This improves your reported ROAS, gives Meta's algorithm better signals to optimise bidding, and allows Advantage+ campaigns to work more effectively. Raising Event Match Quality from 4 to 7+ means more of your events match to a Meta account, so more conversions become attributable. We publish no uplift percentage; measure your own result as Additional Conversions Reported in Meta Events Manager."}},{"@type":"Question","name":"Is the Meta Conversions API free to use?","acceptedAnswer":{"@type":"Answer","text":"Yes. Meta's Events API has no direct cost. You need a way to send server-side events — Make.com's free tier (1,000 credits/month) is sufficient for most Shopify stores under 500 orders/month. There is no Meta charge for using the API."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://stackarchitect.xyz/tools/"},{"@type":"ListItem","position":3,"name":"Meta EMQ Score Estimator","item":"https://stackarchitect.xyz/meta-emq-score-estimator/"}]}];
+const schemas = [{"@context":"https://schema.org","@type":"WebApplication","dateModified":pageUpdated('/meta-emq-score-estimator/'),"name":"Meta EMQ Score Estimator","url":"https://stackarchitect.xyz/meta-emq-score-estimator/","description":"Score the customer-data signals that feed your Meta Event Match Quality (EMQ) rating. Meta reports the real score in Events Manager; this tool weighs which parameters you send and how to fix gaps with server-side tracking.","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{ "@id": "https://stackarchitect.xyz/#org" }},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a good Meta EMQ score?","acceptedAnswer":{"@type":"Answer","text":"Meta rates EMQ from 0–10. A score of 7.0 or above is considered strong. Scores of 4–6 indicate moderate match quality with room for improvement. Below 4 means you are likely losing significant attribution and your Meta ad performance data is unreliable."}},{"@type":"Question","name":"What fields improve EMQ score the most?","acceptedAnswer":{"@type":"Answer","text":"Email address and phone number are the highest-impact fields, each contributing significantly to match quality. External ID (your Shopify customer ID) and Click ID (fbc) also add material lift. Hashing these server-side via the Meta Conversions API gives you the highest possible EMQ."}},{"@type":"Question","name":"How do I fix a low Meta EMQ score for Shopify?","acceptedAnswer":{"@type":"Answer","text":"The fastest fix is implementing server-side tracking via the Meta Conversions API using Make.com. This sends Purchase events with hashed customer data (email, phone, external_id) directly from your server, bypassing iOS restrictions and ad blockers. Full setup guide at stackarchitect.xyz/capi-shield."}},{"@type":"Question","name":"Does a higher EMQ score improve my Meta ROAS?","acceptedAnswer":{"@type":"Answer","text":"Yes. Higher EMQ means more of your conversions are matched back to Meta ad clicks. This improves your reported ROAS, gives Meta's algorithm better signals to optimise bidding, and allows Advantage+ campaigns to work more effectively. Raising Event Match Quality from 4 to 7+ means more of your events match to a Meta account, so more conversions become attributable. We publish no uplift percentage; measure your own result as Additional Conversions Reported in Meta Events Manager."}},{"@type":"Question","name":"Is the Meta Conversions API free to use?","acceptedAnswer":{"@type":"Answer","text":"Yes. Meta's Events API has no direct cost. You need a way to send server-side events — Make.com's free tier (1,000 credits/month) is sufficient for most Shopify stores under 500 orders/month. There is no Meta charge for using the API."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://stackarchitect.xyz/tools/"},{"@type":"ListItem","position":3,"name":"Meta EMQ Score Estimator","item":"https://stackarchitect.xyz/meta-emq-score-estimator/"}]}];
 
 const breadcrumb = [
   { label: 'Home', href: '/' },
@@ -55,7 +56,7 @@ const tocHeadings = [
 
 <Base
   title="Meta EMQ Score Estimator — Free EMQ Calculator"
-  description="Estimate your Meta Event Match Quality score, see which customer-data parameters are raising or lowering it, and what fixes a low score."
+  description="Tick the customer details your Meta events carry and see which are missing. Meta reports your real Event Match Quality score in Events Manager; this checks the inputs."
   canonical="https://stackarchitect.xyz/meta-emq-score-estimator/"
   schema={schemas}
   breadcrumb={breadcrumb}
@@ -162,9 +163,9 @@ const tocHeadings = [
   <section class="tool-hero">
     <div class="tool-hero-inner">
       <div class="tool-badge"><span class="dot"></span>FREE TOOL // Meta Attribution</div>
-      <h1>Meta <span class="green">EMQ Score</span> Estimator</h1>
+      <h1>Meta EMQ estimator: <span class="green">check which match keys you send</span></h1>
 
-    <p id="answer">Meta's Event Match Quality score rates how well the customer data attached to your conversion events matches Meta's own user records, on a scale of one to ten. Meta reports your real score in Events Manager; this tool scores the inputs that feed it — which parameters you send, and how.</p>
+    <p id="answer">Meta's Event Match Quality score rates how well the customer details on your events match Meta's own records, on a scale of one to ten. Meta shows your real score in Events Manager. This tool checks the inputs: which match keys you send, and which are missing. For why Meta results drop, see <a href="/blog/shopify-meta-roas-dropped-2026-fix/">the ROAS guide</a>.</p>
 
   <TableOfContents headings={tocHeadings} />
 
@@ -438,9 +439,9 @@ const tocHeadings = [
   ]
 }
 </script>
-  <!-- Byline inside <main>: the Article/Person schema describes the content
+  <!-- Byline inside the main element: the Article/Person schema describes the content
        region, so the visible attribution for it belongs in the same region.
-       This card used to sit after </main>, in the footer block. -->
+       This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
   </main>
 

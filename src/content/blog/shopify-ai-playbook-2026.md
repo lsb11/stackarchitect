@@ -16,8 +16,6 @@ faqs:
     answer: "The highest-ROI AI tools for Shopify stores in 2026 are: Make.com (free automation for server-side tracking and workflows), Tidio Lyro AI (AI customer support; Tidio says it automates around 67% of customer inquiries on average, and the free plan includes 50 one-time Lyro conversations), Shopify Magic (free AI copywriting built into Shopify admin), ChatGPT or Claude for product descriptions and ad copy, and Systeme.io for AI-assisted email automation. Paid tools like AdCreative.ai and Writesonic are worth evaluating at scale."
   - question: "What is GEO for Shopify?"
     answer: "GEO stands for Generative Engine Optimisation — the practice of optimising your store and content to be cited by AI search engines like ChatGPT, Google AI Mode, and Perplexity. Unlike traditional SEO which targets Google's ranking algorithm, GEO optimises for AI citation probability by adding structured data (FAQ schema), clear factual answers, and content that AI engines can directly quote as authoritative sources."
-  - question: "What are Shopify Agentic Storefronts?"
-    answer: "Shopify Agentic Storefronts allow customers to purchase your products directly inside ChatGPT, Google AI Mode, and Microsoft Copilot without leaving the AI conversation. Currently available to US-based stores in early access. Non-US stores can prepare by installing the Knowledge Base App, optimising product data, and adding FAQ schema to content."
   - question: "How do I use AI for Shopify ad creative?"
     answer: "The most effective approach in 2026 is using AI for creative concept generation and copy, then testing with real performance data. Tools include: AdCreative.ai for AI-generated ad images and copy combinations, ChatGPT/Claude for hook writing and angle variation, Canva AI for image generation, and Shopify Magic for product photography backgrounds. Start with AI-generated concepts and iterate based on actual ROAS data."
   - question: "Is AI customer support reliable for Shopify stores?"
@@ -88,7 +86,7 @@ Meta's Advantage+ AI, Google's Performance Max, and TikTok's Smart Campaigns all
 
 **The fix is server-side tracking:** sending purchase events directly from Shopify's server to Meta, Google, and TikTok via their Conversions APIs. This bypasses browsers entirely. Meta's [Conversions API](https://developers.facebook.com/docs/marketing-api/conversions-api) and Google's [Enhanced Conversions](https://support.google.com/google-ads/answer/9888656) both support server-side event submission with hashed first-party data — the mechanism that makes tracking reliable regardless of browser privacy settings.
 
-**Free approach:** [CAPI Shield](/capi-shield/) — Make.com scenario that sends purchase events to Meta's Conversions API. Its Google branch cannot match Shopify orders as shipped. TikTok is a [separate setup](/tiktok-events-api-shopify/). Covers the purchase events browser tracking loses. Deploys in under an hour. $0/month.
+**Free approach:** [CAPI Shield](/capi-shield/) — Make.com scenario that sends purchase events to Meta's Conversions API. [Make.com's free plan](https://www.make.com/en/pricing) gives up to 1,000 credits a month. Its Google branch cannot match Shopify orders as shipped. TikTok is a [separate setup](/tiktok-events-api-shopify/). Covers the purchase events browser tracking loses. Deploys in under an hour. $0/month.
 
 This is the AI-adjacent investment with the clearest ROI on this list. Better purchase data → better AI ad optimisation → better ROAS.
 
@@ -96,7 +94,7 @@ This is the AI-adjacent investment with the clearest ROI on this list. Better pu
 
 **What AI does well:** subject line optimisation, personalisation at scale, send time prediction, and flow content generation.
 
-**Free approach:** [Systeme.io — free for 2,000 contacts](/go/systeme/?source=shopify-ai-playbook-2026-n1) includes AI-assisted email automation on the free plan — 2,000 contacts, unlimited sends, full automation sequences. Most stores paying $20+/month for Klaviyo do not use features beyond what Systeme.io provides free.
+**Free approach:** [Systeme.io — free for 2,000 contacts](/go/systeme/?source=shopify-ai-playbook-2026-n1) covers email automation on the free plan: 2,000 contacts and unlimited emails, per [Systeme.io's pricing page](https://systeme.io/pricing). Most stores paying $20+/month for Klaviyo do not use features beyond what Systeme.io provides free.
 
 **When AI email matters:** predictive send time optimisation and AI-generated personalisation become valuable at 10,000+ active subscribers where manual optimisation is not feasible. For smaller lists, a well-written sequence outperforms algorithmically optimised mediocre copy.
 
@@ -130,7 +128,7 @@ This is the newest layer and the one most Shopify content sites have not yet ada
 
 4. **Install the Shopify Knowledge Base App.** AI crawlers access your knowledge base even before you enable Agentic Storefronts. Populate it with FAQ content, product details, and return policies.
 
-5. **Register for Agentic Storefronts early access** at shopify.com/chatgpt — US stores can enable direct AI checkout now; international stores are in the queue.
+5. **Check Agentic Storefronts in your admin.** Shopify says agentic storefronts are active by default for eligible stores and managed under Sales channels > Agentic ([Shopify Help Center](https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts)). Eligibility differs by AI channel.
 
 The [Agentic Storefronts complete setup guide](/blog/shopify-agentic-storefronts-setup-guide-2026/) covers eligibility, Knowledge Base App configuration, product data optimisation, and exactly what to do if your store is not eligible yet.
 

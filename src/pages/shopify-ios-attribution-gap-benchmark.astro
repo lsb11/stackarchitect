@@ -1,4 +1,5 @@
 ---
+import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 /**
@@ -25,7 +26,9 @@ const SITE       = "https://stackarchitect.xyz";
 const CANONICAL  = `${SITE}/shopify-ios-attribution-gap-benchmark/`;
 const OG         = `${SITE}/og.png`;
 const datePublished = "2026-06-13";
-const dateModified  = "2026-07-02";
+const dateModified  = pageUpdated('/shopify-ios-attribution-gap-benchmark/')!;
+// The dataset version is the date its figures were last revised, not the page date.
+const dataVersion   = "2026-07-02";
 const verified      = "2 July 2026";
 const lastReviewISO = "2026-07-02";
 
@@ -81,9 +84,9 @@ const schemaGraph = {
       // one route to Google surfacing this page that does not depend on
       // domain-level trust.
       "identifier": CANONICAL,
-      "version": dateModified,
+      "version": dataVersion,
       "creativeWorkStatus": "Maintained",
-      "temporalCoverage": `${datePublished.slice(0,4) && "2021-04"}/${dateModified}`,
+      "temporalCoverage": `${datePublished.slice(0,4) && "2021-04"}/${dataVersion}`,
       "spatialCoverage": { "@type": "Place", "name": "Worldwide" },
       "measurementTechnique": "Structured synthesis of published third-party measurements. Each input figure is attributed to a named, dated and linked primary source; no proprietary primary data is claimed. Methodology is published in full on the page.",
       "includedInDataCatalog": {

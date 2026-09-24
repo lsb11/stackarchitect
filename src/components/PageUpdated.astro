@@ -1,0 +1,13 @@
+---
+// Visible "Updated <date>" for the current page. The date is the same one the
+// page puts in its JSON-LD dateModified; scripts/content-quality-guard.mjs
+// fails the build when the two differ or when a sitemap page has neither.
+import { pageUpdated, formatUpdated } from '../data/pageUpdated';
+
+interface Props { style?: string }
+const { style = 'font-size:0.78rem;color:#93a09a;margin:8px 0 0;' } = Astro.props;
+const iso = pageUpdated(Astro.url.pathname);
+---
+{iso && (
+  <p class="page-updated" data-page-updated style={style}>Updated <time datetime={iso}>{formatUpdated(iso)}</time></p>
+)}

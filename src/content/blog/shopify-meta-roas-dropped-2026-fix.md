@@ -57,7 +57,7 @@ This is not all Safari browsing. Standard Safari browsing sessions are unaffecte
 
 ## Cause 2 — Shopify's App Pixel Change (January 13, 2026)
 
-On January 13, 2026, Shopify changed the default data sharing setting for all App Pixels from **Always on** to **Optimized**.
+On January 13, 2026, Shopify changed the default data sharing setting for all App Pixels from **Always on** to **Optimized** ([Shopify changelog: New default setting for marketing pixel data sharing](https://changelog.shopify.com/posts/new-default-setting-for-pixel-data-sharing)). You can set a pixel back to Always on under Settings → Customer events.
 
 In Optimized mode, Shopify monitors whether each pixel is generating attribution signals. If no attribution signals are detected over days or weeks — which happens when iOS strips click IDs — Shopify throttles or pauses data sharing to that pixel.
 
@@ -141,9 +141,9 @@ Meta Conversions API (CAPI) sends conversion events directly from your server to
 After 7 days, check:
 
 - **Event Match Quality:** Read the score Meta shows for the Purchase event and track it over time. We publish no target figure for this setup.
-- **Deduplication overlap:** Healthy setup shows 80–95%.
+- **Deduplication:** Meta treats a Pixel event and a Conversions API event as the same purchase when the Pixel's `eventID` matches the server event's `event_id` and the event names match ([Meta: deduplicate Pixel and server events](https://developers.facebook.com/documentation/ads-commerce/conversions-api/deduplicate-pixel-and-server-events)). If the IDs do not match, purchases are counted twice.
 
-If EMQ is below 6, review the customer data signals (email, phone number, external ID) being passed with CAPI events. Missing signals are the most common cause of low EMQ.
+If the score is low, review the customer data sent with each server event (email, phone number, external ID). Meta requires contact details such as email and phone to be SHA256-hashed after normalising them, for example trimming spaces and lower-casing email ([Meta: customer information parameters](https://developers.facebook.com/documentation/ads-commerce/conversions-api/parameters/customer-information-parameters)).
 
 ## Use Blended ROAS, Not Meta's Reported ROAS
 
@@ -160,14 +160,14 @@ This uses ground-truth revenue data from Shopify — which counts every order re
 | Metric | Before | After |
 |---|---|---|
 | Shopify vs Meta gap | Wide | Narrowed to expected residual |
-| Event Match Quality | Below 5 | Rises with the match keys you send — read your own score |
-| Deduplication overlap | Low or none | 80–95% |
+| Event Match Quality | Low | Rises with the match keys you send; read your own score |
+| Deduplication | Low or none | Pixel and server events share an event_id |
 | Pixel mode | Optimized (throttled) | Always on |
 | CAPI events | Not visible | Visible alongside pixel |
 
 **Timeline:** Steps 1–3 show impact in 24–72 hours. Full CAPI shows full impact 7–14 days after implementation. We publish no expected ROAS improvement — it depends on your spend, creative and audience, and we have not measured it across a sample. Measure your own result as Additional Conversions Reported in Meta Events Manager.
 
-The [CAPI Shield setup guide](/capi-shield/) covers every step of the full CAPI implementation including deduplication, event matching, and verification in Meta Events Manager. Once it has been running for a fortnight, [recovering lost Shopify conversions with CAPI Shield](/blog/recover-lost-shopify-conversions-capi-shield/) shows how to read Additional Conversions Reported against your own order data — the difference between believing the gap closed and knowing by how much.
+The [CAPI Shield setup guide](/capi-shield/) covers every step of the full CAPI implementation including deduplication, event matching, and verification in Meta Events Manager. Once it has been running for a fortnight, [recovering lost Shopify conversions with CAPI Shield](/capi-shield/) shows how to read Additional Conversions Reported against your own order data — the difference between believing the gap closed and knowing by how much.
 
 
 ---

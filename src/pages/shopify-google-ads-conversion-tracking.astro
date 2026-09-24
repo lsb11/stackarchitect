@@ -1,4 +1,5 @@
 ---
+import { pageUpdated, formatUpdatedMonth } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
 import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
@@ -94,11 +95,10 @@ const crosslinks = [
   { href: "/stocky-swap/",                    tag: "Inventory ⚠ Aug 2026",    tagClass: "tag-sky",    name: "Stocky Swap",           desc: "Shopify closes Stocky on August 31, 2026. Stocky Swap logs every order to Google Sheets in real time via the same webhook infrastructure — free inventory management before the shutdown.", save: "Saves $29–$199/mo",  saveColor: "var(--sky)"    },
   { href: "/shopify-profit-loss-automation/", tag: "P&L reporting",           tagClass: "tag-sky",    name: "P&L Auto",              desc: "The same Shopify webhook branches to a live P&L Google Sheets dashboard. Revenue, COGS, ad spend, and net profit updated on every order at $0/month.", save: "Saves $19–$299/mo",  saveColor: "var(--sky)"    },
   { href: "/replace-klaviyo-free/",           tag: "Email marketing",         tagClass: "",           name: "Replace Klaviyo Free",  desc: "Systeme.io replaces Klaviyo entirely — 2,000 contacts, unlimited emails, automations, and CRM on the free plan. $0 vs $20+/month.", save: "Saves $20+/mo", saveColor: "var(--g)"      },
-  { href: "/pro/",                            tag: "Complete Kit",            tagClass: "tag-amber",  name: `Get all 4 automations — ${formatPrice(KIT_PRICE)}`, desc: "Get the pre-built Make.com JSON blueprints for Google Ads tracking, Meta CAPI, Stocky Swap, and P&L Auto. Import and deploy all four in 10 minutes instead of building from scratch.", save: `${formatPrice(KIT_PRICE)} one-time`,       saveColor: "var(--amber)"  }
 ];
 
 const relatedGuides = [
-  { href: "/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026/",      label: "Fix Shopify Google Ads conversion tracking 2026 — free server-side setup" },
+  { href: "/shopify-google-ads-conversion-tracking/",      label: "Fix Shopify Google Ads conversion tracking 2026 — free server-side setup" },
   { href: "/blog/shopify-server-side-tracking-complete-setup-guide/",           label: "Shopify server-side tracking — complete setup guide 2026" },
   { href: "/blog/shopify-meta-roas-dropped-2026-fix/",                          label: "Shopify Meta ROAS dropped in 2026 — free fix" },
   { href: "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/",    label: "How to fix Shopify conversion tracking after iOS updates" }
@@ -112,7 +112,7 @@ const schemaGraph = {
       "url": CANONICAL,
       "name": "Free Shopify Google Ads Conversion Tracking 2026 — GCLID + Enhanced Conversions",
       "description": "Fix Shopify Google Ads conversion tracking free. Server-side Google Enhanced Conversions via Make.com webhook — carries purchase events blocked by iOS and Safari ITP. No code, 6 minutes.",
-      "dateModified": "2026-07-17",
+      "dateModified": pageUpdated('/shopify-google-ads-conversion-tracking/'),
       "speakable": { "@type": "SpeakableSpecification", "cssSelector": [".direct-answer", ".hero h1", ".sec-head h2"] },
       "breadcrumb": {
         "@type": "BreadcrumbList",
@@ -180,7 +180,7 @@ const schemaGraph = {
       "author":    { "@id": "https://stackarchitect.xyz/#luke" },
       "publisher": { "@id": "https://stackarchitect.xyz/#org" },
       "datePublished": "2026-04-21",
-      "dateModified": "2026-07-17",
+      "dateModified": pageUpdated('/shopify-google-ads-conversion-tracking/'),
       "inLanguage": "en-GB",
       "url": CANONICAL,
       "image": OG_IMAGE
@@ -278,7 +278,7 @@ const tocHeadings = [
   <div class="hero-inner">
 
     <div style="font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;opacity:.6;">
-      Updated July 2026 · Free Shopify Google Ads tracking · ~10 min read
+      Updated {formatUpdatedMonth(pageUpdated('/shopify-google-ads-conversion-tracking/')!)} · Free Shopify Google Ads tracking · ~10 min read
     </div>
 
     <div class="hero-proof">
@@ -478,17 +478,35 @@ const tocHeadings = [
       </a>
     </div>
 
-    <div style="margin-top:24px;text-align:center;">
-      <p style="font-size:14px;color:var(--text-4);margin-bottom:16px;">Prefer all four in one place? The Complete Kit includes a ready-to-import Make.com JSON blueprint for this exact setup — plus Meta CAPI, TikTok CAPI, Stocky Swap, and P&L Auto.</p>
-      <a href={buildStripeUrl(KIT_URL, "guide_shopify_google_ads_conversion_tracking_kit_mid")} data-cta="guide_shopify_google_ads_conversion_tracking_kit_mid" class="btn btn-sm" target="_blank" rel="noopener">
-        Get all 4 pre-built automations — {formatPrice(KIT_PRICE)}
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-    </div>
   </div>
 </section>
 
-  <InlineOffer slug="capi-shield" source="guide_shopify_google_ads_conversion_tracking_inline_top" />
+
+<!-- ─── BEFORE YOU START / CHECK IT WORKS ─── merged from
+     /shopify-google-ads-conversion-tracking/ on 24 Sep 2026 -->
+<section class="section" aria-labelledby="check-h">
+  <div class="inner-sm">
+    <div class="sec-head">
+      <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Before and after</span>
+      <h2 id="check-h">Before you start, and how to check it is working</h2>
+    </div>
+    <p style="color:var(--text-2);line-height:1.75;margin-bottom:14px;">The server-side route adds to Shopify's own Google tracking; it does not replace it. Set up the native layer first, so Google Ads already has a purchase conversion action to attach Enhanced Conversions to.</p>
+    <ol style="color:var(--text-2);line-height:1.75;margin:0 0 18px 20px;">
+      <li>In Shopify, add the Google &amp; YouTube sales channel if it is not installed, and connect your Google Ads account in its settings.</li>
+      <li>In Google Ads, open Goals and find the purchase conversion action Shopify created. If it is not recording conversions, the channel is not connected yet.</li>
+      <li>Note the conversion ID, which starts <code>AW-</code>, and the conversion label. The Make.com module asks for both.</li>
+    </ol>
+    <p style="color:var(--text-2);line-height:1.75;margin-bottom:10px;">If Enhanced Conversions shows no data after a day or two, check these first:</p>
+    <ul style="color:var(--text-2);line-height:1.75;margin:0 0 18px 20px;">
+      <li>The conversion ID and label are copied from Google Ads exactly, not retyped.</li>
+      <li>The Google Ads customer ID is entered as ten digits with no hyphens.</li>
+      <li>Email addresses are trimmed and lower-cased before they are hashed with SHA-256. A hash of the raw string will not match.</li>
+      <li>You are comparing like with like: Google Ads conversions against Shopify orders over the same one to two weeks. The gap should narrow but will not close, because some buyers cannot be matched to any Google account.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="divider"></div>
 
 <!-- ─── COMPARISON TABLE ─── -->
 <section class="section-alt" id="comparison" aria-labelledby="compare-h">
@@ -642,9 +660,6 @@ const tocHeadings = [
         Fix Google Ads tracking free on Make.com — no credit card
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
-      <a href={buildStripeUrl(KIT_URL, "guide_shopify_google_ads_conversion_tracking_kit_end")} data-cta="guide_shopify_google_ads_conversion_tracking_kit_end" target="_blank" rel="noopener" class="btn-outline" style="font-size:15px;">
-        Get pre-built kit — {formatPrice(KIT_PRICE)}
-      </a>
     </div>
     <div class="risk-strip" style="justify-content:center;">
       {["6-minute setup","No code required","Make.com free tier","$0/month ongoing","Any Shopify plan"].map(t => (
@@ -691,11 +706,10 @@ const tocHeadings = [
 </section>
   <InlineOffer slug="capi-shield" source="guide_shopify_google_ads_conversion_tracking_inline_end" />
   <p style="max-width:760px;margin:-12px auto 32px;font-size:13px;color:#93a09a;">
-    <a href="/pro/" data-cta="guide_shopify_google_ads_conversion_tracking_kit_demoted" style="color:#93a09a;text-decoration:underline;">Fixing more than one thing? All four blueprints — {formatPrice(KIT_PRICE)} →</a>
   </p>
-  <!-- Byline inside <main>: the Article/Person schema describes the content
+  <!-- Byline inside the main element: the Article/Person schema describes the content
        region, so the visible attribution for it belongs in the same region.
-       This card used to sit after </main>, in the footer block. -->
+       This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
 </main>
 

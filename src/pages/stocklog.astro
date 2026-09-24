@@ -1,4 +1,6 @@
 ---
+import { pageUpdated } from '../data/pageUpdated';
+import PageUpdated from '../components/PageUpdated.astro';
 /**
  * /stocklog/ is the home page for StockLog, our Shopify app.
  *
@@ -186,6 +188,13 @@ const faq = [
 const schema = [
   {
     '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': PAGE_URL + '#webpage',
+    url: PAGE_URL,
+    dateModified: pageUpdated('/stocklog/'),
+  },
+  {
+    '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     // Same @id as the node on /about/, so the two merge into one entity.
     '@id': 'https://stocklog.onrender.com/#app',
@@ -244,7 +253,7 @@ const schema = [
   },
 ];
 ---
-<Base title="StockLog: stock history and inventory ledger for Shopify" description="StockLog is a Shopify app that explains stock numbers that look wrong, by recording every order, refund, import and correction with the time and the reason." pageType="product" publishDate="2026-09-23" updatedDate="2026-09-23" schema={schema} breadcrumb={[{ label: 'Home', href: '/' }, { label: 'StockLog' }]}>
+<Base title="StockLog: stock history and inventory ledger for Shopify" description="StockLog records every change to your Shopify stock, from orders and refunds to imports and manual corrections, with the time and the reason, so a wrong count can be traced." pageType="product" publishDate="2026-09-23" updatedDate={pageUpdated('/stocklog/')} schema={schema} breadcrumb={[{ label: 'Home', href: '/' }, { label: 'StockLog' }]}>
 <div class="sl">
 <main id="main-content">
 
@@ -254,7 +263,7 @@ const schema = [
       <div class="hero-copy">
         <div class="brand">
           <Image src={icon} alt="" width={64} height={64} densities={[1, 2]} loading="eager" class="brand-icon" />
-          <h1 id="sl-h1">StockLog</h1>
+          <h1 id="sl-h1">StockLog: stock history for Shopify</h1>
         </div>
         <p class="hero-sub">A stock ledger for Shopify. Every change to your stock, with the reason behind it.</p>
         <p id="answer" class="hero-intro">
@@ -264,6 +273,7 @@ const schema = [
           point. It is for merchants who need to explain a stock count that looks wrong.
           It costs {monthly} after a {trial}.
         </p>
+        <p class="hero-sub">Moving off Shopify Stocky? The <a href="/stocky-alternative/">Stocky alternatives guide</a> compares every option.</p>
         <div class="cta-block">
           <a class="btn" href={STOCKLOG_APP_STORE_URL} rel="noopener">Install from the Shopify App Store</a>
           <p class="cta-note">{monthly}, {trial}</p>
@@ -402,6 +412,7 @@ const schema = [
     </div>
   </section>
 
+  <PageUpdated style="max-width:760px;margin:0 auto 2rem;padding:0 24px;font-size:0.78rem;color:#93a09a;" />
 </main>
 </div>
 </Base>

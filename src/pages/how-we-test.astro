@@ -1,4 +1,5 @@
 ---
+import { pageUpdated, formatUpdated } from '../data/pageUpdated';
 // /how-we-test/ — methodology & trust page. Site-level E-E-A-T asset:
 // sourcing standards, badge policy, funding disclosure, corrections policy.
 import Base from "../layouts/Base.astro";
@@ -45,6 +46,7 @@ const schemas = [
     "@context": "https://schema.org",
     "@type": "WebPage",
     "@id": "https://stackarchitect.xyz/how-we-test/#webpage",
+    "dateModified": pageUpdated('/how-we-test/'),
     "url": "https://stackarchitect.xyz/how-we-test/",
     "name": "How We Test and Verify Every Claim",
     "description": "Every price and limit on Stack Architect is sourced from vendor pricing pages, dated, re-verified quarterly, and corrected publicly when wrong.",
@@ -82,7 +84,7 @@ const schemas = [
   <TableOfContents headings={tocHeadings} />
 
       <p style="font-size:0.9rem;color:#93a09a;margin-bottom:2rem;font-family:'JetBrains Mono',monospace;">
-        Last updated: 24 July 2026 · Maintained by <a href="/about/" style="color:#34d377;text-decoration:underline;">Luke Sandelands</a>
+        Updated <time datetime={pageUpdated('/how-we-test/')}>{formatUpdated(pageUpdated('/how-we-test/')!)}</time> · Maintained by <a href="/about/" style="color:#34d377;text-decoration:underline;">Luke Sandelands</a>
       </p>
 
       <p style="font-size:1.05rem;color:#c9cec9;margin-bottom:1.75rem;line-height:1.75;">

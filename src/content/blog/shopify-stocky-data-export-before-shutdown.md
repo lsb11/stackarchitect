@@ -1,8 +1,8 @@
 ---
 title: "Shopify Stocky Data Export — the Read-Only Window"
-heading: "Shopify Stocky Data Export — What You Can Still Get Out After the 31 August 2026 Shutdown"
-description: "Shopify Stocky's end of service was 31 August 2026, but read-only export access continues for at least 90 days. What Stocky holds, how to get it out, and what is recoverable if the app will not open."
-answer: "Shopify set 31 August 2026 as Stocky's end of service, and nothing inside the app was migrated to Shopify Admin. Shopify says read-only export access continues for at least 90 days, so purchase orders, stocktakes and supplier records may still be retrievable. Stocky's APIs are the exception: they stopped dead that day."
+heading: "Exporting Your Stocky Data During the Read-Only Window: What to Take and How"
+description: "Stocky is read-only after 31 August 2026, with export access for at least 90 days. Which records exist only in Stocky, and how to export each one."
+answer: "Stocky became read-only on 31 August 2026, and Shopify says you can export your data for at least 90 days after that. Nothing moves into Shopify by itself. This guide covers which records exist only in Stocky, how to export each one, and where to keep them. For replacement options, see the Stocky alternatives guide."
 publishDate: "2026-04-16"
 updatedDate: "2026-09-10"
 verifiedDate: "2026-09-10"
@@ -32,8 +32,8 @@ relatedGuides:
     href: "/blog/the-ultimate-guide-to-shopify-inventory-management/"
   - title: "Make.com for Shopify — Complete Beginner's Guide"
     href: "/make-com-shopify/"
-  - title: "Shopify Automation Stack for Small Stores"
-    href: "/blog/shopify-automation-stack-for-small-stores/"
+  - title: "The Recommended Free Shopify Stack"
+    href: "/stack/"
 ---
 
 Shopify set August 31, 2026 as Stocky's end of service, and nothing held inside the app was migrated to Shopify Admin. [Shopify removed Stocky from the App Store on February 2, 2026](https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky) — the August 31 date is confirmed and it has passed.
@@ -42,7 +42,7 @@ What happened on that date came in two halves, and almost everything written abo
 
 Your Shopify inventory levels are safe — they live in Shopify Admin, not in Stocky. But years of purchase order history, stocktake records, supplier contacts and demand data exist only inside Stocky.
 
-This guide tells you exactly what to export, how to export it, and what to do with the data afterwards.
+This guide tells you exactly what to export, how to export it, and what to do with the data afterwards. If you are still choosing what replaces Stocky, the [Stocky alternatives guide](/stocky-alternative/) compares every option.
 
 ## What Data Stocky Holds — and What Is Stranded
 

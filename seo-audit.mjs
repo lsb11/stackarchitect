@@ -547,12 +547,17 @@ const NOINDEX_OK = [
   // Post-purchase thank-you pages: noindex because they carry the fulfilment
   // link and have nothing to rank for. Also filtered out of the sitemap.
   /^\/pro\/[^/]+\/success\/$/,
+  // Consolidation, 24 Sep 2026 (freeze exception #3): single-blueprint sales
+  // pages and an affiliate-led calculator, listed in src/data/noindex-routes.json.
+  ...JSON.parse(readFileSync('src/data/noindex-routes.json', 'utf8')).routes.map(
+    (r) => new RegExp('^' + r.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&') + '$'),
+  ),
 ];
 
 // Pages deliberately absent from the sitemap. Distinct from NOINDEX_OK: a page
 // can be indexable yet not worth a sitemap entry, and this list keeps the
 // "missing from sitemap" warning meaningful instead of permanently noisy.
-const SITEMAP_OPTIONAL = [/^\/privacy\/$/, /^\/terms\/$/, /^\/refund-policy\/$/];
+const SITEMAP_OPTIONAL = [/^\/privacy\/$/, /^\/terms\/$/, /^\/refund-policy\/$/, ...NOINDEX_OK.slice(-JSON.parse(readFileSync('src/data/noindex-routes.json', 'utf8')).routes.length)];
 
 for (const f of htmlFiles) {
   const page = f.slice(DIST.length).replace(/index\.html$/, '') || '/';

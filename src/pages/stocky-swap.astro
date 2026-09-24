@@ -1,7 +1,7 @@
 ---
+import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
 import Disclosure from '../components/Disclosure.astro';
-import StickyAffiliateCTA from '../components/StickyAffiliateCTA.astro';
 import StockLogPromo from '../components/StockLogPromo.astro';
 import RelatedGuides from '../components/RelatedGuides.astro';
 import AuthorCard from '../components/AuthorCard.astro';
@@ -14,7 +14,7 @@ import { isPostShutdown, STOCKY_EOL_ISO } from '../utils/stockyDeadline';
  * Secondary: "Stocky replacement", "Stocky shutdown alternative", "$0 Stocky alternative",
  *            "cheap Stocky alternative", "Stocky alternative 2026", "replace Stocky free"
  *
- * Cluster hub for: /stocky-shutdown/, /stocky-alternative/, /stocky-migration-risk-scorer/,
+ * Cluster hub for: /stocky-alternative/, /stocky-migration-risk-scorer/,
  *                  /blog/shopify-stocky-data-export-before-shutdown/
  *
  * Strategy notes:
@@ -32,7 +32,7 @@ const PAGE_URL = `${SITE_URL}/stocky-swap/`;
 const SHUTDOWN_DATE = "August 31, 2026";
 const SHUTDOWN_DATE_ISO = STOCKY_EOL_ISO;
 const DATE_PUBLISHED = "2026-01-01";
-const DATE_MODIFIED = "2026-08-22";
+const DATE_MODIFIED = pageUpdated('/stocky-swap/')!;
 
 /* ---------------------------------------------------------------------------
  * TIME AWARENESS — this page had a 9-day fuse.
@@ -89,7 +89,7 @@ const PRO_URL = `${SITE_URL}/pro/`;
 const SEO = {
   title: "Free Stocky Replacement 2026 — $0 Make.com Setup",
   description:
-    "Stocky closed on 31 August 2026. The free replacement: a Make.com scenario logging every Shopify order to Google Sheets in real time. $0, no code, 4 minutes.",
+    "Keep a live log of every Shopify order in a Google Sheet you own, now that Stocky has closed. A free Make.com scenario, no code, set up in about four minutes.",
   canonical: PAGE_URL,
   ogTitle: "Free Stocky Replacement (4-Min Setup) — $0/Month Forever",
   ogDescription: "Stocky closed Aug 31, 2026. Replace it free with Make.com + Google Sheets. No fees, no code, live in 4 minutes. Independent comparison of every paid alternative.",
@@ -294,11 +294,7 @@ const jsonLd = {
           name: "What is the best free Stocky alternative in 2026?",
           acceptedAnswer: { "@type": "Answer", text: "Stocky Swap is the leading free Stocky alternative for Shopify in 2026. It logs every Shopify order to Google Sheets in real-time via a public Make.com scenario, deploys in under 5 minutes, runs on Make.com's free tier with no monthly fees, and stores all data in a Google Sheet you own. Paid alternatives like Qoblex, SKUSavvy, Sumtracker, Inventory Planner, and Prediko offer deeper forecasting features but cost between $59 and $999 per month." }
         },
-        {
-          "@type": "Question",
-          name: "When does Shopify Stocky shut down?",
-          acceptedAnswer: { "@type": "Answer", text: "Shopify Stocky became unusable on August 31, 2026 — you can no longer use it to manage inventory. Shopify removed Stocky from the App Store on February 2, 2026. Two things happened on the shutdown date and they are not the same: Stocky's APIs stopped dead with no grace period, breaking every third-party integration instantly, while read-only access to export your purchase order history, supplier records, stocktake data and demand forecasts continues for at least 90 days after that date. Shopify has published no deletion date. Your Shopify Admin inventory levels are not affected — only data stored inside the Stocky app. Source: help.shopify.com/en/manual/products/inventory/transitioning-from-stocky, read 5 September 2026." }
-        },
+        
         {
           "@type": "Question",
           name: "Is Stocky Swap actually free?",
@@ -316,7 +312,7 @@ const jsonLd = {
         },
         {
           "@type": "Question",
-          name: "Will Stocky Swap interfere with my Shopify store or apps?",
+          name: "Will Stocky Swap interfere with my Shopify store or other apps?",
           acceptedAnswer: { "@type": "Answer", text: "No. Stocky Swap is a one-way listener — it reads new order data via Shopify's webhook API and writes to your own Google Sheet. It does not modify products, inventory levels, customer records, or other Shopify data. It runs independently of Stocky and any other inventory app, so you can run it alongside Stocky as a parallel verification system before the August 31 2026 shutdown." }
         },
         {
@@ -332,7 +328,7 @@ const jsonLd = {
         {
           "@type": "Question",
           name: "Does Stocky Swap handle refunds, returns, or multi-location stock?",
-          acceptedAnswer: { "@type": "Answer", text: "Stocky Swap is built as a forward-only order ledger — it logs every new paid Shopify order. For full inventory accounting that handles refunds, returns, and multi-location stock movements, pair Stocky Swap with native Shopify Admin inventory tracking (which manages stock-on-hand correctly across these scenarios), or use the Stack Architect Pro bundle which includes additional Make.com scenarios for refund and return handling." }
+          acceptedAnswer: { "@type": "Answer", text: "Stocky Swap is built as a forward-only order ledger — it logs every new paid Shopify order. For full inventory accounting that handles refunds, returns, and multi-location stock movements, pair Stocky Swap with native Shopify Admin inventory tracking (which manages stock-on-hand correctly across these scenarios)." }
         },
         {
           "@type": "Question",
@@ -1235,15 +1231,17 @@ const tocHeadings = [
 
       <h1 id="hero-heading">
         {shutdownPassed ? (
-          <>Stocky is gone.<br /><span class="green">This replaces it.</span><br /><span class="dim">Free, live in 4 minutes.</span></>
+          <>A free order log<br /><span class="green">in Google Sheets,</span><br /><span class="dim">now that Stocky has closed.</span></>
         ) : (
           <>The free<br /><span class="green">Stocky alternative.</span><br /><span class="dim">Live in 4 minutes.</span></>
         )}
       </h1>
 
       <p id="answer">{shutdownPassed
-        ? "Stocky Swap is the free replacement for Shopify Stocky, which became unusable on August 31, 2026. It's a public Make.com scenario that logs every order to a Google Sheet you own — order tracking, not full inventory management. It logs forward only; export your Stocky archive yourself, read-only for at least 90 days."
+        ? "Stocky Swap is a free Make.com scenario that writes every paid Shopify order to a Google Sheet you own, as it happens. It is an order log, not full inventory management, and it starts from your next order. Stocky closed on 31 August 2026; for every replacement option, see the Stocky alternatives guide."
         : "Stocky Swap is the free replacement for Shopify Stocky, which shuts down on August 31, 2026. It's a public Make.com scenario that logs every order to a Google Sheet you own — order tracking, not full inventory management. It starts logging from your next order, so switch it on before the shutdown."}</p>
+
+      <p class="aff-note">Comparing every way to replace Stocky, paid ones included? See the <a href="/stocky-alternative/">Stocky alternatives guide</a>.</p>
 
       {/* The scenario cannot be cloned without a Make.com account, so the
           account comes first. Previously the only hero exit was the scenario
@@ -1559,9 +1557,6 @@ const tocHeadings = [
                 at $9/month — not what a reader came to a $0 guide for. This one
                 stays because the walkthrough needs it: step 1 is where the
                 account actually gets created. */}
-            <a href={`${MAKE_AFFILIATE}?source=stocky-swap-step1-make`} class="step-cta btn-g" target="_blank" rel="sponsored nofollow noopener" data-cta="step1-make">
-              Create your free account <span class="aff-tag">affiliate</span>
-            </a>
             <span class="step-tool">~60 seconds</span>
           </div>
         </div>
@@ -1572,10 +1567,6 @@ const tocHeadings = [
             <div class="step-title">Clone the public Stocky Swap scenario</div>
             <div class="step-desc">
               Open the <a href={SCENARIO_URL} target="_blank" rel="noopener">public Make.com scenario</a> and click Clone. The scenario imports into your workspace pre-configured — Shopify webhook trigger, line-item iterator, Google Sheets row writer. No building from scratch.
-            </div>
-            <div class="callout info" style="margin:14px 0 0;">
-              <div class="callout-label">Tested & verified</div>
-              <p style="margin:0;font-size:var(--fs-md);line-height:1.6;">This scenario is live-tested: a multi-item order writes one row per SKU to Google Sheets, with timestamp, quantity, order ID and product name. It's not a mockup — it's the exact build we run and verified end-to-end.</p>
             </div>
             <span class="step-tool">~90 seconds</span>
           </div>
@@ -1612,7 +1603,6 @@ const tocHeadings = [
     </div>
   </section>
 
-  <InlineOffer slug="stocky-swap" source="guide_stocky_swap_inline_top" />
 
   <section class="section tex-dots" id="comparison">
     <div class="inner">
@@ -2117,7 +2107,7 @@ const tocHeadings = [
         </div>
         <div class="glossary-item">
           <div class="glossary-term">Stocky shutdown</div>
-          <p class="glossary-def">Shopify's permanent retirement of the Stocky app on {SHUTDOWN_DATE}. App and APIs stop; data stays exportable read-only for at least 90 days. <a href="/stocky-shutdown/">Full timeline →</a></p>
+          <p class="glossary-def">Shopify's permanent retirement of the Stocky app on {SHUTDOWN_DATE}. App and APIs stop; data stays exportable read-only for at least 90 days. <a href="/stocky-alternative/">Full timeline →</a></p>
         </div>
         <div class="glossary-item">
           <div class="glossary-term">CAPI</div>
@@ -2136,7 +2126,7 @@ const tocHeadings = [
       </div>
 
       <div class="crosslink-grid">
-        <a href="/stocky-shutdown/" class="crosslink-card">
+        <a href="/stocky-alternative/" class="crosslink-card">
           <div class="crosslink-tag">↳ Background</div>
           <div class="crosslink-name">Shopify Stocky Shutdown — what happens August 31</div>
           <div class="crosslink-desc">The full shutdown timeline, what is stranded behind the read-only export window, and what survives in Shopify Admin.</div>
@@ -2199,13 +2189,6 @@ const tocHeadings = [
         </details>
 
         <details class="faq-item-s">
-          <summary>When does Shopify Stocky shut down? <span class="faq-ico" aria-hidden="true"></span></summary>
-          <div class="faq-ans-s">
-            <p>Shopify Stocky became unusable on <strong>{SHUTDOWN_DATE}</strong>; Shopify removed it from the App Store on February 2, 2026. Two separate things happened on the shutdown date. Stocky's <strong>APIs stopped dead, with no grace period</strong>, so any third-party integration broke instantly. Your <strong>purchase order history, supplier records, stocktake data and demand forecasts remain exportable read-only for at least 90 days</strong> after that date — Shopify has published no deletion date. (Source: <a href="https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky" rel="nofollow">Shopify, &ldquo;Transitioning from Stocky&rdquo;</a>, read 10 September 2026.) <a href="/stocky-shutdown/">Read the full shutdown timeline →</a></p>
-          </div>
-        </details>
-
-        <details class="faq-item-s">
           <summary>What is the cheapest Stocky alternative for Shopify? <span class="faq-ico" aria-hidden="true"></span></summary>
           <div class="faq-ans-s">
             <p>Stocky Swap at <strong>$0/month</strong> is the cheapest Stocky alternative in 2026. It runs on Make.com's free tier with no Stack Architect fees. Paid options start around $9/month for Make.com Core (if you outgrow free), or ~$59/month for entry-tier paid Shopify inventory apps like Sumtracker.</p>
@@ -2257,7 +2240,7 @@ const tocHeadings = [
         <details class="faq-item-s">
           <summary>Does Stocky Swap handle refunds, returns, or multi-location stock? <span class="faq-ico" aria-hidden="true"></span></summary>
           <div class="faq-ans-s">
-            <p>Stocky Swap is a forward-only order ledger — every paid Shopify order produces a Google Sheet row. For full inventory accounting that handles refunds, returns, and multi-location stock-on-hand calculations, rely on native Shopify Admin inventory tracking (which manages these correctly), or pair with the <a href={PRO_URL}>Stack Architect Pro bundle</a> which includes additional Make.com scenarios for refund and return handling.</p>
+            <p>Stocky Swap is a forward-only order ledger — every paid Shopify order produces a Google Sheet row. For full inventory accounting that handles refunds, returns, and multi-location stock-on-hand calculations, rely on native Shopify Admin inventory tracking (which manages these correctly).</p>
           </div>
         </details>
 
@@ -2293,26 +2276,6 @@ const tocHeadings = [
     </div>
   </section>
 
-  <section class="section tex-dots">
-    <div class="inner-md">
-      <div class="pro-block">
-        <div class="pro-tag">↳ Optional upgrade</div>
-        <h3>Want every Shopify automation done?</h3>
-        <p>Stocky Swap is free and covers order logging. To see how it fits alongside the other free tools — server-side tracking, email, P&amp;L — explore the <a href="/">complete $0 automation stack</a>. The <strong>Stack Architect Pro</strong> bundle ({formatPrice(KIT_PRICE)} one-time) includes the same Stocky Swap scenario plus pre-built Make.com scenarios for the rest of the stack:</p>
-        <ul class="pro-features">
-          <li>Stocky Swap (free here, included in Pro)</li>
-          <li>CAPI Shield — server-side Meta tracking</li>
-          <li>TikTok Events API — server-side TikTok tracking</li>
-          <li>P&amp;L Automation — daily revenue + cost reporting</li>
-          <li>Refund/return handling for full inventory accounting</li>
-          <li>Replace Klaviyo — free email automation alternative</li>
-        </ul>
-        <div class="pro-price">{formatPrice(KIT_PRICE)}</div>
-        <div class="pro-price-sub">one-time · lifetime access · all six automations</div>
-        <a href={PRO_URL} class="btn btn-pro" data-cta="pro-upsell">See what's in Pro →</a>
-      </div>
-    </div>
-  </section>
 
   <section class="section-alt bloom">
     <div class="inner-md" style="text-align:center;">
@@ -2326,9 +2289,6 @@ const tocHeadings = [
       </div>
 
       <div class="hero-ctas" style="margin-top: 24px;">
-        <a href={`${MAKE_AFFILIATE}?source=stocky-swap-footer-make`} class="btn pulse" target="_blank" rel="sponsored nofollow noopener" data-cta="footer-make">
-          Replace Stocky with Make.com free — 4-minute setup, no card →
-        </a>
         <a href={SCENARIO_URL} class="btn-outline" target="_blank" rel="noopener" data-cta="footer-scenario">
           View public scenario
         </a>
@@ -2340,21 +2300,12 @@ const tocHeadings = [
     </div>
   </section>
 
-  <section style="max-width:760px;margin:0 auto;padding:40px 24px;border-top:1px solid #222825;"><h2 id="related-reading" style="font-size:var(--fs-md);font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:4px;">Related reading</h2><p style="font-size:var(--fs-sm);color:#93a09a;margin-bottom:18px;">Related guides and tools from Stack Architect.</p><div style="display:grid;gap:10px;"><a href="/stocky-alternative/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:var(--fs-md);font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Replace Shopify Stocky with a $0 inventory system →</a><a href="/stocky-shutdown/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:var(--fs-md);font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Stocky shutdown: what you need to know →</a><a href="/stocky-migration-risk-scorer/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:var(--fs-md);font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Stocky migration risk scorer →</a></div></section>
+  <section style="max-width:760px;margin:0 auto;padding:40px 24px;border-top:1px solid #222825;"><h2 id="related-reading" style="font-size:var(--fs-md);font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:4px;">Related reading</h2><p style="font-size:var(--fs-sm);color:#93a09a;margin-bottom:18px;">Related guides and tools from Stack Architect.</p><div style="display:grid;gap:10px;"><a href="/stocky-alternative/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:var(--fs-md);font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Replace Shopify Stocky with a $0 inventory system →</a><a href="/stocky-alternative/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:var(--fs-md);font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Stocky shutdown: what you need to know →</a><a href="/stocky-migration-risk-scorer/" style="display:block;padding:14px 16px;border:1px solid #222825;border-radius:8px;color:#dfe6e2;text-decoration:none;font-size:var(--fs-md);font-weight:600;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#34d377';this.style.background='#121614'" onmouseout="this.style.borderColor='#222825';this.style.background='transparent'">Stocky migration risk scorer →</a></div></section>
   <InlineOffer slug="stocky-swap" source="guide_stocky_swap_inline_end" />
-  <!-- The offer above goes straight to Stripe, so until now nothing on this
-       page reached /pro/stocky-swap/ — the product page for the very blueprint
-       this guide builds. The kit link stays, second, where it belongs: it is
-       the right answer only for a reader fixing more than one thing. -->
-  <p style="max-width:760px;margin:-12px auto 32px;font-size:13px;color:#93a09a;">
-    <a href="/pro/stocky-swap/" data-cta="guide_stocky_swap_single_page" style="color:#93a09a;text-decoration:underline;">What's in the Stocky Swap blueprint →</a>
-    <span style="margin:0 8px;opacity:.5;">·</span>
-    <a href="/pro/" data-cta="guide_stocky_swap_kit_demoted" style="color:#93a09a;text-decoration:underline;">Fixing more than one thing? All four blueprints — {formatPrice(KIT_PRICE)} →</a>
-  </p>
 
-  <!-- Byline inside <main>: the Article/Person schema describes the content
+  <!-- Byline inside the main element: the Article/Person schema describes the content
        region, so the visible attribution for it belongs in the same region.
-       This card used to sit after </main>, in the footer block. -->
+       This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
   </main>
 
@@ -2365,7 +2316,7 @@ const tocHeadings = [
   { title: "How to export Stocky data while the app still opens", href: "/blog/shopify-stocky-data-export-before-shutdown/" },
   { title: "Stocky Migration Checklist", href: "/stocky-alternative/" },
   { title: "Stocky Alternative 2026 — Free Replacement", href: "/stocky-alternative/" },
-  { title: "Stocky Shutdown — What Stopped on Aug 31", href: "/stocky-shutdown/" },
+  { title: "Stocky Shutdown — What Stopped on Aug 31", href: "/stocky-alternative/" },
   { title: "What Replaces Stocky After August 2026?", href: "/stocky-alternative/" },
   { title: "Live Shopify P&L Automation — Free", href: "/shopify-profit-loss-automation/" },
 ]} />
@@ -2521,10 +2472,5 @@ const tocHeadings = [
   })();
 </script>
 
-<StickyAffiliateCTA
-  href="/go/make/?source=stocky-swap-n1"
-  label="Start free on Make.com →"
-  context="Stocky Swap runs on Make.com’s free tier — 1,000 ops/month, no card."
-/>
 </Base>
 

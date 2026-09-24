@@ -10,7 +10,7 @@
 // live check.
 //
 // What it asserts, for every permutation of host, scheme and trailing slash:
-//   1. the 62 live pages reach their canonical URL in exactly one 301, or zero
+//   1. the 49 live pages reach their canonical URL in exactly one 301, or zero
 //      when already canonical;
 //   2. every legacy source reaches its FINAL destination in exactly one 301 —
 //      never an intermediate slash-adding hop;
@@ -79,11 +79,17 @@ test('generated legacy map is in sync with public/_redirects', () => {
   });
 });
 
-test('the 63 live pages resolve in at most one 301, to their canonical URL', async (t) => {
+test('the 49 live pages resolve in at most one 301, to their canonical URL', async (t) => {
   assert.ok(sitemapPaths.length > 0, 'run `npm run build` first — dist/sitemap-0.xml is missing');
   // 62 -> 63 on 23 Sep 2026: /stocklog/, the second recorded freeze exception
   // (see CLAUDE.md, Hard rules). Moving this number is the record of a new URL.
-  assert.equal(sitemapPaths.length, 63, 'sitemap URL count changed — the URL set is frozen');
+  //
+  // 63 -> 49 on 24 Sep 2026: freeze exception #3, "Consolidation of unindexed
+  // pages per content audit 2026-09-24". Nine pages merged into their cluster
+  // primary and 301ed (listed in tests/retired-urls.test.js) and five set to
+  // noindex, follow and dropped from the sitemap (src/data/noindex-routes.json).
+  // These 49 are the frozen set from here on.
+  assert.equal(sitemapPaths.length, 49, 'sitemap URL count changed — the URL set is frozen');
 
   let checked = 0;
   for (const path of sitemapPaths) {

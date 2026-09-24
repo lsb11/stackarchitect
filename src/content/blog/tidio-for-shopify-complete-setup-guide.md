@@ -1,8 +1,8 @@
 ---
 title: "Tidio for Shopify: Free AI Live Chat Setup Guide 2026"
-heading: "Tidio for Shopify: Complete Setup Guide 2026 — Free AI Live Chat That Resolves 70% of Queries"
+heading: "Tidio for Shopify: Complete Setup Guide 2026, and When the Free Plan Is Enough"
 description: "Install Tidio on Shopify, configure Lyro AI to answer common queries automatically, set up order status flows, and replace Gorgias for free. 30 minutes."
-answer: "Tidio installs on Shopify from the App Store, and its Lyro AI answers order-status, shipping and product questions automatically — roughly 60-70% of a typical store's support volume. The free plan covers live chat, a basic bot and Shopify order lookup. Full setup, including Lyro training, takes about 30 minutes."
+answer: "Tidio installs on Shopify from the App Store, and its Lyro AI answers order-status, shipping and product questions automatically. Tidio says Lyro automates around 67% of inquiries on average; that is Tidio's figure, not one we measured. The free plan covers live chat, a basic bot and Shopify order lookup. Full setup, including Lyro training, takes about 30 minutes."
 publishDate: "2026-03-20"
 updatedDate: "2026-09-24"
 verifiedDate: "2026-08-11"
@@ -21,7 +21,7 @@ faqs:
   - question: "Does Tidio integrate with Shopify orders?"
     answer: "Yes. Tidio's native Shopify integration pulls live order data — order status, tracking numbers, fulfilment status, and purchase history — directly into the chat sidebar. Both Lyro AI and human agents can see this data without switching systems."
   - question: "What is the Tidio Lyro AI resolution rate?"
-    answer: "Tidio says Lyro automates around 67% of customer inquiries on average. However, the actual rate depends heavily on knowledge base quality and query routing configuration. Default settings typically achieve 25–35% resolution. The performance guide in this post covers the configuration required to reach 70%."
+    answer: "Tidio says Lyro automates around 67% of customer inquiries on average. That is Tidio's own average, not a figure we measured. Your rate depends mostly on how complete the knowledge base is and how queries are routed, which is what the weekly tuning routine in this post works on."
 relatedGuides:
   - title: "Tidio vs Gorgias for Shopify — Full comparison 2026"
     href: "/blog/tidio-vs-gorgias-shopify/"
@@ -33,7 +33,7 @@ relatedGuides:
     href: "/make-com-shopify/"
 ---
 
-Order status, shipping questions, and product FAQs account for 60–70% of all Shopify support volume. Tidio's Lyro AI resolves them automatically — without a human agent, without a helpdesk subscription, and without a monthly fee on the free plan.
+Order status, shipping questions and product FAQs make up much of a typical Shopify store's support inbox. Tidio's Lyro AI can answer them automatically — without a human agent, without a helpdesk subscription, and without a monthly fee on the free plan.
 
 This guide covers the complete setup: installation, widget configuration, Lyro AI training, chatbot flows, Shopify order sync, and the tuning routine that separates stores near Tidio's reported 67% average from those stuck at 30%.
 
@@ -44,6 +44,8 @@ Most Shopify merchants overpay for customer support infrastructure. Gorgias star
 Tidio's Lyro AI reads and responds to queries using a generative language model trained on your FAQ content and Shopify product catalogue, and escalates what it cannot answer automatically. Tidio says Lyro automates around 67% of customer inquiries on average.
 
 The free tier includes 50 one-time Lyro AI conversations. Whether that is enough is a question about conversation volume, not revenue: it depends on how many shoppers ask Lyro something, which is not a fixed share of GMV. The "£30,000/month GMV" threshold that stood here was invented — no source states it, and no mechanism produces it.
+
+For how Tidio compares with the other AI tools a store might add, see [the best AI tools for Shopify](/best-ai-tools-shopify/); for where support sits among the other uses of AI in a store, see the [Shopify AI playbook](/blog/shopify-ai-playbook-2026/).
 
 ## Installation — 10 Minutes
 
@@ -129,9 +131,9 @@ Trigger: message contains "size", "fit", "measurement"
 
 Flow: present size guide link → ask if query is resolved → if not, route to Lyro AI for specific product questions
 
-## The Weekly Tuning Routine That Gets You to 70%
+## The Weekly Tuning Routine
 
-Most stores set up Lyro and never touch it again. This is why they stay at 30% resolution. The stores getting near Tidio's reported 67% average review Lyro's performance weekly and update the knowledge base based on what Lyro got wrong.
+Lyro only improves if someone reviews it. The way to get closer to Tidio's reported 67% average is to review Lyro's performance weekly and update the knowledge base based on what Lyro got wrong.
 
 **Weekly review (20 minutes):**
 
@@ -140,7 +142,7 @@ Most stores set up Lyro and never touch it again. This is why they stay at 30% r
 3. Write new FAQ pairs for those topics and add them to the knowledge base
 4. In "Resolved by Lyro", read a sample of 10–15 successful resolutions — verify Lyro's answers are accurate and appropriate
 
-After 4–6 weeks of weekly tuning, most stores reach 60–70% resolution rates. The improvement comes entirely from expanding and refining the FAQ content — not from any technical configuration.
+The gains come from expanding and correcting the FAQ content, not from technical settings. Measure your own resolution rate in Lyro's analytics before and after, rather than assuming a number.
 
 Those escalation logs are worth more than the support time they save. Every repeated pre-purchase question — sizing, delivery windows, whether it fits a particular use — is a question the product page failed to answer, asked by someone motivated enough to type it. Most visitors with the same question leave instead. Feeding the top escalation topics back into your product copy is one of the cheapest conversion gains available; [free Shopify conversion rate optimisation](/blog/shopify-conversion-rate-optimisation-free-2026/) covers where on the page that content belongs.
 
@@ -157,6 +159,28 @@ Tidio lists Starter at $24.17/month and Growth from $49.17/month, both shown aga
 
 Compare this to Gorgias, from $40/month ([gorgias.com/pricing](https://www.gorgias.com/pricing), read 11 August 2026), for a system that assumes more human agent time.
 
+## Is the free plan enough for your store?
+
+Tidio bills by conversation, not by seat, so the decision turns on your monthly conversation count, the channels you support and who handles orders. Check the current allowances on [Tidio's pricing page](https://www.tidio.com/pricing/) against your own numbers; the reasoning below does not depend on them.
+
+**Stay on the free plan while:**
+- your monthly conversations fit inside the free allowance, and have done for a couple of months;
+- you are still testing whether automated answers resolve enough of your queries to be worth paying for; the free Lyro conversations are for exactly that test;
+- the "Powered by Tidio" branding on the widget does not bother your customers.
+
+**Move to a paid Tidio plan when:**
+- you regularly run out of free conversations;
+- you want visitor analytics and operating hours, or email handled in the same inbox as chat.
+
+Buy the smallest paid plan that covers your volume. Jumping from free straight to the larger plans for their analytics is the usual way to overspend.
+
+**Consider a ticket-based helpdesk such as Gorgias instead when:**
+- your conversation volume is growing fast enough that each Tidio tier is outgrown within months;
+- you support customers across Instagram, Facebook, email and SMS as well as chat, which Gorgias is built around;
+- your agents spend their day refunding, editing orders and applying discount codes, where a helpdesk with deeper Shopify order actions saves time.
+
+The [Tidio vs Gorgias comparison](/blog/tidio-vs-gorgias-shopify/) covers that switch in detail.
+
 ## Getting Started Today
 
 1. [Install Tidio free: Tidio says Lyro automates around 67% of inquiries on average](/go/tidio/?source=tidio-for-shopify-complete-setup-guide-n1) — free, 2 minutes
@@ -169,7 +193,6 @@ Compare this to Gorgias, from $40/month ([gorgias.com/pricing](https://www.gorgi
 
 The initial setup takes 30 minutes. The weekly review routine takes 20 minutes. Four to six weeks later, Lyro should be answering most routine queries without human intervention (Tidio's reported average is around 67%), freeing your team for the queries that genuinely need a person.
 
-The [Tidio vs Gorgias full comparison](/blog/tidio-vs-gorgias-shopify/) covers the cost and feature analysis for stores currently paying for a dedicated helpdesk.
 
 
 ---

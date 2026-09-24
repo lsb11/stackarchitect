@@ -1,4 +1,5 @@
 ---
+import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
 import { KIT_PRICE, formatPrice } from '../data/products';
 const kitPrice = formatPrice(KIT_PRICE);
@@ -8,7 +9,7 @@ import AuthorCard from '../components/AuthorCard.astro';
 const SITE     = "https://stackarchitect.xyz";
 const CANON    = `${SITE}/best-free-shopify-apps-2026/`;
 const OG       = `${SITE}/og.png`;
-const UPDATED  = "2026-09-24";
+const UPDATED  = pageUpdated('/best-free-shopify-apps-2026/')!;
 // Visible dateline is derived from UPDATED — never hardcode it, or the
 // rendered date drifts away from the schema dateModified.
 const UPDATED_LABEL = new Date(UPDATED).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
@@ -177,7 +178,7 @@ const categories = [
         saves: "$29–$99/mo",
         description: "The best free newsletter platform for Shopify store owners who want to build a subscriber list alongside their store. Free plan: 2,500 subscribers, unlimited sends, full monetisation tools including Boosts (earn $1–3 per subscriber referred to partner newsletters), ad network, and subscriptions. Significantly more powerful than Mailchimp's free tier.",
         cta: "Where Beehiiv fits in the stack",
-        ctaHref: "/blog/the-lean-shopify-tech-stack-2026/",
+        ctaHref: "/stack/",
         detail: "Best free plan in the newsletter space. Boosts monetisation available immediately.",
       },
       {
@@ -221,7 +222,7 @@ const categories = [
         saves: "$19.99+/mo",
         description: "The automation platform that powers the entire Stack Architect free stack. Make.com's free tier includes 1,000 credits/month (formerly called operations) — sufficient to run the whole stack as one consolidated scenario (router branches from a single Shopify webhook) for stores under ~250 orders/month. 10× more generous free tier than Zapier. Visual scenario builder, direct API call support (essential for CAPI), and native Shopify integration. For stores needing more: Make.com Core at $9/month covers 10,000 credits.",
         cta: "Create a free Make.com account — 1,000 ops/month",
-        ctaHref: `${AFF.make}?source=best-free-shopify-apps-2026-map-n2`,
+        ctaHref: '', // affiliate button removed 24 Sep 2026 (one per page)
         ctaRel: "sponsored nofollow noopener",
         detail: "Free: 1,000 credits/month, two active scenarios. Core: $9/month, 10,000 credits, unlimited active scenarios.",
       },
@@ -310,7 +311,7 @@ const categories = [
         saves: "$29–$100/mo",
         description: "The best free live chat + AI support tool for Shopify. Tidio's free plan includes live chat, a basic chatbot, Shopify order lookup, and visitor tracking. Tidio says its Lyro AI (paid beyond the 50 one-time free conversations) automates around 67% of customer inquiries on average. The free plan is sufficient for stores handling under 100 conversations per month. For sites with higher volume, Tidio's paid plans are significantly cheaper than Gorgias or Zendesk.",
         cta: "Install Tidio free: Tidio says Lyro automates around 67% of inquiries",
-        ctaHref: `${AFF.tidio}?source=best-free-shopify-apps-2026-map-n3`,
+        ctaHref: '', // affiliate button removed 24 Sep 2026 (one per page)
         ctaRel: "sponsored nofollow noopener",
         detail: "Free: 50 conversations/month, live chat, basic bot. Paid from $29/month.",
       },
@@ -671,7 +672,7 @@ const tocHeadings = [
 ];
 
 ---
-<Base title="Best Free Shopify Apps 2026 — 40+ Tools Ranked" description="40+ genuinely free Shopify apps across tracking, email, inventory and automation — plus what a typical paid stack really costs and which apps are worth keeping.">
+<Base title="Best Free Shopify Apps 2026 — 40+ Tools Ranked" description="Free Shopify apps by category: tracking, email, inventory, automation, support, reviews and SEO. What each free plan covers and where it stops.">
 <Fragment slot="head">
 <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
 
@@ -714,11 +715,11 @@ const tocHeadings = [
     </div>
 
     <h1>
-      The Best <span class="grn">Free Shopify Apps</span><br>
-      <span class="dim">2026 — 40+ Tools Ranked</span>
+      <span class="grn">Free Shopify apps</span> by category<br>
+      <span class="dim">What each free plan covers, and where it stops</span>
     </h1>
 
-    <p id="answer">The best free Shopify apps for 2026 include CAPI Shield for server-side Meta tracking, Stocky Swap for a free order log now that Stocky has shut down, Systeme.io for email replacing Klaviyo, Make.com for automation, Judge.me for reviews, and Microsoft Clarity for heatmaps. Together they replace $465–$2,297 a month in paid app subscriptions.</p>
+    <p id="answer">This is a category-by-category list of Shopify apps and tools you can run without a monthly fee: tracking, email, inventory, automation, support, reviews and SEO. Each entry says what the free plan covers and where it stops. For a shorter, ordered set of seven tools that work together, see <a href="/stack/">the recommended free stack</a>.</p>
 
   <TableOfContents headings={tocHeadings} />
 
@@ -845,7 +846,7 @@ const tocHeadings = [
                   <div class="tool-detail">{tool.detail}</div>
                 )}
 
-                <a
+                {tool.ctaHref && <a
                   href={tool.ctaHref}
                   class={`tool-cta ${tool.badge === "warning" ? "warning-cta" : ""}`}
                   target={tool.ctaHref.startsWith("http") ? "_blank" : undefined}
@@ -854,7 +855,7 @@ const tocHeadings = [
                 >
                   {tool.cta}
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </a>
+                </a>}
 
               </div>
             </article>
@@ -1036,43 +1037,10 @@ const tocHeadings = [
   </div>
 </div>
 
-<!-- BOTTOM CTA -->
-<section class="bottom-cta" aria-label="Get the Complete Kit">
-  <div class="bottom-cta-inner">
-    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:20px">
-      <span class="dot"></span>
-      <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);letter-spacing:.08em">Runs on Make.com's free tier · No subscription ever</span>
-    </div>
-    <h2 id="skip-the-build-deploy-in-about-10-minutes">
-      Skip the build.<br>
-      <span class="grn">Deploy in about 10 minutes. {kitPrice}.</span>
-    </h2>
-    <p>
-      The Complete Kit gives you four pre-built Make.com JSON blueprints — CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto — plus two Google Sheets templates. Import and deploy your entire free automation stack in about 10 minutes. {kitPrice} one-time. No subscription. Files yours to keep.
-    </p>
-    <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:20px">
-      <a href={TOOLS.pro} class="btn pulse" style="font-size:16px;padding:16px 32px">
-        Get the Complete Kit — {kitPrice}
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-      <a href="/make-com-shopify/" class="btn-outline">
-        Read the Make.com Shopify guide
-      </a>
-    </div>
-    <div class="trust-row">
-      {["Instant access via Stripe","No subscription ever","Any Shopify plan","Deploy in 10 minutes","Files yours to keep"].map(t => (
-        <div class="trust-item">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
-          {t}
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
 
-  <!-- Byline inside <main>: the Article/Person schema describes the content
+  <!-- Byline inside the main element: the Article/Person schema describes the content
        region, so the visible attribution for it belongs in the same region.
-       This card used to sit after </main>, in the footer block. -->
+       This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
 </main>
 

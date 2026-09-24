@@ -24,8 +24,8 @@ faqs:
 relatedGuides:
   - title: "Make.com for Shopify — Complete Beginner's Guide"
     href: "/make-com-shopify/"
-  - title: "Scalable Google Sheets Automation for High Volume"
-    href: "/blog/scalable-google-sheets-automation-for-high-volume-workflows/"
+  - title: "Shopify to Google Sheets Automation"
+    href: "/shopify-google-sheets-automation/"
   - title: "Google Apps Script Quotas — All Limits 2026"
     href: "/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/"
   - title: "CAPI Shield — Server-Side Tracking Setup"
@@ -159,7 +159,7 @@ Apply these to every Shopify automation scenario before treating it as productio
 - [ ] Test with a real order after building — not just Make.com's test data
 - [ ] Run scenario manually after any Shopify plan change or API version update
 
-The [Make.com beginner's guide](/make-com-shopify/) covers the initial scenario setup. The [scalable Sheets architecture guide](/blog/scalable-google-sheets-automation-for-high-volume-workflows/) covers the Google Sheets patterns that support reliable data writing at volume. The [Google Apps Script quotas guide](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/) covers the Apps Script limits that affect any workflow using scheduled scripts alongside Make.com.
+The [Make.com beginner's guide](/make-com-shopify/) covers the initial scenario setup. The [Shopify to Google Sheets guide](/shopify-google-sheets-automation/) covers the Google Sheets patterns that support reliable data writing at volume. The [Google Apps Script quotas guide](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/) covers the Apps Script limits that affect any workflow using scheduled scripts alongside Make.com.
 
 
 ---

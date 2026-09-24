@@ -1,4 +1,5 @@
 ---
+import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
 import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
@@ -24,7 +25,7 @@ const schemas = [
         'headline': 'The Complete Free Shopify Automation Tool Stack — No Monthly Fees',
         'description': 'Free Shopify automation tools and calculators that replace paid apps. CAPI Shield, Stocky Swap, plus 9 free diagnostic calculators. $0 forever — no subscriptions.',
         'inLanguage': 'en-GB',
-        'dateModified': '2026-07-16',
+        'dateModified': pageUpdated('/tools/'),
         'isPartOf': { '@id': 'https://stackarchitect.xyz/#website' },
         'breadcrumb': {
           '@type': 'BreadcrumbList',
@@ -51,15 +52,6 @@ const schemas = [
           { '@type': 'ListItem', 'position': 10, 'name': 'Shopify App Stack Kill or Keep Auditor', 'url': 'https://stackarchitect.xyz/shopify-app-stack-kill-or-keep-auditor/' },
           { '@type': 'ListItem', 'position': 11, 'name': 'Shopify App Pricing Index', 'url': 'https://stackarchitect.xyz/apps/' },
           { '@type': 'ListItem', 'position': 12, 'name': 'Ultimate Shopify Automation Guide', 'url': 'https://stackarchitect.xyz/ultimate-shopify-automation-guide/' },
-        ]
-      },
-      {
-        '@type': 'FAQPage',
-        'mainEntity': [
-          { '@type': 'Question', 'name': 'What free Shopify automation tools does Stack Architect offer?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Stack Architect offers six free deployment tools — CAPI Shield for server-side conversion tracking, Stocky Swap for inventory management replacing the Stocky app, Autocrat Quota Fix for Google Apps Script errors, a Shopify Automation Scanner, a Shopify App Cost Calculator, and the Ultimate Shopify Automation Guide — plus 9 free diagnostic calculators. All tools are permanently free.' } },
-          { '@type': 'Question', 'name': 'What are the free Shopify calculators and diagnostic tools?', 'acceptedAnswer': { '@type': 'Answer', 'text': "Stack Architect's 9 free diagnostic calculators and auditors cover: Meta EMQ Score Estimator, Shopify vs Meta Attribution Gap Calculator, Klaviyo Migration Savings Calculator, Stocky Migration Risk Scorer, Make vs Zapier Cost Calculator, Shopify App Cost Calculator, App Stack Kill or Keep Auditor, Shopify Automation Scanner, and the AI App Audit. All free at stackarchitect.xyz — no signup required." } },
-          { '@type': 'Question', 'name': 'Is Make.com really free for Shopify automation?', 'acceptedAnswer': { '@type': 'Answer', 'text': "Yes. Make.com's free plan includes 1,000 credits/month (formerly called operations) — enough to handle automation for most Shopify stores. All Stack Architect tools are built to run within the free plan limits, including its two-active-scenario cap — the stack runs as one scenario with router branches. There are no hidden costs." } },
-          { '@type': 'Question', 'name': 'What paid Shopify apps can I replace for free?', 'acceptedAnswer': { '@type': 'Answer', 'text': "Stack Architect's free tools replace: Klaviyo and Mailchimp (replaced by Systeme.io), Triple Whale and Elevar (replaced by CAPI Shield), Stocky and Inventory Planner (replaced by Stocky Swap), Zapier (replaced by Make.com), and document generation tools. Saving depends on which paid apps you replace." } },
         ]
       }
     ]
@@ -475,7 +467,7 @@ const tocHeadings = [
             <div class="tool-card-saving calc-saving">Helpdesk setup walkthrough</div>
             <div class="tool-card-cta">Read Guide &rarr;</div>
           </a>
-          <a href="/tidio-shopify-guide/" class="tool-card calc-card">
+          <a href="/blog/tidio-for-shopify-complete-setup-guide/" class="tool-card calc-card">
             <div class="tool-card-tag calc-tag"><span class="tool-tag-dot" style="background:#6cc3e6;"></span>Support</div>
             <div class="tool-card-title">Tidio for Shopify — Guide</div>
             <p class="tool-card-desc">Setting up <strong>Tidio live chat and chatbots</strong> on Shopify, with cost and free-tier notes.</p>
@@ -540,7 +532,6 @@ const tocHeadings = [
             <div class="how-num">02</div>
             <div class="how-title">Create your free Make account</div>
             <p class="how-desc">Make.com is the automation engine behind every Stack Architect deployment tool. The free plan handles all of them as one scenario with router branches — no credit card, no upgrade required. Make's free plan allows two active scenarios; running them separately needs Core.</p>
-            <a href="/go/make/?source=tools-n1" class="cta-primary" target="_blank" rel="sponsored nofollow noopener">Start free on Make.com</a>
           </div>
           <div class="how-card">
             <div class="how-num">03</div>
@@ -698,16 +689,15 @@ const tocHeadings = [
               <div class="final-bullet"><span style="width:5px;height:5px;background:var(--green);border-radius:50%;"></span>Free workflow automation</div>
               <div class="final-bullet"><span style="width:5px;height:5px;background:#6cc3e6;border-radius:50%;"></span>9 free diagnostic calculators</div>
             </div>
-            <a href="/go/make/?source=tools-n3" class="cta-primary" style="font-size:17px;padding:16px 40px;" target="_blank" rel="sponsored nofollow noopener">Start free on Make.com</a>
             <span class="final-trust">Runs on Make.com's free tier &middot; No credit card &middot; Live in 15 minutes &middot; $0 forever</span>
           </div>
         </div>
       </div>
 
     </div>
-  <!-- Byline inside <main>: the Article/Person schema describes the content
+  <!-- Byline inside the main element: the Article/Person schema describes the content
        region, so the visible attribution for it belongs in the same region.
-       This card used to sit after </main>, in the footer block. -->
+       This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
   </main>
 

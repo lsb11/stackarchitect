@@ -13,6 +13,96 @@
 // `*` patterns.
 export const LEGACY_RULES = [
   {
+    "from": "/tidio-shopify-guide",
+    "to": "/blog/tidio-for-shopify-complete-setup-guide/",
+    "status": 301
+  },
+  {
+    "from": "/tidio-shopify-guide/",
+    "to": "/blog/tidio-for-shopify-complete-setup-guide/",
+    "status": 301
+  },
+  {
+    "from": "/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026",
+    "to": "/shopify-google-ads-conversion-tracking/",
+    "status": 301
+  },
+  {
+    "from": "/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026/",
+    "to": "/shopify-google-ads-conversion-tracking/",
+    "status": 301
+  },
+  {
+    "from": "/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script",
+    "to": "/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/",
+    "status": 301
+  },
+  {
+    "from": "/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script/",
+    "to": "/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/",
+    "status": 301
+  },
+  {
+    "from": "/stocky-shutdown",
+    "to": "/stocky-alternative/",
+    "status": 301
+  },
+  {
+    "from": "/stocky-shutdown/",
+    "to": "/stocky-alternative/",
+    "status": 301
+  },
+  {
+    "from": "/blog/recover-lost-shopify-conversions-capi-shield",
+    "to": "/capi-shield/",
+    "status": 301
+  },
+  {
+    "from": "/blog/recover-lost-shopify-conversions-capi-shield/",
+    "to": "/capi-shield/",
+    "status": 301
+  },
+  {
+    "from": "/blog/shopify-email-marketing-free-2026",
+    "to": "/replace-klaviyo-free/",
+    "status": 301
+  },
+  {
+    "from": "/blog/shopify-email-marketing-free-2026/",
+    "to": "/replace-klaviyo-free/",
+    "status": 301
+  },
+  {
+    "from": "/blog/the-lean-shopify-tech-stack-2026",
+    "to": "/stack/",
+    "status": 301
+  },
+  {
+    "from": "/blog/the-lean-shopify-tech-stack-2026/",
+    "to": "/stack/",
+    "status": 301
+  },
+  {
+    "from": "/blog/shopify-automation-stack-for-small-stores",
+    "to": "/stack/",
+    "status": 301
+  },
+  {
+    "from": "/blog/shopify-automation-stack-for-small-stores/",
+    "to": "/stack/",
+    "status": 301
+  },
+  {
+    "from": "/blog/scalable-google-sheets-automation-for-high-volume-workflows",
+    "to": "/shopify-google-sheets-automation/",
+    "status": 301
+  },
+  {
+    "from": "/blog/scalable-google-sheets-automation-for-high-volume-workflows/",
+    "to": "/shopify-google-sheets-automation/",
+    "status": 301
+  },
+  {
     "from": "/stocky-export-guide",
     "to": "/blog/shopify-stocky-data-export-before-shutdown/",
     "status": 301
@@ -59,7 +149,7 @@ export const LEGACY_RULES = [
   },
   {
     "from": "/blog/recover-lost-shopify-conversions-with-capi-shield/",
-    "to": "/blog/recover-lost-shopify-conversions-capi-shield/",
+    "to": "/capi-shield/",
     "status": 301
   },
   {
@@ -229,12 +319,12 @@ export const LEGACY_RULES = [
   },
   {
     "from": "/blog/fix-autocrat-quota-errors-stop-service-invoked-too-many-times-failures",
-    "to": "/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script/",
+    "to": "/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/",
     "status": 301
   },
   {
     "from": "/blog/fix-autocrat-quota-errors-stop-service-invoked-too-many-times-failures/",
-    "to": "/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script/",
+    "to": "/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/",
     "status": 301
   },
   {
@@ -269,12 +359,12 @@ export const LEGACY_RULES = [
   },
   {
     "from": "/blog/how-to-run-high-volume-document-automation-without-errors",
-    "to": "/blog/scalable-google-sheets-automation-for-high-volume-workflows/",
+    "to": "/shopify-google-sheets-automation/",
     "status": 301
   },
   {
     "from": "/blog/how-to-run-high-volume-document-automation-without-errors/",
-    "to": "/blog/scalable-google-sheets-automation-for-high-volume-workflows/",
+    "to": "/shopify-google-sheets-automation/",
     "status": 301
   },
   {
@@ -294,7 +384,7 @@ export const LEGACY_RULES = [
   },
   {
     "from": "/blog/recover-lost-shopify-conversions-with-capi-shield",
-    "to": "/blog/recover-lost-shopify-conversions-capi-shield/",
+    "to": "/capi-shield/",
     "status": 301
   },
   {
@@ -599,12 +689,12 @@ export const LEGACY_RULES = [
   },
   {
     "from": "/shopify-stocky-shutdown",
-    "to": "/stocky-shutdown/",
+    "to": "/stocky-alternative/",
     "status": 301
   },
   {
     "from": "/shopify-stocky-shutdown/",
-    "to": "/stocky-shutdown/",
+    "to": "/stocky-alternative/",
     "status": 301
   },
   {

@@ -1,4 +1,5 @@
 ---
+import { pageUpdated } from '../../data/pageUpdated';
 import Base from '../../layouts/Base.astro';
 import Disclosure from '../../components/Disclosure.astro';
 import AuthorCard from '../../components/AuthorCard.astro';
@@ -25,7 +26,7 @@ import CHANNELS from '../../data/agentic-storefronts-channels.json';
  * That distinction is the substance of this page.
  * ------------------------------------------------------------------------ */
 
-const UPDATED = CHANNELS.verifiedDate;              // 2026-08-24
+const UPDATED = pageUpdated('/blog/shopify-agentic-storefronts-setup-guide-2026/')!;              // 2026-08-24
 const PUBLISHED = '2026-03-21';
 const CANONICAL = 'https://stackarchitect.xyz/blog/shopify-agentic-storefronts-setup-guide-2026/';
 
@@ -52,7 +53,7 @@ const FAQ = [
   },
   {
     q: 'Am I eligible for Shopify Agentic Storefronts?',
-    a: 'Eligibility is per channel, not one blanket rule, and it stacks two separate conditions: where your store is based, and where you sell. ChatGPT, Microsoft Copilot and Meta AI accept a store based in any country provided it sells to customers in the United States. Google AI Mode and Gemini require the store itself to be based in the United States, United Kingdom, Australia or Canada and to sell into one of those four countries — and even then, direct checkout renders only for US-based customers, with everyone else redirected. Google also remains in early access and requires the Google & YouTube sales channel with product and shipping sync enabled. Agentic storefronts are active by default for eligible stores; the setting lives under Sales channels, then Agentic.',
+    a: 'Eligibility is per channel, not one blanket rule, and it stacks two separate conditions: where your store is based, and where you sell. ChatGPT and Microsoft Copilot accept a store based in any country provided it sells to customers in the United States; Meta accepts one that sells to customers in the United States, Canada or Mexico. Google AI Mode and Gemini require the store itself to be based in the United States, United Kingdom, Australia or Canada and to sell into one of those four countries — and even then, direct checkout renders only for US-based customers, with everyone else redirected. Google also remains in early access and requires the Google & YouTube sales channel with product and shipping sync enabled. Agentic storefronts are active by default for eligible stores; the setting lives under Sales channels, then Agentic.',
   },
   {
     q: 'How much does the Shopify Knowledge Base app cost?',
@@ -100,7 +101,7 @@ const datasetSchema = {
   creator: { '@id': 'https://stackarchitect.xyz/#org' },
   isPartOf: { '@id': CANONICAL },
   dateModified: UPDATED,
-  temporalCoverage: '2025-12-10/' + UPDATED,
+  temporalCoverage: '2025-12-10/' + CHANNELS.verifiedDate,
   variableMeasured: [
     ...CHANNELS.channels.flatMap((c) => [
       { '@type': 'PropertyValue', name: `${c.name} — checkout model`, value: c.checkoutModel },
@@ -143,7 +144,7 @@ const graphSchema = {
       totalTime: 'PT45M',
       estimatedCost: { '@type': 'MonetaryAmount', currency: 'USD', value: '0' },
       step: [
-        { '@type': 'HowToStep', position: 1, name: 'Check eligibility, per channel', text: 'Open Shopify admin, then Sales channels, then Agentic. Eligibility is per channel: ChatGPT, Copilot and Meta accept any store location selling to US customers; Google AI Mode and Gemini require a store based in the US, UK, Australia or Canada.' },
+        { '@type': 'HowToStep', position: 1, name: 'Check eligibility, per channel', text: 'Open Shopify admin, then Sales channels, then Agentic. Eligibility is per channel: ChatGPT and Copilot accept any store location selling to US customers, and Meta any store selling to US, Canadian or Mexican customers; Google AI Mode and Gemini require a store based in the US, UK, Australia or Canada.' },
         { '@type': 'HowToStep', position: 2, name: 'Install the free Knowledge Base app', text: 'Install the Shopify Knowledge Base app, which is free, and populate it with FAQs, return and shipping detail and brand voice guidance. It is invisible on your storefront and serves as the data source AI platforms read.' },
         { '@type': 'HowToStep', position: 3, name: 'Close the attribution gap before enabling', text: 'Direct checkout fires only server-to-server started and completed pixels. Get server-side tracking working first so agentic orders are attributed rather than appearing to come from nowhere.' },
         { '@type': 'HowToStep', position: 4, name: 'Audit the catalog against the unsupported list', text: 'Subscriptions, bundles, digital products, customizable products and B2B-only products are unsupported in agentic direct checkout. Confirm which of your products are affected and on which channels.' },
@@ -199,6 +200,8 @@ const graphSchema = {
     <span class="callout-label">&#9888; If you have read other guides on this, check their date</span>
     <p>This feature reversed itself on <strong>24 March 2026</strong>. ChatGPT launched with in-conversation Instant Checkout; OpenAI retired it that day, and Shopify&rsquo;s documentation now describes ChatGPT as a discovery-focused referrer that sends shoppers to your own checkout. Meanwhile Google, Copilot and Meta gained direct checkout. Most guides still in circulation describe the launch arrangement, which is the opposite of the current one &mdash; and they inherit a set of restrictions from it that no longer apply the way they say.</p>
   </div>
+  <p style="font-size:14px;color:#93a09a;line-height:1.7;">Shopify&rsquo;s own pages, checked 24 September 2026: the <a href="https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts" target="_blank" rel="noopener">agentic storefronts overview</a> (the channels, on by default for eligible stores, managed under Sales channels &gt; Agentic); <a href="https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts/microsoft" target="_blank" rel="noopener">Microsoft Copilot</a> (direct checkout, shown only to customers in the United States); and <a href="https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts/meta" target="_blank" rel="noopener">Meta</a> (direct checkout on Meta surfaces, for stores selling to the United States, Canada or Mexico).</p>
+  <p>Agentic storefronts are the last of seven stages in the <a href="/blog/shopify-ai-playbook-2026/">Shopify AI playbook</a>, which covers the earlier ones: product research, ad creative, email, tracking and support.</p>
 
   <!-- ═══════ THE MATRIX — the citable artefact ═══════ -->
   <div class="sec-mark" id="matrix">01 &mdash; The matrix: who is eligible for what</div>
@@ -512,7 +515,6 @@ const graphSchema = {
     <p class="final-sub">Direct checkout fires only server-to-server events. Get server-side tracking live before you enable the channels and there is no gap to reconstruct later. CAPI Shield is free and runs on Make.com&rsquo;s free tier.</p>
     <div class="final-btns">
       <a href="/capi-shield/" class="btn btn-g">Deploy CAPI Shield &mdash; free &rarr;</a>
-      <a href="/go/make/?source=shopify-agentic-storefronts-setup-guide--agentic-final" class="btn btn-p" target="_blank" rel="sponsored nofollow noopener" data-cta-position="agentic-final">Start free on Make.com &rarr; <span class="aff-mark">affiliate</span></a>
     </div>
   </div>
 

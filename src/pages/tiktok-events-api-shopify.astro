@@ -1,6 +1,6 @@
 ---
+import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
-import StickyAffiliateCTA from '../components/StickyAffiliateCTA.astro';
 import Disclosure from "../components/Disclosure.astro";
 import AuthorCard from '../components/AuthorCard.astro';
 /**
@@ -33,7 +33,7 @@ const OG_IMAGE  = "https://stackarchitect.xyz/og/og-tiktok-events-api.png";
 // Single source of truth for the modified date. Both the schema dateModified
 // and the visible dateline derive from this — never hardcode either, or the
 // rendered date drifts away from what crawlers are told.
-const DATE_MODIFIED = "2026-08-08";
+const DATE_MODIFIED = pageUpdated('/tiktok-events-api-shopify/')!;
 const UPDATED_LABEL = new Date(DATE_MODIFIED).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
 
 // ─── Affiliate / external URLs ────────────────────────────────────────────────
@@ -365,6 +365,7 @@ const tocHeadings = [
     </h1>
 
     <p id="answer">TikTok Events API is a server-to-server connection that sends Shopify purchase events directly to TikTok without passing through the browser, bypassing iOS restrictions and ad blockers. To connect it, add a Shopify order-paid webhook pointing to a free Make.com scenario that posts a CompletePayment event to TikTok with your Pixel ID and Access Token, a six-minute, no-code setup.</p>
+      <p class="hero-sub" style="font-size:14px;margin-top:10px;">TikTok says the Events API reports conversions the Pixel misses through &ldquo;connectivity issues and browser inconsistency&rdquo;, and recommends running it alongside your existing Pixel (<a href="https://ads.tiktok.com/help/article/events-api" target="_blank" rel="noopener">About Events API</a>). Its <a href="https://ads.tiktok.com/help/article/advanced-matching-web" target="_blank" rel="noopener">Advanced Matching</a> matches email, phone and other identifiers to events sent through the Pixel or the Events API. On Safari, <a href="https://webkit.org/tracking-prevention/" target="_blank" rel="noopener">Intelligent Tracking Prevention</a> deletes cookies set by script after seven days without a visit. Checked 24 September 2026.</p>
 
   <TableOfContents headings={tocHeadings} />
 
@@ -561,7 +562,6 @@ const tocHeadings = [
         <div class="cta-h">Deploy TikTok Events API free via Make.com</div>
         <p>Takes 6 minutes · No code · Free forever on Make.com free plan</p>
       </div>
-      <a href={`${MAKE_URL}?source=tiktok-events-api-n2`} target="_blank" rel="sponsored nofollow noopener" class="btn btn-sm pulse">Deploy TikTok Events API free on Make.com — 6 minutes →</a>
     </div>
   </div>
 </section>
@@ -643,10 +643,6 @@ const tocHeadings = [
       <p>Add a Router module to your Make.com scenario and branch to Meta Conversions API and Google Enhanced Conversions simultaneously — no additional Shopify setup needed. The same Order Payment webhook feeds all three platforms. <a href="/capi-shield/">Deploy CAPI Shield for Meta free →</a></p>
     </div>
 
-    <div class="callout info" style="max-width:680px;margin-left:auto;margin-right:auto;">
-      <div class="callout-label">Tested &amp; verified</div>
-      <p>This scenario is live-tested end to end: a Shopify order fires the webhook, the customer's email, phone, IP and user agent are hashed for Advanced Matching, and TikTok's Events API returns a 200 success response. It's the exact build we run — not a mockup.</p>
-    </div>
 
     <div style="text-align:center;margin-top:32px;display:flex;flex-wrap:wrap;gap:14px;justify-content:center;">
       <a href="/capi-shield/" class="btn-outline" aria-label="Deploy CAPI Shield for Meta too">Add Meta CAPI too</a>
@@ -657,7 +653,6 @@ const tocHeadings = [
 
 <div class="divider"></div>
 
-  <InlineOffer slug="tiktok-capi" source="guide_tiktok_events_api_shopify_inline_top" />
 
 <!-- ── COMPARISON TABLE ── -->
 <section class="section-alt" aria-labelledby="compare-h">
@@ -826,11 +821,6 @@ const tocHeadings = [
             TikTok CAPI + CAPI Shield replaces Analyzify at $0 vs $145–$275/month</span></span>
       <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">vs $145–$375/mo</span>
     </a>
-    <a href="/pro/tiktok-capi/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
-      <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">TikTok CAPI — Pre-Built Blueprint ({singlePrice})
-            The TikTok Events API scenario on this page, already wired</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">{singlePrice} one-time</span></span>
-      <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">Import in 6 minutes · or all four in the Complete Kit for {formatPrice(KIT_PRICE)}</span>
-    </a>
   </div>
 </section>
   <InlineOffer slug="tiktok-capi" source="guide_tiktok_events_api_shopify_inline_end" />
@@ -844,9 +834,9 @@ const tocHeadings = [
       <li style="margin:.35em 0"><a href="https://www.make.com/en/pricing" target="_blank" rel="noopener">Make.com — official pricing & free plan limits</a></li>
   </ul>
 </section>
-  <!-- Byline inside <main>: the Article/Person schema describes the content
+  <!-- Byline inside the main element: the Article/Person schema describes the content
        region, so the visible attribution for it belongs in the same region.
-       This card used to sit after </main>, in the footer block. -->
+       This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
 </main>
 
@@ -909,11 +899,6 @@ const tocHeadings = [
 
 
 
-<StickyAffiliateCTA
-  href="/go/make/?source=tiktok-events-api-shopify-n1"
-  label="Start free on Make.com →"
-  context="Server-side TikTok events run on Make.com’s free tier."
-/>
 </Base>
 
 <style is:global>

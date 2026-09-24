@@ -10,23 +10,20 @@
 // so it is a claim we cannot substantiate — the same class of unsupported
 // assertion as the Make free-tier line. Do not reinstate it.
 import { AUTHOR } from '../data/author';
+import PageUpdated from './PageUpdated.astro';
 import { PRESS } from '../data/press';
 
+// The card used to end with "Last reviewed <date>", falling back to the date
+// the author profile was confirmed. That put one identical date on 55 pages,
+// which said nothing about any of them. It now shows the page's own
+// "Updated" date from src/data/page-updated.json instead.
 interface Props {
-  /** Optional: when the page's content was last reviewed. Falls back to the
-      date the author profile itself was last confirmed accurate. */
-  dateModified?: string;
   /** Show the MAKERSPACE credential line. Off by default — it belongs on the
       commercial pages and /about/, not on every guide that carries a byline. */
   press?: boolean;
 }
 
-const { dateModified, press = false } = Astro.props;
-
-const modified = dateModified || AUTHOR.profileVerified;
-const modifiedLabel = new Date(modified).toLocaleDateString('en-GB', {
-  day: 'numeric', month: 'long', year: 'numeric',
-});
+const { press = false } = Astro.props;
 
 // Never link a page to itself: /about/ carries this card too.
 const onAboutPage = Astro.url.pathname.replace(/\/+$/, '') === '/about';
@@ -44,10 +41,11 @@ const quote = PRESS[0];
         <Fragment> <a href={quote.url} target="_blank" rel="noopener" style="color:#34d377;text-decoration:underline;">{quote.shortLine}</a>.</Fragment>
       )}
     </div>
-    <div style="font-size:0.78rem;color:#7f8b85;margin-top:8px;">
-      {!onAboutPage && (
-        <Fragment><a href={AUTHOR.links.about} style="color:#93a09a;text-decoration:underline;">Full profile and credentials</a> · </Fragment>
-      )}Last reviewed <time datetime={modified}>{modifiedLabel}</time>
-    </div>
+    {!onAboutPage && (
+      <div style="font-size:0.78rem;color:#7f8b85;margin-top:8px;">
+        <a href={AUTHOR.links.about} style="color:#93a09a;text-decoration:underline;">Full profile and credentials</a>
+      </div>
+    )}
+    <PageUpdated />
   </div>
 </div>

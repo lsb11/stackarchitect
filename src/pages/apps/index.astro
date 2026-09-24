@@ -1,4 +1,6 @@
 ---
+import { pageUpdated } from '../../data/pageUpdated';
+import PageUpdated from '../../components/PageUpdated.astro';
 import Base from "../../layouts/Base.astro";
 import appsData from "../../data/apps.json";
 import {
@@ -155,7 +157,7 @@ const schema = {
       description,
       inLanguage: "en-GB",
       isPartOf: { "@id": `${SITE}/#website` },
-      ...(latestVerified ? { dateModified: latestVerified } : {}),
+      dateModified: pageUpdated('/apps/'),
       mainEntity: { "@id": `${canonical}#itemlist` },
     },
     // The index as a citable dataset. The two distributions are the same rows
@@ -172,7 +174,7 @@ const schema = {
       license: indexMeta.license,
       creator: { "@id": `${SITE}/#org` },
       isAccessibleForFree: true,
-      ...(latestVerified ? { dateModified: latestVerified } : {}),
+      dateModified: pageUpdated('/apps/'),
       temporalCoverage: `${POPULATED_ON}/${latestVerified ?? EXPORT_VERSION_DATE}`,
       distribution: [
         { "@type": "DataDownload", encodingFormat: "text/csv", contentUrl: `${SITE}${CSV}` },
@@ -694,6 +696,7 @@ const td = "padding:10px 12px;color:var(--text-2);vertical-align:top;";
       <em> not yet checked</em> have never been read against a live vendor page and may be stale — treat
       them as indicative. Re-check before making a purchasing decision.
     </p>
+    <PageUpdated />
   </main>
 
   <script is:inline>

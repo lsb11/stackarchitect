@@ -1,4 +1,5 @@
 ---
+import { pageUpdated, formatUpdatedMonth } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
 import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
@@ -9,7 +10,7 @@ import TableOfContents from '../components/TableOfContents.astro';
 const SITE = "https://stackarchitect.xyz";
 const PAGE = `${SITE}/shopify-app-development-cost/`;
 const DATE_PUBLISHED = "2026-08-08";
-const DATE_MODIFIED = "2026-08-08";
+const DATE_MODIFIED = pageUpdated('/shopify-app-development-cost/')!;
 const DATE_VERIFIED = "2026-08-08";
 
 const CALCULATOR = "/shopify-app-cost-calculator/";
@@ -103,14 +104,13 @@ const schema = JSON.stringify({
           "acceptedAnswer": { "@type": "Answer", "text": "A simple private app (single internal tool, e.g. a webhook receiver) runs roughly $5,000–$15,000. A substantial private app with multiple features and integrations runs $15,000–$60,000. A public App Store app MVP runs $30,000–$150,000 to build, plus $20,000–$50,000 in first-year operations. Figures vary widely by developer location and experience — see the sourced breakdown above." } },
         { "@type": "Question", "name": "What's the cost difference between a private app and a public app?",
           "acceptedAnswer": { "@type": "Answer", "text": "A private app only needs to work for your own store, so it skips Shopify's App Store review process, public-app security requirements, and multi-tenant architecture — which is most of why private apps cost a fraction of public ones. A public app also carries an ongoing retainer, commonly $5,000–$40,000/month depending on complexity, because it has to keep working for every merchant who installs it, not just you." } },
-        { "@type": "Question", "name": "What ongoing costs does a custom Shopify app have beyond the initial build?",
+        { "@type": "Question", "name": "What ongoing costs does a custom Shopify app have beyond the build?",
           "acceptedAnswer": { "@type": "Answer", "text": "Four recurring costs people underbudget: maintenance (commonly quoted as 20–30% of build cost per year, or a $2,000–$10,000+/month retainer for an active store), Shopify API version migrations (mandatory testing work roughly every quarter), App Store re-review for public apps when functionality changes, and hosting for the backend server and database the app runs on." } },
         { "@type": "Question", "name": "How often does Shopify's API change, and does that affect a custom app?",
           "acceptedAnswer": { "@type": "Answer", "text": "Shopify ships a new API version every three months. Each stable version is supported for a minimum of 12 months with at least nine months of overlap between versions, so nothing breaks overnight — but a custom app that never gets touched will eventually stop working once its version's support window closes. That's recurring engineering time a workflow-automation platform absorbs on your behalf, since Make.com maintains its own Shopify connector." } },
         { "@type": "Question", "name": "How long does Shopify App Store review take?",
           "acceptedAnswer": { "@type": "Answer", "text": "Shopify's own guidance and community reports put the initial review at roughly 4–10 business days. If the reviewer requests changes — common on a first submission — the app moves to a Paused status until you resubmit, and the full process commonly stretches to 2–4 weeks. This only applies to public apps; private apps for your own store skip review entirely." } },
-        { "@type": "Question", "name": "When should I build a custom Shopify app instead of using Make.com?",
-          "acceptedAnswer": { "@type": "Answer", "text": "When the logic is genuinely proprietary and unique to your operation, when you need true real-time bidirectional sync with an internal system that has no accessible API, when you're building the app to sell on the App Store as a product, or when your scale exceeds what a workflow-automation platform's rate limits can sustain. Outside those cases, an existing free tool or a Make.com scenario usually gets there faster and cheaper." } },
+        
         { "@type": "Question", "name": "Can Make.com really replace a custom-built Shopify integration?",
           "acceptedAnswer": { "@type": "Answer", "text": "For the common case — receive a Shopify webhook, transform the data, send it somewhere else — yes. That pattern is exactly what CAPI Shield, Stocky Swap, Shopify P&L Automation, and Autocrat Quota Fix do, each replacing what would otherwise be a small custom backend service, at $0 instead of a $5,000–$15,000+ build. It doesn't replace custom development for logic a workflow tool genuinely can't express." } },
         { "@type": "Question", "name": "Is a free Make.com scenario really equivalent to a paid custom app?",
@@ -294,7 +294,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
 <div class="hero-inner">
 
   <div class="expert-byline" role="doc-subtitle">
-    <span>By <strong>Stack Architect</strong> · <time datetime={DATE_MODIFIED}>Updated August 2026</time> · ~10 min read</span>
+    <span>By <strong>Stack Architect</strong> · <time datetime={DATE_MODIFIED}>Updated {formatUpdatedMonth(pageUpdated('/shopify-app-development-cost/')!)}</time> · ~10 min read</span>
   </div>
 
   <div class="hero-proof">
@@ -652,9 +652,9 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
 </div>
 </section>
 
-  <!-- Byline inside <main>: the Article/Person schema describes the content
+  <!-- Byline inside the main element: the Article/Person schema describes the content
        region, so the visible attribution for it belongs in the same region.
-       This card used to sit after </main>, in the footer block. -->
+       This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
 </main>
 

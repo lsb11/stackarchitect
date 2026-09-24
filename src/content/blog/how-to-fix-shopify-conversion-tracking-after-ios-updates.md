@@ -1,8 +1,8 @@
 ---
 title: "Fix Shopify Conversion Tracking After iOS Updates 2026"
-heading: "How to Fix Shopify Conversion Tracking After iOS Updates 2026"
-description: "iOS updates have broken Shopify conversion tracking for millions of stores. Diagnoses which iOS change broke yours and gives the free fix for each cause."
-answer: "Shopify conversion tracking breaks after iOS updates because browser pixels are blocked by App Tracking Transparency, Safari ITP cookie expiry and Link Tracking Protection. By 2026 stores lose conversion data across Meta, Google and TikTok in proportion to how much of their traffic is iOS. The fix is sending purchase events server-side, where no browser restriction can intercept them."
+heading: "Which iOS Privacy Changes Break Shopify Conversion Tracking, and What Each One Stops"
+description: "App Tracking Transparency, Safari ITP and Link Tracking Protection each stop a different part of Shopify conversion tracking. Which one affects you, and the fix for each."
+answer: "Three Apple privacy features break Shopify conversion tracking in different ways: App Tracking Transparency limits tracking inside apps, Safari's Intelligent Tracking Prevention shortens cookie lifetimes, and Link Tracking Protection strips click IDs from some links. This guide takes each in turn and gives the fix for each. The common fix is sending purchases server-side."
 publishDate: "2026-03-15"
 updatedDate: "2026-04-16"
 category: "tracking"
@@ -45,7 +45,7 @@ relatedGuides:
 
 iOS updates have progressively degraded browser-based conversion tracking since 2021. By 2026, the cumulative effect of multiple iOS privacy changes means most Shopify stores are missing conversion data in Meta Ads Manager, Google Ads, and TikTok Ads Manager. How much is a property of the individual store — it scales with the iOS share of its traffic and with how many of those visitors decline tracking — which is why this guide shows you how to measure your own gap rather than quoting an industry figure at you.
 
-This guide diagnoses exactly which iOS change is causing your tracking gap and provides the specific free fix for each cause.
+This guide diagnoses exactly which iOS change is causing your tracking gap and provides the specific free fix for each cause. If the symptom you are chasing is a drop in Meta ROAS rather than tracking in general, the [Meta ROAS diagnosis](/blog/shopify-meta-roas-dropped-2026-fix/) starts from there.
 
 ## The iOS Tracking Timeline — What Changed and When
 
@@ -172,7 +172,7 @@ Go to: **Meta Events Manager → Aggregated Event Measurement → Configure Web 
 
 A residual gap is expected and normal even with full server-side implementation. This represents orders from users who cannot be attributed due to complete ATT denial combined with no click ID — Meta genuinely cannot match these. The important thing is that server-side delivery is not subject to the browser-side loss in the first place — measure what it adds as Additional Conversions Reported in Meta Events Manager.
 
-That measurement is the part most stores skip, and it is the only thing that tells you whether the work paid for itself. [Recovering lost Shopify conversions with CAPI Shield](/blog/recover-lost-shopify-conversions-capi-shield/) walks through reading Additional Conversions Reported against your own order data, so you can put a number on what came back rather than assuming the gap closed.
+That measurement is the part most stores skip, and it is the only thing that tells you whether the work paid for itself. [CAPI Shield guide](/capi-shield/) walks through reading Additional Conversions Reported against your own order data, so you can put a number on what came back rather than assuming the gap closed.
 
 ## TikTok and Google — The Same Problem
 

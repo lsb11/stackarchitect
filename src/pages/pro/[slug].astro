@@ -1,4 +1,5 @@
 ---
+import { isNoindexRoute } from '../../data/noindexRoutes';
 /**
  * /pro/{slug}/ — one page per blueprint, for the single-problem buyer.
  *
@@ -135,6 +136,7 @@ const quote = PRESS[0];
 
 ---
 <Base
+  noindex={isNoindexRoute(Astro.url.pathname)}
   title={pageTitle}
   description={`${problem} ${name} is the finished Make.com blueprint that fixes it — live in ${deployTime}, ${single} once, no subscription.`}
   pageType="product"
