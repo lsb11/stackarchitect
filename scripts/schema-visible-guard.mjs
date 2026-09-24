@@ -13,7 +13,7 @@
  * on remembering to fix both.
  *
  * WHAT IT CHECKS
- * Runs over dist/ after the build, and makes four separate checks.
+ * Runs over dist/ after the build, and makes five separate checks.
  *
  *  1. Numeric claims. For every page, extracts numeric claims from JSON-LD
  *     string values and from the rendered visible text, then fails on any
@@ -28,6 +28,9 @@
  *     next to the product's name. See CHECK 3 below.
  *  4. Unrendered placeholders. Fails when visible text or a JSON-LD string
  *     contains a literal {camelCase} name, such as {kitPrice}. See CHECK 4.
+ *  5. Stocky shutdown wording. Fails when visible text, a meta/alt/title
+ *     attribute or a JSON-LD string still says Stocky is shutting down, or
+ *     claims data is deleted. See CHECK 5.
  *
  * Numbers are normalised (thousands separators, en/em dashes, $ and %
  * retained) so "$1,500" and "$1500" compare equal, and a range written
@@ -414,6 +417,92 @@ export function unrenderedPlaceholders(text) {
   return [...new Set(text.match(PLACEHOLDER) ?? [])];
 }
 
+/* -------------------------------------------------------------------------
+ * CHECK 5: Stocky shutdown wording.
+ *
+ * Stocky closed on 31 August 2026. Read-only export stays open for at least
+ * 90 days after that, and Shopify has published no end date and no deletion
+ * date. Copy written before the closure said "shutting down" and "shuts down
+ * August 31", and it kept shipping for weeks after the date passed because
+ * no check reads tense. Nor does any check read a claim that data was or will
+ * be deleted, which is the one statement here that could cost a merchant
+ * their export.
+ *
+ * Scanned: visible body text, the text-bearing attributes (content, title,
+ * alt, aria-label) and every JSON-LD string. Allowlisted: the homepage video
+ * transcript only, the <details class="hero-video-transcript"> block, because
+ * it transcribes audio recorded before the closure and a transcript has to
+ * match what is said. Nothing else on index.html is exempt.
+ * ------------------------------------------------------------------------- */
+const SHUTDOWN_WORDING = [
+  /stocky.{0,60}(shutting down|will (shut|close)|shuts down|is closing|before the shutdown|closes on)|(shutting down|shuts down).{0,40}stocky/gi,
+  /delet(ed|es|ing) all/gi,
+];
+const TRANSCRIPT_BLOCK = /<details\b[^>]*\bclass="[^"]*\bhero-video-transcript\b[^"]*"[^>]*>[\s\S]*?<\/details>/gi;
+const TEXT_ATTRS = /\b(?:content|title|alt|aria-label)="([^"]*)"/gi;
+
+export function shutdownWordingIn(text) {
+  const hits = [];
+  for (const re of SHUTDOWN_WORDING) {
+    for (const m of text.matchAll(re)) hits.push(m[0]);
+  }
+  return hits;
+}
+
+/** Every shutdown-wording hit on a built page, with where it was found. */
+export function shutdownWordingHits(html) {
+  const page = html.replace(TRANSCRIPT_BLOCK, ' ');
+  const hits = [];
+  for (const h of shutdownWordingIn(visibleText(page))) hits.push({ where: 'visible text', text: h });
+  const head = page.replace(/<script[\s\S]*?<\/script>/gi, ' ');
+  for (const m of head.matchAll(TEXT_ATTRS)) {
+    for (const h of shutdownWordingIn(decodeAttr(m[1]))) hits.push({ where: 'attribute', text: h });
+  }
+  for (const m of page.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+    let graph;
+    try {
+      graph = JSON.parse(m[1]);
+    } catch {
+      continue;
+    }
+    for (const s of nodeTexts(graph)) {
+      for (const h of shutdownWordingIn(s)) hits.push({ where: 'JSON-LD', text: h });
+    }
+  }
+  return hits;
+}
+
+/**
+ * One string per JSON-LD node: its own string values joined. The Stocky node
+ * on /stocky-swap/ carried the name and the wording in separate fields
+ * ({ name: "Stocky", description: "...shutting down..." }), so scanning each
+ * string alone never sees the word "Stocky" beside the tense. Site-level
+ * nodes are included here, unlike check 1: a stale claim is stale anywhere.
+ */
+function nodeTexts(node, acc = []) {
+  if (Array.isArray(node)) {
+    for (const v of node) {
+      if (typeof v === 'string') acc.push(v);
+      else nodeTexts(v, acc);
+    }
+  } else if (node && typeof node === 'object') {
+    const own = Object.values(node).filter((v) => typeof v === 'string' && !/^https?:\/\//.test(v));
+    if (own.length) acc.push(own.join(' '));
+    for (const v of Object.values(node)) if (v && typeof v === 'object') nodeTexts(v, acc);
+  }
+  return acc;
+}
+
+function decodeAttr(s) {
+  return s
+    .replace(/&ndash;/g, '–')
+    .replace(/&mdash;/g, '—')
+    .replace(/&amp;/g, '&')
+    .replace(/&#39;|&apos;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&[a-z#0-9]+;/gi, ' ');
+}
+
 /* The checks above are pure and are imported by
  * tests/schema-first-party-price.test.js. Everything below is the CLI: it
  * reads dist/ and exits non-zero, so it must not run on import. The body is
@@ -459,6 +548,7 @@ const offerQuarantine = new Map(
 );
 const offerViolations = [];
 const placeholderViolations = [];
+const shutdownViolations = [];
 
 for (const f of files) {
   const html = fs.readFileSync(f, 'utf8');
@@ -468,6 +558,8 @@ for (const f of files) {
   const visClaims = numericClaims(vis);
   // Also accept a bare number appearing in prose without its unit.
   const visRaw = norm(vis);
+
+  for (const h of shutdownWordingHits(html)) shutdownViolations.push({ url, ...h });
 
   for (const p of unrenderedPlaceholders(vis)) {
     placeholderViolations.push({ url, where: 'visible text', placeholder: p });
@@ -557,7 +649,21 @@ if (placeholderViolations.length && !process.argv.includes('--list')) {
   process.exit(1);
 }
 
+if (shutdownViolations.length && !process.argv.includes('--list')) {
+  console.error('\n✗ schema-visible-guard: Stocky shutdown wording on a built page\n');
+  for (const v of shutdownViolations) console.error(`  ${v.url}  "${v.text}"  in ${v.where}`);
+  console.error(
+    '\n  Stocky closed on 31 August 2026. Read-only export stays open for at least\n' +
+      '  90 days after that, with no end date published. Write it in the past tense,\n' +
+      '  and do not say data was or will be deleted. Only the homepage video\n' +
+      '  transcript is exempt.\n'
+  );
+  process.exit(1);
+}
+
 if (process.argv.includes('--list')) {
+  console.log(`schema-visible-guard: ${shutdownViolations.length} Stocky shutdown wording hit(s)`);
+  for (const v of shutdownViolations) console.log(`  ${v.url}  "${v.text}"  in ${v.where}`);
   console.log(`schema-visible-guard: ${placeholderViolations.length} unrendered placeholder(s)`);
   for (const v of placeholderViolations) console.log(`  ${v.url}  ${v.placeholder}  in ${v.where}`);
   console.log(
@@ -627,6 +733,6 @@ console.log(
   `\u2713 schema-visible-guard: ${files.length} pages, no new schema-only numeric claims ` +
     `(${quarantine.size} quarantined), first-party prices match their constants, ` +
     `${offerViolations.length - liveOffers.length} third-party Offer(s) quarantined, ` +
-    `no unrendered placeholders.`
+    `no unrendered placeholders, no Stocky shutdown wording.`
 );
 }

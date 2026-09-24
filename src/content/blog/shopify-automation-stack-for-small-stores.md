@@ -90,7 +90,7 @@ Every Shopify order should be automatically logged to a Google Sheet you own. Th
 
 [Stocky Swap](/stocky-swap/) adds a second branch to your Make.com scenario that writes an order row to a Google Sheet on every purchase. The setup takes 20 minutes.
 
-**Urgent note:** if you currently use Shopify Stocky for inventory tracking, it shuts down permanently on August 31, 2026. Stocky Swap is the direct free replacement.
+**Note:** if you used Shopify Stocky for inventory tracking, it closed on 31 August 2026. Read-only export stays open for at least 90 days after that. Stocky Swap is the direct free replacement.
 
 At low volume, your Sheet also serves as your inventory system. Set up the structure from [the inventory guide](/blog/the-ultimate-guide-to-shopify-inventory-management/) — it takes 30 minutes and gives you running stock calculations via SUMIF formulas that update automatically with every order.
 
