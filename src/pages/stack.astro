@@ -2,6 +2,8 @@
 import Base from '../layouts/Base.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 import Disclosure from '../components/Disclosure.astro';
+import { FREE_TOOLS } from '../data/freeTools';
+import { KIT_PRICE, SINGLE_PRICE, formatPrice } from '../data/products';
 // src/pages/stack.astro
 // PAGE INTENT: informational/research — "what does Stack Architect recommend"
 // HOMEPAGE INTENT: transactional — "replace my apps / deploy now"
@@ -440,6 +442,28 @@ const schemaWebPage = {
 <aside class="disclosure-bar" aria-label="Affiliate disclosure">
   <div class="container"><Disclosure /></div>
 </aside>
+
+<!-- ─── OUR FREE TOOLS ───
+     The header's "Free tools" link lands here, so this is the one place that
+     lists the whole free range. Rendered from src/data/freeTools.ts, the same
+     list as the footer column; add a free page there, not here. -->
+<section class="diag-section" id="free-tools" aria-labelledby="free-tools-h2">
+  <div class="container">
+    <div class="section-header">
+      <h2 id="free-tools-h2">Our {FREE_TOOLS.length} free Shopify setups</h2>
+      <p class="section-sub">each one is a free guide on this site, built on the tools further down this page. no payment, no signup with us.</p>
+    </div>
+    <ul class="diag-list" aria-label="Free setups on this site">
+      {FREE_TOOLS.map((t) => (
+        <li><a href={t.href} class="diag-link">
+          <span class="diag-icon" aria-hidden="true">→</span>
+          <div><strong>{t.name}</strong><span class="diag-sub">{t.line}</span></div>
+        </a></li>
+      ))}
+    </ul>
+    <p class="section-sub">Want CAPI Shield, TikTok, Stocky Swap and Live P&amp;L as ready-to-import Make.com files instead of building them? <a href="/pro/">The complete kit is {formatPrice(KIT_PRICE)}, paid once</a>, or {formatPrice(SINGLE_PRICE)} for a single blueprint.</p>
+  </div>
+</section>
 
 <!-- ─── TOOL CARDS ─── -->
 <section class="tools-section" aria-labelledby="tools-h2">

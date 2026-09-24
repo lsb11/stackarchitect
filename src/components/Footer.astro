@@ -1,12 +1,15 @@
 ---
 // Footer.astro: Stack Architect sitewide footer.
 import { KIT_PRICE, STOCKLOG_PRICE, formatPrice } from '../data/products';
+import { FREE_TOOLS } from '../data/freeTools';
 // 24 Sep 2026 redesign: 34 links down to 22, 13 of them outside the trust and
 // legal group.
 //  • One CTA, the kit, matching the header. Affiliate links belong in content
 //    where they have context, not in site chrome.
-//  • Products lists StockLog first as the paid app, linked to /stocklog/ and
-//    never to the placeholder App Store URL, then the free product pages.
+//  • Free tools and Paid are separate columns so a first-time visitor can
+//    tell which is which without reading a tag. Free tools renders
+//    src/data/freeTools.ts, the same list /stack/ shows. Paid links StockLog
+//    to /stocklog/, never to the placeholder App Store URL.
 //  • Resources holds the pages no section index links: the stack, the
 //    benchmark, the attribution comparison, the Sheets guide and the app
 //    development cost page. Remove one only after its section index or another
@@ -31,17 +34,15 @@ const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" w
     </div>
 
     <div class="sa-footer-grid">
-      <nav class="sa-footer-col" aria-labelledby="sa-footer-products">
-        <div class="sa-footer-hub" id="sa-footer-products">Products</div>
-        <a href="/stocklog/">StockLog, <span class="figure">{formatPrice(STOCKLOG_PRICE)}</span>/mo <span class="sa-footer-tag">Paid app</span></a>
-        <a href="/capi-shield/">CAPI Shield: free Meta server-side tracking</a>
-        <a href="/shopify-google-ads-conversion-tracking/">Google Ads conversion tracking</a>
-        <a href="/tiktok-events-api-shopify/">TikTok Events API</a>
-        <a href="/stocky-swap/">Stocky Swap: free inventory</a>
-        <a href="/replace-klaviyo-free/">Replace Klaviyo free</a>
-        <a href="/shopify-profit-loss-automation/">Live P&amp;L automation</a>
+      <nav class="sa-footer-col" aria-labelledby="sa-footer-free">
+        <div class="sa-footer-hub" id="sa-footer-free">Free tools <span class="sa-footer-tag">$0</span></div>
+        {FREE_TOOLS.map((t) => <a href={t.href}>{t.name}</a>)}
       </nav>
-
+      <nav class="sa-footer-col" aria-labelledby="sa-footer-paid">
+        <div class="sa-footer-hub" id="sa-footer-paid">Paid</div>
+        <a href="/stocklog/">StockLog app, <span class="figure">{formatPrice(STOCKLOG_PRICE)}</span>/mo</a>
+        <a href="/pro/">Complete kit, <span class="figure">{formatPrice(KIT_PRICE)}</span> once</a>
+      </nav>
       <nav class="sa-footer-col" aria-labelledby="sa-footer-resources">
         <div class="sa-footer-hub" id="sa-footer-resources">Resources</div>
         <a href="/stack/">The recommended stack</a>
@@ -116,7 +117,7 @@ const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" w
   .figure { font-family: var(--font-mono, monospace); font-variant-numeric: tabular-nums; }
 
   .sa-footer-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px;
     padding: 48px 4px;
   }
   .sa-footer-col { display: flex; flex-direction: column; gap: 9px; }

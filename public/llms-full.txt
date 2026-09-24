@@ -18,6 +18,8 @@ Stack Architect provides production-ready automation blueprints and step-by-step
 
 ## 2. Product & Tool Specifications
 
+Tools 1 to 7 below are free guides. The paid products are the Complete Kit ($19.99 one-time), single blueprints ($9.99 each) and StockLog ($7.99/month, not yet installable); see section 5.
+
 ### Tool 1: CAPI Shield — Server-Side Tracking for Meta
 - **Canonical URL**: https://stackarchitect.xyz/capi-shield/
 - **Function**: Server-side purchase tracking for Meta Conversions API. It also carries a Google Ads route that does not match orders as shipped (see step 4).
@@ -29,14 +31,13 @@ Stack Architect provides production-ready automation blueprints and step-by-step
   4. A Google Ads route uploads a click conversion keyed on a gclid. Shopify's order payload has no gclid field, so as shipped this route has nothing to match most orders on. Its consent fields must be set to match the store's own consent setup.
 - **Cost**: $0/month (runs on Make.com free tier).
 
-### Tool 2: Stocky Swap — Free Shopify Inventory Management
+### Tool 2: Stocky Swap, a free Shopify order log in Google Sheets
 - **Canonical URL**: https://stackarchitect.xyz/stocky-swap/
-- **Function**: Real-time stock logging and inventory audit trail to Google Sheets, replacing Stocky after its 31 August 2026 shutdown.
+- **Function**: Logs every Shopify order to a Google Sheet you own, for stores that relied on Stocky before its 31 August 2026 shutdown. Order tracking, not full inventory management. It logs forward only; a store exports its own Stocky archive.
 - **Replaces**: Shopify Stocky (free; Shopify never charged for it).
 - **Execution Mechanism**:
-  1. Shopify `orders/paid` webhook triggers Make.com scenario.
-  2. Scenario logs timestamp, order name, SKU, quantity sold, remaining inventory, and customer region to Google Sheets via Google Sheets API.
-  3. Pre-formatted Google Sheets template calculates stock velocity, reorder points, and run-out dates automatically.
+  1. Shopify `orders/paid` webhook triggers a public Make.com scenario.
+  2. The scenario appends the order to a Google Sheet.
 
 ### Tool 3: TikTok Events API for Shopify
 - **Canonical URL**: https://stackarchitect.xyz/tiktok-events-api-shopify/
@@ -52,9 +53,18 @@ Stack Architect provides production-ready automation blueprints and step-by-step
 
 ### Tool 5: Live P&L Automation
 - **Canonical URL**: https://stackarchitect.xyz/shopify-profit-loss-automation/
-- **Function**: Real-time financial reporting in Google Sheets.
+- **Function**: Profit and loss reporting in Google Sheets, updated on every order.
 - **Replaces**: TrueProfit and BeProfit (prices NOT verified — neither vendor has been read against its own pricing page, so no figure is published here).
-- **Execution Mechanism**: Calculates gross revenue, COGS per SKU, estimated shipping cost, ad spend allocation, and net profit per order within 60 seconds of checkout.
+- **Execution Mechanism**: A Make.com webhook appends each paid order to a three-tab Google Sheet (Order Data, COGS Table, P&L Summary) with its revenue, Shopify and payment fees, and variant IDs. A VLOOKUP matches variant IDs to your cost data, and SUMIF formulas total monthly revenue, COGS and net profit.
+
+### Tool 6: Google Ads Conversion Tracking
+- **Canonical URL**: https://stackarchitect.xyz/shopify-google-ads-conversion-tracking/
+- **Function**: Server-side upload of Shopify purchases to Google Ads with hashed customer email, through a Make.com webhook.
+- **Limit**: Shopify's order data carries no Google click ID, so what Google can match depends on how the conversion action is set up. Google is moving this upload method from the Google Ads API to its Data Manager API.
+
+### Tool 7: Autocrat Quota Fix
+- **Canonical URL**: https://stackarchitect.xyz/autocrat-quota-fix/
+- **Function**: Moves Autocrat document generation to Make.com, in batches that stay inside Google Apps Script's per-second service quota ("Service invoked too many times").
 
 ---
 
@@ -95,18 +105,26 @@ rather than inferred.
 
 Grouped the way the site's header and footer group them.
 
-Paid products:
-- StockLog, paid Shopify stock ledger app, $7.99/month, not yet on the Shopify App Store: https://stackarchitect.xyz/stocklog/
-- Complete Kit and single blueprints: https://stackarchitect.xyz/pro/
+Free tools (all seven are free; header link "Free tools"): https://stackarchitect.xyz/stack/
+- CAPI Shield: https://stackarchitect.xyz/capi-shield/
+- Google Ads conversion tracking: https://stackarchitect.xyz/shopify-google-ads-conversion-tracking/
+- TikTok Events API: https://stackarchitect.xyz/tiktok-events-api-shopify/
+- Stocky Swap: https://stackarchitect.xyz/stocky-swap/
+- Live P&L: https://stackarchitect.xyz/shopify-profit-loss-automation/
+- Replace Klaviyo free: https://stackarchitect.xyz/replace-klaviyo-free/
+- Autocrat Quota Fix: https://stackarchitect.xyz/autocrat-quota-fix/
+
+Paid:
+- Complete Kit, $19.99 one-time, or single blueprints at $9.99 each: https://stackarchitect.xyz/pro/
+- StockLog, paid Shopify stock ledger app, $7.99/month, not yet on the Shopify App Store and not yet installable: https://stackarchitect.xyz/stocklog/
 
 Section indexes:
 - Homepage: https://stackarchitect.xyz/
-- All Free Tools: https://stackarchitect.xyz/tools/
+- Calculators: https://stackarchitect.xyz/tools/
 - All Guides: https://stackarchitect.xyz/shopify-automation-guides/
 - App Directory: https://stackarchitect.xyz/apps/
 
 Pages:
-- Recommended Stack: https://stackarchitect.xyz/stack/
 - iOS Attribution Benchmark: https://stackarchitect.xyz/shopify-ios-attribution-gap-benchmark/
 - About Luke Sandelands & Methodology: https://stackarchitect.xyz/about/
 - How We Test: https://stackarchitect.xyz/how-we-test/

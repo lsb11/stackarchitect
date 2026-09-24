@@ -165,7 +165,7 @@ export interface Product {
   faq: Faq[];
 }
 
-export const KIT_STRIPE_URL = 'https://buy.stripe.com/9B68wI4jP3Fd8ZH6xrfrW02';
+export const KIT_STRIPE_URL = 'https://buy.stripe.com/00w28k3fLcbJb7P3lffrW07';
 
 export const PRODUCTS: Product[] = [
   {

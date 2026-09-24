@@ -6,7 +6,8 @@ import { KIT_PRICE, SINGLE_PRICE, STOCKLOG_PRICE, formatPrice } from '../data/pr
 // Nav.astro: Stack Architect sitewide header.
 //
 // 24 Sep 2026 redesign. The header went from 29 links (plus 27 in the mobile
-// menu) to 7, and every page it dropped is still linked from its section index
+// menu) to 7, then 8 with "Free tools" (keep it at 8 or under), and every
+// page it dropped is still linked from its section index
 // (/tools/, /shopify-automation-guides/, /pro/) and from the homepage body or the
 // footer. The rules it was cut to:
 //  • A header link either sells something (/stocklog/, /pro/), is a section
@@ -43,8 +44,12 @@ const current = (href: string) =>
 const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="20" height="20" fill="none" aria-hidden="true"><rect x="17" y="65" width="66" height="9" rx="2.6" fill="#34d377"/><rect x="23.5" y="52" width="53" height="9" rx="2.6" fill="#34d377"/><rect x="30" y="39" width="40" height="9" rx="2.6" fill="#34d377"/><rect x="36.5" y="26" width="27" height="9" rx="2.6" fill="#7ee2a8"/></svg>`;
 
 // Section indexes. Each one links every page cut from the old dropdowns.
+// "Free tools" goes to /stack/, which lists the seven free setups from
+// src/data/freeTools.ts. /tools/ is labelled Calculators so the two are not
+// both called "tools" side by side.
 const sections = [
-  { href: '/tools/', title: 'Tools' },
+  { href: '/stack/', title: 'Free tools' },
+  { href: '/tools/', title: 'Calculators' },
   { href: '/shopify-automation-guides/', title: 'Guides' },
   { href: '/apps/', title: 'App Directory' },
 ];
