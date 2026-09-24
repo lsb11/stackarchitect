@@ -13,7 +13,7 @@
  * on remembering to fix both.
  *
  * WHAT IT CHECKS
- * Runs over dist/ after the build, and makes three separate checks.
+ * Runs over dist/ after the build, and makes four separate checks.
  *
  *  1. Numeric claims. For every page, extracts numeric claims from JSON-LD
  *     string values and from the rendered visible text, then fails on any
@@ -26,6 +26,8 @@
  *  3. Third-party Offers. Fails when a competitor's Offer has no
  *     priceVerifiedDate, no vendor source URL, or a price that is not shown
  *     next to the product's name. See CHECK 3 below.
+ *  4. Unrendered placeholders. Fails when visible text or a JSON-LD string
+ *     contains a literal {camelCase} name, such as {kitPrice}. See CHECK 4.
  *
  * Numbers are normalised (thousands separators, en/em dashes, $ and %
  * retained) so "$1,500" and "$1500" compare equal, and a range written
@@ -393,6 +395,25 @@ export function thirdPartyOfferViolations(graph, visible) {
   return out;
 }
 
+/* ---------------------------------------------------------------------------
+ * CHECK 4: unrendered template placeholders.
+ *
+ * Two homepage FAQ answers shipped "Complete Kit for {kitPrice}" to readers
+ * and to the FAQPage JSON-LD until 24 Sep 2026. The answers were JS template
+ * literals, where only ${kitPrice} interpolates. A bare {kitPrice} is plain
+ * text there, though it would work in Astro markup. No other check saw it,
+ * because the string carries no number.
+ *
+ * Matches a single-braced camelCase identifier. Requiring a capital letter
+ * keeps out prose braces and Make's {{email}} syntax, which is double-braced
+ * and lower case. Runs on visible text and on JSON-LD strings.
+ * ------------------------------------------------------------------------- */
+const PLACEHOLDER = /(?<![{$])\{[a-z][a-z0-9]*[A-Z][A-Za-z0-9]*\}(?!\})/g;
+
+export function unrenderedPlaceholders(text) {
+  return [...new Set(text.match(PLACEHOLDER) ?? [])];
+}
+
 /* The checks above are pure and are imported by
  * tests/schema-first-party-price.test.js. Everything below is the CLI: it
  * reads dist/ and exits non-zero, so it must not run on import. The body is
@@ -437,6 +458,7 @@ const offerQuarantine = new Map(
   ).map((e) => [e.key, e.why])
 );
 const offerViolations = [];
+const placeholderViolations = [];
 
 for (const f of files) {
   const html = fs.readFileSync(f, 'utf8');
@@ -447,12 +469,21 @@ for (const f of files) {
   // Also accept a bare number appearing in prose without its unit.
   const visRaw = norm(vis);
 
+  for (const p of unrenderedPlaceholders(vis)) {
+    placeholderViolations.push({ url, where: 'visible text', placeholder: p });
+  }
+
   for (const m of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
     let graph;
     try {
       graph = JSON.parse(m[1]);
     } catch {
       continue; // invalid JSON-LD is a separate concern
+    }
+    for (const s of stringsFrom(graph)) {
+      for (const p of unrenderedPlaceholders(s)) {
+        placeholderViolations.push({ url, where: 'JSON-LD', placeholder: p });
+      }
     }
     for (const v of firstPartyPriceViolations(graph, claims)) {
       priceViolations.push({ url, ...v });
@@ -516,7 +547,19 @@ if (uniquePrice.length && !process.argv.includes('--list')) {
   process.exit(1);
 }
 
+if (placeholderViolations.length && !process.argv.includes('--list')) {
+  console.error('\n✗ schema-visible-guard: unrendered template placeholder on a built page\n');
+  for (const v of placeholderViolations) console.error(`  ${v.url}  ${v.placeholder}  in ${v.where}`);
+  console.error(
+    '\n  A {name} inside a JS template literal is literal text. Write ${name}\n' +
+      '  there. In Astro markup, {name} is correct and renders the value.\n'
+  );
+  process.exit(1);
+}
+
 if (process.argv.includes('--list')) {
+  console.log(`schema-visible-guard: ${placeholderViolations.length} unrendered placeholder(s)`);
+  for (const v of placeholderViolations) console.log(`  ${v.url}  ${v.placeholder}  in ${v.where}`);
   console.log(
     `schema-visible-guard: ${unique.length} schema-only numeric claim(s) ` +
       `(${live.length} live, ${unique.length - live.length} quarantined)\n`
@@ -583,6 +626,7 @@ if (live.length) {
 console.log(
   `\u2713 schema-visible-guard: ${files.length} pages, no new schema-only numeric claims ` +
     `(${quarantine.size} quarantined), first-party prices match their constants, ` +
-    `${offerViolations.length - liveOffers.length} third-party Offer(s) quarantined.`
+    `${offerViolations.length - liveOffers.length} third-party Offer(s) quarantined, ` +
+    `no unrendered placeholders.`
 );
 }

@@ -122,7 +122,7 @@ const FAQ = [
   },
   {
     q: 'Do I have to keep paying $500+ per month on Shopify apps?',
-    a: `No. The Stack Architect $0 Automation Stack replaces seven categories of paid Shopify apps — ad tracking, inventory management, email marketing, TikTok server-side tracking, P&L profit reporting, workflow automation and automation stability — using the free tiers of Make.com, Google Sheets and Systeme.io. Adding up the seven categories on this page gives ${MO_RANGE}, or ${YR_RANGE}. Or buy the <a href='/pro/'>Complete Kit for {kitPrice}</a> for the pre-built files.`,
+    a: `No. The Stack Architect $0 Automation Stack replaces seven categories of paid Shopify apps — ad tracking, inventory management, email marketing, TikTok server-side tracking, P&L profit reporting, workflow automation and automation stability — using the free tiers of Make.com, Google Sheets and Systeme.io. Adding up the seven categories on this page gives ${MO_RANGE}, or ${YR_RANGE}. Or buy the <a href='/pro/'>Complete Kit for ${kitPrice}</a> for the pre-built files.`,
   },
   {
     q: `What is the Stack Architect Complete Kit and what does ${kitPrice} include?`,
@@ -154,7 +154,7 @@ const FAQ = [
   },
   {
     q: 'How much does a typical Shopify store save with the free automation stack?',
-    a: `Adding up the seven paid app categories on this page gives ${MO_RANGE}, which is ${YR_RANGE}. The low bound is the sum of every category's entry-level price and the high bound the sum of every category's ceiling, so most stores land between them depending on which apps they run. Categories quoted as "from $X" contribute their floor to both bounds, so both figures understate rather than overstate. The {kitPrice} Complete Kit pays for itself in under a week at any point in that range. Calculate your exact figure with the <a href='/shopify-app-cost-calculator/'>App Cost Calculator</a>.`,
+    a: `Adding up the seven paid app categories on this page gives ${MO_RANGE}, which is ${YR_RANGE}. The low bound is the sum of every category's entry-level price and the high bound the sum of every category's ceiling, so most stores land between them depending on which apps they run. Categories quoted as "from $X" contribute their floor to both bounds, so both figures understate rather than overstate. The ${kitPrice} Complete Kit pays for itself in under a week at any point in that range. Calculate your exact figure with the <a href='/shopify-app-cost-calculator/'>App Cost Calculator</a>.`,
   },
   {
     q: 'Does Shopify officially support replacing its Stocky app with third-party tools?',
@@ -183,9 +183,9 @@ const faqJsonLd = {
   })),
 };
 
-/* Stocky's end of service. One date, used by the countdown, the urgency strip
- * and the post-deadline copy, so the page reads correctly on 1 September with
- * no edit. */
+/* Stocky's end of service. One date, used by the urgency strip and the
+ * post-deadline copy, so the page reads correctly on 1 September with no
+ * edit. */
 const stockyGone = isPostShutdown();
 
 /* ---------------------------------------------------------------------------
@@ -381,7 +381,7 @@ const kitSchema = {
     <div class="ledger-row ledger-total"><span class="ledger-app">These four alone</span><span class="ledger-fill"></span><span class="ledger-was">$213–$1,469/mo</span><span class="ledger-now">$0</span></div>
   </div></div>
   <div class="urgency" role="note"><span class="dot" style="background:var(--amber);animation:none;"></span>{stockyGone
-    ? "Stocky stopped on August 31, 2026. Its data is still exportable read-only, and the free replacement deploys in 4 minutes"
+    ? "Stocky closed on 31 August 2026. Your data can still be exported, so export it now. The free replacement deploys in 4 minutes."
     : "Shopify's Stocky app shuts down August 31, 2026 — free replacement ready now"}</div>
 
   <!-- Self-hosted video with captions + transcript -->
@@ -554,19 +554,9 @@ const kitSchema = {
           </div>
         </div>
         <div class="sol-urgent-right">
-          <div class="countdown-box" id="cd-box">
-            <div class="countdown-label">Stocky shuts down in</div>
-            <div class="countdown-nums">
-              <div class="cd-unit"><div class="cd-val" id="cd-d">--</div><div class="cd-l">Days</div></div>
-              <div class="cd-sep">:</div>
-              <div class="cd-unit"><div class="cd-val" id="cd-h">--</div><div class="cd-l">Hrs</div></div>
-              <div class="cd-sep">:</div>
-              <div class="cd-unit"><div class="cd-val" id="cd-m">--</div><div class="cd-l">Min</div></div>
-            </div>
-          </div>
-          <div class="countdown-box" id="cd-box-post" hidden>
-            <div class="countdown-label">Stocky — end of service</div>
-            <div style="font-family:var(--mono);font-size:var(--fs-lg);font-weight:700;color:var(--amber);text-align:center;">31 Aug 2026</div>
+          <div class="countdown-box">
+            <div class="countdown-label">Stocky closed 31 Aug 2026</div>
+            <div style="font-family:var(--mono);font-size:var(--fs-lg);font-weight:700;color:var(--amber);text-align:center;">Export still open</div>
           </div>
           <div style="font-family:var(--mono);font-size:var(--fs-micro);color:var(--text-4);text-align:center;line-height:1.5;max-width:180px;">Free replacement — deploys in 4 minutes</div>
         </div>
@@ -967,9 +957,9 @@ const kitSchema = {
 
       <a href="/stocky-migration-risk-scorer/" class="calc-card">
         <div class="calc-icon" style="background:rgba(245,182,77,.08);border-color:rgba(245,182,77,.2);color:var(--amber);">!</div>
-        <div class="calc-label" style="color:var(--amber);">Urgent · Aug 2026</div>
+        <div class="calc-label" style="color:var(--amber);">Export window open</div>
         <div class="calc-name">Stocky Migration Risk Scorer</div>
-        <p class="calc-desc-c">Score your Stocky replacement risk based on SKU count, supplier complexity, and reorder frequency. Get a personalised replacement plan before the shutdown.</p>
+        <p class="calc-desc-c">Score your Stocky replacement risk based on SKU count, supplier complexity, and reorder frequency. Get a personalised replacement plan while export is still open.</p>
         <div class="calc-pair">→ Pairs with Stocky Swap</div>
         <span class="calc-cta">Score my risk →</span>
       </a>
@@ -1085,7 +1075,7 @@ const kitSchema = {
             <td>CAPI Shield — Free</td>
           </tr>
           <tr>
-            <td>Inventory Management <small style="color:var(--text-4);display:block;font-size:var(--fs-micro);margin-top:3px;">Stocky (shutting down), Linnworks, Skubana, Inventory Planner</small></td>
+            <td>Inventory Management <small style="color:var(--text-4);display:block;font-size:var(--fs-micro);margin-top:3px;">Stocky (closed Aug 2026), Linnworks, Skubana, Inventory Planner</small></td>
             <td>$29–$500/mo</td>
             <td>Stocky Swap — Free</td>
           </tr>
@@ -1502,7 +1492,7 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
 <!-- =============================================================== -->
 
 <!-- =============================================================== -->
-<!-- SCRIPTS — Scanner, countdown, scroll bar, FAQ, guide             -->
+<!-- SCRIPTS — Scanner, scroll bar, FAQ, guide                        -->
 <!-- =============================================================== -->
 <script is:inline>
 (function() {
@@ -1516,30 +1506,6 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
   // Footer copyright
   var el = document.getElementById('footer-copyright');
   if (el) el.textContent = '© ' + new Date().getFullYear() + ' STACK_ARCHITECT // CORE_DEPLOYMENT';
-
-  // Stocky countdown. Past the deadline it must not render "0 Days : 00 Hrs"
-  // under a "shuts down in" label — it swaps to a plain statement of the date
-  // so the page reads correctly on 1 September with no edit.
-  function updateCountdown() {
-    var target = new Date('2026-08-31T23:59:59Z');
-    var now = new Date();
-    var diff = target - now;
-    if (diff <= 0) {
-      var box = document.getElementById('cd-box');
-      var post = document.getElementById('cd-box-post');
-      if (box) box.hidden = true;
-      if (post) post.hidden = false;
-      return;
-    }
-    var days = Math.floor(diff / 86400000);
-    var hours = Math.floor((diff % 86400000) / 3600000);
-    var mins = Math.floor((diff % 3600000) / 60000);
-    var d=document.getElementById('cd-d'); if(d) d.textContent=days;
-    var h=document.getElementById('cd-h'); if(h) h.textContent=String(hours).padStart(2,'0');
-    var m=document.getElementById('cd-m'); if(m) m.textContent=String(mins).padStart(2,'0');
-  }
-  updateCountdown();
-  setInterval(updateCountdown, 30000);
 
   // The #scroll-bar listener that lived here was dead code: the element was
   // removed from this page but its scroll handler and dismiss handler stayed,
@@ -2032,11 +1998,6 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text-3);line-heigh
 .sol-urgent-right{display:flex;flex-direction:column;align-items:flex-end;gap:16px;min-width:200px;}
 .countdown-box{background:rgba(245,182,77,.06);border:1px solid rgba(245,182,77,.2);border-radius:10px;padding:20px 24px;text-align:center;}
 .countdown-label{font-family:var(--mono);font-size:var(--fs-micro);font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--amber);margin-bottom:8px;}
-.countdown-nums{display:flex;gap:8px;justify-content:center;}
-.cd-unit{text-align:center;}
-.cd-val{font-family:var(--mono);font-size:var(--fs-lg);font-weight:700;color:var(--text);line-height:1;}
-.cd-l{font-size:var(--fs-micro);color:var(--text-4);margin-top:2px;}
-.cd-sep{font-family:var(--mono);font-size:var(--fs-lg);font-weight:700;color:var(--text-4);padding-top:2px;}
 .sol-urgent-meta{display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid rgba(245,182,77,.15);}
 .sol-urgent-save{font-family:var(--mono);font-size:var(--fs-md);font-weight:700;color:var(--amber);}
 .sol-urgent-time{font-family:var(--mono);font-size:var(--fs-micro);color:var(--text-4);background:rgba(255,255,255,.03);border:1px solid var(--border);padding:4px 9px;border-radius:3px;}
