@@ -2,32 +2,61 @@
 import Base from '../layouts/Base.astro';
 import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
+import TableOfContents from '../components/TableOfContents.astro';
 // src/pages/best-ai-tools-shopify.astro
-// Best AI Tools for Shopify 2026 — Ranked by ROI | Stack Architect
-// Fully optimised for SEO, GEO, AI citation (ChatGPT / Perplexity / Google AI Overview)
-// Affiliate links verified & corrected — deploy via Cloudflare Pages
+// Ranked by first-hand use, then by what the free plan covers. Commission
+// rate is never a ranking reason: until Sep 2026 this page listed twelve
+// tools and justified some positions by commission rate and cookie window.
+// Those entries were cut, not rewritten.
 
 const SITE_URL = "https://stackarchitect.xyz";
 const PAGE_URL = `${SITE_URL}/best-ai-tools-shopify/`;
 const DATE_PUBLISHED = "2026-03-15";
-const DATE_MODIFIED = '2026-05-18';
+const DATE_MODIFIED = '2026-09-24';
+const DATE_MODIFIED_LABEL = new Date(DATE_MODIFIED).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
 
-// ── Affiliate links (verified) ────────────────────────────────
+// ── Affiliate links ───────────────────────────────────────────
 const AFF = {
   make:       "/go/make/",
   systeme:    "/go/systeme/",
-  beehiiv:    "/go/beehiiv/",
   tidio:      "/go/tidio/",
-  workspace:  "/go/workspace/",
-  getresponse:"/go/getresponse/",    // affiliate: try.getresponsetoday.com (see functions/go/_cloaks.js)
 };
+
+// ── FAQ: one source for the visible list and the FAQPage schema ──
+const faqs = [
+  {
+    q: "What is the best free AI tool for Shopify store owners in 2026?",
+    a: "Make.com and Systeme.io are the two we run ourselves, and both do real work on a free plan: Make.com gives 1,000 credits a month (formerly called operations) and Systeme.io gives 2,000 contacts with unlimited sends. Tidio, Beehiiv and Shopify Magic also have free plans. We have not used those three, so we can tell you what the free plan includes but not how well it performs.",
+  },
+  {
+    q: "Is Systeme.io a good free alternative to Klaviyo for Shopify?",
+    a: "Yes, for most small stores. The free plan includes 2,000 contacts with unlimited email sends, abandoned cart and post-purchase automation, sales funnels and a CRM. Klaviyo's free plan is limited to 250 contacts and 500 emails per month, so Systeme.io's free plan holds 8× more contacts with no send limit. What you give up is Klaviyo's email editor and predictive segmentation. See the <a href=\"/replace-klaviyo-free/\">free step-by-step migration guide</a>.",
+  },
+  {
+    q: "What does Make.com do for Shopify stores?",
+    a: "Make.com receives Shopify's order webhook and sends the order on to other services. Every blueprint on this site runs on it: purchase events to Meta's Conversions API (CAPI Shield) and TikTok's Events API, a Google Sheets log of every paid order (Stocky Swap), and gross profit per order (P&L Auto). The free plan gives 1,000 credits a month and two active scenarios, so the four run as router branches of one scenario, which covers roughly 160–250 orders a month.",
+  },
+  {
+    q: "How much does Make.com cost compared to Zapier for Shopify?",
+    a: "Make.com's free plan includes 1,000 credits/month (formerly called operations). Zapier's free plan includes 100 tasks per month, 10× fewer. On paid plans, Make.com's Core plan costs $9/month for 10,000 credits, while Zapier's Starter plan costs $19.99/month for 750 tasks. The trade-off is that Make.com takes longer to learn than Zapier.",
+  },
+  {
+    q: "Is Tidio worth it for Shopify customer support?",
+    a: "We have not used Tidio on a store, so we cannot answer that from our own results. What Tidio publishes: the free plan includes 50 one-time Lyro AI conversations, not a monthly allowance; paid plans start at $29/month; and Tidio says Lyro automates around 67% of customer inquiries on average. That last figure is Tidio's, not ours. Gorgias, the usual paid alternative, starts at $40+/month.",
+  },
+  {
+    q: "Should I use Beehiiv or Systeme.io for Shopify email?",
+    a: "They do different jobs. Systeme.io handles email triggered by what a customer does in your store: abandoned cart, welcome and post-purchase flows. Beehiiv is for a newsletter you write and send yourself. We run Systeme.io and have not used Beehiiv. Both have free plans, up to 2,000 contacts on Systeme.io and 2,500 subscribers on Beehiiv.",
+  },
+];
+const stripTags = (s) => s.replace(/<[^>]+>/g, '');
 
 // ── JSON-LD schemas ───────────────────────────────────────────
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": "Best AI Tools for Shopify 2026 — 12 Tools Ranked by ROI (Free Options First)",
-  "description": "Honest ranking of 12 AI tools for Shopify DTC stores in 2026. Free alternatives noted throughout. Systeme.io, Make.com, Beehiiv, Tidio — ranked by real-world ROI, not hype.",
+  "headline": "Best AI Tools for Shopify 2026 — 5 Tools, Ranked by First-Hand Use",
+  "description": "Five AI and automation tools for Shopify, ranked by first-hand use rather than commission. Which ones we run, which we have not used, and what each free plan covers.",
   "datePublished": DATE_PUBLISHED,
   "dateModified": DATE_MODIFIED,
   "author": { "@id": "https://stackarchitect.xyz/#luke" },
@@ -36,12 +65,12 @@ const articleSchema = {
   "url": PAGE_URL,
   "inLanguage": "en-GB",
   "articleSection": "AI Tools",
-  "keywords": ["best ai tools shopify 2026","free shopify ai tools","shopify email automation free","systeme.io shopify","make.com shopify","beehiiv shopify","tidio shopify","shopify automation tools 2026","replace klaviyo free","shopify roi tools"],
+  "keywords": ["best ai tools shopify 2026","free shopify ai tools","make.com shopify","systeme.io shopify","tidio shopify","beehiiv shopify","replace klaviyo free"],
   "about": [
-    { "@type": "Thing", "name": "Systeme.io", "sameAs": "https://systeme.io" },
     { "@type": "Thing", "name": "Make.com",   "sameAs": "https://www.make.com" },
-    { "@type": "Thing", "name": "Beehiiv",    "sameAs": "https://www.beehiiv.com" },
-    { "@type": "Thing", "name": "Tidio",      "sameAs": "https://www.tidio.com" }
+    { "@type": "Thing", "name": "Systeme.io", "sameAs": "https://systeme.io" },
+    { "@type": "Thing", "name": "Tidio",      "sameAs": "https://www.tidio.com" },
+    { "@type": "Thing", "name": "Beehiiv",    "sameAs": "https://www.beehiiv.com" }
   ]
 };
 
@@ -49,78 +78,25 @@ const itemListSchema = {
   "@context": "https://schema.org",
   "@type": "ItemList",
   "name": "Best AI Tools for Shopify 2026",
-  "description": "12 AI tools ranked by ROI for Shopify DTC store owners in 2026",
-  "numberOfItems": 12,
+  "description": "Five tools for Shopify stores, ranked by first-hand use, then by what the free plan covers",
+  "numberOfItems": 5,
   "itemListElement": [
-    { "@type": "ListItem", "position": 1, "name": "Systeme.io", "description": "Free Klaviyo replacement. 2,000 contacts, unlimited email sends, automations, and CRM at $0/month. 40% recurring affiliate commission." },
-    { "@type": "ListItem", "position": 2, "name": "Make.com",   "description": "Shopify automation backbone. 1,000 credits/month free. Replaces Zapier and 3–5 paid Shopify apps simultaneously." },
-    { "@type": "ListItem", "position": 3, "name": "Beehiiv",    "description": "Brand newsletter platform. Free for up to 2,500 subscribers. Built-in monetisation and subscriber referral growth." },
-    { "@type": "ListItem", "position": 4, "name": "Tidio AI",   "description": "AI customer support. Tidio says Lyro automates around 67% of customer inquiries on average. Free tier genuinely functional for stores under $50k/month." },
-    { "@type": "ListItem", "position": 5, "name": "GetResponse", "description": "Email + AI automation. 60–70% cheaper than Klaviyo. Best for stores that have outgrown Systeme.io's free tier." },
-    { "@type": "ListItem", "position": 6, "name": "Writesonic", "description": "SEO content + copy. 30% lifetime recurring commission. Free tier: 10,000 words/month." },
-    { "@type": "ListItem", "position": 7, "name": "AdCreative.ai", "description": "Meta and Google ad creative generation. Complete ad sets — copy, headlines, visuals — in minutes." },
-    { "@type": "ListItem", "position": 8, "name": "Hypotenuse AI", "description": "Bulk Shopify product descriptions with native Shopify integration. Best for catalogues with 100+ SKUs." },
-    { "@type": "ListItem", "position": 9, "name": "Synthesia",  "description": "AI video ad creation. No camera, no talent, no editing. 120+ AI avatars across 120+ languages." },
-    { "@type": "ListItem", "position": 10, "name": "Photoroom", "description": "AI product photography. Background removal and studio backdrops for Shopify product images." },
-    { "@type": "ListItem", "position": 11, "name": "Jasper AI",  "description": "Brand-voice AI copy. Trains on your guidelines for consistent ad copy, email, and product descriptions." },
-    { "@type": "ListItem", "position": 12, "name": "Octane AI",  "description": "AI product quiz and personalisation. Converts at 2–3× better than generic popups." }
+    { "@type": "ListItem", "position": 1, "name": "Make.com",    "description": "Automation platform every Stack Architect blueprint runs on. Used by us. 1,000 credits/month free." },
+    { "@type": "ListItem", "position": 2, "name": "Systeme.io",  "description": "Email automation and funnels. Used by us. Free for 2,000 contacts with unlimited sends." },
+    { "@type": "ListItem", "position": 3, "name": "Tidio AI",    "description": "Live chat with Lyro AI replies. Not used by us. Free plan includes 50 one-time Lyro conversations." },
+    { "@type": "ListItem", "position": 4, "name": "Beehiiv",     "description": "Newsletter platform. Not used by us. Free for up to 2,500 subscribers." },
+    { "@type": "ListItem", "position": 5, "name": "GetResponse", "description": "Paid email platform for lists beyond Systeme.io's free plan. Not used by us." }
   ]
 };
 
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "What is the best free AI tool for Shopify store owners in 2026?",
-      "acceptedAnswer": { "@type": "Answer",
-        "text": "The best free AI tools for Shopify in 2026 are: Systeme.io (replaces Klaviyo at $0 for up to 2,000 contacts with unlimited sends), Make.com (automates Shopify workflows free for 1,000 credits/month), Beehiiv (brand newsletter free for up to 2,500 subscribers), Tidio (AI customer support with a genuinely functional free tier), and Shopify Magic (built into every Shopify plan for product descriptions). These five tools cover the most expensive Shopify AI use cases before you spend anything."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is Systeme.io a good free alternative to Klaviyo for Shopify?",
-      "acceptedAnswer": { "@type": "Answer",
-        "text": "Yes. Systeme.io is the most effective free Klaviyo alternative for Shopify stores in 2026. The free plan includes 2,000 contacts with unlimited email sends, full abandoned cart and post-purchase automation, sales funnels, and CRM — everything most stores use Klaviyo for. Klaviyo's free plan is limited to 250 contacts and 500 emails per month. Systeme.io's free plan handles 8× more contacts with no email send limit. Stores paying $20+/month for Klaviyo can migrate to Systeme.io's free plan in approximately 30 minutes."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What does Make.com do for Shopify stores?",
-      "acceptedAnswer": { "@type": "Answer",
-        "text": "Make.com connects Shopify to 1,500+ apps through visual automation workflows. For Shopify stores, the most valuable use cases are: sending server-side conversion events to Meta (CAPI Shield), syncing orders to Google Sheets in real time for inventory and P&L tracking, connecting Shopify webhooks to Systeme.io for abandoned cart and post-purchase email flows, and sending alerts to Slack or Gmail when stock falls below threshold. Make.com's free plan includes 1,000 credits/month (formerly called operations) — enough for most small stores to run all of these automations simultaneously at $0."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How much does Make.com cost compared to Zapier for Shopify?",
-      "acceptedAnswer": { "@type": "Answer",
-        "text": "Make.com's free plan includes 1,000 credits/month (formerly called operations). Zapier's free plan includes only 100 tasks per month — 10× fewer than Make.com. For paid plans, Make.com's Core plan costs $9/month for 10,000 credits. Zapier's equivalent Starter plan costs $19.99/month for 750 tasks. For most Shopify automation use cases, Make.com delivers significantly more capacity at a lower price point. The main trade-off is that Make.com has a steeper learning curve than Zapier's simpler interface."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is Tidio worth it for Shopify customer support?",
-      "acceptedAnswer": { "@type": "Answer",
-        "text": "For Shopify stores under $50,000 per month GMV, Tidio's free tier handles the majority of customer support needs. Lyro AI automatically resolves order status queries, shipping questions, and product FAQs — the categories that account for 60–70% of Shopify support volume. The free tier includes 50 one-time Lyro AI conversations, not a monthly allowance. For higher volume, Tidio's paid plans start at $29/month — significantly less than Gorgias at $40+/month. The native Shopify integration pulls live order data, allowing Lyro to answer 'where is my order?' without a human agent."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What AI tools replace the most expensive Shopify apps in 2026?",
-      "acceptedAnswer": { "@type": "Answer",
-        "text": "The highest-ROI AI tool replacements for Shopify in 2026 are: Systeme.io replaces Klaviyo at $0 (saves $20+/month), Make.com replaces Zapier and individual automation connectors (saves $50–$200/month), Tidio replaces Gorgias for customer support (saves $40+/month), Photoroom replaces product photography shoots, and Beehiiv replaces paid newsletter platforms. Combined with the $0 Shopify automation stack (CAPI Shield, Stocky Swap, P&L Auto), stores can replace six paid apps worth $700+/month at zero cost."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Should I use Beehiiv or Systeme.io for Shopify email?",
-      "acceptedAnswer": { "@type": "Answer",
-        "text": "Use both — they serve different purposes. Systeme.io is built for e-commerce transactional email: abandoned cart, welcome sequences, post-purchase flows, and Shopify webhook-triggered automations. Beehiiv is built for brand newsletters: curated content, subscriber growth, and newsletter monetisation. The recommended setup for Shopify brands is Systeme.io for all Shopify-triggered automation flows and Beehiiv for a weekly or monthly brand newsletter. Together they replace a $300+/month Klaviyo and newsletter platform stack at $0 until you scale past 2,000–2,500 subscribers."
-      }
-    }
-  ]
+  "mainEntity": faqs.map((f) => ({
+    "@type": "Question",
+    "name": f.q,
+    "acceptedAnswer": { "@type": "Answer", "text": stripTags(f.a) }
+  }))
 };
 
 const breadcrumbSchema = {
@@ -131,91 +107,29 @@ const breadcrumbSchema = {
     { "@type": "ListItem", "position": 2, "name": "Best AI Tools for Shopify 2026", "item": PAGE_URL }
   ]
 };
-import TableOfContents from '../components/TableOfContents.astro';
 
 const tocHeadings = [
-  {
-    "id": "systeme-title",
-    "text": "Systeme.io"
-  },
-  {
-    "id": "make-title",
-    "text": "Make.com"
-  },
-  {
-    "id": "beehiiv-title",
-    "text": "Beehiiv"
-  },
-  {
-    "id": "tidio-title",
-    "text": "Tidio AI"
-  },
-  {
-    "id": "getresponse-title",
-    "text": "GetResponse"
-  },
-  {
-    "id": "writesonic-title",
-    "text": "Writesonic"
-  },
-  {
-    "id": "adcreative-title",
-    "text": "AdCreative.ai"
-  },
-  {
-    "id": "hypotenuse-title",
-    "text": "Hypotenuse AI"
-  },
-  {
-    "id": "synthesia-title",
-    "text": "Synthesia"
-  },
-  {
-    "id": "photoroom-title",
-    "text": "Photoroom"
-  },
-  {
-    "id": "jasper-title",
-    "text": "Jasper AI"
-  },
-  {
-    "id": "octane-title",
-    "text": "Octane AI"
-  },
-  {
-    "id": "comparison",
-    "text": "Full comparison table"
-  },
-  {
-    "id": "faq",
-    "text": "Frequently asked questions"
-  },
-  {
-    "id": "related-app-alternatives",
-    "text": "Related App Alternatives"
-  }
+  { "id": "how-ranked",        "text": "How this ranking works" },
+  { "id": "make-title",        "text": "Make.com" },
+  { "id": "systeme-title",     "text": "Systeme.io" },
+  { "id": "tidio-title",       "text": "Tidio AI" },
+  { "id": "beehiiv-title",     "text": "Beehiiv" },
+  { "id": "getresponse-title", "text": "GetResponse" },
+  { "id": "comparison",        "text": "Comparison table" },
+  { "id": "faq",               "text": "Frequently asked questions" },
+  { "id": "related-app-alternatives", "text": "Related App Alternatives" }
 ];
 
 ---
-<Base title="Best AI Tools for Shopify 2026 — 12 Tools Ranked by ROI" description="Honest ranking of 12 AI tools for Shopify DTC stores in 2026 — Systeme.io, Make.com, Beehiiv, Tidio — ranked by real ROI, not hype, free options noted.">
+<Base title="Best AI Tools for Shopify 2026 — 5 Tools, Ranked by Use" description="Five AI and automation tools for Shopify, ranked by first-hand use rather than commission: which we run, which we have not used, and what each free plan covers.">
 <Fragment slot="head">
 <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
-
-  <!-- ── Fonts ────────────────────────────────────────────────── -->
-
-  <!-- ── GA4 ──────────────────────────────────────────────────── -->
-  
-<script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps \u2014 server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
+<script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps — server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
   </Fragment>
 
-
-
-<!-- ╔══════════════════════════════════════════════════════════╗ -->
-<!-- ║  PAGE CONTENT                                            ║ -->
-<!-- ╚══════════════════════════════════════════════════════════╝ -->
 <main class="page-wrap" id="main-content">
 
   <!-- Breadcrumbs -->
@@ -239,63 +153,52 @@ const tocHeadings = [
       <time datetime={DATE_PUBLISHED}>Published March 2026</time>
     </span>
     <span>
-      <time datetime={DATE_MODIFIED}>Updated April 2026</time>
+      <time datetime={DATE_MODIFIED}>Updated {DATE_MODIFIED_LABEL}</time>
     </span>
-    <span>12 tools reviewed</span>
+    <span>5 tools listed</span>
   </div>
 
   <!-- ── HERO ──────────────────────────────────────────────────── -->
   <section class="hero" aria-labelledby="page-h1">
     <div class="hero-eyebrow">
       <span class="eyebrow-dot" aria-hidden="true"></span>
-      <span class="eyebrow-txt">DTC-focused · Free tools first · Updated April 2026</span>
+      <span class="eyebrow-txt">Free tools first · Updated {DATE_MODIFIED_LABEL}</span>
     </div>
     <h1 id="page-h1">
       Best <span class="h1-g">AI Tools</span> for Shopify 2026<br>
-      <span class="h1-sky">12 Tools Ranked by Real ROI</span>
+      <span class="h1-sky">5 Tools, Ranked by First-Hand Use</span>
     </h1>
 
-    <p id="answer">The AI tools worth paying for on a Shopify store cluster in three areas: ad creative generation, customer support deflection, and product research. Most other categories have a free route that performs equivalently at small scale. This ranking is by measured return rather than vendor sponsorship, with the free alternative noted on every tool.</p>
+    <p id="answer">Five AI and automation tools for Shopify stores, ranked by how much of their result we have seen first-hand. We run Make.com and Systeme.io ourselves. We have not used Tidio, Beehiiv or GetResponse, and describe those from vendor documentation. We have measured return on none of them, and commission played no part in the order.</p>
 
   <TableOfContents headings={tocHeadings} />
 
     <p class="hero-deck">
-      Not a vendor-sponsored ranking. Written for Shopify DTC operators paying $39–$799/month and running Meta and Google ads. <strong>Free alternatives noted on every single tool.</strong> Systeme.io, Make.com, Beehiiv, and Tidio are confirmed partners — they also happen to have the best free tiers on this list.
+      Written for Shopify operators who want to know what a tool does on a free plan before paying for it. <strong>Each entry says whether we have used the tool.</strong> We earn a commission from all five through our links. That is disclosed below, and it is not why any tool is where it is.
     </p>
 
-    <!-- Confirmed partner strip -->
-    <div class="partner-strip" aria-label="Confirmed affiliate partners">
-      <a href="#systeme" class="p-badge pb-g"><span class="pb-dot" aria-hidden="true"></span>Systeme.io · Free · 40% recurring</a>
-      <a href="#make" class="p-badge pb-sky"><span class="pb-dot" aria-hidden="true"></span>Make.com · Free · Referral</a>
-      <a href="#beehiiv" class="p-badge pb-p"><span class="pb-dot" aria-hidden="true"></span>Beehiiv · Free · Partner</a>
-      <a href="#tidio" class="p-badge pb-a"><span class="pb-dot" aria-hidden="true"></span>Tidio · Free tier · 30% × 6mo</a>
-    </div>
-
-    <div class="stats" role="list" aria-label="Key statistics">
+    <div class="stats" role="list" aria-label="What this page is based on">
       <div class="stat" role="listitem">
-        <span class="stat-v sv-g">$700+</span>
-        <span class="stat-l">Avg savings / month</span>
+        <span class="stat-v sv-sky">5</span>
+        <span class="stat-l">Tools listed</span>
       </div>
       <div class="stat" role="listitem">
-        <span class="stat-v sv-sky">12</span>
-        <span class="stat-l">Tools reviewed</span>
+        <span class="stat-v sv-g">2</span>
+        <span class="stat-l">We run ourselves</span>
       </div>
       <div class="stat" role="listitem">
-        <span class="stat-v sv-a">4 free</span>
-        <span class="stat-l">Cost nothing</span>
+        <span class="stat-v sv-a">3</span>
+        <span class="stat-l">Not used by us</span>
       </div>
-      <!-- Was "500+ Stores in network" — an audience claim with nothing behind
-           it, on a site whose homepage says it does not use inflated user
-           counts. Replaced with a figure derived from this page's own contents. -->
       <div class="stat" role="listitem">
-        <span class="stat-v sv-p">8</span>
-        <span class="stat-l">Need a paid plan</span>
+        <span class="stat-v sv-p">0</span>
+        <span class="stat-l">ROI measured</span>
       </div>
     </div>
 
     <div class="hero-btns">
       <a href="#comparison" class="btn btn-g">Jump to comparison table →</a>
-      <a href="#systeme" class="btn btn-o">Start free (Systeme.io)</a>
+      <a href="#how-ranked" class="btn btn-o">How this is ranked</a>
       <a href="https://stackarchitect.xyz/tools/" class="btn btn-o">Run free audit</a>
     </div>
   </section>
@@ -304,140 +207,78 @@ const tocHeadings = [
   <div class="quick-answer" role="note" aria-label="Quick answer">
     <span class="qa-label">Quick answer</span>
     <p>
-      <strong>The best free AI tools for Shopify in 2026 are Systeme.io, Make.com, Beehiiv, Tidio, and Shopify Magic.</strong>
-      Systeme.io replaces Klaviyo at $0 for up to 2,000 contacts with unlimited sends.
-      Make.com automates Shopify workflows free for 1,000 credits/month (formerly called operations).
-      Beehiiv builds your brand newsletter free for up to 2,500 subscribers.
-      Tidio says its Lyro AI automates around 67% of customer inquiries on average. The free tier includes 50 one-time Lyro conversations.
-      Shopify Magic generates product descriptions on every plan at no extra cost.
-      Together these five tools replace the most expensive Shopify AI subscriptions before you spend anything.
+      <strong>Start with Make.com and Systeme.io. They are the two on this list we run ourselves, and both are free to start.</strong>
+      Make.com gives 1,000 credits/month (formerly called operations), which is enough to run this site's four Shopify blueprints on roughly 160–250 orders a month.
+      Systeme.io handles abandoned cart, welcome and post-purchase email free for up to 2,000 contacts with unlimited sends.
+      Tidio (live chat and AI replies) and Beehiiv (newsletters) also have free plans. We have not used either one.
     </p>
   </div>
 
-  <!-- ── INTRO PROSE ───────────────────────────────────────────── -->
+  <!-- ── HOW THIS IS RANKED ────────────────────────────────────── -->
+  <div class="sec-mark" id="how-ranked">How this ranking works</div>
   <div class="prose">
-    <p>Most "best AI tools for Shopify" guides are written by SaaS companies ranking their own products first, affiliate sites optimising for commission over honesty, or content farms that have never run a Shopify store. This guide is written for operators — people paying $39–$799/month on Shopify plans, running Meta and Google ads, fighting for margin in a post-iOS 17 world.</p>
-    <p>Every tool is evaluated on one question: <strong>does it earn its keep for a Shopify DTC store?</strong> The four confirmed partners at the top — Systeme.io, Make.com, Beehiiv, and Tidio — are flagged because we actively earn from them and because they have the best free tiers on this list. Everything below is evaluated the same way.</p>
-    <p>Before adding any AI tool to your stack, run the <a href="https://stackarchitect.xyz/shopify-app-stack-kill-or-keep-auditor/">free app stack auditor</a> to see which apps you're currently paying for that can be replaced at $0. The average store saves $643/month before they need to evaluate a single paid AI tool.</p>
+    <p>This page used to rank twelve tools "by measured return", and nothing on it had been measured. Several positions were justified by the size of a commission or the length of a cookie window. Those seven entries are gone. They had about 80 words each, figures with no source, and no sign that anyone had tested the tool. We cut them rather than padding them out.</p>
+    <p>What is left is ranked on the one thing we can honestly claim: <strong>whether we have used the tool ourselves.</strong> We have not measured return on investment for any tool here. We have no before-and-after revenue figures to report, and anyone who says they measured one is quoting a vendor.</p>
+    <ol>
+      <li><strong>Used by us, ranked first.</strong> Make.com runs every blueprint on this site. Systeme.io is where we rebuilt Klaviyo's flows on the free plan (see <a href="https://stackarchitect.xyz/about/">About</a>).</li>
+      <li><strong>Not used by us, ranked by what the free plan does before you pay.</strong> Tidio's free plan puts a working chat widget on your store. Beehiiv's free plan runs a newsletter but does not replace any store-triggered email. GetResponse comes last because the job it does, store-triggered email, is one Systeme.io already does for free up to 2,000 contacts.</li>
+    </ol>
+    <p>Before adding any tool, run the <a href="https://stackarchitect.xyz/shopify-app-stack-kill-or-keep-auditor/">free app stack auditor</a> to see what you already pay for.</p>
   </div>
 
   <div class="callout amber">
     <span class="callout-label">Affiliate disclosure</span>
-    <p>Stack Architect earns a commission if you sign up via our links — at no extra cost to you. <strong>Confirmed partner tools are marked below.</strong> Commission rates are noted on each tool. We only include tools we've evaluated against real Shopify stores. GetResponse is listed but we are not currently on their affiliate programme — the link is bare.</p>
+    <p>Stack Architect earns a commission if you sign up for Make.com, Systeme.io, Tidio, Beehiiv or GetResponse through our links, at no extra cost to you. Commission rates are not shown on this page and played no part in the order. <strong>Correction, September 2026:</strong> earlier versions of this page ranked tools partly by commission rate and said GetResponse was not an affiliate. It is.</p>
   </div>
 
-  <!-- ══════════════════════════════════════════════════════════ -->
-  <!-- CONFIRMED PARTNER TOOLS                                    -->
-  <!-- ══════════════════════════════════════════════════════════ -->
-  <div class="sec-mark" id="confirmed">Confirmed partner tools — start here</div>
-
-  <!-- ── #1 SYSTEME.IO ─────────────────────────────────────────── -->
-  <article class="tool-card confirmed-g" id="systeme" aria-labelledby="systeme-title">
+  <!-- ── #1 MAKE.COM ───────────────────────────────────────────── -->
+  <article class="tool-card confirmed-sky" id="make" aria-labelledby="make-title">
     <div class="tc-header">
       <span class="tc-rank">#1</span>
       <div class="tc-name-wrap">
-        <h2 class="tc-name" id="systeme-title">Systeme.io</h2>
-        <p class="tc-tagline">Free Klaviyo replacement — 2,000 contacts, unlimited sends, full automation at $0/month</p>
-      </div>
-      <div class="tc-badges">
-        <span class="tc-badge tcb-conf">Confirmed Partner</span>
-        <span class="tc-badge tcb-free">Free tier</span>
-      </div>
-    </div>
-
-    <div class="tc-meta">
-      <div class="tc-meta-item"><span class="tc-meta-label">Price</span><span class="tc-meta-val">$0 – $97/mo</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Commission</span><span class="tc-meta-val">40% recurring forever</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Free tier</span><span class="tc-meta-val">Yes — 2,000 contacts</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Klaviyo savings</span><span class="tc-meta-val">$20+/mo</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Best for</span><span class="tc-meta-val">Replacing Klaviyo at $0</span></div>
-    </div>
-
-    <div class="tc-body">
-      <p>Systeme.io is the highest-ROI tool on this list for most Shopify stores. It replaces Klaviyo — welcome sequences, abandoned cart, post-purchase flows, broadcast emails — entirely for free up to 2,000 contacts with unlimited sends. <strong>Stores paying $20+/month for Klaviyo can migrate to Systeme.io and capture those savings on day one.</strong></p>
-      <p>Beyond email, the free plan includes sales funnels, landing pages, digital product delivery, a full CRM, and affiliate programme management. Klaviyo's free plan caps at 250 contacts and 500 emails per month — Systeme.io's free plan gives you 8× more contacts with no send limit.</p>
-      <p>The 40% recurring affiliate commission pays indefinitely. A single referred subscriber on the $27/month Startup plan generates $10.80/month permanently. See the <a href="https://stackarchitect.xyz/replace-klaviyo-free/">full free Klaviyo migration guide</a> for the step-by-step migration process.</p>
-    </div>
-
-    <div class="tc-pros-cons">
-      <div class="tc-pros">
-        <div class="tc-pros-head">Pros</div>
-        <ul class="tc-list">
-          <li>Free for 2,000 contacts with unlimited email sends</li>
-          <li>Full abandoned cart, welcome, and post-purchase automation</li>
-          <li>Sales funnels, landing pages, and digital products included</li>
-          <li>40% recurring commission — pays indefinitely</li>
-          <li>Shopify integration via native connector or Make.com webhook</li>
-        </ul>
-      </div>
-      <div class="tc-cons">
-        <div class="tc-cons-head">Watch out for</div>
-        <ul class="tc-list">
-          <li>Email design editor less polished than Klaviyo's drag-and-drop</li>
-          <li>Advanced predictive segmentation not available at free tier</li>
-          <li>Native Shopify integration requires webhook setup (5 min via Make.com)</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="tc-verdict">
-      <strong>Verdict:</strong> The #1 free AI tool for Shopify stores overpaying for Klaviyo. If you're paying more than $50/month for email, migrate this week. See the <a href="https://stackarchitect.xyz/replace-klaviyo-free/">full free migration guide</a> — it takes 30 minutes.
-    </div>
-
-    <div class="tc-ctas">
-      <a href="https://stackarchitect.xyz/replace-klaviyo-free/" class="btn btn-g">Migration guide (free)</a>
-    </div>
-  </article>
-
-  <!-- ── #2 MAKE.COM ───────────────────────────────────────────── -->
-  <article class="tool-card confirmed-sky" id="make" aria-labelledby="make-title">
-    <div class="tc-header">
-      <span class="tc-rank">#2</span>
-      <div class="tc-name-wrap">
         <h2 class="tc-name" id="make-title">Make.com</h2>
-        <p class="tc-tagline">Shopify automation backbone — replaces 3–5 paid apps, free plan handles most stores</p>
+        <p class="tc-tagline">The automation platform every blueprint on this site runs on</p>
       </div>
       <div class="tc-badges">
-        <span class="tc-badge tcb-conf">Confirmed Partner</span>
+        <span class="tc-badge tcb-conf">Used by us</span>
         <span class="tc-badge tcb-free">Free tier</span>
       </div>
     </div>
 
     <div class="tc-meta">
+      <div class="tc-meta-item"><span class="tc-meta-label">Used by us</span><span class="tc-meta-val">Yes, in production</span></div>
       <div class="tc-meta-item"><span class="tc-meta-label">Price</span><span class="tc-meta-val">Free – $29/mo</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Commission</span><span class="tc-meta-val">Referral per conversion</span></div>
       <div class="tc-meta-item"><span class="tc-meta-label">Free tier</span><span class="tc-meta-val">1,000 credits/month</span></div>
       <div class="tc-meta-item"><span class="tc-meta-label">vs Zapier free</span><span class="tc-meta-val">10× more operations</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Best for</span><span class="tc-meta-val">Replacing 3–5 paid apps</span></div>
     </div>
 
     <div class="tc-body">
-      <p>Make.com is the connective tissue of a lean Shopify stack. Where Zapier's free plan gives 100 tasks/month, Make's free plan includes 1,000 credits — enough for most stores to automate P&L tracking, inventory alerts, Systeme.io webhooks, server-side conversion events, and order notifications simultaneously. <strong>We use Make.com across every guide on this site.</strong></p>
-      <p>The four scenarios every Shopify store should run on Make.com's free plan: (1) Shopify order → Meta Conversions API (CAPI Shield), (2) Shopify order → Google Sheets inventory ledger (Stocky Swap), (3) Shopify checkout → Systeme.io abandoned cart trigger, (4) low-stock webhook → email/Slack alert. All four run as router branches inside one consolidated scenario, within the 1,000 credits/month free limit, for most stores under ~250 orders/month.</p>
+      <p>Make.com is first because it is the one tool on this list we depend on every day. It receives Shopify's order webhook and passes the order on to other services. Where Zapier's free plan gives 100 tasks a month, Make's free plan gives 1,000 credits. <strong>Every blueprint on this site is built on it.</strong></p>
+      <p>The four blueprints are Meta purchase events (CAPI Shield), TikTok purchase events (TikTok CAPI), a Google Sheets log of every paid order (Stocky Swap) and gross profit per order (P&L Auto). Make's free plan allows two active scenarios, so the Complete Kit's <code>FILE_00</code> runs all four as router branches of one scenario. That fits roughly 160–250 orders a month on the free plan. The <a href="https://stackarchitect.xyz/make-com-shopify/">Make.com guide</a> shows the arithmetic.</p>
+      <p>What we have seen go wrong: with a module's error handler set to <code>Ignore</code>, a rejected API call finishes as a green run and nothing tells you. Check the error handling on every module that sends data out before you trust a scenario with your conversion data.</p>
     </div>
 
     <div class="tc-pros-cons">
       <div class="tc-pros">
         <div class="tc-pros-head">Pros</div>
         <ul class="tc-list">
-          <li>1,000 credits/month free — 10× Zapier's free tier</li>
-          <li>Visual workflow builder — no code required</li>
-          <li>Powers CAPI Shield, Stocky Swap, and P&L automation on this site</li>
-          <li>Connects Shopify to 1,500+ apps including Google Sheets, Meta, Systeme.io</li>
+          <li>1,000 credits/month free, 10× Zapier's free tier</li>
+          <li>Visual workflow builder, no code required</li>
+          <li>Powers CAPI Shield, Stocky Swap, TikTok CAPI and P&L Auto on this site</li>
         </ul>
       </div>
       <div class="tc-cons">
         <div class="tc-cons-head">Watch out for</div>
         <ul class="tc-list">
-          <li>Steeper learning curve than Zapier's simpler interface</li>
-          <li>Complex multi-step scenarios consume ops faster</li>
-          <li>Setup via webhooks — no native Shopify app install</li>
+          <li>Steeper learning curve than Zapier</li>
+          <li>Two active scenarios on the free plan</li>
+          <li>Each extra branch uses more credits on every order</li>
         </ul>
       </div>
     </div>
 
     <div class="tc-verdict">
-      <strong>Verdict:</strong> Essential free infrastructure for any Shopify store. Start with the <a href="https://stackarchitect.xyz/shopify-profit-loss-automation/">free P&L automation guide</a> to see exactly how it works — then add CAPI Shield and Systeme.io on the same scenario.
+      <strong>Verdict:</strong> Start here. Build one scenario from the <a href="https://stackarchitect.xyz/shopify-profit-loss-automation/">free P&L automation guide</a> to learn how it works, then add branches.
     </div>
 
     <div class="tc-ctas">
@@ -445,55 +286,159 @@ const tocHeadings = [
     </div>
   </article>
 
-  <!-- ── #3 BEEHIIV ─────────────────────────────────────────────── -->
-  <article class="tool-card confirmed-p" id="beehiiv" aria-labelledby="beehiiv-title">
+  <!-- ── #2 SYSTEME.IO ─────────────────────────────────────────── -->
+  <article class="tool-card confirmed-g" id="systeme" aria-labelledby="systeme-title">
     <div class="tc-header">
-      <span class="tc-rank">#3</span>
+      <span class="tc-rank">#2</span>
       <div class="tc-name-wrap">
-        <h2 class="tc-name" id="beehiiv-title">Beehiiv</h2>
-        <p class="tc-tagline">Brand newsletter platform — free for 2,500 subscribers with built-in monetisation</p>
+        <h2 class="tc-name" id="systeme-title">Systeme.io</h2>
+        <p class="tc-tagline">Free Klaviyo replacement: 2,000 contacts, unlimited sends, automation at $0/month</p>
       </div>
       <div class="tc-badges">
-        <span class="tc-badge tcb-conf">Confirmed Partner</span>
+        <span class="tc-badge tcb-conf">Used by us</span>
         <span class="tc-badge tcb-free">Free tier</span>
       </div>
     </div>
 
     <div class="tc-meta">
-      <div class="tc-meta-item"><span class="tc-meta-label">Price</span><span class="tc-meta-val">Free – $99/mo</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Commission</span><span class="tc-meta-val">Partner programme rate</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Free tier</span><span class="tc-meta-val">Up to 2,500 subscribers</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Differentiator</span><span class="tc-meta-val">Newsletter monetisation</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Best for</span><span class="tc-meta-val">Building owned audience</span></div>
+      <div class="tc-meta-item"><span class="tc-meta-label">Used by us</span><span class="tc-meta-val">Yes, Klaviyo flows rebuilt</span></div>
+      <div class="tc-meta-item"><span class="tc-meta-label">Price</span><span class="tc-meta-val">$0 – $97/mo</span></div>
+      <div class="tc-meta-item"><span class="tc-meta-label">Free tier</span><span class="tc-meta-val">Yes — 2,000 contacts</span></div>
+      <div class="tc-meta-item"><span class="tc-meta-label">Best for</span><span class="tc-meta-val">Replacing Klaviyo at $0</span></div>
     </div>
 
     <div class="tc-body">
-      <p>Beehiiv fills the gap Klaviyo, Systeme.io, and GetResponse all miss: it's built for <em>newsletters</em>, not e-commerce flows. For Shopify brands in niches where content drives purchases — fitness, beauty, food, lifestyle, outdoor gear — a curated weekly or monthly newsletter builds the relationship that turns one-time buyers into repeat customers. <strong>Beehiiv is optimised for open rates, subscriber growth, and newsletter revenue — not transactional automation.</strong></p>
-      <p>The recommended setup: Systeme.io for all Shopify-triggered flows (abandoned cart, post-purchase, welcome), Beehiiv for your brand newsletter. Together they replace a $300+/month Klaviyo + content platform stack at zero cost until you exceed 2,000–2,500 subscribers.</p>
+      <p>Systeme.io is the second tool we have used ourselves. We rebuilt the flows most stores pay Klaviyo for on its free plan: welcome sequence, abandoned cart, post-purchase and broadcasts. The free plan covers 2,000 contacts with unlimited sends. <strong>Klaviyo's free plan caps at 250 contacts and 500 emails a month, so Systeme.io holds 8× more contacts with no send limit.</strong></p>
+      <p>It ranks below Make.com only because it needs Make.com to see your store. Shopify events reach it through a webhook, and that link is the part that takes setting up. See the <a href="https://stackarchitect.xyz/replace-klaviyo-free/">free Klaviyo migration guide</a> for the steps.</p>
     </div>
 
     <div class="tc-pros-cons">
       <div class="tc-pros">
         <div class="tc-pros-head">Pros</div>
         <ul class="tc-list">
-          <li>Free for 2,500 subscribers with unlimited sends</li>
-          <li>Built-in newsletter monetisation and paid subscriptions</li>
-          <li>Subscriber referral programme grows your list automatically</li>
-          <li>Clean email rendering optimised for open rates</li>
+          <li>Free for 2,000 contacts with unlimited email sends</li>
+          <li>Abandoned cart, welcome and post-purchase automation</li>
+          <li>Sales funnels, landing pages and digital products included</li>
         </ul>
       </div>
       <div class="tc-cons">
         <div class="tc-cons-head">Watch out for</div>
         <ul class="tc-list">
-          <li>Not a Klaviyo replacement — no abandoned cart or Shopify flows</li>
-          <li>Best value when you have a consistent content publishing schedule</li>
-          <li>Lower value for stores without a content strategy</li>
+          <li>Email design editor less polished than Klaviyo's drag-and-drop</li>
+          <li>No predictive segmentation on the free tier</li>
+          <li>Shopify data arrives by webhook, set up through Make.com</li>
         </ul>
       </div>
     </div>
 
     <div class="tc-verdict">
-      <strong>Verdict:</strong> The best tool for building owned media that compounds over time. Run Systeme.io for transactional email, Beehiiv for your newsletter — both free until you scale.
+      <strong>Verdict:</strong> If Klaviyo is costing you money and your list is under 2,000 contacts, move. The <a href="https://stackarchitect.xyz/replace-klaviyo-free/">migration guide</a> covers it.
+    </div>
+
+    <div class="tc-ctas">
+      <a href="https://stackarchitect.xyz/replace-klaviyo-free/" class="btn btn-g">Migration guide (free)</a>
+    </div>
+  </article>
+
+  <!-- ── #3 TIDIO ───────────────────────────────────────────────── -->
+  <article class="tool-card confirmed-a" id="tidio" aria-labelledby="tidio-title">
+    <div class="tc-header">
+      <span class="tc-rank">#3</span>
+      <div class="tc-name-wrap">
+        <h2 class="tc-name" id="tidio-title">Tidio AI</h2>
+        <p class="tc-tagline">Live chat with Lyro AI replies. Free plan available. Not used by us</p>
+      </div>
+      <div class="tc-badges">
+        <span class="tc-badge tcb-free">Free tier</span>
+      </div>
+    </div>
+
+    <div class="tc-meta">
+      <div class="tc-meta-item"><span class="tc-meta-label">Used by us</span><span class="tc-meta-val">No</span></div>
+      <div class="tc-meta-item"><span class="tc-meta-label">Price</span><span class="tc-meta-val">Free – $59/mo</span></div>
+      <div class="tc-meta-item"><span class="tc-meta-label">Free tier</span><span class="tc-meta-val">Yes, 50 one-time</span></div>
+      <div class="tc-meta-item"><span class="tc-meta-label">Paid alternative</span><span class="tc-meta-val">Gorgias, $40+/mo</span></div>
+    </div>
+
+    <div class="tc-body">
+      <p>We have not run Tidio on a store. Everything in this entry comes from Tidio's own documentation. Lyro, its AI agent, answers order status, shipping and product questions, and the Shopify integration lets it look up a customer's order. <strong>Tidio says Lyro automates around 67% of customer inquiries on average. That is Tidio's figure. We have not checked it.</strong></p>
+      <p>The free plan includes 50 one-time Lyro AI conversations, not a monthly allowance. Paid plans start at $29/month. It ranks third because its free plan puts a working chat widget on your store before you pay anything. The <a href="https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide/">Tidio setup guide</a> walks through the configuration.</p>
+    </div>
+
+    <div class="tc-pros-cons">
+      <div class="tc-pros">
+        <div class="tc-pros-head">What Tidio offers</div>
+        <ul class="tc-list">
+          <li>Live chat and AI replies in one inbox</li>
+          <li>Shopify integration for order lookups</li>
+          <li>A free plan, not a time-limited trial</li>
+        </ul>
+      </div>
+      <div class="tc-cons">
+        <div class="tc-cons-head">Watch out for</div>
+        <ul class="tc-list">
+          <li>Only 50 one-time Lyro AI conversations on free, so higher-volume stores pay for Lyro</li>
+          <li>The automation rate is the vendor's average, not a result for your store</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tc-verdict">
+      <strong>Verdict:</strong> Worth trying on the free plan before you pay for a helpdesk. Measure the share of conversations it closes without you, rather than relying on Tidio's average.
+    </div>
+
+    <Disclosure />
+    <div class="tc-ctas">
+      <a href={`${AFF.tidio}?source=best-ai-tools-shopify-map-n1`} class="btn btn-g" target="_blank" rel="sponsored nofollow noopener">Try Tidio's free plan →</a>
+      <a href="https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide/" class="btn btn-o">Setup guide</a>
+      <span class="tc-aff-note">Affiliate link</span>
+    </div>
+  </article>
+
+  <!-- ── #4 BEEHIIV ─────────────────────────────────────────────── -->
+  <article class="tool-card confirmed-p" id="beehiiv" aria-labelledby="beehiiv-title">
+    <div class="tc-header">
+      <span class="tc-rank">#4</span>
+      <div class="tc-name-wrap">
+        <h2 class="tc-name" id="beehiiv-title">Beehiiv</h2>
+        <p class="tc-tagline">Newsletter platform, free for up to 2,500 subscribers. Not used by us</p>
+      </div>
+      <div class="tc-badges">
+        <span class="tc-badge tcb-free">Free tier</span>
+      </div>
+    </div>
+
+    <div class="tc-meta">
+      <div class="tc-meta-item"><span class="tc-meta-label">Used by us</span><span class="tc-meta-val">No</span></div>
+      <div class="tc-meta-item"><span class="tc-meta-label">Price</span><span class="tc-meta-val">Free – $99/mo</span></div>
+      <div class="tc-meta-item"><span class="tc-meta-label">Free tier</span><span class="tc-meta-val">Up to 2,500 subscribers</span></div>
+      <div class="tc-meta-item"><span class="tc-meta-label">Best for</span><span class="tc-meta-val">A newsletter you write</span></div>
+    </div>
+
+    <div class="tc-body">
+      <p>We have not used Beehiiv. It is built for newsletters, not store-triggered email: you write an issue and send it to your list. It has no abandoned cart or post-purchase flows. It suits a brand that already publishes content, where a regular newsletter gives past buyers a reason to come back.</p>
+      <p>It ranks below Tidio because its free plan does not replace anything a store is likely to be paying for. If you use it, pair it with Systeme.io: Systeme.io for store-triggered email, Beehiiv for the newsletter.</p>
+    </div>
+
+    <div class="tc-pros-cons">
+      <div class="tc-pros">
+        <div class="tc-pros-head">What Beehiiv offers</div>
+        <ul class="tc-list">
+          <li>Free for 2,500 subscribers</li>
+          <li>Paid subscriptions and a subscriber referral programme</li>
+        </ul>
+      </div>
+      <div class="tc-cons">
+        <div class="tc-cons-head">Watch out for</div>
+        <ul class="tc-list">
+          <li>Not a Klaviyo replacement: no abandoned cart or Shopify flows</li>
+          <li>Worth little without a regular publishing schedule</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tc-verdict">
+      <strong>Verdict:</strong> Only if you will write a newsletter regularly. Otherwise skip it.
     </div>
 
     <div class="tc-ctas">
@@ -501,365 +446,96 @@ const tocHeadings = [
     </div>
   </article>
 
-  <!-- ── #4 TIDIO ───────────────────────────────────────────────── -->
-  <article class="tool-card confirmed-a" id="tidio" aria-labelledby="tidio-title">
-    <div class="tc-header">
-      <span class="tc-rank">#4</span>
-      <div class="tc-name-wrap">
-        <h2 class="tc-name" id="tidio-title">Tidio AI</h2>
-        <p class="tc-tagline">AI customer support. Tidio says Lyro automates around 67% of inquiries on average; free tier genuinely functional</p>
-      </div>
-      <div class="tc-badges">
-        <span class="tc-badge tcb-conf">Confirmed Partner</span>
-        <span class="tc-badge tcb-free">Free tier</span>
-      </div>
-    </div>
-
-    <div class="tc-meta">
-      <div class="tc-meta-item"><span class="tc-meta-label">Price</span><span class="tc-meta-val">Free – $59/mo</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Commission</span><span class="tc-meta-val">30% (first 6 months)</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Free tier</span><span class="tc-meta-val">Yes, 50 one-time</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Gorgias savings</span><span class="tc-meta-val">$60–$300/mo</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Best for</span><span class="tc-meta-val">Stores under $50k/mo GMV</span></div>
-    </div>
-
-    <div class="tc-body">
-      <p>Tidio's Lyro AI handles order status queries, shipping questions, and product FAQs automatically — the categories that account for 60–70% of Shopify support volume. <strong>For stores paying Gorgias $40+/month, Tidio's free tier handles the majority of the same use cases at zero cost.</strong> Native Shopify integration pulls live order data so Lyro can answer "where is my order?" without a human agent.</p>
-      <p>The free tier includes 50 one-time Lyro AI conversations, not a monthly allowance. The plan is genuinely functional for stores under $20k GMV/month. Beyond that, Tidio's paid plans start at $29/month, still significantly cheaper than Gorgias for comparable support volumes. See the <a href="https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide/">complete Tidio Shopify setup guide</a> for the full configuration walkthrough.</p>
-    </div>
-
-    <div class="tc-pros-cons">
-      <div class="tc-pros">
-        <div class="tc-pros-head">Pros</div>
-        <ul class="tc-list">
-          <li>Tidio says Lyro automates around 67% of inquiries on average</li>
-          <li>Native Shopify integration pulls live order data</li>
-          <li>Free tier is genuinely functional — not a crippled trial</li>
-          <li>Live chat + AI in the same interface</li>
-        </ul>
-      </div>
-      <div class="tc-cons">
-        <div class="tc-cons-head">Watch out for</div>
-        <ul class="tc-list">
-          <li>Only 50 one-time Lyro AI conversations on free, so higher-volume stores pay for Lyro</li>
-          <li>Commission covers first 6 months only (not lifetime like Writesonic)</li>
-          <li>Less powerful than Gorgias for complex multi-agent support teams</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="tc-verdict">
-      <strong>Verdict:</strong> Start with Tidio's free tier before paying for Gorgias. For most stores under $50k/month, the free plan handles the support workload adequately. No credit card required.
-    </div>
-
-    <Disclosure />
-    <div class="tc-ctas">
-      <a href={`${AFF.tidio}?source=best-ai-tools-shopify-map-n1`} class="btn btn-g" target="_blank" rel="sponsored nofollow noopener">Get Tidio free: Tidio says Lyro automates around 67% of inquiries →</a>
-      <a href="https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide/" class="btn btn-o">Setup guide</a>
-      <span class="tc-aff-note">Confirmed partner · 30% for 6 months · affiliate link</span>
-    </div>
-  </article>
-
-  <div class="inline-cta">
-    <div class="ict-text">
-      <div class="cta-h">Systeme.io + Make.com + Beehiiv = $0/month</div>
-      <p>Three confirmed partner tools cover email automation, Shopify workflows, and brand newsletters at zero cost. Migrate from Klaviyo this week.</p>
-    </div>
-    <a href="https://stackarchitect.xyz/replace-klaviyo-free/" class="btn btn-g">See the Klaviyo migration guide →</a>
-  </div>
-
-  <!-- ══════════════════════════════════════════════════════════ -->
-  <!-- ADDITIONAL TOOLS #5–#12                                    -->
-  <!-- ══════════════════════════════════════════════════════════ -->
-  <div class="sec-mark" id="additional">Additional tools — ranked by ROI</div>
-
   <!-- ── #5 GETRESPONSE ────────────────────────────────────────── -->
   <article class="tool-card" id="getresponse" aria-labelledby="getresponse-title">
     <div class="tc-header">
       <span class="tc-rank">#5</span>
       <div class="tc-name-wrap">
         <h2 class="tc-name" id="getresponse-title">GetResponse</h2>
-        <p class="tc-tagline">Best paid Klaviyo alternative — 60–70% cheaper, AI email copy included</p>
+        <p class="tc-tagline">Paid email platform for lists beyond Systeme.io's free plan. Not used by us</p>
       </div>
       <div class="tc-badges">
         <span class="tc-badge tcb-free">Free tier</span>
       </div>
     </div>
     <div class="tc-meta">
+      <div class="tc-meta-item"><span class="tc-meta-label">Used by us</span><span class="tc-meta-val">No</span></div>
       <div class="tc-meta-item"><span class="tc-meta-label">Price</span><span class="tc-meta-val">$19–$119/mo</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">vs Klaviyo</span><span class="tc-meta-val">60–70% cheaper</span></div>
       <div class="tc-meta-item"><span class="tc-meta-label">Free tier</span><span class="tc-meta-val">500 contacts</span></div>
     </div>
     <div class="tc-body">
-      <p>GetResponse is the right step for stores that have outgrown Systeme.io's 2,000-contact free tier but aren't ready for Klaviyo prices. At $19–$119/month versus Klaviyo's $20+/month for equivalent volumes, the cost case is immediate. AI-generated email copy, abandoned cart flows, post-purchase sequences, and welcome automations are all included. <strong>Note: try Systeme.io free first — if it covers your needs, there's no reason to pay GetResponse's subscription.</strong></p>
+      <p>We have not used GetResponse. It does the same job as Systeme.io: abandoned cart, post-purchase and welcome automation, plus AI-written email copy. Its free plan is smaller, 500 contacts against Systeme.io's 2,000, and its paid plans run $19–$119/month. That is why it ranks last. It only becomes worth looking at when your list has outgrown Systeme.io's free plan and you are comparing paid options, Klaviyo among them. <strong>Try Systeme.io free first.</strong></p>
     </div>
     <div class="tc-verdict">
-      <strong>Verdict:</strong> Best for stores outgrowing Systeme.io's free plan. Graduate to GetResponse only when you need the contact volume or advanced features. We are not currently on GetResponse's affiliate programme — the link is untracked.
+      <strong>Verdict:</strong> A paid option to compare once you pass 2,000 contacts, not a starting point.
     </div>
     <div class="tc-ctas">
       <a href="https://stackarchitect.xyz/replace-klaviyo-free/" class="btn btn-g">Compare GetResponse and Systeme.io →</a>
     </div>
   </article>
 
-  <!-- ── #6 WRITESONIC ─────────────────────────────────────────── -->
-  <article class="tool-card" id="writesonic" aria-labelledby="writesonic-title">
-    <div class="tc-header">
-      <span class="tc-rank">#6</span>
-      <div class="tc-name-wrap">
-        <h2 class="tc-name" id="writesonic-title">Writesonic</h2>
-        <p class="tc-tagline">SEO content + ad copy — 30% lifetime recurring commission (best structure on this list)</p>
-      </div>
-      <div class="tc-badges"><span class="tc-badge tcb-pend">30% lifetime</span></div>
-    </div>
-    <div class="tc-meta">
-      <div class="tc-meta-item"><span class="tc-meta-label">Price</span><span class="tc-meta-val">Free – $99/mo</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Commission</span><span class="tc-meta-val">30% lifetime recurring</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Cookie</span><span class="tc-meta-val">60 days</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Free tier</span><span class="tc-meta-val">10,000 words/mo</span></div>
-    </div>
-    <div class="tc-body">
-      <p>Writesonic ranks highly on the strength of one thing: 30% <em>lifetime</em> recurring commission. Every other tool on this list pays for 6–12 months. Writesonic pays as long as the customer stays — forever. For Shopify stores investing in organic traffic, it delivers strong SEO article output and ad copy. One referred subscriber at $49/month generates $14.70 every single month, indefinitely.</p>
-    </div>
-    <div class="tc-verdict"><strong>Verdict:</strong> Best for Shopify stores at $5k–$30k/month GMV wanting AI content without a large subscription. The 10,000 word/month free tier covers smaller stores building an SEO content bank.</div>
-    <div class="tc-ctas"><a href="https://writesonic.com/" class="btn btn-o" target="_blank" rel="sponsored nofollow noopener">Try Writesonic free →</a><span class="tc-aff-note">30% lifetime recurring · 60-day cookie</span></div>
-  </article>
-
-  <!-- ── #7 ADCREATIVE.AI ───────────────────────────────────────── -->
-  <article class="tool-card" id="adcreative" aria-labelledby="adcreative-title">
-    <div class="tc-header">
-      <span class="tc-rank">#7</span>
-      <div class="tc-name-wrap">
-        <h2 class="tc-name" id="adcreative-title">AdCreative.ai</h2>
-        <p class="tc-tagline">Best for Meta ads — AI-generated complete ad sets including visuals</p>
-      </div>
-      <div class="tc-badges"><span class="tc-badge tcb-pend">22.5% recurring</span></div>
-    </div>
-    <div class="tc-meta">
-      <div class="tc-meta-item"><span class="tc-meta-label">Price</span><span class="tc-meta-val">$29–$149/mo</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Commission</span><span class="tc-meta-val">22.5% + $100 per 10</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Cookie</span><span class="tc-meta-val">30 days</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Best for</span><span class="tc-meta-val">Stores spending $5k+/mo on Meta</span></div>
-    </div>
-    <div class="tc-body"><p>AdCreative.ai generates complete Meta and Google ad sets — not just copy, but the full creative package including headline variations, body copy, and image layouts. Spending $5,000+/month on Meta? Even a 10% improvement in creative CTR covers the $149/mo cost in the first week.</p></div>
-    <div class="tc-verdict"><strong>Verdict:</strong> Most directly revenue-tied AI tool for DTC brands running paid social. 30-day cookie is the shortest on this list — prioritise getting referrals early in the attribution window.</div>
-    <div class="tc-ctas"><a href="https://www.adcreative.ai/" class="btn btn-o" target="_blank" rel="sponsored nofollow noopener">Try AdCreative.ai free →</a><span class="tc-aff-note">22.5% recurring + $100 per 10 signups</span></div>
-  </article>
-
-  <!-- ── #8 HYPOTENUSE AI ───────────────────────────────────────── -->
-  <article class="tool-card" id="hypotenuse" aria-labelledby="hypotenuse-title">
-    <div class="tc-header">
-      <span class="tc-rank">#8</span>
-      <div class="tc-name-wrap">
-        <h2 class="tc-name" id="hypotenuse-title">Hypotenuse AI</h2>
-        <p class="tc-tagline">Bulk Shopify product descriptions — native Shopify integration, best for 100+ SKUs</p>
-      </div>
-      <div class="tc-badges"><span class="tc-badge tcb-pend">20% recurring</span></div>
-    </div>
-    <div class="tc-meta">
-      <div class="tc-meta-item"><span class="tc-meta-label">Price</span><span class="tc-meta-val">$29–$99/mo</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Commission</span><span class="tc-meta-val">20% recurring</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Integration</span><span class="tc-meta-val">Native Shopify app</span></div>
-    </div>
-    <div class="tc-body"><p>Hypotenuse AI is purpose-built for stores with large catalogues: bulk AI product descriptions with native Shopify integration. For a store with 500 products, it turns a 3-week copywriting project into a half-day workflow. <strong>For stores under 50 products, Shopify Magic (free, built into every plan) covers this at zero cost.</strong></p></div>
-    <div class="tc-verdict"><strong>Verdict:</strong> Best for stores with 100+ SKUs where product description quality and SEO is a bottleneck. Not worth the subscription for smaller catalogues.</div>
-    <div class="tc-ctas"><a href="https://www.hypotenuse.ai/" class="btn btn-o" target="_blank" rel="sponsored nofollow noopener">Try Hypotenuse free →</a></div>
-  </article>
-
-  <!-- ── #9 SYNTHESIA ───────────────────────────────────────────── -->
-  <article class="tool-card" id="synthesia" aria-labelledby="synthesia-title">
-    <div class="tc-header">
-      <span class="tc-rank">#9</span>
-      <div class="tc-name-wrap">
-        <h2 class="tc-name" id="synthesia-title">Synthesia</h2>
-        <p class="tc-tagline">AI video ads — no camera, no talent, no editing — 120+ avatars, 120+ languages</p>
-      </div>
-      <div class="tc-badges"><span class="tc-badge tcb-pend">25% × 12 months</span></div>
-    </div>
-    <div class="tc-meta">
-      <div class="tc-meta-item"><span class="tc-meta-label">Price</span><span class="tc-meta-val">$22–$192/mo</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Commission</span><span class="tc-meta-val">25% recurring (12 months)</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Cookie</span><span class="tc-meta-val">60 days</span></div>
-    </div>
-    <div class="tc-body"><p>Video is the highest-performing ad format on Meta, TikTok, and YouTube — and production costs are the primary reason stores under $500k/year can't compete. Synthesia eliminates camera, talent, and editing entirely. Paying $1,000 per video and needing four per month? Synthesia at $192/month saves $3,600/month immediately.</p></div>
-    <div class="tc-verdict"><strong>Verdict:</strong> Highest ROI for stores needing video content without production budget. Commission is 12-month limited only — not lifetime.</div>
-    <div class="tc-ctas"><a href="https://www.synthesia.io/" class="btn btn-o" target="_blank" rel="sponsored nofollow noopener">Try Synthesia free →</a></div>
-  </article>
-
-  <!-- ── #10 PHOTOROOM ─────────────────────────────────────────── -->
-  <article class="tool-card" id="photoroom" aria-labelledby="photoroom-title">
-    <div class="tc-header">
-      <span class="tc-rank">#10</span>
-      <div class="tc-name-wrap">
-        <h2 class="tc-name" id="photoroom-title">Photoroom</h2>
-        <p class="tc-tagline">AI product photography — background removal and studio backdrops, free tier available</p>
-      </div>
-      <div class="tc-badges"><span class="tc-badge tcb-free">Free tier</span></div>
-    </div>
-    <div class="tc-meta">
-      <div class="tc-meta-item"><span class="tc-meta-label">Price</span><span class="tc-meta-val">Free – $29/mo</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Saves</span><span class="tc-meta-val">$5–$15 per image</span></div>
-    </div>
-    <div class="tc-body"><p>One of the highest-ROI tools for physical product Shopify stores. Background removal, AI studio backdrops, and lifestyle image generation eliminate expensive photo shoots. Batch processing makes it practical for any store managing more than a handful of SKUs. No standalone affiliate programme currently available.</p></div>
-    <div class="tc-verdict"><strong>Verdict:</strong> Essential for any Shopify store with physical products. Free tier handles low-volume needs; $29/month pays for itself on the first product batch it saves from a shoot.</div>
-    <div class="tc-ctas"><a href="https://www.photoroom.com/" class="btn btn-o" target="_blank" rel="noopener">Try Photoroom free →</a></div>
-  </article>
-
-  <!-- ── #11 JASPER ────────────────────────────────────────────── -->
-  <article class="tool-card" id="jasper" aria-labelledby="jasper-title">
-    <div class="tc-header">
-      <span class="tc-rank">#11</span>
-      <div class="tc-name-wrap">
-        <h2 class="tc-name" id="jasper-title">Jasper AI</h2>
-        <p class="tc-tagline">Brand-voice copy — trains on your guidelines for consistent ad copy and email</p>
-      </div>
-      <div class="tc-badges"><span class="tc-badge tcb-pend">25% yr 1</span></div>
-    </div>
-    <div class="tc-meta">
-      <div class="tc-meta-item"><span class="tc-meta-label">Price</span><span class="tc-meta-val">$49–$125/mo</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Commission</span><span class="tc-meta-val">25% recurring (year 1 only)</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Cookie</span><span class="tc-meta-val">30 days</span></div>
-    </div>
-    <div class="tc-body"><p>Jasper's genuine differentiator is brand voice training: upload your guidelines, past copy, and product documentation, and it generates on-brand ad copy across Meta, Google, and TikTok simultaneously. 25% commission is year-1 only — Writesonic's lifetime structure outperforms over any 18-month window.</p></div>
-    <div class="tc-verdict"><strong>Verdict:</strong> Worth it for stores spending $2,000+/month on ad creative production and running multi-channel campaigns. Below that threshold, Writesonic's lifetime commission beats Jasper's year-1 cap.</div>
-    <div class="tc-ctas"><a href="https://www.jasper.ai/" class="btn btn-o" target="_blank" rel="sponsored nofollow noopener">Try Jasper free (7 days) →</a></div>
-  </article>
-
-  <!-- ── #12 OCTANE AI ─────────────────────────────────────────── -->
-  <article class="tool-card" id="octane" aria-labelledby="octane-title">
-    <div class="tc-header">
-      <span class="tc-rank">#12</span>
-      <div class="tc-name-wrap">
-        <h2 class="tc-name" id="octane-title">Octane AI</h2>
-        <p class="tc-tagline">AI product quiz and personalisation — converts 2–3× better than generic popups</p>
-      </div>
-    </div>
-    <div class="tc-meta">
-      <div class="tc-meta-item"><span class="tc-meta-label">Price</span><span class="tc-meta-val">$50–$200/mo</span></div>
-      <div class="tc-meta-item"><span class="tc-meta-label">Integration</span><span class="tc-meta-val">Native Shopify app</span></div>
-    </div>
-    <div class="tc-body"><p>Octane AI's quiz engine increases AOV and captures high-quality subscribers simultaneously. Users completing a quiz convert at 2–3× generic popup signups. For stores selling skincare, supplements, or fashion — where "which one is right for me?" is the primary objection — Octane addresses the core conversion barrier. Best results at 1,000+ daily visitors.</p></div>
-    <div class="tc-verdict"><strong>Verdict:</strong> Worth evaluating for stores with 1,000+ daily visitors and a product range where personalised recommendations improve conversions. Below that threshold, prioritise free tools first.</div>
-    <div class="tc-ctas"><a href="https://www.octaneai.com/" class="btn btn-o" target="_blank" rel="noopener">Try Octane AI →</a></div>
-  </article>
-
   <!-- ══════════════════════════════════════════════════════════ -->
   <!-- COMPARISON TABLE                                           -->
   <!-- ══════════════════════════════════════════════════════════ -->
-  <div class="sec-mark" id="comparison">Full comparison table</div>
+  <div class="sec-mark" id="comparison">Comparison table</div>
 
   <div class="table-wrap" role="region" aria-label="AI tools comparison table" tabindex="0">
     <table class="comp-table">
       <thead>
         <tr>
+          <th scope="col">Rank</th>
           <th scope="col">Tool</th>
           <th scope="col">Best for</th>
           <th scope="col">Price/mo</th>
-          <th scope="col">Commission</th>
           <th scope="col">Free tier?</th>
-          <th scope="col">Partner?</th>
+          <th scope="col">Used by us?</th>
         </tr>
       </thead>
       <tbody>
         <tr class="highlight">
-          <td class="col-tool"><span class="conf-dot" aria-hidden="true"></span>Systeme.io</td>
-          <td>Free Klaviyo replacement</td>
-          <td>$0–$97</td>
-          <td class="col-comm">40% recurring forever</td>
-          <td class="col-free">Yes — 2,000 contacts</td>
-          <td class="col-comm">✓ Confirmed</td>
-        </tr>
-        <tr class="highlight">
-          <td class="col-tool"><span class="conf-dot" aria-hidden="true"></span>Make.com</td>
+          <td>1</td>
+          <td class="col-tool">Make.com</td>
           <td>Shopify automation</td>
           <td>Free–$29</td>
-          <td class="col-comm">Referral per conversion</td>
           <td class="col-free">Yes — 1,000 credits/mo</td>
-          <td class="col-comm">✓ Confirmed</td>
+          <td class="col-free">Yes</td>
         </tr>
         <tr class="highlight">
-          <td class="col-tool"><span class="conf-dot" aria-hidden="true"></span>Beehiiv</td>
-          <td>Brand newsletter</td>
-          <td>Free–$99</td>
-          <td class="col-comm">Partner rate</td>
-          <td class="col-free">Yes — 2,500 subs</td>
-          <td class="col-comm">✓ Confirmed</td>
+          <td>2</td>
+          <td class="col-tool">Systeme.io</td>
+          <td>Free Klaviyo replacement</td>
+          <td>$0–$97</td>
+          <td class="col-free">Yes — 2,000 contacts</td>
+          <td class="col-free">Yes</td>
         </tr>
-        <tr class="highlight">
-          <td class="col-tool"><span class="conf-dot" aria-hidden="true"></span>Tidio AI</td>
+        <tr>
+          <td>3</td>
+          <td class="col-tool">Tidio AI</td>
           <td>Customer support chat</td>
           <td>Free–$59</td>
-          <td class="col-comm">30% (6 months)</td>
           <td class="col-free">Yes, 50 one-time</td>
-          <td class="col-comm">✓ Confirmed</td>
+          <td>No</td>
         </tr>
         <tr>
-          <td class="col-tool">GetResponse</td>
-          <td>Email + AI automation</td>
-          <td>$19–$119</td>
-          <td>Not affiliated</td>
-          <td class="col-free">Yes — 500 contacts</td>
-          <td>—</td>
-        </tr>
-        <tr>
-          <td class="col-tool">Writesonic</td>
-          <td>SEO content + copy</td>
+          <td>4</td>
+          <td class="col-tool">Beehiiv</td>
+          <td>Brand newsletter</td>
           <td>Free–$99</td>
-          <td class="col-comm">30% lifetime</td>
-          <td class="col-free">Yes — 10k words/mo</td>
-          <td>Pending</td>
+          <td class="col-free">Yes — 2,500 subs</td>
+          <td>No</td>
         </tr>
         <tr>
-          <td class="col-tool">AdCreative.ai</td>
-          <td>Meta/Google creatives</td>
-          <td>$29–$149</td>
-          <td>22.5% + $100</td>
-          <td>Trial only</td>
-          <td>Pending</td>
-        </tr>
-        <tr>
-          <td class="col-tool">Hypotenuse AI</td>
-          <td>Bulk product descriptions</td>
-          <td>$29–$99</td>
-          <td>20% recurring</td>
-          <td>Trial only</td>
-          <td>—</td>
-        </tr>
-        <tr>
-          <td class="col-tool">Synthesia</td>
-          <td>AI video ad production</td>
-          <td>$22–$192</td>
-          <td>25% (12 months)</td>
-          <td>Trial only</td>
-          <td>—</td>
-        </tr>
-        <tr>
-          <td class="col-tool">Photoroom</td>
-          <td>Product photography</td>
-          <td>Free–$29</td>
-          <td>—</td>
-          <td class="col-free">Yes</td>
-          <td>—</td>
-        </tr>
-        <tr>
-          <td class="col-tool">Jasper AI</td>
-          <td>Brand-voice copy</td>
-          <td>$49–$125</td>
-          <td>25% yr 1</td>
-          <td>Trial — 7 days</td>
-          <td>Pending</td>
-        </tr>
-        <tr>
-          <td class="col-tool">Octane AI</td>
-          <td>Quiz personalisation</td>
-          <td>$50–$200</td>
-          <td>—</td>
-          <td>Trial only</td>
-          <td>—</td>
+          <td>5</td>
+          <td class="col-tool">GetResponse</td>
+          <td>Paid email step-up</td>
+          <td>$19–$119</td>
+          <td class="col-free">Yes — 500 contacts</td>
+          <td>No</td>
         </tr>
       </tbody>
     </table>
   </div>
-  <p style="font-family:var(--mono);font-size:10px;color:var(--text4);margin-bottom:32px;line-height:1.6;">Commission rates correct as of April 2026. Verify on each programme's own page before applying. Green highlighted rows = confirmed affiliate partners.</p>
+  <p style="font-family:var(--mono);font-size:10px;color:var(--text4);margin-bottom:32px;line-height:1.6;">Highlighted rows are the tools we run ourselves. Vendor prices change, so check each vendor's pricing page before you sign up.</p>
 
   <!-- ── Google Workspace callout ────────────────────────────── -->
   <div class="callout sky">
@@ -873,56 +549,12 @@ const tocHeadings = [
   <div class="sec-mark" id="faq">Frequently asked questions</div>
 
   <div class="faq-list">
-
-    <details class="faq">
-      <summary><span>What is the best free AI tool for Shopify store owners in 2026?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans">
-        <p>The best free AI tools for Shopify in 2026 are <strong>Systeme.io</strong> (replaces Klaviyo at $0 for up to 2,000 contacts with unlimited sends), <strong>Make.com</strong> (automates Shopify workflows free for 1,000 credits/month), <strong>Beehiiv</strong> (brand newsletter free for up to 2,500 subscribers), <strong>Tidio</strong> (AI customer support with a genuinely functional free tier), and <strong>Shopify Magic</strong> (built into every Shopify plan for product descriptions). These five tools cover the most expensive Shopify AI use cases before you spend anything.</p>
-      </div>
-    </details>
-
-    <details class="faq">
-      <summary><span>Is Systeme.io a good free alternative to Klaviyo for Shopify?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans">
-        <p>Yes. Systeme.io is the most effective free Klaviyo alternative for Shopify stores in 2026. The free plan includes 2,000 contacts with unlimited email sends, full abandoned cart and post-purchase automation, sales funnels, and CRM — everything most stores use Klaviyo for. Klaviyo's free plan is limited to 250 contacts and 500 emails per month. Systeme.io's free plan handles 8× more contacts with no email send limit. Stores paying $20+/month for Klaviyo can migrate to Systeme.io's free plan in approximately 30 minutes. See the <a href="https://stackarchitect.xyz/replace-klaviyo-free/">free step-by-step migration guide</a>.</p>
-      </div>
-    </details>
-
-    <details class="faq">
-      <summary><span>What does Make.com do for Shopify stores?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans">
-        <p>Make.com connects Shopify to 1,500+ apps through visual automation workflows. For Shopify stores, the most valuable use cases are: (1) sending server-side conversion events to Meta via CAPI Shield, (2) syncing orders to Google Sheets in real time for inventory and P&L tracking, (3) connecting Shopify webhooks to Systeme.io for email automation, and (4) sending low-stock alerts to Slack or Gmail. Make.com's free plan includes 1,000 credits/month (formerly called operations) — enough for most small stores to run all of these automations simultaneously at $0.</p>
-      </div>
-    </details>
-
-    <details class="faq">
-      <summary><span>How much does Make.com cost compared to Zapier for Shopify?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans">
-        <p>Make.com's free plan includes 1,000 credits/month (formerly called operations). Zapier's free plan includes only 100 tasks per month — 10× fewer than Make.com. For paid plans, Make.com's Core plan costs $9/month for 10,000 credits. Zapier's equivalent Starter plan costs $19.99/month for 750 tasks. For most Shopify automation use cases, Make.com delivers significantly more capacity at a lower price. The main trade-off is that Make.com has a steeper learning curve than Zapier's simpler interface.</p>
-      </div>
-    </details>
-
-    <details class="faq">
-      <summary><span>Is Tidio worth it for Shopify customer support?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans">
-        <p>For Shopify stores under $50,000 per month GMV, Tidio's free tier handles the majority of customer support needs. Lyro AI automatically resolves order status queries, shipping questions, and product FAQs — the categories that account for 60–70% of Shopify support volume. The free tier includes 50 one-time Lyro AI conversations, not a monthly allowance. For higher volume, Tidio's paid plans start at $29/month — significantly less than Gorgias at $40+/month. The native Shopify integration pulls live order data so Lyro can answer "where is my order?" without a human agent.</p>
-      </div>
-    </details>
-
-    <details class="faq">
-      <summary><span>What AI tools replace the most expensive Shopify apps in 2026?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans">
-        <p>The highest-ROI AI tool replacements for Shopify in 2026 are: Systeme.io replaces Klaviyo at $0 (saves $20+/month), Make.com replaces Zapier and automation connectors (saves $50–$200/month), Tidio replaces Gorgias for customer support (saves $40+/month), Photoroom replaces product photography shoots, and Beehiiv replaces paid newsletter platforms. Combined with the $0 Shopify automation stack (CAPI Shield, Stocky Swap, P&L Auto), stores can replace six paid apps worth $700+/month at zero cost.</p>
-      </div>
-    </details>
-
-    <details class="faq">
-      <summary><span>Should I use Beehiiv or Systeme.io for Shopify email?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans" style="max-width:1140px;margin:48px auto 0;padding:0 24px;box-sizing:border-box;">
-        <p>Use both — they serve different purposes. <strong>Systeme.io</strong> is built for e-commerce transactional email: abandoned cart, welcome sequences, post-purchase flows, and Shopify webhook-triggered automations. <strong>Beehiiv</strong> is built for brand newsletters: curated content, subscriber growth, and newsletter monetisation. The recommended setup: Systeme.io for all Shopify-triggered flows and Beehiiv for a weekly or monthly brand newsletter. Together they replace a $300+/month Klaviyo and newsletter platform stack at $0 until you exceed 2,000–2,500 subscribers.</p>
-      </div>
-    </details>
-
+    {faqs.map((f) => (
+      <details class="faq">
+        <summary><span>{f.q}</span><span class="faq-ico" aria-hidden="true"></span></summary>
+        <div class="faq-ans"><p set:html={f.a} /></div>
+      </details>
+    ))}
   </div>
 
   <!-- ══════════════════════════════════════════════════════════ -->
@@ -931,7 +563,7 @@ const tocHeadings = [
   <div class="sec-mark">Related — complete the stack</div>
   <nav class="related-grid" aria-label="Related guides">
     <a href="https://stackarchitect.xyz/replace-klaviyo-free/" class="related-card">
-      <span class="rc-type">Free tool — save $400/mo</span>
+      <span class="rc-type">Free tool — email</span>
       <span class="rc-title">Replace Klaviyo Free — Systeme.io Migration</span>
       <span class="rc-desc">2,000 contacts, unlimited emails, $0/month — migrate in 30 minutes →</span>
     </a>
@@ -939,11 +571,6 @@ const tocHeadings = [
       <span class="rc-type">Free tool — fix your tracking</span>
       <span class="rc-title">CAPI Shield — Free Server-Side Tracking</span>
       <span class="rc-desc">Meta CAPI via Make.com — 6 minutes free →</span>
-    </a>
-    <a href="https://stackarchitect.xyz/stocky-swap/" class="related-card">
-      <span class="rc-type">⚠ Deadline Aug 31 2026</span>
-      <span class="rc-title">Stocky Swap — Free Inventory Before Shutdown</span>
-      <span class="rc-desc">Shopify Stocky closes August 31. Free replacement deploys in 4 minutes →</span>
     </a>
     <a href="https://stackarchitect.xyz/blog/shopify-agentic-storefronts-setup-guide-2026/" class="related-card">
       <span class="rc-type">New — AI commerce</span>
@@ -964,19 +591,19 @@ const tocHeadings = [
 
   <!-- ── FINAL CTA ─────────────────────────────────────────────── -->
   <div class="final-cta" role="complementary" aria-label="Get started for free">
-    <div class="final-eyebrow">Start with the free stack — then add AI tools</div>
-    <div class="final-title">Replace $700+/month of apps<br><span class="fg">before you pay for anything.</span></div>
-    <p class="final-sub">Systeme.io + Make.com + Beehiiv + Tidio = $0/month. Build the free stack first, then evaluate paid AI tools from a position of profit, not cost.</p>
+    <div class="final-eyebrow">Start with the two we run</div>
+    <div class="final-title">Build the free stack first,<br><span class="fg">then decide what is worth paying for.</span></div>
+    <p class="final-sub">Make.com and Systeme.io both start free, and they are the two tools on this page we use ourselves.</p>
     <div class="final-btns">
-      <a href={`${AFF.systeme}?source=best-ai-tools-shopify-map-n2`} class="btn btn-g" target="_blank" rel="sponsored nofollow noopener">Start Systeme.io free — 2,000 contacts, unlimited sends →</a>
-      <a href={`${AFF.make}?source=best-ai-tools-shopify-map-n3`} class="btn btn-o" target="_blank" rel="sponsored nofollow noopener">Get Make.com free — 1,000 ops/month, no card →</a>
+      <a href={`${AFF.make}?source=best-ai-tools-shopify-map-n3`} class="btn btn-g" target="_blank" rel="sponsored nofollow noopener">Get Make.com free — 1,000 credits/month, no card →</a>
+      <a href={`${AFF.systeme}?source=best-ai-tools-shopify-map-n2`} class="btn btn-o" target="_blank" rel="sponsored nofollow noopener">Start Systeme.io free — 2,000 contacts, unlimited sends →</a>
       <a href="https://stackarchitect.xyz/" class="btn btn-o">See the full $0 stack →</a>
     </div>
   </div>
 
   <!-- Affiliate disclosure (page-level) -->
   <p style="margin-top:32px;padding:12px 16px;border:1px solid var(--border);border-radius:6px;font-family:var(--mono);font-size:10px;color:var(--text4);letter-spacing:.05em;line-height:1.65;">
-    Stack Architect uses affiliate links. We earn a commission if you sign up via our links — at no extra cost to you. Confirmed partner tools (Systeme.io, Make.com, Beehiiv, Tidio) are marked throughout. GetResponse is listed but unaffiliated. Commission rates noted are correct as of April 2026 — verify on each programme's own terms page.
+    Stack Architect uses affiliate links. We earn a commission if you sign up for Make.com, Systeme.io, Tidio, Beehiiv or GetResponse through our links, at no extra cost to you. The ranking is by first-hand use, not by commission.
   </p>
 
   <!-- Byline inside <main>: the Article/Person schema describes the content
@@ -1022,8 +649,6 @@ const tocHeadings = [
     { pattern: 'beehiiv.com',   label: 'beehiiv_ai_tools' },
     { pattern: 'tidio.com',     label: 'tidio_ai_tools' },
     { pattern: 'workspace.google.com', label: 'google_workspace_ai_tools' },
-    { pattern: 'writesonic.com', label: 'writesonic_ai_tools' },
-    { pattern: 'adcreative.ai', label: 'adcreative_ai_tools' },
   ];
   document.addEventListener('click', function(e) {
     var el = e.target.closest('a[href]');
@@ -1033,8 +658,8 @@ const tocHeadings = [
     // /go/* cloaks are already counted by the sitewide listener in
     // src/layouts/Base.astro. Without this guard they were counted twice here,
     // inflating this page's affiliate_click total against pages that count once.
-    // The patterns below that are NOT /go/* (writesonic.com, adcreative.ai,
-    // workspace.google.com and similar direct links) are still tracked, because
+    // The patterns below that are NOT /go/* (workspace.google.com and
+    // similar direct links) are still tracked, because
     // the global listener records those as generic outbound_click rather than
     // affiliate_click — so this block is guarded, not removed.
     if (href.indexOf('/go/') === 0) return;
@@ -1092,7 +717,7 @@ const tocHeadings = [
         }
       });
     }, { threshold: 0.4 });
-    ['systeme','make','beehiiv','tidio','getresponse','writesonic','adcreative','hypotenuse','synthesia','photoroom','jasper','octane'].forEach(function(id) {
+    ['make','systeme','tidio','beehiiv','getresponse'].forEach(function(id) {
       var el = document.getElementById(id);
       if (el) io.observe(el);
     });
