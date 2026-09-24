@@ -59,13 +59,26 @@ const YR_RANGE = `${money(SAVINGS.yrLow)}–${money(SAVINGS.yrHigh)}/year`;
  * produce a figure that contradicts the rest of the page.
  * ------------------------------------------------------------------------ */
 const PAINS = [
-  { id: 't',  label: 'Losing Meta ad attribution after iOS updates', cost: 650, badge: 'Most common',     sol: 'CAPI Shield',          url: '/capi-shield/' },
-  { id: 'k',  label: 'Paying Klaviyo $20+/mo for email marketing',            cost: 20,  badge: 'Replace free',    sol: 'Replace Klaviyo Free', url: '/replace-klaviyo-free/' },
-  { id: 'tk', label: 'Running TikTok ads — losing conversions to iOS',           cost: 299, badge: 'TikTok CAPI',     sol: 'TikTok Events API',    url: '/tiktok-events-api-shopify/' },
-  { id: 'i',  label: 'Paying for inventory or stock sync apps',               cost: 500, badge: 'Aug 2026 urgent', sol: 'Stocky Swap',          url: '/stocky-swap/' },
-  { id: 'p',  label: 'No live P&L — manual CSV exports or no reporting',      cost: 299, badge: 'Quick fix',       sol: 'P&L Auto',             url: '/shopify-profit-loss-automation/' },
-  { id: 'a',  label: 'Google Scripts or Make.com failing mid-month',          cost: 119, badge: null,              sol: 'Autocrat Quota Fix',   url: '/autocrat-quota-fix/' },
+  { id: 't',  label: 'Losing Meta ad attribution after iOS updates', cost: 650, badge: 'Most common',     sol: 'CAPI Shield',          url: '/capi-shield/',                    category: 'server-side Meta tracking' },
+  { id: 'k',  label: 'Paying Klaviyo $20+/mo for email marketing',            cost: 20,  badge: 'Replace free',    sol: 'Replace Klaviyo Free', url: '/replace-klaviyo-free/',            category: 'email marketing' },
+  { id: 'tk', label: 'Running TikTok ads, losing conversions to iOS',            cost: 299, badge: 'TikTok CAPI',     sol: 'TikTok Events API',    url: '/tiktok-events-api-shopify/',      category: 'TikTok Events API' },
+  { id: 'i',  label: 'Paying for inventory or stock sync apps',               cost: 500, badge: 'Aug 2026 urgent', sol: 'Stocky Swap',          url: '/stocky-swap/',                    category: 'inventory logging' },
+  { id: 'p',  label: 'No live P&L: manual CSV exports or no reporting',      cost: 299, badge: 'Quick fix',       sol: 'P&L Auto',             url: '/shopify-profit-loss-automation/', category: 'live profit reporting' },
+  { id: 'a',  label: 'Google Scripts or Make.com failing mid-month',          cost: 119, badge: null,              sol: 'Autocrat Quota Fix',   url: '/autocrat-quota-fix/',             category: 'Apps Script quota fixes' },
 ];
+
+/* The hero's "Six of the most expensive..." and the solutions grid's "all six"
+ * both count PAINS. The hero once said "Six" and listed five; deriving the
+ * word and the list from one array is what stops that recurring.
+ * tests/homepage-categories.test.js checks that the grid has one
+ * data-tool-card per entry. */
+const NUMBER_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+const toolCount = NUMBER_WORDS[PAINS.length] ?? String(PAINS.length);
+const ToolCount = toolCount.charAt(0).toUpperCase() + toolCount.slice(1);
+const categoryList = (() => {
+  const c = PAINS.map((p) => p.category);
+  return c.length > 1 ? `${c.slice(0, -1).join(', ')} and ${c[c.length - 1]}` : c.join('');
+})();
 
 /* ---------------------------------------------------------------------------
  * FAQ — 19 questions. The only definition.
@@ -212,7 +225,7 @@ const kitSchema = {
 ---
 <Base 
   title="Free Shopify Automation Stack 2026 — Replace Paid Apps" 
-  description="Replace six paid Shopify apps with free tools: Meta CAPI, TikTok CAPI, Stocky replacement, Klaviyo alternative, live P&L and an Apps Script quota fix."
+  description={`Replace ${toolCount} paid Shopify apps with free tools: Meta CAPI, TikTok CAPI, Stocky replacement, Klaviyo alternative, live P&L and an Apps Script quota fix.`}
   schema={kitSchema}
 >
   <Fragment slot="head">
@@ -346,7 +359,7 @@ const kitSchema = {
 
   <h1 itemprop="headline">Klaviyo. Triple Whale. Stocky.<br><span class="green">Replaced — free.</span></h1>
 
-  <p id="answer" class="hero-sub" itemprop="description">Six of the most expensive Shopify app categories have free replacements built on Make.com's free tier: server-side Meta tracking, inventory logging, email marketing, TikTok Events API and live profit reporting. Each runs from one Shopify order webhook, needs no code, and deploys in about six minutes. Full walkthrough: <a href="/ultimate-shopify-automation-guide/">Ultimate Shopify Automation Guide</a>.</p>
+  <p id="answer" class="hero-sub" itemprop="description">{ToolCount} of the most expensive Shopify app categories have free replacements on this site: {categoryList}. Most run on Make.com's free tier, email runs on Systeme.io's free plan, and none needs code. Full walkthrough: <a href="/ultimate-shopify-automation-guide/">Ultimate Shopify Automation Guide</a>.</p>
 
   <div class="hero-primary-cta">
     <a href="#sa-scanner" class="btn btn-lg btn-g">See What Your Store Is Overpaying <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
@@ -513,10 +526,10 @@ const kitSchema = {
     <div class="sec-head">
       <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Free tools · Deploy individually or as a stack</span>
       <h2 id="sol-h">One Stack. Every Shopify Leak Fixed.</h2>
-      <p>Each targets a specific profit leak. Deploy one or all six — every tool costs $0, deploys in under 6 minutes, and runs on Make.com's free tier.</p>
+      <p>Each targets a specific profit leak. Deploy one or all {toolCount}. Every tool costs $0 and deploys in under 6 minutes.</p>
     </div>
 
-    <article class="sol-urgent">
+    <article class="sol-urgent" data-tool-card="/stocky-swap/">
       <div class="sol-urgent-bar"></div>
       <div class="sol-urgent-inner">
         <div style="flex:1;min-width:260px;">
@@ -560,7 +573,7 @@ const kitSchema = {
     </article>
 
     <div class="sol-grid">
-      <article class="sol-card g">
+      <article class="sol-card g" data-tool-card="/capi-shield/">
         <div class="sol-bar" style="background:linear-gradient(90deg,var(--g),#f5b64d);"></div>
         <div class="sol-body">
           <span class="tag">Meta Ads Tracking</span>
@@ -578,7 +591,7 @@ const kitSchema = {
         </div>
       </article>
 
-      <article class="sol-card t">
+      <article class="sol-card t" data-tool-card="/tiktok-events-api-shopify/">
         <div class="sol-bar"></div>
         <div class="sol-body">
           <span class="tag tag-tiktok">TikTok Tracking</span>
@@ -596,7 +609,7 @@ const kitSchema = {
         </div>
       </article>
 
-      <article class="sol-card g" style="border-color:rgba(52,211,119,.18);">
+      <article class="sol-card g" data-tool-card="/replace-klaviyo-free/" style="border-color:rgba(52,211,119,.18);">
         <div class="sol-bar" style="background:linear-gradient(90deg,var(--g),#00a8e8);"></div>
         <div class="sol-body">
           <span class="tag">Email Marketing</span>
@@ -614,7 +627,7 @@ const kitSchema = {
         </div>
       </article>
 
-      <article class="sol-card s">
+      <article class="sol-card s" data-tool-card="/shopify-profit-loss-automation/">
         <div class="sol-bar"></div>
         <div class="sol-body">
           <span class="tag tag-sky">P&amp;L Reporting</span>
@@ -632,7 +645,7 @@ const kitSchema = {
         </div>
       </article>
 
-      <article class="sol-card v">
+      <article class="sol-card v" data-tool-card="/autocrat-quota-fix/">
         <div class="sol-bar"></div>
         <div class="sol-body">
           <span class="tag tag-vio">Automation Stability</span>
