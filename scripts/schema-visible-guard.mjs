@@ -437,6 +437,11 @@ export function unrenderedPlaceholders(text) {
 const SHUTDOWN_WORDING = [
   /stocky.{0,60}(shutting down|will (shut|close)|shuts down|is closing|before the shutdown|closes on)|(shutting down|shuts down).{0,40}stocky/gi,
   /delet(ed|es|ing) all/gi,
+  // Added 25 Sep 2026: "before the shutdown" and its variants read as a
+  // deadline still ahead. Stocky has closed, so any of these is now stale.
+  // A bare "before the deadline" is not matched: past-tense copy ("if you did
+  // not export before the deadline") uses it correctly.
+  /before (the )?(Aug(ust)? )?(\d{1,2}(st)?,? )?(2026 )?shutdown|before (the )?Aug(ust)? 31(st)?,? (2026 )?deadline|replace (Shopify )?Stocky before|before Stocky (closes|shuts|retires)|Stocky (retires|is retiring)|with Stocky retiring/gi,
 ];
 const TRANSCRIPT_BLOCK = /<details\b[^>]*\bclass="[^"]*\bhero-video-transcript\b[^"]*"[^>]*>[\s\S]*?<\/details>/gi;
 const TEXT_ATTRS = /\b(?:content|title|alt|aria-label)="([^"]*)"/gi;

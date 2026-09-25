@@ -6,12 +6,12 @@ import AuthorCard from '../components/AuthorCard.astro';
 import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
 import GapContribute from '../components/GapContribute.astro';
 
-const schemas = [{"@context":"https://schema.org","@type":"WebApplication","dateModified":pageUpdated('/shopify-vs-meta-attribution-gap-calculator/'),"name":"Shopify vs Meta Attribution Gap Calculator","url":"https://stackarchitect.xyz/shopify-vs-meta-attribution-gap-calculator/","description":"Calculate the gap between your Shopify actual revenue and Meta Ads reported revenue. Understand your true ROAS, identify how much iOS is costing you, and discover whether server-side tracking will fix it.","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{ "@id": "https://stackarchitect.xyz/#org" }},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does Meta report more revenue than Shopify shows?","acceptedAnswer":{"@type":"Answer","text":"Meta's default attribution model counts a purchase against an ad if any ad was clicked within 7 days or viewed within 1 day — even if the customer would have bought anyway. Shopify only shows actual orders. Some overreporting is normal, but its size is specific to your ad strategy and audience overlap — which is what the calculator above measures against your own two figures rather than an industry range."}},{"@type":"Question","name":"Why does Meta sometimes report less revenue than Shopify?","acceptedAnswer":{"@type":"Answer","text":"If Meta is reporting significantly less than Shopify, you likely have a tracking problem — iOS restrictions, ad blockers, or a broken pixel are preventing Meta from seeing conversions. This is the dangerous scenario: you appear to have lower ROAS than you actually do, leading to under-investment in profitable campaigns."}},{"@type":"Question","name":"What is a healthy Shopify vs Meta attribution ratio?","acceptedAnswer":{"@type":"Answer","text":"This calculator treats 1.0–1.8x as normal overlap, above 1.8x as view-through inflation or audience overlap worth checking, and below 0.8x as tracking loss — Meta missing conversions Shopify is processing. Those bands are our convention, not a measured distribution across brands: above 1.0x is what the 7-day click, 1-day view window produces by construction, and below 1.0x means Meta cannot see orders Shopify recorded. Your own ratio tracked over time is the more useful baseline."}},{"@type":"Question","name":"Does server-side tracking fix the Meta attribution gap?","acceptedAnswer":{"@type":"Answer","text":"Server-side tracking (Meta CAPI) fixes the under-reporting problem — it ensures Meta sees conversions that browser tracking misses. It does not reduce the over-reporting caused by attribution window overlap. Use de-duplicated server-side events alongside the pixel for the most accurate picture."}},{"@type":"Question","name":"How do I set up Meta CAPI on Shopify for free?","acceptedAnswer":{"@type":"Answer","text":"Use Make.com to route Shopify order webhooks directly to Meta's Conversions API server-to-server. The full free setup guide is at stackarchitect.xyz/capi-shield. It takes 6 minutes and costs $0 on Make.com's free tier."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://stackarchitect.xyz/tools/"},{"@type":"ListItem","position":3,"name":"Shopify vs Meta Attribution Gap Calculator","item":"https://stackarchitect.xyz/shopify-vs-meta-attribution-gap-calculator/"}]}];
+const schemas = [{"@context":"https://schema.org","@type":"WebApplication","dateModified":pageUpdated('/shopify-vs-meta-attribution-gap-calculator/'),"name":"Shopify vs Meta Attribution Gap Calculator","url":"https://stackarchitect.xyz/shopify-vs-meta-attribution-gap-calculator/","description":"Calculate the gap between your Shopify actual revenue and Meta Ads reported revenue. Understand your true ROAS, identify how much iOS is costing you, and discover whether server-side tracking will fix it.","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{ "@id": "https://stackarchitect.xyz/#org" }},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does Meta report more revenue than Shopify shows?","acceptedAnswer":{"@type":"Answer","text":"Meta's default attribution model counts a purchase against an ad if any ad was clicked within 7 days or viewed within 1 day, even if the customer would have bought anyway. Shopify only shows actual orders. Some overreporting is normal, but its size is specific to your ad strategy and audience overlap, which is what the calculator above measures against your own two figures rather than an industry range."}},{"@type":"Question","name":"Why does Meta sometimes report less revenue than Shopify?","acceptedAnswer":{"@type":"Answer","text":"If Meta is reporting significantly less than Shopify, you likely have a tracking problem: iOS restrictions, ad blockers, or a broken pixel are preventing Meta from seeing conversions. This is the dangerous scenario: you appear to have lower ROAS than you actually do, leading to under-investment in profitable campaigns."}},{"@type":"Question","name":"What is a healthy Shopify vs Meta attribution ratio?","acceptedAnswer":{"@type":"Answer","text":"This calculator treats 1.0–1.8x as normal overlap, above 1.8x as view-through inflation or audience overlap worth checking, and below 0.8x as tracking loss: Meta missing conversions Shopify is processing. Those bands are our convention, not a measured distribution across brands: above 1.0x is what the 7-day click, 1-day view window produces by construction, and below 1.0x means Meta cannot see orders Shopify recorded. Your own ratio tracked over time is the more useful baseline."}},{"@type":"Question","name":"Does server-side tracking fix the Meta attribution gap?","acceptedAnswer":{"@type":"Answer","text":"Server-side tracking (Meta CAPI) fixes the under-reporting problem: it ensures Meta sees conversions that browser tracking misses. It does not reduce the over-reporting caused by attribution window overlap. Use de-duplicated server-side events alongside the pixel for the most accurate picture."}},{"@type":"Question","name":"How do I set up Meta CAPI on Shopify for free?","acceptedAnswer":{"@type":"Answer","text":"Use Make.com to route Shopify order webhooks directly to Meta's Conversions API server-to-server. The full free setup guide is at stackarchitect.xyz/capi-shield. It takes 6 minutes and costs $0 on Make.com's free tier."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://stackarchitect.xyz/tools/"},{"@type":"ListItem","position":3,"name":"Shopify vs Meta Attribution Gap Calculator","item":"https://stackarchitect.xyz/shopify-vs-meta-attribution-gap-calculator/"}]}];
 
 const breadcrumb = [
   { label: 'Home', href: '/' },
   { label: 'Tools', href: '/tools/' },
-  { label: 'Shopify vs Meta Attribution Gap Calculator — Free ROAS Gap Analysis Tool' },
+  { label: 'Shopify vs Meta Attribution Gap Calculator: Free ROAS Gap Analysis Tool' },
 ];
 import TableOfContents from '../components/TableOfContents.astro';
 
@@ -34,7 +34,7 @@ const tocHeadings = [
   },
   {
     "id": "fix-tracking-loss-free-capi-setup",
-    "text": "Fix Tracking Loss \u2014 Free CAPI Setup"
+    "text": "Fix Tracking Loss: Free CAPI Setup"
   }
 ];
 
@@ -159,7 +159,7 @@ const tocHeadings = [
     <div class="calc-inner">
       <div class="calc-card">
         <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#93a09a;margin-bottom:20px;">ATTRIBUTION_GAP_CALCULATOR</div>
-        <p class="calc-currency-note" style="margin-bottom:16px;">Enter all three figures in the same currency. The tool compares them against each other, so it never needs to know which one — and it does not convert.</p>
+        <p class="calc-currency-note" style="margin-bottom:16px;">Enter all three figures in the same currency. The tool compares them against each other, so it never needs to know which one, and it does not convert.</p>
         <div class="calc-grid">
           <div class="calc-field">
             <label>Shopify revenue (last 30 days)</label>
@@ -189,7 +189,7 @@ const tocHeadings = [
             <div class="result-cell">
               <div class="result-label">Attribution Gap</div>
               <div class="result-value" id="ag-gap" style="color:#f5b64d;">−16%</div>
-              <div class="result-sub" id="ag-gap-label">Slight under-reporting — check pixel</div>
+              <div class="result-sub" id="ag-gap-label">Slight under-reporting: check pixel</div>
             </div>
             <div class="result-cell">
               <div class="result-label">Blended ROAS</div>
@@ -221,12 +221,12 @@ const tocHeadings = [
   <section class="editorial">
     <div class="editorial-inner">
       <h2 id="understanding-the-shopify-vs-meta-revenue-discrepancy">Understanding the Shopify vs Meta Revenue Discrepancy</h2>
-      <p>Every Shopify store running Meta ads sees a discrepancy between what Meta claims to have driven in revenue and what Shopify actually recorded. This is not a bug — it is a fundamental feature of how Meta's attribution model works. Understanding which direction the gap goes and why is the difference between making good media-buying decisions and wasting budget.</p>
-      <p><strong>Over-reporting (Meta shows more than Shopify):</strong> Meta's default 7-day click, 1-day view attribution window counts a purchase against your ad even if the customer was already going to buy. A customer who clicked your retargeting ad on Monday, then bought on Thursday after directly typing your URL, gets counted by Meta as an attributed conversion. Shopify records one order. This overlap is normal and expected — particularly for brands with high organic traffic or returning customer rates.</p>
-      <p><strong>Under-reporting (Meta shows less than Shopify):</strong> This is the dangerous scenario. It means iOS App Tracking Transparency, Safari ITP, or ad blockers are preventing Meta's pixel from firing on a meaningful percentage of conversions. Your actual ROAS is higher than your dashboard shows — but you are making budget decisions based on artificially low numbers, likely cutting campaigns that are genuinely profitable. Our <a href="/shopify-ios-attribution-gap-benchmark/">iOS attribution gap benchmark</a> tracks how large this under-reporting typically runs, measured from real Shopify stores.</p>
+      <p>Every Shopify store running Meta ads sees a discrepancy between what Meta claims to have driven in revenue and what Shopify actually recorded. This is not a bug: it is a fundamental feature of how Meta's attribution model works. Understanding which direction the gap goes and why is the difference between making good media-buying decisions and wasting budget.</p>
+      <p><strong>Over-reporting (Meta shows more than Shopify):</strong> Meta's default 7-day click, 1-day view attribution window counts a purchase against your ad even if the customer was already going to buy. A customer who clicked your retargeting ad on Monday, then bought on Thursday after directly typing your URL, gets counted by Meta as an attributed conversion. Shopify records one order. This overlap is normal and expected: particularly for brands with high organic traffic or returning customer rates.</p>
+      <p><strong>Under-reporting (Meta shows less than Shopify):</strong> This is the dangerous scenario. It means iOS App Tracking Transparency, Safari ITP, or ad blockers are preventing Meta's pixel from firing on a meaningful percentage of conversions. Your actual ROAS is higher than your dashboard shows, but you are making budget decisions based on artificially low numbers, likely cutting campaigns that are genuinely profitable. Our <a href="/shopify-ios-attribution-gap-benchmark/">iOS attribution gap benchmark</a> tracks how large this under-reporting typically runs, measured from real Shopify stores.</p>
 
       <h2 id="what-is-a-healthy-attribution-ratio">What Is a Healthy Attribution Ratio?</h2>
-      <p>The calculator scores your ratio against four bands, and they are this tool's convention rather than a measured distribution of DTC stores — we have not measured one, and any figure claiming to be typical across brands would be inherited from somewhere we cannot check. What each band rests on is the arithmetic of the attribution window itself: with a 7-day click, 1-day view setting, Meta counts purchases Shopify also counts, so a ratio above 1.0x is expected by construction, and one below 1.0x means Meta is failing to see orders that Shopify recorded. <strong>1.0–1.8x</strong> reads as normal overlap; <strong>above 1.8x</strong> flags view-through inflation or audience overlap worth checking; <strong>0.8–1.0x</strong> is slight under-reporting; <strong>below 0.8x</strong> is tracking loss that needs investigation. Your own ratio over time is a better baseline than any of these — a stable number that moves is the signal.</p>
+      <p>The calculator scores your ratio against four bands, and they are this tool's convention rather than a measured distribution of DTC stores: we have not measured one, and any figure claiming to be typical across brands would be inherited from somewhere we cannot check. What each band rests on is the arithmetic of the attribution window itself: with a 7-day click, 1-day view setting, Meta counts purchases Shopify also counts, so a ratio above 1.0x is expected by construction, and one below 1.0x means Meta is failing to see orders that Shopify recorded. <strong>1.0–1.8x</strong> reads as normal overlap; <strong>above 1.8x</strong> flags view-through inflation or audience overlap worth checking; <strong>0.8–1.0x</strong> is slight under-reporting; <strong>below 0.8x</strong> is tracking loss that needs investigation. Your own ratio over time is a better baseline than any of these: a stable number that moves is the signal.</p>
 
       <h2 id="how-meta-capi-changes-the-picture">How Meta CAPI Changes the Picture</h2>
       <p>Implementing <a href="/capi-shield/">Meta Conversions API (server-side)</a> alongside your browser pixel solves the under-reporting problem. Server-side events fire from your server directly to Meta's API, so iOS restrictions cannot intercept them. When properly deduplicated (using the same event_id for both the pixel and CAPI event), you get the most complete picture of attribution possible within Meta's system. This typically brings the Meta-to-Shopify ratio closer to a predictable and expected range, making budget decisions much clearer.</p>
@@ -238,12 +238,12 @@ const tocHeadings = [
   <div class="aff-block">
     <div class="aff-block-text">
       <div class="aff-block-label">Recommended tool</div>
-      <div class="aff-block-title">CAPI Shield — Free Meta Server-Side Tracking</div>
+      <div class="aff-block-title">CAPI Shield: Free Meta Server-Side Tracking</div>
       <div class="aff-block-desc">Send Shopify purchase events directly to Meta's Conversions API via Make.com. Covers the iOS-blocked conversions the browser pixel never delivers. Free on Make.com's free tier.</div>
     </div>
     <div>
       <a href="/go/make/?source=shopify-vs-meta-attribution-gap-calculator-guide" target="_blank" rel="sponsored nofollow noopener" class="aff-block-link">Create a free Make.com account</a>
-      <div class="aff-disclosure">Affiliate link — costs you nothing extra</div>
+      <div class="aff-disclosure">Affiliate link: costs you nothing extra</div>
     </div>
   </div>
   </div>
@@ -255,25 +255,25 @@ const tocHeadings = [
     <details class="faq-item">
       <summary><span>Why does Meta report more revenue than Shopify shows?</span><span class="faq-arrow">▼</span></summary>
       <div class="faq-answer">
-        <p>Meta's default attribution model counts a purchase against an ad if any ad was clicked within 7 days or viewed within 1 day — even if the customer would have bought anyway. Shopify only shows actual orders. Some overreporting is normal, but its size is specific to your ad strategy and audience overlap — which is what the calculator above measures against your own two figures rather than an industry range.</p>
+        <p>Meta's default attribution model counts a purchase against an ad if any ad was clicked within 7 days or viewed within 1 day, even if the customer would have bought anyway. Shopify only shows actual orders. Some overreporting is normal, but its size is specific to your ad strategy and audience overlap, which is what the calculator above measures against your own two figures rather than an industry range.</p>
       </div>
     </details>
     <details class="faq-item">
       <summary><span>Why does Meta sometimes report less revenue than Shopify?</span><span class="faq-arrow">▼</span></summary>
       <div class="faq-answer">
-        <p>If Meta is reporting significantly less than Shopify, you likely have a tracking problem — iOS restrictions, ad blockers, or a broken pixel are preventing Meta from seeing conversions. This is the dangerous scenario: you appear to have lower ROAS than you actually do, leading to under-investment in profitable campaigns.</p>
+        <p>If Meta is reporting significantly less than Shopify, you likely have a tracking problem: iOS restrictions, ad blockers, or a broken pixel are preventing Meta from seeing conversions. This is the dangerous scenario: you appear to have lower ROAS than you actually do, leading to under-investment in profitable campaigns.</p>
       </div>
     </details>
     <details class="faq-item">
       <summary><span>What is a healthy Shopify vs Meta attribution ratio?</span><span class="faq-arrow">▼</span></summary>
       <div class="faq-answer">
-        <p>This calculator treats 1.0–1.8x as normal overlap, above 1.8x as view-through inflation or audience overlap worth checking, and below 0.8x as tracking loss — Meta missing conversions Shopify is processing. Those bands are our convention, not a measured distribution across brands: above 1.0x is what the 7-day click, 1-day view window produces by construction, and below 1.0x means Meta cannot see orders Shopify recorded. Your own ratio tracked over time is the more useful baseline.</p>
+        <p>This calculator treats 1.0–1.8x as normal overlap, above 1.8x as view-through inflation or audience overlap worth checking, and below 0.8x as tracking loss: Meta missing conversions Shopify is processing. Those bands are our convention, not a measured distribution across brands: above 1.0x is what the 7-day click, 1-day view window produces by construction, and below 1.0x means Meta cannot see orders Shopify recorded. Your own ratio tracked over time is the more useful baseline.</p>
       </div>
     </details>
     <details class="faq-item">
       <summary><span>Does server-side tracking fix the Meta attribution gap?</span><span class="faq-arrow">▼</span></summary>
       <div class="faq-answer">
-        <p>Server-side tracking (Meta CAPI) fixes the under-reporting problem — it ensures Meta sees conversions that browser tracking misses. It does not reduce the over-reporting caused by attribution window overlap. Use de-duplicated server-side events alongside the pixel for the most accurate picture.</p>
+        <p>Server-side tracking (Meta CAPI) fixes the under-reporting problem: it ensures Meta sees conversions that browser tracking misses. It does not reduce the over-reporting caused by attribution window overlap. Use de-duplicated server-side events alongside the pixel for the most accurate picture.</p>
       </div>
     </details>
     <details class="faq-item">
@@ -286,7 +286,7 @@ const tocHeadings = [
   </section>
 
   <section class="cta-strip-tool">
-    <h2 id="fix-tracking-loss-free-capi-setup">Fix Tracking Loss — Free CAPI Setup</h2>
+    <h2 id="fix-tracking-loss-free-capi-setup">Fix Tracking Loss: Free CAPI Setup</h2>
     <p>Server-side Meta tracking. 6 minutes. $0 forever.</p>
     <a href="/capi-shield/">Deploy CAPI Shield Free →</a>
   </section>
@@ -296,8 +296,6 @@ const tocHeadings = [
   <div class="sa-byline-wrap"><AuthorCard /></div>
   </main>
 
-  <div style="max-width:860px;margin:0 auto;padding:0 24px;margin-bottom:60px;">
-  </div>
 </Base>
 
 <script is:inline>

@@ -10,6 +10,9 @@ interface Props {
 }
 
 const { guides } = Astro.props;
+// The anchor text is the title alone. A badge or an arrow inside the link
+// becomes part of its anchor text, so the arrow is drawn in CSS instead and
+// `badge` is accepted but not rendered.
 
 // Normalise internal hrefs to trailing-slash form (site is trailingSlash:'always');
 // prevents a 301 hop on every related-guide link when frontmatter omits the slash.
@@ -25,8 +28,6 @@ const norm = (h: string) =>
     {guides.map(({ title, href, badge }) => (
       <a href={norm(href)} class="related-item">
         <span class="related-title">{title}</span>
-        {badge && <span class="related-badge">{badge}</span>}
-        <span class="related-arrow">→</span>
       </a>
     ))}
   </div>
@@ -96,14 +97,15 @@ const norm = (h: string) =>
     flex-shrink: 0;
   }
 
-  .related-arrow {
-    color: #2f3733;
+  .related-item::after {
+    content: "→";
+    color: #7f8b85;
     font-size: 13px;
     flex-shrink: 0;
     transition: color 0.2s;
   }
 
-  .related-item:hover .related-arrow {
-    color: #15803d;
+  .related-item:hover::after {
+    color: #34d377;
   }
 </style>

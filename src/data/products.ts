@@ -207,7 +207,7 @@ export const PRODUCTS: Product[] = [
       {
         time: '~2 min',
         title: 'Copy the Sheet, paste your credentials',
-        body: 'Copy SA_Template_1 into your own Drive — the six-column Inventory_Log is already laid out — then connect your Google account and your Shopify store where the blueprint marks the placeholders.',
+        body: 'Copy SA_Template_1 into your own Drive (the six-column Inventory_Log is already laid out), then connect your Google account and your Shopify store where the blueprint marks the placeholders.',
         tool: 'Google Sheets · your own connections',
       },
       {
@@ -218,7 +218,7 @@ export const PRODUCTS: Product[] = [
       },
     ],
     replacesNote:
-      "Linnworks, Skubana and Inventory Planner are inventory systems in the full sense: purchase orders, supplier lead times, demand forecasts, warehouse locations. Stocky Swap is none of that. It is a sales ledger — every unit that leaves through a Shopify order is written to a Sheet you own, as it happens. If what you relied on Stocky for was knowing what sold and when, that is the whole job, and a monthly subscription to a forecasting suite pays for screens you will not open. If you raise purchase orders against suppliers every week, one of those tools is the right call, and this page is not trying to argue you out of it.",
+      "Linnworks, Skubana and Inventory Planner are inventory systems in the full sense: purchase orders, supplier lead times, demand forecasts, warehouse locations. Stocky Swap is none of that. It is a sales ledger: every unit that leaves through a Shopify order is written to a Sheet you own, as it happens. If what you relied on Stocky for was knowing what sold and when, that is the whole job, and a monthly subscription to a forecasting suite pays for screens you will not open. If you raise purchase orders against suppliers every week, one of those tools is the right call, and this page is not trying to argue you out of it.",
     prerequisites: [
       "Shopify admin access that reaches Settings → Notifications. The store owner has it; a staff account needs the settings permission.",
       "A Make.com account. This one scenario fits inside Make’s free plan.",
@@ -229,7 +229,7 @@ export const PRODUCTS: Product[] = [
     setup: [
       {
         title: "Download both files from the Drive folder",
-        body: "Your Stripe receipt links to a Drive folder holding the JSON blueprint and the Excel template. Save the JSON to your computer — Make imports from a local file, not from a Drive link.",
+        body: "Your Stripe receipt links to a Drive folder holding the JSON blueprint and the Excel template. Save the JSON to your computer: Make imports from a local file, not from a Drive link.",
       },
       {
         title: "Import into an empty scenario",
@@ -237,7 +237,7 @@ export const PRODUCTS: Product[] = [
       },
       {
         title: "Turn the template into a Google Sheet",
-        body: "Upload SA_Template_1 to Drive and open it with Google Sheets so it converts; the scenario writes to a Google Sheet, not to an .xlsx file stored in Drive. Leave the tab called Inventory_Log named exactly that — the scenario finds it by name.",
+        body: "Upload SA_Template_1 to Drive and open it with Google Sheets so it converts; the scenario writes to a Google Sheet, not to an .xlsx file stored in Drive. Leave the tab called Inventory_Log named exactly that: the scenario finds it by name.",
       },
       {
         title: "Connect Google and pick the Sheet",
@@ -249,7 +249,7 @@ export const PRODUCTS: Product[] = [
       },
       {
         title: "Prove it with one order",
-        body: "Buy something with a SKU — a cheap real order you refund, or a checkout through Shopify’s test payment gateway. Once the run finishes there should be one new row per line: time, SKU, a negative quantity, the order ID, the product title and a note. Delete the test rows once you have seen them.",
+        body: "Buy something with a SKU: a cheap real order you refund, or a checkout through Shopify’s test payment gateway. Once the run finishes there should be one new row per line: time, SKU, a negative quantity, the order ID, the product title and a note. Delete the test rows once you have seen them.",
       },
     ],
     failureModes: [
@@ -265,7 +265,7 @@ export const PRODUCTS: Product[] = [
       },
       {
         symptom: "Make shows runs, but the Sheet stops filling.",
-        cause: "The Google connection has lapsed — changing your Google password or removing Make’s access revokes it — or someone renamed the tab. The Sheets step is set to ignore errors, so the run can still finish without an alert.",
+        cause: "The Google connection has lapsed (changing your Google password or removing Make’s access revokes it) or someone renamed the tab. The Sheets step is set to ignore errors, so the run can still finish without an alert.",
         check: "Open the latest run and click the Sheets step. An authorisation error means reconnect Google; a message that the sheet cannot be found means the tab no longer reads Inventory_Log.",
       },
       {
@@ -285,7 +285,7 @@ export const PRODUCTS: Product[] = [
       },
       {
         q: 'Do I need a paid Make.com plan?',
-        a: 'Not for this one scenario — it runs on Make’s free plan. Make’s free plan caps how many scenarios you can have active at once, so running several blueprints together is what pushes you onto a paid tier.',
+        a: 'Not for this one scenario: it runs on Make’s free plan. Make’s free plan caps how many scenarios you can have active at once, so running several blueprints together is what pushes you onto a paid tier.',
       },
       {
         q: 'What if I would rather build it myself?',
@@ -293,7 +293,7 @@ export const PRODUCTS: Product[] = [
       },
       {
         q: "Does it record restocks, returns and adjustments?",
-        a: "No — only units leaving through paid orders. Add incoming stock as a row with a positive number in the change column and a note such as “PO received”, and the running total stays honest. Returns go in the same way.",
+        a: "No: only units leaving through paid orders. Add incoming stock as a row with a positive number in the change column and a note such as “PO received”, and the running total stays honest. Returns go in the same way.",
       },
       {
         q: "Will it slow down my storefront or checkout?",
@@ -311,7 +311,7 @@ export const PRODUCTS: Product[] = [
     job:
       "Sends every paid Shopify order to Meta’s Conversions API from the server, with the customer’s details hashed for matching, so the purchase can reach your ad account even when the browser pixel is blocked.",
     buyIf:
-      "You advertise on Meta, Ads Manager reports fewer purchases than Shopify, and nothing else — Shopify’s own Facebook & Instagram app included — is already sending purchases to Meta from the server.",
+      "You advertise on Meta, Ads Manager reports fewer purchases than Shopify, and nothing else (Shopify’s own Facebook & Instagram app included) is already sending purchases to Meta from the server.",
     guideIf:
       "You want to see and adapt every field that goes to Meta, or you mainly want to understand how server-side events work. The free guide walks through the same request.",
     files: ['Blueprint 01_CAPI_Shield.json'],
@@ -337,7 +337,7 @@ export const PRODUCTS: Product[] = [
       {
         time: '~3 min',
         title: 'Paste your own API credentials',
-        body: 'The blueprint ships with placeholders where your secrets go: your Meta pixel ID and Conversions API access token. Paste yours in — nothing is shared, nothing is proxied through us. Then delete the Google Ads route: as shipped it cannot match orders.',
+        body: 'The blueprint ships with placeholders where your secrets go: your Meta pixel ID and Conversions API access token. Paste yours in: nothing is shared, nothing is proxied through us. Then delete the Google Ads route: as shipped it cannot match orders.',
         tool: 'Meta Events Manager',
       },
       {
@@ -366,7 +366,7 @@ export const PRODUCTS: Product[] = [
       },
       {
         title: "Fill in the Meta branch",
-        body: "Open the Meta request step and replace the two placeholders — dataset ID and token — with yours. Leave the request body as it is; the field names and the hashing are what Meta checks each event against.",
+        body: "Open the Meta request step and replace the two placeholders, dataset ID and token, with yours. Leave the request body as it is; the field names and the hashing are what Meta checks each event against.",
       },
       {
         title: "Delete the Google route",
@@ -378,7 +378,7 @@ export const PRODUCTS: Product[] = [
       },
       {
         title: "Confirm it in Test Events",
-        body: "Open Test Events in Events Manager, then place an order — a cheap real one you refund, or one through Shopify’s test gateway. A Purchase should appear from the server. If your browser pixel fires as well, the pair should read as one deduplicated event, not two.",
+        body: "Open Test Events in Events Manager, then place an order: a cheap real one you refund, or one through Shopify’s test gateway. A Purchase should appear from the server. If your browser pixel fires as well, the pair should read as one deduplicated event, not two.",
       },
     ],
     failureModes: [
@@ -389,7 +389,7 @@ export const PRODUCTS: Product[] = [
       },
       {
         symptom: "Purchases in Ads Manager jump to roughly double.",
-        cause: "Two server-side senders are reporting the same order — this scenario plus Shopify’s own Meta integration or another tracking app — with event IDs that do not match.",
+        cause: "Two server-side senders are reporting the same order (this scenario plus Shopify’s own Meta integration or another tracking app) with event IDs that do not match.",
         check: "Events Manager’s Overview lists the sources feeding each event and whether they are being deduplicated. Switch one server sender off, or make both send the same event ID.",
       },
       {
@@ -399,7 +399,7 @@ export const PRODUCTS: Product[] = [
       },
       {
         symptom: "Events stop arriving months after setup.",
-        cause: "The token was revoked — for example, the Conversions API system user was removed during a clean-up of Business Settings — or Meta retired the Graph API version named in the request URL.",
+        cause: "The token was revoked (for example, the Conversions API system user was removed during a clean-up of Business Settings) or Meta retired the Graph API version named in the request URL.",
         check: "Read the Meta step’s response in the latest run. For a token error, generate a new token in Events Manager and paste it in; for a version error, move the URL to a current version from Meta’s changelog. Send one order through to confirm.",
       },
     ],
@@ -426,7 +426,7 @@ export const PRODUCTS: Product[] = [
       },
       {
         q: "Do I need Google Ads for it to work?",
-        a: "No. The Meta branch works on its own. Delete the Google route — as shipped it cannot match orders anyway — and each order then makes one outbound call instead of two.",
+        a: "No. The Meta branch works on its own. Delete the Google route (as shipped, it cannot match orders anyway) and each order then makes one outbound call instead of two.",
       },
     ],
   },
@@ -475,7 +475,7 @@ export const PRODUCTS: Product[] = [
       },
     ],
     replacesNote:
-      "WeltPixel and Analyzify sell server-side tracking inside wider packages: several ad platforms at once, GA4 clean-up, help with installation. For a store whose TikTok problem is purchases going missing, the part that matters is one server event per paid order with the customer fields hashed for matching. TikTok CAPI is that part as an importable file. It does not send browse or cart events from the server and it reports on nothing — TikTok Ads Manager stays the place you read results.",
+      "WeltPixel and Analyzify sell server-side tracking inside wider packages: several ad platforms at once, GA4 clean-up, help with installation. For a store whose TikTok problem is purchases going missing, the part that matters is one server event per paid order with the customer fields hashed for matching. TikTok CAPI is that part as an importable file. It does not send browse or cart events from the server and it reports on nothing: TikTok Ads Manager stays the place you read results.",
     prerequisites: [
       "A TikTok pixel in Events Manager, and an Admin or Operator role on the ad account, which TikTok requires before it will issue an Events API token.",
       "Your pixel code, copied from the pixel’s settings page.",
@@ -489,7 +489,7 @@ export const PRODUCTS: Product[] = [
       },
       {
         title: "Generate an Events API token",
-        body: "In TikTok Events Manager, open your pixel, go to its settings and generate an access token for the Events API. Copy the token and the pixel code — both go into Make next.",
+        body: "In TikTok Events Manager, open your pixel, go to its settings and generate an access token for the Events API. Copy the token and the pixel code: both go into Make next.",
       },
       {
         title: "Fill the two placeholders",
@@ -533,7 +533,7 @@ export const PRODUCTS: Product[] = [
     faq: [
       {
         q: 'Why does TikTok report fewer purchases than Shopify?',
-        a: 'The browser-side pixel is the weak link — iOS restrictions, ad blockers and abandoned sessions all cost it events. A server-side CompletePayment fires from the order itself, so it does not depend on the shopper’s browser cooperating.',
+        a: 'The browser-side pixel is the weak link: iOS restrictions, ad blockers and abandoned sessions all cost it events. A server-side CompletePayment fires from the order itself, so it does not depend on the shopper’s browser cooperating.',
       },
       {
         q: 'Will this double-count against my existing pixel?',
@@ -545,7 +545,7 @@ export const PRODUCTS: Product[] = [
       },
       {
         q: 'Can I build this from the free guide instead?',
-        a: 'Yes — /tiktok-events-api-shopify/ covers the same scenario end to end and the day-one result is the same. This is the finished file for people who would rather not spend the afternoon.',
+        a: 'Yes: /tiktok-events-api-shopify/ covers the same scenario end to end and the day-one result is the same. This is the finished file for people who would rather not spend the afternoon.',
       },
       {
         q: "Does it send events for POS and draft orders?",
@@ -569,7 +569,7 @@ export const PRODUCTS: Product[] = [
     buyIf:
       "You know your unit costs, most of your orders are for a single item, and you want per-order gross profit in a Sheet rather than in a monthly app.",
     guideIf:
-      "You want to change the maths — cost every line item, or use your own fee model — and would rather build the scenario knowing how each step works.",
+      "You want to change the maths (cost every line item, or use your own fee model) and would rather build the scenario knowing how each step works.",
     files: ['Blueprint 04_P_and_L_Auto.json', 'SA_Template_2_PnL_Auto.xlsx'],
     replaces: [
       { name: 'TrueProfit', price: '$19+/mo' },
@@ -603,7 +603,7 @@ export const PRODUCTS: Product[] = [
       },
     ],
     replacesNote:
-      "TrueProfit, BeProfit and Glew.io pull ad spend from Meta, Google and TikTok automatically, break profit down by product and channel, and present it on a hosted dashboard. P&L Auto does the per-order arithmetic — revenue, fees, cost of goods, gross profit — and writes it into a workbook you own. Ad spend you enter yourself, weekly or monthly. If your margin questions are about individual orders and SKUs, that trade is worth the subscription you stop paying. If you run spend across many campaigns and want it attributed order by order, the paid tools earn their price.",
+      "TrueProfit, BeProfit and Glew.io pull ad spend from Meta, Google and TikTok automatically, break profit down by product and channel, and present it on a hosted dashboard. P&L Auto does the per-order arithmetic (revenue, fees, cost of goods, gross profit) and writes it into a workbook you own. Ad spend you enter yourself, weekly or monthly. If your margin questions are about individual orders and SKUs, that trade is worth the subscription you stop paying. If you run spend across many campaigns and want it attributed order by order, the paid tools earn their price.",
     prerequisites: [
       "A unit cost for every SKU you sell. This is the only real work; the workbook cannot work out profit on a product it has no cost for.",
       "The variant ID of every product you sell. COGS_Table is keyed on Shopify’s variant ID, not the SKU; it is in the variant’s admin URL.",
@@ -618,11 +618,11 @@ export const PRODUCTS: Product[] = [
       },
       {
         title: "Turn the workbook into a Google Sheet",
-        body: "Upload SA_Template_2 to Drive and open it with Google Sheets so it converts. Leave the tab names as they are — the scenario addresses Order_Data and COGS_Table by name.",
+        body: "Upload SA_Template_2 to Drive and open it with Google Sheets so it converts. Leave the tab names as they are: the scenario addresses Order_Data and COGS_Table by name.",
       },
       {
         title: "Fill COGS_Table before anything else",
-        body: "One row per variant ID with its landed unit cost: what you paid the supplier plus inbound freight and duty, if you want gross profit to mean what it says. Do this before the first live order — an order whose variant is missing from the table is not written at all.",
+        body: "One row per variant ID with its landed unit cost: what you paid the supplier plus inbound freight and duty, if you want gross profit to mean what it says. Do this before the first live order: an order whose variant is missing from the table is not written at all.",
       },
       {
         title: "Connect Google in every Sheets step",
@@ -634,7 +634,7 @@ export const PRODUCTS: Product[] = [
       },
       {
         title: "Reconcile one order by hand",
-        body: "Place a test order, then check its row against Shopify: revenue should match the order total, COGS should match your table’s unit cost for the first item, and the fee should sit close to what your processor actually charged. If any figure is off, fix it now — every later row follows the same logic.",
+        body: "Place a test order, then check its row against Shopify: revenue should match the order total, COGS should match your table’s unit cost for the first item, and the fee should sit close to what your processor actually charged. If any figure is off, fix it now: every later row follows the same logic.",
       },
     ],
     failureModes: [

@@ -3,7 +3,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
-import { analysePage, check, parseRedirects, loadDist, updatedClaims } from '../scripts/content-quality-guard.mjs';
+import { analysePage, check, parseRedirects, loadDist, updatedClaims, anchorWarnings, internalPath } from '../scripts/content-quality-guard.mjs';
 
 const page = ({ main = '', head = '', outside = '' } = {}) =>
   `<!doctype html><html><head>${head}</head><body><nav class="sa-nav"><a class="sa-nav-cta" href="/pro/">Kit</a></nav>` +
@@ -16,7 +16,8 @@ const good = (extra = '', d = '2026-09-01') =>
 
 function run(pages, { sitemap = Object.keys(pages), redirects = '' } = {}) {
   const analysed = Object.fromEntries(Object.entries(pages).map(([p, h]) => [p, analysePage(h)]));
-  return check({ pages: analysed, sitemapPaths: sitemap, redirects: parseRedirects(redirects), builtPaths: new Set(Object.keys(pages)) });
+  // /pro/ is built: the nav in page() links to it.
+  return check({ pages: analysed, sitemapPaths: sitemap, redirects: parseRedirects(redirects), builtPaths: new Set([...Object.keys(pages), '/pro/']) });
 }
 const rules = (f) => [...new Set(f.map((x) => x.rule))].sort();
 
@@ -59,7 +60,7 @@ test('two kit mentions fail, including a Stripe checkout link; /pro/ pages are e
 });
 
 test('homepage: at most 8 buttons and 5 affiliate links in total', () => {
-  const btns = Array.from({ length: 9 }, (_, i) => `<a class="btn" href="/x${i}/">x</a>`).join('');
+  const btns = Array.from({ length: 9 }, (_, i) => `<a class="btn" href="#x${i}">x</a>`).join('');
   assert.deepEqual(rules(run({ '/': good(btns) })), ['caps']);
 });
 
@@ -101,6 +102,45 @@ test('a redirect whose target is itself a redirect source fails', () => {
   const f = run({ '/c/': good() }, { sitemap: ['/c/'], redirects: '/a/ /b/ 301\n/b/ /c/ 301' });
   assert.deepEqual(rules(f), ['redirect-chain']);
   assert.deepEqual(run({ '/c/': good() }, { sitemap: ['/c/'], redirects: '/a/ /c/ 301\n/b/ /c/ 301' }), []);
+});
+
+test('internal links must be direct: trailing slash, not a redirect, built, not noindex', () => {
+  const noindex = page({ head: '<meta name="robots" content="noindex, follow">' + ld({ '@type': 'WebPage', dateModified: '2026-09-01' }), main: dated() });
+  const pages = (href) => ({ '/a/': good(`<p><a href="${href}">B</a></p>`), '/b/': good(), '/apps/x/': noindex, '/privacy/': noindex });
+  const sitemap = ['/a/', '/b/'];
+  assert.deepEqual(run(pages('/b/'), { sitemap }), []);
+  assert.deepEqual(run(pages('https://stackarchitect.xyz/b/#top'), { sitemap }), []);
+  assert.deepEqual(rules(run(pages('/b'), { sitemap })), ['internal-link']);
+  assert.deepEqual(rules(run(pages('/old/'), { sitemap, redirects: '/old/ /b/ 301' })), ['internal-link']);
+  assert.deepEqual(rules(run(pages('/missing/'), { sitemap })), ['internal-link']);
+  assert.deepEqual(rules(run(pages('/apps/x/'), { sitemap })), ['internal-link']);
+  // legal pages, /go/ cloaks and files are not checked as pages
+  assert.deepEqual(run(pages('/privacy/'), { sitemap }), []);
+  assert.deepEqual(run(pages('/go/make/'), { sitemap }), []);
+  assert.equal(internalPath('/downloads/x.csv'), null);
+});
+
+test('/pro/ may link to its own noindex product pages; other pages may not', () => {
+  const noindex = page({ head: '<meta name="robots" content="noindex, follow">' + ld({ '@type': 'WebPage', dateModified: '2026-09-01' }), main: dated() });
+  const link = good('<p><a href="/pro/capi-shield/">CAPI Shield</a></p>');
+  assert.deepEqual(run({ '/pro/': link, '/pro/capi-shield/': noindex }, { sitemap: ['/pro/'] }), []);
+  assert.deepEqual(rules(run({ '/a/': link, '/pro/capi-shield/': noindex }, { sitemap: ['/a/'] })), ['internal-link']);
+});
+
+test('an em dash in visible page text fails; nav, footer and scripts do not count', () => {
+  assert.deepEqual(rules(run({ '/a/': good('<p>One \u2014 two</p>') })), ['em-dash']);
+  assert.deepEqual(run({ '/a/': good('<script>const s = "a \u2014 b";</script>') }), []);
+  const chrome = good().replace('>Kit<', '>Kit \u2014 now<');
+  assert.deepEqual(run({ '/a/': chrome }), []);
+});
+
+test('an anchor that shares no word with its target is a warning, not a failure', () => {
+  const pages = {
+    '/a/': analysePage(good('<p><a href="/b/">The $0 automation stack</a></p>')),
+    '/b/': analysePage(good().replace('<head>', '<head><title>Replace Klaviyo Free</title>')),
+  };
+  assert.equal(anchorWarnings({ pages, sitemapPaths: ['/a/', '/b/'] }).length, 1);
+  assert.deepEqual(run({ '/a/': good('<p><a href="/b/">The $0 automation stack</a></p>'), '/b/': good() }), []);
 });
 
 test('the built site passes', { skip: !existsSync('dist/sitemap-0.xml') && 'run `npm run build` first' }, () => {

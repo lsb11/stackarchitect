@@ -62,3 +62,21 @@ test('allowlists the homepage video transcript and nothing else on the page', ()
     1
   );
 });
+
+test('fails on "before the shutdown" deadline wording now that Stocky has closed', () => {
+  for (const s of [
+    'Replace Stocky before the August 2026 shutdown.',
+    'Stocky Swap, replace Stocky before August shutdown.',
+    'Export purchase orders separately before the shutdown.',
+    'Move your data before Stocky closes.',
+    'Free inventory management before Aug 2026 shutdown.',
+    'Stocky replacement (before August 31 shutdown).',
+    'Stocky Swap: Replace Shopify Stocky Before August 31.',
+    'Stocky Retires August 31 2026.',
+    'Your migration started before the August 31 2026 deadline.',
+  ]) {
+    assert.equal(shutdownWordingHits(page(`<p>${s}</p>`)).length, 1, s);
+  }
+  assert.deepEqual(shutdownWordingHits(page('<p>Stocky closed on 31 August 2026.</p>')), []);
+  assert.deepEqual(shutdownWordingHits(page('<p>If you did not export before the deadline, look now.</p>')), []);
+});

@@ -8,7 +8,9 @@ interface Props {
 const { type, appSlug, appName } = Astro.props;
 
 const isAlternative = type === 'alternative';
-const targetUrl = isAlternative ? `/${appSlug}-alternative/` : `/apps/${appSlug}/`;
+// The /apps/<slug>/ detail pages are noindex, so the review variant points at
+// the app's row in the indexable /apps/ index instead.
+const targetUrl = isAlternative ? `/${appSlug}-alternative/` : `/apps/#app-${appSlug}`;
 ---
 
 <aside class="bg-gray-800 border border-gray-700 rounded-xl p-6 my-8">
@@ -28,9 +30,9 @@ const targetUrl = isAlternative ? `/${appSlug}-alternative/` : `/apps/${appSlug}
         </p>
       ) : (
         <p class="text-gray-300 m-0 leading-relaxed text-sm sm:text-base">
-          <strong class="text-white block mb-1">Deep Dive Integration</strong>
+          <strong class="text-white block mb-1">Pricing record</strong>
           <a href={targetUrl} class="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors underline decoration-emerald-400/30 underline-offset-4">
-            View full pricing breakdown and technical verdict for {appName} &rarr;
+            See {appName} in the Shopify app pricing index &rarr;
           </a>
         </p>
       )}

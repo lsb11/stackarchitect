@@ -58,6 +58,10 @@ const categoryLabels: Record<string, string> = {
   product: 'Products',
 };
 
+// The last breadcrumb shows the page title as visible text, where an em dash
+// is not used; <title> itself keeps it.
+const crumbTitle = title.replace(/\s+—\s+/g, ': ');
+
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
@@ -74,7 +78,7 @@ const breadcrumbSchema = {
       name: categoryLabels[category] ?? category,
       item: 'https://stackarchitect.xyz/shopify-automation-guides/',
     },
-    { '@type': 'ListItem', position: 3, name: title, item: canonicalUrl },
+    { '@type': 'ListItem', position: 3, name: crumbTitle, item: canonicalUrl },
   ],
 };
 
@@ -104,7 +108,7 @@ const breadcrumb = [
     label: categoryLabels[category] ?? category,
     href: '/shopify-automation-guides/',
   },
-  { label: title },
+  { label: crumbTitle },
 ];
 
 const displayDate = (d: string) =>
@@ -150,7 +154,7 @@ const pageTitle = (title + SUFFIX).length <= 60 ? title + SUFFIX : title;
 
     <!--
       The H1 is rendered here from frontmatter, not from the markdown body.
-      #answer must follow the H1 in the DOM — it is the quotable unit
+      #answer must follow the H1 in the DOM: it is the quotable unit
       (Runbook §3.1) and reads as a summary of the title above it, not as
       a preamble to an unseen heading. seo-audit.mjs enforces this order.
     -->

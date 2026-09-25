@@ -18,7 +18,7 @@ interface Props {
   url: string;
   date: string;
   /** Machine-readable publication date, ISO 8601. Omitted where the original
-      prose gave no date — do not invent one to fill the attribute. */
+      prose gave no date: do not invent one to fill the attribute. */
   datetime?: string;
   /** The argument Luke made, in his words from the source paragraph. */
   argument: string;
@@ -26,7 +26,7 @@ interface Props {
   format?: string;
   rel?: string;
   /** Verbatim text WE supplied to the outlet, rendered as a pull quote.
-      Only ever our own contributed words — never another contributor's text
+      Only ever our own contributed words: never another contributor's text
       and never a summary of theirs. See the copyright rule in
       src/data/press.ts, which is the only permitted source for this prop. */
   quote?: string;
@@ -51,14 +51,14 @@ const {
   </h3>
   {quote && (
     /* A contributed quote, marked up as a quotation and nothing more. It is
-       NOT a Review, Rating or endorsement of us — see CLAUDE.md and the guard
+       NOT a Review, Rating or endorsement of us: see CLAUDE.md and the guard
        in scripts/claims-guard.mjs, which fails the build on rating-shaped
        markup near this article's URL. */
     <figure class="pc-quote-fig">
       <blockquote class="pc-quote" cite={url}>{quote}</blockquote>
       {attribution && (
         <figcaption class="pc-quote-attr">
-          {attribution} — <a href={url} target="_blank" rel={rel}>{outlet}</a>{date && <Fragment>, {date}</Fragment>}
+          {attribution}, <a href={url} target="_blank" rel={rel}>{outlet}</a>{date && <Fragment>, {date}</Fragment>}
         </figcaption>
       )}
     </figure>

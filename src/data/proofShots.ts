@@ -42,7 +42,7 @@ export const KIT_HERO_SHOT: ProofShot = {
   file: 'scenario-all-in-one.png',
   alt: 'The Complete Kit scenario open in the Make.com canvas: one Shopify order webhook feeding a router that fans out to the Meta Conversions API, Google Ads Enhanced Conversions, the TikTok Events API and two Google Sheets modules.',
   caption:
-    'All four automations running as one scenario in Make.com — one webhook, one router, five destinations.',
+    'All four automations running as one scenario in Make.com: one webhook, one router, five destinations.',
   width: 1600,
   height: 900,
 };
@@ -105,7 +105,7 @@ export const RESULT_SHOTS: Record<string, ProofShot> = {
     file: 'proof-sheets-rows.png',
     alt: 'The Google Sheets inventory log populated with real order rows: timestamp, SKU, change amount, order ID, product and note. Order identifiers are redacted.',
     caption:
-      'Real orders landing in the Sheets log — timestamp, SKU, quantity, order ID, product. Order IDs redacted.',
+      'Real orders landing in the Sheets log: timestamp, SKU, quantity, order ID, product. Order IDs redacted.',
     width: 1600,
     height: 900,
   },

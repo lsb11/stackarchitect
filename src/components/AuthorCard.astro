@@ -27,6 +27,7 @@ const { press = false } = Astro.props;
 
 // Never link a page to itself: /about/ carries this card too.
 const onAboutPage = Astro.url.pathname.replace(/\/+$/, '') === '/about';
+const onStockLogPage = Astro.url.pathname.replace(/\/+$/, '') === '/stocklog';
 const quote = PRESS[0];
 ---
 <div class="author-card-container" style="background:#0f1311;border:1px solid #222825;border-radius:12px;padding:1.5rem;margin:3rem 0;display:flex;align-items:center;gap:1.25rem;box-shadow:0 4px 16px rgba(0,0,0,.3);">
@@ -37,13 +38,13 @@ const quote = PRESS[0];
     </div>
     <div style="font-size:0.85rem;color:#93a09a;margin-bottom:6px;">{AUTHOR.roleLine}</div>
     <div style="font-size:0.88rem;color:#b6c0ba;line-height:1.5;">
-      Developer of <a href={AUTHOR.links.stockLog} target="_blank" rel="noopener" style="color:#34d377;text-decoration:underline;">StockLog</a> and author of the open-source <a href={AUTHOR.links.validatorRepo} target="_blank" rel="noopener" style="color:#34d377;text-decoration:underline;"><code>shopify-capi-validator</code></a> npm package. Certified in Shopify server-side tracking, Meta CAPI, and Google Apps Script engineering.{press && (
+      Developer of {onStockLogPage ? 'StockLog' : <a href={AUTHOR.links.stockLog} style="color:#34d377;text-decoration:underline;">StockLog</a>} and author of the open-source <a href={AUTHOR.links.validatorRepo} target="_blank" rel="noopener" style="color:#34d377;text-decoration:underline;"><code>shopify-capi-validator</code></a> npm package. Builds Shopify server-side tracking, Meta CAPI and Google Apps Script automations.{press && (
         <Fragment> <a href={quote.url} target="_blank" rel="noopener" style="color:#34d377;text-decoration:underline;">{quote.shortLine}</a>.</Fragment>
       )}
     </div>
     {!onAboutPage && (
       <div style="font-size:0.78rem;color:#7f8b85;margin-top:8px;">
-        <a href={AUTHOR.links.about} style="color:#93a09a;text-decoration:underline;">Full profile and credentials</a>
+        <a href={AUTHOR.links.about} style="color:#93a09a;text-decoration:underline;">Full profile</a>
       </div>
     )}
     <PageUpdated />

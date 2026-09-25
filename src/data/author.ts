@@ -49,7 +49,9 @@ export const AUTHOR = {
 
   /** Links the visible bio renders. Kept here so the card carries no URLs. */
   links: {
-    stockLog: 'https://stocklog.onrender.com/',
+    /** The StockLog page on this site, not the app host: a reader following the
+        byline should land on the product page, which links out to the app. */
+    stockLog: '/stocklog/',
     validatorRepo: 'https://github.com/lsb11/shopify-capi-validator',
     validatorNpm: 'https://www.npmjs.com/package/shopify-capi-validator',
     about: `${SITE}/about/`,

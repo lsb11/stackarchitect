@@ -19,6 +19,18 @@
 //   5. a sitemap URL is a redirect source or carries noindex
 //   6. a redirect target in public/_redirects is itself a redirect source, or
 //      is not a built page
+//   7. an internal link on a sitemap page (nav and footer included) lacks the
+//      trailing slash, is a redirect source, is not a built page, or points at
+//      a noindex page. Exceptions: the legal pages, and /pro/ linking to its
+//      own product pages. Added 25 Sep 2026, when every /apps/<slug>/ link on
+//      the site turned out to point at a noindex page.
+//   8. a sitemap page shows an em dash in its visible text (nav and footer
+//      aside). Added 25 Sep 2026 with the sitewide punctuation pass; <title>
+//      is in <head> and not checked.
+//
+// An anchor whose words share nothing with the target's title or H1 is
+// reported as a warning, not a failure: the match is a judgement, and a
+// short anchor such as "About" can be right.
 //
 // Elements are counted from a parsed DOM, never from raw text. A comment that
 // says "<main>" is not a main element, and the audit that led to this file got
@@ -127,9 +139,13 @@ export function analysePage(html) {
   const doc = parse(html);
   const mains = [];
   let robots = '';
+  let title = '';
+  let h1 = '';
   const ld = [];
   walk(doc, (n) => {
     if (n.tagName === 'main') mains.push(n);
+    if (n.tagName === 'title' && !title) title = textOf(n);
+    if (n.tagName === 'h1' && !h1) h1 = textOf(n);
     if (n.tagName === 'meta' && attr(n, 'name') === 'robots') robots = attr(n, 'content') || '';
     if (n.tagName === 'script' && attr(n, 'type') === 'application/ld+json') {
       try { ld.push(JSON.parse(n.childNodes.map((c) => c.value).join(''))); } catch { /* schema guard owns this */ }
@@ -141,9 +157,23 @@ export function analysePage(html) {
   let body = null;
   walk(doc, (n) => { if (!body && n.tagName === 'body') { body = n; return false; } });
   const anchors = [];
+  const links = [];
+  const emDashes = [];
   let stickyBars = 0;
   let updated = null;
   const faqVisible = [];
+  // Every link on the page, chrome included, for rule 7; em dashes in the
+  // visible text outside the chrome, for rule 8.
+  if (body) walk(body, (n) => {
+    if (n.tagName === 'a' && attr(n, 'href')) links.push({ href: attr(n, 'href'), text: textOf(n) });
+  });
+  if (body) walk(body, (n) => {
+    if (n !== body && isChrome(n)) return false;
+    // <title> is exempt; parse5 moves it into <body> when a stray element
+    // in <head> closes the head early.
+    if (SKIP_TEXT.has(n.tagName) || n.tagName === 'title') return false;
+    if (n.nodeName === '#text' && n.value.includes('\u2014')) emDashes.push(n.value.replace(/\s+/g, ' ').trim().slice(0, 80));
+  });
   const collect = (n, inFaq) => {
     if (n !== body && isChrome(n)) return;
     if (cls(n).split(/\s+/).includes('sa-sticky')) stickyBars++;
@@ -184,6 +214,10 @@ export function analysePage(html) {
     updated, modified,
     faqs: [...new Map([...faqLd, ...faqVisible].map((q) => q.replace(/\s+/g, ' ').trim()).filter(Boolean).map((q) => [norm(q), q])).values()],
     faqLd,
+    links,
+    emDashes,
+    title,
+    h1,
     bodyText: body ? norm(textOf(body)) : '',
     rawText: body ? contentText(body) : '',
   };
@@ -210,6 +244,41 @@ function isSource(rules, path) {
     }
     return slashless(r.from) === p;
   });
+}
+
+// ── internal links ──────────────────────────────────────────────────────────
+const LEGAL = new Set(['/privacy/', '/terms/', '/refund-policy/']);
+/** The site path an href points at, or null when it is not a page on this site
+    (off-site, mailto:, a bare #fragment, /go/ cloaks, /api/ Functions, files). */
+export function internalPath(href) {
+  let h = href.trim();
+  const abs = h.match(/^https?:\/\/(www\.)?stackarchitect\.xyz(\/.*)?$/i);
+  if (abs) h = abs[2] || '/';
+  if (!h.startsWith('/') || h.startsWith('//')) return null;
+  const path = h.split('#')[0].split('?')[0];
+  if (!path || /^\/(go|api|cdn-cgi)\//.test(path) || /^\/(go|api)$/.test(path)) return null;
+  if (/\.[a-z0-9]{2,5}$/i.test(path)) return null;
+  return path;
+}
+
+const STOP = new Set('a an and the of for to in on with your you is it this that how what why free 2026 guide shopify s vs by at from are'.split(' '));
+const words = (t) => new Set(norm(t).split(' ').filter((w) => w.length > 2 && !STOP.has(w)));
+/** Links whose anchor shares no significant word with the target's title or
+    H1. Warnings only: see the note at the top of this file. */
+export function anchorWarnings({ pages, sitemapPaths }) {
+  const out = [];
+  for (const path of sitemapPaths) {
+    for (const { href, text } of pages[path]?.links || []) {
+      const target = internalPath(href);
+      const t = target && pages[target];
+      if (!t || target === path || !text) continue;
+      const a = words(text);
+      if (a.size === 0) continue;
+      const ref = words(`${t.title} ${t.h1}`);
+      if (![...a].some((w) => ref.has(w))) out.push({ path, href, text, target: t.title });
+    }
+  }
+  return out;
 }
 
 // ── checks ──────────────────────────────────────────────────────────────────
@@ -260,6 +329,22 @@ export function check({ pages, sitemapPaths, redirects, builtPaths }) {
     if (p.noindex) fail('sitemap', path, 'carries noindex');
     if (isSource(redirects, path)) fail('sitemap', path, 'is a redirect source in public/_redirects');
   }
+  // 7. internal links, 8. em dashes
+  for (const path of sitemapPaths) {
+    const p = pages[path];
+    if (!p) continue;
+    for (const { href } of p.links || []) {
+      const target = internalPath(href);
+      if (!target) continue;
+      if (!target.endsWith('/')) { fail('internal-link', path, `${href} has no trailing slash`); continue; }
+      if (isSource(redirects, target)) { fail('internal-link', path, `${href} is a redirect source`); continue; }
+      if (builtPaths && !builtPaths.has(target)) { fail('internal-link', path, `${href} is not a built page`); continue; }
+      const exempt = LEGAL.has(target) || (path === '/pro/' && target.startsWith('/pro/'));
+      if (pages[target]?.noindex && !exempt) fail('internal-link', path, `${href} points at a noindex page`);
+    }
+    if ((p.emDashes || []).length) fail('em-dash', path, `${p.emDashes.length} em dash(es), e.g. "${p.emDashes[0]}"`);
+  }
+
   for (const { q, pages: set } of faqOwners.values()) {
     const ps = [...set];
     if (ps.length > 1) fail('faq', ps.join(' '), `FAQ question on ${ps.length} pages: "${q}"`);
@@ -314,8 +399,11 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     console.error(`\n✗ content-quality-guard [${rule}] ${fs.length} failure(s)`);
     for (const f of fs) console.error(`  ${f.path}: ${f.msg}`);
   }
+  const warnings = anchorWarnings(data);
+  if (list) for (const w of warnings) console.warn(`  ⚠ anchor ${w.path}: "${w.text}" → ${w.href} (${w.target})`);
+  if (warnings.length) console.warn(`⚠ content-quality-guard: ${warnings.length} anchor(s) share no word with the target's title or H1${list ? '' : ' (--list shows them)'}.`);
   if (failures.length === 0) {
-    console.log(`✓ content-quality-guard: ${data.sitemapPaths.length} sitemap pages, ${Object.keys(data.pages).length} built pages — one <main> each, within CTA caps, dated, FAQ questions unique, no redirect chains.`);
+    console.log(`✓ content-quality-guard: ${data.sitemapPaths.length} sitemap pages, ${Object.keys(data.pages).length} built pages — one <main> each, within CTA caps, dated, FAQ questions unique, no redirect chains, internal links direct, no em dashes.`);
   } else if (!list) {
     process.exit(1);
   }

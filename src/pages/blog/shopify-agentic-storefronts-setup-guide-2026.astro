@@ -45,23 +45,23 @@ const prettyDate = (iso: string) =>
 const FAQ = [
   {
     q: 'What are Shopify Agentic Storefronts?',
-    a: "Shopify Agentic Storefronts connect your product catalog to AI assistants — ChatGPT, Google AI Mode and Gemini, Microsoft Copilot and Meta AI — through one setting in your Shopify admin, with no separate integration per platform. What each channel then does with a shopper differs: Google, Copilot and Meta complete the purchase inside their own interface, while ChatGPT sends the shopper to your own Shopify checkout. Announced in Shopify's Winter '26 Edition on 10 December 2025 and generally available to eligible merchants from 24 March 2026.",
+    a: "Shopify Agentic Storefronts connect your product catalog to AI assistants (ChatGPT, Google AI Mode and Gemini, Microsoft Copilot and Meta AI) through one setting in your Shopify admin, with no separate integration per platform. What each channel then does with a shopper differs: Google, Copilot and Meta complete the purchase inside their own interface, while ChatGPT sends the shopper to your own Shopify checkout. Announced in Shopify's Winter '26 Edition on 10 December 2025 and generally available to eligible merchants from 24 March 2026.",
   },
   {
     q: 'Does ChatGPT still let customers buy without leaving the chat?',
-    a: 'No. OpenAI retired Instant Checkout on 24 March 2026, and Shopify’s documentation now describes ChatGPT as a discovery-focused referrer: shoppers complete the purchase on your own Shopify checkout, opened in the ChatGPT in-app browser or a new tab. This matters more than it sounds. Because the transaction happens on your checkout, the product-type restrictions, fulfilment restrictions and pixel restrictions that apply to direct checkout do not apply to ChatGPT traffic at all — your normal checkout rules and your client-side pixels work as they always have. Guides published before 24 March 2026 describe the opposite arrangement.',
+    a: 'No. OpenAI retired Instant Checkout on 24 March 2026, and Shopify’s documentation now describes ChatGPT as a discovery-focused referrer: shoppers complete the purchase on your own Shopify checkout, opened in the ChatGPT in-app browser or a new tab. This matters more than it sounds. Because the transaction happens on your checkout, the product-type restrictions, fulfilment restrictions and pixel restrictions that apply to direct checkout do not apply to ChatGPT traffic at all: your normal checkout rules and your client-side pixels work as they always have. Guides published before 24 March 2026 describe the opposite arrangement.',
   },
   {
     q: 'Am I eligible for Shopify Agentic Storefronts?',
-    a: 'Eligibility is per channel, not one blanket rule, and it stacks two separate conditions: where your store is based, and where you sell. ChatGPT and Microsoft Copilot accept a store based in any country provided it sells to customers in the United States; Meta accepts one that sells to customers in the United States, Canada or Mexico. Google AI Mode and Gemini require the store itself to be based in the United States, United Kingdom, Australia or Canada and to sell into one of those four countries — and even then, direct checkout renders only for US-based customers, with everyone else redirected. Google also remains in early access and requires the Google & YouTube sales channel with product and shipping sync enabled. Agentic storefronts are active by default for eligible stores; the setting lives under Sales channels, then Agentic.',
+    a: 'Eligibility is per channel, not one blanket rule, and it stacks two separate conditions: where your store is based, and where you sell. ChatGPT and Microsoft Copilot accept a store based in any country provided it sells to customers in the United States; Meta accepts one that sells to customers in the United States, Canada or Mexico. Google AI Mode and Gemini require the store itself to be based in the United States, United Kingdom, Australia or Canada and to sell into one of those four countries, and even then, direct checkout renders only for US-based customers, with everyone else redirected. Google also remains in early access and requires the Google & YouTube sales channel with product and shipping sync enabled. Agentic storefronts are active by default for eligible stores; the setting lives under Sales channels, then Agentic.',
   },
   {
     q: 'How much does the Shopify Knowledge Base app cost?',
-    a: 'It is free. The Shopify Knowledge Base app is published by Shopify, launched on 16 May 2025, and its App Store listing shows no paid tier and no Plus-only pricing. Guides quoting a monthly fee for standard plans appear to be describing third-party knowledge-base apps instead. The app is not visible on your storefront — your FAQs serve as a data source that AI platforms read when answering questions about your products.',
+    a: 'It is free. The Shopify Knowledge Base app is published by Shopify, launched on 16 May 2025, and its App Store listing shows no paid tier and no Plus-only pricing. Guides quoting a monthly fee for standard plans appear to be describing third-party knowledge-base apps instead. The app is not visible on your storefront: your FAQs serve as a data source that AI platforms read when answering questions about your products.',
   },
   {
     q: 'Which products cannot be sold through Agentic Storefronts?',
-    a: 'Subscriptions, product bundles, digital products, customizable products and B2B-only products are not supported in agentic storefront direct checkouts. Local delivery, pickup in store and pickup points are not available as delivery methods, and custom checkout fields, checkout upsells, checkout validations and required customer sign-in do not work either. Every one of those restrictions applies to the direct-checkout channels only — Google, Copilot and Meta. ChatGPT sends shoppers to your own checkout, where none of them apply.',
+    a: 'Subscriptions, product bundles, digital products, customizable products and B2B-only products are not supported in agentic storefront direct checkouts. Local delivery, pickup in store and pickup points are not available as delivery methods, and custom checkout fields, checkout upsells, checkout validations and required customer sign-in do not work either. Every one of those restrictions applies to the direct-checkout channels only: Google, Copilot and Meta. ChatGPT sends shoppers to your own checkout, where none of them apply.',
   },
   {
     q: 'Do discount codes work in agentic checkout?',
@@ -69,7 +69,7 @@ const FAQ = [
   },
   {
     q: 'Will Google Analytics and my Meta pixel track agentic orders?',
-    a: 'Not in direct checkout. Shopify states that Google Analytics and custom pixels will not fire there — only server-to-server pixels for the started and completed events. So an order placed inside Google AI Mode, Copilot or Meta AI reaches your Shopify admin but arrives in GA4 and Meta Ads Manager with no client-side event behind it. If you buy ads and measure return on ad spend from browser pixels, those orders look like they came from nowhere. Server-side tracking is the fix, and it is worth having in place before you enable the channels rather than after. ChatGPT is unaffected — that checkout is yours, so your pixels fire normally.',
+    a: 'Not in direct checkout. Shopify states that Google Analytics and custom pixels will not fire there: only server-to-server pixels for the started and completed events. So an order placed inside Google AI Mode, Copilot or Meta AI reaches your Shopify admin but arrives in GA4 and Meta Ads Manager with no client-side event behind it. If you buy ads and measure return on ad spend from browser pixels, those orders look like they came from nowhere. Server-side tracking is the fix, and it is worth having in place before you enable the channels rather than after. ChatGPT is unaffected: that checkout is yours, so your pixels fire normally.',
   },
   {
     q: 'Does Shopify charge a fee for selling through AI channels?',
@@ -81,7 +81,7 @@ const FAQ = [
   },
   {
     q: 'My store is not eligible yet. Is any of this worth doing now?',
-    a: 'Yes, because discovery already happens without it. AI assistants crawl the web and read Shopify Catalog regardless of your agentic settings — what the feature adds is the checkout, not the visibility. Four things pay off immediately: install and populate the free Knowledge Base app, complete your product data so AI assistants can match products to conversational queries, add FAQPage structured data to your content, and get server-side tracking working so you have no attribution gap on the day the channels switch on.',
+    a: 'Yes, because discovery already happens without it. AI assistants crawl the web and read Shopify Catalog regardless of your agentic settings: what the feature adds is the checkout, not the visibility. Four things pay off immediately: install and populate the free Knowledge Base app, complete your product data so AI assistants can match products to conversational queries, add FAQPage structured data to your content, and get server-side tracking working so you have no attribution gap on the day the channels switch on.',
   },
 ];
 
@@ -95,7 +95,7 @@ const datasetSchema = {
   '@context': 'https://schema.org',
   '@type': 'Dataset',
   '@id': CANONICAL + '#matrix',
-  name: 'Shopify Agentic Storefronts — per-channel eligibility and capability matrix (August 2026)',
+  name: 'Shopify Agentic Storefronts: per-channel eligibility and capability matrix (August 2026)',
   description: CHANNELS.description,
   license: 'https://creativecommons.org/licenses/by/4.0/',
   creator: { '@id': 'https://stackarchitect.xyz/#org' },
@@ -104,15 +104,15 @@ const datasetSchema = {
   temporalCoverage: '2025-12-10/' + CHANNELS.verifiedDate,
   variableMeasured: [
     ...CHANNELS.channels.flatMap((c) => [
-      { '@type': 'PropertyValue', name: `${c.name} — checkout model`, value: c.checkoutModel },
-      { '@type': 'PropertyValue', name: `${c.name} — store must be based in`, value: c.storeLocationRule },
-      { '@type': 'PropertyValue', name: `${c.name} — must sell to customers in`, value: c.customerLocationRule },
-      { '@type': 'PropertyValue', name: `${c.name} — channel fee`, value: c.fee },
+      { '@type': 'PropertyValue', name: `${c.name}: checkout model`, value: c.checkoutModel },
+      { '@type': 'PropertyValue', name: `${c.name}: store must be based in`, value: c.storeLocationRule },
+      { '@type': 'PropertyValue', name: `${c.name}: must sell to customers in`, value: c.customerLocationRule },
+      { '@type': 'PropertyValue', name: `${c.name}: channel fee`, value: c.fee },
     ]),
-    { '@type': 'PropertyValue', name: 'Direct checkout — unsupported product types', value: limits.unsupportedProductTypes.join('; ') },
-    { '@type': 'PropertyValue', name: 'Direct checkout — unsupported delivery methods', value: limits.unsupportedFulfilment.join('; ') },
-    { '@type': 'PropertyValue', name: 'Direct checkout — discount codes supported', value: 'Yes' },
-    { '@type': 'PropertyValue', name: 'Direct checkout — client-side pixels fire', value: 'No; server-to-server started and completed events only' },
+    { '@type': 'PropertyValue', name: 'Direct checkout: unsupported product types', value: limits.unsupportedProductTypes.join('; ') },
+    { '@type': 'PropertyValue', name: 'Direct checkout: unsupported delivery methods', value: limits.unsupportedFulfilment.join('; ') },
+    { '@type': 'PropertyValue', name: 'Direct checkout: discount codes supported', value: 'Yes' },
+    { '@type': 'PropertyValue', name: 'Direct checkout: client-side pixels fire', value: 'No; server-to-server started and completed events only' },
     { '@type': 'PropertyValue', name: 'Shopify Knowledge Base app price', value: kb.price },
   ],
 };
@@ -187,27 +187,27 @@ const graphSchema = {
     emits the BreadcrumbList JSON-LD, so a second hand-rolled trail here would
     render twice and describe itself twice. */}
 <div class="blog-title-band">
-  <h1>Shopify Agentic Storefronts 2026 &mdash; Eligibility, Checkout and Limits, Per Channel</h1>
+  <h1>Shopify Agentic Storefronts 2026: Eligibility, Checkout and Limits, Per Channel</h1>
   <div class="band-meta">Updated {prettyDate(UPDATED)} &middot; Verified against Shopify&rsquo;s documentation &middot; 12 min read</div>
 </div>
 
 <div class="article-outer">
 <div class="sa-agentic">
 
-  <p id="answer" class="sa-answer">Shopify Agentic Storefronts connect your catalog to ChatGPT, Google AI Mode, Microsoft Copilot and Meta AI from one admin setting. Since 24 March 2026 the channels split: Google, Copilot and Meta complete checkout inside the AI surface, while ChatGPT redirects shoppers to your own Shopify checkout &mdash; which is why most limits apply to only some channels.</p>
+  <p id="answer" class="sa-answer">Shopify Agentic Storefronts connect your catalog to ChatGPT, Google AI Mode, Microsoft Copilot and Meta AI from one admin setting. Since 24 March 2026 the channels split: Google, Copilot and Meta complete checkout inside the AI surface, while ChatGPT redirects shoppers to your own Shopify checkout, which is why most limits apply to only some channels.</p>
 
   <div class="callout amber" id="stale-warning">
     <span class="callout-label">&#9888; If you have read other guides on this, check their date</span>
-    <p>This feature reversed itself on <strong>24 March 2026</strong>. ChatGPT launched with in-conversation Instant Checkout; OpenAI retired it that day, and Shopify&rsquo;s documentation now describes ChatGPT as a discovery-focused referrer that sends shoppers to your own checkout. Meanwhile Google, Copilot and Meta gained direct checkout. Most guides still in circulation describe the launch arrangement, which is the opposite of the current one &mdash; and they inherit a set of restrictions from it that no longer apply the way they say.</p>
+    <p>This feature reversed itself on <strong>24 March 2026</strong>. ChatGPT launched with in-conversation Instant Checkout; OpenAI retired it that day, and Shopify&rsquo;s documentation now describes ChatGPT as a discovery-focused referrer that sends shoppers to your own checkout. Meanwhile Google, Copilot and Meta gained direct checkout. Most guides still in circulation describe the launch arrangement, which is the opposite of the current one, and they inherit a set of restrictions from it that no longer apply the way they say.</p>
   </div>
   <p style="font-size:14px;color:#93a09a;line-height:1.7;">Shopify&rsquo;s own pages, checked 24 September 2026: the <a href="https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts" target="_blank" rel="noopener">agentic storefronts overview</a> (the channels, on by default for eligible stores, managed under Sales channels &gt; Agentic); <a href="https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts/microsoft" target="_blank" rel="noopener">Microsoft Copilot</a> (direct checkout, shown only to customers in the United States); and <a href="https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts/meta" target="_blank" rel="noopener">Meta</a> (direct checkout on Meta surfaces, for stores selling to the United States, Canada or Mexico).</p>
   <p>Agentic storefronts are the last of seven stages in the <a href="/blog/shopify-ai-playbook-2026/">Shopify AI playbook</a>, which covers the earlier ones: product research, ad creative, email, tracking and support.</p>
 
   <!-- ═══════ THE MATRIX — the citable artefact ═══════ -->
-  <div class="sec-mark" id="matrix">01 &mdash; The matrix: who is eligible for what</div>
+  <div class="sec-mark" id="matrix">01: The matrix: who is eligible for what</div>
   <div class="prose">
     <h2 id="eligibility-and-capability-per-channel">Eligibility and capability, per channel</h2>
-    <p>Eligibility is not one rule. It stacks two independent conditions &mdash; where your store is based, and where you sell &mdash; and they differ by channel. A merchant in Manchester is eligible for three of the four channels and, for the fourth, eligible to appear but not to take checkout from most of their customers. That is genuinely hard to work out from Shopify&rsquo;s documentation, because it is spread across four pages.</p>
+    <p>Eligibility is not one rule. It stacks two independent conditions (where your store is based, and where you sell) and they differ by channel. A merchant in Manchester is eligible for three of the four channels and, for the fourth, eligible to appear but not to take checkout from most of their customers. That is genuinely hard to work out from Shopify&rsquo;s documentation, because it is spread across four pages.</p>
     <p>Every cell below is sourced. The linked page is Shopify&rsquo;s, not ours.</p>
   </div>
 
@@ -249,12 +249,12 @@ const graphSchema = {
 
   <div class="callout green">
     <span class="callout-label">The distinction that decides everything else</span>
-    <p><strong>Direct checkout</strong> &mdash; {directChannels.map((c) => c.name).join(', ')} &mdash; happens inside the AI product. Shopify&rsquo;s restrictions on product types, delivery methods, checkout extensions and tracking pixels all apply there.<br><br>
+    <p><strong>Direct checkout</strong>: {directChannels.map((c) => c.name).join(', ')}: happens inside the AI product. Shopify&rsquo;s restrictions on product types, delivery methods, checkout extensions and tracking pixels all apply there.<br><br>
     <strong>ChatGPT is a redirect.</strong> The shopper lands on your Shopify checkout. Your checkout rules, your extensions, your subscriptions, your bundles and your client-side pixels all behave exactly as they do for any other visitor. <strong>None of the direct-checkout restrictions apply to ChatGPT traffic.</strong> Almost every guide on this subject blurs those two paths into one list of limitations, which makes the feature sound far more constrained than it is.</p>
   </div>
 
   <!-- ═══════ LIMITS ═══════ -->
-  <div class="sec-mark" id="limits">02 &mdash; What breaks, and only where</div>
+  <div class="sec-mark" id="limits">02: What breaks, and only where</div>
   <div class="prose">
     <h2 id="direct-checkout-restrictions">Direct-checkout restrictions</h2>
     <p>These apply to {directChannels.map((c) => c.name).join(', ')}. They do not apply to ChatGPT.</p>
@@ -289,7 +289,7 @@ const graphSchema = {
   </div>
 
   <!-- ═══════ ATTRIBUTION ═══════ -->
-  <div class="sec-mark" id="attribution">03 &mdash; The attribution gap, and what to do about it</div>
+  <div class="sec-mark" id="attribution">03: The attribution gap, and what to do about it</div>
   <div class="prose">
     <h2 id="your-agentic-orders-will-look-like-they-came-from-nowhere">Your agentic orders will look like they came from nowhere</h2>
     <p>This is the limitation with real money attached, and it is the one every competing guide quotes without operationalising. Shopify states it plainly:</p>
@@ -297,17 +297,17 @@ const graphSchema = {
 
   <blockquote class="pull-quote">
     &ldquo;{limits.pixels.quote}&rdquo;
-    <cite><a href={limits.source} target="_blank" rel="noopener">Shopify Help Center &mdash; AI channels with built-in checkout</a></cite>
+    <cite><a href={limits.source} target="_blank" rel="noopener">Shopify Help Center: AI channels with built-in checkout</a></cite>
   </blockquote>
 
   <div class="prose">
-    <p>Read carefully, that means an order placed inside Google AI Mode, Copilot or Meta AI reaches your Shopify admin correctly &mdash; revenue is not lost &mdash; but arrives in GA4 and in Meta Ads Manager with no client-side event behind it. Only two server-to-server events fire: <code>started</code> and <code>completed</code>.</p>
+    <p>Read carefully, that means an order placed inside Google AI Mode, Copilot or Meta AI reaches your Shopify admin correctly (revenue is not lost) but arrives in GA4 and in Meta Ads Manager with no client-side event behind it. Only two server-to-server events fire: <code>started</code> and <code>completed</code>.</p>
     <p>If you buy ads and measure return on ad spend from browser pixels, the consequence is specific: the AI channels will appear to convert at zero while quietly taking revenue, and the campaigns that fed them will be under-credited. Optimisation algorithms fed under-reported conversions bid down. You are not just missing a number in a dashboard; you are training your ad accounts on a false signal.</p>
     <h3 id="what-actually-closes-it">What actually closes it</h3>
     <ul>
       <li><strong>Shopify&rsquo;s native Customer events pixels</strong> fire server-side and will capture agentic orders once configured under <strong>Settings &rarr; Customer events</strong>. This is the baseline and it costs nothing.</li>
       <li><strong>Meta Conversions API</strong> needs to be sending Purchase events server-side rather than relying on the browser pixel. Our free <a href="/capi-shield/">CAPI Shield</a> build does this through a Make.com webhook.</li>
-      <li><strong>Google Enhanced Conversions</strong> likewise, via a server-side container or Shopify&rsquo;s Google channel &mdash; see <a href="/shopify-google-ads-conversion-tracking/">the free Enhanced Conversions setup</a>.</li>
+      <li><strong>Google Enhanced Conversions</strong> likewise, via a server-side container or Shopify&rsquo;s Google channel: see <a href="/shopify-google-ads-conversion-tracking/">the free Enhanced Conversions setup</a>.</li>
     </ul>
     <p>The sequencing matters more than the tooling. Turn the channels on before server-side tracking is live and you get a period of unattributed revenue you cannot reconstruct afterwards, because the events were never recorded. Turn tracking on first and there is no gap to explain.</p>
   </div>
@@ -317,11 +317,11 @@ const graphSchema = {
       <div class="cta-h">Close the gap before you enable the channels</div>
       <p>CAPI Shield is free server-side tracking for Meta, built on Make.com&rsquo;s free tier. Roughly an hour to deploy, and it is the difference between attributed and invisible agentic revenue.</p>
     </div>
-    <a href="/capi-shield/" class="btn btn-g">Deploy CAPI Shield &mdash; free &rarr;</a>
+    <a href="/capi-shield/" class="btn btn-g">Deploy CAPI Shield: free &rarr;</a>
   </div>
 
   <!-- ═══════ SETUP ═══════ -->
-  <div class="sec-mark" id="setup">04 &mdash; Setup, in the order that avoids rework</div>
+  <div class="sec-mark" id="setup">04: Setup, in the order that avoids rework</div>
   <div class="prose">
     <h2 id="how-to-set-up-shopify-agentic-storefronts">How to set up Shopify Agentic Storefronts</h2>
     <p>Around 45 minutes if your catalog is already clean, longer if product descriptions need work. Agentic storefronts are active by default for eligible stores, so step one is often confirmation rather than activation.</p>
@@ -332,7 +332,7 @@ const graphSchema = {
       <div class="step-num-col"><span class="step-n">1</span></div>
       <div class="step-body">
         <div class="step-title">Check eligibility, per channel <span class="step-req-tag sr-req">start here</span></div>
-        <div class="step-desc">Shopify admin &rarr; <strong>Sales channels &rarr; Agentic</strong>. Read your row in the matrix above before assuming a single yes or no &mdash; you may be eligible for three channels and not the fourth, and Google remains in early access even where you qualify on paper.</div>
+        <div class="step-desc">Shopify admin &rarr; <strong>Sales channels &rarr; Agentic</strong>. Read your row in the matrix above before assuming a single yes or no: you may be eligible for three channels and not the fourth, and Google remains in early access even where you qualify on paper.</div>
         <span class="step-time">&#9203; 2 minutes</span>
       </div>
     </div>
@@ -340,7 +340,7 @@ const graphSchema = {
       <div class="step-num-col"><span class="step-n">2</span></div>
       <div class="step-body">
         <div class="step-title">Install the Knowledge Base app <span class="step-req-tag sr-rec">free</span></div>
-        <div class="step-desc">Published by Shopify, <strong>free</strong>, and invisible on your storefront. It is the data source AI assistants read when a shopper asks about returns, sizing or shipping. See section 5 for what to put in it &mdash; most merchants install it and write nothing, which wastes the only lever they have over what AI says about them.</div>
+        <div class="step-desc">Published by Shopify, <strong>free</strong>, and invisible on your storefront. It is the data source AI assistants read when a shopper asks about returns, sizing or shipping. See section 5 for what to put in it: most merchants install it and write nothing, which wastes the only lever they have over what AI says about them.</div>
         <span class="step-time">&#9203; 20&ndash;30 minutes</span>
       </div>
     </div>
@@ -356,7 +356,7 @@ const graphSchema = {
       <div class="step-num-col"><span class="step-n">4</span></div>
       <div class="step-body">
         <div class="step-title">Audit your catalog against the unsupported list <span class="step-req-tag sr-rec">recommended</span></div>
-        <div class="step-desc">Subscriptions, bundles, digital products, customizable products and B2B-only products cannot go through direct checkout. Work out which of your products that covers, and remember it does not constrain ChatGPT traffic at all &mdash; a subscription brand is not locked out of agentic commerce, it is locked out of three of the four channels&rsquo; checkout.</div>
+        <div class="step-desc">Subscriptions, bundles, digital products, customizable products and B2B-only products cannot go through direct checkout. Work out which of your products that covers, and remember it does not constrain ChatGPT traffic at all: a subscription brand is not locked out of agentic commerce, it is locked out of three of the four channels&rsquo; checkout.</div>
         <span class="step-time">&#9203; Depends on catalog size</span>
       </div>
     </div>
@@ -364,7 +364,7 @@ const graphSchema = {
       <div class="step-num-col"><span class="step-n">5</span></div>
       <div class="step-body">
         <div class="step-title">Write product data for conversation, not keywords <span class="step-req-tag sr-rec">recommended</span></div>
-        <div class="step-desc">A product called &ldquo;Blue Sneaker&rdquo; loses to &ldquo;Men&rsquo;s Wide-Fit Running Sneaker &mdash; Breathable Mesh, Cushioned Sole, UK 7&ndash;13&rdquo; when someone asks for a comfortable wide-fit running shoe. See section 6.</div>
+        <div class="step-desc">A product called &ldquo;Blue Sneaker&rdquo; loses to &ldquo;Men&rsquo;s Wide-Fit Running Sneaker: Breathable Mesh, Cushioned Sole, UK 7&ndash;13&rdquo; when someone asks for a comfortable wide-fit running shoe. See section 6.</div>
         <span class="step-time">&#9203; Variable</span>
       </div>
     </div>
@@ -372,22 +372,22 @@ const graphSchema = {
       <div class="step-num-col"><span class="step-n">6</span></div>
       <div class="step-body">
         <div class="step-title">Enable, verify, monitor <span class="step-req-tag sr-new">activation</span></div>
-        <div class="step-desc">Agree to the Supplemental Terms and toggle each channel individually. Use <strong>Test Agent</strong> to confirm products surface correctly, then filter your Orders list by channel. The dashboard also exposes the queries shoppers typed before finding you &mdash; unfiltered intent language, and the most useful by-product of the whole feature.</div>
+        <div class="step-desc">Agree to the Supplemental Terms and toggle each channel individually. Use <strong>Test Agent</strong> to confirm products surface correctly, then filter your Orders list by channel. The dashboard also exposes the queries shoppers typed before finding you: unfiltered intent language, and the most useful by-product of the whole feature.</div>
         <span class="step-time">&#9203; 5 minutes, then ongoing</span>
       </div>
     </div>
   </div>
 
   <!-- ═══════ KNOWLEDGE BASE ═══════ -->
-  <div class="sec-mark" id="knowledge-base">05 &mdash; The Knowledge Base app</div>
+  <div class="sec-mark" id="knowledge-base">05: The Knowledge Base app</div>
   <div class="prose">
     <h2 id="what-to-actually-write-in-the-knowledge-base">What to actually write in the Knowledge Base</h2>
     <div class="vbox green">
       <strong>It is free.</strong> {kb.priceNote} Published by Shopify on {prettyDate(kb.launched)}: <a href={kb.source} target="_blank" rel="noopener">App Store listing &#8599;</a>
     </div>
-    <p>Shopify describes it precisely: &ldquo;{kb.quote}&rdquo; Nothing you write appears on your storefront. It exists solely to be read by machines &mdash; which makes it the only place you get to speak directly to the model that will paraphrase you to a customer.</p>
-    <h3 id="faqs-15-to-20-written-for-the-purchase-decision">FAQs &mdash; 15 to 20, written for the purchase decision</h3>
-    <p>Cover shipping times and costs, the return process in specifics rather than generalities, sizing and fit, materials and care, warranty, and what actually differentiates you. Write plainly. AI assistants paraphrase, and marketing tone survives paraphrasing badly &mdash; clarity survives it well.</p>
+    <p>Shopify describes it precisely: &ldquo;{kb.quote}&rdquo; Nothing you write appears on your storefront. It exists solely to be read by machines, which makes it the only place you get to speak directly to the model that will paraphrase you to a customer.</p>
+    <h3 id="faqs-15-to-20-written-for-the-purchase-decision">FAQs: 15 to 20, written for the purchase decision</h3>
+    <p>Cover shipping times and costs, the return process in specifics rather than generalities, sizing and fit, materials and care, warranty, and what actually differentiates you. Write plainly. AI assistants paraphrase, and marketing tone survives paraphrasing badly: clarity survives it well.</p>
     <h3 id="the-customer-friendly-version-of-your-returns-policy">The customer-friendly version of your returns policy</h3>
     <p>Your policies page is a legal document. This entry should be what the process actually involves: how long a refund takes, what &ldquo;free returns&rdquo; means in practice, the exceptions. This is what gets cited when a shopper asks whether you are safe to buy from.</p>
     <h3 id="brand-voice-and-compliance-language">Brand voice, and compliance language</h3>
@@ -397,22 +397,22 @@ const graphSchema = {
   </div>
 
   <!-- ═══════ PRODUCT DATA ═══════ -->
-  <div class="sec-mark" id="product-data">06 &mdash; Product data for AI discovery</div>
+  <div class="sec-mark" id="product-data">06: Product data for AI discovery</div>
   <div class="prose">
     <h2 id="writing-product-data-an-assistant-can-match">Writing product data an assistant can match</h2>
-    <p>AI assistants interpret intent rather than matching keywords, and they answer with whichever product they can most confidently describe. Thin data does not rank badly &mdash; it fails to be selected at all, because the model has nothing to say about it.</p>
+    <p>AI assistants interpret intent rather than matching keywords, and they answer with whichever product they can most confidently describe. Thin data does not rank badly: it fails to be selected at all, because the model has nothing to say about it.</p>
     <h3 id="titles">Titles</h3>
     <p><strong>Brand + product type + key differentiator + size or variant.</strong> Sixty to eighty characters. Use the words customers say out loud, not internal SKU language.</p>
     <h3 id="descriptions">Descriptions</h3>
     <p>Two hundred words minimum. What it is in a plain first sentence, materials and specifications, who it is for and in what situation, how it compares to the obvious alternatives, care, and any certification. Short paragraphs and lists parse more reliably than dense prose.</p>
     <h3 id="variants-and-stock">Variants and stock</h3>
-    <p>Assistants will not recommend what shows as out of stock. Five colours and eight sizes means forty defined combinations with real counts &mdash; &ldquo;multiple options available&rdquo; is invisible to a model trying to answer &ldquo;do they have it in a 10?&rdquo;.</p>
+    <p>Assistants will not recommend what shows as out of stock. Five colours and eight sizes means forty defined combinations with real counts: &ldquo;multiple options available&rdquo; is invisible to a model trying to answer &ldquo;do they have it in a 10?&rdquo;.</p>
     <h3 id="metafields">Metafields</h3>
     <p>Material composition, care instructions, suitability, country of manufacture, certifications, compatible products. Metafields answer the specific question your description did not anticipate.</p>
   </div>
 
   <!-- ═══════ TIMELINE ═══════ -->
-  <div class="sec-mark" id="timeline">07 &mdash; How this feature got here</div>
+  <div class="sec-mark" id="timeline">07: How this feature got here</div>
   <div class="prose">
     <h2 id="timeline">Timeline</h2>
     <p>Useful mainly for dating other people&rsquo;s advice: if a guide describes in-conversation ChatGPT checkout, it was written against the arrangement that ended on 24 March 2026.</p>
@@ -427,10 +427,10 @@ const graphSchema = {
   </ol>
 
   <!-- ═══════ NOT ELIGIBLE ═══════ -->
-  <div class="sec-mark" id="not-eligible">08 &mdash; Not eligible yet</div>
+  <div class="sec-mark" id="not-eligible">08: Not eligible yet</div>
   <div class="prose">
     <h2 id="four-things-worth-doing-before-you-qualify">Four things worth doing before you qualify</h2>
-    <p>Discovery is already happening. AI assistants crawl the web and read Shopify Catalog regardless of your agentic settings &mdash; the feature adds checkout, not visibility. Everything below improves how you are described today, whether or not you can switch a channel on.</p>
+    <p>Discovery is already happening. AI assistants crawl the web and read Shopify Catalog regardless of your agentic settings: the feature adds checkout, not visibility. Everything below improves how you are described today, whether or not you can switch a channel on.</p>
   </div>
 
   <div class="prep-grid">
@@ -472,8 +472,8 @@ const graphSchema = {
   <AuthorCard />
 
   <!-- ═══════ FAQ ═══════ -->
-  <div class="sec-mark" id="faq">FAQ &mdash; {FAQ.length} questions</div>
-  <div class="prose"><h2 id="shopify-agentic-storefronts-questions-merchants-actually-ask">Shopify Agentic Storefronts &mdash; questions merchants actually ask</h2></div>
+  <div class="sec-mark" id="faq">FAQ: {FAQ.length} questions</div>
+  <div class="prose"><h2 id="shopify-agentic-storefronts-questions-merchants-actually-ask">Shopify Agentic Storefronts: questions merchants actually ask</h2></div>
   <div class="faq-list">
     {FAQ.map((item) => (
       <details class="faq-item">
@@ -488,38 +488,38 @@ const graphSchema = {
   <div class="related-grid">
     <a href="/capi-shield/" class="related-card">
       <span class="rc-type">Free tool</span>
-      <span class="rc-title">CAPI Shield &mdash; free server-side tracking</span>
+      <span class="rc-title">CAPI Shield: free server-side tracking</span>
       <span class="rc-desc">Meta server-side events from one Make.com webhook. The fix for the agentic attribution gap in section 3.</span>
     </a>
     <a href="/blog/shopify-server-side-tracking-complete-setup-guide/" class="related-card">
       <span class="rc-type">Guide</span>
-      <span class="rc-title">Shopify server-side tracking &mdash; complete setup</span>
+      <span class="rc-title">Shopify server-side tracking: complete setup</span>
       <span class="rc-desc">The full walkthrough behind that fix: Meta CAPI, Google server-side tagging and TikTok Events API.</span>
     </a>
     <a href="/shopify-google-ads-conversion-tracking/" class="related-card">
       <span class="rc-type">Free tool</span>
-      <span class="rc-title">Google Ads Enhanced Conversions &mdash; free</span>
+      <span class="rc-title">Google Ads Enhanced Conversions: free</span>
       <span class="rc-desc">Hashed email sent server-side to Google Ads, bypassing the click-ID loss that breaks browser attribution.</span>
     </a>
     <a href="/ultimate-shopify-automation-guide/" class="related-card">
       <span class="rc-type">Free guide</span>
       <span class="rc-title">Ultimate Shopify automation guide</span>
-      <span class="rc-desc">The whole $0 stack in deploy order &mdash; tracking, inventory, P&amp;L and email.</span>
+      <span class="rc-desc">The whole $0 stack in deploy order: tracking, inventory, P&amp;L and email.</span>
     </a>
   </div>
 
   <!-- ═══════ FINAL CTA ═══════ -->
   <div class="final-cta">
-    <div class="final-eyebrow">free &mdash; no account required</div>
+    <div class="final-eyebrow">free: no account required</div>
     <div class="final-title">Attributed agentic revenue,<br><span class="p">or invisible agentic revenue</span></div>
     <p class="final-sub">Direct checkout fires only server-to-server events. Get server-side tracking live before you enable the channels and there is no gap to reconstruct later. CAPI Shield is free and runs on Make.com&rsquo;s free tier.</p>
     <div class="final-btns">
-      <a href="/capi-shield/" class="btn btn-g">Deploy CAPI Shield &mdash; free &rarr;</a>
+      <a href="/capi-shield/" class="btn btn-g">Deploy CAPI Shield: free &rarr;</a>
     </div>
   </div>
 
   <div class="src-block">
-    <div class="src-head">Sources &mdash; every claim above</div>
+    <div class="src-head">Sources: every claim above</div>
     <ul class="src-list">
       {[...new Set(CHANNELS.channels.map((c) => c.source).concat([limits.source, kb.source]))].map((s) => (
         <li><a href={s} target="_blank" rel="noopener">{s.replace(/^https?:\/\//, '')}</a></li>

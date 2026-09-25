@@ -137,7 +137,7 @@ export const fieldNotes = [
   ['id', 'Stable slug. Also the last path segment of detail_url.'],
   ['name', "The app's name as the vendor writes it."],
   ['category', 'Our categorisation, not the Shopify App Store’s.'],
-  ['monthly_cost', 'Display text, not a number — "$99", "$45+", "Free", "Not publicly listed". Parse it, do not assume a figure.'],
+  ['monthly_cost', 'Display text, not a number: "$99", "$45+", "Free", "Not publicly listed". Parse it, do not assume a figure.'],
   ['price_plan', 'The named plan the figure belongs to. Null where no figure is recorded, or where the vendor names no tier.'],
   ['price_status', 'verified | held | unchecked. See the three states above.'],
   ['price_verified_date', 'ISO date a human read the figure on the vendor page. Null unless price_status is verified.'],

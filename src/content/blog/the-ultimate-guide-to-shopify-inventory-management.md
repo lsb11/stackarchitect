@@ -1,6 +1,6 @@
 ---
 title: "Shopify Inventory in Google Sheets 2026"
-heading: "The Ultimate Guide to Shopify Inventory Management 2026 — Free Systems That Scale"
+heading: "The Ultimate Guide to Shopify Inventory Management 2026: Free Systems That Scale"
 description: "Send Shopify orders to Google Sheets free in 2026 and build stock counts, reorder flags and alerts on top. What replaces the order record Stocky kept, and what it does not."
 answer: "You can run Shopify inventory tracking free by sending each paid order into Google Sheets through Make.com. That gives you an order ledger you own. Stock counts, reorder flags and low-stock alerts are formulas and extra scenarios you add yourself. Shopify Stocky shut down on 31 August 2026, and paid replacements start around $29 a month."
 publishDate: "2026-03-28"
@@ -23,14 +23,12 @@ faqs:
   - question: "What is the difference between Shopify inventory tracking and inventory management?"
     answer: "Shopify's built-in inventory tracking records stock levels and deducts quantities when orders are placed. Inventory management goes further. It tracks the full product lifecycle from supplier purchase order through receiving, storage, sales velocity analysis, reorder point calculation, and multi-location management. A Make.com and Google Sheets ledger covers order logging, velocity and reorder points at zero cost. It does not cover forecasting, bundles or barcode receiving."
 relatedGuides:
-  - title: "Stocky Swap — Free Shopify Stocky Replacement (Deploy in 4 Minutes)"
-    href: "/stocky-swap/"
-  - title: "Make.com for Shopify — Complete Beginner's Guide"
-    href: "/make-com-shopify/"
-  - title: "Shopify P&L Automation — Live Profit Reporting Free"
-    href: "/shopify-profit-loss-automation/"
-  - title: "The Recommended Free Shopify Stack"
-    href: "/stack/"
+  - title: "Stocky alternative: replace Shopify Stocky for $0"
+    href: "/stocky-alternative/"
+  - title: "Exporting your Stocky data during the read-only window"
+    href: "/blog/shopify-stocky-data-export-before-shutdown/"
+  - title: "Stocky migration risk scorer"
+    href: "/stocky-migration-risk-scorer/"
 ---
 
 Most Shopify inventory management guides end with a recommendation to pay $29–$199/month for an app. This one doesn't. Every system described here costs $0 and runs on tools you likely already have access to.
@@ -66,7 +64,7 @@ Shopify's own migration guide for former Stocky users lists transfers, purchase 
 
 The free Make.com and Google Sheets system fills part of that gap: the order ledger, velocity and reorder points. It does this without an app that could shut down, change pricing, or lose your historical data. It does not forecast demand, track bundles or handle barcode receiving.
 
-## The Core System — Make.com + Google Sheets
+## The Core System: Make.com + Google Sheets
 
 The foundation of free Shopify inventory management is a single Make.com scenario connected to a Google Sheets inventory ledger. Every time an order is paid in Shopify, Make.com captures the order data and appends a row to your sheet automatically.
 
@@ -91,7 +89,7 @@ From this point forward, every paid order in Shopify writes a new row to your sh
 
 The sheet structure matters. A well-designed ledger supports every advanced feature below without rebuilding from scratch.
 
-**Sheet 1 — Orders Log (auto-populated by Make.com)**
+**Sheet 1: Orders Log (auto-populated by Make.com)**
 
 | Column | Data | Source |
 |---|---|---|
@@ -106,7 +104,7 @@ The sheet structure matters. A well-designed ledger supports every advanced feat
 | I | Customer name | Make.com |
 | J | Location (only if your order payload carries one) | Make.com |
 
-**Sheet 2 — Product Inventory (manually maintained, formula-calculated)**
+**Sheet 2: Product Inventory (manually maintained, formula-calculated)**
 
 | Column | Data | Source |
 |---|---|---|
@@ -125,29 +123,29 @@ Column E calculates total units sold for each SKU by summing the Orders Log. Col
 
 Column F only knows about paid orders and the units you enter in Column D. Refunds, returns, damaged stock and manual adjustments in Shopify never reach the sheet, so the figure drifts from Shopify's own count until you enter them by hand. Stocky Swap does not calculate stock on hand for you, and neither does this sheet on its own. Treat Shopify Admin as the count of record and reconcile against it.
 
-**Sheet 3 — Supplier Purchase Orders**
+**Sheet 3: Supplier Purchase Orders**
 
-A simple table for tracking what you've ordered from suppliers, expected delivery dates, and quantities received. When stock arrives, manually update Column D (Units received) in Sheet 2 — stock levels update automatically.
+A simple table for tracking what you've ordered from suppliers, expected delivery dates, and quantities received. When stock arrives, manually update Column D (Units received) in Sheet 2: stock levels update automatically.
 
-## Stock Alerts — Free Automated Notifications
+## Stock Alerts: Free Automated Notifications
 
 With the inventory ledger in place, you can trigger alerts when stock falls below reorder points without checking the sheet manually.
 
-**Option 1 — Email alert via Make.com (simplest)**
+**Option 1: Email alert via Make.com (simplest)**
 
 Add a second branch to your existing Make.com scenario: after logging the order to Google Sheets, check if the current stock level for that product is at or below the reorder point. If yes, send an email to your nominated address with the product name, current stock, and reorder point.
 
-**Option 2 — Scheduled daily check (more reliable)**
+**Option 2: Scheduled daily check (more reliable)**
 
 Create a separate Make.com scenario that runs every morning at 8am. It reads your Sheet 2, filters rows where Column H = "REORDER NOW", and sends a consolidated email listing every product that needs reordering. This catches situations where stock dropped outside of order events (damaged goods, manual adjustments).
 
-**Option 3 — Google Sheets email alert (no Make.com needed)**
+**Option 3: Google Sheets email alert (no Make.com needed)**
 
 In Google Sheets, use **Extensions → Apps Script** to write a simple Apps Script function that sends an email when triggered. Set it to run daily via a time-based trigger. This works without Make.com if you prefer to keep everything in Google's ecosystem, but be aware of the [Google Apps Script quota limits](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/) on consumer accounts.
 
 ## Sales Velocity Analysis
 
-Understanding how fast products sell tells you when to reorder before you run out — not after. With your Orders Log populated, add these calculations to Sheet 2:
+Understanding how fast products sell tells you when to reorder before you run out, not after. With your Orders Log populated, add these calculations to Sheet 2:
 
 **30-day velocity** (units sold in last 30 days):
 ```
@@ -164,7 +162,7 @@ Understanding how fast products sell tells you when to reorder before you run ou
 =IF(days_remaining<=lead_time, "ORDER NOW", TODAY()+(days_remaining-lead_time))
 ```
 
-These formulas give you a live view of which products are running low based on actual sales rate — not arbitrary stock level thresholds.
+These formulas give you a live view of which products are running low based on actual sales rate, not arbitrary stock level thresholds.
 
 ## Multi-Location Inventory
 
@@ -195,10 +193,10 @@ When each order arrives, Make.com writes to both your inventory sheet (quantity,
 
 The free system described here handles most Shopify stores well. The genuine limitations appear at:
 
-- **10+ locations** — managing more than 3–4 locations via formula-based sheets becomes operationally complex
-- **1,000+ SKUs** — SUMIF calculations across thousands of SKUs can slow sheet performance; a database-backed system handles this better
-- **Complex bundling** — products that combine multiple SKUs (bundles, kits) require more sophisticated inventory logic than SUMIF can cleanly handle
-- **Barcode scanning for receiving** — if your warehouse team scans items into stock, you need purpose-built receiving software
+- **10+ locations**: managing more than 3–4 locations via formula-based sheets becomes operationally complex
+- **1,000+ SKUs**: SUMIF calculations across thousands of SKUs can slow sheet performance; a database-backed system handles this better
+- **Complex bundling**: products that combine multiple SKUs (bundles, kits) require more sophisticated inventory logic than SUMIF can cleanly handle
+- **Barcode scanning for receiving**: if your warehouse team scans items into stock, you need purpose-built receiving software
 
 Below these thresholds, Shopify Admin plus the Make.com and Google Sheets ledger covers what most small stores used Stocky for. It is not equivalent to a paid inventory app: it has no forecasting, and its stock figures need the manual reconciliation described above. It is free, owned by you, and exportable at any time.
 
@@ -224,8 +222,4 @@ Every step above is free. The only ongoing cost is Make.com's Core plan at $9/mo
 
 The Complete Kit includes the Stocky Swap Make.com JSON blueprint. Import it and it logs one row per order line to your sheet from the next paid order. It does not record restocks, returns or adjustments; you add those as rows by hand. The kit also includes CAPI Shield (Meta purchase events), TikTok CAPI and P&L Auto. $19.99 one-time.
 
-**[Get the Complete Kit — $19.99 →](/pro/)**
-
-
-## Related App Alternatives
-- [Stocky Pricing & Alternatives](/apps/stocky/)
+**[Get the Complete Kit: $19.99 →](/pro/)**

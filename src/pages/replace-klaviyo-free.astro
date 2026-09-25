@@ -45,7 +45,7 @@ const GETRESPONSE_URL = "/go/getresponse/";
 // ─── Nav data ─────────────────────────────────────────────────────────────────
 const products = [
   { href: "/capi-shield/",                    label: "CAPI Shield",          desc: "Free Meta server-side tracking"                               },
-  { href: "/stocky-swap/",                    label: "Stocky Swap",       desc: "Free inventory — replaces Stocky Aug 2026"                             },
+  { href: "/stocky-swap/",                    label: "Stocky Swap",       desc: "Free inventory: replaces Stocky Aug 2026"                             },
   { href: "/tiktok-events-api-shopify/",      label: "TikTok Events API",    desc: "Free TikTok server-side tracking"                                       },
   { href: "/shopify-profit-loss-automation/", label: "Shopify P&L Auto",     desc: "Live profit and loss in Google Sheets free"                             },
   { href: "/autocrat-quota-fix/",             label: "Autocrat Quota Fix",   desc: "Fix Google Apps Script quota errors free"                               },
@@ -55,8 +55,8 @@ const tools = [
   { href: "/tools/",                       label: "All Tools",          desc: "Free tools to audit and automate your store"              },
   { href: "/shopify-app-stack-kill-or-keep-auditor/",  label: "Automation Scanner", desc: "Find which apps you can replace for $0"                  },
   { href: "/shopify-app-cost-calculator/", label: "App Cost Calculator",desc: "Calculate your exact monthly app bill"                   },
-  { href: "/shopify-app-stack-kill-or-keep-auditor/", label: "App Audit",     desc: "AI audit — enter your apps, get a free savings report"   },
-  { href: "/best-ai-tools-shopify/",       label: "Best AI Tools 2026", desc: "9 AI tools for Shopify ranked by ROI — free options noted"}
+  { href: "/shopify-app-stack-kill-or-keep-auditor/", label: "App Audit",     desc: "AI audit: enter your apps, get a free savings report"   },
+  { href: "/best-ai-tools-shopify/",       label: "Best AI Tools 2026", desc: "9 AI tools for Shopify ranked by ROI: free options noted"}
 ];
 const guides = [
   { href: "/shopify-automation-guides/",          label: "All Guides",              desc: "Tracking, inventory, P&L and workflow guides" },
@@ -86,7 +86,7 @@ const stripStats = [
 // merchant-reported estimates and are labelled as such wherever they render.
 const TIER_SOURCE_NOTE =
   "Verified against klaviyo.com/pricing on 11 August 2026: free up to 250 active " +
-  "profiles, $20/month from 251. Klaviyo does not publish its higher tiers — the " +
+  "profiles, $20/month from 251. Klaviyo does not publish its higher tiers: the " +
   "figures above 500 profiles are merchant-reported estimates, not vendor-verified.";
 const pricingTiers = [
   { contacts: "500",    price: "$20" },
@@ -94,21 +94,6 @@ const pricingTiers = [
   { contacts: "10,000", price: "$175" },
   { contacts: "25,000", price: "$400" },
   { contacts: "50,000", price: "$720" }
-];
-
-// ─── UK pricing ──────────────────────────────────────────────────────────────
-// Klaviyo bills in USD. These are conversions at an approximate £1 = $1.27,
-// plus UK VAT at 20% on digital services. Both figures move — the rate daily,
-// the VAT treatment with the customer's registration status.
-const GBP_RATE_NOTE = "£1 = $1.27";
-const ukTiers = [
-  { contacts: "Up to 500",     usd: "$20",    gbp: "£16",  incVat: "£19"    },
-  { contacts: "Up to 1,000",   usd: "$30",    gbp: "£24",  incVat: "£28"    },
-  { contacts: "Up to 5,000",   usd: "$100",   gbp: "£79",  incVat: "£95"    },
-  { contacts: "Up to 10,000",  usd: "$175",   gbp: "£138", incVat: "£165"   },
-  { contacts: "Up to 25,000",  usd: "$400",   gbp: "£315", incVat: "£378"   },
-  { contacts: "Up to 50,000",  usd: "$720",   gbp: "£567", incVat: "£680"   },
-  { contacts: "Up to 100,000", usd: "$1,100", gbp: "£866", incVat: "£1,040" }
 ];
 
 // ─── Klaviyo vs GetResponse, per tier ────────────────────────────────────────
@@ -125,22 +110,22 @@ const grRows = [
 
 // ─── Calculator options ──────────────────────────────────────────────────────
 const calcOptions = [
-  { value: "20,500",   label: "Up to 500 contacts — $20/mo" },
-  { value: "30,1000",  label: "Up to 1,000 contacts — $30/mo" },
-  { value: "100,5000", label: "Up to 5,000 contacts — $100/mo" },
-  { value: "175,10000",label: "Up to 10,000 contacts — $175/mo" },
-  { value: "400,25000",label: "Up to 25,000 contacts — $400/mo" },
-  { value: "720,50000",label: "Up to 50,000 contacts — $720/mo" }
+  { value: "20,500",   label: "Up to 500 contacts: $20/mo" },
+  { value: "30,1000",  label: "Up to 1,000 contacts: $30/mo" },
+  { value: "100,5000", label: "Up to 5,000 contacts: $100/mo" },
+  { value: "175,10000",label: "Up to 10,000 contacts: $175/mo" },
+  { value: "400,25000",label: "Up to 25,000 contacts: $400/mo" },
+  { value: "720,50000",label: "Up to 50,000 contacts: $720/mo" }
 ];
 
 // ─── Features that Systeme.io replaces ───────────────────────────────────────
 const features = [
-  { icon: "✉️", title: "Email marketing & automation",       desc: "Unlimited email sends. Welcome sequences, abandoned cart, post-purchase flows, broadcast campaigns. All the automation logic that sits behind Klaviyo's active-profile tiers.",                              saves: "Replaces Klaviyo — saves $20+/mo" },
-  { icon: "⏽",  title: "Sales funnels & landing pages",      desc: "Build opt-in pages, sales funnels, upsell flows, and squeeze pages. Drag-and-drop builder — no ClickFunnels subscription required.",                                                            saves: "Replaces ClickFunnels — saves $97–$297/mo" },
-  { icon: "👥", title: "CRM & contact management",           desc: "Tag contacts, build segments, track purchase behaviour, and manage your entire customer database — without a separate CRM tool.",                                                                saves: "Replaces standalone CRM tools — saves $50–$200/mo" },
-  { icon: "🎓", title: "Online course hosting",              desc: "Host digital products, courses, and memberships directly on Systeme.io. No Teachable or Thinkific subscription needed.",                                                                         saves: "Replaces Teachable — saves $39–$119/mo" },
-  { icon: "🤝", title: "Affiliate programme management",     desc: "Run your own affiliate programme — track referrals, manage commission payouts, and recruit affiliates — all included free.",                                                                     saves: "Replaces affiliate software — saves $30–$100/mo" },
-  { icon: "📊", title: "Analytics & reporting",              desc: "Email open rates, click rates, funnel conversion rates, and revenue attribution — all in one dashboard, no add-on required.",                                                                    saves: "Replaces paid analytics add-ons — free" }
+  { icon: "✉️", title: "Email marketing & automation",       desc: "Unlimited email sends. Welcome sequences, abandoned cart, post-purchase flows, broadcast campaigns. All the automation logic that sits behind Klaviyo's active-profile tiers.",                              saves: "Replaces Klaviyo: saves $20+/mo" },
+  { icon: "⏽",  title: "Sales funnels & landing pages",      desc: "Build opt-in pages, sales funnels, upsell flows, and squeeze pages. Drag-and-drop builder: no ClickFunnels subscription required.",                                                            saves: "Replaces ClickFunnels: saves $97–$297/mo" },
+  { icon: "👥", title: "CRM & contact management",           desc: "Tag contacts, build segments, track purchase behaviour, and manage your entire customer database, without a separate CRM tool.",                                                                saves: "Replaces standalone CRM tools: saves $50–$200/mo" },
+  { icon: "🎓", title: "Online course hosting",              desc: "Host digital products, courses, and memberships directly on Systeme.io. No Teachable or Thinkific subscription needed.",                                                                         saves: "Replaces Teachable: saves $39–$119/mo" },
+  { icon: "🤝", title: "Affiliate programme management",     desc: "Run your own affiliate programme (track referrals, manage commission payouts, and recruit affiliates) all included free.",                                                                     saves: "Replaces affiliate software: saves $30–$100/mo" },
+  { icon: "📊", title: "Analytics & reporting",              desc: "Email open rates, click rates, funnel conversion rates, and revenue attribution: all in one dashboard, no add-on required.",                                                                    saves: "Replaces paid analytics add-ons: free" }
 ];
 
 // ─── Comparison table ─────────────────────────────────────────────────────────
@@ -150,10 +135,10 @@ const compRows = [
   { feature: "Email automations",        klaviyo: "Advanced",                                systeme: "Full sequences included",       kClass: "win",  sClass: "win" },
   { feature: "Billing model",            klaviyo: "All active profiles (incl. unengaged)",   systeme: "Contact count only",            kClass: "lose", sClass: "win" },
   { feature: "Sales funnels",            klaviyo: "Not included",                            systeme: "Included free",                 kClass: "lose", sClass: "win" },
-  { feature: "CRM",                      klaviyo: "Basic — email focused",                   systeme: "Full CRM included",             kClass: "lose", sClass: "win" },
+  { feature: "CRM",                      klaviyo: "Basic: email focused",                   systeme: "Full CRM included",             kClass: "lose", sClass: "win" },
   { feature: "Course hosting",           klaviyo: "Not included",                            systeme: "Included free",                 kClass: "lose", sClass: "win" },
   { feature: "Affiliate management",     klaviyo: "Not included",                            systeme: "Included free",                 kClass: "lose", sClass: "win" },
-  { feature: "Auto tier upgrades",       klaviyo: "Automatic — unpredictable cost",          systeme: "Manual — you control upgrades", kClass: "lose", sClass: "win" },
+  { feature: "Auto tier upgrades",       klaviyo: "Automatic: unpredictable cost",          systeme: "Manual: you control upgrades", kClass: "lose", sClass: "win" },
   { feature: "Shopify integration",      klaviyo: "Native deep integration",                 systeme: "Webhook + Zapier/Make",         kClass: "win",  sClass: "neutral" },
   { feature: "Shopify segmentation",     klaviyo: "Deep ecommerce segments",                 systeme: "Standard tags and segments",    kClass: "win",  sClass: "neutral" },
   { feature: "Annual cost (10k contacts)", klaviyo: "$1,800–$2,100/year",                    systeme: "$0–$204/year",                  kClass: "lose", sClass: "win", highlight: true }
@@ -161,9 +146,9 @@ const compRows = [
 
 // ─── Setup steps ─────────────────────────────────────────────────────────────
 const setupSteps = [
-  { pos: 1, title: "Create your free Systeme.io account",          tool: "systeme.io — free plan, no credit card",                       desc: "Sign up at the link below — no credit card required. The free plan activates instantly. You get 2,000 contacts, unlimited email sends, automations, funnels, and CRM from the moment you register." },
+  { pos: 1, title: "Create your free Systeme.io account",          tool: "systeme.io: free plan, no credit card",                       desc: "Sign up at the link below: no credit card required. The free plan activates instantly. You get 2,000 contacts, unlimited email sends, automations, funnels, and CRM from the moment you register." },
   { pos: 2, title: "Export your Klaviyo contact list",             tool: "Klaviyo → Profiles → Export CSV",                              desc: "In Klaviyo, go to Profiles → All Profiles → Export. Download your list as a CSV. Include email address, first name, last name, and any custom properties. This takes under 2 minutes." },
-  { pos: 3, title: "Import your contacts to Systeme.io",          tool: "Systeme.io → Contacts → Import",                               desc: "In Systeme.io, go to Contacts → Import Contacts. Upload your CSV and map the columns — email, first name, last name. Add a tag like imported-from-klaviyo so you can segment them. Large lists import in under 5 minutes." },
+  { pos: 3, title: "Import your contacts to Systeme.io",          tool: "Systeme.io → Contacts → Import",                               desc: "In Systeme.io, go to Contacts → Import Contacts. Upload your CSV and map the columns: email, first name, last name. Add a tag like imported-from-klaviyo so you can segment them. Large lists import in under 5 minutes." },
   { pos: 4, title: "Rebuild your key automation sequences",       tool: "Systeme.io → Automations → New workflow",                      desc: "In Systeme.io's automation builder, recreate your welcome sequence, abandoned cart flow, and post-purchase sequence. Most stores need 2–3 core automations. Takes 15–20 minutes per flow." },
   { pos: 5, title: "Connect Shopify and test",                    tool: "Systeme.io → Settings → Integrations → Shopify",               desc: "Connect Systeme.io to Shopify using the native integration under Settings → Integrations, or via a Make.com webhook for more advanced triggers. Place a test order and verify your welcome and post-purchase flows fire correctly." },
   { pos: 6, title: "Cancel Klaviyo",                              tool: "Klaviyo → Account → Plan → Cancel",                            desc: "Once your Systeme.io automations are confirmed working, cancel your Klaviyo subscription. In Klaviyo, go to Account → Plan → Cancel Plan. You will not be charged again. Your data remains accessible for 90 days after cancellation." }
@@ -172,34 +157,34 @@ const setupSteps = [
 
 // ─── Cross-links ──────────────────────────────────────────────────────────────
 const crosslinks = [
-  { href: "/capi-shield/",                    hoverClass: "",    tag: "Ad tracking",            tagClass: "",         name: "CAPI Shield",       desc: "Close the browser tracking gap iOS opens. Free server-side tracking replacing paid tools like Triple Whale and Elevar — deploy in 6 minutes.", save: "Saves $150–$299/mo",  saveColor: "var(--g)"    },
-  { href: "/stocky-swap/",                    hoverClass: "sky", tag: "Inventory ⚠ Aug 2026",   tagClass: "tag-sky",  name: "Stocky Swap",       desc: "Replace the retired Stocky app. Every order auto-logged to Google Sheets in real time. Free forever — no paid inventory apps needed.", save: "Saves $29–$199/mo",  saveColor: "var(--sky)"    },
-  { href: "/tiktok-events-api-shopify/",      hoverClass: "tt",  tag: "TikTok tracking",        tagClass: "",         name: "TikTok Events API", desc: "Recover lost TikTok conversion data free. Server-side tracking via Make.com — replaces WeltPixel at $0, deploys in 6 minutes.", save: "Saves $39–$99/mo",   saveColor: "#ff2e63"       },
-  { href: "/shopify-profit-loss-automation/", hoverClass: "",    tag: "P&L reporting",          tagClass: "tag-dim",  name: "Shopify P&L automation", desc: "Every order writes to a live Google Sheets P&L automatically. Revenue, COGS, fees, and net margin tracked in real time — free, no code, 10 minutes.", save: "Saves $19–$299/mo",  saveColor: "var(--g)"    },
-  { href: "/autocrat-quota-fix/",             hoverClass: "vio", tag: "Stability",              tagClass: "tag-vio",  name: "Autocrat Quota Fix",desc: "Stop Google Apps Script quota errors breaking your document workflows. Handles 10,000+ rows per day at $0 — keeps the entire stack running reliably.", save: "Saves $49–$99/mo",   saveColor: "var(--vio)"    },
-  { href: "/",                               hoverClass: "",    tag: "Full stack",             tagClass: "tag-dim",  name: "$0 Automation Stack",desc: "All six free tools in one place — tracking, inventory, TikTok, email, P&L, and workflow stability. Deploy the entire backend for $0/month.", save: "Save $700+/mo total", saveColor: "var(--text-4)" }
+  { href: "/capi-shield/",                    hoverClass: "",    tag: "Ad tracking",            tagClass: "",         name: "CAPI Shield",       desc: "Close the browser tracking gap iOS opens. Free server-side tracking replacing paid tools like Triple Whale and Elevar: deploy in 6 minutes.", save: "Saves $150–$299/mo",  saveColor: "var(--g)"    },
+  { href: "/stocky-swap/",                    hoverClass: "sky", tag: "Inventory",   tagClass: "tag-sky",  name: "Stocky Swap",       desc: "Replace the retired Stocky app. Every order auto-logged to Google Sheets in real time. Free forever: no paid inventory apps needed.", save: "Saves $29–$199/mo",  saveColor: "var(--sky)"    },
+  { href: "/tiktok-events-api-shopify/",      hoverClass: "tt",  tag: "TikTok tracking",        tagClass: "",         name: "TikTok Events API", desc: "Recover lost TikTok conversion data free. Server-side tracking via Make.com: replaces WeltPixel at $0, deploys in 6 minutes.", save: "Saves $39–$99/mo",   saveColor: "#ff2e63"       },
+  { href: "/shopify-profit-loss-automation/", hoverClass: "",    tag: "P&L reporting",          tagClass: "tag-dim",  name: "Shopify P&L automation", desc: "Every order writes to a live Google Sheets P&L automatically. Revenue, COGS, fees, and net margin tracked in real time: free, no code, 10 minutes.", save: "Saves $19–$299/mo",  saveColor: "var(--g)"    },
+  { href: "/autocrat-quota-fix/",             hoverClass: "vio", tag: "Stability",              tagClass: "tag-vio",  name: "Autocrat Quota Fix",desc: "Stop Google Apps Script quota errors breaking your document workflows. Handles 10,000+ rows per day at $0: keeps the entire stack running reliably.", save: "Saves $49–$99/mo",   saveColor: "var(--vio)"    },
+  { href: "/",                               hoverClass: "",    tag: "Full stack",             tagClass: "tag-dim",  name: "$0 Automation Stack",desc: "All six free tools in one place: tracking, inventory, TikTok, email, P&L, and workflow stability. Deploy the entire backend for $0/month.", save: "Save $700+/mo total", saveColor: "var(--text-4)" }
 ];
 
 // ─── FAQs ─────────────────────────────────────────────────────────────────────
 const faqs = [
   { q: "Is Klaviyo free in 2026?", a: "No. Klaviyo changed its billing model in February 2025. The free tier is now limited to 250 contacts and 500 emails/month. Paid plans start at $20/month for 500 contacts. Klaviyo now charges for every active profile, including contacts you have not emailed recently." },
-  { q: "Is Systeme.io really free as a Klaviyo replacement?", a: "Yes. Systeme.io's free plan supports 2,000 contacts with unlimited email sends, full automation sequences, sales funnels, and CRM — permanently free, no credit card required. Klaviyo charges $20+/mo across its published ladder, with a typical mid-sized Shopify list landing in the middle of it." },
-  { q: "What is the difference between Klaviyo and Systeme.io for Shopify?", a: "Klaviyo offers deeper native Shopify segmentation. Systeme.io offers a broader platform — email marketing, funnels, CRM, courses, and affiliate management — at $0/month. For stores not using Klaviyo's advanced segmentation, Systeme.io delivers equivalent email results at zero cost." },
+  { q: "Is Systeme.io really free as a Klaviyo replacement?", a: "Yes. Systeme.io's free plan supports 2,000 contacts with unlimited email sends, full automation sequences, sales funnels, and CRM: permanently free, no credit card required. Klaviyo charges $20+/mo across its published ladder, with a typical mid-sized Shopify list landing in the middle of it." },
+  { q: "What is the difference between Klaviyo and Systeme.io for Shopify?", a: "Klaviyo offers deeper native Shopify segmentation. Systeme.io offers a broader platform (email marketing, funnels, CRM, courses, and affiliate management) at $0/month. For stores not using Klaviyo's advanced segmentation, Systeme.io delivers equivalent email results at zero cost." },
   { q: "How do I migrate my Klaviyo email list to Systeme.io?", a: "Export your Klaviyo contacts as a CSV (Profiles → Export) and import them into Systeme.io (Contacts → Import). Map email, first name, and last name. Your list migrates in under 10 minutes regardless of size." },
-  { q: "What is the Klaviyo free plan limit in 2026?", a: "Klaviyo's free plan in 2026 is limited to 250 active profiles and 500 email sends per month. Systeme.io's free plan allows 2,000 contacts with unlimited email sends — 8× more contacts and no sending cap at zero cost." },
-  { q: "Why did my Klaviyo bill go up in 2025–2026?", a: "Klaviyo changed its billing model in February 2025. Previously you paid based on contacts you actively emailed. Now you pay for all active profiles in your account — every subscribed contact whether or not you send to them." },
+  { q: "What is the Klaviyo free plan limit in 2026?", a: "Klaviyo's free plan in 2026 is limited to 250 active profiles and 500 email sends per month. Systeme.io's free plan allows 2,000 contacts with unlimited email sends: 8× more contacts and no sending cap at zero cost." },
+  { q: "Why did my Klaviyo bill go up in 2025–2026?", a: "Klaviyo changed its billing model in February 2025. Previously you paid based on contacts you actively emailed. Now you pay for all active profiles in your account: every subscribed contact whether or not you send to them." },
   { q: "Does Systeme.io have abandoned cart emails for Shopify?", a: "Yes. Systeme.io supports triggered automation workflows including abandoned cart sequences via Shopify webhook integration. Connect Shopify to Systeme.io under Settings → Integrations, or use a Make.com webhook for more advanced triggers." },
   { q: "What does Systeme.io replace besides Klaviyo?", a: "Systeme.io's free plan replaces: Klaviyo and Mailchimp for email marketing, ClickFunnels ($97–$297/month) for sales funnels, Teachable ($39–$119/month) for course hosting, and most standalone CRM tools." },
-  { q: "Is there a free trial or do I need a credit card?", a: "No credit card required. Systeme.io's free plan is permanently free — not a trial. You create an account, access the full platform up to the free plan limits, and never need to enter payment details unless you choose to upgrade." },
-  { q: "Is Beehiiv a good alternative to Klaviyo for Shopify?", a: "Beehiiv is a strong alternative for content-led Shopify brands running newsletter-first growth strategies. Free up to 2,500 subscribers with built-in referral tools. It is not a direct Klaviyo replacement for ecommerce automation — it lacks abandoned cart and post-purchase triggers — but for stores where the newsletter is the primary acquisition channel, it outperforms both Klaviyo and Systeme.io on ease of use and organic list growth." }
+  { q: "Is there a free trial or do I need a credit card?", a: "No credit card required. Systeme.io's free plan is permanently free, not a trial. You create an account, access the full platform up to the free plan limits, and never need to enter payment details unless you choose to upgrade." },
+  { q: "Is Beehiiv a good alternative to Klaviyo for Shopify?", a: "Beehiiv is a strong alternative for content-led Shopify brands running newsletter-first growth strategies. Free up to 2,500 subscribers with built-in referral tools. It is not a direct Klaviyo replacement for ecommerce automation: it lacks abandoned cart and post-purchase triggers. But for stores where the newsletter is the primary acquisition channel, it outperforms both Klaviyo and Systeme.io on ease of use and organic list growth." }
 ];
 
 // ─── Related guides ───────────────────────────────────────────────────────────
 const relatedGuides = [
-  { href: "/shopify-automation-guides/",  label: "All Shopify automation guides — tracking, inventory and workflows" },
-  { href: "/capi-shield/",               label: "CAPI Shield — free Shopify server-side tracking (Meta Ads)" },
-  { href: "/stocky-swap/",               label: "Stocky Swap — free replacement for the retired Stocky app" },
-  { href: "/tools/",                      label: "The complete $0 Shopify automation stack — all free tools" }
+  { href: "/shopify-automation-guides/",  label: "All Shopify automation guides: tracking, inventory and workflows" },
+  { href: "/capi-shield/",               label: "CAPI Shield: free Shopify server-side tracking (Meta Ads)" },
+  { href: "/stocky-swap/",               label: "Stocky Swap: free replacement for the retired Stocky app" },
+  { href: "/tools/",                      label: "The complete $0 Shopify automation stack: all free tools" }
 ];
 
 // ─── JSON-LD ──────────────────────────────────────────────────────────────────
@@ -209,8 +194,8 @@ const schemaGraph = {
     {
       "@type": "WebPage",
       "url": CANONICAL,
-      "name": "Replace Klaviyo Free in 2026 — Best Free Klaviyo Alternative for Shopify",
-      "description": "Replace Klaviyo with Systeme.io free — 2,000 contacts, unlimited email sends, full automations, CRM, and sales funnels at $0/month. Migrate in 30 minutes.",
+      "name": "Replace Klaviyo Free in 2026: Best Free Klaviyo Alternative for Shopify",
+      "description": "Replace Klaviyo with Systeme.io free: 2,000 contacts, unlimited email sends, full automations, CRM, and sales funnels at $0/month. Migrate in 30 minutes.",
       "dateModified": DATE_MODIFIED,
       "breadcrumb": {
         "@type": "BreadcrumbList",
@@ -289,19 +274,19 @@ const tocHeadings = [
   },
   {
     "id": "compare-h",
-    "text": "Klaviyo vs Systeme.io \u2014 the full comparison"
+    "text": "Klaviyo vs Systeme.io: the full comparison"
   },
   {
     "id": "uk-h",
-    "text": "Klaviyo pricing in \u00a3 for UK Shopify stores"
+    "text": "Klaviyo pricing for UK Shopify stores"
   },
   {
     "id": "getresponse-h",
-    "text": "Over 2,000 contacts \u2014 Klaviyo vs GetResponse"
+    "text": "Over 2,000 contacts: Klaviyo vs GetResponse"
   },
   {
     "id": "migrate-h",
-    "text": "Replace Klaviyo in 30 minutes \u2014 step by step"
+    "text": "Replace Klaviyo in 30 minutes: step by step"
   },
   {
     "id": "guide-h",
@@ -313,7 +298,7 @@ const tocHeadings = [
   },
   {
     "id": "faq-h",
-    "text": "Replace Klaviyo \u2014 FAQ"
+    "text": "Replace Klaviyo: FAQ"
   },
   {
     "id": "stop-paying-klaviyo-for-contacts-you-don-t-email",
@@ -322,21 +307,17 @@ const tocHeadings = [
   {
     "id": "sources-amp-primary-documentation",
     "text": "Sources &amp; primary documentation"
-  },
-  {
-    "id": "related-app-alternatives",
-    "text": "Related App Alternatives"
   }
 ];
 
 ---
-<Base title="Replace Klaviyo Free — Systeme.io & GetResponse 2026" description="Klaviyo bills every active profile. Systeme.io covers 2,000 contacts free, GetResponse cuts 60–70% above that. UK £ pricing, VAT, and a 30-minute migration.">
+<Base title="Replace Klaviyo Free — Systeme.io & GetResponse 2026" description="Klaviyo bills every active profile. Systeme.io covers 2,000 contacts free, GetResponse is a cheaper paid option above that. UK VAT, and a 30-minute migration.">
 <Fragment slot="head">
 <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
 
   <!-- ─── Fonts ─── -->
   
-<script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps \u2014 server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
+<script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps: server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
   </Fragment>
 
 
@@ -401,11 +382,11 @@ const tocHeadings = [
     </p>
 
     <!-- ── CALCULATOR ── -->
-    <div class="calc-wrap" aria-label="Klaviyo savings calculator">
+    <div class="calc-wrap" id="klaviyo-savings-calculator" aria-label="Klaviyo savings calculator">
       <span class="calc-label">Calculate_Your_Klaviyo_Savings</span>
       <p style="font-size:14px;color:var(--text-3);margin-bottom:20px;">How many contacts do you have in Klaviyo?</p>
       <select class="calc-select" id="contact-select" aria-label="Select your Klaviyo contact list size">
-        <option value="">— Select your list size —</option>
+        <option value="">Select your list size</option>
         {calcOptions.map(o => (
           <option value={o.value}>{o.label}</option>
         ))}
@@ -417,7 +398,7 @@ const tocHeadings = [
 
         <div class="calc-capture" id="calc-capture-form">
           <span class="calc-capture-label">Get_Your_Free_Klaviyo_Migration_Checklist</span>
-          <p class="calc-capture-sub">Enter your email and we'll send the step-by-step migration checklist — then show you exactly how to replace Klaviyo for free.</p>
+          <p class="calc-capture-sub">Enter your email and we'll send the step-by-step migration checklist, then show you exactly how to replace Klaviyo for free.</p>
           <div class="calc-capture-row">
             <input type="email" id="calc-email" class="calc-capture-inp" placeholder="your@email.com" aria-label="Email address for migration checklist" autocomplete="email" />
             <button class="calc-capture-btn" id="calc-capture-submit" type="button">
@@ -428,7 +409,7 @@ const tocHeadings = [
           <p class="calc-capture-disc">No spam. Unsubscribe anytime. We'll also show you the free Systeme.io setup.</p>
         </div>
         <div class="calc-capture-done" id="calc-capture-done">
-          <div class="calc-capture-done-msg">✓ Checklist on its way — check your inbox.</div>
+          <div class="calc-capture-done-msg">✓ Checklist on its way: check your inbox.</div>
           <div class="calc-capture-done-sub">Opening Systeme.io so you can start saving now…</div>
         </div>
 
@@ -468,8 +449,8 @@ const tocHeadings = [
     </div>
 
     <p class="hero-cta-note">
-      Powered by Systeme.io
-      — free forever up to 2,000 contacts. Replaces Klaviyo, ClickFunnels, and Teachable at $0.
+      Powered by Systeme.io:
+      free forever up to 2,000 contacts. Replaces Klaviyo, ClickFunnels, and Teachable at $0.
     </p>
 
 
@@ -494,13 +475,13 @@ const tocHeadings = [
     <div class="sec-head">
       <span class="tag tag-red" style="margin-bottom:16px;display:inline-flex;">The Klaviyo problem</span>
       <h2 id="problem-h">Why your Klaviyo bill keeps climbing in 2026</h2>
-      <p>Klaviyo changed how it bills in February 2025 — and most merchants didn't notice until the invoice arrived.</p>
+      <p>Klaviyo changed how it bills in February 2025, and most merchants didn't notice until the invoice arrived.</p>
     </div>
 
     <div class="body-text" style="max-width:860px;margin:0 auto;">
-      <p>Until February 2025, Klaviyo billed you based on the contacts you actively emailed each month. If you had 15,000 people on your list but only emailed 8,000 of them, you paid for 8,000. That was already expensive — but it was at least predictable.</p>
+      <p>Until February 2025, Klaviyo billed you based on the contacts you actively emailed each month. If you had 15,000 people on your list but only emailed 8,000 of them, you paid for 8,000. That was already expensive, but it was at least predictable.</p>
 
-      <p>The 2025 pricing update changed this fundamentally. <strong>Klaviyo now charges based on active profiles — every contact in your account, whether you email them or not.</strong> Unengaged subscribers who haven't opened an email in two years. People who signed up for a discount code and never bought. All of them count.</p>
+      <p>The 2025 pricing update changed this fundamentally. <strong>Klaviyo now charges based on active profiles: every contact in your account, whether you email them or not.</strong> Unengaged subscribers who haven't opened an email in two years. People who signed up for a discount code and never bought. All of them count.</p>
 
       <div style="background:var(--red-bg);border:1.5px solid var(--red-border);border-radius:12px;padding:28px 32px;margin:28px 0;">
         <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--red);margin-bottom:16px;">Klaviyo 2026 pricing reality</div>
@@ -515,11 +496,11 @@ const tocHeadings = [
         <p style="font-size:12px;color:var(--text-4);line-height:1.6;margin:12px 0 0;">{TIER_SOURCE_NOTE}</p>
       </div>
 
-      <p>The compounding effect is brutal. As you run ads, collect email addresses at checkout, and grow your list through popups and campaigns, your Klaviyo bill climbs automatically — even when your revenue doesn't.</p>
+      <p>The compounding effect is brutal. As you run ads, collect email addresses at checkout, and grow your list through popups and campaigns, your Klaviyo bill climbs automatically, even when your revenue doesn't.</p>
 
       <h3>What most stores actually use Klaviyo for</h3>
 
-      <p>The honest truth is that <strong>90% of Shopify stores use Klaviyo for four things</strong>: a welcome email sequence, an abandoned cart flow, a post-purchase sequence, and occasional broadcast campaigns. These are not advanced features. Systeme.io provides all four on its free plan — without billing you for unengaged subscribers.</p>
+      <p>The honest truth is that <strong>most Shopify stores use Klaviyo for four things</strong>: a welcome email sequence, an abandoned cart flow, a post-purchase sequence, and occasional broadcast campaigns. These are not advanced features. Systeme.io provides all four on its free plan, without billing you for unengaged subscribers.</p>
 
       <p>For stores that need more advanced customer support alongside email, consider pairing Systeme.io with Tidio for free live chat and AI chatbots, or Gorgias for a unified helpdesk that integrates with Shopify. Both complement your email marketing with real-time customer engagement.</p>
     </div>
@@ -550,7 +531,7 @@ const tocHeadings = [
 
     <div class="callout" style="margin-top:40px;">
       <div class="callout-label">Free plan limits</div>
-      <p>Systeme.io's free plan supports <strong>2,000 contacts with unlimited email sends</strong>. Klaviyo's free plan caps at 250 contacts and 500 emails per month. For stores larger than 2,000 contacts, Systeme.io's Startup plan at <strong>$17/month</strong> covers up to 5,000 contacts. On Klaviyo's ladder that same list sits at the $100 tier. For stores needing advanced email marketing features with larger lists, GetResponse offers AI-powered automation, landing pages, and webinar hosting — compared tier by tier further down this page.</p>
+      <p>Systeme.io's free plan supports <strong>2,000 contacts with unlimited email sends</strong>. Klaviyo's free plan caps at 250 contacts and 500 emails per month. For stores larger than 2,000 contacts, Systeme.io's Startup plan at <strong>$17/month</strong> covers up to 5,000 contacts. On Klaviyo's ladder that same list sits at the $100 tier. For stores needing advanced email marketing features with larger lists, GetResponse offers AI-powered automation, landing pages, and webinar hosting: compared tier by tier further down this page.</p>
     </div>
   </div>
 </section>
@@ -562,7 +543,7 @@ const tocHeadings = [
   <div class="inner">
     <div class="sec-head">
       <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Side by side</span>
-      <h2 id="compare-h">Klaviyo vs Systeme.io — the full comparison</h2>
+      <h2 id="compare-h">Klaviyo vs Systeme.io: the full comparison</h2>
       <p>Every metric that matters for a Shopify email marketing decision.</p>
     </div>
 
@@ -589,12 +570,12 @@ const tocHeadings = [
 
     <div class="callout warn" style="margin-top:24px;">
       <div class="callout-label">When Klaviyo is worth keeping</div>
-      <p>Klaviyo's deep Shopify integration, predictive analytics, and ecommerce-specific segmentation are genuinely more powerful for large stores running sophisticated segmented campaigns. <strong>If you have 50,000+ contacts and use Klaviyo's advanced segmentation heavily, the ROI may justify the cost.</strong> For everyone else paying a mid-ladder Klaviyo bill to run welcome flows and broadcast campaigns — Systeme.io does that for $0.</p>
+      <p>Klaviyo's deep Shopify integration, predictive analytics, and ecommerce-specific segmentation are genuinely more powerful for large stores running sophisticated segmented campaigns. <strong>If you have 50,000+ contacts and use Klaviyo's advanced segmentation heavily, the ROI may justify the cost.</strong> For everyone else paying a mid-ladder Klaviyo bill to run welcome flows and broadcast campaigns: Systeme.io does that for $0.</p>
     </div>
 
     <div class="callout bee" style="margin-top:16px;">
       <div class="callout-label">🌍 Newsletter-first stores</div>
-      <p>Running a content-led or newsletter-first Shopify brand? Beehiiv is worth considering alongside Systeme.io — <strong>free up to 2,500 subscribers</strong>, built-in referral growth tools, and a significantly simpler setup for content creators. Where Systeme.io is built for funnel-led email marketing, Beehiiv is built for newsletter-first audience growth — a meaningful distinction for content-driven stores that prioritise audience over conversion rate optimisation.</p>
+      <p>Running a content-led or newsletter-first Shopify brand? Beehiiv is worth considering alongside Systeme.io: <strong>free up to 2,500 subscribers</strong>, built-in referral growth tools, and a significantly simpler setup for content creators. Where Systeme.io is built for funnel-led email marketing, Beehiiv is built for newsletter-first audience growth: a meaningful distinction for content-driven stores that prioritise audience over conversion rate optimisation.</p>
     </div>
   </div>
 </section>
@@ -606,45 +587,27 @@ const tocHeadings = [
   <div class="inner">
     <div class="sec-head">
       <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">UK stores</span>
-      <h2 id="uk-h">Klaviyo pricing in £ for UK Shopify stores</h2>
-      <p>Billed in dollars, paid in pounds, then 20% VAT on top. The sticker price is not the bill.</p>
+      <h2 id="uk-h">Klaviyo pricing for UK Shopify stores</h2>
+      <p>Billed in dollars, paid in pounds, with VAT on top. The sticker price is not the bill.</p>
     </div>
 
     <div class="body-text" style="max-width:860px;margin:0 auto;">
-      <p>Klaviyo bills in USD, so a UK store pays whatever the exchange rate says on the invoice date and then <strong>20% VAT on top</strong> under HMRC's digital services rules. The table below converts at approximately <strong>{GBP_RATE_NOTE}</strong>. Your actual figure moves with the rate.</p>
-
-      <div class="comp-wrap" style="margin:24px 0;">
-        <table class="comp-table" aria-label="Klaviyo pricing in pounds for UK stores">
-          <thead>
-            <tr><th>Contacts</th><th>USD/month</th><th>GBP approx</th><th>GBP incl. 20% VAT</th></tr>
-          </thead>
-          <tbody>
-            {ukTiers.map(t => (
-              <tr>
-                <td>{t.contacts}</td>
-                <td>{t.usd}</td>
-                <td>{t.gbp}</td>
-                <td class="lose"><strong>{t.incVat}</strong></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <p>Klaviyo publishes its prices in USD (<a href="https://www.klaviyo.com/pricing" target="_blank" rel="noopener">klaviyo.com/pricing</a>, read 25 September 2026), so a UK store pays whatever the exchange rate says on the invoice date. VAT is then added at the UK standard rate, which is 20% (<a href="https://www.gov.uk/vat-rates" target="_blank" rel="noopener">gov.uk/vat-rates</a>, read 25 September 2026). We quote Klaviyo in the currency it publishes and do not convert: a sterling figure worked out at one day's rate is out of date the next.</p>
       <p style="font-size:12px;color:var(--text-4);line-height:1.6;margin:12px 0 0;">{TIER_SOURCE_NOTE}</p>
 
-      <p>VAT-registered businesses reclaim that 20% on the quarterly return, so the true cost is the net figure — but the cash-flow effect is real, because you pay it upfront and recover it later.</p>
+      <p>VAT-registered businesses reclaim that VAT on the quarterly return, so the true cost is the net figure. The cash-flow effect is still real, because you pay it upfront and recover it later.</p>
 
       <h3>Why UK bills rose harder than US bills</h3>
-      <p>Two things landed at once. The active-profile change described above hit UK stores disproportionately, because <strong>GDPR practice creates large suppressed segments</strong> — contacts who never re-consented during post-Brexit list cleans, unsubscribes, bounces and lapsed customers that UK stores retain for compliance periods rather than delete. Under volume-based billing those cost nothing. Under active-profile billing they are chargeable.</p>
-      <p>On top of that, sterling weakness through 2024–2025 meant the same dollar price cost more in pounds. A store on the $400 tier paid roughly £320/month in 2022 and roughly £378/month including VAT in 2026 — a 20%+ increase with no change of plan and no change in usage.</p>
+      <p>Two things landed at once. The active-profile change described above hit UK stores disproportionately, because <strong>GDPR practice creates large suppressed segments</strong>: contacts who never re-consented during post-Brexit list cleans, unsubscribes, bounces and lapsed customers that UK stores retain for compliance periods rather than delete. Under volume-based billing those cost nothing. Under active-profile billing they are chargeable.</p>
+      <p>On top of that, a dollar-denominated bill moves with the exchange rate, so the same plan can cost a UK store more in pounds from one year to the next with no change of plan and no change in usage.</p>
 
       <h3>GDPR, consent and Making Tax Digital</h3>
-      <p>Systeme.io and GetResponse both maintain UK GDPR compliance, which mirrors EU GDPR under the Data Protection Act 2018, and both support double opt-in, consent recording and data subject access request workflows to ICO expectations. <strong>Your existing consent records transfer with your contact export</strong> — you do not need to re-obtain consent from subscribers who already opted in.</p>
+      <p>Systeme.io and GetResponse both maintain UK GDPR compliance, which mirrors EU GDPR under the Data Protection Act 2018, and both support double opt-in, consent recording and data subject access request workflows to ICO expectations. <strong>Your existing consent records transfer with your contact export</strong>: you do not need to re-obtain consent from subscribers who already opted in.</p>
       <p>One administrative detail worth knowing: Klaviyo invoices are issued in USD, so a VAT-registered UK business has to convert each one to GBP at the invoice date for its MTD records. A free plan issues no invoices and creates no such obligation for that cost centre.</p>
 
       <div class="callout" style="margin-top:24px;">
         <div class="callout-label">The honest UK threshold</div>
-        <p>If you are paying more than <strong>£50/month</strong> and your use case is triggered sequences plus broadcasts, migrate. The sequences rebuild in under an hour and the saving is immediate — roughly <strong>£336/year</strong> at a 1,000-contact list, and over <strong>£760/year</strong> at 5,000 contacts once VAT is counted.</p>
+        <p>If your Klaviyo invoice has moved past the free tier and your use case is triggered sequences plus broadcasts, migrate. The sequences rebuild in under an hour, and the saving starts with the next invoice.</p>
       </div>
     </div>
   </div>
@@ -657,7 +620,7 @@ const tocHeadings = [
   <div class="inner">
     <div class="sec-head">
       <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Above the free tier</span>
-      <h2 id="getresponse-h">Over 2,000 contacts — Klaviyo vs GetResponse</h2>
+      <h2 id="getresponse-h">Over 2,000 contacts: Klaviyo vs GetResponse</h2>
       <p>Systeme.io's free plan stops at 2,000 contacts. Past that, this is the comparison that matters.</p>
     </div>
 
@@ -686,8 +649,8 @@ const tocHeadings = [
       <p>At 25,000 contacts that is <strong>$3,132 a year</strong>. The gap is consistent at every tier and widens as the list grows, because the two platforms scale on different curves.</p>
 
       <h3>Where the feature gap actually is</h3>
-      <p>Klaviyo's Shopify integration is genuinely best-in-class: real-time sync of products viewed, collections browsed, search queries, checkout started and order placed, with flows that can trigger on category affinity, cart-value thresholds, purchase frequency or predicted next order date. <strong>GetResponse covers the core reliably</strong> — orders sync, abandoned cart triggers fire on live cart data, purchase history is available for segmentation — but without the granular event-level tracking behind browse abandonment and predictive triggers.</p>
-      <p>It also includes two things Klaviyo does not: a full landing-page and funnel builder, and built-in webinars. Klaviyo counters with predictive analytics — CLV and churn modelling — that GetResponse has no equivalent for.</p>
+      <p>Klaviyo's Shopify integration is genuinely best-in-class: real-time sync of products viewed, collections browsed, search queries, checkout started and order placed, with flows that can trigger on category affinity, cart-value thresholds, purchase frequency or predicted next order date. <strong>GetResponse covers the core reliably</strong> (orders sync, abandoned cart triggers fire on live cart data, purchase history is available for segmentation) but without the granular event-level tracking behind browse abandonment and predictive triggers.</p>
+      <p>It also includes two things Klaviyo does not: a full landing-page and funnel builder, and built-in webinars. Klaviyo counters with predictive analytics (CLV and churn modelling) that GetResponse has no equivalent for.</p>
 
       <div class="comp-two" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:24px 0;">
         <div class="callout warn" style="margin:0;">
@@ -700,7 +663,7 @@ const tocHeadings = [
         </div>
       </div>
 
-      <p>The migration is the same shape as the Systeme.io one below — export from Klaviyo, connect Shopify under Integrations, import the CSV, rebuild the flows. Two differences are worth planning for: <a href={`${GETRESPONSE_URL}?source=replace-klaviyo-free-getresponse`} target="_blank" rel="sponsored nofollow noopener">GetResponse</a> ships <strong>template flows</strong> for abandoned cart, welcome and post-purchase that you customise rather than build from scratch, and you should <strong>run both platforms in parallel for two to four weeks</strong> before cancelling. Export your Klaviyo campaign history and reporting first — it is not accessible after cancellation.</p>
+      <p>The migration is the same shape as the Systeme.io one below: export from Klaviyo, connect Shopify under Integrations, import the CSV, rebuild the flows. Two differences are worth planning for: <a href={`${GETRESPONSE_URL}?source=replace-klaviyo-free-getresponse`} target="_blank" rel="sponsored nofollow noopener">GetResponse</a> ships <strong>template flows</strong> for abandoned cart, welcome and post-purchase that you customise rather than build from scratch, and you should <strong>run both platforms in parallel for two to four weeks</strong> before cancelling. Export your Klaviyo campaign history and reporting first: it is not accessible after cancellation.</p>
 
     </div>
   </div>
@@ -733,7 +696,7 @@ const tocHeadings = [
   <div class="inner">
     <div class="sec-head">
       <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Migration guide</span>
-      <h2 id="migrate-h">Replace Klaviyo in 30 minutes — step by step</h2>
+      <h2 id="migrate-h">Replace Klaviyo in 30 minutes: step by step</h2>
       <p>No developer required. Your email sequences migrate in under an hour. Cancel Klaviyo the same day.</p>
     </div>
 
@@ -755,7 +718,7 @@ const tocHeadings = [
     <Disclosure />
     <div class="section-cta">
       <div class="section-cta-left">
-        <div class="cta-h">Start replacing Klaviyo — takes 30 minutes</div>
+        <div class="cta-h">Start replacing Klaviyo: takes 30 minutes</div>
         <p>Free forever · 2,000 contacts · Unlimited sends · No credit card</p>
       </div>
       <a href={`${SYSTEME_URL}?source=replace-klaviyo-free-migrate`} target="_blank" rel="sponsored nofollow noopener" class="btn btn-sm">Create a free Systeme.io account</a>
@@ -778,31 +741,31 @@ const tocHeadings = [
     </div>
 
     <div class="body-text" style="max-width:860px;margin:0 auto;">
-      <h3>Why Klaviyo became the default — and why that's changing</h3>
+      <h3>Why Klaviyo became the default, and why that's changing</h3>
       <p>Klaviyo became the dominant email marketing platform for Shopify stores between 2020 and 2023 because of its deep native integration, real-time ecommerce event tracking, and genuinely powerful segmentation. The 2025 billing change disrupted that value equation. <strong>Charging based on total active profiles rather than email volume means stores pay Klaviyo for contacts they never contact.</strong></p>
 
       <h3>What makes Systeme.io different from other Klaviyo alternatives</h3>
-      <p>Most Klaviyo alternatives — Omnisend, Mailchimp, ActiveCampaign — are still email-only platforms. Systeme.io replaces all of it in one platform. <strong>The free plan includes unlimited email sends, full automation sequences, sales funnels, a CRM, affiliate management, and course hosting.</strong> For stores that outgrow Systeme.io's contact limits, GetResponse offers a scalable alternative with AI-powered automation, landing pages, and webinar hosting — starting at $19/month for up to 1,000 contacts with no feature restrictions.</p>
+      <p>Most Klaviyo alternatives (Omnisend, Mailchimp, ActiveCampaign) are still email-only platforms. Systeme.io replaces all of it in one platform. <strong>The free plan includes unlimited email sends, full automation sequences, sales funnels, a CRM, affiliate management, and course hosting.</strong> For stores that outgrow Systeme.io's contact limits, GetResponse offers a scalable alternative with AI-powered automation, landing pages, and webinar hosting: starting at $19/month for up to 1,000 contacts with no feature restrictions.</p>
 
-      <h3>Systeme.io vs Klaviyo — the technical reality for Shopify</h3>
+      <h3>Systeme.io vs Klaviyo: the technical reality for Shopify</h3>
       <p>The one area where Klaviyo outperforms Systeme.io is deep ecommerce event segmentation. For most Shopify stores, this limitation is theoretical. <strong>The majority of stores on Klaviyo are not using predictive segmentation.</strong> They have a welcome flow, abandoned cart, post-purchase follow-up, and broadcast campaigns. All four work identically in Systeme.io at $0/month.</p>
 
-      <h3>Beehiiv — the newsletter-first alternative</h3>
-      <p>For content-led Shopify brands building audience before product — or stores that generate more revenue through editorial content than promotional email — Beehiiv is worth evaluating alongside Systeme.io. Free up to 2,500 subscribers with a built-in referral programme that grows your list passively. Where Systeme.io is built for funnel-led email marketing, Beehiiv is built for newsletter-first growth — a meaningful distinction for content-driven stores that prioritise audience over conversion rate optimisation.</p>
+      <h3>Beehiiv: the newsletter-first alternative</h3>
+      <p>For content-led Shopify brands building audience before product (or stores that generate more revenue through editorial content than promotional email) Beehiiv is worth evaluating alongside Systeme.io. Free up to 2,500 subscribers with a built-in referral programme that grows your list passively. Where Systeme.io is built for funnel-led email marketing, Beehiiv is built for newsletter-first growth: a meaningful distinction for content-driven stores that prioritise audience over conversion rate optimisation.</p>
 
       <h3>Complete your customer engagement stack</h3>
-      <p>Email marketing is one channel. To maximise customer lifetime value, pair your email platform with live chat and support tools. Tidio adds free live chat and AI chatbots to your Shopify store — answering customer questions in real time while your automations handle follow-up. For larger stores needing a unified helpdesk, Gorgias integrates directly with Shopify and centralises email, chat, and social support in one dashboard. Both pair naturally with Systeme.io's email automations.</p>
+      <p>Email marketing is one channel. To maximise customer lifetime value, pair your email platform with live chat and support tools. Tidio adds free live chat and AI chatbots to your Shopify store: answering customer questions in real time while your automations handle follow-up. For larger stores needing a unified helpdesk, Gorgias integrates directly with Shopify and centralises email, chat, and social support in one dashboard. Both pair naturally with Systeme.io's email automations.</p>
 
       <h3>The $0 marketing stack for Shopify</h3>
-      <p>Systeme.io is one layer of the <a href="/">complete $0 automation stack</a>. Pair it with <a href="/capi-shield/">CAPI Shield</a> for free server-side conversion tracking, <a href="/stocky-swap/">Stocky Swap</a> for free inventory management, <a href="/tiktok-events-api-shopify/">TikTok Events API</a> for free TikTok server-side tracking, and Make.com for workflow automation. Use Google Workspace for your business email and collaboration — all connecting into a stack that costs $0/month for core operations.</p>
+      <p>Systeme.io is one layer of the <a href="/stack/">complete $0 automation stack</a>. Pair it with <a href="/capi-shield/">CAPI Shield</a> for free server-side conversion tracking, <a href="/stocky-swap/">Stocky Swap</a> for free inventory management, <a href="/tiktok-events-api-shopify/">TikTok Events API</a> for free TikTok server-side tracking, and Make.com for workflow automation. Use Google Workspace for your business email and collaboration: all connecting into a stack that costs $0/month for core operations.</p>
     </div>
 
     <!-- ── BEEHIIV CARD ── -->
     <div class="bee-card" style="margin-top:48px;">
       <div class="bee-card-left">
         <div class="bee-badge">🌍 Newsletter-first alternative</div>
-        <div class="bee-title">Beehiiv — For content-led stores & newsletter brands</div>
-        <div class="bee-desc">If your Shopify store grows through content, community, or editorial — not just promotions — Beehiiv is built for you. Free up to 2,500 subscribers, with a built-in referral programme that compounds your list passively. Simpler to set up than Klaviyo or Systeme.io, and purpose-built for newsletter-first audience growth.</div>
+        <div class="bee-title">Beehiiv: For content-led stores & newsletter brands</div>
+        <div class="bee-desc">If your Shopify store grows through content, community, or editorial, not just promotions, Beehiiv is built for you. Free up to 2,500 subscribers, with a built-in referral programme that compounds your list passively. Simpler to set up than Klaviyo or Systeme.io, and purpose-built for newsletter-first audience growth.</div>
         <div class="bee-pills">
           <span class="bee-pill">Free up to 2,500 subscribers</span>
           <span class="bee-pill">Built-in referral programme</span>
@@ -831,7 +794,7 @@ const tocHeadings = [
     <div class="crosslink-grid">
       {crosslinks.map(c => (
         <a href={c.href} class={`crosslink-card${c.hoverClass ? " " + c.hoverClass : ""}`}
-           aria-label={`${c.name} — ${c.desc.slice(0,60)}`}>
+           aria-label={`${c.name}: ${c.desc.slice(0,60)}`}>
           <span class={`tag${c.tagClass ? " " + c.tagClass : ""}`} style={c.tagClass === "" && c.hoverClass === "tt" ? "display:inline-flex;background:rgba(255,46,99,.07);border-color:rgba(255,46,99,.2);color:#ff2e63;margin-bottom:10px;" : "display:inline-flex;margin-bottom:10px;"}>{c.tag}</span>
           <div class="crosslink-name">{c.name}</div>
           <div class="crosslink-desc">{c.desc}</div>
@@ -852,7 +815,7 @@ const tocHeadings = [
   <div class="inner-sm">
     <div class="sec-head">
       <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Common questions</span>
-      <h2 id="faq-h">Replace Klaviyo — FAQ</h2>
+      <h2 id="faq-h">Replace Klaviyo: FAQ</h2>
       <p>Every question store owners ask before switching.</p>
     </div>
     <div class="faq-list-c">
@@ -874,7 +837,7 @@ const tocHeadings = [
 <div class="divider"></div>
 
 <!-- ── FINAL CTA ── -->
-<section class="section" aria-label="Replace Klaviyo free — final call to action">
+<section class="section" aria-label="Replace Klaviyo free: final call to action">
   <div class="inner-md" style="text-align:center;">
     <span class="tag" style="margin-bottom:20px;display:inline-flex;">Ready to switch</span>
     <h2 id="stop-paying-klaviyo-for-contacts-you-don-t-email" style="font-family:var(--sans);font-weight:700;font-size:clamp(28px,5vw,52px);color:var(--text);letter-spacing:-.04em;line-height:.98;margin-bottom:20px;">
@@ -882,12 +845,12 @@ const tocHeadings = [
       <span style="color:var(--g);">for contacts you don't email.</span>
     </h2>
     <p style="font-size:17px;color:var(--text-3);max-width:520px;margin:0 auto 32px;line-height:1.7;">
-      Systeme.io replaces Klaviyo — and ClickFunnels, and Teachable — on a free plan that never expires. 2,000 contacts, unlimited sends, full automations. Cancel Klaviyo today.
+      Systeme.io replaces Klaviyo (and ClickFunnels, and Teachable) on a free plan that never expires. 2,000 contacts, unlimited sends, full automations. Cancel Klaviyo today.
     </p>
     <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-bottom:16px;">
-      <a href="/tools/" class="btn-outline" aria-label="See the full $0 automation stack">See the full $0 stack</a>
+      <a href="/stack/" class="btn-outline" aria-label="See the full $0 automation stack">See the full $0 stack</a>
     </div>
-    <p style="font-size:13px;color:var(--text-4);margin-top:16px;">Newsletter brand? Beehiiv is the better starting point — it is covered in the guide above.</p>
+    <p style="font-size:13px;color:var(--text-4);margin-top:16px;">Newsletter brand? Beehiiv is the better starting point: it is covered in the guide above.</p>
     <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:20px;margin-top:28px;">
       {["Migrate in 30 minutes","No developer required","Cancel Klaviyo same day"].map(t => (
         <span style="font-size:13px;color:var(--text-4);display:flex;align-items:center;gap:6px;">
@@ -905,26 +868,26 @@ const tocHeadings = [
   <p style="letter-spacing:.18em;font-size:12px;color:#34d399;font-weight:700;margin:0 0 16px;text-transform:uppercase;">Related free tools</p>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;">
     <a href="#compare-h" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
-      <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Klaviyo vs Systeme.io — Full Comparison</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">On this page</span></span>
+      <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Klaviyo vs Systeme.io: Full Comparison</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">On this page</span></span>
       <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">Every feature compared, and why most stores never need the Systeme.io paid plan</span>
     </a>
     <a href="/capi-shield/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
-      <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">CAPI Shield — Fix Broken Ad Tracking While You&#x27;re Here
+      <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">CAPI Shield: Fix Broken Ad Tracking While You&#x27;re Here
             iOS is also breaking your Meta Ads attribution</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $145–$650/mo</span></span>
       <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">6-minute free fix</span>
     </a>
     <a href="/stocky-swap/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
-      <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Stocky Swap — Replace Shopify Stocky for $0
+      <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Stocky Swap: Replace Shopify Stocky for $0
             Stocky closed 31 Aug 2026. Export still open</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $29–$199/mo</span></span>
       <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">Free replacement in 4 minutes</span>
     </a>
     <a href="/shopify-profit-loss-automation/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
-      <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">P&amp;L Auto — See Your Real Profit After Saving on Klaviyo
+      <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">P&amp;L Auto: See Your Real Profit After Saving on Klaviyo
             Live profit dashboard in Google Sheets</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $19–$299/mo</span></span>
       <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">Know exactly what you save switching from Klaviyo</span>
     </a>
     <a href="/pro/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
-      <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Complete Kit — All 4 Automations Pre-Built ({kitPrice})
+      <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Complete Kit: All 4 Automations Pre-Built ({kitPrice})
             CAPI Shield + TikTok CAPI + Stocky Swap + P&amp;L Auto</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">{kitPrice} one-time</span></span>
       <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">10 minutes to full deployment</span>
     </a>
@@ -961,29 +924,11 @@ const tocHeadings = [
   <h2 id="sources-amp-primary-documentation" style="margin:0 0 .5rem;font-size:1.15em">Sources &amp; primary documentation</h2>
   <p style="margin:0 0 .6rem;opacity:.85">Every technical claim and price on this page can be verified against the official documentation:</p>
   <ul style="margin:0;padding-left:1.2em">
-      <li style="margin:.35em 0"><a href="https://www.klaviyo.com/pricing" target="_blank" rel="noopener">Klaviyo — official pricing</a></li>
-      <li style="margin:.35em 0"><a href="https://systeme.io/pricing" target="_blank" rel="noopener">Systeme.io — official pricing & free plan</a></li>
-      <li style="margin:.35em 0"><a href="https://shopify.dev/docs/api/webhooks" target="_blank" rel="noopener">Shopify.dev — Webhooks API reference</a></li>
+      <li style="margin:.35em 0"><a href="https://www.klaviyo.com/pricing" target="_blank" rel="noopener">Klaviyo: official pricing</a></li>
+      <li style="margin:.35em 0"><a href="https://systeme.io/pricing" target="_blank" rel="noopener">Systeme.io: official pricing & free plan</a></li>
+      <li style="margin:.35em 0"><a href="https://shopify.dev/docs/api/webhooks" target="_blank" rel="noopener">Shopify.dev: Webhooks API reference</a></li>
   </ul>
 </section>
-<div style="max-width:860px;margin:0 auto;padding:0 24px;">
-  
-<div style="max-width:860px;margin:2rem auto;padding:0 24px;">
-  <h2 id="related-app-alternatives" style="font-size:1.5rem;font-weight:bold;margin-bottom:1rem;color:white;">Related App Alternatives</h2>
-  <ul style="list-style:disc;padding-left:1.5rem;color:#9ca3af;">
-    <li><a href="/apps/elevar/" style="color:#34d377;text-decoration:none;hover:underline;">Elevar Pricing & Alternatives</a></li>
-    <li><a href="/apps/triple-whale/" style="color:#34d377;text-decoration:none;hover:underline;">Triple Whale Pricing & Alternatives</a></li>
-    <li><a href="/apps/klaviyo/" style="color:#34d377;text-decoration:none;hover:underline;">Klaviyo Pricing & Alternatives</a></li>
-    <li><a href="/apps/stocky/" style="color:#34d377;text-decoration:none;hover:underline;">Stocky Pricing & Alternatives</a></li>
-    <li><a href="/apps/omnisend/" style="color:#34d377;text-decoration:none;hover:underline;">Omnisend Pricing & Alternatives</a></li>
-    <li><a href="/apps/mailchimp/" style="color:#34d377;text-decoration:none;hover:underline;">Mailchimp Pricing & Alternatives</a></li>
-    <li><a href="/apps/northbeam/" style="color:#34d377;text-decoration:none;hover:underline;">Northbeam Pricing & Alternatives</a></li>
-    <li><a href="/apps/analyzify/" style="color:#34d377;text-decoration:none;hover:underline;">Analyzify Pricing & Alternatives</a></li>
-    <li><a href="/apps/gorgias/" style="color:#34d377;text-decoration:none;hover:underline;">Gorgias Pricing & Alternatives</a></li>
-    <li><a href="/apps/zapier/" style="color:#34d377;text-decoration:none;hover:underline;">Zapier Pricing & Alternatives</a></li>
-  </ul>
-</div>
-</div>
 
 <!-- ════════════════════════════════════════════════════════════════════════════
      CLIENT SCRIPTS
