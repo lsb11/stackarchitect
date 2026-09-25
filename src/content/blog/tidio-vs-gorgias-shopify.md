@@ -140,9 +140,11 @@ For most $500k+ Shopify stores, **Gorgias Pro or Advanced** is still the right a
 
 **For most Shopify stores, Tidio is the right starting point.** The free plan is genuinely functional. Lyro AI reduces human support time meaningfully when properly configured. The $29–$59/month paid plans extend this for growing stores at a fraction of Gorgias's cost.
 
-Start with [Tidio free — Lyro AI resolves support at $0/month](/go/tidio/?source=tidio-vs-gorgias-shopify-n2). The [Tidio setup guide](https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide/) covers when the free plan is enough and when it isn't. The [Tidio setup guide](https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide/) covers the full configuration including the Lyro knowledge base structure.
+Start with [Tidio's free plan](/go/tidio/?source=tidio-vs-gorgias-shopify-n2). The [Tidio setup guide](https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide/) covers when the free plan is enough and when it isn't. The [Tidio setup guide](https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide/) covers the full configuration including the Lyro knowledge base structure.
 
-Once you cross 300 tickets/month or hit Tidio's seat cap, [upgrade to Gorgias — native Shopify integration and revenue attribution](https://www.gorgias.com/). The [Gorgias review for $50k+ stores](https://stackarchitect.xyz/gorgias-shopify-guide/) covers the upgrade decision and which Gorgias tier matches your ticket volume.
+Once you cross 300 tickets/month or hit Tidio's seat cap, [book a Gorgias demo or start a free trial](/go/gorgias/?source=tidio-vs-gorgias-shopify-verdict). The [Gorgias review for $50k+ stores](https://stackarchitect.xyz/gorgias-shopify-guide/) covers the upgrade decision and which Gorgias tier matches your ticket volume.
+
+Both the Tidio and the Gorgias links in this post are affiliate links, so Stack Architect may earn a commission whichever you choose. The revenue and ticket thresholds above decide the recommendation, not which one pays.
 
 ---
 

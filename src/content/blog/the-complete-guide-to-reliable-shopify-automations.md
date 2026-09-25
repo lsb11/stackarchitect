@@ -32,7 +32,7 @@ relatedGuides:
     href: "/capi-shield/"
 ---
 
-Getting a [Make.com](/go/make/?source=reliable-automations-intro) scenario to run once is easy. Getting it to run correctly every time — handling API failures gracefully, recovering from missed events, processing concurrent orders without data corruption — requires deliberate architecture decisions.
+Getting a Make.com scenario to run once is easy. Getting it to run correctly every time — handling API failures gracefully, recovering from missed events, processing concurrent orders without data corruption — requires deliberate architecture decisions.
 
 This guide covers the patterns that separate fragile Shopify automations from reliable ones.
 
@@ -106,7 +106,7 @@ Webhook processing should be treated as best-effort delivery. Even with retry lo
 
 **Daily reconciliation check:**
 
-Create a separate Make.com scenario that runs every morning:
+Create a separate [Make.com](/go/make/?source=the-complete-guide-to-reliable-shopify-automations-reconcile) scenario that runs every morning:
 
 1. Calls Shopify's Orders API: `GET /admin/api/2024-01/orders.json?status=paid&created_at_min=YESTERDAY_DATE`
 2. Gets the count of yesterday's paid orders from Shopify

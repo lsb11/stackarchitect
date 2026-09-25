@@ -136,7 +136,7 @@ Server-to-server communication is not subject to any browser privacy setting or 
 
 **How to implement free:**
 
-[CAPI Shield](/capi-shield/) is the free implementation guide. It uses Make.com to receive a Shopify order webhook and forward a formatted purchase event to Meta's Conversions API endpoint. Setup takes about 6 minutes once your [Make.com account](/go/make/?source=ios-updates-capi-shield) and Meta access are in place, and covers Meta CAPI. Its Google branch cannot match Shopify orders as shipped.
+[CAPI Shield](/capi-shield/) is the free implementation guide. It uses Make.com to receive a Shopify order webhook and forward a formatted purchase event to Meta's Conversions API endpoint. Setup takes about 6 minutes once your [Make.com account](/go/make/?source=how-to-fix-shopify-conversion-tracking-after-ios-updates-body) and Meta access are in place, and covers Meta CAPI. Its Google branch cannot match Shopify orders as shipped.
 
 **Critical: deduplication**
 

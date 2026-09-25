@@ -66,6 +66,13 @@
  * /go/gorgias, which paid a $200-500 bounty on a vendor apps.json names as
  * something to swap out for Tidio.
  *
+ * One named exception, GORGIAS_BOTH_SIDES below: on 25 Sep 2026 the owner
+ * chose to restore /go/gorgias, knowing it means earning on both sides of the
+ * Tidio-or-Gorgias choice. The exception is for that one slug and that one
+ * domain, and it is paid for in disclosure: /gorgias-shopify-guide/ and
+ * /blog/tidio-vs-gorgias-shopify/ say in words that both sides pay. Every
+ * other vendor in apps.json is still refused.
+ *
  * Usage:
  *   node scripts/claims-guard.mjs          # exit 1 on violation
  *   node scripts/claims-guard.mjs --list   # print the worklist, always exit 0
@@ -551,6 +558,13 @@ function checkDisclosure() {
 }
 
 /**
+ * Cloaks allowed to resolve to a vendor apps.json lists, slug -> domain. Each
+ * entry is a decision somebody made with the conflict in view, not a way to
+ * make the build pass. See the header, FOURTH AND FIFTH CHECKS.
+ */
+const GORGIAS_BOTH_SIDES = { gorgias: 'gorgias.com' };
+
+/**
  * FIFTH CHECK — no cloak resolves to a vendor apps.json says to replace, and
  * every cloak a page uses actually resolves at all.
  */
@@ -593,6 +607,7 @@ function checkGoTargets() {
     }
     for (const domain of appDomains.keys()) {
       if (!hostMatches(host, domain)) continue;
+      if (GORGIAS_BOTH_SIDES[slug] === domain) continue;
       const name = appNameFor(domain);
       problems.push({
         slug,

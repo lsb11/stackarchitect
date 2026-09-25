@@ -155,7 +155,7 @@ There is a tempting sequence error here: export first, then deal with the replac
 
 The correct sequence:
 
-1. **Deploy Stocky Swap now** — [4-minute setup](/stocky-swap/), on a [free Make.com account](/go/make/?source=stocky-data-export-next-steps). This starts logging every new order immediately.
+1. **Deploy Stocky Swap now** — [4-minute setup](/stocky-swap/), on a [free Make.com account](/go/make/?source=shopify-stocky-data-export-before-shutdown-next-steps). This starts logging every new order immediately.
 2. **Export all Stocky data** — using the steps above. Do this within the next 30 days.
 3. **Import historical data** — use your exports to populate the opening stock figures in your new Sheet.
 4. **Cancel Stocky** — once your replacement is running and your historical data is exported.

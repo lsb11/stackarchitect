@@ -104,7 +104,7 @@ Add a BFCM tab to your Stocky Swap Sheets that flags SKUs at risk of stockout. U
 
 **Deadline: October — upgrade before BFCM**
 
-The [Make.com free tier](/go/make/?source=bfcm-checklist-credits) covers 1,000 credits per month. During BFCM, your order volume may multiply 5–10x. Each order triggers 3–5 operations across your automation stack.
+The [Make.com free tier](/go/make/?source=shopify-bfcm-automation-checklist-2026-credits) covers 1,000 credits per month. During BFCM, your order volume may multiply 5–10x. Each order triggers 3–5 operations across your automation stack.
 
 **Calculate your BFCM operations budget:**
 - Forecast your Black Friday order count (use last year × 1.2 as a baseline)

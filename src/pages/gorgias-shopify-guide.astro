@@ -3,12 +3,14 @@ import { pageUpdated, formatUpdatedMonth } from '../data/pageUpdated';
 // /src/pages/gorgias-shopify-guide.astro
 // Gorgias Review for Shopify — definitive 2026 buyer's guide
 // Audience: $50k+/month Shopify stores evaluating Gorgias seriously
-// Not an affiliate: Gorgias links here are direct and uncompensated. apps.json lists
-// Gorgias as an app to replace with Tidio, so earning on both sides would invalidate
-// that comparison. Do not reintroduce a /go/gorgias cloak.
+// Affiliate: /go/gorgias (PartnerStack). Restored 25 Sep 2026 by the owner's decision,
+// after being dropped on 2 Sep because apps.json lists Gorgias as an app to replace
+// with Tidio, which also pays. Both sides pay, and this page says so in words; the
+// exemption that lets the build pass is GORGIAS_BOTH_SIDES in scripts/claims-guard.mjs.
 // Target keywords: "gorgias review", "is gorgias worth it", "gorgias for shopify"
 
 import Base from '../layouts/Base.astro';
+import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 
 const pageTitle = 'Gorgias Review 2026 — Is It Worth It for Shopify?';
@@ -315,7 +317,7 @@ const tocHeadings = [
         </div>
 
         <p style="font-size:13px;color:var(--text-4);margin-top:16px;line-height:1.5;">
-          7-day free trial, no credit card required. Affiliate link — Stack Architect may receive a commission if you upgrade to a paid plan, at no cost to you. We don't recommend Gorgias for stores under $50k/month GMV; if that's you, see the <a href="/blog/tidio-vs-gorgias-shopify/" style="color:var(--text-3);text-decoration:underline;">Tidio comparison</a> instead.
+          Gorgias links on this page are affiliate links: Stack Architect may earn a commission if you upgrade to a paid plan, at no cost to you. Tidio links on this site are affiliate links too, so we are paid whichever you pick. We don't recommend Gorgias for stores under $50k/month GMV; if that's you, see the <a href="/blog/tidio-vs-gorgias-shopify/" style="color:var(--text-3);text-decoration:underline;">Tidio comparison</a> instead.
         </p>
       </div>
     </section>
@@ -405,7 +407,8 @@ const tocHeadings = [
 
           <div style="background:linear-gradient(135deg, rgba(52,211,119,.08), rgba(52,211,119,.02));border:1px solid rgba(52,211,119,.3);border-radius:12px;padding:24px;margin:32px 0;text-align:center;">
             <p style="margin:0 0 14px 0;font-size:15px;color:var(--text-2);line-height:1.55;">If three or more "buy" cases match your store, the maths almost certainly works.</p>
-            <a href="https://www.gorgias.com/" target="_blank" rel="noopener" class="btn pulse" style="display:inline-block;">Start the 7-day Gorgias trial — native Shopify ticketing →</a>
+            <div style="text-align:left;"><Disclosure /></div>
+            <a href="/go/gorgias/?source=gorgias-shopify-guide-fit" target="_blank" rel="sponsored nofollow noopener" class="btn pulse" style="display:inline-block;">Book a Gorgias demo or start a free trial</a>
             <p style="margin:10px 0 0 0;font-size:12px;color:var(--text-4);">No credit card. Cancel anytime in-app.</p>
           </div>
 
@@ -453,11 +456,8 @@ const tocHeadings = [
 
         <p style="font-size:13px;color:var(--text-4);margin-bottom:24px;">All prices USD. Annual billing is approximately 16-25% cheaper than monthly (around two months free). Per-ticket overage rates may vary by contract. AI Agent fees are billed separately — see hidden costs below.</p>
 
-        <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:20px 0 32px 0;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;">
-          <div style="flex:1;min-width:240px;">
-            <p style="margin:0;font-size:14px;color:var(--text-2);line-height:1.5;"><strong style="color:var(--text);">Want to see the real billing screen?</strong> Start the 7-day trial — every plan unlocked, no card needed.</p>
-          </div>
-          <a href="https://www.gorgias.com/" target="_blank" rel="noopener" class="btn" style="white-space:nowrap;">Try Gorgias free — revenue attribution per agent →</a>
+        <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:20px 0 32px 0;">
+          <p style="margin:0;font-size:14px;color:var(--text-2);line-height:1.5;"><strong style="color:var(--text);">Want to see the real billing screen?</strong> <a href="/go/gorgias/?source=gorgias-shopify-guide-pricing" target="_blank" rel="sponsored nofollow noopener" style="color:var(--g);text-decoration:underline;">Start a Gorgias free trial</a> and check the plans against your own ticket volume.</p>
         </div>
 
         <!-- $3.10 per-ticket benchmark — strong AI citation magnet -->
@@ -747,26 +747,23 @@ const tocHeadings = [
         </h2>
 
         <p style="font-size:17px;color:var(--text-3);max-width:560px;margin:0 auto 32px;line-height:1.65;">
-          200+ tickets, $50k+ GMV, 3+ agents — start the trial. Anything less, save your money for now and stay on a free or lower-cost alternative until the next growth threshold.
+          200+ tickets, $50k+ GMV, 3+ agents: <a href="/go/gorgias/?source=gorgias-shopify-guide-end" target="_blank" rel="sponsored nofollow noopener" style="color:var(--g);text-decoration:underline;">start a Gorgias free trial</a>. Anything less, save your money for now and stay on a free or lower-cost alternative until the next growth threshold.
         </p>
 
         <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-bottom:32px;">
           <a href="/blog/tidio-vs-gorgias-shopify/" class="btn-outline">
             Not sure yet? Read the comparison
           </a>
-          <a href="https://www.gorgias.com/" target="_blank" rel="noopener" class="btn pulse">
-            Start the 7-day Gorgias trial — native Shopify ticketing and revenue attribution →
-          </a>
         </div>
 
-        <!-- Unqualified buyer capture path — keeps the wrong-fit reader on-site as a Tidio affiliate prospect -->
+        <!-- Unqualified buyer path: sends the wrong-fit reader to the free Tidio guide -->
         <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:24px 0;text-align:left;">
           <div style="max-width:1140px;margin:48px auto 0;padding:0 24px;box-sizing:border-box;font-family:var(--mono);font-size:10px;color:var(--text-4);letter-spacing:.1em;margin-bottom:8px;">NOT READY FOR GORGIAS YET?</div>
           <p style="margin:0;font-size:14px;color:var(--text-2);line-height:1.6;">Under $50k/month GMV or fewer than 200 tickets — get the <a href="/blog/tidio-for-shopify-complete-setup-guide/" style="color:var(--g);text-decoration:underline;">free Tidio setup guide</a> and revisit Gorgias when you cross 200 tickets/month, hire a third agent, or start spending heavily on paid social. The triggers in <a href="/blog/tidio-vs-gorgias-shopify/" style="color:var(--g);text-decoration:underline;">the Tidio vs Gorgias comparison</a> are the early-warning signals.</p>
         </div>
 
         <p style="font-size:13px;color:var(--text-4);max-width:520px;margin:0 auto;line-height:1.55;">
-          No credit card required for the trial. These Gorgias links are direct and uncompensated — Stack Architect earns no commission on Gorgias, because we recommend Tidio as a replacement for it elsewhere on this site and will not be paid by both sides of that comparison. We don’t recommend Gorgias for stores that don’t meet the three thresholds above.
+          No credit card required for the trial. Gorgias and Tidio links on this site are both affiliate links, so Stack Architect may earn a commission whichever you choose, at no cost to you. The recommendation rests on the three thresholds above, not on which one pays. We don’t recommend Gorgias for stores that don’t meet them.
         </p>
       </div>
     </section>

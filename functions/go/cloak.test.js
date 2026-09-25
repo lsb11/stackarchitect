@@ -68,6 +68,29 @@ describe('/go/* cloak resolver', () => {
     assert.equal(url.searchParams.get('source'), 'stack-row');
   });
 
+  it('sends /go/gorgias to the PartnerStack referral link with a 302', async () => {
+    const res = await call('/go/gorgias/', ['gorgias', '']);
+    assert.equal(res.status, 302);
+    assert.equal(res.headers.get('location'), 'https://partner.gorgias.com/xclmfdgeizdk');
+  });
+
+  it('tags a /go/gorgias placement without changing the referral path', async () => {
+    const res = await call('/go/gorgias/?source=gorgias-shopify-guide-fit', ['gorgias']);
+    const url = new URL(res.headers.get('location'));
+    assert.equal(url.origin + url.pathname, 'https://partner.gorgias.com/xclmfdgeizdk');
+    assert.equal(url.searchParams.get('source'), 'gorgias-shopify-guide-fit');
+  });
+
+  it('answers a crawler on /go/gorgias with the vendor page, never the referral link', async () => {
+    const res = await call('/go/gorgias/', ['gorgias'], {
+      'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+    });
+    assert.equal(res.status, 200);
+    const body = await res.text();
+    assert.ok(body.includes('https://www.gorgias.com/'));
+    assert.ok(!body.includes('xclmfdgeizdk'), 'the referral credential must never reach a crawler');
+  });
+
   it('falls through to _redirects for an unknown slug', async () => {
     assert.equal(await call('/go/not-a-partner', ['not-a-partner']), NEXT);
   });

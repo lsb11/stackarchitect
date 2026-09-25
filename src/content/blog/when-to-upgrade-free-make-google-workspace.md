@@ -39,7 +39,7 @@ The free stack — Make.com free + Gmail + Google Sheets on a consumer account �
 
 The free automation stack runs on:
 
-- **[Make.com free](/go/make/?source=when-to-upgrade-free-stack):** 1,000 credits/month, webhook triggers included, multi-branch scenarios supported
+- **[Make.com free](/go/make/?source=when-to-upgrade-free-make-google-workspace-free-stack):** 1,000 credits/month, webhook triggers included, multi-branch scenarios supported
 - **Gmail/Google account (consumer):** Google Apps Script execution limited to 6 minutes per run, 90 minutes total daily trigger runtime, 250 document creates/day
 - **Google Sheets (consumer):** No meaningful limits for most stores
 
@@ -119,7 +119,7 @@ At 500 orders/month with a 5-branch scenario running server-side tracking, inven
 
 Against three hours a week of recovered time, a two-line subscription bill is not usually the deciding variable — which is the point. At this volume the upgrade is not a close call, and whatever Google is charging in your region this quarter does not change the answer. If it *is* a close call for you, that is the signal you have not actually hit a ceiling yet.
 
-If you have read the signals above and you are past the ceiling, the two accounts to open are [Make.com Core](/go/make/?source=when-to-upgrade-decision) and [Google Workspace](/go/workspace/?source=when-to-upgrade-decision).
+If you have read the signals above and you are past the ceiling, the two accounts to open are [Make.com Core](/go/make/?source=when-to-upgrade-free-make-google-workspace-decision-make) and [Google Workspace](/go/workspace/?source=when-to-upgrade-free-make-google-workspace-decision-workspace).
 
 ## Migration — Zero Downtime
 

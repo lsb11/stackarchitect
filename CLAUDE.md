@@ -46,6 +46,7 @@ and the command that reproduces them.
 | `npm run pricing-audit` | Cross-check asserted vendor prices |
 | `npm run gsc:coverage` | GSC URL Inspection sweep (needs `GSC_KEY_JSON`) |
 | `npm run gsc:weekly` | One tab-separated line appended to `gsc-weekly.tsv`: indexed, crawled-not-indexed, and impressions on any non-homepage URL over a 7-day window ending 3 days back. Needs `GSC_KEY_JSON`. |
+| `npm run aff:check` | Fetch every `/go/*` destination, follow redirects, fail on non-2xx or a stripped referral credential. Not in the build. See `docs/AFFILIATES.md`. |
 | `node scripts/redirect-smoke.mjs --parse-only` | Lint `public/_redirects` offline (chains, loops, truncation) |
 | `node scripts/moderate-gap.mjs list\|approve\|reject\|stats` | Moderate D1 benchmark submissions via wrangler |
 | `.venv-og/bin/python scripts/og/make_page_og.py` | Re-render the generated OG cards and their `og-images.json` entries (setup: `python3 -m venv .venv-og && .venv-og/bin/pip install -r scripts/og/requirements.txt`) |

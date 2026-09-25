@@ -456,17 +456,10 @@ const tocHeadings = [
       ))}
     </div>
 
-    <!-- Systeme.io is what this page recommends, so it is the first CTA the
-         reader meets. It used to appear only at the very end, with GetResponse
-         — the paid option, and only the right answer above 2,000 contacts —
-         as the first affiliate link on the page. A reader who arrived on a URL
-         promising a free Klaviyo replacement met the paid alternative first. -->
+    <!-- Systeme.io is what this page recommends, so it is the page's one
+         affiliate button. Since 25 Sep 2026 it sits after the migration steps,
+         not here: no affiliate button goes above the first H2. -->
     <div class="hero-ctas">
-      <a href={`${SYSTEME_URL}?source=replace-klaviyo-hero`} target="_blank" rel="sponsored nofollow noopener" class="btn pulse"
-         aria-label="Start on Systeme.io free — 2,000 contacts">
-        Start free on Systeme.io
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
       <a href="#how-it-works" class="btn-outline"
          onclick="event.preventDefault();document.getElementById('how-it-works').scrollIntoView({behavior:'smooth'})"
          aria-label="See how Klaviyo replacement works">
@@ -759,12 +752,13 @@ const tocHeadings = [
       ))}
     </div>
 
+    <Disclosure />
     <div class="section-cta">
       <div class="section-cta-left">
         <div class="cta-h">Start replacing Klaviyo — takes 30 minutes</div>
         <p>Free forever · 2,000 contacts · Unlimited sends · No credit card</p>
       </div>
-      <a href="#migrate-h" class="btn btn-sm">Jump to the 30-minute migration steps →</a>
+      <a href={`${SYSTEME_URL}?source=replace-klaviyo-free-migrate`} target="_blank" rel="sponsored nofollow noopener" class="btn btn-sm">Create a free Systeme.io account</a>
     </div>
   </div>
 </section>
@@ -1110,7 +1104,7 @@ const tocHeadings = [
       // klaviyo-calculator. Removing it costs nothing and stops it competing
       // with the affiliate link for the single available popup slot.
       setTimeout(function () {
-        window.open('/go/systeme/?source=replace-klaviyo-calculator', '_blank');
+        window.open('/go/systeme/?source=replace-klaviyo-free-calculator', '_blank');
       }, 800);
     });
   }

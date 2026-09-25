@@ -180,7 +180,7 @@ The server-side fix: Make.com receives the Shopify Order Payment webhook and sen
 
 **What you need:**
 
-- Make.com account ([free plan — 1,000 credits a month at $0](/go/make/?source=shopify-google-analytics-4-setup-free-20-n1))
+- Make.com account ([free plan](/go/make/?source=shopify-google-analytics-4-setup-free-2026-n1): 1,000 credits a month at $0)
 - Your GA4 Measurement ID (`G-XXXXXXXXXX`)
 - Your GA4 API Secret — in GA4: **Admin → Data Streams → [your stream] → Measurement Protocol API secrets → Create**. Name it "Make.com" and copy the secret value.
 
@@ -267,7 +267,7 @@ GA4 covers the traffic and behaviour layer. Two additional free tools complete y
 
 **[CAPI Shield](/capi-shield/)** — If you run Meta Ads, CAPI Shield sends server-side purchase events to Meta's Conversions API — giving Meta the conversion data it needs to optimise campaigns. Its Google branch cannot match Shopify orders as shipped. This is the ad attribution layer that complements GA4's organic analytics layer.
 
-**[Make.com — free, 1,000 ops/month](/go/make/?source=shopify-google-analytics-4-setup-free-20-n2)** — the automation engine connecting all three. One Shopify Order Payment webhook fans out to: GA4 Measurement Protocol, Meta CAPI, Google Enhanced Conversions, and your P&L spreadsheet — simultaneously, at $0/month on the free plan for stores under 250 orders per month.
+**[Make.com](/go/make/?source=shopify-google-analytics-4-setup-free-2026-n2)** (free, 1,000 ops/month) is the automation engine connecting all three. One Shopify Order Payment webhook fans out to: GA4 Measurement Protocol, Meta CAPI, Google Enhanced Conversions, and your P&L spreadsheet — simultaneously, at $0/month on the free plan for stores under 250 orders per month.
 
 ## What to Check After 7 Days
 

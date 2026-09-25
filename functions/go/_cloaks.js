@@ -40,6 +40,7 @@
 export const CLOAKS = {
   beehiiv:         { destination: 'https://www.beehiiv.com/?via=gym-extras',                           subidParam: 'source', vendor: 'beehiiv', vendorUrl: 'https://www.beehiiv.com/' },
   getresponse:     { destination: 'https://try.getresponsetoday.com/gejtf3pvvf1u',                     subidParam: 'source', vendor: 'GetResponse', vendorUrl: 'https://www.getresponse.com/' },
+  gorgias:         { destination: 'https://partner.gorgias.com/xclmfdgeizdk',                          subidParam: 'source', vendor: 'Gorgias', vendorUrl: 'https://www.gorgias.com/' },
   make:            { destination: 'https://www.make.com/en/register?pc=techie123',                     subidParam: 'affiliatesource', vendor: 'Make.com', vendorUrl: 'https://www.make.com/' },
   systeme:         { destination: 'https://systeme.io/?sa=sa02742252683e3d56c853555171a010913de57be6', subidParam: 'tk',     vendor: 'Systeme.io', vendorUrl: 'https://systeme.io/' },
   tidio:           { destination: 'https://affiliate.tidio.com/5kfhrx3ot6tf',                          subidParam: 'source', vendor: 'Tidio', vendorUrl: 'https://www.tidio.com/' },
