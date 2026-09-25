@@ -8,21 +8,22 @@ Spec: docs/RUNBOOK-consolidation-v1.md — read it before any structural change.
 That runbook is a record of completed work, **not a to-do list**. Do not re-cut
 pages it describes; they are already cut.
 
-Measured against the build on 2026-09-23:
+Measured against the build on 2026-09-25:
 
 | Metric | Value |
 |---|---|
-| HTML pages built | 129 |
-| `noindex` pages | 64 (54 × `/apps/*`, 4 × `/pro/*/success/`, 3 × `/embed/*`, privacy/terms/refund) |
-| **Indexable pages** | **65** |
-| **URLs in sitemap-0.xml** | **63** |
+| HTML pages built | 120 |
+| `noindex` pages | 69 (54 × `/apps/*`, 4 × `/pro/*/`, 4 × `/pro/*/success/`, 3 × `/embed/*`, the Klaviyo migration calculator, privacy/terms/refund) |
+| **Indexable pages** | **51** |
+| **URLs in sitemap-0.xml** | **49** |
 
 The two indexable pages absent from the sitemap are `/404.html` and
 `/sitemap-page/`, both deliberate. Reproduce the whole table with
 `npm run build`, then count `<loc>` in `dist/sitemap-0.xml`.
 
 The runbook's 88 → 58 target was met on 17 Aug at 120 pages / 58 URLs. The set
-has since grown by five indexable URLs — see the freeze note below. An earlier
+grew to 63 through freeze exceptions #1 and #2, then fell to 49 with exception
+#3 on 24 Sep. See the freeze note below. An earlier
 version of this file said the cut was still to be made; that was stale and caused
 wasted work, which is why these figures now carry the date they were measured
 and the command that reproduces them.
@@ -108,6 +109,43 @@ schema in `schema/`). The gap is computed server-side, submissions land `pending
 by design — no admin endpoint exists. The page's *sourced* (non-first-party) rows live in
 `src/data/attributionGap.js`, the single source shared by the page and the CSV/JSON download
 endpoints.
+
+**Analytics.** GA4 (`G-TE6Z6CW514`) is a single inline tracker in
+`src/layouts/Base.astro`, between the `GA4_PLACEHOLDER` comments. It fires
+`affiliate_click` on `/go/*`, `begin_checkout` on a Stripe Payment Link (with
+`value`/`currency`/`items`) and `kit_click` on a move toward `/pro/*`. Its
+data — the AI-referrer table and the Stripe-link-to-price map — lives in
+`src/data/analytics.ts` and is interpolated into the page as JSON, because an
+inline script cannot import and a price literal in a layout is exactly the
+drift `claims.json` exists to stop. `tests/analytics-tracker.test.js` runs the
+real tracker in a vm against a DOM stub; it is the only check on that script,
+since no build guard reads it.
+
+**Consent gates all of it.** Consent Mode v2 defaults all four signals to
+`denied` before `config`, and gtag.js is not even requested until the visitor
+presses Accept on the `#sa-consent` banner (end of `<body>` in `Base.astro`).
+Consent Mode alone is not enough: a loaded gtag.js with `analytics_storage`
+denied still sends cookieless pings. Accept grants `analytics_storage` only.
+Events before Accept are dropped, not queued; `sa_attr` and `sa_landing` are
+only stored with consent. Reject after Accept deletes the `_ga*`/`sa_attr`
+cookies and reloads. The choice is `localStorage.sa_consent`; `/privacy/` has
+the button that reopens the banner. The redirect in `functions/go/` does not
+depend on any of this. `npm run consent:check` (after a build) proves it in a
+real browser: no request to Google before consent or after Reject.
+
+**Client-side only, on purpose.** The `/go/*` Function sees every hit and
+could report more, but `functions/go/_bots.js` and the `clicks`/`bot_hits`
+tables are the single source of truth for what is a crawler. A second,
+differently-filtered count in GA4 would not reconcile with D1. GA4 measures
+real browser clicks; D1 measures every request.
+
+**Half of GA4 is not in this repo.** Key events, custom dimensions, the AI
+assistant channel group and the internal-traffic filter are property settings
+in the GA4 admin UI — the same category as the Cloudflare zone rules above.
+Steps are in `docs/GA4-SETUP.md`. Until they are done the events are collected
+and nothing is marked a conversion. Two traps that doc covers: custom
+dimensions and data filters are both non-retroactive, and the Internal Traffic
+filter ships in **Testing**, which means it is excluding nothing.
 
 **Build guards** (`scripts/`, both wired into `npm run build`):
 - `claims-guard.mjs` — a page asserting a third-party price with no `verifiedDate` fails the
@@ -546,7 +584,7 @@ submitter, integration, workflow step or hook before then.
 `scripts/indexnow.mjs` (key `5da5f….txt`, which is live) stays **manual-only**.
 Do not wire it to a build, a workflow or a cron. After ~21 Oct it gets
 rebuilt with these rules:
-- **URLs:** only the canonical trailing-slash URLs in `dist/sitemap-0.xml` (62
+- **URLs:** only the canonical trailing-slash URLs in `dist/sitemap-0.xml` (49
   today). Never legacy redirect sources, noindex pages, `/go/*` or `/embed/*`.
 - **Change detection:** a URL counts as changed when its sitemap `lastmod`
   differs from the live production sitemap. Do not hash the HTML: every build
@@ -575,6 +613,9 @@ rebuilt with these rules:
   `tests/legacy-redirects.test.js` pins the sitemap count and was moved to 63
   in the same commit; that pin is the tripwire, so moving it is the record.
   Two exceptions are two too many. The next new URL waits for ~21 Oct.
+- URL freeze exception #3, 24 Sep 2026: consolidation of unindexed pages per
+  content audit 2026-09-24 (sitemap 63 to 49; see tests/retired-urls.test.js
+  and src/data/noindex-routes.json).
 - Merging content means DEDUPLICATING, never concatenating. A 4,500-word page
   assembled by stapling four 1,100-word posts together is still four thin pages.
 - **Never emit a schema.org Offer for a THIRD-PARTY price without both
@@ -610,7 +651,7 @@ rebuilt with these rules:
   tool that claims otherwise.
 - **Run `npm run a11y` before any CSS or colour-token change ships.** It builds
   nothing — run `npm run build` first — then measures every text node and every
-  link/button on all 62 sitemap URLs with proper alpha and gradient
+  link/button on all 49 sitemap URLs with proper alpha and gradient
   compositing. It must exit 0. Two bug classes it exists to catch, both found
   live on 23 Aug 2026:
   - **Dark Tailwind tokens used as text on a dark ground.** `#15803d`

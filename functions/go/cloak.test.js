@@ -55,7 +55,10 @@ describe('/go/* cloak resolver', () => {
     const res = await call('/go/systeme/?source=index-grid', ['systeme']);
     const url = new URL(res.headers.get('location'));
     assert.ok(url.searchParams.get('sa').startsWith('sa0274'), 'sa= must survive');
-    assert.equal(url.searchParams.get('source'), 'index-grid');
+    // Systeme reads its tag back as `tk`
+    // (help.systeme.io/article/1508-how-to-tag-an-affiliate-link).
+    assert.equal(url.searchParams.get('tk'), 'index-grid');
+    assert.equal(url.searchParams.get('source'), null, 'must not also send the generic name');
   });
 
   it('adds nothing to a destination with no query string of its own', async () => {

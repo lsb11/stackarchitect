@@ -29,6 +29,9 @@
  * network's own docs, with the date somebody read them:
  *   make — `affiliatesource`, per help.make.com/affiliate-program, read
  *          21 Sep 2026.
+ *   systeme — `tk`, per
+ *          help.systeme.io/article/1508-how-to-tag-an-affiliate-link, read
+ *          21 Sep 2026.
  * Every other partner is still on the generic `source`, which is a
  * placeholder and not a confirmation. An unrecognised parameter is inert —
  * the referral credential is a separate param and is never touched — so a
@@ -38,7 +41,7 @@ export const CLOAKS = {
   beehiiv:         { destination: 'https://www.beehiiv.com/?via=gym-extras',                           subidParam: 'source', vendor: 'beehiiv', vendorUrl: 'https://www.beehiiv.com/' },
   getresponse:     { destination: 'https://try.getresponsetoday.com/gejtf3pvvf1u',                     subidParam: 'source', vendor: 'GetResponse', vendorUrl: 'https://www.getresponse.com/' },
   make:            { destination: 'https://www.make.com/en/register?pc=techie123',                     subidParam: 'affiliatesource', vendor: 'Make.com', vendorUrl: 'https://www.make.com/' },
-  systeme:         { destination: 'https://systeme.io/?sa=sa02742252683e3d56c853555171a010913de57be6', subidParam: 'source', vendor: 'Systeme.io', vendorUrl: 'https://systeme.io/' },
+  systeme:         { destination: 'https://systeme.io/?sa=sa02742252683e3d56c853555171a010913de57be6', subidParam: 'tk',     vendor: 'Systeme.io', vendorUrl: 'https://systeme.io/' },
   tidio:           { destination: 'https://affiliate.tidio.com/5kfhrx3ot6tf',                          subidParam: 'source', vendor: 'Tidio', vendorUrl: 'https://www.tidio.com/' },
   'tidio-ai':      { destination: 'https://affiliate.tidio.com/6zz36w6istip-yq3nec',                   subidParam: 'source', vendor: 'Tidio', vendorUrl: 'https://www.tidio.com/' },
   'tidio-pricing': { destination: 'https://affiliate.tidio.com/xwzr8x1q52z5-zlvl5g',                   subidParam: 'source', vendor: 'Tidio', vendorUrl: 'https://www.tidio.com/' },

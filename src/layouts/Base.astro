@@ -4,6 +4,7 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import { ClientRouter } from 'astro:transitions';
 import { personSchema } from '../data/author';
+import { analyticsBootstrap } from '../data/analytics';
 
 interface BreadcrumbItem {
   label: string;
@@ -453,51 +454,149 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
 
     <!-- GA4 + AttributionTracker — measurement ID G-TE6Z6CW514 -->
     <!-- GA4_PLACEHOLDER_START -->
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-TE6Z6CW514"></script>
+    <!-- Data the inline tracker needs. An inline script cannot import, so the
+         AI-referrer table and the Stripe price map are interpolated from
+         src/data/analytics.ts (which reads products.ts) rather than written
+         out as literals. Emitted before gtag so it is always defined. -->
+    <script is:inline set:html={analyticsBootstrap()}></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag(){window.dataLayer.push(arguments);}
       window.gtag = gtag;
+
+      // ---------- consent (UK PECR / UK GDPR) ----------
+      // Nothing reaches Google until the visitor presses Accept on the
+      // banner (#sa-consent, at the end of <body>). Two layers do that:
+      //
+      //   1. Consent Mode v2 defaults, all four signals denied, pushed BEFORE
+      //      the config call so no command can run ahead of them.
+      //   2. gtag.js itself is not requested until consent is granted. Consent
+      //      Mode alone is not enough: with analytics_storage denied, a loaded
+      //      gtag.js still sends cookieless pings to /g/collect. Not loading
+      //      it means no request to Google at all, and no _ga cookie.
+      //
+      // Accept grants analytics_storage only. The three ad signals stay
+      // denied for good: this site runs no advertising tags.
+      //
+      // The choice lives in localStorage under sa_consent ('granted' or
+      // 'denied'). If storage throws (private mode, blocked site data) the
+      // choice is held in memory for this page and the banner comes back on
+      // the next full load, which errs on the side of asking again.
+      var GA_ID = 'G-TE6Z6CW514';
+      var CONSENT_KEY = 'sa_consent';
+      gtag('consent', 'default', {
+        analytics_storage: 'denied',
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied'
+      });
+      var saConsent = window.__saConsent || (window.__saConsent = { state: '' });
+      if (!saConsent.state) {
+        try {
+          var stored = localStorage.getItem(CONSENT_KEY);
+          if (stored === 'granted' || stored === 'denied') saConsent.state = stored;
+        } catch (e) {}
+      }
+      if (saConsent.state === 'granted') gtag('consent', 'update', { analytics_storage: 'granted' });
+
       gtag('js', new Date());
 
       // send_page_view:false — we fire page_view manually on astro:page-load
       // so that view-transition navigations are counted correctly.
-      gtag('config', 'G-TE6Z6CW514', {
+      gtag('config', GA_ID, {
         send_page_view: false,
         // Keeps UTM/referrer attribution intact across the SPA-style router.
         ignore_referrer: false
       });
 
+      function loadGtag() {
+        if (saConsent.loaded) return;
+        saConsent.loaded = true;
+        try {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+          document.head.appendChild(s);
+        } catch (e) {}
+      }
+      if (saConsent.state === 'granted') loadGtag();
+
       (function () {
         'use strict';
         try {
+          var CFG = window.__saAnalytics || { ai: [], checkout: {}, currency: 'USD' };
+
+          // Every event goes through here. Before Accept, and after Reject,
+          // it drops the event rather than queueing it: an interaction from
+          // before the visitor agreed is not sent later just because they
+          // agreed afterwards. The one exception is the page_view for the
+          // page they accepted on, which the banner handler sends itself.
+          function granted() { return saConsent.state === 'granted'; }
+          function track(name, params) {
+            if (!granted()) return;
+            gtag('event', name, params);
+          }
           var LANDING_KEY = 'sa_landing';
           var ATTR_COOKIE = 'sa_attr';
           var BOUND_FLAG  = '__saTrackerBound';
           var NOW = Date.now();
 
           // ---------- landing / attribution capture ----------
+          // Which AI assistant a referring hostname belongs to, or ''.
+          // Exact host or subdomain only — a bare suffix test would call
+          // notopenai.com an OpenAI referral. Mirrors aiAssistantSource() in
+          // src/data/analytics.ts, which is the tested copy.
+          function aiSourceFor(host) {
+            if (!host) return '';
+            var h = String(host).toLowerCase().replace(/^www\./, '');
+            for (var i = 0; i < CFG.ai.length; i++) {
+              var k = CFG.ai[i].host;
+              if (h === k || h.slice(-(k.length + 1)) === '.' + k) return CFG.ai[i].source;
+            }
+            return '';
+          }
+
+          // The landing record is held in memory until consent is granted and
+          // only then written to sessionStorage, because storing it on the
+          // device is itself covered by PECR, not just sending it. Without
+          // consent it lasts as long as the page (and ClientRouter swaps).
+          var landingMem = null;
+          function persistLanding() {
+            if (!granted() || !landingMem) return;
+            try {
+              if (!sessionStorage.getItem(LANDING_KEY)) sessionStorage.setItem(LANDING_KEY, landingMem);
+            } catch (e) {}
+          }
           function captureLanding() {
-            if (sessionStorage.getItem(LANDING_KEY)) return;
+            try {
+              var saved = sessionStorage.getItem(LANDING_KEY);
+              if (saved) { landingMem = saved; return; }
+            } catch (e) {}
+            if (landingMem) return;
             var url = new URL(window.location.href);
             var refHost = 'direct';
             try { if (document.referrer) refHost = new URL(document.referrer).hostname; } catch (e) {}
-            sessionStorage.setItem(LANDING_KEY, JSON.stringify({
+            landingMem = JSON.stringify({
               path:       url.pathname,
               ref:        refHost,
+              ai:         aiSourceFor(refHost),
               utm_source: url.searchParams.get('utm_source')   || '',
               utm_medium: url.searchParams.get('utm_medium')   || '',
               utm_camp:   url.searchParams.get('utm_campaign') || '',
               gclid:      url.searchParams.get('gclid')        || '',
               fbclid:     url.searchParams.get('fbclid')       || '',
               ts:         NOW
-            }));
+            });
+            persistLanding();
           }
           function getLanding() {
-            try { return JSON.parse(sessionStorage.getItem(LANDING_KEY) || '{}'); }
+            try { return JSON.parse(landingMem || '{}'); }
             catch (e) { return {}; }
           }
+          // sa_attr is an analytics cookie like _ga, so it is only set with
+          // consent.
           function setAttrCookie(payload) {
+            if (!granted()) return;
             var expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString();
             document.cookie = ATTR_COOKIE + '=' + encodeURIComponent(JSON.stringify(payload)) +
               '; path=/; expires=' + expires + '; SameSite=Lax; Secure';
@@ -506,16 +605,82 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
             return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
           }
 
+          // ---------- internal traffic ----------
+          // GA4's "Internal Traffic" data filter excludes any event carrying
+          // traffic_type=internal. Its usual source is an IP rule in the data
+          // stream, which is the right primary mechanism — but a home
+          // connection's IP moves, and the day it moves the operator's own
+          // visits start landing in the reports again with nothing to show
+          // that they have.
+          //
+          // So the device can mark itself, once, and stay marked:
+          //   https://stackarchitect.xyz/?sa_internal=1   opt this browser out
+          //   https://stackarchitect.xyz/?sa_internal=0   opt it back in
+          //
+          // Set BEFORE captureLanding, so the flag is in place before the
+          // first page_view of the session can be sent. Nothing is excluded
+          // here — the events are still sent, tagged — because the exclusion
+          // belongs to the filter in the GA4 UI, where it can be put in
+          // Testing first and seen to work. See docs/GA4-SETUP.md.
+          //
+          // localStorage, not a cookie: it is per-browser, survives a session,
+          // and never travels to the server, so it cannot reach the edge or
+          // the /go/ click counter. Clearing site data resets it, which is why
+          // the IP rule stays the primary mechanism rather than the only one.
+          var INTERNAL_KEY = 'sa_internal';
+          try {
+            var flag = new URL(window.location.href).searchParams.get('sa_internal');
+            if (flag === '1') localStorage.setItem(INTERNAL_KEY, '1');
+            else if (flag === '0') localStorage.removeItem(INTERNAL_KEY);
+          } catch (e) {}
+          var isInternal = false;
+          try { isInternal = localStorage.getItem(INTERNAL_KEY) === '1'; } catch (e) {}
+          if (isInternal) gtag('set', { traffic_type: 'internal' });
+
           captureLanding();
+
+          // ---------- AI-assistant traffic ----------
+          // GA4 has no AI channel, and a custom channel group can only match
+          // on Source/Medium/Campaign — never on a custom event parameter. So
+          // two things happen here, and they do different jobs:
+          //
+          //   ai_source  — a plain event parameter, set globally so it rides
+          //                every event. Register it as a custom dimension and
+          //                it segments any report, including revenue events.
+          //   campaign_source — canonicalised, so chatgpt.com, chat.openai.com
+          //                and openai.com collapse to one value the channel
+          //                group in the GA4 UI can match exactly.
+          //
+          // The override is deliberately narrow. It only runs when the
+          // referrer is a known assistant AND the URL carries no utm_source,
+          // so it can never stomp a real campaign — it only renames a referral
+          // GA4 was already attributing to that same host. The medium stays
+          // 'referral' on purpose: inventing one would drop this traffic into
+          // Unassigned in the DEFAULT channel group, which is the report
+          // nobody remembers to stop trusting. See docs/GA4-SETUP.md.
+          //
+          // Limit worth knowing: assistants that strip the referrer arrive as
+          // Direct and are invisible to both of these. Nothing client-side can
+          // recover a referrer the browser never sent.
+          var landing0 = getLanding();
+          var globalParams = { ai_source: landing0.ai || '' };
+          if (landing0.ai && !landing0.utm_source) {
+            globalParams.campaign_source = landing0.ai;
+            globalParams.campaign_medium = 'referral';
+          }
+          gtag('set', globalParams);
 
           // ---------- page_view (fires on first load AND every swap) ----------
           var lastPageViewPath = null;
           function sendPageView() {
+            // Checked before the double-fire guard, so a page viewed before
+            // Accept can still be counted once the visitor accepts on it.
+            if (!granted()) return;
             var path = window.location.pathname + window.location.search;
             if (path === lastPageViewPath) return;   // guard double-fire
             lastPageViewPath = path;
             var landing = getLanding();
-            gtag('event', 'page_view', {
+            track('page_view', {
               page_title:    document.title,
               page_location: window.location.href,
               page_path:     window.location.pathname,
@@ -553,7 +718,7 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
               [25, 50, 75, 90].forEach(function (mark) {
                 if (pct >= mark && !scrollMarks[mark]) {
                   scrollMarks[mark] = true;
-                  gtag('event', 'scroll_depth', {
+                  track('scroll_depth', {
                     percent_scrolled: mark,
                     page_path: window.location.pathname
                   });
@@ -576,7 +741,13 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
               var sourcePage = window.location.pathname;
 
               var isAffiliate = href.indexOf('/go/') === 0;
-              var isKitPage   = (href === '/pro/' || href.indexOf('/pro#') === 0 || href.indexOf('/pro/#') === 0);
+              // Every route under /pro, not just the kit hub. The four
+              // chooser cards point at /pro/<slug>/ and carry a data-cta, and
+              // until this widened they matched none of the three branches
+              // below: they fell through the outbound test as internal links
+              // and fired nothing at all, so the step from "read the chooser"
+              // to "open a product page" was missing from GA4 entirely.
+              var isProPage   = (href === '/pro/' || href.indexOf('/pro/') === 0 || href.indexOf('/pro#') === 0);
               var isStripe    = absHref.indexOf('buy.stripe.com') > -1;
 
               // The CTA's own source string (brief section 5): written onto the
@@ -590,11 +761,11 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
               }
 
               // --- outbound (non-affiliate external) — useful for GEO/referral insight
-              if (!isAffiliate && !isKitPage && !isStripe) {
+              if (!isAffiliate && !isProPage && !isStripe) {
                 var isExternal = false;
                 try { isExternal = new URL(absHref).hostname !== window.location.hostname; } catch (err) {}
                 if (isExternal) {
-                  gtag('event', 'outbound_click', {
+                  track('outbound_click', {
                     link_url: absHref,
                     link_domain: (function () { try { return new URL(absHref).hostname; } catch (err) { return ''; } })(),
                     source_page: sourcePage
@@ -614,7 +785,38 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
                 ts:  Date.now()
               });
 
-              var partner = isAffiliate ? href.replace(/^\/go\//, '').replace(/\/$/, '') : '';
+              // Parsed off the URL, not sliced off the raw href. Every /go/
+              // link on the site carries a ?source= placement tag, so the old
+              // string surgery produced partner="make/?source=tools-n1" —
+              // one cardinality-of-one value per placement, which meant GA4
+              // could not group clicks by partner at all. The tag is now its
+              // own dimension, which is what makes "which page earns money"
+              // answerable: partner says who pays, source_tag says which
+              // placement earned it.
+              var partner = '', sourceTag = '', proSlug = '';
+              if (isAffiliate) {
+                try {
+                  var goUrl = new URL(absHref);
+                  partner   = goUrl.pathname.replace(/^\/go\//, '').replace(/\/+$/, '').toLowerCase();
+                  sourceTag = goUrl.searchParams.get('source') || '';
+                } catch (err) {}
+              } else if (isProPage) {
+                try {
+                  proSlug = (new URL(absHref).pathname.match(/^\/pro\/([^/]+)\//) || ['', ''])[1];
+                } catch (err) {}
+              }
+
+              // The item behind a Stripe Payment Link, looked up on origin +
+              // pathname because by now the href has a client_reference_id on
+              // it. Prices come from products.ts through the bootstrap
+              // payload, so a repriced product cannot drift out of GA4.
+              var item = null;
+              if (isStripe) {
+                try {
+                  var su = new URL(absHref);
+                  item = CFG.checkout[su.origin + su.pathname.replace(/\/$/, '')] || null;
+                } catch (err) {}
+              }
 
               // This is now the SINGLE source of affiliate_click for /go/* links.
               // shopify-automation-guides, stocky-swap and best-ai-tools-shopify
@@ -641,10 +843,26 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
                 } catch (err) {}
               }
 
-              gtag('event', isAffiliate ? 'affiliate_click' : 'kit_click', {
+              // Three events, because they are three different moments and
+              // marking one key event over all of them would make "conversions"
+              // meaningless:
+              //   affiliate_click — a reader left for a partner. Revenue.
+              //   begin_checkout  — a reader opened Stripe. Revenue, and a GA4
+              //                     recommended event, so value/currency/items
+              //                     are understood without configuration.
+              //   kit_click       — a reader moved toward a product page. Funnel
+              //                     step, not revenue; do not mark it key.
+              // affiliate_click and begin_checkout are the two to mark as key
+              // events in the GA4 UI — see docs/GA4-SETUP.md.
+              var eventName = isAffiliate ? 'affiliate_click'
+                            : (isStripe ? 'begin_checkout' : 'kit_click');
+
+              var params = {
                 source_page:  sourcePage,
                 destination:  href,
                 partner:      partner,
+                source_tag:   sourceTag,
+                product:      proSlug || (item ? item.item_id : ''),
                 cta_source:   ctaSource,
                 link_text:    linkText,
                 link_position: linkPosition,
@@ -652,9 +870,31 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
                 referrer:     landing.ref || 'direct',
                 utm_source:   landing.utm_source || '',
                 utm_campaign: landing.utm_camp || ''
-              });
+              };
 
-              if (isStripe) {
+              // value is the list price at the moment of the click, not revenue
+              // recognised: this fires on the way to Stripe and nothing here
+              // knows whether the payment completed. An unmapped link — a new
+              // Payment Link nobody added to products.ts — sends no value
+              // rather than a wrong one.
+              if (item) {
+                params.currency = CFG.currency;
+                params.value    = item.value;
+                params.items    = [{
+                  item_id:   item.item_id,
+                  item_name: item.item_name,
+                  price:     item.value,
+                  quantity:  1
+                }];
+              }
+
+              track(eventName, params);
+
+              // The session payload describes the visitor's journey, so it
+              // only rides along with consent. Without it the link keeps the
+              // CTA source that buildStripeUrl wrote at build time, which
+              // says which button was pressed and nothing about the visitor.
+              if (isStripe && granted()) {
                 try {
                   var stripeUrl = new URL(absHref);
                   var payload = b64url(JSON.stringify({
@@ -690,7 +930,7 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
               if (!form || form.tagName !== 'FORM') return;
               var hasEmail = form.querySelector('input[type="email"]');
               if (hasEmail) {
-                gtag('event', 'email_signup', {
+                track('email_signup', {
                   source_page: window.location.pathname,
                   form_id: form.id || form.getAttribute('name') || 'unnamed'
                 });
@@ -707,14 +947,112 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
               var p = window.location.pathname;
               if (toolFired[p]) return;
               toolFired[p] = true;
-              gtag('event', 'tool_use', { tool_path: p, tool_name: document.title });
+              track('tool_use', { tool_path: p, tool_name: document.title });
             }, true);
+          }
+
+          // Called by the banner on Accept: store the landing record that was
+          // held in memory, and count the page the visitor accepted on.
+          saConsent.onGrant = function () {
+            persistLanding();
+            sendPageView();
+          };
+        } catch (err) {}
+      })();
+
+      // ---------- consent banner ----------
+      // Its own block, outside the tracker's try, so a fault in the tracker
+      // can never leave a visitor without a way to answer.
+      (function () {
+        try {
+          function banner() {
+            try { return document.getElementById('sa-consent'); } catch (e) { return null; }
+          }
+          function sync() {
+            var b = banner();
+            if (b) b.hidden = !!saConsent.state && !saConsent.asking;
+          }
+          // _ga, _ga_<stream> and sa_attr, on every domain GA may have used.
+          function clearAnalyticsStorage() {
+            var host = window.location.hostname;
+            var domains = ['', host, '.' + host, '.' + host.split('.').slice(-2).join('.')];
+            String(document.cookie || '').split(';').forEach(function (c) {
+              var name = c.split('=')[0].trim();
+              if (name !== 'sa_attr' && name.indexOf('_ga') !== 0) return;
+              domains.forEach(function (d) {
+                document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + (d ? '; domain=' + d : '');
+              });
+            });
+            try { sessionStorage.removeItem('sa_landing'); } catch (e) {}
+          }
+          function choose(choice) {
+            if (choice !== 'granted' && choice !== 'denied') return;
+            saConsent.state = choice;
+            saConsent.asking = false;
+            try { localStorage.setItem(CONSENT_KEY, choice); } catch (e) {}
+            var b = banner();
+            if (b) {
+              var active = document.activeElement;
+              b.hidden = true;
+              if (active && b.contains(active) && active.blur) active.blur();
+            }
+            if (choice === 'granted') {
+              gtag('consent', 'update', { analytics_storage: 'granted' });
+              loadGtag();
+              if (saConsent.onGrant) saConsent.onGrant();
+              return;
+            }
+            // Reject. Remove anything an earlier Accept left behind. If
+            // gtag.js is already running on this page it cannot be unloaded,
+            // so reload: the fresh page will not request it.
+            gtag('consent', 'update', { analytics_storage: 'denied' });
+            clearAnalyticsStorage();
+            if (saConsent.loaded) { try { window.location.reload(); } catch (e) {} }
+          }
+          if (!window.__saConsentBound) {
+            window.__saConsentBound = true;
+            document.addEventListener('click', function (e) {
+              var t = e.target && e.target.closest && e.target.closest('[data-consent], [data-consent-reset]');
+              if (!t) return;
+              if (t.hasAttribute('data-consent-reset')) {
+                // "Change your choice" on /privacy/. The earlier choice stands
+                // until a new one is made.
+                saConsent.asking = true;
+                sync();
+                var first = banner() && banner().querySelector('button');
+                if (first) first.focus();
+                return;
+              }
+              choose(t.getAttribute('data-consent'));
+            });
+            if (document.readyState === 'loading') {
+              document.addEventListener('DOMContentLoaded', sync, { once: true });
+            } else {
+              sync();
+            }
+            // ClientRouter swaps in a new <body>, whose banner starts hidden.
+            document.addEventListener('astro:after-swap', sync);
           }
         } catch (err) {}
       })();
     </script>
     <!-- GA4_PLACEHOLDER_END -->
 
+<style is:global>
+/* Consent banner. Colours from the dark ramp: --text-2 ink and the site
+   accent on an opaque ground, so the contrast audit measures a solid fill. */
+#sa-consent.sa-consent{position:fixed;left:0;right:0;bottom:0;z-index:2147483000;background:#0c0f0d;border-top:1px solid #34d377;padding:14px 16px;color:#b6c0ba;font-size:14px;line-height:1.5}
+#sa-consent.sa-consent[hidden]{display:none}
+#sa-consent .sa-consent-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+#sa-consent .sa-consent-text{flex:1 1 320px;margin:0;color:#b6c0ba}
+#sa-consent .sa-consent-text strong{color:#f0efe8;margin-right:6px}
+#sa-consent .sa-consent-text a{color:#34d377;text-decoration:underline}
+#sa-consent .sa-consent-actions{display:flex;gap:10px;flex:0 0 auto}
+#sa-consent .sa-consent-btn{min-width:104px;min-height:44px;padding:10px 18px;border:1px solid #34d377;border-radius:6px;background:#0c0f0d;color:#f0efe8;font:inherit;font-weight:600;cursor:pointer}
+#sa-consent .sa-consent-btn:hover{background:#15201a}
+#sa-consent .sa-consent-btn:focus-visible,#sa-consent .sa-consent-text a:focus-visible{outline:2px solid #f0efe8;outline-offset:2px}
+@media(max-width:560px){#sa-consent .sa-consent-actions{width:100%}#sa-consent .sa-consent-btn{flex:1 1 0}}
+</style>
 <style>
 @media(hover:hover){.related-link-item:hover{border-bottom-color:rgba(52,211,119,.2) !important;}}
 @media(max-width:640px){
@@ -752,6 +1090,20 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
 
     <slot />
     <Footer />
+
+    <!-- Consent banner. Fixed to the bottom and overlaid, so it moves no
+         content when it appears. Starts hidden; the consent block in the GA4
+         script shows it when no choice is stored. Accept and Reject share one
+         class so neither is more prominent than the other. -->
+    <section id="sa-consent" class="sa-consent" aria-labelledby="sa-consent-title" hidden>
+      <div class="sa-consent-inner">
+        <p class="sa-consent-text"><strong id="sa-consent-title">Analytics cookies</strong> We would like to use Google Analytics to see which pages people find useful. It stays off unless you accept. <a href="/privacy/#cookies">Privacy policy</a></p>
+        <div class="sa-consent-actions">
+          <button type="button" class="sa-consent-btn" data-consent="granted">Accept</button>
+          <button type="button" class="sa-consent-btn" data-consent="denied">Reject</button>
+        </div>
+      </div>
+    </section>
 
   </body>
 </html>
