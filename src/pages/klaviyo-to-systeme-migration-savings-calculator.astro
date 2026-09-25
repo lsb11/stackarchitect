@@ -2,10 +2,12 @@
 import { isNoindexRoute } from '../data/noindexRoutes';
 import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
+import { READ_DATE } from '../data/priceSources';
+import PriceSources from '../components/PriceSources.astro';
 import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 
-const schemas = [{"@context":"https://schema.org","@type":"WebApplication","dateModified":pageUpdated('/klaviyo-to-systeme-migration-savings-calculator/'),"name":"Klaviyo to Systeme Migration Savings Calculator","url":"https://stackarchitect.xyz/klaviyo-to-systeme-migration-savings-calculator/","description":"Calculate exactly how much you would save by migrating from Klaviyo to Systeme.io. Compare features, contacts, send limits, and automation capabilities side-by-side.","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{ "@id": "https://stackarchitect.xyz/#org" }},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does Systeme.io replace all Klaviyo features?","acceptedAnswer":{"@type":"Answer","text":"For most Shopify stores using Klaviyo for welcome flows, abandoned cart, post-purchase, and broadcast emails — yes. Systeme.io's free plan covers unlimited emails, full automation sequences, segmentation, and CRM. What it lacks is Klaviyo's advanced predictive analytics, deep Shopify product feed sync for dynamic product recommendation emails, and the SMS channel. If you rely heavily on those specific features, factor that into your decision."}},{"@type":"Question","name":"How long does migration from Klaviyo to Systeme.io take?","acceptedAnswer":{"@type":"Answer","text":"The core migration — exporting contacts, importing to Systeme.io, recreating your main flows (welcome, abandoned cart, post-purchase) — takes approximately 2–4 hours for a standard store. Complex setups with many custom segments, advanced conditional logic, or large template libraries may take longer. Most stores can complete migration in a weekend."}},{"@type":"Question","name":"Will I lose my Klaviyo subscriber data when migrating?","acceptedAnswer":{"@type":"Answer","text":"No. Export your subscriber list from Klaviyo as a CSV, then import it into Systeme.io. Subscriber data including name, email, opt-in status, and custom properties migrates cleanly. Historical email engagement data (opens, clicks, revenue attributed) stays in Klaviyo and cannot be migrated, but is not required for ongoing operations."}},{"@type":"Question","name":"What is Klaviyo's current pricing for Shopify stores?","acceptedAnswer":{"@type":"Answer","text":"Klaviyo changed its billing model in February 2025. You now pay based on the number of active profiles (contacts who received at least one email in the past 90 days), not just your total list size. Klaviyo publishes only its entry pricing: free up to 250 active profiles, and $20/month for an Email plan covering 251–500 (verified against klaviyo.com/pricing on 11 August 2026). Above 500 profiles Klaviyo does not publish fixed tier prices — the cost is quoted through its in-account estimator and rises with every active profile."}},{"@type":"Question","name":"Is GetResponse a better alternative to Systeme.io?","acceptedAnswer":{"@type":"Answer","text":"GetResponse is a strong Klaviyo alternative for stores that need more advanced ecommerce integrations or prefer a more traditional email platform UX. It offers a free plan for up to 500 contacts, with paid plans from around $16/month for 1,000 contacts. Systeme.io's free plan is more generous (2,000 contacts, unlimited sends) for stores just replacing Klaviyo's core email function."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://stackarchitect.xyz/tools/"},{"@type":"ListItem","position":3,"name":"Klaviyo to Systeme Migration Savings Calculator","item":"https://stackarchitect.xyz/klaviyo-to-systeme-migration-savings-calculator/"}]}];
+const schemas = [{"@context":"https://schema.org","@type":"WebApplication","dateModified":pageUpdated('/klaviyo-to-systeme-migration-savings-calculator/'),"name":"Klaviyo to Systeme Migration Savings Calculator","url":"https://stackarchitect.xyz/klaviyo-to-systeme-migration-savings-calculator/","description":"Calculate exactly how much you would save by migrating from Klaviyo to Systeme.io. Compare features, contacts, send limits, and automation capabilities side-by-side.","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{ "@id": "https://stackarchitect.xyz/#org" }},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does Systeme.io replace all Klaviyo features?","acceptedAnswer":{"@type":"Answer","text":"For most Shopify stores using Klaviyo for welcome flows, abandoned cart, post-purchase, and broadcast emails — yes. Systeme.io's free plan covers unlimited emails, full automation sequences, segmentation, and CRM. What it lacks is Klaviyo's advanced predictive analytics, deep Shopify product feed sync for dynamic product recommendation emails, and the SMS channel. If you rely heavily on those specific features, factor that into your decision."}},{"@type":"Question","name":"How long does migration from Klaviyo to Systeme.io take?","acceptedAnswer":{"@type":"Answer","text":"The core migration — exporting contacts, importing to Systeme.io, recreating your main flows (welcome, abandoned cart, post-purchase) — takes approximately 2–4 hours for a standard store. Complex setups with many custom segments, advanced conditional logic, or large template libraries may take longer. Most stores can complete migration in a weekend."}},{"@type":"Question","name":"Will I lose my Klaviyo subscriber data when migrating?","acceptedAnswer":{"@type":"Answer","text":"No. Export your subscriber list from Klaviyo as a CSV, then import it into Systeme.io. Subscriber data including name, email, opt-in status, and custom properties migrates cleanly. Historical email engagement data (opens, clicks, revenue attributed) stays in Klaviyo and cannot be migrated, but is not required for ongoing operations."}},{"@type":"Question","name":"What is Klaviyo's current pricing for Shopify stores?","acceptedAnswer":{"@type":"Answer","text":"Klaviyo changed its billing model in February 2025. You now pay based on the number of active profiles (contacts who received at least one email in the past 90 days), not just your total list size. Klaviyo publishes only its entry pricing: free up to 250 active profiles, and $20/month for an Email plan covering 251–500 contacts (klaviyo.com/pricing and Klaviyo's Shopify App Store listing, read 25 September 2026). Above 500 profiles Klaviyo does not publish fixed tier prices: the cost is quoted through its in-account estimator and rises with every active profile."}},{"@type":"Question","name":"Is GetResponse a better alternative to Systeme.io?","acceptedAnswer":{"@type":"Answer","text":"GetResponse is a strong Klaviyo alternative for stores that need more advanced ecommerce integrations or prefer a more traditional email platform UX. Its monthly plans start at $19/month for 1,000 subscribers (getresponse.com/pricing, read 25 September 2026). Systeme.io's free plan is more generous (2,000 contacts, unlimited sends) for stores just replacing Klaviyo's core email function."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://stackarchitect.xyz/tools/"},{"@type":"ListItem","position":3,"name":"Klaviyo to Systeme Migration Savings Calculator","item":"https://stackarchitect.xyz/klaviyo-to-systeme-migration-savings-calculator/"}]}];
 
 const breadcrumb = [
   { label: 'Home', href: '/' },
@@ -43,7 +45,7 @@ const tocHeadings = [
 
 ---
 
-<Base
+<Base verifiedDate={READ_DATE}
   noindex={isNoindexRoute(Astro.url.pathname)}
   title="Klaviyo to Systeme.io Savings Calculator"
   description="Compare what Klaviyo bills for your list size against Systeme.io's free plan. Monthly and annual difference, calculated from published list pricing."
@@ -183,7 +185,7 @@ const tocHeadings = [
         </div>
         <button class="calc-btn" onclick="calcKlaviyo()">CALCULATE MY SAVINGS →</button>
         <div class="calc-result" id="kl-result">
-          <span class="calc-state" id="kl-state">Worked example · $60/month Klaviyo bill, 1,800 contacts</span>
+          <span class="calc-state" id="kl-state">Worked example · you enter a $60/month Klaviyo bill and 1,800 contacts</span>
           <div class="result-grid">
             <div class="result-cell">
               <div class="result-label">Monthly Saving</div>
@@ -248,7 +250,7 @@ const tocHeadings = [
         <li>Affiliate programme management</li>
         <li>No Systeme.io branding on emails (unlike some free plans)</li>
       </ul>
-      <p>For stores over 2,000 contacts, Systeme.io's Startup plan at $27/month includes 5,000 contacts and unlimited everything else. This compares to Klaviyo's pricing of approximately $100/month at 5,000 active profiles — a saving of about $73/month (~$876/year) for the same contact count.</p>
+      <p>For stores over 2,000 contacts, Systeme.io's Startup plan at $17/month includes 5,000 contacts and unlimited sends (<a href="https://systeme.io/pricing" target="_blank" rel="noopener">systeme.io/pricing</a>, read 25 September 2026). Klaviyo does not publish a price above 500 active profiles, so read yours from its in-account estimator and compare it with that $17.</p>
 
       <h2 id="migration-checklist-klaviyo-to-systeme-io">Migration Checklist: Klaviyo to Systeme.io</h2>
       <ul>
@@ -288,13 +290,13 @@ const tocHeadings = [
     <details class="faq-item">
       <summary><span>What is Klaviyo's current pricing for Shopify stores?</span><span class="faq-arrow">▼</span></summary>
       <div class="faq-answer">
-        <p>Klaviyo changed its billing model in February 2025. You now pay based on the number of active profiles (contacts who received at least one email in the past 90 days), not just your total list size. Klaviyo publishes only its entry pricing: free up to 250 active profiles, and $20/month for an Email plan covering 251–500 (verified against klaviyo.com/pricing on 11 August 2026). Above 500 profiles Klaviyo does not publish fixed tier prices — the cost is quoted through its in-account estimator and rises with every active profile.</p>
+        <p>Klaviyo changed its billing model in February 2025. You now pay based on the number of active profiles (contacts who received at least one email in the past 90 days), not just your total list size. Klaviyo publishes only its entry pricing: free up to 250 active profiles, and $20/month for an Email plan covering 251–500 contacts (klaviyo.com/pricing and Klaviyo's Shopify App Store listing, read 25 September 2026). Above 500 profiles Klaviyo does not publish fixed tier prices: the cost is quoted through its in-account estimator and rises with every active profile.</p>
       </div>
     </details>
     <details class="faq-item">
       <summary><span>Is GetResponse a better alternative to Systeme.io?</span><span class="faq-arrow">▼</span></summary>
       <div class="faq-answer">
-        <p>GetResponse is a strong Klaviyo alternative for stores that need more advanced ecommerce integrations or prefer a more traditional email platform UX. It offers a free plan for up to 500 contacts, with paid plans from around $16/month for 1,000 contacts. Systeme.io's free plan is more generous (2,000 contacts, unlimited sends) for stores just replacing Klaviyo's core email function.</p>
+        <p>GetResponse is a strong Klaviyo alternative for stores that need more advanced ecommerce integrations or prefer a more traditional email platform UX. Its monthly plans start at $19/month for 1,000 subscribers (getresponse.com/pricing, read 25 September 2026). Systeme.io's free plan is more generous (2,000 contacts, unlimited sends) for stores just replacing Klaviyo's core email function.</p>
       </div>
     </details>
     </div>
@@ -310,7 +312,8 @@ const tocHeadings = [
        region, so the visible attribution for it belongs in the same region.
        This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
-  </main>
+  <PriceSources ids={['klaviyo', 'systeme', 'getresponse']} />
+</main>
 
 </Base>
 
@@ -332,7 +335,7 @@ const tocHeadings = [
 
     let systemePlan, systemeMonthly, planDetail;
     if (subs <= 2000) { systemePlan = 'FREE'; systemeMonthly = 0; planDetail = 'Unlimited sends · 2,000 contacts'; }
-    else if (subs <= 5000) { systemePlan = 'STARTUP'; systemeMonthly = 24; planDetail = 'Unlimited sends · 5,000 contacts'; }
+    else if (subs <= 5000) { systemePlan = 'STARTUP'; systemeMonthly = 17; planDetail = 'Unlimited sends · 5,000 contacts'; }
     else if (subs <= 10000) { systemePlan = 'WEBINAR'; systemeMonthly = 47; planDetail = 'Unlimited sends · 10,000 contacts'; }
     else { systemePlan = 'UNLIMITED'; systemeMonthly = 97; planDetail = 'Unlimited sends · Unlimited contacts'; }
 
@@ -350,7 +353,7 @@ const tocHeadings = [
     if (sms) insight += '<strong>Note on SMS:</strong> Systeme.io does not include SMS. Factor in a separate SMS tool cost if SMS is core to your flows. ';
     if (monthly > 200) insight += '<strong>High saving opportunity.</strong> At this Klaviyo spend level, migration should be a priority. Your annual saving of $' + annual.toLocaleString() + ' covers significant other business investments. ';
     else if (monthly > 0) insight += 'Solid saving for migrating the core email function. Most Shopify stores can complete migration in a weekend without losing capability. ';
-    else insight += 'At your contact volume, a paid Systeme.io plan is needed — but it likely still represents a saving vs Klaviyo. Verify current Klaviyo pricing for your active profile count. ';
+    else insight += 'At your contact volume, a paid Systeme.io plan is needed, but it likely still represents a saving vs Klaviyo. Verify current Klaviyo pricing for your active profile count. ';
     insight += '<a href="/replace-klaviyo-free/">Full migration guide →</a>';
     document.getElementById('kl-insight').innerHTML = insight;
     document.getElementById('kl-result').classList.add('show');

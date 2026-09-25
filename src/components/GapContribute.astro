@@ -140,7 +140,7 @@ const { source = 'onsite' } = Astro.props;
       if (!reported && reported !== 0) { msg.textContent = 'Enter the conversions your ad platform reported.'; return; }
       if (!actual) { msg.textContent = 'Enter your actual Shopify order count for the same period.'; return; }
       if (actual < 20) { msg.textContent = 'The benchmark needs at least 20 orders in the window to be a meaningful measurement.'; return; }
-      if (reported > actual) { msg.textContent = 'The benchmark measures under-reporting only (platform showing fewer conversions than Shopify). Over-attribution is normal — see the benchmark page for why.'; return; }
+      if (reported > actual) { msg.textContent = 'The benchmark measures under-reporting only (platform showing fewer conversions than Shopify). Over-attribution is normal: see the benchmark page for why.'; return; }
 
       (btn as HTMLButtonElement).disabled = true;
       msg.textContent = 'Submitting…';
@@ -161,12 +161,12 @@ const { source = 'onsite' } = Astro.props;
           document.getElementById('gc-done')!.style.display = 'block';
         } else {
           msg.style.color = '#f87171';
-          msg.textContent = d.error || 'Could not submit — please try again.';
+          msg.textContent = d.error || 'Could not submit. Please try again.';
           (btn as HTMLButtonElement).disabled = false;
         }
       } catch {
         msg.style.color = '#f87171';
-        msg.textContent = 'Network error — please try again.';
+        msg.textContent = 'Network error. Please try again.';
         (btn as HTMLButtonElement).disabled = false;
       }
     });

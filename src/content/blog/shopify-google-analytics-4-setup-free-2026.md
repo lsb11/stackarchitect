@@ -61,7 +61,7 @@ Before setting anything up, understand what GA4 gives you and what it doesn't. [
 - Attribution to specific ad clicks for campaign optimisation: covered by Google Ads Enhanced Conversions (separate system)
 - Customer lifetime value across multiple orders: requires GA4 User ID implementation or a CRM
 
-For most Shopify stores, particularly those under $1M/year revenue, the native GA4 integration covers everything needed to make informed decisions about traffic, products, and funnel optimisation.
+For most Shopify stores, particularly smaller ones, the native GA4 integration covers everything needed to make informed decisions about traffic, products, and funnel optimisation.
 
 ## What You Need Before Starting
 

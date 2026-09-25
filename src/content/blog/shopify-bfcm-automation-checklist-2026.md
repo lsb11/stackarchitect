@@ -4,7 +4,8 @@ heading: "Shopify BFCM Automation Checklist 2026: 14 Things to Set Up Before Bla
 description: "14 automation tasks to complete before Black Friday 2026, ordered by deadline. Tracking first: ad platforms need 60-90 days of clean data to calibrate."
 answer: "The BFCM automation work that matters happens months before November. Ad platforms need 60-90 days of clean conversion data to optimise, so server-side tracking has to be live by September. Inventory logging, email flows and a Make.com operations budget follow. Fourteen tasks, ordered by deadline rather than by effort."
 publishDate: "2026-04-21"
-updatedDate: "2026-09-24"
+updatedDate: "2026-09-25"
+verifiedDate: "2026-09-25"
 category: "automation"
 badge: "BFCM 2026"
 badgeType: "urgent"
@@ -106,7 +107,7 @@ The [Make.com free tier](/go/make/?source=shopify-bfcm-automation-checklist-2026
 **Calculate your BFCM operations budget:**
 - Forecast your Black Friday order count (use last year × 1.2 as a baseline)
 - Multiply by 4 operations per order (CAPI Shield + Google CAPI + Stocky Swap + P&L Auto)
-- If the result exceeds 1,000, upgrade to **Make.com Core ($9/month, 10,000 credits)** in October
+- If the result exceeds 1,000, upgrade to **Make.com Core ($9/month, 10,000 credits; [make.com/en/pricing](https://www.make.com/en/pricing), read 25 September 2026)** in October
 
 Downgrade back to free in January. The $27 cost for three months of Core tier during BFCM is worth it.
 

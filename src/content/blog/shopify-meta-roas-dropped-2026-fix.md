@@ -4,7 +4,8 @@ heading: "Shopify Meta ROAS Dropped in 2026? Here's Exactly Why: and the Free Fi
 description: "Three Q1 2026 changes are costing Shopify stores Meta conversion data. Free server-side fix to recover ROAS without attribution software."
 answer: "Meta ROAS falls on Shopify because Ads Manager counts only conversions it can attribute, and three converging Q1 2026 changes cost stores a large part of that signal. The sales still happen and Shopify still counts them, but Meta's algorithm never learns from them. Server-side purchase events restore the feed without attribution software."
 publishDate: "2026-03-21"
-updatedDate: "2026-04-14"
+updatedDate: "2026-09-25"
+verifiedDate: "2026-09-25"
 category: "tracking"
 badge: "Urgent Fix"
 badgeType: "urgent"
@@ -14,7 +15,7 @@ faqs:
   - question: "Why does Shopify show more sales than Meta Ads Manager in 2026?"
     answer: "Three changes converged: iOS 26's Link Tracking Protection strips Meta's fbclid click identifier in Private Browsing, Mail, and Messages; Shopify changed its App Pixel default to Optimized mode on January 13, 2026, which throttles data sent to Meta when no attribution signals are detected; and Meta's shift toward Advantage+ campaigns reduced targeting control. Meta's pixel receives incomplete conversion data, so Ads Manager underreports purchases while Shopify records every order regardless of source."
   - question: "What is the free fix for Meta ROAS dropping on Shopify?"
-    answer: "The free fix is implementing Meta Conversions API (CAPI): server-side tracking that sends conversion events directly from your server to Meta, bypassing browser restrictions entirely. The quickest partial fix (5 minutes) is switching your App Pixel from Optimized to Always on mode. The free server-side route is a single Make.com scenario, about 6 minutes once your Make.com account and Meta access are in place, and it covers the purchase events browser tracking loses. A Google Tag Manager server-side container does the same job in 2–3 hours and costs $10–30/month in hosting."
+    answer: "The free fix is implementing Meta Conversions API (CAPI): server-side tracking that sends conversion events directly from your server to Meta, bypassing browser restrictions entirely. The quickest partial fix (5 minutes) is switching your App Pixel from Optimized to Always on mode. The free server-side route is a single Make.com scenario, about 6 minutes once your Make.com account and Meta access are in place, and it covers the purchase events browser tracking loses. A Google Tag Manager server-side container does the same job in 2–3 hours; hosting it on Stape is free on its Free plan and $17/month on its Pro plan, billed $200 yearly (stape.io/price, read 25 September 2026)."
   - question: "Does iOS 26 strip fbclid from all Safari browsing?"
     answer: "Not from all browsing. iOS 26's Link Tracking Protection strips fbclid primarily when links are opened from Private Browsing mode, Mail, and Messages, not from standard Safari browsing sessions. For stores with significant iOS traffic from Instagram or email campaigns, this represents a meaningful attribution gap."
   - question: "What is the Shopify App Pixel Optimized mode change?"
@@ -127,7 +128,7 @@ Meta Conversions API (CAPI) sends conversion events directly from your server to
 
 [CAPI Shield](/capi-shield/) is the free step-by-step implementation guide for that route, about 6 minutes once your Make.com account and Meta access are in place. It covers Meta CAPI. Its Google branch cannot match Shopify orders as shipped.
 
-**The other route.** A Google Tag Manager server-side container plus Shopify webhooks reaches the same place and is worth it if you already run one. GTM itself is free, but container hosting is approximately $10–30/month and the build takes 2–3 hours. That is the only non-free option in this guide.
+**The other route.** A Google Tag Manager server-side container plus Shopify webhooks reaches the same place and is worth it if you already run one. GTM itself is free. Container hosting on Stape is free on its Free plan and $17/month on its Pro plan, billed $200 yearly ([stape.io/price](https://stape.io/price), read 25 September 2026), and the build takes 2–3 hours. That is the only non-free option in this guide.
 
 ### Step 6: Verify Deduplication and Event Match Quality (10 minutes, after 7 days)
 

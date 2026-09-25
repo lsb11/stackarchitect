@@ -1,6 +1,8 @@
 ---
 import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
+import { READ_DATE } from '../data/priceSources';
+import PriceSources from '../components/PriceSources.astro';
 import Disclosure from "../components/Disclosure.astro";
 import AuthorCard from '../components/AuthorCard.astro';
 /**
@@ -65,7 +67,7 @@ const guides = [
 // ─── Stats ────────────────────────────────────────────────────────────────────
 const heroStats = [
   { value: "Silent loss",  label: "Events iOS drops" },
-  { value: "$39–$299/mo",  label: "Paid tools charge" },
+  { value: "$39–$275/mo",  label: "Paid tools charge" },
   { value: "Blind CPAs",   label: "Algorithm underperforms" },
   { value: "$0",           label: "This setup costs" }
 ];
@@ -95,24 +97,24 @@ const setupSteps = [
 
 // ─── Comparison table ─────────────────────────────────────────────────────────
 const compRows = [
-  { feature: "Monthly cost",                       free: "$0 forever",         welt: "$39+/mo",      anal: "$99+/mo",     elev: "$150+/mo",   freeWin: true },
+  { feature: "Monthly cost",                       free: "$0 forever",         welt: "$39/mo",      anal: "$145–$275/mo",     elev: "$225/mo",   freeWin: true },
   { feature: "CompletePayment server-side",         free: "Yes",                welt: "Yes",           anal: "Yes",          elev: "Yes",        freeWin: true },
   { feature: "Advanced Matching (hashed PII)",      free: "Yes: full",         welt: "Yes",           anal: "Yes",          elev: "Yes",        freeWin: true },
   { feature: "Webhook-triggered (not browser)",     free: "Yes",                welt: "Partial",       anal: "Partial",      elev: "Partial",    freeWin: true },
   { feature: "Data in your own account",            free: "Yes: Make.com",     welt: "Their servers", anal: "Their servers", elev: "Their servers", freeWin: true },
   { feature: "Also covers Meta",                    free: "Yes: same webhook", welt: "Separate setup",anal: "Separate setup",elev: "Yes (paid)", freeWin: true },
-  { feature: "Annual cost",                         free: "$0",                 welt: "$468+",         anal: "$1,188+",      elev: "$1,800+",    freeWin: true, highlight: true }
+  { feature: "Annual cost",                         free: "$0",                 welt: "$468",         anal: "$1,740+",      elev: "$2,700+",    freeWin: true, highlight: true }
 ];
 
 
 // ─── Cross-links ──────────────────────────────────────────────────────────────
 const crosslinks = [
-  { href: "/capi-shield/",                    hoverClass: "green",  tag: "Ad tracking: same webhook", tagClass: "tag-g",    name: "CAPI Shield",       desc: "Add Meta CAPI to the same Make.com scenario. One Shopify webhook covers TikTok and Meta at no extra cost. Its Google branch cannot match Shopify orders as shipped.", save: "Saves $150–$299/mo",  saveColor: "var(--g)"    },
+  { href: "/capi-shield/",                    hoverClass: "green",  tag: "Ad tracking: same webhook", tagClass: "tag-g",    name: "CAPI Shield",       desc: "Add Meta CAPI to the same Make.com scenario. One Shopify webhook covers TikTok and Meta at no extra cost. Its Google branch cannot match Shopify orders as shipped.", save: "Saves $145–$650/mo",  saveColor: "var(--g)"    },
   { href: "/stocky-swap/",                    hoverClass: "sky",    tag: "Inventory",       tagClass: "tag-sky",  name: "Stocky Swap",       desc: "Stocky shut down on August 31, 2026. Stocky Swap is the free replacement: real-time inventory tracking in Google Sheets via Make.com.", save: "Free forever",  saveColor: "var(--sky)"    },
   { href: "/replace-klaviyo-free/",           hoverClass: "",       tag: "Email marketing",             tagClass: "tag-g",    name: "Replace Klaviyo",   desc: "Systeme.io replaces Klaviyo entirely: unlimited emails, automations, and CRM on the free plan. 2,000 contacts, unlimited sends, $0/month forever.", save: "Saves $20+/mo", saveColor: "var(--g)"      },
-  { href: "/shopify-profit-loss-automation/", hoverClass: "sky",    tag: "P&L reporting",               tagClass: "tag-sky",  name: "P&L Auto",          desc: "The same webhook that powers TikTok tracking branches to a live P&L Google Sheets dashboard. Revenue, ad spend, and net profit updated on every order: $0/month.", save: "Saves $19–$299/mo",  saveColor: "var(--sky)"    },
-  { href: "/autocrat-quota-fix/",             hoverClass: "vio",    tag: "Stability",                   tagClass: "tag-vio",  name: "Autocrat Quota Fix",desc: "Stop Google Apps Script quota errors breaking your document workflows. Handles 10,000+ rows per day at $0: keeps the entire automation stack running reliably.", save: "Saves $49–$99/mo",   saveColor: "var(--vio)"    },
-  { href: "/",                               hoverClass: "",       tag: "Full stack",                  tagClass: "tag-dim",  name: "$0 Automation Stack",desc: "All six free tools in one place: TikTok tracking, Meta CAPI, inventory, email, P&L, and workflow stability. Deploy the entire backend for $0/month.", save: "Save $700+/mo total", saveColor: "var(--text-4)" }
+  { href: "/shopify-profit-loss-automation/", hoverClass: "sky",    tag: "P&L reporting",               tagClass: "tag-sky",  name: "P&L Auto",          desc: "The same webhook that powers TikTok tracking branches to a live P&L Google Sheets dashboard. Revenue, ad spend, and net profit updated on every order: $0/month.", save: "Saves $35–$299/mo",  saveColor: "var(--sky)"    },
+  { href: "/autocrat-quota-fix/",             hoverClass: "vio",    tag: "Stability",                   tagClass: "tag-vio",  name: "Autocrat Quota Fix",desc: "Stop Google Apps Script quota errors breaking your document workflows. Handles 10,000+ rows per day at $0: keeps the entire automation stack running reliably.", save: "Runs on Make's free plan",   saveColor: "var(--vio)"    },
+  { href: "/",                               hoverClass: "",       tag: "Full stack",                  tagClass: "tag-dim",  name: "$0 Automation Stack",desc: "All six free tools in one place: TikTok tracking, Meta CAPI, inventory, email, P&L, and workflow stability. Deploy the entire backend for $0/month.", save: "$0 a month for the stack", saveColor: "var(--text-4)" }
 ];
 
 // ─── FAQs ─────────────────────────────────────────────────────────────────────
@@ -122,7 +124,7 @@ const faqs = [
   { q: "How to set up TikTok Events API for Shopify free?",               a: "Sign up for Make.com free, import the pre-built TikTok Events API scenario with one click, add a Shopify Order Payment webhook pointing to your Make.com URL, enter your Pixel ID and Access Token in the HTTP module, then test with a sample order. Takes 6 minutes, no code, free forever on Make.com's free tier." },
   { q: "What is the TikTok purchase event name?",                          a: "TikTok uses CompletePayment as the purchase event name, not Purchase like Meta and Google. Using the wrong event name will result in events not contributing to campaign optimisation. Always use CompletePayment for TikTok purchase tracking." },
   { q: "Can I run TikTok Events API alongside my existing TikTok Pixel?",  a: "Yes: TikTok officially recommends running Events API alongside the browser Pixel, not instead of it. The Pixel captures upper-funnel events (ViewContent, AddToCart). Events API adds server-side CompletePayment on top. Set a matching event_id in Make.com to match the browser Pixel event_id so TikTok deduplicates automatically and you do not double-count conversions." },
-  { q: "Does this replace WeltPixel or Analyzify?",                        a: "Yes. WeltPixel charges $39–$99/month and Analyzify charges $145–$275/month for TikTok server-side tracking. The Make.com webhook approach achieves the same CompletePayment server-side delivery at $0/month on Make.com's free tier. The data flows through your own Make.com workspace rather than a third-party's servers." },
+  { q: "Does this replace WeltPixel or Analyzify?",                        a: "Yes. WeltPixel charges $39/month on its Plus plan and Analyzify charges $145–$275/month for TikTok server-side tracking. The Make.com webhook approach achieves the same CompletePayment server-side delivery at $0/month on Make.com's free tier. The data flows through your own Make.com workspace rather than a third-party's servers." },
   { q: "What is TikTok Advanced Matching?",                                a: "TikTok Advanced Matching sends hashed customer data (email, phone number, IP address, and user agent) alongside purchase events to improve event matching accuracy and EMQ scores. The Make.com setup hashes all available Shopify order fields with SHA-256 before transmission, as required by TikTok's API specification." },
   { q: "What EMQ score will I achieve?",                                   a: "We have not sampled EMQ across Shopify stores, so we do not publish a typical score for this setup: what we can say is that it sends full Advanced Matching data, which is what the score is calculated from. EMQ measures how well TikTok can match server-side events to TikTok user accounts. Scores of 6 and above are considered strong by TikTok's own guidelines. Including hashed email, phone, IP, and user agent from the Shopify order webhook maximises your score." },
   { q: "Can I set up TikTok and Meta CAPI from the same Make.com scenario?", a: "Yes. Add a Router module to the same scenario and branch to Meta Conversions API and Google Enhanced Conversions simultaneously. One Shopify Order Payment webhook feeds all three platforms: still within Make.com's free tier for most stores." }
@@ -298,13 +300,13 @@ const tocHeadings = [
 ];
 
 ---
-<Base title="TikTok Events API for Shopify — Free Server-Side Setup 2026" description="Browser tracking loses TikTok purchase events to iOS ITP and ad blockers. Send CompletePayment server-side via Make.com, past both. Free.">
+<Base verifiedDate={READ_DATE} title="TikTok Events API for Shopify — Free Server-Side Setup 2026" description="Browser tracking loses TikTok purchase events to iOS ITP and ad blockers. Send CompletePayment server-side via Make.com, past both. Free.">
 <Fragment slot="head">
 <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
 
   <!-- ─── Fonts — preconnect first, then stylesheet ─── -->
   
-<script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps: server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
+<script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing paid apps: server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
   </Fragment>
 
 
@@ -653,7 +655,7 @@ const tocHeadings = [
     <div class="sec-head">
       <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Comparison</span>
       <h2 id="compare-h">Free TikTok Events API vs paid alternatives</h2>
-      <p>The same server-side CompletePayment delivery, at $0 instead of $39–$299/month.</p>
+      <p>The same server-side CompletePayment delivery, at $0 instead of $39–$275/month.</p>
     </div>
 
     <div class="comp-wrap">
@@ -801,18 +803,18 @@ const tocHeadings = [
     </a>
     <a href="/shopify-google-ads-conversion-tracking/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
       <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Fix Google Ads Conversion Tracking: Free
-            Add Google Ads Enhanced Conversions to the same webhook</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $29–$99/mo</span></span>
+            Add Google Ads Enhanced Conversions to the same webhook</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Free setup</span></span>
       <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">One setup covers all three platforms</span>
     </a>
     <a href="/stocky-swap/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
       <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Stocky Swap: Replace Shopify Stocky Free
-            Same webhook infrastructure replaces Stocky inventory management for free</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $29–$199/mo</span></span>
+            Same webhook infrastructure replaces Stocky inventory management for free</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $49–$119/mo</span></span>
       <span style="font-size:14px;line-height:1.55;color:#8FA6BD;"></span>
     </a>
     <a href="/shopify-attribution-tools-compared/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
       <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Analyzify Alternative: Free Comparison
             TikTok CAPI + CAPI Shield replaces Analyzify at $0 vs $145–$275/month</span></span>
-      <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">vs $145–$375/mo</span>
+      <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">vs $145–$275/mo</span>
     </a>
   </div>
 </section>
@@ -831,6 +833,7 @@ const tocHeadings = [
        region, so the visible attribution for it belongs in the same region.
        This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
+<PriceSources ids={['weltpixel', 'analyzify', 'elevar', 'prediko', 'klaviyo', 'trueprofit', 'lifetimely', 'make']} />
 </main>
 
 <!-- ════════════════════════════════════════════════════════════════════════════

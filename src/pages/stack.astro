@@ -1,6 +1,8 @@
 ---
 import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
+import { READ_DATE } from '../data/priceSources';
+import PriceSources from '../components/PriceSources.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 import Disclosure from '../components/Disclosure.astro';
 import { FREE_TOOLS } from '../data/freeTools';
@@ -23,7 +25,7 @@ const UPDATED    = new Date(UPDATED_ISO).toLocaleDateString('en-GB', { month: 'l
 // No publication ID or API credential belongs in this file.
 
 const stats = [
-  { value: "$700+", label: "Saved / month" },
+  { value: "$0", label: "Monthly cost of the stack" },
   { value: "7",     label: "Tools vetted"   },
   { value: "$0",    label: "Monthly cost"   },
 ];
@@ -37,7 +39,7 @@ const tools = [
     version: "STACK CORE // AUTOMATION HUB",
     tagline: "the free automation hub that powers the entire stack.",
     replaces: ["Zapier", "Pabbly", "Automate.io", "Paid connectors"],
-    saving: "$49–$99/mo",
+    saving: "$19.99+/mo",
     setup: "~2 min",
     freeTier: "1,000 credits/month: covers up to 200 Shopify orders",
     bestFor: "every store. it is the hub every other tool in this stack connects through.",
@@ -60,7 +62,7 @@ const tools = [
     saving: "$20+/mo",
     setup: "~30 min",
     freeTier: "unlimited contacts · unlimited email sends · 3 funnels · CRM · course hosting: $0 forever",
-    bestFor: "stores on a Klaviyo email plan (which starts at $20+/month and climbs with every active profile) running welcome, abandoned cart, and post-purchase flows.",
+    bestFor: "stores on a Klaviyo email plan (which is $20/month for 251–500 contacts and climbs with every active profile) running welcome, abandoned cart, and post-purchase flows.",
     notFor: "stores relying on Klaviyo's advanced predictive analytics or deep Shopify segment triggers.",
     why: "Klaviyo changed billing in February 2025: stores now pay for every active profile whether they email them or not. Affects UK, US, AU, and CA stores equally. Systeme.io has no profile billing, no contact limits, and no expiry on the free plan. Most stores save $20+/month permanently.",
     vendorURL:    "https://systeme.io/",
@@ -77,12 +79,12 @@ const tools = [
     version: "SUPPORT LAYER // AI LIVE CHAT",
     tagline: "ai-powered live chat that converts browsers into buyers: free tier available.",
     replaces: ["Gorgias", "Reamaze", "Zendesk Chat", "Intercom", "Freshdesk"],
-    saving: "$60–$300/mo",
+    saving: "$10–$360/mo",
     setup: "~5 min",
     freeTier: "50 live chat conversations/month · basic chatbot · 1 seat: free tier",
-    bestFor: "stores losing conversions to unanswered pre-purchase questions or spending $60+/month on helpdesk tools.",
+    bestFor: "stores losing conversions to unanswered pre-purchase questions or paying monthly for a helpdesk such as Gorgias.",
     notFor: "large support teams needing deep CRM or ticketing integrations at scale: use Gorgias at that stage.",
-    why: "Tidio says Lyro resolves 67% of conversations instantly (tidio.com). Deploys directly on Shopify in 5 minutes via app install, recovers abandoned carts via live chat, and replaces helpdesk subscriptions costing $40+/month.",
+    why: "Tidio says Lyro resolves 67% of conversations instantly (tidio.com). Deploys directly on Shopify in 5 minutes via app install, recovers abandoned carts via live chat, and replaces helpdesk subscriptions such as Gorgias, $10+/month for its helpdesk alone.",
     vendorURL:    "https://www.tidio.com/",
     ctaHref: "/go/tidio/?source=stack-tidio",
     cta: "Try Tidio free",
@@ -97,7 +99,7 @@ const tools = [
     version: "DATA LAYER // INVENTORY + P&L",
     tagline: "your inventory ledger, p&l dashboard, and data layer: permanently yours.",
     replaces: ["Stocky", "Linnworks", "Skubana", "Inventory Planner", "BeProfit", "Glew.io", "Peel"],
-    saving: "$29–$449/mo",
+    saving: "$35–$449/mo",
     setup: "~5 min",
     freeTier: "unlimited rows · real-time webhook updates via Make.com · formula engine: $0",
     bestFor: "every Shopify store that wants to own their operational data, not rent it inside a third-party dashboard.",
@@ -137,7 +139,7 @@ const tools = [
     version: "TRACKING LAYER // SERVER-SIDE TIKTOK",
     tagline: "close the browser tracking gap on tiktok: branches from your existing make.com scenario.",
     replaces: ["WeltPixel", "Analyzify", "Elevar TikTok", "Trackify"],
-    saving: "$39–$299/mo",
+    saving: "$39–$275/mo",
     setup: "~6 min",
     freeTier: "branches from the same make.com scenario as CAPI Shield: zero extra cost",
     bestFor: "stores spending on TikTok ads that need server-side conversion data for algorithm optimisation.",
@@ -209,7 +211,7 @@ const faqs = [
   },
   {
     q: "What is the maximum I can save?",
-    a: "Stores deploying the full stack save $700+/month based on the verified pricing differences between each paid app and its free replacement. Use the Shopify App Stack Kill-or-Keep Auditor at stackarchitect.xyz/tools to calculate your exact saving.",
+    a: "It depends on which paid apps you run now. The paid apps this stack replaces start at $20/month for Klaviyo's entry email plan and reach $650/month for Elevar's Advanced plan, per their pricing pages read on 25 September 2026. Use the Shopify App Stack Kill-or-Keep Auditor at stackarchitect.xyz/tools to calculate your exact saving.",
   },
   {
     q: "Where have the diagnostic tools moved?",
@@ -251,7 +253,7 @@ const schemaItemList = {
   "@context": "https://schema.org",
   "@type": "ItemList",
   "name": "Recommended Shopify Automation Stack 2026",
-  "description": "Free tools that replace $700+/month of paid Shopify apps: vetted and ranked by Stack Architect.",
+  "description": "Free tools that replace paid Shopify apps: vetted and ranked by Stack Architect.",
   "numberOfItems": tools.length,
   "itemListElement": tools.map((t, i) => ({
     "@type": "ListItem",
@@ -266,9 +268,9 @@ const schemaItemList = {
 // Google Workspace emits NO offers property. It held its price on 2026-09-04.
 // The "6" that used to sit here was retired pricing: Google raised base list
 // prices when Gemini was folded into the plans, so the tier that sold for
-// $6/user/month is not the tier sold today. Two aggregators — cloudwards.net
+// 6 USD a user a month is not the tier sold today. Two aggregators — cloudwards.net
 // and name.com, the latter stating pricing as of 1 Jan 2026 — both report
-// $7/user/month on annual commitment and $8.40 on flexible monthly billing.
+// 7 USD a user a month on annual commitment and 8.40 on flexible monthly billing.
 //
 // So the hold is not ignorance of the figure. It is that the figure cannot be
 // verified at the source in the currency this Offer would assert.
@@ -299,7 +301,7 @@ const schemaArticle = {
   "@context": "https://schema.org",
   "@type": "Article",
   "headline": "Recommended Shopify Stack 2026 — 7 Free Tools, Vetted & Ranked",
-  "description": "The exact free Shopify automation stack recommended by Stack Architect: 7 vetted tools replacing $700+/month of paid apps.",
+  "description": "The exact free Shopify automation stack recommended by Stack Architect: 7 vetted tools replacing paid apps.",
   "dateModified": UPDATED_ISO,
   "datePublished": "2025-01-01",
   "author":    { "@id": "https://stackarchitect.xyz/#luke" },
@@ -318,7 +320,7 @@ const schemaWebPage = {
   "isPartOf": { "@type": "WebSite", "url": SITE, "name": "Stack Architect" },
 };
 ---
-<Base title="Recommended Free Shopify Stack 2026 — 7 Tools" description="The seven free tools Stack Architect recommends for Shopify, why each was chosen, what it replaces, and the point at which you should upgrade.">
+<Base verifiedDate={READ_DATE} title="Recommended Free Shopify Stack 2026 — 7 Tools" description="The seven free tools Stack Architect recommends for Shopify, why each was chosen, what it replaces, and the point at which you should upgrade.">
 <Fragment slot="head">
 <script type="application/ld+json" set:html={JSON.stringify(schemaFAQ)} />
   <script type="application/ld+json" set:html={JSON.stringify(schemaBreadcrumb)} />
@@ -364,8 +366,8 @@ const schemaWebPage = {
     <div class="savings-row" role="list" aria-label="What the stack replaces">
       <div role="listitem"><span class="sr-amount">$145–$650/mo</span><span class="sr-label">Ad tracking apps</span></div>
       <div role="listitem"><span class="sr-amount">$20+/mo</span><span class="sr-label">Klaviyo / email</span></div>
-      <div role="listitem"><span class="sr-amount">$39–$199/mo</span><span class="sr-label">TikTok + inventory</span></div>
-      <div role="listitem"><span class="sr-amount">$19–$299/mo</span><span class="sr-label">P&amp;L + connectors</span></div>
+      <div role="listitem"><span class="sr-amount">$39–$275/mo</span><span class="sr-label">TikTok tracking apps</span></div>
+      <div role="listitem"><span class="sr-amount">$35–$299/mo</span><span class="sr-label">P&amp;L apps</span></div>
     </div>
 
     <div class="trust-pills" aria-label="Trust signals">
@@ -765,6 +767,7 @@ const schemaWebPage = {
 <AuthorCard />
   </div>
 
+<PriceSources ids={['zapier', 'make', 'klaviyo', 'gorgias', 'trueprofit', 'peel', 'analyzify', 'elevar', 'weltpixel', 'lifetimely', 'shopexperts']} />
 </main>
 
 

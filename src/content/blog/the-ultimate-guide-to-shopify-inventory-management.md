@@ -2,9 +2,10 @@
 title: "Shopify Inventory in Google Sheets 2026"
 heading: "The Ultimate Guide to Shopify Inventory Management 2026: Free Systems That Scale"
 description: "Send Shopify orders to Google Sheets free in 2026 and build stock counts, reorder flags and alerts on top. What replaces the order record Stocky kept, and what it does not."
-answer: "You can run Shopify inventory tracking free by sending each paid order into Google Sheets through Make.com. That gives you an order ledger you own. Stock counts, reorder flags and low-stock alerts are formulas and extra scenarios you add yourself. Shopify Stocky shut down on 31 August 2026, and paid replacements start around $29 a month."
+answer: "You can run Shopify inventory tracking free by sending each paid order into Google Sheets through Make.com. That gives you an order ledger you own. Stock counts, reorder flags and low-stock alerts are formulas and extra scenarios you add yourself. Shopify Stocky shut down on 31 August 2026, and paid replacements such as Prediko start at $49 a month."
 publishDate: "2026-03-28"
-updatedDate: "2026-09-24"
+updatedDate: "2026-09-25"
+verifiedDate: "2026-09-25"
 category: "inventory"
 badge: "Complete Guide"
 badgeType: "new"
@@ -31,7 +32,7 @@ relatedGuides:
     href: "/stocky-migration-risk-scorer/"
 ---
 
-Most Shopify inventory management guides end with a recommendation to pay $29–$199/month for an app. This one doesn't. Every system described here costs $0 and runs on tools you likely already have access to.
+Most Shopify inventory management guides end with a recommendation to pay for an app: Prediko's Starter plan is $49/month and Inventory Planner quotes on request (both read on their Shopify App Store listings, 25 September 2026). This one doesn't. Every system described here costs $0 and runs on tools you likely already have access to.
 
 This guide covers the complete inventory management layer for Shopify stores, from basic order logging through supplier management, stock alerts, velocity analysis, and multi-location tracking. It also covers what to do now that **Shopify Stocky has shut down. It stopped working on 31 August 2026.**
 
@@ -202,7 +203,7 @@ Below these thresholds, Shopify Admin plus the Make.com and Google Sheets ledger
 
 ## Deploying Your Free Inventory System Today
 
-The average store is paying anywhere from $29 to $500 a month for inventory management.
+Paid inventory apps start at $49 a month for Prediko's Starter plan, and Inventory Planner publishes no price at all, only a quote form.
 
 > **Don't want to build the order log yourself?** I've already built that part. It's called Stocky Swap. It's free, it runs on Make.com, and you can deploy it to your store in about 4 minutes. It logs every paid order to your sheet. The stock counts, reorder flags and alerts below are still yours to add.  
 > 👉 [Get Stocky Swap for free here](/stocky-swap/).
@@ -213,7 +214,7 @@ The average store is paying anywhere from $29 to $500 a month for inventory mana
 4. **Export Stocky data** if Stocky still opens in your admin. Its end of service was 31 August 2026. Shopify says read-only export access continues for at least 90 days after that date and has published no end date.
 5. **Add P&L tracking.** A third branch on the same scenario, no additional setup cost.
 
-Every step above is free. The only ongoing cost is Make.com's Core plan at $9/month if your order volume outgrows the free plan's 1,000 credits a month.
+Every step above is free. The only ongoing cost is Make.com's Core plan at $9/month for 10,000 credits ([make.com/en/pricing](https://www.make.com/en/pricing), read 25 September 2026) if your order volume outgrows the free plan's 1,000 credits a month.
 
 
 ---

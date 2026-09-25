@@ -3,6 +3,7 @@ import { pageUpdated, formatUpdated } from '../data/pageUpdated';
 // /how-we-test/ — methodology & trust page. Site-level E-E-A-T asset:
 // sourcing standards, badge policy, funding disclosure, corrections policy.
 import Base from "../layouts/Base.astro";
+import { READ_DATE } from '../data/priceSources';
 import AuthorCard from "../components/AuthorCard.astro";
 import TableOfContents from '../components/TableOfContents.astro';
 import { KIT_PRICE, formatPrice } from '../data/products';
@@ -56,7 +57,7 @@ const schemas = [
 ];
 
 ---
-<Base
+<Base verifiedDate={READ_DATE}
   schema={schemas}
   title="How We Test and Verify Every Claim"
   description="Every price and limit on Stack Architect is sourced from vendor pricing pages, dated, re-verified quarterly, and corrected publicly when wrong."

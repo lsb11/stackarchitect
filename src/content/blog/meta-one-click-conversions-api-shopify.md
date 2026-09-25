@@ -4,7 +4,8 @@ heading: "Meta One-Click Conversions API for Shopify: What It Fixes, and the Two
 description: "Meta's free one-click CAPI mirrors your browser Pixel, for Meta only. What it fixes, how to switch it on in two minutes, and the two gaps it leaves open."
 answer: "Meta's one-click Conversions API, released on 15 April 2026, switches on server-side tracking from inside Events Manager with Meta hosting the infrastructure. It takes two minutes and costs nothing. It mirrors your browser Pixel for Meta alone, so it cannot recover events the Pixel never fired, nor feed Google or TikTok."
 publishDate: "2026-07-15"
-updatedDate: "2026-07-15"
+updatedDate: "2026-09-25"
+verifiedDate: "2026-09-25"
 category: "tracking"
 badge: "New for 2026"
 badgeType: "urgent"
@@ -71,7 +72,7 @@ That second portion is what a **Shopify webhook** fixes. Shopify's `orders/paid`
 | Advertising on Meta **plus** Google and/or TikTok | One-click covers Meta only. Add the [free webhook setup](/blog/shopify-server-side-tracking-complete-setup-guide/): one trigger, three platforms, ~18-minute build. |
 | High ad-blocker / iOS-heavy audience and thank-you-page drop-offs | Webhook-origin events are the only fix; Pixel-derived CAPI can't mirror an event that never fired. |
 | Custom events, subscriptions, offline conversions | One-click can't; this needs a custom or webhook-based implementation. |
-| Paying $199+/mo for a managed tracking tool | One-click + the free webhook setup reach the same endpoints. The subscription buys dashboards and support, not better API access. |
+| Paying $225+/mo for a managed tracking tool (Elevar's Core plan on [getelevar.com/pricing](https://www.getelevar.com/pricing/), read 25 September 2026) | One-click + the free webhook setup reach the same endpoints. The subscription buys dashboards and support, not better API access. |
 
 ## Bottom line
 

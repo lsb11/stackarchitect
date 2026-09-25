@@ -1,6 +1,8 @@
 ---
 import { pageUpdated, formatUpdatedMonth } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
+import { READ_DATE } from '../data/priceSources';
+import PriceSources from '../components/PriceSources.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 import ProductChooser from '../components/ProductChooser.astro';
 import ProofShot from '../components/ProofShot.astro';
@@ -72,7 +74,7 @@ const faqs = [
   },
   {
     q: 'What Shopify apps does the Complete Kit replace?',
-    a: 'CAPI Shield replaces Elevar ($225/mo), Triple Whale (GMV-based), and Northbeam (from $1,500+/mo). TikTok CAPI replaces WeltPixel ($39+/mo) and Analyzify ($145–$275/mo). Stocky Swap replaces Shopify Stocky, Linnworks, and Skubana: none of which publish a price. P&L Auto replaces TrueProfit and BeProfit ($19–$299/mo). Most stores replace $60–$180 per month; heavy ad spenders on Elevar or Analyzify replace far more.',
+    a: 'CAPI Shield replaces Elevar ($225/mo), Triple Whale (GMV-based), and Northbeam (Starter listed at $1,500, by quote). TikTok CAPI replaces WeltPixel ($39/mo) and Analyzify ($145–$275/mo). Stocky Swap replaces Shopify Stocky, which was free and closed in August 2026, and paid inventory apps such as Prediko ($49+/mo). P&L Auto replaces TrueProfit and BeProfit ($35–$249/mo). The cheapest paid set covering all four jobs is about $123/mo on list prices: WeltPixel Plus ($39, Meta and TikTok), Prediko Starter ($49) and TrueProfit Basic ($35). Stores on Elevar or Analyzify replace far more.',
   },
   {
     q: 'What is Stocky Swap and why is August 2026 the deadline?',
@@ -243,7 +245,7 @@ const proSchema = [
 ];
 
 ---
-<Base
+<Base verifiedDate={READ_DATE}
   title={`Stack Architect Complete Kit — ${kit}`}
   description={`Four import-ready Make.com blueprints plus two Google Sheets templates. Server-side tracking, TikTok CAPI, inventory and live P&L, live in 10 minutes. ${kit} once, or ${single} for one.`}
   pageType="product"
@@ -368,7 +370,7 @@ const proSchema = [
               <p class="sol-urgent-desc">Every Shopify order line item auto-logged to Google Sheets in real time: timestamp, SKU, quantity sold, order ID and product. Shopify closes Stocky on 31 August 2026 and provides no migration path. This file starts logging from your next order.</p>
             )}
             <div class="sol-reps" style="margin-bottom:12px;"><span class="sol-rep">Shopify Stocky</span><span class="sol-rep">Linnworks</span><span class="sol-rep">Skubana</span><span class="sol-rep">Inventory Planner</span></div>
-            <div class="sol-urgent-meta"><span class="sol-urgent-save">Saves $29–$199/mo</span><span class="sol-urgent-time">~4 min after import</span></div>
+            <div class="sol-urgent-meta"><span class="sol-urgent-save">Saves $49–$119/mo</span><span class="sol-urgent-time">~4 min after import</span></div>
             <div class="sol-foot sol-foot-flat">
               <a href="/pro/stocky-swap/" class="sol-single" data-cta="pro_card_stocky-swap">On its own: {single} →</a>
               <a href="/stocky-swap/" class="sol-guide">Free guide ↗</a>
@@ -388,7 +390,7 @@ const proSchema = [
             <div class="sol-hl">Meta purchase events, server-side</div>
             <p class="sol-desc">Meta Conversions API, server-side via Shopify webhook. Bypasses iOS restrictions and ad blockers. Sends hashed email, phone and name, plus IP and user agent, for Meta to match against. Its Google Ads route cannot match Shopify orders as shipped; delete it.</p>
             <div class="sol-rep-label">Replaces</div>
-            <div class="sol-reps"><span class="sol-rep">Elevar $225/mo</span><span class="sol-rep">Triple Whale GMV-based</span><span class="sol-rep">Stape $29+/mo</span><span class="sol-rep">Littledata $159+/mo</span></div>
+            <div class="sol-reps"><span class="sol-rep">Elevar $225/mo</span><span class="sol-rep">Triple Whale GMV-based</span><span class="sol-rep">Stape $17/mo billed yearly</span><span class="sol-rep">Littledata $159+/mo</span></div>
             <div class="sol-meta"><span class="sol-save">$145–$650/mo saved</span><span class="sol-time">~6 min after import</span></div>
           </div>
           <div class="sol-foot">
@@ -406,8 +408,8 @@ const proSchema = [
             <div class="sol-hl">TikTok's Events API: server-side events iOS cannot strip</div>
             <p class="sol-desc">CompletePayment events sent server-side to TikTok's Events API via Make.com. iOS restrictions and ad blockers cannot intercept the signal. Hashed email and phone, plus IP and user agent, on every event.</p>
             <div class="sol-rep-label">Replaces</div>
-            <div class="sol-reps"><span class="sol-rep">WeltPixel $39+/mo</span><span class="sol-rep">Analyzify $145–$275/mo</span><span class="sol-rep">Elevar TikTok</span></div>
-            <div class="sol-meta"><span class="sol-save t">$39–$299/mo saved</span><span class="sol-time">~6 min after import</span></div>
+            <div class="sol-reps"><span class="sol-rep">WeltPixel $39/mo</span><span class="sol-rep">Analyzify $145–$275/mo</span><span class="sol-rep">Elevar TikTok</span></div>
+            <div class="sol-meta"><span class="sol-save t">$39–$275/mo saved</span><span class="sol-time">~6 min after import</span></div>
           </div>
           <div class="sol-foot">
             <a href="/pro/tiktok-capi/" class="sol-single" data-cta="pro_card_tiktok-capi">On its own: {single} →</a>
@@ -424,8 +426,8 @@ const proSchema = [
             <div class="sol-hl">Live profit &amp; loss: every order, automatically</div>
             <p class="sol-desc">Every paid Shopify order writes a row to a Google Sheets P&L: revenue, an estimated processing fee, COGS from your own cost table, and gross profit. Ad spend you enter by hand.</p>
             <div class="sol-rep-label">Replaces</div>
-            <div class="sol-reps"><span class="sol-rep">TrueProfit $19+/mo</span><span class="sol-rep">BeProfit $29+/mo</span><span class="sol-rep">Glew.io</span></div>
-            <div class="sol-meta"><span class="sol-save a">$19–$299/mo saved</span><span class="sol-time">~8 min after import</span></div>
+            <div class="sol-reps"><span class="sol-rep">TrueProfit $35+/mo</span><span class="sol-rep">BeProfit $49+/mo</span><span class="sol-rep">Glew.io</span></div>
+            <div class="sol-meta"><span class="sol-save a">$35–$299/mo saved</span><span class="sol-time">~8 min after import</span></div>
           </div>
           <div class="sol-foot">
             <a href="/pro/pnl-auto/" class="sol-single" data-cta="pro_card_pnl-auto">On its own: {single} →</a>
@@ -491,7 +493,7 @@ const proSchema = [
           <div class="compare-head-cell" role="columnheader">Feature</div>
           <div class="compare-head-cell" role="columnheader">Free Guides</div>
           <div class="compare-head-cell hl" role="columnheader">Complete Kit: {kit} ✓</div>
-          <div class="compare-head-cell" role="columnheader">Paid Apps ($60–$180+/mo)</div>
+          <div class="compare-head-cell" role="columnheader">Paid Apps (from $123/mo)</div>
         </div>
         <div class="compare-row" role="row">
           <div class="compare-cell">Server-side purchase tracking (Meta, TikTok)</div>
@@ -527,7 +529,7 @@ const proSchema = [
           <div class="compare-cell">Monthly ongoing cost</div>
           <div class="compare-cell"><span class="yes">$0, or ~$9 for all four</span></div>
           <div class="compare-cell hl"><span class="yes">$0, or ~$9 for all four</span></div>
-          <div class="compare-cell"><span style="color:var(--red);font-family:var(--mono);font-size:12px;">$60–$180+/mo</span></div>
+          <div class="compare-cell"><span style="color:var(--red);font-family:var(--mono);font-size:12px;">From $123/mo</span></div>
         </div>
         <div class="compare-row" role="row">
           <div class="compare-cell">One-time cost</div>
@@ -575,7 +577,7 @@ const proSchema = [
           <div class="compare-cell">Year-one total cost</div>
           <div class="compare-cell"><span class="yes">$0, or ~$108 on Core</span></div>
           <div class="compare-cell hl"><span style="color:var(--amber);font-family:var(--mono);font-size:12px;font-weight:700;">{kit}</span></div>
-          <div class="compare-cell"><span style="color:var(--red);font-family:var(--mono);font-size:12px;font-weight:700;">$720–$2,160+</span></div>
+          <div class="compare-cell"><span style="color:var(--red);font-family:var(--mono);font-size:12px;font-weight:700;">$1,476+</span></div>
         </div>
       </div>
 
@@ -591,7 +593,7 @@ const proSchema = [
     <div class="inner">
       <div class="sec-head">
         <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">exact savings · per scenario</span>
-        <h2 id="savings-h">Most stores replace <span style="color:var(--g)">$60–$180/mo</span> of apps</h2>
+        <h2 id="savings-h">The same four jobs cost <span style="color:var(--g)">from $123/mo</span> in paid apps</h2>
         <p>Heavy ad spenders on Elevar or Analyzify replace far more. {kit} one-time, zero monthly fees: these are the exact apps the Complete Kit replaces, and what they cost.</p>
       </div>
 
@@ -603,28 +605,28 @@ const proSchema = [
         </div>
         <div class="rep-row" role="row">
           <div class="rep-cell"><strong>CAPI Shield</strong>: Meta Conversions API</div>
-          <div class="rep-cell">Elevar ($225), Triple Whale (GMV-based), Stape ($29+), Littledata ($159+)</div>
+          <div class="rep-cell">Elevar ($225), Triple Whale (GMV-based), Stape ($17+, billed yearly), Littledata ($159+)</div>
           <div class="rep-cell"><span class="rep-saving">$145–$650/mo</span></div>
         </div>
         <div class="rep-row" role="row">
           <div class="rep-cell"><strong>TikTok CAPI</strong>: TikTok Events API</div>
-          <div class="rep-cell">WeltPixel ($39+), Analyzify ($145–$275), Elevar TikTok</div>
-          <div class="rep-cell"><span class="rep-saving">$39–$299/mo</span></div>
+          <div class="rep-cell">WeltPixel ($39), Analyzify ($145–$275), Elevar TikTok</div>
+          <div class="rep-cell"><span class="rep-saving">$39–$275/mo</span></div>
         </div>
         <div class="rep-row" role="row">
           <div class="rep-cell"><strong>Stocky Swap</strong>: Inventory tracking</div>
-          <div class="rep-cell">Shopify Stocky (retired), Linnworks, Skubana</div>
-          <div class="rep-cell"><span class="rep-saving">$29–$199/mo</span></div>
+          <div class="rep-cell">Shopify Stocky (retired, was free), Prediko ($49+)</div>
+          <div class="rep-cell"><span class="rep-saving">$49–$119/mo</span></div>
         </div>
         <div class="rep-row" role="row">
           <div class="rep-cell"><strong>P&amp;L Auto</strong>: Live profit reporting</div>
-          <div class="rep-cell">TrueProfit ($19+), BeProfit ($29+), Glew.io</div>
-          <div class="rep-cell"><span class="rep-saving">$19–$299/mo</span></div>
+          <div class="rep-cell">TrueProfit ($35+), BeProfit ($49+)</div>
+          <div class="rep-cell"><span class="rep-saving">$35–$249/mo</span></div>
         </div>
         <div class="rep-row rep-total" role="row">
           <div class="rep-cell">Total stack · monthly saving</div>
-          <div class="rep-cell" style="color:var(--text-3);">Depends entirely on which apps you actually run today</div>
-          <div class="rep-cell"><span class="rep-saving" style="font-size:14px;">$60–$180/mo</span></div>
+          <div class="rep-cell" style="color:var(--text-3);">Depends on which apps you run today; the cheapest paid set for all four jobs is WeltPixel Plus, Prediko Starter and TrueProfit Basic</div>
+          <div class="rep-cell"><span class="rep-saving" style="font-size:14px;">From $123/mo</span></div>
         </div>
       </div>
     </div>
@@ -674,7 +676,7 @@ const proSchema = [
         <meta itemprop="headline" content="Stack Architect Complete Kit: Shopify Automation JSON Blueprint Files for Make.com">
 
         <h3>What is the Stack Architect Complete Kit?</h3>
-        <p>The Stack Architect Complete Kit is a <strong>{kit} one-time purchase</strong> that gives Shopify store owners seven ready-to-use files: four pre-configured Make.com automation scenario JSON blueprints, two Google Sheets templates, and a PDF setup guide. The four scenarios are CAPI Shield (Meta Conversions API, server-side), TikTok CAPI (TikTok's Events API), Stocky Swap (live inventory to Google Sheets, replacing Shopify Stocky before its August 31 2026 shutdown), and P&L Auto (live profit and loss reporting). Access is instant via Stripe: files open in your browser immediately after payment. Most stores replace $60–$180 per month of apps with it; heavy ad spenders on Elevar or Analyzify replace far more.</p>
+        <p>The Stack Architect Complete Kit is a <strong>{kit} one-time purchase</strong> that gives Shopify store owners seven ready-to-use files: four pre-configured Make.com automation scenario JSON blueprints, two Google Sheets templates, and a PDF setup guide. The four scenarios are CAPI Shield (Meta Conversions API, server-side), TikTok CAPI (TikTok's Events API), Stocky Swap (live inventory to Google Sheets, replacing Shopify Stocky before its August 31 2026 shutdown), and P&L Auto (live profit and loss reporting). Access is instant via Stripe: files open in your browser immediately after payment. The same four jobs cost from $123 a month in paid apps, and stores replace them with it; heavy ad spenders on Elevar or Analyzify replace far more.</p>
 
         <h3>What is a Make.com JSON blueprint and why does it matter?</h3>
         <p>A <strong>Make.com JSON blueprint</strong> (also called a scenario file) is a complete export of a finished Make.com automation. Every module, API endpoint, field mapping, routing rule, and connection setting is embedded inside the JSON file. Importing it into Make.com recreates the entire automation in one click: no manual configuration required. This is different from a guide or tutorial, which describes how to build the automation step by step. The Complete Kit gives you the finished blueprint files, not instructions for building them. At {kit}, the kit costs less than two hours of agency time and less than a single month of any tracking app it replaces.</p>
@@ -686,10 +688,10 @@ const proSchema = [
         <p>Stocky Swap is the inventory management scenario in the Complete Kit. It replicates Shopify Stocky's core function: logging every order line item in real time to a Google Sheets inventory log. Each sale writes a row with timestamp, SKU, quantity sold as a negative change amount, order ID, product title, and a note, across six clean columns. <strong>Shopify is permanently closing Stocky on August 31, 2026 and will delete all data after that date.</strong> The Stocky Swap JSON file imports in under 60 seconds and begins capturing data from the next order forward, requiring no manual data migration. Live stock per SKU is a single SUMIF away: the included template and README show exactly how.</p>
 
         <h3>How does the TikTok CAPI scenario work for Shopify?</h3>
-        <p>The TikTok CAPI scenario uses a Shopify order webhook to POST a <strong>CompletePayment event</strong> to TikTok's Events API server-to-server via Make.com. The request URL names an API version: check it against TikTok's Events API documentation and keep it current, because a retired version fails every request. iOS Intelligent Tracking Prevention and ad blockers cannot intercept server-to-server signals. Email and phone are SHA-256 hashed inside Make.com before transmission. WeltPixel charges $39+ per month for TikTok server-side tracking. The Complete Kit achieves the same EMQ outcome at $0 per month ongoing.</p>
+        <p>The TikTok CAPI scenario uses a Shopify order webhook to POST a <strong>CompletePayment event</strong> to TikTok's Events API server-to-server via Make.com. The request URL names an API version: check it against TikTok's Events API documentation and keep it current, because a retired version fails every request. iOS Intelligent Tracking Prevention and ad blockers cannot intercept server-to-server signals. Email and phone are SHA-256 hashed inside Make.com before transmission. WeltPixel charges $39 per month for TikTok server-side tracking. The Complete Kit achieves the same EMQ outcome at $0 per month ongoing.</p>
 
         <h3>How does P&L Auto replace TrueProfit?</h3>
-        <p>P&L Auto fires the instant a Shopify order is paid. It writes one row per order to an Order_Data tab with ten fields: Order_ID, Date, Channel, Revenue, Discount, Shipping_Rev, Shopify_Fee, Payment_Fee, COGS, and Gross_Profit. A COGS_Table maps each Variant_ID to its cost price, and a live Dashboard tab auto-totals revenue, fees, COGS, gross profit, order count and average profit per order via SUM formulas. The Shopify fee defaults to 2.9% + $0.30 and is editable for your plan. TrueProfit charges $19–$99 per month; the P&L Auto scenario produces a real-time profit picture at $0 per month.</p>
+        <p>P&L Auto fires the instant a Shopify order is paid. It writes one row per order to an Order_Data tab with ten fields: Order_ID, Date, Channel, Revenue, Discount, Shipping_Rev, Shopify_Fee, Payment_Fee, COGS, and Gross_Profit. A COGS_Table maps each Variant_ID to its cost price, and a live Dashboard tab auto-totals revenue, fees, COGS, gross profit, order count and average profit per order via SUM formulas. The Shopify fee defaults to 2.9% + $0.30 and is editable for your plan. TrueProfit charges $35–$200 per month; the P&L Auto scenario produces a real-time profit picture at $0 per month.</p>
 
         <h3>What is included in the Complete Kit for {kit}?</h3>
         <p>The Stack Architect Complete Kit contains exactly eight files: <strong>FILE_00_Complete_Kit_All_In_One.json</strong> (all four automations in one scenario: one webhook, one of Make's two free scenario slots, about a third fewer credits per order), <strong>Blueprint 01_CAPI_Shield.json</strong> (Meta Conversions API, plus a Google Ads route on a built-in router that needs a click ID Shopify orders do not carry), <strong>Blueprint 02_TikTok_CAPI.json</strong> (TikTok's Events API), <strong>Blueprint 03_Stocky_Swap_Inventory.json</strong> (live inventory to Sheets), <strong>Blueprint 04_P_and_L_Auto.json</strong> (live P&L to Sheets), <strong>SA_Template_1_Stocky_Swap_Inventory.xlsx</strong> (pre-built six-column inventory log with example rows and setup tab), <strong>SA_Template_2_PnL_Auto.xlsx</strong> (pre-built P&L workbook with four tabs including a live auto-totalling dashboard), and <strong>README_Complete_Kit.pdf</strong> (full setup documentation). One direct support question is also included with every purchase. All files are accessible instantly via Stripe: no email required.</p>
@@ -752,7 +754,8 @@ const proSchema = [
 <AuthorCard press />
   </div>
 
-  </main>
+  <PriceSources ids={['make', 'elevar', 'northbeam', 'weltpixel', 'analyzify', 'prediko', 'trueprofit', 'beprofit', 'stape', 'littledata']} />
+</main>
 
   <script>
   (function() {

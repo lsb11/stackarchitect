@@ -27,6 +27,16 @@
 //   8. a sitemap page shows an em dash in its visible text (nav and footer
 //      aside). Added 25 Sep 2026 with the sitewide punctuation pass; <title>
 //      is in <head> and not checked.
+//   9. any built page, once parsed the way a browser or Googlebot parses it,
+//      has its <title>, canonical, meta robots or a JSON-LD script outside
+//      <head>, or has anything in <head> that is not a head element. Added
+//      25 Sep 2026: /tools/ put a <div> before <html>, the parser opened
+//      <body> there, and every tag Base.astro writes into <head> landed in
+//      the body, where Google may ignore a canonical or robots tag.
+//  10. an em dash in a string literal a reader can see but rule 8 cannot:
+//      inside a <script> in any src/ .astro or .md file (calculator output,
+//      status messages), or in a data file under src/data. Comments are not
+//      checked. Added 25 Sep 2026. See scripts/lib/script-string-dashes.mjs.
 //
 // An anchor whose words share nothing with the target's title or H1 is
 // reported as a warning, not a failure: the match is a judgement, and a
@@ -42,6 +52,7 @@ import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { parse } from 'parse5';
+import { dashesInScript, scriptBlocks, dashesInJson } from './lib/script-string-dashes.mjs';
 
 export const CAPS = {
   // Affiliate CTA buttons or blocks (a /go/ or rel=sponsored link styled as a
@@ -135,8 +146,58 @@ function claimMatches(claim, iso) {
   return mon === month && day === d && Number(yy) === y;
 }
 
+// What the HTML spec allows as a child of <head>. Anything else makes a
+// parser close the head early, so everything after it lands in <body>.
+export const HEAD_ELEMENTS = new Set(['meta', 'link', 'title', 'script', 'style', 'noscript', 'base', 'template']);
+const HTML_NS = 'http://www.w3.org/1999/xhtml';
+
+/** Rule 9: head problems in a parsed document, as short messages. */
+export function headProblems(doc) {
+  const out = [];
+  let head = null;
+  walk(doc, (n) => { if (!head && n.tagName === 'head') { head = n; return false; } });
+  if (!head) return ['no <head> element'];
+  // The parse tree always ends up with a valid <head>: the parser moves a
+  // stray element into <body> and takes everything after it along. What is
+  // left to see is whether the page's own <head> and </head> tags were the
+  // ones used. An implied open means content came before <head>; an implied
+  // close means a non-head element inside it ended the head early.
+  const loc = head.sourceCodeLocation;
+  if (loc !== undefined) {
+    if (!loc?.startTag) out.push('<head> opened implicitly: an element comes before it');
+    else if (!loc.endTag) out.push('<head> closed early by an element not allowed in it');
+  }
+  for (const c of head.childNodes || []) {
+    if (c.nodeName.startsWith('#')) continue;
+    if (!HEAD_ELEMENTS.has(c.tagName)) out.push(`<${c.tagName}> inside <head>`);
+  }
+  // Only the HTML namespace: an SVG <title> in the body is not the page title.
+  const found = { title: [], canonical: [], robots: [], jsonld: [] };
+  const scan = (n, inHead) => {
+    const here = inHead || n === head;
+    if (n.namespaceURI === HTML_NS) {
+      const rel = (attr(n, 'rel') || '').toLowerCase().split(/\s+/);
+      if (n.tagName === 'title') found.title.push(here);
+      if (n.tagName === 'link' && rel.includes('canonical')) found.canonical.push(here);
+      if (n.tagName === 'meta' && (attr(n, 'name') || '').toLowerCase() === 'robots') found.robots.push(here);
+      if (n.tagName === 'script' && attr(n, 'type') === 'application/ld+json') found.jsonld.push(here);
+    }
+    for (const c of n.childNodes || []) scan(c, here);
+  };
+  scan(doc, false);
+  const label = { title: '<title>', canonical: 'canonical link', robots: 'meta robots', jsonld: 'JSON-LD script' };
+  for (const [k, hits] of Object.entries(found)) {
+    // JSON-LD is optional (the /embed/ pages carry none); the other three are not.
+    if (hits.length === 0 && k !== 'jsonld') out.push(`no ${label[k]}`);
+    const outside = hits.filter((h) => !h).length;
+    if (outside) out.push(`${outside} ${label[k]}${outside > 1 ? 's' : ''} outside <head>`);
+  }
+  return out;
+}
+
 export function analysePage(html) {
-  const doc = parse(html);
+  const doc = parse(html, { sourceCodeLocationInfo: true });
+  const head = headProblems(doc);
   const mains = [];
   let robots = '';
   let title = '';
@@ -208,6 +269,8 @@ export function analysePage(html) {
   ld.forEach(visit);
 
   return {
+    head,
+    jsonld: ld.length,
     mains: mains.length,
     noindex: /\bnoindex\b/i.test(robots),
     affButtons, affInline, affTotal: aff.length, kit, buttons,
@@ -290,6 +353,9 @@ export function check({ pages, sitemapPaths, redirects, builtPaths }) {
 
   for (const [path, p] of Object.entries(pages)) {
     if (p.mains > 1) fail('single-main', path, `${p.mains} <main> elements`);
+    // 9. head validity, on every built page: a noindex that parses into the
+    // body is as lost as a canonical that does.
+    for (const msg of p.head || []) fail('head', path, msg);
   }
 
   const faqOwners = new Map();
@@ -327,6 +393,7 @@ export function check({ pages, sitemapPaths, redirects, builtPaths }) {
 
     // 5. sitemap hygiene
     if (p.noindex) fail('sitemap', path, 'carries noindex');
+    if (p.jsonld === 0) fail('head', path, 'no JSON-LD script');
     if (isSource(redirects, path)) fail('sitemap', path, 'is a redirect source in public/_redirects');
   }
   // 7. internal links, 8. em dashes
@@ -363,6 +430,35 @@ export function check({ pages, sitemapPaths, redirects, builtPaths }) {
   return failures;
 }
 
+// ── rule 10: em dashes in script strings and data files ──────────────────
+// claims.json is a record: its `forbid` patterns must match em dashes to catch
+// them in content, so it is the one data file not scanned.
+export const DASH_RECORDS = new Set(['/data/claims.json']);
+export function sourceDashes(root = 'src') {
+  const out = [];
+  const walkSrc = (dir) => {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const full = join(dir, e.name);
+      if (e.isDirectory()) { walkSrc(full); continue; }
+      const rel = full.replace(/\\/g, '/');
+      if (/\.(astro|md|mdx)$/.test(e.name)) {
+        for (const b of scriptBlocks(readFileSync(full, 'utf8'))) {
+          for (const h of dashesInScript(b.code)) out.push({ file: rel, line: b.line + h.line - 1, text: h.text });
+        }
+      } else if (rel.startsWith(`${root}/data/`) && !DASH_RECORDS.has(rel.slice(root.length))) {
+        const src = readFileSync(full, 'utf8');
+        if (e.name.endsWith('.json')) {
+          for (const h of dashesInJson(JSON.parse(src))) out.push({ file: rel, line: h.path, text: h.text });
+        } else if (/\.(ts|js|mjs)$/.test(e.name)) {
+          for (const h of dashesInScript(src)) out.push({ file: rel, line: h.line, text: h.text });
+        }
+      }
+    }
+  };
+  if (existsSync(root)) walkSrc(root);
+  return out;
+}
+
 // ── CLI ─────────────────────────────────────────────────────────────────────
 function htmlFiles(dir) {
   const out = [];
@@ -393,6 +489,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   const list = process.argv.includes('--list');
   const data = loadDist();
   const failures = check(data);
+  for (const d of sourceDashes()) failures.push({ rule: 'em-dash-source', path: `${d.file}:${d.line}`, msg: `em dash in a string literal: "${d.text}"` });
   const byRule = {};
   for (const f of failures) (byRule[f.rule] ||= []).push(f);
   for (const [rule, fs] of Object.entries(byRule)) {
@@ -403,7 +500,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   if (list) for (const w of warnings) console.warn(`  ⚠ anchor ${w.path}: "${w.text}" → ${w.href} (${w.target})`);
   if (warnings.length) console.warn(`⚠ content-quality-guard: ${warnings.length} anchor(s) share no word with the target's title or H1${list ? '' : ' (--list shows them)'}.`);
   if (failures.length === 0) {
-    console.log(`✓ content-quality-guard: ${data.sitemapPaths.length} sitemap pages, ${Object.keys(data.pages).length} built pages — one <main> each, within CTA caps, dated, FAQ questions unique, no redirect chains, internal links direct, no em dashes.`);
+    console.log(`✓ content-quality-guard: ${data.sitemapPaths.length} sitemap pages, ${Object.keys(data.pages).length} built pages — one <main> each, within CTA caps, dated, FAQ questions unique, no redirect chains, internal links direct, no em dashes in pages or script strings, head valid.`);
   } else if (!list) {
     process.exit(1);
   }

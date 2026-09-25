@@ -164,6 +164,19 @@ filter ships in **Testing**, which means it is excluding nothing.
   same ratchet. It holds one entry, Analyzify on
   `/shopify-attribution-tools-compared/` (see the apps.json problems below).
 
+**Added 25 Sep 2026.** `schema-visible-guard` check 6 fails when a FAQPage
+question or answer is not the exact text (tags and whitespace stripped) of an
+element on the page; build FAQs from one array with `faqPage()` in
+`src/utils/faq.ts`. `content-quality-guard` rule 9 fails when `<head>` is
+opened or closed implicitly, or a title, canonical, meta robots or JSON-LD
+script parses outside `<head>` (a `<div>` before `<Base>` on `/tools/` did
+this); rule 10 fails on an em dash in a `<script>` string literal or a
+`src/data` string (`scripts/lib/script-string-dashes.mjs`). The claims
+quarantine is empty: every third-party price is read on the vendor's page,
+recorded with its read date in `src/data/priceSources.ts`, and cited on the
+page by `<PriceSources>`. When a price is re-read, change the figure, the
+ledger entry and `READ_DATE` together.
+
 **What neither guard checks — capability claims.** Both guards are about
 numbers: third-party prices, the canonical figures in `claims.json`, numbers
 in schema. Nothing checks a sentence that says what a product *does*, and a

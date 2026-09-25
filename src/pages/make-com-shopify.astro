@@ -1,11 +1,30 @@
 ---
+import { faqPage, type Faq } from '../utils/faq';
 import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
+import { READ_DATE } from '../data/priceSources';
+import PriceSources from '../components/PriceSources.astro';
 import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import { KIT_PRICE, formatPrice } from '../data/products';
 const kitPrice = formatPrice(KIT_PRICE);
+
+// One array renders the visible FAQ and the FAQPage node.
+const faqs: Faq[] = [
+  { q: "Is Make.com free for Shopify automation?",
+    a: "Make.com's free plan gives 1,000 credits/month (formerly called operations) with no time limit and no credit card required. It includes webhook triggers and multi-step scenarios: enough to run CAPI Shield, Stocky Swap, TikTok CAPI, and P&L Auto simultaneously for stores under ~250 orders per month." },
+  { q: "Does Make.com work with Shopify Basic?",
+    a: "Yes. Make.com works with every Shopify plan including Basic. It connects via Shopify's built-in webhook system (Settings → Notifications → Webhooks) which is available on all plans. No Shopify app is required." },
+  { q: "What is the Make.com free plan limit for Shopify stores?",
+    a: "1,000 credits/month (formerly called operations). Running all four Stack Architect scenarios simultaneously uses approximately 4–6 operations per order: covering roughly 166–250 orders per month free, as one scenario with router branches. Make's free plan allows two active scenarios, so importing the four blueprints separately needs Core. Above either limit, Make.com Core at $9/month gives 10,000 credits and unlimited active scenarios." },
+  { q: "Can Make.com replace Zapier for Shopify?",
+    a: "Yes: and it's significantly better value. Make.com provides 10× more free operations, includes webhook triggers on the free plan (Zapier requires a paid plan), and supports multi-step branching for free. For Shopify automation specifically, Make.com is the recommended platform at every price point." },
+  { q: "How long does it take to set up Make.com with Shopify?",
+    a: `Connecting Make.com to Shopify via webhook takes approximately 3 minutes. Building each individual automation (CAPI Shield, Stocky Swap, TikTok CAPI, P&L Auto) takes 4–8 minutes each from the free guides. The Complete Kit (${kitPrice}) provides the same automations as pre-built JSON blueprints, ready to import.` },
+  { q: "What is a Make.com JSON blueprint for Shopify?",
+    a: "A Make.com JSON blueprint (also called a scenario file) is a complete export of a finished automation: every module, API endpoint, and field mapping is embedded in the file. Importing it recreates the entire scenario in one click with zero manual configuration. The Complete Kit contains four pre-built blueprints for CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto." },
+];
 
 const tocHeadings = [
   {
@@ -51,7 +70,7 @@ const tocHeadings = [
 ];
 
 ---
-<Base title="Make.com for Shopify — Free Automation Guide 2026" description="Connect Make.com to Shopify in 3 minutes. What the free tier covers, how it compares to Zapier and Shopify Flow, and when you actually need to upgrade.">
+<Base verifiedDate={READ_DATE} title="Make.com for Shopify — Free Automation Guide 2026" description="Connect Make.com to Shopify in 3 minutes. What the free tier covers, how it compares to Zapier and Shopify Flow, and when you actually need to upgrade.">
 <Fragment slot="head">
 <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
@@ -133,38 +152,7 @@ const tocHeadings = [
           }
         ]
       },
-      {
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Is Make.com free for Shopify automation?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Make.com's free plan gives 1,000 credits/month (formerly called operations) with no time limit and no credit card required. It includes webhook triggers, HTTP modules, and multi-step scenarios with branching: enough to run server-side tracking (Meta), inventory management, TikTok CAPI, and P&L reporting simultaneously for most Shopify stores under 250 orders per month."
-            }
-          },
-          
-          
-          
-          {
-            "@type": "Question",
-            "name": "Does Make.com work with Shopify Basic?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes. Make.com works with every Shopify plan including Basic, Shopify, Advanced, and Plus. It connects via Shopify's built-in webhook system (Settings → Notifications → Webhooks) which is available on all plans. No Shopify app installation is required."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "What is the Make.com free plan limit for Shopify?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Make.com's free plan provides 1,000 credits/month (formerly called operations). For Shopify stores, one order typically uses 4–6 operations when running CAPI Shield, Stocky Swap, TikTok CAPI, and P&L Auto simultaneously. This covers approximately 166–250 monthly orders on the free plan, running as one scenario with router branches: Make's free plan allows two active scenarios, so four separate ones need Core. Stores processing more orders can upgrade to Make.com Core at $9 per month for 10,000 credits and unlimited active scenarios."
-            }
-          }
-        ]
-      }
+      { ...faqPage(faqs), "@context": undefined }
     ]
   })}></script>
 </Fragment>
@@ -206,7 +194,7 @@ const tocHeadings = [
       <div class="tag">Quick Answer</div>
       <h2 id="what-does-make-com-do-for-shopify">What Does Make.com Do for Shopify?</h2>
       <p class="speakable">Make.com is a no-code automation platform that connects to Shopify using Shopify's built-in webhook system. When an order is paid, Shopify fires a webhook to Make.com, which routes the order data simultaneously to multiple destinations: Meta Conversions API (server-side purchase events), Google Enhanced Conversions, TikTok Events API, Google Sheets (inventory and P&L), and Systeme.io (email automation). All of this runs on Make.com's free plan: 1,000 credits/month (formerly called operations), no credit card required.</p>
-      <p>Make.com replaces five paid Shopify apps that collectively cost $500–$900 per month: Elevar or Triple Whale (server-side tracking), Shopify Stocky (inventory, closed on 31 August 2026), WeltPixel or Analyzify (TikTok CAPI), TrueProfit or BeProfit (P&L reporting), and Klaviyo (replaced by Systeme.io). The entire stack costs $0 per month on Make.com's free tier.</p>
+      <p>Make.com replaces paid Shopify apps across five jobs: Elevar or Triple Whale (server-side tracking), Shopify Stocky (inventory, closed on 31 August 2026), WeltPixel or Analyzify (TikTok CAPI), TrueProfit or BeProfit (P&L reporting), and Klaviyo (replaced by Systeme.io). The entire stack costs $0 per month on Make.com's free tier.</p>
     </div>
   </section>
 
@@ -239,7 +227,7 @@ const tocHeadings = [
           <div class="tool-card-tag">Scenario 04 · P&L Reporting</div>
           <h3>P&L Auto</h3>
           <p>Auto-populates a Google Sheets P&L dashboard with revenue, COGS, fees, and net profit for every order the instant payment confirms. Real-time profitability at $0/mo.</p>
-          <div class="tool-card-saves">Replaces TrueProfit ($19/mo) · BeProfit ($29/mo) · Glew.io</div>
+          <div class="tool-card-saves">Replaces TrueProfit ($35/mo) · BeProfit ($49/mo) · Glew.io</div>
         </a>
         <a href="/replace-klaviyo-free/" class="tool-card">
           <div class="tool-card-tag">Bonus · Email Automation</div>
@@ -251,7 +239,7 @@ const tocHeadings = [
           <div class="tool-card-tag">Bonus · Google Ads</div>
           <h3>Google Enhanced Conversions</h3>
           <p>SHA-256 hashes customer email from Shopify orders and uploads it server-side via the Google Ads Conversions API (Enhanced Conversions for click conversions). Recovers Google Ads conversions the browser tag misses. We publish no figure for how many: it depends on your traffic and consent mix.</p>
-          <div class="tool-card-saves">Replaces Stape ($29/mo) · Littledata ($159+/mo) · In CAPI Shield</div>
+          <div class="tool-card-saves">Replaces Stape ($17/mo billed yearly) · Littledata ($159+/mo) · In CAPI Shield</div>
         </a>
       </div>
     </div>
@@ -335,8 +323,8 @@ const tocHeadings = [
               ["Multi-step branching (free)", "✓", "Paid only"],
               ["Fan-out (1 trigger → many actions)", "✓ free", "Paid only"],
               ["Shopify integration", "Native", "Native"],
-              ["Paid plan (entry)", "$9/mo (10k credits)", "$19.99/mo (750 tasks)"],
-              ["Cost per operation (paid)", "~$0.0009", "~$0.027 (30× more)"],
+              ["Paid plan (entry)", "$9/mo (10k credits)", "From $19.99/mo"],
+              ["Cost per operation (paid)", "~$0.0009", "Not published per task"],
               ["Visual scenario builder", "✓", "Limited"],
               ["HTTP / webhook modules (free)", "✓", "Paid only"],
             ].map((row, i) => (
@@ -471,30 +459,12 @@ const tocHeadings = [
       <div class="tag">FAQ</div>
       <h2 id="make-com-shopify-common-questions">Make.com + Shopify: Common Questions</h2>
       <ul class="faq-list">
-        <li class="faq-item">
-          <p class="faq-q">Is Make.com free for Shopify automation?</p>
-          <p class="faq-a">Make.com's free plan gives 1,000 credits/month (formerly called operations) with no time limit and no credit card required. It includes webhook triggers and multi-step scenarios: enough to run CAPI Shield, Stocky Swap, TikTok CAPI, and P&L Auto simultaneously for stores under ~250 orders per month.</p>
-        </li>
-        <li class="faq-item">
-          <p class="faq-q">Does Make.com work with Shopify Basic?</p>
-          <p class="faq-a">Yes. Make.com works with every Shopify plan including Basic. It connects via Shopify's built-in webhook system (Settings → Notifications → Webhooks) which is available on all plans. No Shopify app is required.</p>
-        </li>
-        <li class="faq-item">
-          <p class="faq-q">What is the Make.com free plan limit for Shopify stores?</p>
-          <p class="faq-a">1,000 credits/month (formerly called operations). Running all four Stack Architect scenarios simultaneously uses approximately 4–6 operations per order: covering roughly 166–250 orders per month free, as one scenario with router branches. Make's free plan allows two active scenarios, so importing the four blueprints separately needs Core. Above either limit, Make.com Core at $9/month gives 10,000 credits and unlimited active scenarios.</p>
-        </li>
-        <li class="faq-item">
-          <p class="faq-q">Can Make.com replace Zapier for Shopify?</p>
-          <p class="faq-a">Yes: and it's significantly better value. Make.com provides 10× more free operations, includes webhook triggers on the free plan (Zapier requires a paid plan), and supports multi-step branching for free. For Shopify automation specifically, Make.com is the recommended platform at every price point.</p>
-        </li>
-        <li class="faq-item">
-          <p class="faq-q">How long does it take to set up Make.com with Shopify?</p>
-          <p class="faq-a">Connecting Make.com to Shopify via webhook takes approximately 3 minutes. Building each individual automation (CAPI Shield, Stocky Swap, TikTok CAPI, P&L Auto) takes 4–8 minutes each from the free guides. The Complete Kit ({kitPrice}) provides the same automations as pre-built JSON blueprints, ready to import.</p>
-        </li>
-        <li class="faq-item">
-          <p class="faq-q">What is a Make.com JSON blueprint for Shopify?</p>
-          <p class="faq-a">A Make.com JSON blueprint (also called a scenario file) is a complete export of a finished automation: every module, API endpoint, and field mapping is embedded in the file. Importing it recreates the entire scenario in one click with zero manual configuration. The Complete Kit contains four pre-built blueprints for CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto.</p>
-        </li>
+        {faqs.map(({ q, a }) => (
+          <li class="faq-item">
+            <p class="faq-q">{q}</p>
+            <p class="faq-a" set:html={a} />
+          </li>
+        ))}
       </ul>
     </div>
   </section>
@@ -517,6 +487,7 @@ const tocHeadings = [
        region, so the visible attribution for it belongs in the same region.
        This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
+<PriceSources ids={['make', 'zapier', 'elevar', 'weltpixel', 'analyzify', 'trueprofit', 'beprofit', 'klaviyo', 'stape', 'littledata']} />
 </main>
 
 

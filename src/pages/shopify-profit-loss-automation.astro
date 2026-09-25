@@ -1,6 +1,8 @@
 ---
 import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
+import { READ_DATE } from '../data/priceSources';
+import PriceSources from '../components/PriceSources.astro';
 import Disclosure from "../components/Disclosure.astro";
 import AuthorCard from '../components/AuthorCard.astro';
 // src/pages/shopify-profit-loss-automation.astro
@@ -240,7 +242,7 @@ const tocHeadings = [
 ];
 
 ---
-<Base title="Shopify P&amp;L Automation Free 2026 — Live in Google Sheets" description="Build a live Shopify P&L in Google Sheets via Make.com. Every order writes revenue, COGS, fees and net margin automatically. Free, no code, 10 minutes.">
+<Base verifiedDate={READ_DATE} title="Shopify P&amp;L Automation Free 2026 — Live in Google Sheets" description="Build a live Shopify P&L in Google Sheets via Make.com. Every order writes revenue, COGS, fees and net margin automatically. Free, no code, 10 minutes.">
 <Fragment slot="head">
 <script type="application/ld+json" set:html={schema} />
 
@@ -554,7 +556,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
 
   <div class="pain-row" role="list">
     <div class="pain-pill" role="listitem"><div class="pain-v">Manual exports</div><div class="pain-l">Every time you want data</div></div>
-    <div class="pain-pill" role="listitem"><div class="pain-v">$19–$299/mo</div><div class="pain-l">P&amp;L apps charge</div></div>
+    <div class="pain-pill" role="listitem"><div class="pain-v">$35–$299/mo</div><div class="pain-l">P&amp;L apps charge</div></div>
     <div class="pain-pill" role="listitem"><div class="pain-v">Days old</div><div class="pain-l">Reporting lag</div></div>
     <div class="pain-pill" role="listitem" style="background:var(--g-bg);border-color:var(--g-border);"><div class="pain-v" style="color:var(--g);">$0</div><div class="pain-l">This setup costs</div></div>
   </div>
@@ -665,7 +667,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
     <p>Manual CSV exports and static templates have three failure modes that compound as your store grows.</p>
   </div>
   <div class="body-text" style="max-width:860px;margin:0 auto;">
-    <p>Most Shopify store owners track profit and loss in one of three ways: they pay $19–$299/month for a P&amp;L app, they download monthly CSV exports and paste them into a template, or they wait for quarterly management accounts. All three share the same problem: <strong>the data is always behind, and decisions made on behind data are systematically worse than decisions made on live data.</strong></p>
+    <p>Most Shopify store owners track profit and loss in one of three ways: they pay $35–$299/month for a P&amp;L app, they download monthly CSV exports and paste them into a template, or they wait for quarterly management accounts. All three share the same problem: <strong>the data is always behind, and decisions made on behind data are systematically worse than decisions made on live data.</strong></p>
     <p>The specific failure mode is inventory and ad spend decisions. A store owner who checks their P&amp;L weekly rather than daily will run ad campaigns for an extra 4–6 days on products that are already margin-negative before the data catches up. At $5,000/month in ad spend, that lag costs measurable money every month.</p>
     <div class="stat-callout" role="note">
       <div class="sc-val">3 hrs</div>
@@ -676,7 +678,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
     <h3>What Shopify's built-in reports don't tell you</h3>
     <p>Shopify's native Analytics shows revenue, units sold, and average order value. It has no concept of your cost of goods, Shopify subscription fee, ad spend, or operating expenses. The gross margin figure that determines whether your store is viable is not available anywhere in Shopify's dashboard without a third-party app or manual calculation.</p>
     <h3>Why every competitor either charges monthly or gives you a blank template</h3>
-    <p>Search "shopify P&amp;L template free" and you find two types of results. Paid apps like TrueProfit ($19+/mo), Lifetimely ($79+/mo), and Finaloop ($65+/mo) that automate everything but charge monthly forever. And free templates: static Excel files with no data connection. <strong>Nobody has built a genuinely free, live-updating, automated Shopify P&amp;L that connects directly to order data via webhooks. Until now.</strong></p>
+    <p>Search "shopify P&amp;L template free" and you find two types of results. Paid apps like TrueProfit ($35+/mo), Lifetimely (free plan, then $49+/mo) and Finaloop that automate everything but charge monthly forever. And free templates: static Excel files with no data connection. <strong>Nobody has built a genuinely free, live-updating, automated Shopify P&amp;L that connects directly to order data via webhooks. Until now.</strong></p>
   </div>
   <div class="section-cta">
     <div class="section-cta-left">
@@ -899,7 +901,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
   </div>
   <div class="callout">
     <div class="callout-label">When to upgrade Make.com</div>
-    <p>At 500+ orders per month you use approximately 1,000 Make.com operations on the free plan (2 ops per order). The Core plan at $9/month provides 10,000 credits: enough for 5,000 orders per month. <strong>At that scale this setup saves $188–$288/month versus TrueProfit or Lifetimely</strong> even on a paid Make.com plan.</p>
+    <p>At 500+ orders per month you use approximately 1,000 Make.com operations on the free plan (2 ops per order). The Core plan at $9/month provides 10,000 credits: enough for 5,000 orders per month. At that scale TrueProfit's Enterprise plan costs $305 a month ($200 for 3,500 orders plus $0.07 for each of the other 1,500) and Lifetimely's L plan $299, so <strong>even on Make's $9 Core plan this setup costs about $290–$296 a month less</strong> (list prices read 25 September 2026).</p>
   </div>
 </div>
 </section>
@@ -929,7 +931,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
       <div class="crosslink-name">Stocky Swap</div>
       <div class="crosslink-desc">The same webhook branches to an inventory ledger: tracking units sold per SKU in real time alongside your P&amp;L. Stocky closed on 31 August 2026; this gives you live stock visibility in its place, for free.</div>
       <div style="display:flex;align-items:center;justify-content:space-between;">
-        <span class="crosslink-save" style="color:var(--sky);">Saves $29–$199/mo</span>
+        <span class="crosslink-save" style="color:var(--sky);">Saves $49–$119/mo</span>
         <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);" aria-hidden="true">→</span>
       </div>
     </a>
@@ -938,7 +940,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
       <div class="crosslink-name">TikTok Events API</div>
       <div class="crosslink-desc">The same webhook branches to TikTok Events API simultaneously. Free CompletePayment events server-side: covers the TikTok conversions iOS strips from browser tracking, at $0.</div>
       <div style="display:flex;align-items:center;justify-content:space-between;">
-        <span class="crosslink-save" style="color:#ff2e63;">Saves $39–$299/mo</span>
+        <span class="crosslink-save" style="color:#ff2e63;">Saves $39–$275/mo</span>
         <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);" aria-hidden="true">→</span>
       </div>
     </a>
@@ -956,14 +958,14 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
       <div class="crosslink-name">Autocrat Quota Fix</div>
       <div class="crosslink-desc">Stop Google Apps Script quota errors breaking your document workflows. Handles 10,000+ rows per day at $0: keeps the entire automation stack running reliably.</div>
       <div style="display:flex;align-items:center;justify-content:space-between;">
-        <span class="crosslink-save" style="color:var(--vio);">Saves $49–$99/mo</span>
+        <span class="crosslink-save" style="color:var(--vio);">Runs on Make's free plan</span>
         <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);" aria-hidden="true">→</span>
       </div>
     </a>
     <a href="https://stackarchitect.xyz/shopify-app-cost-calculator/" class="crosslink-card" aria-label="App Cost Calculator: find hidden Shopify app costs before building your P&L">
       <span class="tag tag-dim" style="display:inline-flex;margin-bottom:10px;">Free tool</span>
       <div class="crosslink-name">App Cost Calculator</div>
-      <div class="crosslink-desc">Before you can build an accurate P&amp;L you need to know your actual app costs. Most stores find $500–$2,500 in annual waste: all inputs for your fixed costs tab. Takes 30 seconds.</div>
+      <div class="crosslink-desc">Before you can build an accurate P&amp;L you need to know your actual app costs. Your app bill is an input for your fixed costs tab. Takes 30 seconds.</div>
       <div style="display:flex;align-items:center;justify-content:space-between;">
         <span class="crosslink-save" style="color:var(--g);">Free: instant results</span>
         <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);" aria-hidden="true">→</span>
@@ -1110,7 +1112,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
     </a>
     <a href="/stocky-swap/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
       <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Stocky Swap: Live Inventory in the Same Google Sheet
-            The same Make</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $29–$199/mo</span></span>
+            The same Make</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $49–$119/mo</span></span>
       <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">com webhook logs inventory alongside your P&amp;L data automatically</span>
     </a>
     <a href="/replace-klaviyo-free/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
@@ -1120,7 +1122,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
     </a>
     <a href="/shopify-google-ads-conversion-tracking/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
       <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Fix Google Ads Tracking: Know Your Real ROAS
-            P&amp;L accuracy requires accurate ad attribution</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $29–$99/mo</span></span>
+            P&amp;L accuracy requires accurate ad attribution</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Free setup</span></span>
       <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">Fix Google Enhanced Conversions free</span>
     </a>
   </div>
@@ -1131,7 +1133,8 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
        region, so the visible attribution for it belongs in the same region.
        This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
-  </main>
+  <PriceSources ids={['trueprofit', 'lifetimely', 'make', 'analyzify', 'elevar', 'prediko', 'weltpixel', 'klaviyo']} />
+</main>
 
 <!-- ══ FOOTER ══ -->
 

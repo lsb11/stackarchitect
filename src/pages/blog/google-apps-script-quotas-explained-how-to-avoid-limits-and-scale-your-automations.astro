@@ -1,6 +1,27 @@
 ---
 import { pageUpdated, formatUpdatedMonth } from '../../data/pageUpdated';
 import Base from '../../layouts/Base.astro';
+import { faqPage, type Faq } from '../../utils/faq';
+
+// One array renders the visible FAQ and the FAQPage node.
+const faqs: Faq[] = [
+  { q: "What is the Google Apps Script execution time limit in 2026?",
+    a: "Both consumer (free) and Google Workspace accounts are capped at <strong>6 minutes per execution</strong> in 2026: the 30-minute Workspace limit cited by older guides no longer applies. Scripts that exceed the limit are hard-stopped mid-run: no graceful shutdown, no warning, just termination." },
+  { q: "What is the daily runtime limit for Google Apps Script in 2026?",
+    a: "Google's official quota for <strong>triggers total runtime</strong> is <strong>90 minutes per day</strong> on consumer accounts and <strong>6 hours per day</strong> on Workspace accounts. This applies to trigger-driven executions; manual runs are not counted. The quota resets 24 hours after the first request." },
+  { q: "What is the Google Apps Script UrlFetch daily limit?",
+    a: "Consumer accounts can make <strong>20,000 UrlFetch calls per day</strong>. Google Workspace accounts get <strong>100,000 per day</strong>. If your automation calls external APIs on every order, this limit can be exhausted faster than expected on high-volume days." },
+  { q: "Have Google Apps Script quotas changed for 2026?",
+    a: "The core limits, 6-minute execution (both consumer and Workspace) and 90-minute daily trigger runtime on consumer accounts, have remained consistent into 2026. Google does not announce quota changes prominently. If you are seeing new failures, it is more likely that your volume has grown into the limits rather than that Google has tightened them." },
+  { q: "Can Google Apps Script quotas be increased?",
+    a: "Not by request or configuration. Google publishes one set of figures for consumer accounts and a higher set for Google Workspace accounts, so moving to Workspace raises the daily quotas, such as trigger runtime and URL Fetch calls. The six-minute limit per execution is the same on both. To work beyond it, move the work outside Apps Script, into Make.com or a dedicated API layer." },
+  { q: "Why does my script work in the morning but fail in the afternoon?",
+    a: "This is the clearest sign of a daily quota problem. Trigger-driven automations are exhausting the 90-minute daily trigger runtime (consumer) in the first half of the day, leaving nothing for afternoon processing. The quota resets 24 hours after the first request, which is why timing shifts day to day." },
+  { q: "Why does the same script work one day and fail the next?",
+    a: "Variable load. A day with higher order volume or more form submissions hits limits that a quieter day never reached. The script did not change: the pressure on its quota allowance did." },
+  { q: "Is Apps Script still useful for automation in 2026?",
+    a: "Yes: as a lightweight trigger and orchestration layer for simple spreadsheet actions and low-volume workflows. It becomes a liability when it is the execution engine for mission-critical, high-volume processing. For those cases, Make.com is the right tool." },
+];
 import quotaData from '../../data/apps-script-quotas.json';
 import Disclosure from '../../components/Disclosure.astro';
 import AuthorCard from '../../components/AuthorCard.astro';
@@ -168,54 +189,10 @@ const datasetSchema = {
         }
       ]
     },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is the Google Apps Script execution time limit in 2026?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Both consumer (free) and Google Workspace accounts are capped at 6 minutes per execution in 2026, per Google's official quota documentation. (Workspace accounts had a 30-minute limit in the past, but that no longer applies.) Scripts that exceed the limit are hard-stopped mid-run with no graceful shutdown." }
-        },
-        {
-          "@type": "Question",
-          "name": "What is the daily runtime limit for Google Apps Script in 2026?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Google's official quota for triggers total runtime is 90 minutes per day on consumer accounts and 6 hours per day on Google Workspace accounts. This cap applies to trigger-driven executions; quotas reset 24 hours after the first request." }
-        },
-        {
-          "@type": "Question",
-          "name": "What is the Google Apps Script UrlFetch daily limit?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Consumer accounts can make 20,000 UrlFetch calls per day. Google Workspace accounts get 100,000 per day." }
-        },
-        {
-          "@type": "Question",
-          "name": "Can Google Apps Script quotas be increased?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Not by request or configuration. Google publishes one set of figures for consumer accounts and a higher set for Google Workspace accounts, so moving to Workspace raises the daily quotas, such as trigger runtime and URL Fetch calls. The six-minute limit per execution is the same on both. To work beyond it, move the work outside Apps Script, into Make.com or a dedicated API layer." }
-        },
-        {
-          "@type": "Question",
-          "name": "Why does my script work in the morning but fail in the afternoon?",
-          "acceptedAnswer": { "@type": "Answer", "text": "This is the clearest sign of a daily quota problem. Trigger-driven automations are exhausting the 90-minute daily trigger runtime (consumer) in the first half of the day, leaving nothing for afternoon processing. The quota resets 24 hours after the first request." }
-        },
-        {
-          "@type": "Question",
-          "name": "Have Google Apps Script quotas changed for 2026?",
-          "acceptedAnswer": { "@type": "Answer", "text": "The core limits, 6-minute execution (for both consumer and Workspace accounts) and 90-minute daily trigger runtime on consumer accounts, have remained consistent into 2026. If you are seeing new failures, it is more likely that your volume has grown into the limits rather than that Google has tightened them." }
-        },
-        {
-          "@type": "Question",
-          "name": "Why does the same script work one day and fail the next?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Variable load. A day with higher order volume or more form submissions hits limits that a quieter day never reached. The script did not change: the pressure on its quota allowance did." }
-        },
-        {
-          "@type": "Question",
-          "name": "Is Apps Script still useful for automation in 2026?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Yes: as a lightweight trigger and orchestration layer for simple spreadsheet actions and low-volume workflows. It becomes a liability when it is the execution engine for mission-critical, high-volume processing." }
-        }
-      ]
-    }
+    { ...faqPage(faqs), "@context": undefined }
   ]
 })}></script>
-<script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps: server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
+<script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing paid apps: server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
 <script type="application/ld+json" set:html={JSON.stringify(datasetSchema)} />
   </Fragment>
 
@@ -819,38 +796,12 @@ function scheduleNextChunk_() {
 
   <h2 id="faq">Frequently Asked Questions</h2>
   <div class="faq-wrap">
-    <div class="faq-item">
-      <p class="q">What is the Google Apps Script execution time limit in 2026?</p>
-      <p class="a">Both consumer (free) and Google Workspace accounts are capped at <strong>6 minutes per execution</strong> in 2026: the 30-minute Workspace limit cited by older guides no longer applies. Scripts that exceed the limit are hard-stopped mid-run: no graceful shutdown, no warning, just termination.</p>
-    </div>
-    <div class="faq-item">
-      <p class="q">What is the daily runtime limit for Google Apps Script in 2026?</p>
-      <p class="a">Google's official quota for <strong>triggers total runtime</strong> is <strong>90 minutes per day</strong> on consumer accounts and <strong>6 hours per day</strong> on Workspace accounts. This applies to trigger-driven executions; manual runs are not counted. The quota resets 24 hours after the first request.</p>
-    </div>
-    <div class="faq-item">
-      <p class="q">What is the Google Apps Script UrlFetch daily limit?</p>
-      <p class="a">Consumer accounts can make <strong>20,000 UrlFetch calls per day</strong>. Google Workspace accounts get <strong>100,000 per day</strong>. If your automation calls external APIs on every order, this limit can be exhausted faster than expected on high-volume days.</p>
-    </div>
-    <div class="faq-item">
-      <p class="q">Have Google Apps Script quotas changed for 2026?</p>
-      <p class="a">The core limits, 6-minute execution (both consumer and Workspace) and 90-minute daily trigger runtime on consumer accounts, have remained consistent into 2026. Google does not announce quota changes prominently. If you are seeing new failures, it is more likely that your volume has grown into the limits rather than that Google has tightened them.</p>
-    </div>
-    <div class="faq-item">
-      <p class="q">Can Google Apps Script quotas be increased?</p>
-      <p class="a">Not by request or configuration. Google publishes one set of figures for consumer accounts and a higher set for Google Workspace accounts, so moving to Workspace raises the daily quotas, such as trigger runtime and URL Fetch calls. The six-minute limit per execution is the same on both. To work beyond it, move the work outside Apps Script, into Make.com or a dedicated API layer.</p>
-    </div>
-    <div class="faq-item">
-      <p class="q">Why does my script work in the morning but fail in the afternoon?</p>
-      <p class="a">This is the clearest sign of a daily quota problem. Trigger-driven automations are exhausting the 90-minute daily trigger runtime (consumer) in the first half of the day, leaving nothing for afternoon processing. The quota resets 24 hours after the first request, which is why timing shifts day to day.</p>
-    </div>
-    <div class="faq-item">
-      <p class="q">Why does the same script work one day and fail the next?</p>
-      <p class="a">Variable load. A day with higher order volume or more form submissions hits limits that a quieter day never reached. The script did not change: the pressure on its quota allowance did.</p>
-    </div>
-    <div class="faq-item">
-      <p class="q">Is Apps Script still useful for automation in 2026?</p>
-      <p class="a">Yes: as a lightweight trigger and orchestration layer for simple spreadsheet actions and low-volume workflows. It becomes a liability when it is the execution engine for mission-critical, high-volume processing. For those cases, Make.com is the right tool.</p>
-    </div>
+    {faqs.map(({ q, a }) => (
+      <div class="faq-item">
+        <p class="q">{q}</p>
+        <p class="a" set:html={a} />
+      </div>
+    ))}
   </div>
 
   <h2 id="final-takeaway">Final Takeaway</h2>

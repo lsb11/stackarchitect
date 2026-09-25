@@ -1,10 +1,11 @@
 ---
 import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
+import { READ_DATE } from '../data/priceSources';
+import PriceSources from '../components/PriceSources.astro';
 import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 // Inline cumulative-cost chart (raw SVG → DOM-level, Google-Images indexable + accessible)
-import costChartSvg from '../assets/diagrams/paid-vs-free-stack-cost-12-months.svg?raw';
 
 const breadcrumb = [
   { label: 'Home', href: '/' },
@@ -112,15 +113,15 @@ const tocHeadings = [
 
 ---
 
-<div id="reading-progress" style="position:fixed;top:0;left:0;width:0;height:2px;background:#34d377;z-index:9999;transition:width .1s;"></div>
-
-<Base ogImage="https://stackarchitect.xyz/og/og-free-tools.png"
+<Base verifiedDate={READ_DATE} ogImage="https://stackarchitect.xyz/og/og-free-tools.png"
   title="Free Shopify Tools & Calculators 2026 — 21 Free Tools"
   description="21 free Shopify tools: 6 app replacements and 15 diagnostic calculators. Server-side tracking, inventory, EMQ, attribution gap and cost calculators."
   canonical="https://stackarchitect.xyz/tools/"
   schema={schemas}
   breadcrumb={breadcrumb}
 >
+
+  <div id="reading-progress" style="position:fixed;top:0;left:0;width:0;height:2px;background:#34d377;z-index:9999;transition:width .1s;"></div>
 
   <main class="flex-1">
     <style>
@@ -316,7 +317,7 @@ const tocHeadings = [
               <div class="tool-card-tag"><span class="tool-tag-dot"></span>Inventory Management<span class="featured-badge">STOCKY CLOSED AUG 2026. EXPORT STILL OPEN</span></div>
               <div class="tool-card-title" itemprop="name">Stocky Swap</div>
               <p class="tool-card-desc" itemprop="description"><strong>Stocky shut down on August 31, 2026.</strong> Stocky Swap is the free replacement: real-time inventory visibility in Google Sheets, no monthly fees, no code, no paid apps.</p>
-              <div class="tool-card-saving">Replaces: Stocky, Inventory Planner, Skubana, replaces paid tools listed at $29–$199/mo</div>
+              <div class="tool-card-saving">Replaces: Stocky, Inventory Planner, Skubana, replaces paid tools listed at $49–$119/mo</div>
             </div>
             <div style="flex-shrink:0;">
               <div class="tool-card-cta" style="white-space:nowrap;">Replace Stocky Free &rarr;</div>
@@ -356,7 +357,7 @@ const tocHeadings = [
             <div class="tool-card-tag"><span class="tool-tag-dot"></span>Free Calculator</div>
             <div class="tool-card-title" itemprop="name">App Cost Calculator</div>
             <p class="tool-card-desc" itemprop="description">Enter your monthly app spend across marketing, inventory, and analytics. Get your <strong>efficiency score, annual waste figure, and potential savings</strong>: then replace the apps causing the drain.</p>
-            <div class="tool-card-saving">Average result: $6,000–$18,000 in recoverable annual spend</div>
+            <div class="tool-card-saving">Uses your own app bill, not an average</div>
             <div class="tool-card-cta">Calculate Savings &rarr;</div>
           </a>
 
@@ -434,7 +435,7 @@ const tocHeadings = [
             <div class="tool-card-tag calc-tag"><span class="tool-tag-dot" style="background:#6cc3e6;"></span>Cost</div>
             <div class="tool-card-title">Make vs Zapier Calculator</div>
             <p class="tool-card-desc">Calculate the exact annual cost difference between Make.com and Zapier for your automation volume. See your <strong>monthly saving from switching</strong> platforms.</p>
-            <div class="tool-card-saving calc-saving">Most stores save $500+/yr switching to Make.com</div>
+            <div class="tool-card-saving calc-saving">See the yearly difference at your volume</div>
             <div class="tool-card-cta">Compare Costs &rarr;</div>
           </a>
 
@@ -477,7 +478,7 @@ const tocHeadings = [
       <section class="hub-section" aria-labelledby="comparison-heading">
         <span class="section-tag">Infrastructure_Audit // Cost_Comparison</span>
         <h2 class="section-h2" id="comparison-heading">Paid Apps vs.<br><span class="accent">The $0 Stack.</span></h2>
-        <p class="section-sub">Most Shopify stores pay $500–$2,500/month for tools they could replace for free. Here's the breakdown.</p>
+        <p class="section-sub">Here is what the paid tools cost at entry level, on their own pricing pages read on 25 September 2026.</p>
         <div class="comp-wrap">
           <div class="comp-header">
             <span class="comp-label neutral">What You're Paying For</span>
@@ -485,23 +486,15 @@ const tocHeadings = [
             <span class="comp-label good">Stack Architect ($0)</span>
           </div>
           <div class="comp-row"><span class="comp-metric">Email &amp; CRM (e.g. Klaviyo)</span><span class="comp-bad">$20+/mo</span><span class="comp-good">Systeme.io: Free</span></div>
-          <div class="comp-row"><span class="comp-metric">Ad Attribution (e.g. Triple Whale)</span><span class="comp-bad">$150–$300/mo</span><span class="comp-good">CAPI Shield: Free</span></div>
-          <div class="comp-row"><span class="comp-metric">Inventory (e.g. Stocky, Inventory Planner)</span><span class="comp-bad">$29–$199/mo</span><span class="comp-good">Stocky Swap: Free</span></div>
+          <div class="comp-row"><span class="comp-metric">Ad Attribution (e.g. Elevar)</span><span class="comp-bad">$225–$650/mo</span><span class="comp-good">CAPI Shield: Free</span></div>
+          <div class="comp-row"><span class="comp-metric">Inventory (e.g. Prediko)</span><span class="comp-bad">$49–$119/mo</span><span class="comp-good">Stocky Swap: Free</span></div>
           <div class="comp-row"><span class="comp-metric">Workflow Automation (e.g. Zapier)</span><span class="comp-bad">$19.99+/mo</span><span class="comp-good">Make.com: Free</span></div>
-          <div class="comp-row"><span class="comp-metric">Document Generation (e.g. Autocrat)</span><span class="comp-bad">$50–$150/mo</span><span class="comp-good">Autocrat Fix: Free</span></div>
-          <div class="comp-row"><span class="comp-metric">Store Audit Tools</span><span class="comp-bad">$99–$299/mo</span><span class="comp-good">Scanner + Calculator: Free</span></div>
           <div class="comp-row" style="background:rgba(0,168,84,.04);">
-            <span class="comp-metric" style="color:#fff;font-weight:700;">Total Monthly Cost</span>
-            <span class="comp-bad" style="font-size:16px;">$557–$1,648/mo</span>
+            <span class="comp-metric" style="color:#fff;font-weight:700;">Entry prices, added up</span>
+            <span class="comp-bad" style="font-size:16px;">$314+/mo</span>
             <span class="comp-good" style="font-size:16px;">$0.00</span>
           </div>
         </div>
-        <figure style="margin:44px 0 0;border:1px solid rgba(255,255,255,.06);border-radius:20px;background:#080a09;padding:24px clamp(12px,3vw,32px);">
-          <Fragment set:html={costChartSvg} />
-          <figcaption style="font-family:var(--mono);font-size:11px;color:#93a09a;letter-spacing:1px;text-transform:uppercase;margin-top:16px;text-align:center;">
-            Cumulative 12-month spend: paid app stack climbs to ~$12,000 while the free stack stays flat at $0
-          </figcaption>
-        </figure>
         <div style="text-align:center;margin-top:40px;">
           <p style="font-family:var(--mono);font-size:11px;color:#93a09a;letter-spacing:1px;text-transform:uppercase;margin-bottom:24px;">Average saving depends on which paid apps you replace switching to the free stack</p>
           <a href="#how-heading" class="btn-primary">Start The Free Stack &rarr;</a>
@@ -554,9 +547,9 @@ const tocHeadings = [
             </button>
             <div class="seo-body">
               <div class="seo-content" itemprop="text">
-                Free Shopify automation tools are workflow automations built on platforms like <strong>Make.com</strong> that replicate the functionality of paid Shopify apps, at zero ongoing cost. Instead of paying $29–$500/month per app, you run the same processes through pre-built automation scenarios that connect Shopify directly to Google Sheets, Meta Ads, Google Ads, and other services via API.
+                Free Shopify automation tools are workflow automations built on platforms like <strong>Make.com</strong> that replicate the functionality of paid Shopify apps, at zero ongoing cost. Instead of paying a monthly fee per app, you run the same processes through pre-built automation scenarios that connect Shopify directly to Google Sheets, Meta Ads, Google Ads, and other services via API.
                 <br><br>
-                Stack Architect's free tools cover the four most expensive Shopify app categories: <strong>inventory management</strong> (Stocky Swap), <strong>server-side ad tracking</strong> (CAPI Shield), <strong>workflow automation</strong> (Make.com), and <strong>email and CRM</strong> (Systeme.io). Together they replace a typical $500–$1,500+/month app stack at $0. Before deploying, the <a href="/shopify-profit-loss-automation/">free diagnostic calculators</a> help you identify your biggest leaks first.
+                Stack Architect's free tools cover the four most expensive Shopify app categories: <strong>inventory management</strong> (Stocky Swap), <strong>server-side ad tracking</strong> (CAPI Shield), <strong>workflow automation</strong> (Make.com), and <strong>email and CRM</strong> (Systeme.io). Together they replace a paid app stack at $0. Before deploying, the <a href="/shopify-profit-loss-automation/">free diagnostic calculators</a> help you identify your biggest leaks first.
               </div>
             </div>
           </div>
@@ -584,7 +577,7 @@ const tocHeadings = [
               <div class="seo-content">
                 Yes. <strong>Make.com's free plan includes 1,000 credits/month (formerly called operations)</strong>: enough to handle inventory tracking, conversion tracking, and document automation for most Shopify stores processing up to several hundred orders per month. There are no time limits, no credit card requirements, and no forced upgrades.
                 <br><br>
-                All Stack Architect tools are specifically built to operate within Make.com's free plan limits, including its two-active-scenario cap, which is why the stack is assembled as one scenario with router branches rather than four separate ones. Stores processing higher order volumes can upgrade to Make.com's Core plan at $9/month: still 95% cheaper than the paid apps it replaces. <a href="/go/make/?source=tools-n2" rel="sponsored nofollow noopener" target="_blank">Create a free Make.com account</a>
+                All Stack Architect tools are specifically built to operate within Make.com's free plan limits, including its two-active-scenario cap, which is why the stack is assembled as one scenario with router branches rather than four separate ones. Stores processing higher order volumes can upgrade to Make.com's Core plan at $9/month: still far below the paid apps it replaces, where Elevar's Core plan alone is $225/month. <a href="/go/make/?source=tools-n2" rel="sponsored nofollow noopener" target="_blank">Create a free Make.com account</a>
               </div>
             </div>
           </div>
@@ -598,7 +591,7 @@ const tocHeadings = [
               <div class="seo-content">
                 Shopify set <strong>August 31, 2026</strong> as Stocky's end of service. Merchants who relied on Stocky for inventory tracking, purchase orders and stock management need a replacement: the app can no longer be used, and its APIs stopped that day with no grace period. Read-only export access continues for at least 90 days.
                 <br><br>
-                <a href="/stocky-swap/">Stocky Swap</a> is the free replacement for its order log. It logs every paid order to Google Sheets via a Make.com automation. It does not calculate stock on hand; Shopify Admin does. Use the <a href="/stocky-migration-risk-scorer/">Stocky Migration Risk Scorer</a> to assess your complexity before migrating. Setup takes under 5 minutes. Most paid alternatives charge $49–$199/month. Stocky Swap is permanently free.
+                <a href="/stocky-swap/">Stocky Swap</a> is the free replacement for its order log. It logs every paid order to Google Sheets via a Make.com automation. It does not calculate stock on hand; Shopify Admin does. Use the <a href="/stocky-migration-risk-scorer/">Stocky Migration Risk Scorer</a> to assess your complexity before migrating. Setup takes under 5 minutes. Paid alternatives such as Prediko cost $49+/month. Stocky Swap is permanently free.
               </div>
             </div>
           </div>
@@ -610,7 +603,7 @@ const tocHeadings = [
             </button>
             <div class="seo-body">
               <div class="seo-content">
-                Since iOS 14, browser-based tracking pixels have been losing data: blocked by privacy settings, ad blockers, and Safari's Intelligent Tracking Prevention. Paid tools like Triple Whale, Northbeam, and Elevar charge $225/month to work around this via server-side APIs.
+                Since iOS 14, browser-based tracking pixels have been losing data: blocked by privacy settings, ad blockers, and Safari's Intelligent Tracking Prevention. Paid tools work around this via server-side APIs: Elevar's Core plan is $225/month, Northbeam lists Starter at $1,500, and Triple Whale prices by store revenue.
                 <br><br>
                 <a href="/capi-shield/">CAPI Shield</a> does the same thing free: it uses Make.com to capture Shopify purchase events server-side and send them directly to Meta's Conversions API. Use the <a href="/meta-emq-score-estimator/">Meta EMQ Score Estimator</a> to see exactly how much you're losing before you build, and the <a href="/shopify-vs-meta-attribution-gap-calculator/">Attribution Gap Calculator</a> to understand your current data discrepancy.
               </div>
@@ -664,7 +657,7 @@ const tocHeadings = [
               <span class="faq-q">How much can I save by switching to the free stack?</span>
               <span class="faq-plus">+</span>
             </button>
-            <div class="faq-ans"><div class="faq-ans-inner"><span>The average Shopify store saves <strong>$1,428–$6,696 per year</strong> by switching to the free stack. Stores running Klaviyo, Triple Whale, Stocky, and Zapier simultaneously typically spend $400–$900/month on those tools alone. Use the <a href="/shopify-app-cost-calculator/">App Cost Calculator</a> to calculate your exact figure.</span></div></div>
+            <div class="faq-ans"><div class="faq-ans-inner"><span>It depends on the paid apps you replace. On entry list prices read on 25 September 2026, Klaviyo Email ($20), Elevar Core ($225), Prediko Starter ($49) and Zapier Professional ($19.99) come to <strong>about $314 a month, or $3,768 a year</strong>, before any usage tiers. Use the <a href="/shopify-app-cost-calculator/">App Cost Calculator</a> to calculate your exact figure.</span></div></div>
           </div>
         </div>
       </section>
@@ -695,7 +688,8 @@ const tocHeadings = [
        region, so the visible attribution for it belongs in the same region.
        This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
-  </main>
+  <PriceSources ids={['klaviyo', 'elevar', 'northbeam', 'prediko', 'zapier', 'make']} />
+</main>
 
 </Base>
 

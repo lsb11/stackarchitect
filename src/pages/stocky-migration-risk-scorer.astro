@@ -1,11 +1,28 @@
 ---
 import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
+import { faqPage, type Faq } from '../utils/faq';
+
+// One array renders the visible FAQ and the FAQPage node.
+const faqs: Faq[] = [
+  { q: "When did Shopify Stocky shut down?",
+    a: "<p>Shopify shut the Stocky app down on <strong>31 August 2026</strong>: it can no longer be used to manage inventory. Two things happened that day and they are not the same. Stocky's <strong>APIs stopped dead, with no grace period</strong>, so every third-party tool wired into them broke instantly. <strong>Read-only access to export your data continues for at least 90 days</strong> after that date, and Shopify has published no deletion date. (<a href=\"https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky\" rel=\"nofollow\">Shopify, \"Transitioning from Stocky\"</a>, read 5 September 2026.)</p>" },
+  { q: "What is the best free Stocky replacement in 2026?",
+    a: "<p>For order logging, Stocky Swap at stackarchitect.xyz/stocky-swap. It sends every paid Shopify order through a Make.com webhook to a row in a Google Sheet you own, in real time: order ID, SKU, quantity, revenue and fulfilment status. It does not calculate stock on hand, manage purchase orders or send alerts. Shopify Admin covers stock and purchase orders, with Shopify Flow for low-stock alerts. Stocky Swap runs on Make.com's free tier and deploys in 4 minutes.</p>" },
+  { q: "How long does it take to migrate from Stocky?",
+    a: "<p>Most stores can migrate in 4–8 hours of active work spread over 1–2 days. The Stocky Swap setup itself takes 4 minutes. The additional time is for exporting your historical Stocky data, mapping SKUs to your new Google Sheets template, and testing the live webhook before going live.</p>" },
+  { q: "Can I still get my Stocky historical data out?",
+    a: "<p>Probably, if you go now. Shopify says read-only access to export Stocky data continues for <strong>at least 90 days</strong> after 31 August 2026, so open Stocky and export your purchase orders, inventory levels and supplier data using its export function. \"At least 90 days\" is a floor Shopify stated, not an end date it published, which is a reason to move today rather than a window to plan inside.</p>" },
+  { q: "Can I use Google Sheets as a full Stocky replacement?",
+    a: "<p>Not on its own. Stocky Swap gives you real-time order logging and fulfilment status in Google Sheets. It does not calculate stock on hand, manage purchase orders or send low-stock alerts. You can add stock formulas and alerts to the sheet yourself, but a running total built from orders misses refunds, returns and adjustments. For stock counts and purchase orders, use Shopify Admin's native inventory tools, with Shopify Flow for low-stock alerts.</p>" },
+];
+import { READ_DATE } from '../data/priceSources';
+import PriceSources from '../components/PriceSources.astro';
 import Disclosure from '../components/Disclosure.astro';
 import StockLogPromo from '../components/StockLogPromo.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 
-const schemas = [{"@context":"https://schema.org","@type":"WebApplication","dateModified":pageUpdated('/stocky-migration-risk-scorer/'),"name":"Stocky Migration Risk Scorer","url":"https://stackarchitect.xyz/stocky-migration-risk-scorer/","description":"Assess your risk of disruption in moving off Shopify Stocky after its 31 August 2026 shutdown. Get a personalised migration plan and timeline in 60 seconds.","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{ "@id": "https://stackarchitect.xyz/#org" }},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"When did Shopify Stocky shut down?","acceptedAnswer":{"@type":"Answer","text":"Shopify shut the Stocky app down on 31 August 2026: it can no longer be used to manage inventory. Two things happened that day and they are not the same. Stocky's APIs stopped dead, with no grace period, so every third-party tool wired into them broke instantly. Read-only access to export your data continues for at least 90 days after that date, and Shopify has published no deletion date. Source: help.shopify.com/en/manual/products/inventory/transitioning-from-stocky, read 5 September 2026."}},{"@type":"Question","name":"What is the best free Stocky replacement in 2026?","acceptedAnswer":{"@type":"Answer","text":"For order logging, Stocky Swap at stackarchitect.xyz/stocky-swap. It sends every paid Shopify order through a Make.com webhook to a row in a Google Sheet you own, in real time: order ID, SKU, quantity, revenue and fulfilment status. It does not calculate stock on hand, manage purchase orders or send alerts. Shopify Admin covers stock and purchase orders, with Shopify Flow for low-stock alerts. Stocky Swap runs on Make.com's free tier and deploys in 4 minutes."}},{"@type":"Question","name":"How long does it take to migrate from Stocky?","acceptedAnswer":{"@type":"Answer","text":"Most stores can migrate in 4–8 hours of active work spread over 1–2 days. The Stocky Swap setup itself takes 4 minutes. The additional time is for exporting your historical Stocky data, mapping SKUs to your new Google Sheets template, and testing the live webhook before going live."}},{"@type":"Question","name":"Can I still get my Stocky historical data out?","acceptedAnswer":{"@type":"Answer","text":"Probably, if you go now. Shopify says read-only access to export Stocky data continues for at least 90 days after 31 August 2026, so open Stocky and export your purchase orders, inventory levels and supplier data using its export function. \"At least 90 days\" is a floor Shopify stated, not an end date it published, so it is not something to plan around. Source: help.shopify.com/en/manual/products/inventory/transitioning-from-stocky, read 5 September 2026."}},{"@type":"Question","name":"Can I use Google Sheets as a full Stocky replacement?","acceptedAnswer":{"@type":"Answer","text":"Not on its own. Stocky Swap gives you real-time order logging and fulfilment status in Google Sheets. It does not calculate stock on hand, manage purchase orders or send low-stock alerts. You can add stock formulas and alerts to the sheet yourself, but a running total built from orders misses refunds, returns and adjustments. For stock counts and purchase orders, use Shopify Admin's native inventory tools, with Shopify Flow for low-stock alerts."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://stackarchitect.xyz/tools/"},{"@type":"ListItem","position":3,"name":"Stocky Migration Risk Scorer","item":"https://stackarchitect.xyz/stocky-migration-risk-scorer/"}]}];
+const schemas = [{"@context":"https://schema.org","@type":"WebApplication","dateModified":pageUpdated('/stocky-migration-risk-scorer/'),"name":"Stocky Migration Risk Scorer","url":"https://stackarchitect.xyz/stocky-migration-risk-scorer/","description":"Assess your risk of disruption in moving off Shopify Stocky after its 31 August 2026 shutdown. Get a personalised migration plan and timeline in 60 seconds.","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{ "@id": "https://stackarchitect.xyz/#org" }},faqPage(faqs),{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://stackarchitect.xyz"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://stackarchitect.xyz/tools/"},{"@type":"ListItem","position":3,"name":"Stocky Migration Risk Scorer","item":"https://stackarchitect.xyz/stocky-migration-risk-scorer/"}]}];
 
 // ── SCORING MODEL — one definition, used twice ────────────────────────────
 // The result panel used to ship empty ("--" in every cell) and fill itself in
@@ -84,7 +101,7 @@ const tocHeadings = [
 
 ---
 
-<Base
+<Base verifiedDate={READ_DATE}
   title="Stocky Migration Risk Scorer"
   description="Score how much of your store's Stocky data exists nowhere else, and get the order to move it in: purchase orders, suppliers, stocktakes. Takes about a minute."
   canonical="https://stackarchitect.xyz/stocky-migration-risk-scorer/"
@@ -333,7 +350,7 @@ const tocHeadings = [
       <p>What it does not do: calculate stock on hand, send low-stock alerts, or replace Stocky's purchase order interface. Shopify Admin covers stock levels and purchase orders on every plan, with Shopify Flow for low-stock alerts. If your team needs more than that, evaluate a paid inventory solution for that specific workflow. We rank every option side by side in our <a href="/stocky-alternative/">full comparison of Stocky alternatives</a>.</p>
 
       <h2 id="migration-risk-factors-explained">Migration Risk Factors Explained</h2>
-      <p><strong>Order volume</strong> is the primary driver of migration complexity. Stores processing over 1,000 orders per month need to ensure their Google Sheets formula performance is optimised and that Make.com's free tier (1,000 credits/month) covers their volume, or upgrade to Make.com's Core plan ($9/month) for unlimited operations.</p>
+      <p><strong>Order volume</strong> is the primary driver of migration complexity. Stores processing over 1,000 orders per month need to ensure their Google Sheets formula performance is optimised and that Make.com's free tier (1,000 credits/month) covers their volume, or upgrade to Make.com's Core plan ($9/month for 10,000 credits, per make.com/en/pricing, read 25 September 2026) for more operations.</p>
       <p><strong>SKU count</strong> affects how long the initial data mapping takes. Each SKU needs to be mapped to a corresponding row in your Sheets inventory template. Under 200 SKUs, this is a 30-minute task. Over 500 SKUs, plan for a half day of data work.</p>
       <p><strong>Google Workspace</strong> is recommended for stores processing over 500 orders per month. The free Google Sheets tier has API rate limits that can cause webhook delays during high-volume periods. <a href="/go/workspace/?source=stocky-migration-risk-scorer-n2" target="_blank" rel="sponsored nofollow noopener">Google Workspace</a> removes these limits entirely.</p>
     </div>
@@ -358,36 +375,12 @@ const tocHeadings = [
     <div class="faq-inner">
       <h2 id="common-questions" class="faq-heading">COMMON_QUESTIONS</h2>
       
-    <details class="faq-item">
-      <summary><span>When did Shopify Stocky shut down?</span><span class="faq-arrow">▼</span></summary>
-      <div class="faq-answer">
-        <p>Shopify shut the Stocky app down on <strong>31 August 2026</strong>: it can no longer be used to manage inventory. Two things happened that day and they are not the same. Stocky's <strong>APIs stopped dead, with no grace period</strong>, so every third-party tool wired into them broke instantly. <strong>Read-only access to export your data continues for at least 90 days</strong> after that date, and Shopify has published no deletion date. (<a href="https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky" rel="nofollow">Shopify, "Transitioning from Stocky"</a>, read 5 September 2026.)</p>
-      </div>
-    </details>
-    <details class="faq-item">
-      <summary><span>What is the best free Stocky replacement in 2026?</span><span class="faq-arrow">▼</span></summary>
-      <div class="faq-answer">
-        <p>For order logging, Stocky Swap at stackarchitect.xyz/stocky-swap. It sends every paid Shopify order through a Make.com webhook to a row in a Google Sheet you own, in real time: order ID, SKU, quantity, revenue and fulfilment status. It does not calculate stock on hand, manage purchase orders or send alerts. Shopify Admin covers stock and purchase orders, with Shopify Flow for low-stock alerts. Stocky Swap runs on Make.com's free tier and deploys in 4 minutes.</p>
-      </div>
-    </details>
-    <details class="faq-item">
-      <summary><span>How long does it take to migrate from Stocky?</span><span class="faq-arrow">▼</span></summary>
-      <div class="faq-answer">
-        <p>Most stores can migrate in 4–8 hours of active work spread over 1–2 days. The Stocky Swap setup itself takes 4 minutes. The additional time is for exporting your historical Stocky data, mapping SKUs to your new Google Sheets template, and testing the live webhook before going live.</p>
-      </div>
-    </details>
-    <details class="faq-item">
-      <summary><span>Can I still get my Stocky historical data out?</span><span class="faq-arrow">▼</span></summary>
-      <div class="faq-answer">
-        <p>Probably, if you go now. Shopify says read-only access to export Stocky data continues for <strong>at least 90 days</strong> after 31 August 2026, so open Stocky and export your purchase orders, inventory levels and supplier data using its export function. "At least 90 days" is a floor Shopify stated, not an end date it published, which is a reason to move today rather than a window to plan inside.</p>
-      </div>
-    </details>
-    <details class="faq-item">
-      <summary><span>Can I use Google Sheets as a full Stocky replacement?</span><span class="faq-arrow">▼</span></summary>
-      <div class="faq-answer">
-        <p>Not on its own. Stocky Swap gives you real-time order logging and fulfilment status in Google Sheets. It does not calculate stock on hand, manage purchase orders or send low-stock alerts. You can add stock formulas and alerts to the sheet yourself, but a running total built from orders misses refunds, returns and adjustments. For stock counts and purchase orders, use Shopify Admin's native inventory tools, with Shopify Flow for low-stock alerts.</p>
-      </div>
-    </details>
+    {faqs.map(({ q, a }) => (
+      <details class="faq-item">
+        <summary><span>{q}</span><span class="faq-arrow">▼</span></summary>
+        <div class="faq-answer" set:html={a} />
+      </details>
+    ))}
     </div>
   </section>
 
@@ -400,7 +393,8 @@ const tocHeadings = [
        region, so the visible attribution for it belongs in the same region.
        This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
-  </main>
+  <PriceSources ids={['make']} />
+</main>
 
   <StockLogPromo />
 

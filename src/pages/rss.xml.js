@@ -17,7 +17,7 @@ export async function GET() {
   return rss({
     title: 'Stack Architect — Free Shopify Automation',
     description:
-      'Free tools and guides that replace $700+/month of paid Shopify apps — server-side tracking, inventory, email, TikTok Events API, and P&L automation.',
+      'Free tools and guides that replace paid Shopify apps: server-side tracking, inventory, email, TikTok Events API, and P&L automation.',
     site: SITE,
     trailingSlash: true,
     items: posts.map((post) => ({

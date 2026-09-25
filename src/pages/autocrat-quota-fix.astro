@@ -1,6 +1,41 @@
 ---
 import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
+import { READ_DATE } from '../data/priceSources';
+import PriceSources from '../components/PriceSources.astro';
+import { faqPage, type Faq } from '../utils/faq';
+
+// One array renders the visible FAQ and the FAQPage node.
+const faqs: Faq[] = [
+  { q: "What causes the \"service invoked too many times\" error in Google Apps Script?",
+    a: "<p>\"Service invoked too many times\" is a <strong>rate-limit</strong> error: your script called a Google service too many times in a short window, usually a loop that reads or writes one row at a time. The free fix is batching: read all rows in one call, process them in memory, then write back in one call. See the <a href=\"/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/\">free batching fix with code</a>. This is separate from the 6-minute execution ceiling and the daily document-create cap: structural limits that batching cannot solve. For high-volume document generation that hits those ceilings, Autocrat Quota Fix moves execution to Make.com, which has no equivalent per-execution time limit.</p>" },
+  { q: "What is Autocrat and why does it hit quota limits?",
+    a: "<p>Autocrat is a Google Sheets add-on that generates Google Docs or PDFs from spreadsheet rows using templates. It runs on Google Apps Script, which has daily quota limits. High-volume stores processing hundreds of orders per day frequently exceed these limits, causing Autocrat to fail silently mid-batch with documents never generated.</p>" },
+  { q: "How does Autocrat Quota Fix work?",
+    a: "<p>Autocrat Quota Fix replaces Google Apps Script as the execution engine. Make.com receives a trigger, processes your spreadsheet data in configurable batches of 50–100 rows, and sends each batch to your document generation workflow independently. Each batch runs within Google's limits, and state persists between batches so processing resumes exactly where it stopped if interrupted.</p>" },
+  { q: "Is Autocrat Quota Fix really free?",
+    a: "<p>Yes. It runs on Make.com's free tier, which provides 1,000 credits/month (formerly called operations) at no cost. Each document uses a credit for every module it passes through, so the free tier covers a few hundred documents a month. There are no subscriptions, no infrastructure fees, and no credit card required.</p>" },
+  { q: "Does Autocrat Quota Fix work with my existing templates?",
+    a: "<p>Yes. Autocrat Quota Fix does not replace your templates or change your Google Docs structure. It replaces the execution engine that triggers and processes your template generation. Your existing templates, merge fields, and output formats all stay exactly as they are.</p>" },
+  { q: "How many documents can Autocrat Quota Fix handle?",
+    a: "<p>It depends on your credits, not on a daily cap. Make.com's free tier gives 1,000 credits a month, and each document uses a credit for every module it passes through, so a scenario with a trigger and a Google Docs step spends at least two per document. The Core plan is $9/month for 10,000 credits (<a href=\"https://www.make.com/en/pricing\" target=\"_blank\" rel=\"noopener\">make.com/en/pricing</a>, read 25 September 2026). Google Apps Script, by contrast, caps total run time at 90 minutes a day on free accounts.</p>" },
+  { q: "What is chunked processing and why does it fix quota errors?",
+    a: "<p>Chunked processing breaks a large batch of rows into smaller groups (50–100 rows) and processes each group as a separate execution. Instead of one long script that hits the 6-minute time limit, you run many short executions that each complete well within Google's limits. Make.com handles this automatically with no manual configuration needed.</p>" },
+  { q: "What is exponential backoff and does Autocrat Quota Fix use it?",
+    a: "<p>Exponential backoff is a retry strategy where a failed request waits progressively longer before retrying: 1 second, then 2, then 4, then 8. This prevents quota errors from cascading. Make.com has built-in error handling that implements exponential backoff automatically, so transient quota errors resolve without manual intervention.</p>" },
+  { q: "Will my data be secure with Autocrat Quota Fix?",
+    a: "<p>Your data flows through your own Make.com workspace: Stack Architect has zero access to your spreadsheet data or documents. Make.com connects to Google Sheets and Google Docs using your own Google account credentials via OAuth. Remove the integration at any time by disconnecting Make.com from Google.</p>" },
+  { q: "How long does Autocrat Quota Fix setup take?",
+    a: "<p>Most operators are live in 3 minutes. Make.com account creation takes 1 minute. The scenario configuration takes 2 minutes. No code, no Google Cloud Console, no developer required. A full <a href=\"https://d1yei2z3i6k35z.cloudfront.net/16370908/699c3311a6020_Manual_The_Autocrat_Quota_Fix.pdf\" target=\"_blank\" rel=\"noopener\">deployment manual PDF</a> covers every step.</p>" },
+  { q: "Does this fix other Google Apps Script errors beyond Autocrat?",
+    a: "<p>Yes. The same Make.com architecture fixes quota errors for any Google Apps Script workflow: Gmail sending limits, Google Sheets write quotas, Google Drive API limits, and any document generation pipeline. If the error message contains \"service invoked too many times\" or \"exceeded maximum execution time\", Autocrat Quota Fix resolves it.</p>" },
+  { q: "Should I upgrade to Google Workspace instead?",
+    a: "<p>Google Workspace raises Apps Script quotas approximately 10x, which helps but does not eliminate the problem at high volume. Autocrat Quota Fix is the complete solution and works on free Gmail accounts. For stores processing 500+ orders per month, combining Google Workspace with Autocrat Quota Fix removes all practical limits. Workspace is not required to start.</p>" },
+  { q: "Why did Autocrat only merge 100 documents or stop partway through?",
+    a: "<p>A run that stops after a fixed number of documents or partway through a batch is hitting a daily service quota or the 6-minute execution ceiling, not a permanent fault. Reduce the batch size, or for reliable high-volume generation move execution to Make.com, which processes in chunks and resumes from the exact row if interrupted rather than abandoning the remaining rows.</p>" },
+  { q: "Why is Autocrat only doing one line or one row?",
+    a: "<p>Autocrat merging only a single row is usually a job-configuration issue rather than a quota error: check that the job's row range isn't restricted to one row, that the merge condition or filter isn't limiting which rows run, and that rows aren't already flagged as merged in the status columns. Clearing stale \"merged\" status values and re-running typically resolves it.</p>" },
+];
 import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 // src/pages/autocrat-quota-fix.astro
@@ -139,7 +174,7 @@ const schema = JSON.stringify({
       "tool": [{ "@type": "HowToTool", "name": "Make.com account (free)" }],
       "step": [
         { "@type": "HowToStep", "position": 1, "name": "Activate Make.com free",
-          "text": "Sign up for Make.com free tier: 1,000 credits/month (formerly called operations) at no cost, enough for stores processing up to 300 documents per day. This replaces Google Apps Script as the execution engine for your document workflows.",
+          "text": "Sign up for Make.com free tier: 1,000 credits/month (formerly called operations) at no cost, enough for a few hundred documents a month. This replaces Google Apps Script as the execution engine for your document workflows.",
           "url": MAKE_VENDOR_URL },
         { "@type": "HowToStep", "position": 2, "name": "Create a webhook trigger scenario",
           "text": "In Make.com, create a new scenario. Add a Webhooks module as the trigger: this receives order data from Shopify or from your existing spreadsheet. Copy the webhook URL. Set the batch size to 50–100 rows in the scenario settings." },
@@ -150,40 +185,7 @@ const schema = JSON.stringify({
       ]
     },
     // FAQ
-    {
-      "@type": "FAQPage",
-      "@id": `${PAGE}#faq`,
-      "mainEntity": [
-        { "@type": "Question", "name": "What causes the 'service invoked too many times' error in Google Apps Script?",
-          "acceptedAnswer": { "@type": "Answer", "text": "'Service invoked too many times' is a rate-limit error: your script called a Google service (Sheets, Docs, Drive, Gmail) too many times in a short window: most often a loop that reads or writes one row at a time. The free fix is batching: read all rows in one call, process them in memory, write back in one call. This is different from the 6-minute execution ceiling and the daily document-create cap, which are structural limits that batching cannot solve. For high-volume document generation that hits those structural ceilings, Autocrat Quota Fix moves execution to Make.com, which has no equivalent per-execution time limit." } },
-        { "@type": "Question", "name": "What is Autocrat and why does it hit quota limits?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Autocrat is a Google Sheets add-on that generates Google Docs or PDFs from spreadsheet rows using templates. It runs on Google Apps Script, which has daily quota limits. High-volume stores processing hundreds of orders per day frequently exceed these limits, causing Autocrat to fail silently mid-batch with documents never generated." } },
-        { "@type": "Question", "name": "How does Autocrat Quota Fix work?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Autocrat Quota Fix replaces Google Apps Script as the execution engine. Make.com receives a trigger, processes your spreadsheet data in configurable batches (50–100 rows), and sends each batch to your document generation workflow independently. Each batch runs within Google's limits, and state persists between batches so processing resumes exactly where it stopped if interrupted." } },
-        { "@type": "Question", "name": "Is Autocrat Quota Fix really free?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Yes. It runs on Make.com's free tier which provides 1,000 credits/month (formerly called operations) at no cost. Most stores processing up to 300 documents per day stay on the free tier indefinitely. There are no subscriptions, no infrastructure fees, and no credit card required." } },
-        { "@type": "Question", "name": "Does Autocrat Quota Fix work with my existing templates?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Autocrat Quota Fix does not replace your templates or change your Google Docs structure. It replaces the execution engine that triggers and processes your template generation. Your existing templates, merge fields, and output formats all stay exactly as they are." } },
-        { "@type": "Question", "name": "How many rows can Autocrat Quota Fix handle per day?",
-          "acceptedAnswer": { "@type": "Answer", "text": "The Make.com free tier processes up to 1,000 credits/month (formerly called operations): enough for approximately 300 document generations per day. The Core plan at $9/month provides 10,000 credits, covering 3,000+ documents per day. Compared to Google Apps Script's 90-minute daily limit on free accounts, this is effectively unlimited for most stores." } },
-        { "@type": "Question", "name": "What is chunked processing and why does it fix quota errors?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Chunked processing breaks a large batch of rows into smaller groups (50–100 rows) and processes each group as a separate execution. Instead of one long script that hits the 6-minute time limit, you run many short executions that each complete well within Google's limits. Make.com handles this automatically with no manual configuration needed." } },
-        { "@type": "Question", "name": "What is exponential backoff and does Autocrat Quota Fix use it?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Exponential backoff is a retry strategy where a failed request waits progressively longer before retrying: 1 second, then 2, then 4, then 8. Make.com has built-in error handling that implements exponential backoff automatically, so transient quota errors resolve without manual intervention." } },
-        { "@type": "Question", "name": "Will my data be secure with Autocrat Quota Fix?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Your data flows through your own Make.com workspace: Stack Architect has zero access to your spreadsheet data or documents. Make.com connects to Google Sheets and Google Docs using your own Google account credentials via OAuth. Remove the integration at any time by disconnecting Make.com from Google." } },
-        { "@type": "Question", "name": "How long does Autocrat Quota Fix setup take?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Most operators are live in 3 minutes. Make.com account creation takes 1 minute. The scenario configuration takes 2 minutes. No code, no Google Cloud Console, no developer required. A full setup manual is available as a free PDF download." } },
-        
-        
-        
-        
-        { "@type": "Question", "name": "Why did Autocrat only merge 100 documents or stop partway through?",
-          "acceptedAnswer": { "@type": "Answer", "text": "A run that stops after a fixed number of documents or partway through a batch is hitting a daily service quota or the 6-minute execution ceiling, not a permanent fault. Reduce the batch size, or for reliable high-volume generation move execution to Make.com, which processes in chunks and resumes from the exact row if interrupted rather than abandoning the remaining rows." } },
-        { "@type": "Question", "name": "Why is Autocrat only doing one line or one row?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Autocrat merging only a single row is usually a job-configuration issue rather than a quota error: check that the job's row range is not restricted to one row, that the merge condition or filter is not limiting which rows run, and that rows are not already flagged as merged in the status columns. Clearing stale 'merged' status values and re-running typically resolves it." } }
-      ]
-    },
+    { ...faqPage(faqs, `${PAGE}#faq`), "@context": undefined },
     {
       "@type": "VideoObject",
       "name": "How to fix Google Apps Script quota errors with Autocrat Quota Fix",
@@ -240,7 +242,7 @@ const tocHeadings = [
 ];
 
 ---
-<Base title="Fix Google Apps Script Quota Errors Free — Autocrat Fix 2026" description="Autocrat merges stopping partway or failing on large batches? Why they hit Google Apps Script limits, and how to move document generation to Make.com free.">
+<Base verifiedDate={READ_DATE} title="Fix Google Apps Script Quota Errors Free — Autocrat Fix 2026" description="Autocrat merges stopping partway or failing on large batches? Why they hit Google Apps Script limits, and how to move document generation to Make.com free.">
 <Fragment slot="head">
 <script type="application/ld+json" set:html={schema} />
 
@@ -784,9 +786,9 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
           <td class="win">5 minutes per run on the free plan, in small batches that resume</td>
         </tr>
         <tr>
-          <td>Max rows per day (free)</td>
-          <td class="lose">~2,000 (varies)</td>
-          <td class="win">~300/day on Make.com free tier; scales with plan</td>
+          <td>Volume on the free plan</td>
+          <td class="lose">~2,000 rows a day (varies)</td>
+          <td class="win">1,000 credits a month on Make.com's free plan, a credit per module per document; Core is $9/month for 10,000</td>
         </tr>
         <tr>
           <td>"Service invoked too many times" (rate error)</td>
@@ -837,7 +839,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
       <div class="step-num" itemprop="position">1</div>
       <div>
         <div class="step-title" itemprop="name">Activate Make.com free</div>
-        <div class="step-desc" itemprop="text">Sign up for Make.com free: 1,000 credits/month (formerly called operations) at no cost, enough for stores processing up to 300 documents per day. No credit card required. This replaces Google Apps Script as your execution engine.</div>
+        <div class="step-desc" itemprop="text">Sign up for Make.com free: 1,000 credits/month (formerly called operations) at no cost, enough for a few hundred documents a month. No credit card required. This replaces Google Apps Script as your execution engine.</div>
         <span class="step-tool">make.com/en/register</span>
       </div>
     </div>
@@ -945,7 +947,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
       <div class="crosslink-name">Stocky Swap</div>
       <div class="crosslink-desc">Stocky closed on 31 August 2026; replace it free. Every Shopify order logged to Google Sheets in real time: live stock tracking at $0/month forever.</div>
       <div style="display:flex;align-items:center;justify-content:space-between;">
-        <span class="crosslink-save" style="color:var(--sky);">Saves $29–$199/mo</span>
+        <span class="crosslink-save" style="color:var(--sky);">Saves $49–$119/mo</span>
         <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);" aria-hidden="true">→</span>
       </div>
     </a>
@@ -954,7 +956,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
       <div class="crosslink-name">TikTok Events API</div>
       <div class="crosslink-desc">Close the browser tracking gap on TikTok. Free server-side CompletePayment events via Make.com: replaces WeltPixel and Analyzify at $0.</div>
       <div style="display:flex;align-items:center;justify-content:space-between;">
-        <span class="crosslink-save" style="color:#ff2e63;">Saves $39–$299/mo</span>
+        <span class="crosslink-save" style="color:#ff2e63;">Saves $39–$275/mo</span>
         <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);" aria-hidden="true">→</span>
       </div>
     </a>
@@ -972,7 +974,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
       <div class="crosslink-name">P&amp;L Auto</div>
       <div class="crosslink-desc">Live profit and loss in Google Sheets: every Shopify order auto-calculates revenue, COGS, ad spend, and net profit instantly. Replaces TrueProfit and BeProfit at $0.</div>
       <div style="display:flex;align-items:center;justify-content:space-between;">
-        <span class="crosslink-save" style="color:var(--sky);">Saves $19–$299/mo</span>
+        <span class="crosslink-save" style="color:var(--sky);">Saves $35–$299/mo</span>
         <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);" aria-hidden="true">→</span>
       </div>
     </a>
@@ -981,7 +983,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
       <div class="crosslink-name">$0 Automation Stack</div>
       <div class="crosslink-desc">All six free tools in one place: CAPI Shield, Stocky Swap, TikTok CAPI, Klaviyo replacement, P&amp;L Auto, and Autocrat Fix. Deploy the entire backend for $0/month.</div>
       <div style="display:flex;align-items:center;justify-content:space-between;">
-        <span class="crosslink-save" style="color:var(--text-4);">Save $700+/mo total</span>
+        <span class="crosslink-save" style="color:var(--text-4);">$0 a month for the stack</span>
         <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);" aria-hidden="true">→</span>
       </div>
     </a>
@@ -1000,79 +1002,13 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
     <p>Every question asked before fixing quota errors permanently.</p>
   </div>
   <div class="faq-list-a">
-
-    <details class="faq-item-a">
-      <summary><span>What causes the "service invoked too many times" error in Google Apps Script?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-a"><p>"Service invoked too many times" is a <strong>rate-limit</strong> error: your script called a Google service too many times in a short window, usually a loop that reads or writes one row at a time. The free fix is batching: read all rows in one call, process them in memory, then write back in one call. See the <a href="/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/">free batching fix with code</a>. This is separate from the 6-minute execution ceiling and the daily document-create cap: structural limits that batching cannot solve. For high-volume document generation that hits those ceilings, Autocrat Quota Fix moves execution to Make.com, which has no equivalent per-execution time limit.</p></div>
-    </details>
-
-    <details class="faq-item-a">
-      <summary><span>What is Autocrat and why does it hit quota limits?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-a"><p>Autocrat is a Google Sheets add-on that generates Google Docs or PDFs from spreadsheet rows using templates. It runs on Google Apps Script, which has daily quota limits. High-volume stores processing hundreds of orders per day frequently exceed these limits, causing Autocrat to fail silently mid-batch with documents never generated.</p></div>
-    </details>
-
-    <details class="faq-item-a">
-      <summary><span>How does Autocrat Quota Fix work?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-a"><p>Autocrat Quota Fix replaces Google Apps Script as the execution engine. Make.com receives a trigger, processes your spreadsheet data in configurable batches of 50–100 rows, and sends each batch to your document generation workflow independently. Each batch runs within Google's limits, and state persists between batches so processing resumes exactly where it stopped if interrupted.</p></div>
-    </details>
-
-    <details class="faq-item-a">
-      <summary><span>Is Autocrat Quota Fix really free?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-a"><p>Yes. It runs on Make.com's free tier, which provides 1,000 credits/month (formerly called operations) at no cost. Most stores processing up to 300 documents per day stay on the free tier indefinitely. There are no subscriptions, no infrastructure fees, and no credit card required.</p></div>
-    </details>
-
-    <details class="faq-item-a">
-      <summary><span>Does Autocrat Quota Fix work with my existing templates?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-a"><p>Yes. Autocrat Quota Fix does not replace your templates or change your Google Docs structure. It replaces the execution engine that triggers and processes your template generation. Your existing templates, merge fields, and output formats all stay exactly as they are.</p></div>
-    </details>
-
-    <details class="faq-item-a">
-      <summary><span>How many rows can Autocrat Quota Fix handle per day?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-a"><p>The Make.com free tier processes up to 1,000 credits/month (formerly called operations): enough for approximately 300 document generations per day. The Core plan at $9/month provides 10,000 credits, covering 3,000+ documents per day. Compared to Google Apps Script's 90-minute daily limit on free accounts, this is effectively unlimited for most stores.</p></div>
-    </details>
-
-    <details class="faq-item-a">
-      <summary><span>What is chunked processing and why does it fix quota errors?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-a"><p>Chunked processing breaks a large batch of rows into smaller groups (50–100 rows) and processes each group as a separate execution. Instead of one long script that hits the 6-minute time limit, you run many short executions that each complete well within Google's limits. Make.com handles this automatically with no manual configuration needed.</p></div>
-    </details>
-
-    <details class="faq-item-a">
-      <summary><span>What is exponential backoff and does Autocrat Quota Fix use it?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-a"><p>Exponential backoff is a retry strategy where a failed request waits progressively longer before retrying: 1 second, then 2, then 4, then 8. This prevents quota errors from cascading. Make.com has built-in error handling that implements exponential backoff automatically, so transient quota errors resolve without manual intervention.</p></div>
-    </details>
-
-    <details class="faq-item-a">
-      <summary><span>Will my data be secure with Autocrat Quota Fix?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-a"><p>Your data flows through your own Make.com workspace: Stack Architect has zero access to your spreadsheet data or documents. Make.com connects to Google Sheets and Google Docs using your own Google account credentials via OAuth. Remove the integration at any time by disconnecting Make.com from Google.</p></div>
-    </details>
-
-    <details class="faq-item-a">
-      <summary><span>How long does Autocrat Quota Fix setup take?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-a"><p>Most operators are live in 3 minutes. Make.com account creation takes 1 minute. The scenario configuration takes 2 minutes. No code, no Google Cloud Console, no developer required. A full <a href="https://d1yei2z3i6k35z.cloudfront.net/16370908/699c3311a6020_Manual_The_Autocrat_Quota_Fix.pdf" target="_blank" rel="noopener">deployment manual PDF</a> covers every step.</p></div>
-    </details>
-
-    <details class="faq-item-a">
-      <summary><span>Does this fix other Google Apps Script errors beyond Autocrat?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-a"><p>Yes. The same Make.com architecture fixes quota errors for any Google Apps Script workflow: Gmail sending limits, Google Sheets write quotas, Google Drive API limits, and any document generation pipeline. If the error message contains "service invoked too many times" or "exceeded maximum execution time", Autocrat Quota Fix resolves it.</p></div>
-    </details>
-
-    <details class="faq-item-a">
-      <summary><span>Should I upgrade to Google Workspace instead?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-a"><p>Google Workspace raises Apps Script quotas approximately 10x, which helps but does not eliminate the problem at high volume. Autocrat Quota Fix is the complete solution and works on free Gmail accounts. For stores processing 500+ orders per month, combining Google Workspace with Autocrat Quota Fix removes all practical limits. Workspace is not required to start.</p></div>
-    </details>
-
-    <details class="faq-item-a">
-      <summary><span>Why did Autocrat only merge 100 documents or stop partway through?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-a"><p>A run that stops after a fixed number of documents or partway through a batch is hitting a daily service quota or the 6-minute execution ceiling, not a permanent fault. Reduce the batch size, or for reliable high-volume generation move execution to Make.com, which processes in chunks and resumes from the exact row if interrupted rather than abandoning the remaining rows.</p></div>
-    </details>
-
-    <details class="faq-item-a">
-      <summary><span>Why is Autocrat only doing one line or one row?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-a"><p>Autocrat merging only a single row is usually a job-configuration issue rather than a quota error: check that the job's row range isn't restricted to one row, that the merge condition or filter isn't limiting which rows run, and that rows aren't already flagged as merged in the status columns. Clearing stale "merged" status values and re-running typically resolves it.</p></div>
-    </details>
-
+    {faqs.map(({ q, a }) => (
+      <details class="faq-item-a">
+        <summary><span>{q}</span><span class="faq-ico" aria-hidden="true"></span></summary>
+        <div class="faq-ans-a" set:html={a} />
+      </details>
+    ))}
   </div>
-</div>
 </section>
 
 <div class="divider"></div>
@@ -1128,6 +1064,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
        region, so the visible attribution for it belongs in the same region.
        This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
+<PriceSources ids={['make', 'analyzify', 'elevar', 'prediko', 'weltpixel', 'klaviyo', 'trueprofit', 'lifetimely']} />
 </main>
 
 <!-- ══ FOOTER ══ -->

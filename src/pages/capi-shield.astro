@@ -1,6 +1,9 @@
 ---
 import { pageUpdated, formatUpdatedMonth } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
+import { READ_DATE } from '../data/priceSources';
+import PriceSources from '../components/PriceSources.astro';
+import { faqText } from '../utils/faq';
 import Disclosure from "../components/Disclosure.astro";
 import AuthorCard from '../components/AuthorCard.astro';
 // Inline data-flow diagram (raw SVG → stays in the DOM: Google-Images indexable + accessible title/desc)
@@ -101,24 +104,24 @@ const setupSteps = [
 
 // ─── Comparison table ─────────────────────────────────────────────────────────
 const compRows = [
-  { feature: "Monthly cost",                    capi: "$0 forever",         elevar: "$225/mo",    north: "$1,500+/mo",  tw: "$299+/mo",  capiWin: true },
+  { feature: "Monthly cost",                    capi: "$0 forever",         elevar: "$225/mo",    north: "From $1,500, by quote",  tw: "Priced by store revenue",  capiWin: true },
   { feature: "Meta CAPI",                       capi: "Yes",                elevar: "Yes",         north: "Yes",       tw: "Yes",       capiWin: true },
   { feature: "Google Enhanced Conversions",     capi: "Needs click ID",     elevar: "Yes",         north: "Partial",   tw: "Limited",   capiWin: false },
   { feature: "Webhook-triggered (not browser)", capi: "Yes",                elevar: "Partial",     north: "Partial",   tw: "Partial",   capiWin: true },
   { feature: "Data in your own account",        capi: "Yes: Make.com",     elevar: "Their servers",north:"Their servers",tw:"Their servers", capiWin: true },
   { feature: "Vendor lock-in",                  capi: "None",               elevar: "High",        north: "High",      tw: "High",      capiWin: true },
-  { feature: "Annual cost",                     capi: "$0",                 elevar: "$2,700+",     north: "$18,000+",   tw: "$3,588+",   capiWin: true, highlight: true },
+  { feature: "Annual cost",                     capi: "$0",                 elevar: "$2,700+",     north: "By quote",   tw: "Not published",   capiWin: true, highlight: true },
 ];
 
 
 // ─── Cross-links ──────────────────────────────────────────────────────────────
 const crosslinks = [
-  { href: "/stocky-swap/",                    hoverClass: "sky",    tag: "Inventory", tagClass: "tag-sky",    name: "Stocky Swap",       desc: "The free replacement for Stocky, which closed on 31 August 2026. Every Shopify order logged to Google Sheets in real time: live stock tracking at $0/month forever.", save: "Saves $29–$199/mo",  saveColor: "var(--sky)"    },
-  { href: "/tiktok-events-api-shopify/",      hoverClass: "tiktok", tag: "TikTok tracking",       tagClass: "tag-tiktok", name: "TikTok Events API", desc: "The same Make.com webhook branches to TikTok's Events API simultaneously. Free CompletePayment events server-side: sends TikTok events server-side, where iOS cannot strip them.", save: "Saves $39–$299/mo",  saveColor: "var(--tiktok)" },
+  { href: "/stocky-swap/",                    hoverClass: "sky",    tag: "Inventory", tagClass: "tag-sky",    name: "Stocky Swap",       desc: "The free replacement for Stocky, which closed on 31 August 2026. Every Shopify order logged to Google Sheets in real time: live stock tracking at $0/month forever.", save: "Saves $49–$119/mo",  saveColor: "var(--sky)"    },
+  { href: "/tiktok-events-api-shopify/",      hoverClass: "tiktok", tag: "TikTok tracking",       tagClass: "tag-tiktok", name: "TikTok Events API", desc: "The same Make.com webhook branches to TikTok's Events API simultaneously. Free CompletePayment events server-side: sends TikTok events server-side, where iOS cannot strip them.", save: "Saves $39–$275/mo",  saveColor: "var(--tiktok)" },
   { href: "/replace-klaviyo-free/",           hoverClass: "",       tag: "Email marketing",       tagClass: "",           name: "Replace Klaviyo",   desc: "Systeme.io replaces Klaviyo entirely: unlimited emails, automations, and CRM on the free plan. 2,000 contacts, unlimited sends, $0.", save: "Saves $20+/mo", saveColor: "var(--g)"      },
-  { href: "/shopify-profit-loss-automation/", hoverClass: "sky",    tag: "P&L reporting",         tagClass: "tag-sky",    name: "P&L Auto",          desc: "The same webhook that powers CAPI Shield branches to a live P&L Google Sheets dashboard. Revenue, COGS, ad spend, and net profit updated on every order at $0.", save: "Saves $19–$299/mo",  saveColor: "var(--sky)"    },
-  { href: "/autocrat-quota-fix/",             hoverClass: "vio",    tag: "Stability",             tagClass: "tag-vio",    name: "Autocrat Quota Fix",desc: "Stop Google Apps Script quota errors from breaking your automation workflows. Handles 10,000+ rows per day at $0: keeps the entire stack running reliably.", save: "Saves $49–$99/mo",   saveColor: "var(--vio)"    },
-  { href: "/",                               hoverClass: "",       tag: "Full stack",            tagClass: "tag-dim",    name: "$0 Automation Stack",desc: "All six free tools in one place: tracking, inventory, TikTok CAPI, email, P&L, and automation stability. Deploy the entire backend for $0/month.", save: "Save $700+/mo total", saveColor: "var(--text-4)" },
+  { href: "/shopify-profit-loss-automation/", hoverClass: "sky",    tag: "P&L reporting",         tagClass: "tag-sky",    name: "P&L Auto",          desc: "The same webhook that powers CAPI Shield branches to a live P&L Google Sheets dashboard. Revenue, COGS, ad spend, and net profit updated on every order at $0.", save: "Saves $35–$299/mo",  saveColor: "var(--sky)"    },
+  { href: "/autocrat-quota-fix/",             hoverClass: "vio",    tag: "Stability",             tagClass: "tag-vio",    name: "Autocrat Quota Fix",desc: "Stop Google Apps Script quota errors from breaking your automation workflows. Handles 10,000+ rows per day at $0: keeps the entire stack running reliably.", save: "Runs on Make's free plan",   saveColor: "var(--vio)"    },
+  { href: "/",                               hoverClass: "",       tag: "Full stack",            tagClass: "tag-dim",    name: "$0 Automation Stack",desc: "All six free tools in one place: tracking, inventory, TikTok CAPI, email, P&L, and automation stability. Deploy the entire backend for $0/month.", save: "$0 a month for the stack", saveColor: "var(--text-4)" },
 ];
 
 // ─── FAQs ─────────────────────────────────────────────────────────────────────
@@ -130,7 +133,7 @@ const faqs = [
   { q: "What is Meta CAPI and how does it work with Shopify?",           a: "Meta Conversions API (CAPI) is a server-to-server connection that sends Shopify purchase events directly to Meta without going through the browser. CAPI Shield sets this up free using Make.com, sending hashed email, phone, name, IP and user-agent with every event: the match-key set Meta scores Event Match Quality against, and a larger one than the browser pixel carries." },
   { q: "How much conversion data am I losing without server-side tracking?", a: "We do not publish a number, because the honest answer is specific to your store: the loss is driven by how much of your traffic is mobile and iOS, and how many of those visitors decline tracking. Measure yours instead. The Shopify vs Meta Attribution Gap Calculator turns your Ads Manager conversion count and your Shopify order count into your own gap; the Meta EMQ Score Estimator scores the match quality of what you are currently sending; and the Shopify iOS Attribution Gap Benchmark publishes the sourced figures behind the mechanism. After CAPI Shield deployment most stores see an immediate increase in reported conversions in Meta Events Manager within 24–48 hours." },
   { q: "Does CAPI Shield replace my Meta Pixel?",                        a: "No. CAPI Shield works alongside your existing Meta Pixel, not instead of it. The pixel still captures upper-funnel events like ViewContent and AddToCart. CAPI Shield adds server-side Purchase events on top. Both fire simultaneously and Meta deduplicates them automatically using the event_id included in every server event." },
-  { q: "What is the difference between CAPI Shield and Elevar or Northbeam?", a: "Elevar costs $225/month and Northbeam starts at $1,500+/month, with its upper tiers quoted only through a sales call. CAPI Shield uses Make.com to achieve the same server-side event forwarding for free. The core technical outcome, server-side purchase events reaching Meta CAPI, is identical. Elevar and Northbeam add analytics dashboards on top. If you only need conversion recovery, CAPI Shield is the free equivalent." },
+  { q: "What is the difference between CAPI Shield and Elevar or Northbeam?", a: "Elevar's Core plan is $225/month, and Northbeam lists its Starter plan at $1,500 with every plan quoted through a sales call. CAPI Shield uses Make.com to achieve the same server-side event forwarding for free. The core technical outcome, server-side purchase events reaching Meta CAPI, is identical. Elevar and Northbeam add analytics dashboards on top. If you only need conversion recovery, CAPI Shield is the free equivalent." },
   { q: "Will CAPI Shield improve my ROAS?",                              a: "Indirectly, yes. CAPI Shield gives Meta complete purchase data. Advantage+ Shopping uses conversion signals to optimise delivery. Most stores see measurable ROAS improvement within 14–21 days as the algorithm relearns with full data." },
   { q: "What is Event Match Quality and why does it matter?",            a: "Event Match Quality (EMQ) is Meta's 0–10 score for how well server-side events are matched to Meta user accounts. Scores above 7.0 indicate strong matching. CAPI Shield sends hashed email, phone, name, IP and user-agent with every event. More match keys give Meta more to match on, which is what the score measures. We have not sampled EMQ across stores, so we do not publish a typical score: the <a href='/meta-emq-score-estimator/'>EMQ estimator</a> projects a range from your own parameter set." },
   { q: "Is CAPI Shield GDPR compliant?",                                 a: "The data flows through your own Make.com workspace. CAPI Shield hashes all personally identifiable information (email, phone, name) before transmission using SHA-256, as required by Meta's Conversions API specification. Ensure your store's privacy policy covers server-side tracking data sharing." },
@@ -210,7 +213,7 @@ const schemaGraph = {
       "mainEntity": faqs.map(f => ({
         "@type": "Question",
         "name": f.q,
-        "acceptedAnswer": { "@type": "Answer", "text": f.a },
+        "acceptedAnswer": { "@type": "Answer", "text": faqText(f.a) },
       })),
     },
     {
@@ -281,13 +284,13 @@ const tocHeadings = [
 ];
 
 ---
-<Base title="Meta CAPI for Shopify — CAPI Shield, Free Server-Side Setup" description="Set up CAPI Shield, a free Make.com scenario that sends each paid Shopify order to Meta's Conversions API. What you need, the steps, and how to test it.">
+<Base verifiedDate={READ_DATE} title="Meta CAPI for Shopify — CAPI Shield, Free Server-Side Setup" description="Set up CAPI Shield, a free Make.com scenario that sends each paid Shopify order to Meta's Conversions API. What you need, the steps, and how to test it.">
 <Fragment slot="head">
 <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
 
   <!-- ─── Fonts — preconnect first, then stylesheet ─── -->
   
-<script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps: server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
+<script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing paid apps: server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
   </Fragment>
 
 
@@ -630,7 +633,7 @@ const tocHeadings = [
     <div class="sec-head">
       <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Comparison</span>
       <h2 id="compare-h">CAPI Shield vs paid alternatives</h2>
-      <p>The same server-side purchase event forwarding, at $0 instead of $150–$299/month.</p>
+      <p>The same server-side purchase event forwarding, at $0 instead of $225/month for Elevar's Core plan.</p>
     </div>
 
     <div class="comp-wrap">
@@ -713,7 +716,7 @@ const tocHeadings = [
             <span class="faq-ico" aria-hidden="true"></span>
           </summary>
           <div class="faq-ans-c">
-            <p>{f.a}</p>
+            <p set:html={f.a} />
           </div>
         </details>
       ))}
@@ -775,7 +778,7 @@ const tocHeadings = [
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;">
     <a href="/shopify-google-ads-conversion-tracking/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
       <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Fix Google Ads Conversion Tracking: Free
-            Server-side Enhanced Conversions via Make</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $29–$99/mo</span></span>
+            Server-side Enhanced Conversions via Make</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Free setup</span></span>
       <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">com. Reports purchases lost to iOS</span>
     </a>
     <a href="/shopify-ios-attribution-gap-benchmark/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
@@ -792,12 +795,12 @@ const tocHeadings = [
     </a>
     <a href="/tiktok-events-api-shopify/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
       <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">TikTok Events API: Free Server-Side Tracking
-            Add TikTok as a third branch on the same Make</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $39–$299/mo</span></span>
+            Add TikTok as a third branch on the same Make</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $39–$275/mo</span></span>
       <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">com webhook. No extra Shopify setup</span>
     </a>
     <a href="/stocky-swap/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
       <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Stocky Swap: Replace Shopify Stocky Free
-            Stocky closed 31 Aug 2026. Export still open</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $29–$199/mo</span></span>
+            Stocky closed 31 Aug 2026. Export still open</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $49–$119/mo</span></span>
       <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">Free Google Sheets replacement in 4 minutes</span>
     </a>
     <a href="/shopify-attribution-tools-compared/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
@@ -809,7 +812,7 @@ const tocHeadings = [
             CAPI Shield vs Elevar: feature-by-feature</span></span>
       <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">See exactly what you save at $0.
           
-          vs $20+/mo</span>
+          vs $225/mo for Elevar Core</span>
     </a>
   </div>
 </section>
@@ -819,7 +822,8 @@ const tocHeadings = [
        region, so the visible attribution for it belongs in the same region.
        This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
-  </main>
+  <PriceSources ids={['elevar', 'northbeam', 'analyzify', 'prediko', 'weltpixel', 'klaviyo', 'trueprofit', 'lifetimely']} />
+</main>
 
 
 <section aria-label="Sources" style="max-width:860px;margin:3rem auto 2rem;padding:1.25rem 1.5rem;border:1px solid rgba(128,128,128,.25);border-radius:12px;font-size:.95em">

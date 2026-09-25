@@ -4,6 +4,8 @@ import Base from '../layouts/Base.astro';
 import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 import TableOfContents from '../components/TableOfContents.astro';
+import { faqPage, type Faq } from '../utils/faq';
+import { READ_DATE } from '../data/priceSources';
 // src/pages/shopify-app-development-cost.astro
 // Stack Architect — What custom Shopify app development actually costs
 
@@ -11,12 +13,34 @@ const SITE = "https://stackarchitect.xyz";
 const PAGE = `${SITE}/shopify-app-development-cost/`;
 const DATE_PUBLISHED = "2026-08-08";
 const DATE_MODIFIED = pageUpdated('/shopify-app-development-cost/')!;
-const DATE_VERIFIED = "2026-08-08";
+// The day the two cost guides cited in the "Sources" callout were read and
+// every figure on this page checked against them.
+const DATE_VERIFIED = READ_DATE;
 
 const CALCULATOR = "/shopify-app-cost-calculator/";
 const STACK = "/stack/";
 const MAKE_GUIDE = "/make-com-shopify/";
 const AFF_MAKE = "/go/make/";
+
+// One array renders the visible FAQ and the FAQPage node.
+const faqs: Faq[] = [
+  { q: "How much does a custom Shopify app cost in 2026?",
+    a: "A simple private app (single internal tool) runs roughly $5,000–$15,000. A substantial private app with multiple integrations runs $15,000–$60,000. A public App Store app MVP runs $30,000–$80,000 to build, plus $20,000–$50,000 in first-year operations. Those are Shop Experts' ranges, read on 25 September 2026; see the sourced breakdown above for the full range by project type." },
+  { q: "What's the cost difference between a private app and a public app?",
+    a: "A private app only needs to work for your own store, so it skips App Store review, public-app security requirements, and multi-tenant architecture: most of why private apps cost a fraction of public ones. A public app also carries an ongoing retainer, commonly $5,000–$40,000/month, because it has to keep working for every merchant who installs it." },
+  { q: "What ongoing costs does a custom Shopify app have beyond the build?",
+    a: "Four recurring costs people underbudget: maintenance (a yearly cost on top of the build, or a $2,000–$10,000+/month retainer for an active store), Shopify API version migrations (mandatory testing roughly every quarter), App Store re-review for public apps when functionality changes, and hosting for the backend server and database." },
+  { q: "How often does Shopify's API change, and does that affect a custom app?",
+    a: 'Shopify ships a new API version every three months, with each stable version supported for a minimum of 12 months and at least nine months of overlap, so nothing breaks overnight, but an untouched custom app eventually stops working once its version\'s support window closes. See <a href="https://shopify.dev/docs/api/usage/versioning" target="_blank" rel="noopener">Shopify\'s versioning docs</a>.' },
+  { q: "How long does Shopify App Store review take?",
+    a: "Roughly 4–10 business days for the initial review. If changes are requested, common on a first submission, the full process commonly stretches to 2–4 weeks. This only applies to public apps; private apps for your own store skip review entirely." },
+  { q: "When should I build a custom app instead of using Make.com?",
+    a: "When the logic is genuinely proprietary, when you need true real-time bidirectional sync with a system that has no accessible API, when you're building the app to sell as a product, or when your scale exceeds what a workflow platform's rate limits can sustain. Outside those cases, an existing tool or a Make.com scenario usually gets there faster and cheaper." },
+  { q: "Can Make.com really replace a custom-built Shopify integration?",
+    a: 'For the common case (receive a webhook, transform the data, send it somewhere else) yes. That\'s exactly what <a href="/capi-shield/">CAPI Shield</a>, <a href="/stocky-swap/">Stocky Swap</a>, and <a href="/shopify-profit-loss-automation/">P&amp;L Automation</a> do, each replacing what would otherwise be a small custom backend, at $0. It doesn\'t replace custom development for logic a workflow tool genuinely can\'t express.' },
+  { q: "Is a free Make.com scenario really equivalent to a paid custom app?",
+    a: "For webhook-in, transform, API-out workflows, functionally yes: the underlying mechanism is identical to what custom backend code would do. What you give up is full control over the code, trading it for a dependency on Make.com's platform instead of your own infrastructure. For most Shopify operators that trade-off favours the free composition." },
+];
 
 // ── Structured data ──────────────────────────────────────────
 const schema = JSON.stringify({
@@ -96,27 +120,7 @@ const schema = JSON.stringify({
           "text": "Building the workflow in Make.com first is free and fast, and tells you exactly what a custom version needs to do: turning a vague spec into a precise one before anyone gets paid to build it." }
       ]
     },
-    {
-      "@type": "FAQPage",
-      "@id": `${PAGE}#faq`,
-      "mainEntity": [
-        { "@type": "Question", "name": "How much does a custom Shopify app cost in 2026?",
-          "acceptedAnswer": { "@type": "Answer", "text": "A simple private app (single internal tool, e.g. a webhook receiver) runs roughly $5,000–$15,000. A substantial private app with multiple features and integrations runs $15,000–$60,000. A public App Store app MVP runs $30,000–$150,000 to build, plus $20,000–$50,000 in first-year operations. Figures vary widely by developer location and experience: see the sourced breakdown above." } },
-        { "@type": "Question", "name": "What's the cost difference between a private app and a public app?",
-          "acceptedAnswer": { "@type": "Answer", "text": "A private app only needs to work for your own store, so it skips Shopify's App Store review process, public-app security requirements, and multi-tenant architecture, which is most of why private apps cost a fraction of public ones. A public app also carries an ongoing retainer, commonly $5,000–$40,000/month depending on complexity, because it has to keep working for every merchant who installs it, not just you." } },
-        { "@type": "Question", "name": "What ongoing costs does a custom Shopify app have beyond the build?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Four recurring costs people underbudget: maintenance (a yearly cost on top of the build, or a $2,000–$10,000+/month retainer for an active store), Shopify API version migrations (mandatory testing work roughly every quarter), App Store re-review for public apps when functionality changes, and hosting for the backend server and database the app runs on." } },
-        { "@type": "Question", "name": "How often does Shopify's API change, and does that affect a custom app?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Shopify ships a new API version every three months. Each stable version is supported for a minimum of 12 months with at least nine months of overlap between versions, so nothing breaks overnight, but a custom app that never gets touched will eventually stop working once its version's support window closes. That's recurring engineering time a workflow-automation platform absorbs on your behalf, since Make.com maintains its own Shopify connector." } },
-        { "@type": "Question", "name": "How long does Shopify App Store review take?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Shopify's own guidance and community reports put the initial review at roughly 4–10 business days. If the reviewer requests changes, common on a first submission, the app moves to a Paused status until you resubmit, and the full process commonly stretches to 2–4 weeks. This only applies to public apps; private apps for your own store skip review entirely." } },
-        
-        { "@type": "Question", "name": "Can Make.com really replace a custom-built Shopify integration?",
-          "acceptedAnswer": { "@type": "Answer", "text": "For the common case (receive a Shopify webhook, transform the data, send it somewhere else) yes. That pattern is exactly what CAPI Shield, Stocky Swap, Shopify P&L Automation, and Autocrat Quota Fix do, each replacing what would otherwise be a small custom backend service, at $0 instead of a $5,000–$15,000+ build. It doesn't replace custom development for logic a workflow tool genuinely can't express." } },
-        { "@type": "Question", "name": "Is a free Make.com scenario really equivalent to a paid custom app?",
-          "acceptedAnswer": { "@type": "Answer", "text": "For webhook-in, transform, API-out workflows, functionally yes: the underlying mechanism (a server receiving an event and calling an API) is identical to what a custom backend would do. What you give up is full control over the code, and you take on a dependency on Make.com's platform instead of your own infrastructure. For most Shopify operators that trade-off favours the free composition; for a small number of genuinely custom requirements, it doesn't." } }
-      ]
-    }
+    { ...faqPage(faqs, `${PAGE}#faq`), "@context": undefined }
   ]
 });
 
@@ -362,18 +366,18 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
         <tbody>
           <tr><td class="bold">Simple private app</td><td class="green">$5,000–$15,000</td><td>Single-store internal tool: a webhook receiver, a basic admin extension.</td></tr>
           <tr><td class="bold">Substantial private app</td><td class="green">$15,000–$60,000</td><td>Multiple features, several API integrations, a real admin UI, data storage.</td></tr>
-          <tr><td class="bold">Public App Store MVP</td><td class="green">$30,000–$150,000</td><td>Plus $20,000–$50,000 in first-year operations: review, support, hosting.</td></tr>
-          <tr><td class="bold">Large public app</td><td class="green">$80,000–$200,000+</td><td>Plus $50,000–$150,000 first-year operations at that scale.</td></tr>
+          <tr><td class="bold">Public App Store MVP</td><td class="green">$30,000–$80,000</td><td>Plus $20,000–$50,000 in first-year operations: review, support, hosting.</td></tr>
+          <tr><td class="bold">Substantial public app</td><td class="green">$80,000–$200,000</td><td>Plus $50,000–$150,000 first-year operations at that scale. Complex platform-style public apps run $200,000–$1,000,000+.</td></tr>
         </tbody>
       </table>
     </div>
     <h3>Freelance vs agency rates</h3>
-    <p>Freelance Shopify developers commonly charge <strong>$25–$200/hour</strong>, with experienced US/Canada-based Shopify Plus specialists toward the top of that range and offshore developers toward the bottom. Agencies run considerably higher: boutique shops around <strong>$150–$350/hour</strong>, established Shopify Plus agencies <strong>$250–$500/hour</strong>, and enterprise consultancies <strong>$400–$800+/hour</strong>. A freelancer and an agency building the identical spec can land 3–5x apart purely on who you hire, before scope even changes.</p>
+    <p>Freelance Shopify developers commonly charge <strong>about $25–$160/hour</strong>, with senior Shopify Plus specialists at <strong>$120–$200/hour</strong> and offshore developers toward the bottom (CartCoders). Agencies run considerably higher (Shop Experts): boutique shops around <strong>$150–$350/hour</strong>, established Shopify Plus agencies <strong>$250–$500/hour</strong>, and enterprise consultancies <strong>$400–$800+/hour</strong>. A freelancer and an agency building the identical spec can land 3–5x apart purely on who you hire, before scope even changes.</p>
     <h3>In-house</h3>
     <p>Hiring a developer directly avoids per-project markup but carries its own math: a mid-level Shopify developer salary plus employer costs typically lands in a similar or higher annual range than commissioning 2–3 substantial private-app projects from an agency; the trade-off is ongoing capacity versus one-off delivery, not a cheaper unit cost.</p>
     <div class="callout info">
       <div class="callout-label">Sources</div>
-      <p>Cost ranges above are drawn from <a href="https://shopexperts.com/help/pricing/shopify-app-development-cost" target="_blank" rel="noopener">Shop Experts' 2026 Shopify App Development Cost guide</a> and <a href="https://cartcoders.com/blog/shopify-development/shopify-developer-cost-hourly-project-retainer/" target="_blank" rel="noopener">CartCoders' Shopify Developer Cost breakdown</a>. Both are third-party agency pricing guides, not Shopify's own pricing: treat the figures as directional market ranges rather than quotes.</p>
+      <p>Build and maintenance ranges are from <a href="https://shopexperts.com/help/pricing/shopify-app-development-cost" target="_blank" rel="noopener">Shop Experts' 2026 Shopify App Development Cost guide</a> (its table and FAQ; the summary at the top of that guide gives a wider $30,000–$150,000 for a public MVP), and freelance rates and active-store retainers from <a href="https://cartcoders.com/blog/shopify-development/shopify-developer-cost-hourly-project-retainer/" target="_blank" rel="noopener">CartCoders' Shopify Developer Cost breakdown</a>. We read both on <time datetime={READ_DATE}>25 September 2026</time>. Both are third-party agency pricing guides, not Shopify's own pricing: treat the figures as directional market ranges rather than quotes.</p>
     </div>
   </div>
 </div>
@@ -391,7 +395,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
   </div>
   <div class="body-text">
     <h3>Maintenance</h3>
-    <p>Ongoing maintenance is a <strong>recurring yearly cost on top of the build</strong>, often charged as a flat retainer: light upkeep for a private app runs roughly $3,000–$15,000/year, while an actively-developed store's retainer commonly runs <strong>$2,000–$10,000+/month</strong>. A public app retainer runs higher still, commonly $5,000–$40,000/month, because it has to keep working across every merchant who installed it, not just one store.</p>
+    <p>Ongoing maintenance is a <strong>recurring yearly cost on top of the build</strong>, often charged as a flat retainer: light upkeep for a private app runs roughly $3,000–$15,000/year (Shop Experts), while an actively-developed store's retainer commonly runs <strong>$2,000–$10,000+/month</strong> (CartCoders). A public app retainer runs higher still, commonly $5,000–$40,000/month, because it has to keep working across every merchant who installed it, not just one store.</p>
 
     <h3>Shopify API version migrations</h3>
     <p>Shopify ships a new API version <a href="https://shopify.dev/docs/api/usage/versioning" target="_blank" rel="noopener">every three months</a>. Each stable version stays supported for a minimum of 12 months, with at least nine months of overlap before the previous version is retired, so nothing breaks without warning, but a custom app that nobody revisits will eventually stop working once its version's support window closes. That's recurring engineering time baked into owning custom code, not a one-time cost.</p>
@@ -580,47 +584,12 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
     <h2 id="faq-h">Frequently asked questions</h2>
   </div>
   <div class="faq-list-adc">
-
-    <details class="faq-item-adc">
-      <summary><span>How much does a custom Shopify app cost in 2026?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-adc"><p>A simple private app (single internal tool) runs roughly $5,000–$15,000. A substantial private app with multiple integrations runs $15,000–$60,000. A public App Store app MVP runs $30,000–$150,000 to build, plus $20,000–$50,000 in first-year operations. See the sourced breakdown above for the full range by project type.</p></div>
-    </details>
-
-    <details class="faq-item-adc">
-      <summary><span>What's the cost difference between a private app and a public app?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-adc"><p>A private app only needs to work for your own store, so it skips App Store review, public-app security requirements, and multi-tenant architecture: most of why private apps cost a fraction of public ones. A public app also carries an ongoing retainer, commonly $5,000–$40,000/month, because it has to keep working for every merchant who installs it.</p></div>
-    </details>
-
-    <details class="faq-item-adc">
-      <summary><span>What ongoing costs does a custom Shopify app have beyond the build?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-adc"><p>Four recurring costs people underbudget: maintenance (a yearly cost on top of the build, or a $2,000–$10,000+/month retainer), Shopify API version migrations (mandatory testing roughly every quarter), App Store re-review for public apps when functionality changes, and hosting for the backend server and database.</p></div>
-    </details>
-
-    <details class="faq-item-adc">
-      <summary><span>How often does Shopify's API change, and does that affect a custom app?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-adc"><p>Shopify ships a new API version every three months, with each stable version supported for a minimum of 12 months and at least nine months of overlap, so nothing breaks overnight, but an untouched custom app eventually stops working once its version's support window closes. See <a href="https://shopify.dev/docs/api/usage/versioning" target="_blank" rel="noopener">Shopify's versioning docs</a>.</p></div>
-    </details>
-
-    <details class="faq-item-adc">
-      <summary><span>How long does Shopify App Store review take?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-adc"><p>Roughly 4–10 business days for the initial review. If changes are requested, common on a first submission, the full process commonly stretches to 2–4 weeks. This only applies to public apps; private apps for your own store skip review entirely.</p></div>
-    </details>
-
-    <details class="faq-item-adc">
-      <summary><span>When should I build a custom app instead of using Make.com?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-adc"><p>When the logic is genuinely proprietary, when you need true real-time bidirectional sync with a system that has no accessible API, when you're building the app to sell as a product, or when your scale exceeds what a workflow platform's rate limits can sustain. Outside those cases, an existing tool or a Make.com scenario usually gets there faster and cheaper.</p></div>
-    </details>
-
-    <details class="faq-item-adc">
-      <summary><span>Can Make.com really replace a custom-built Shopify integration?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-adc"><p>For the common case (receive a webhook, transform the data, send it somewhere else) yes. That's exactly what <a href="/capi-shield/">CAPI Shield</a>, <a href="/stocky-swap/">Stocky Swap</a>, and <a href="/shopify-profit-loss-automation/">P&amp;L Automation</a> do, each replacing what would otherwise be a small custom backend, at $0. It doesn't replace custom development for logic a workflow tool genuinely can't express.</p></div>
-    </details>
-
-    <details class="faq-item-adc">
-      <summary><span>Is a free Make.com scenario really equivalent to a paid custom app?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-adc"><p>For webhook-in, transform, API-out workflows, functionally yes: the underlying mechanism is identical to what custom backend code would do. What you give up is full control over the code, trading it for a dependency on Make.com's platform instead of your own infrastructure. For most Shopify operators that trade-off favours the free composition.</p></div>
-    </details>
-
+    {faqs.map(({ q, a }) => (
+      <details class="faq-item-adc">
+        <summary><span>{q}</span><span class="faq-ico" aria-hidden="true"></span></summary>
+        <div class="faq-ans-adc"><p set:html={a} /></div>
+      </details>
+    ))}
   </div>
 </div>
 </section>

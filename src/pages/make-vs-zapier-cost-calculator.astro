@@ -1,6 +1,8 @@
 ---
 import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
+import { READ_DATE } from '../data/priceSources';
+import PriceSources from '../components/PriceSources.astro';
 import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
@@ -23,30 +25,32 @@ const breadcrumb = [
 // The tiers live here and are handed to the client as JSON, so the figure in the
 // HTML and the figure the calculator produces come from one source and cannot
 // drift apart.
+// Tiers as each vendor publishes them, read on READ_DATE (make.com/en/pricing,
+// zapier.com/pricing). Make lists Free (1,000 credits) and Core ($9 for 10,000);
+// above that the price moves with credit volume and is not on the page as a
+// figure, so cost is null there. Zapier lists Professional "starting from
+// $19.99" without a task count, so any paid volume is costed as at least that.
 const MAKE_TIERS = [
-  { maxOps: 1000, cost: 0, plan: 'Free tier' },
-  { maxOps: 10000, cost: 9, plan: 'Core: 10k ops' },
-  { maxOps: 40000, cost: 16, plan: 'Pro: 40k ops' },
-  { maxOps: 150000, cost: 29, plan: 'Teams: 150k ops' },
-  { maxOps: Infinity, cost: 99, plan: 'Enterprise' },
+  { maxOps: 1000, cost: 0, plan: 'Free: 1,000 credits a month' },
+  { maxOps: 10000, cost: 9, plan: 'Core: $9 for 10,000 credits' },
+  { maxOps: Infinity, cost: null, plan: 'Above 10,000 credits: priced by volume on make.com' },
 ];
 const ZAPIER_TIERS = [
-  { maxOps: 100, cost: 0, plan: 'Free tier' },
-  { maxOps: 750, cost: 17, plan: 'Starter: 750 tasks' },
-  { maxOps: 2000, cost: 44, plan: 'Professional: 2k tasks' },
-  { maxOps: 50000, cost: 89, plan: 'Team: 50k tasks' },
-  { maxOps: Infinity, cost: 299, plan: 'Company' },
+  { maxOps: 100, cost: 0, plan: 'Free: 100 tasks a month' },
+  { maxOps: Infinity, cost: 19.99, from: true, plan: 'Professional: from $19.99, rising with task volume' },
 ];
-const pick = (tiers: { maxOps: number; cost: number; plan: string }[], ops: number) =>
-  tiers.find((t) => ops <= t.maxOps)!;
+type Tier = { maxOps: number; cost: number | null; plan: string; from?: boolean };
+const pick = (tiers: Tier[], ops: number) => tiers.find((t) => ops <= t.maxOps)!;
+const money = (n: number) => '$' + (Number.isInteger(n) ? n : n.toFixed(2));
+const showCost = (t: Tier) => t.cost === null ? 'By volume' : t.cost === 0 ? 'FREE' : money(t.cost) + (t.from ? '+' : '') + '/mo';
 
-// A store doing ~500 paid orders a month on a five-module scenario — the shape
+// A store doing ~500 paid orders a month on a five-module scenario, the shape
 // the rest of this site is written for.
 const EG = { runs: 500, steps: 5 };
 const egOps = EG.runs * EG.steps;
 const egMake = pick(MAKE_TIERS, egOps);
 const egZapier = pick(ZAPIER_TIERS, egOps);
-const egSaving = egZapier.cost - egMake.cost;
+const egSaving = egMake.cost === null || egZapier.cost === null ? null : Math.round((egZapier.cost - egMake.cost) * 100) / 100;
 
 const tiersJson = JSON.stringify({
   make: MAKE_TIERS.map((t) => ({ ...t, maxOps: t.maxOps === Infinity ? null : t.maxOps })),
@@ -79,7 +83,7 @@ const tocHeadings = [
 
 ---
 
-<Base
+<Base verifiedDate={READ_DATE}
   title="Make.com vs Zapier Cost Calculator 2026"
   description="Compare the true monthly cost of Make.com vs Zapier for your specific automation volume. Calculate exactly how much you would save by switching platforms."
   canonical="https://stackarchitect.xyz/make-vs-zapier-cost-calculator/"
@@ -224,13 +228,13 @@ const tocHeadings = [
         <div class="calc-result" id="mz-result">
           <span class="calc-state" id="mz-state">Worked example · {EG.runs} runs/month × {EG.steps} steps: change any field to use your own</span>
           <div class="result-grid">
-            <div class="result-cell"><div class="result-label">Make.com Monthly Cost</div><div class="result-value" id="mz-make">{egMake.cost === 0 ? 'FREE' : '$' + egMake.cost + '/mo'}</div><div class="result-sub" id="mz-make-plan">{egMake.plan} ({egOps.toLocaleString('en-GB')} ops needed)</div></div>
-            <div class="result-cell"><div class="result-label">Zapier Monthly Cost</div><div class="result-value" id="mz-zapier" style="font-size:28px;color:#f87171;">{egZapier.cost === 0 ? 'FREE' : '$' + egZapier.cost + '/mo'}</div><div class="result-sub" id="mz-zapier-plan">{egZapier.plan}</div></div>
-            <div class="result-cell"><div class="result-label">Monthly Saving (Make)</div><div class="result-value" id="mz-saving" style="font-size:28px;">{egSaving > 0 ? '$' + egSaving + '/mo' : '$0'}</div><div class="result-sub">Annual: <span id="mz-annual">{egSaving > 0 ? '$' + (egSaving * 12).toLocaleString('en-GB') : '$0'}</span></div></div>
+            <div class="result-cell"><div class="result-label">Make.com Monthly Cost</div><div class="result-value" id="mz-make">{showCost(egMake)}</div><div class="result-sub" id="mz-make-plan">{egMake.plan} ({egOps.toLocaleString('en-GB')} ops needed)</div></div>
+            <div class="result-cell"><div class="result-label">Zapier Monthly Cost</div><div class="result-value" id="mz-zapier" style="font-size:28px;color:#f87171;">{showCost(egZapier)}</div><div class="result-sub" id="mz-zapier-plan">{egZapier.plan}</div></div>
+            <div class="result-cell"><div class="result-label">Monthly Saving (Make)</div><div class="result-value" id="mz-saving" style="font-size:28px;">{egSaving !== null && egSaving > 0 ? money(egSaving) + '+/mo' : '$0'}</div><div class="result-sub">Annual: <span id="mz-annual">{egSaving !== null && egSaving > 0 ? money(Math.round(egSaving * 12)) + '+' : '$0'}</span></div></div>
           </div>
           <div class="result-insight" id="mz-insight">
-            <strong>At {EG.runs} orders a month on a {EG.steps}-module scenario, Make.com costs ${egMake.cost} and Zapier costs ${egZapier.cost}: a ${egSaving * 12} difference over a year.</strong>
-            {' '}The gap comes from how the two count usage: Zapier bills a task per action step, so a five-step Zap run {EG.runs} times is {egOps.toLocaleString('en-GB')} tasks and lands on {egZapier.plan}. Make.com counts operations the same way but its tiers are far wider, so the same volume sits inside {egMake.plan}. Enter your own numbers above to see where your store falls.
+            <strong>At {EG.runs} orders a month on a {EG.steps}-module scenario, Make.com costs {money(egMake.cost ?? 0)} a month and Zapier at least {money(egZapier.cost ?? 0)}: at least {money(Math.round((egSaving ?? 0) * 12))} a year.</strong>
+            {' '}The gap comes from how the two count usage: Zapier bills a task per action step, so a five-step Zap run {EG.runs} times is {egOps.toLocaleString('en-GB')} tasks and lands on {egZapier.plan}. Make.com counts operations the same way, and the same volume sits inside {egMake.plan}. Enter your own numbers above to see where your store falls.
           </div>
         </div>
       </div>
@@ -305,7 +309,8 @@ const tocHeadings = [
        region, so the visible attribution for it belongs in the same region.
        This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
-  </main>
+  <PriceSources ids={['make', 'zapier']} />
+</main>
 
 </Base>
 
@@ -346,21 +351,27 @@ const tocHeadings = [
     var mk = pickTier(tiers.make), zp = pickTier(tiers.zapier);
     var makeCost = mk.cost, makePlan = mk.plan;
     var zapierCost = zp.cost, zapierPlan = zp.plan;
+    var money = function (n) { return '$' + (Number.isInteger(n) ? n : n.toFixed(2)); };
+    var show = function (t) { return t.cost === null ? 'By volume' : t.cost === 0 ? 'FREE' : money(t.cost) + (t.from ? '+' : '') + '/mo'; };
+    // Zapier is a floor ("from $19.99"), so a saving is a floor too; above
+    // 10,000 credits Make publishes no figure, so there is no saving to show.
+    var saving = makeCost === null ? null : Math.round((zapierCost - makeCost) * 100) / 100;
+    var plus = zp.from ? '+' : '';
 
-    const saving = zapierCost - makeCost;
-
-    document.getElementById('mz-make').textContent = makeCost === 0 ? 'FREE' : '$' + makeCost + '/mo';
+    document.getElementById('mz-make').textContent = show(mk);
     document.getElementById('mz-make').style.color = '#34d377';
     document.getElementById('mz-make-plan').textContent = makePlan + ' (' + ops.toLocaleString() + ' ops needed)';
-    document.getElementById('mz-zapier').textContent = zapierCost === 0 ? 'FREE' : '$' + zapierCost + '/mo';
+    document.getElementById('mz-zapier').textContent = show(zp);
     document.getElementById('mz-zapier-plan').textContent = zapierPlan;
-    document.getElementById('mz-saving').textContent = saving > 0 ? '$' + saving + '/mo' : '$0';
+    document.getElementById('mz-saving').textContent = saving === null ? 'By volume' : saving > 0 ? money(saving) + plus + '/mo' : '$0';
     document.getElementById('mz-saving').style.color = saving > 0 ? '#34d377' : '#93a09a';
-    document.getElementById('mz-annual').textContent = saving > 0 ? '$' + (saving*12).toLocaleString() : '$0';
+    document.getElementById('mz-annual').textContent = saving === null ? 'See both pricing pages' : saving > 0 ? money(Math.round(saving * 12)) + plus : '$0';
 
-    let insight = saving > 0
-      ? '<strong>Switch to Make.com saves $' + saving + '/month</strong> ($' + (saving*12) + '/year) at your automation volume. Make.com also handles the multi-path routing required for Shopify CAPI, TikTok Events API, and Google Sheets simultaneously — which Zapier cannot do in a single workflow.'
-      : 'At this volume both platforms are in a similar price bracket. Make.com\'s advantage is in capability — complex multi-path scenarios, data transformation, and the ability to run the full $0 Shopify automation stack in a single scenario.';
+    let insight = saving === null
+      ? 'Above 10,000 credits a month, Make.com prices by volume and publishes no single figure, so compare its pricing page with Zapier\'s at your volume. Make.com also handles the multi-path routing Shopify CAPI, TikTok Events API and Google Sheets need in one scenario.'
+      : saving > 0
+      ? '<strong>Make.com costs at least ' + money(saving) + ' a month less</strong> (at least ' + money(Math.round(saving * 12)) + ' a year) at your automation volume. Zapier publishes its Professional plan as a starting price, so the real gap is at least this. Make.com also handles the multi-path routing required for Shopify CAPI, TikTok Events API, and Google Sheets in one scenario, which Zapier cannot do in a single workflow.'
+      : 'At this volume both platforms are free. Make.com\'s advantage is in capability: complex multi-path scenarios, data transformation, and running the full $0 Shopify automation stack in a single scenario.';
     document.getElementById('mz-insight').innerHTML = insight;
     document.getElementById('mz-result').classList.add('show');
 

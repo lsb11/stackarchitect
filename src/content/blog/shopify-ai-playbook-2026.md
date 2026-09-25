@@ -29,7 +29,7 @@ relatedGuides:
     href: "/best-free-shopify-apps-2026/"
 ---
 
-AI-driven traffic to Shopify stores grew 8× year-over-year in 2025. Most guides about AI for Shopify are written by SaaS companies ranking their own products first. This playbook is written for operators: covering which AI applications generate measurable return, which are overhyped, and what the free alternative is before recommending any subscription.
+AI-driven traffic to Shopify stores grew sharply through 2025; we have found no primary source for a single growth multiple, so we do not quote one. Most guides about AI for Shopify are written by SaaS companies ranking their own products first. This playbook is written for operators: covering which AI applications generate measurable return, which are overhyped, and what the free alternative is before recommending any subscription.
 
 Seven operational stages. Free tools first throughout.
 

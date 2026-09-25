@@ -2,6 +2,8 @@
 import { pageUpdated, formatUpdatedMonth } from '../data/pageUpdated';
 import PageUpdated from '../components/PageUpdated.astro';
 import Base from '../layouts/Base.astro';
+import { READ_DATE } from '../data/priceSources';
+import PriceSources from '../components/PriceSources.astro';
 import Disclosure from '../components/Disclosure.astro';
 import { isPostShutdown } from '../utils/stockyDeadline';
 import { KIT_PRICE, formatPrice } from '../data/products';
@@ -28,26 +30,22 @@ const kitPrice = formatPrice(KIT_PRICE);
 /* ---------------------------------------------------------------------------
  * SAVINGS — the page's only savings numbers. Change them here, once.
  *
- * Derived from the seven rows of the "Paid Apps vs The $0 Stack" table, which
- * is the figure set carrying the "cross-referenced against vendor pricing
- * pages" claim. Rows quoted as "$X+/mo" contribute their floor to BOTH bounds,
- * so both bounds understate rather than overstate.
+ * Derived from the seven rows of the "Paid Apps vs The $0 Stack" table. Every
+ * row is a vendor's own list price, read on READ_DATE (src/data/priceSources.ts):
+ * Klaviyo Email entry; Analyzify Standard to Elevar Advanced; Prediko Starter
+ * to Scale-up; Zapier Professional; WeltPixel Plus to Analyzify Plus;
+ * TrueProfit Basic to Lifetimely L; Make Core to Zapier Team. Rows quoted as
+ * "$X+/mo" contribute their floor to BOTH bounds, so both bounds understate.
  *
- *   low  =  20 + 145 +  29 + 20 +  39 +  19 + 49  =   321
- *   high =  20 + 650 + 500 + 20 + 299 + 299 + 99  = 1,887
- *
- * NOTE FOR REVIEW: the hero ledger and the comparison table previously quoted
- * DIFFERENT figures for the same vendors -- Klaviyo and Elevar/Triple Whale
- * each carried two incompatible ranges depending on which block you read. The
- * table is canonical here because it carries the verification claim. The
- * per-row vendor figures still need checking against src/data/apps.json, which
- * is the verified record and holds a priceVerifiedDate for each one.
+ *   low  =  20 + 145 +  49 + 19.99 +  39 +  35 +  9  =   316.99, shown as 317
+ *   high =  20 + 650 + 119 + 19.99 + 275 + 299 + 69  = 1,451.99, shown as 1,452
+ *   year = the monthly sums times 12, rounded to the dollar
  *
  * Do not restate a vendor price in a comment. seo-audit.mjs scans source text
  * and cannot tell a comment from rendered copy, so a figure quoted here reads
  * as a live claim and fails the build's pricing check.
  * ------------------------------------------------------------------------ */
-const SAVINGS = { moLow: 321, moHigh: 1887, yrLow: 3852, yrHigh: 22644 };
+const SAVINGS = { moLow: 317, moHigh: 1452, yrLow: 3804, yrHigh: 17424 };
 const money = (n: number) => '$' + n.toLocaleString('en-US');
 const MO_RANGE = `${money(SAVINGS.moLow)}–${money(SAVINGS.moHigh)}/mo`;
 const YR_RANGE = `${money(SAVINGS.yrLow)}–${money(SAVINGS.yrHigh)}/year`;
@@ -55,16 +53,16 @@ const YR_RANGE = `${money(SAVINGS.yrLow)}–${money(SAVINGS.yrHigh)}/year`;
 /* ---------------------------------------------------------------------------
  * PAINS — the diagnostic scanner options. Rendered server-side as real
  * buttons; the inline script only attaches toggle behaviour to them.
- * Costs sum to 1,887, matching SAVINGS.moHigh, so the scanner can no longer
+ * Costs sum to 1,452, matching SAVINGS.moHigh, so the scanner can no longer
  * produce a figure that contradicts the rest of the page.
  * ------------------------------------------------------------------------ */
 const PAINS = [
   { id: 't',  label: 'Losing Meta ad attribution after iOS updates', cost: 650, badge: 'Most common',     sol: 'CAPI Shield',          url: '/capi-shield/',                    category: 'server-side Meta tracking' },
   { id: 'k',  label: 'Paying Klaviyo $20+/mo for email marketing',            cost: 20,  badge: 'Replace free',    sol: 'Replace Klaviyo Free', url: '/replace-klaviyo-free/',            category: 'email marketing' },
-  { id: 'tk', label: 'Running TikTok ads, losing conversions to iOS',            cost: 299, badge: 'TikTok CAPI',     sol: 'TikTok Events API',    url: '/tiktok-events-api-shopify/',      category: 'TikTok Events API' },
-  { id: 'i',  label: 'Paying for inventory or stock sync apps',               cost: 500, badge: 'Export window open', sol: 'Stocky Swap',          url: '/stocky-swap/',                    category: 'inventory logging' },
+  { id: 'tk', label: 'Running TikTok ads, losing conversions to iOS',            cost: 275, badge: 'TikTok CAPI',     sol: 'TikTok Events API',    url: '/tiktok-events-api-shopify/',      category: 'TikTok Events API' },
+  { id: 'i',  label: 'Paying for inventory or stock sync apps',               cost: 119, badge: 'Export window open', sol: 'Stocky Swap',          url: '/stocky-swap/',                    category: 'inventory logging' },
   { id: 'p',  label: 'No live P&L: manual CSV exports or no reporting',      cost: 299, badge: 'Quick fix',       sol: 'P&L Auto',             url: '/shopify-profit-loss-automation/', category: 'live profit reporting' },
-  { id: 'a',  label: 'Google Scripts or Make.com failing mid-month',          cost: 119, badge: null,              sol: 'Autocrat Quota Fix',   url: '/autocrat-quota-fix/',             category: 'Apps Script quota fixes' },
+  { id: 'a',  label: 'Google Scripts or Make.com failing mid-month',          cost: 89, badge: null,              sol: 'Autocrat Quota Fix',   url: '/autocrat-quota-fix/',             category: 'Apps Script quota fixes' },
 ];
 
 /* The hero's "Six of the most expensive..." and the solutions grid's "all six"
@@ -179,7 +177,7 @@ const kitSchema = {
   provider: { '@id': 'https://stackarchitect.xyz/#org' },
 };
 ---
-<Base 
+<Base verifiedDate={READ_DATE} 
   title="Free Shopify Automation Stack 2026 — Replace Paid Apps" 
   description={`Replace ${toolCount} paid Shopify apps with free tools: Meta CAPI, TikTok CAPI, Stocky replacement, Klaviyo alternative, live P&L and an Apps Script quota fix.`}
   schema={kitSchema}
@@ -198,7 +196,7 @@ const kitSchema = {
       "url": "https://stackarchitect.xyz/",
       "name": "Stack Architect",
       "alternateName": ["StackArchitect", "Stack Architect Shopify Tools"],
-      "description": "Free Shopify automation stack: replace paid tracking, inventory, email, TikTok CAPI, and workflow apps. Replaces $321–$1,887 per month of paid apps. No code required.",
+      "description": "Free Shopify automation stack: replace paid tracking, inventory, email, TikTok CAPI, and workflow apps. Replaces $317–$1,452 per month of paid apps. No code required.",
       "inLanguage": "en-GB",
       "publisher": { "@id": "https://stackarchitect.xyz/#org" }
     },
@@ -206,8 +204,8 @@ const kitSchema = {
       "@type": "WebPage",
       "@id": "https://stackarchitect.xyz/#webpage",
       "url": "https://stackarchitect.xyz/",
-      "name": "Free Shopify Automation Stack 2026: Replace $321–$1,887/Month of Paid Apps",
-      "description": "Free tools replacing paid Shopify apps: server-side tracking (Meta CAPI), inventory management (Stocky replacement), email marketing (Klaviyo alternative), TikTok Events API, and P&L reporting. Replaces $321–$1,887/month of paid apps using Make.com free tier. No code. Deploy in 6 minutes. A pre-built Complete Kit is available.",
+      "name": "Free Shopify Automation Stack 2026: Replace $317–$1,452/Month of Paid Apps",
+      "description": "Free tools replacing paid Shopify apps: server-side tracking (Meta CAPI), inventory management (Stocky replacement), email marketing (Klaviyo alternative), TikTok Events API, and P&L reporting. Replaces $317–$1,452/month of paid apps using Make.com free tier. No code. Deploy in 6 minutes. A pre-built Complete Kit is available.",
       "inLanguage": "en-GB",
       "datePublished": "2026-02-01",
       "dateModified": pageUpdated('/'),
@@ -235,7 +233,7 @@ const kitSchema = {
         { "@type": "ListItem", "position": 1, "name": "CAPI Shield: Free Server-Side Tracking", "url": "https://stackarchitect.xyz/capi-shield/", "description": "Free Meta Conversions API server-side tracking for Shopify. Sends hashed email, phone, name, IP and user-agent as match keys. A free alternative to Elevar, Triple Whale and Northbeam. Addresses the conversion data lost to iOS privacy restrictions and ad blockers. Runs on Make.com free tier." },
         { "@type": "ListItem", "position": 2, "name": "Google Ads Conversion Tracking: Free Enhanced Conversions", "url": "https://stackarchitect.xyz/shopify-google-ads-conversion-tracking/", "description": "Free Google Ads Enhanced Conversions for Shopify via Make.com server-side webhook. Addresses purchase events lost to iOS Link Tracking Protection stripping gclid." },
         { "@type": "ListItem", "position": 3, "name": "Stocky Swap: Free Inventory Management", "url": "https://stackarchitect.xyz/stocky-swap/", "description": "Free Shopify inventory management replacing Shopify Stocky, which became unusable on August 31, 2026. Stocky data stays exportable read-only for at least 90 days after that date; Stocky's APIs stopped dead on the day. Stocky Swap logs every order to Google Sheets in real time via Make.com. Deploys in 4 minutes. Free forever." },
-        { "@type": "ListItem", "position": 4, "name": "TikTok Events API: Free Server-Side Tracking", "url": "https://stackarchitect.xyz/tiktok-events-api-shopify/", "description": "Free TikTok server-side tracking for Shopify via Make.com. Sends CompletePayment events server-to-server, bypassing iOS ITP and ad blockers. A free alternative to WeltPixel ($39+/mo) and Analyzify ($145–$275/mo)." },
+        { "@type": "ListItem", "position": 4, "name": "TikTok Events API: Free Server-Side Tracking", "url": "https://stackarchitect.xyz/tiktok-events-api-shopify/", "description": "Free TikTok server-side tracking for Shopify via Make.com. Sends CompletePayment events server-to-server, bypassing iOS ITP and ad blockers. A free alternative to WeltPixel ($39/mo) and Analyzify ($145–$275/mo)." },
         { "@type": "ListItem", "position": 5, "name": "Replace Klaviyo Free: Systeme.io", "url": "https://stackarchitect.xyz/replace-klaviyo-free/", "description": "Replace Klaviyo with Systeme.io free plan: 2,000 contacts, unlimited email sends, full automation sequences, sales funnels, CRM. Saves $20+/month. Klaviyo changed billing in February 2025 to charge for all active profiles." },
         { "@type": "ListItem", "position": 6, "name": "Shopify P&L Automation", "url": "https://stackarchitect.xyz/shopify-profit-loss-automation/", "description": "Free live profit and loss reporting in Google Sheets. Every order auto-calculates revenue, COGS, ad spend, fees, and net profit within 60 seconds of payment. A free alternative to TrueProfit, BeProfit and Glew.io." },
         { "@type": "ListItem", "position": 7, "name": "Autocrat Quota Fix", "url": "https://stackarchitect.xyz/autocrat-quota-fix/", "description": "Prevents Google Apps Script 'Service invoked too many times' quota errors that silently kill automations. Moves document automation to Make.com, bypassing the 6-minute execution limit and 90-minute daily runtime cap." },
@@ -286,16 +284,16 @@ const kitSchema = {
 <meta name="article:tag" content="Meta Conversions API">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://stackarchitect.xyz/">
-<meta property="og:title" content="Free Shopify Automation Stack: Replace $321–$1,887/Month of Paid Apps">
+<meta property="og:title" content="Free Shopify Automation Stack: Replace $317–$1,452/Month of Paid Apps">
 <meta property="og:description" content={`Replace 6 paid Shopify apps for $0: ad tracking, inventory, email, TikTok, P&L. Verified free tier of Make.com. No code. 6 minutes. ${kitPrice} Complete Kit optional.`}>
 <meta property="og:image" content="https://stackarchitect.xyz/og/og-home.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Stack Architect: Free Shopify Automation Stack replacing $321–$1,887/month of paid apps">
+<meta property="og:image:alt" content="Stack Architect: Free Shopify Automation Stack replacing $317–$1,452/month of paid apps">
 <meta property="og:site_name" content="Stack Architect">
 <meta property="og:locale" content="en_GB">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Free Shopify Automation Stack: Replace $321–$1,887/Month">
+<meta name="twitter:title" content="Free Shopify Automation Stack: Replace $317–$1,452/Month">
 <meta name="twitter:description" content="Replace 6 paid Shopify apps for $0: fix ad tracking, replace Stocky, ditch Klaviyo, recover TikTok conversions, get live P&L. Verified free tier. 6 minutes.">
 <meta name="twitter:image" content="https://stackarchitect.xyz/og/og-home.png">
 <meta name="twitter:image:alt" content="Stack Architect: Free Shopify Automation Stack">
@@ -328,10 +326,10 @@ const kitSchema = {
   
   <div class="ledger reveal" aria-label="What the free stack replaces">
     <div class="ledger-row"><span class="ledger-app">Klaviyo <em>email</em></span><span class="ledger-fill"></span><span class="ledger-was">$20+/mo</span><span class="ledger-now">$0</span></div>
-    <div class="ledger-row"><span class="ledger-app">Triple Whale / Elevar <em>tracking</em></span><span class="ledger-fill"></span><span class="ledger-was">$145–650/mo</span><span class="ledger-now">$0</span></div>
-    <div class="ledger-row"><span class="ledger-app">Stocky <em>inventory</em></span><span class="ledger-fill"></span><span class="ledger-was ledger-gone">$29–500/mo · stopped Aug 31</span><span class="ledger-now">$0</span></div>
-    <div class="ledger-row"><span class="ledger-app">TrueProfit / BeProfit <em>P&amp;L</em></span><span class="ledger-fill"></span><span class="ledger-was">$19–299/mo</span><span class="ledger-now">$0</span></div>
-    <div class="ledger-row ledger-total"><span class="ledger-app">These four alone</span><span class="ledger-fill"></span><span class="ledger-was">$213–$1,469/mo</span><span class="ledger-now">$0</span></div>
+    <div class="ledger-row"><span class="ledger-app">Analyzify / Elevar <em>tracking</em></span><span class="ledger-fill"></span><span class="ledger-was">$145–650/mo</span><span class="ledger-now">$0</span></div>
+    <div class="ledger-row"><span class="ledger-app">Prediko <em>inventory</em></span><span class="ledger-fill"></span><span class="ledger-was">$49–119/mo</span><span class="ledger-now">$0</span></div>
+    <div class="ledger-row"><span class="ledger-app">TrueProfit / BeProfit <em>P&amp;L</em></span><span class="ledger-fill"></span><span class="ledger-was">$35–249/mo</span><span class="ledger-now">$0</span></div>
+    <div class="ledger-row ledger-total"><span class="ledger-app">These four alone</span><span class="ledger-fill"></span><span class="ledger-was">$249–$1,038/mo</span><span class="ledger-now">$0</span></div>
   </div></div>
   <div class="urgency" role="note"><span class="dot" style="background:var(--amber);animation:none;"></span>{stockyGone
     ? "Stocky closed on 31 August 2026. Your data can still be exported, so export it now. The free replacement deploys in 4 minutes."
@@ -356,7 +354,7 @@ const kitSchema = {
     <details class="hero-video-transcript">
       <summary>Read transcript</summary>
       <div class="transcript-body">
-        <p>Your Shopify store is leaking $700 a month.</p>
+        <p>Your Shopify store is leaking money every month.</p>
         <p>Klaviyo. Elevar. Triple Whale. Stocky.</p>
         <p>Every paid app draining your store has a free version that works just as well.</p>
         <p>One Make.com webhook handles server-side tracking, inventory, P&amp;L and email, for zero dollars.</p>
@@ -497,7 +495,7 @@ const kitSchema = {
             <p class="sol-urgent-desc">Shopify ends Stocky on August 31, 2026: the app stops, and its APIs stop with no grace period. Read-only export access continues for at least 90 days afterwards, but Shopify provides no migration path: the export is yours to run. Stocky Swap logs every order to Google Sheets in real time via Make.com webhook. Deploys in 4 minutes. Prefer an app inside your Shopify admin? <a href="/stocklog/" style="color:var(--sky)">StockLog</a> is ours. <a href="/stocky-alternative/" style="color:var(--sky)">See all Stocky alternatives →</a></p>
           )}
           <div class="sol-urgent-reps"><span class="sol-rep">Stocky</span><span class="sol-rep">Linnworks</span><span class="sol-rep">Skubana</span><span class="sol-rep">Inventory Planner</span></div>
-          <div class="sol-urgent-meta"><span class="sol-urgent-save">Saves $29–$500/mo</span><span class="sol-urgent-time">~4 min setup</span></div>
+          <div class="sol-urgent-meta"><span class="sol-urgent-save">Saves $49–$119/mo</span><span class="sol-urgent-time">~4 min setup</span></div>
           <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;">
             <a href="/stocky-swap/" class="btn btn-sm">Deploy Stocky Swap Free →</a>
             <a href="/blog/shopify-stocky-data-export-before-shutdown/" class="btn-outline btn-outline-sm">What you can still export</a>
@@ -540,7 +538,7 @@ const kitSchema = {
           <p class="sol-desc">CompletePayment events sent server-side via Make.com. iOS and ad blockers can't intercept. Full Advanced Matching data. No code, no Shopify app install.</p>
           <div class="sol-rep-label">Replaces</div>
           <div class="sol-reps"><span class="sol-rep">WeltPixel</span><span class="sol-rep">Analyzify</span><span class="sol-rep">Elevar TikTok</span></div>
-          <div class="sol-meta"><span class="sol-save" style="color:var(--tiktok)">$39–$299/mo saved</span><span class="sol-time">~6 min</span></div>
+          <div class="sol-meta"><span class="sol-save" style="color:var(--tiktok)">$39–$275/mo saved</span><span class="sol-time">~6 min</span></div>
         </div>
         <div class="sol-foot">
           <a href="/tiktok-events-api-shopify/" class="sol-guide">No-code setup guide →</a>
@@ -572,7 +570,7 @@ const kitSchema = {
           <p class="sol-desc">Every Shopify order auto-calculates revenue, COGS, ad spend, and net profit into a live Google Sheets dashboard within 60 seconds of payment. Real-time P&amp;L without a BI tool or paid dashboard app.</p>
           <div class="sol-rep-label">Replaces</div>
           <div class="sol-reps"><span class="sol-rep">Glew.io</span><span class="sol-rep">BeProfit</span><span class="sol-rep">TrueProfit</span><span class="sol-rep">Peel</span></div>
-          <div class="sol-meta"><span class="sol-save" style="color:var(--sky)">$19–$299/mo saved</span><span class="sol-time">~8 min</span></div>
+          <div class="sol-meta"><span class="sol-save" style="color:var(--sky)">$35–$299/mo saved</span><span class="sol-time">~8 min</span></div>
         </div>
         <div class="sol-foot">
           <a href="/shopify-profit-loss-automation/" class="sol-guide">Find your profit leaks first →</a>
@@ -588,7 +586,7 @@ const kitSchema = {
           <p class="sol-desc">Prevents Google Apps Script "Service invoked too many times" quota errors that silently kill workflows. Moves document automation to Make.com, bypassing the 6-minute execution limit and 90-minute daily runtime cap.</p>
           <div class="sol-rep-label">Replaces</div>
           <div class="sol-reps"><span class="sol-rep">Zapier</span><span class="sol-rep">Paid Make tiers</span></div>
-          <div class="sol-meta"><span class="sol-save" style="color:var(--vio)">$49–$99/mo saved</span><span class="sol-time">~3 min</span></div>
+          <div class="sol-meta"><span class="sol-save" style="color:var(--vio)">Runs on Make's free plan</span><span class="sol-time">~3 min</span></div>
         </div>
         <div class="sol-foot">
           <a href="/autocrat-quota-fix/" class="sol-guide">Deploy Quota Fix: Free →</a>
@@ -892,7 +890,7 @@ const kitSchema = {
         <div class="calc-icon">⚙</div>
         <div class="calc-label">Cost</div>
         <div class="calc-name">Make vs Zapier Calculator</div>
-        <p class="calc-desc-c">Calculate the exact annual cost difference between Make.com and Zapier for your automation volume. Most stores save $500+/year switching.</p>
+        <p class="calc-desc-c">Calculate the exact annual cost difference between Make.com and Zapier for your automation volume. See the yearly difference at your volume.</p>
         <div class="calc-pair">→ Pairs with every free tool</div>
         <span class="calc-cta">Compare costs →</span>
       </a>
@@ -987,38 +985,38 @@ const kitSchema = {
         </thead>
         <tbody>
           <tr>
-            <td>Email Marketing &amp; CRM <small style="color:var(--text-4);display:block;font-size:var(--fs-micro);margin-top:3px;">Klaviyo, Mailchimp, ClickFunnels</small></td>
+            <td>Email Marketing &amp; CRM <small style="color:var(--text-4);display:block;font-size:var(--fs-micro);margin-top:3px;">Klaviyo (entry Email plan)</small></td>
             <td>$20+/mo</td>
             <td>Systeme.io: Free</td>
           </tr>
           <tr>
-            <td>Ad Attribution &amp; CAPI <small style="color:var(--text-4);display:block;font-size:var(--fs-micro);margin-top:3px;">Elevar, Triple Whale, Northbeam, Analyzify</small></td>
+            <td>Ad Attribution &amp; CAPI <small style="color:var(--text-4);display:block;font-size:var(--fs-micro);margin-top:3px;">Analyzify, Elevar</small></td>
             <td>$145–$650/mo</td>
             <td>CAPI Shield: Free</td>
           </tr>
           <tr>
-            <td>Inventory Management <small style="color:var(--text-4);display:block;font-size:var(--fs-micro);margin-top:3px;">Stocky (closed Aug 2026), Linnworks, Skubana, Inventory Planner</small></td>
-            <td>$29–$500/mo</td>
+            <td>Inventory Management <small style="color:var(--text-4);display:block;font-size:var(--fs-micro);margin-top:3px;">Prediko, Inventory Planner (quote only)</small></td>
+            <td>$49–$119/mo</td>
             <td>Stocky Swap: Free</td>
           </tr>
           <tr>
-            <td>Workflow Automation <small style="color:var(--text-4);display:block;font-size:var(--fs-micro);margin-top:3px;">Zapier, Tray.io, Workato</small></td>
+            <td>Workflow Automation <small style="color:var(--text-4);display:block;font-size:var(--fs-micro);margin-top:3px;">Zapier Professional</small></td>
             <td>$19.99+/mo</td>
             <td>Make.com Free: Free</td>
           </tr>
           <tr>
-            <td>TikTok Server-Side Tracking <small style="color:var(--text-4);display:block;font-size:var(--fs-micro);margin-top:3px;">WeltPixel, Analyzify TikTok</small></td>
-            <td>$39–$299/mo</td>
+            <td>TikTok Server-Side Tracking <small style="color:var(--text-4);display:block;font-size:var(--fs-micro);margin-top:3px;">WeltPixel, Analyzify</small></td>
+            <td>$39–$275/mo</td>
             <td>TikTok Events API: Free</td>
           </tr>
           <tr>
-            <td>P&amp;L &amp; Profit Reporting <small style="color:var(--text-4);display:block;font-size:var(--fs-micro);margin-top:3px;">TrueProfit, BeProfit, Glew.io, Peel</small></td>
-            <td>$19–$299/mo</td>
+            <td>P&amp;L &amp; Profit Reporting <small style="color:var(--text-4);display:block;font-size:var(--fs-micro);margin-top:3px;">TrueProfit, BeProfit, Lifetimely</small></td>
+            <td>$35–$299/mo</td>
             <td>P&amp;L Auto: Free</td>
           </tr>
           <tr>
-            <td>Automation Stability <small style="color:var(--text-4);display:block;font-size:var(--fs-micro);margin-top:3px;">Paid Make tiers, Zapier upgrades</small></td>
-            <td>$49–$99/mo</td>
+            <td>Automation Stability <small style="color:var(--text-4);display:block;font-size:var(--fs-micro);margin-top:3px;">Make Core to Zapier Team</small></td>
+            <td>$9–$69/mo</td>
             <td>Autocrat Quota Fix: Free</td>
           </tr>
         </tbody>
@@ -1198,10 +1196,10 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
         a second, disagreeing one in microdata is worse than none. */}
 
     <h3>What Is the $0 Shopify Automation Stack?</h3>
-    <p>The $0 Automation Stack is a collection of free tools that collectively replace the paid Shopify apps most stores spend $500–$1,600 per month on. Each tool uses a combination of Make.com's free automation tier, Google Sheets, and Systeme.io's free plan to perform the same job as the paid alternative (server-side event delivery, stock logging, email automation) without a monthly subscription, developer cost, or code. It is not feature-for-feature parity: the paid tools carry support, dashboards, and volume headroom the free tiers do not, and Make.com's free plan caps at 1,000 credits and 2 active scenarios. Store owners who want the pre-built version can purchase the <a href="/pro/">Complete Kit for {kitPrice}</a>: four ready-to-import Make.com JSON blueprints that deploy in about 10 minutes.</p>
+    <p>The $0 Automation Stack is a collection of free tools that collectively replace paid Shopify apps listed at {MO_RANGE} across the seven categories in the table above, on the vendors' own prices read on 25 September 2026. Each tool uses a combination of Make.com's free automation tier, Google Sheets, and Systeme.io's free plan to perform the same job as the paid alternative (server-side event delivery, stock logging, email automation) without a monthly subscription, developer cost, or code. It is not feature-for-feature parity: the paid tools carry support, dashboards, and volume headroom the free tiers do not, and Make.com's free plan caps at 1,000 credits and 2 active scenarios. Store owners who want the pre-built version can purchase the <a href="/pro/">Complete Kit for {kitPrice}</a>: four ready-to-import Make.com JSON blueprints that deploy in about 10 minutes.</p>
 
     <h3>Why Replace Shopify Paid Apps With Free Automation?</h3>
-    <p>The core problem most Shopify stores face is that the app ecosystem is structured around recurring revenue. Tracking apps charge $145–$650/month for server-side conversion data. Inventory apps charge $29–$500/month for real-time stock syncing. Email platforms like Klaviyo charge $20+/mo for email automations that most stores never use at full capability. <strong>The $0 stack covers the same jobs (server-side tracking, live inventory, email automation, TikTok Events API, and real-time P&amp;L) using free tiers of tools built for automation at scale.</strong> Where it is worse than the paid app, we say so on the tool's own page. See the <a href="/stack/">full recommended stack: 7 free tools vetted and ranked</a>, or use the <a href="/shopify-app-cost-calculator/">App Cost Calculator</a> to see your exact recoverable spend.</p>
+    <p>The core problem most Shopify stores face is that the app ecosystem is structured around recurring revenue. Tracking apps charge $145–$650/month for server-side conversion data. Inventory apps such as Prediko charge $49+/month for forecasting and purchase orders. Email platforms like Klaviyo charge $20+/mo for email automations that most stores never use at full capability. <strong>The $0 stack covers the same jobs (server-side tracking, live inventory, email automation, TikTok Events API, and real-time P&amp;L) using free tiers of tools built for automation at scale.</strong> Where it is worse than the paid app, we say so on the tool's own page. See the <a href="/stack/">full recommended stack: 7 free tools vetted and ranked</a>, or use the <a href="/shopify-app-cost-calculator/">App Cost Calculator</a> to see your exact recoverable spend.</p>
 
     <h3>Free Shopify Tracking: How CAPI Shield Replaces Elevar and Triple Whale</h3>
     <p><a href="/capi-shield/">CAPI Shield</a> uses Make.com to route Shopify order webhooks directly to Meta's Conversions API server-to-server. Its Google branch cannot match Shopify orders as shipped. iOS restrictions, ad blockers, and cookie expiry cannot intercept server-side signals. Browser-only tracking loses purchase events to iOS ATT, Safari ITP, ad blockers and consent rejection, and server-side delivery is not subject to that loss. <a href="/how-we-test/#the-20-40-figure">We publish no figure for how much is lost</a>: the share is set by a store's own traffic mix and consent rate. How much any one store gains is measurable in your own Meta Events Manager as Additional Conversions Reported. <a href="/shopify-attribution-tools-compared/">Elevar charges $225/mo</a> and delivers events by the same server-to-server mechanism. <strong>We have not run CAPI Shield and Elevar side by side on the same store, so we make no claim about how their Event Match Quality compares.</strong> What we can say is what CAPI Shield sends: hashed email, phone, name, IP and user-agent, which is the parameter set Meta scores EMQ against. <a href="/shopify-attribution-tools-compared/">Triple Whale uses GMV-based pricing that scales with your store's revenue</a> for attribution data that server-side tracking provides natively. Estimate your current EMQ with the <a href="/meta-emq-score-estimator/">Meta EMQ Score Estimator</a>.</p>
@@ -1297,6 +1295,7 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
 </div>
 </section>
 <PageUpdated style="max-width:1140px;margin:0 auto 2rem;padding:0 24px;font-size:0.78rem;color:#93a09a;" />
+<PriceSources ids={['klaviyo', 'analyzify', 'elevar', 'prediko', 'inventoryPlanner', 'zapier', 'weltpixel', 'trueprofit', 'beprofit', 'lifetimely', 'make']} />
 </main>
 
 <script is:inline>
@@ -1391,7 +1390,7 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
     if (sysLink) sysLink.hidden = sel.indexOf('k') === -1;
     var btn = document.getElementById('sc-btn');
     if (btn) {
-      if (sel.length) { btn.disabled = false; btn.className = 'scan-cta ready'; btn.textContent = 'Build My Free Plan — Save $' + tot + '/mo →'; }
+      if (sel.length) { btn.disabled = false; btn.className = 'scan-cta ready'; btn.textContent = 'Build My Free Plan: Save $' + tot + '/mo →'; }
       else { btn.disabled = true; btn.className = 'scan-cta'; btn.textContent = 'Select at least one issue above'; }
     }
   }
@@ -1444,7 +1443,7 @@ window.gfGet = function() {
   window.open('https://d1yei2z3i6k35z.cloudfront.net/16370908/69a2ac505857c_The_Master_Library.pdf', '_blank');
   var form = document.getElementById('gf-form'); if(form) form.style.display = 'none';
   var done = document.getElementById('gf-done'); if(done) done.style.display = 'block';
-  var confirm = document.getElementById('gf-confirm'); if(confirm) confirm.textContent = 'Guides on their way — check your inbox!';
+  var confirm = document.getElementById('gf-confirm'); if(confirm) confirm.textContent = 'Guides on their way. Check your inbox!';
 };
 
 // FAQ is rendered server-side from the FAQ array in this file's frontmatter.

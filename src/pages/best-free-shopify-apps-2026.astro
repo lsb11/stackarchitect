@@ -1,6 +1,8 @@
 ---
 import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
+import { READ_DATE } from '../data/priceSources';
+import PriceSources from '../components/PriceSources.astro';
 import { KIT_PRICE, formatPrice } from '../data/products';
 const kitPrice = formatPrice(KIT_PRICE);
 import Disclosure from '../components/Disclosure.astro';
@@ -49,7 +51,7 @@ const categories = [
         badgeLabel: "Stack Pick: Free Forever",
         price: "$0/month",
         replaces: "Elevar ($225/mo), Triple Whale (GMV-based), Analyzify ($145–$275/mo)",
-        saves: "$149–$499/mo",
+        saves: "$145–$650/mo",
         description: "Sends server-side purchase events to Meta Conversions API and Google Ads Enhanced Conversions via Make.com: bypassing iOS Link Tracking Protection, Safari ITP, and ad blockers. It sends hashed email, phone, name, IP and user-agent: the match keys Meta scores Event Match Quality against. Deploys in 6 minutes. The single highest-ROI free tool for any Shopify store running paid Meta or Google Ads.",
         cta: "Deploy CAPI Shield free",
         ctaHref: TOOLS.capiShield,
@@ -60,8 +62,8 @@ const categories = [
         badge: "stack-pick",
         badgeLabel: "Stack Pick: Free Forever",
         price: "$0/month",
-        replaces: "WeltPixel TikTok ($39/mo), Analyzify ($145–$275/mo), Elevar ($225/mo)",
-        saves: "$39–$299/mo",
+        replaces: "WeltPixel ($39/mo), Analyzify ($145–$275/mo), Elevar ($225/mo)",
+        saves: "$39–$275/mo",
         description: "Sends CompletePayment events to TikTok's Events API server-side via Make.com. Runs alongside CAPI Shield on the same Shopify webhook: no additional configuration needed. Recovers TikTok ad conversions lost to iOS restrictions.",
         cta: "Deploy TikTok Events API free",
         ctaHref: TOOLS.tiktokCAPI,
@@ -72,8 +74,8 @@ const categories = [
         badge: "stack-pick",
         badgeLabel: "Stack Pick: Free Forever",
         price: "$0/month",
-        replaces: "Stape ($29/mo), Littledata ($159+/mo), Analyzify ($145–$275/mo)",
-        saves: "$29–$299/mo",
+        replaces: "Stape ($17/mo billed yearly), Littledata ($159+/mo), Analyzify ($145–$275/mo)",
+        saves: "$17–$275/mo",
         description: "Server-side Google Ads conversion uploads via Make.com, sending hashed customer email from Shopify's server. Shopify's order data has no Google click ID, so whether Google matches the upload depends on how your conversion action is set up; set its consent fields to match your own consent setup.",
         cta: "Set up Google Enhanced Conversions free",
         ctaHref: TOOLS.googleAds,
@@ -85,7 +87,7 @@ const categories = [
         badgeLabel: "Shopify Native: Free",
         price: "$0/month",
         replaces: "Some GA4 app setups",
-        saves: "—",
+        saves: "",
         description: "Shopify's official Google channel installs GA4 Enhanced Ecommerce tracking, the Google Ads conversion tag, and Google Shopping product feed automatically. This is the baseline: install it before adding server-side tracking on top.",
         cta: "Install from Shopify App Store",
         ctaHref: "https://apps.shopify.com/google",
@@ -106,7 +108,7 @@ const categories = [
         badgeLabel: "Stack Pick: Free Forever",
         price: "$0/month",
         replaces: "The order record Shopify Stocky kept. Not stock on hand, purchase orders or alerts",
-        saves: "—",
+        saves: "",
         description: "Auto-logs every paid Shopify order line item to Google Sheets in real time: timestamp, SKU, quantity change, order ID, and product across a clean six-column log, on Make.com's free tier. It is an order log, not inventory management: it does not calculate stock on hand, manage purchase orders or send low-stock alerts. Shopify Admin handles purchase orders, transfers and adjustments, and Shopify Flow can send low-stock alerts.",
         cta: "Deploy Stocky Swap free",
         ctaHref: TOOLS.stockySwap,
@@ -116,7 +118,7 @@ const categories = [
         name: "Stock Sync",
         badge: "freemium",
         badgeLabel: "Freemium",
-        price: "Free (500 SKUs), then $5+/mo",
+        price: "Free (2,000 products), then $7+/mo",
         replaces: "Manual inventory imports",
         saves: "Time",
         description: "Syncs inventory from suppliers, CSV files, or APIs. The free plan covers 500 SKUs with weekly sync: sufficient for small stores. Useful for dropshipping or multi-supplier operations where Stocky Swap's order-based logging is not enough.",
@@ -149,7 +151,7 @@ const categories = [
         badge: "affiliate",
         badgeLabel: "Recommended: Free Forever",
         price: "$0/month (2,000 contacts, unlimited sends)",
-        replaces: "Klaviyo ($20+/mo), ActiveCampaign ($15+/mo), ConvertKit ($29+/mo)",
+        replaces: "Klaviyo ($20+/mo), ActiveCampaign, Kit (ConvertKit)",
         saves: "$20+/mo",
         description: "The best free Klaviyo alternative for Shopify. Systeme.io's free plan permanently includes 2,000 contacts, unlimited email sends, complete automation sequences (welcome, abandoned cart, post-purchase), sales funnels, a CRM, and affiliate programme management. GDPR compliant. No credit card required. For most Shopify stores under 2,000 contacts, this is a permanent $0 Klaviyo replacement.",
         cta: "Create a free Systeme.io account",
@@ -163,7 +165,7 @@ const categories = [
         badgeLabel: "Shopify Native: Free",
         price: "$0/month (10,000 emails/month free)",
         replaces: "Klaviyo for basic campaigns",
-        saves: "—",
+        saves: "",
         description: "Shopify's built-in email tool sends up to 10,000 emails per month free. Limited automation (no complex sequences), but excellent for broadcast campaigns, promotions, and simple post-purchase emails. Uses Shopify customer data directly: no sync required.",
         cta: "Find in Shopify Admin",
         ctaHref: "https://apps.shopify.com/shopify-email",
@@ -175,8 +177,8 @@ const categories = [
         badgeLabel: "Recommended: Free to 2,500 Subscribers",
         price: "$0/month (2,500 subscribers)",
         replaces: "Mailchimp, ConvertKit, newsletter tools",
-        saves: "$29–$99/mo",
-        description: "The best free newsletter platform for Shopify store owners who want to build a subscriber list alongside their store. Free plan: 2,500 subscribers, unlimited sends, full monetisation tools including Boosts (earn $1–3 per subscriber referred to partner newsletters), ad network, and subscriptions. Significantly more powerful than Mailchimp's free tier.",
+        saves: "",
+        description: "The best free newsletter platform for Shopify store owners who want to build a subscriber list alongside their store. Free plan: 2,500 subscribers, unlimited sends, full monetisation tools including Boosts (paid referrals to partner newsletters), ad network, and subscriptions. Significantly more powerful than Mailchimp's free tier.",
         cta: "Where Beehiiv fits in the stack",
         ctaHref: "/stack/",
         detail: "Best free plan in the newsletter space. Boosts monetisation available immediately.",
@@ -185,7 +187,7 @@ const categories = [
         name: "GetResponse",
         badge: "affiliate",
         badgeLabel: "Best for 2,000+ Contacts",
-        price: "Free 30-day trial, then from $19/mo",
+        price: "Free 14-day trial, then from $19/mo",
         replaces: "Klaviyo for larger lists",
         saves: "$20+/mo vs Klaviyo at same contacts",
         description: "The most cost-effective Klaviyo alternative for Shopify stores with lists over 2,000 contacts. GetResponse charges on contacts in your list with no engagement penalty, so it undercuts the equivalent Klaviyo tier at every list size and the gap widens as the list grows: the tier-by-tier figures are on the Klaviyo pillar. Full ecommerce integration, abandoned cart sequences, and Shopify-native product blocks in emails.",
@@ -199,7 +201,7 @@ const categories = [
         badgeLabel: "Free: Limited",
         price: "Free plan (500 contacts)",
         replaces: "Basic email",
-        saves: "—",
+        saves: "",
         description: "Mailchimp's free plan covers 500 contacts and 1,000 monthly sends: genuinely too limited for most active Shopify stores. Included here for completeness, but Systeme.io (2,000 contacts, unlimited sends, free forever) is a strictly better option for stores at this scale.",
         cta: "See Mailchimp",
         ctaHref: "https://mailchimp.com",
@@ -218,7 +220,7 @@ const categories = [
         badge: "affiliate",
         badgeLabel: "Recommended: Free Forever",
         price: "$0/month (1,000 credits/month)",
-        replaces: "Zapier ($19.99+/mo), custom developer work ($50–$150/hr)",
+        replaces: "Zapier ($19.99+/mo), custom developer work ($25–$160/hr for freelancers, per CartCoders)",
         saves: "$19.99+/mo",
         description: "The automation platform that powers the entire Stack Architect free stack. Make.com's free tier includes 1,000 credits/month (formerly called operations): sufficient to run the whole stack as one consolidated scenario (router branches from a single Shopify webhook) for stores under ~250 orders/month. 10× more generous free tier than Zapier. Visual scenario builder, direct API call support (essential for CAPI), and native Shopify integration. For stores needing more: Make.com Core at $9/month covers 10,000 credits.",
         cta: "Create a free Make.com account: 1,000 ops/month",
@@ -244,7 +246,7 @@ const categories = [
         badgeLabel: "Freemium: Very Limited",
         price: "From $19.99/mo (free tier: 100 tasks/month)",
         replaces: "Make.com (at lower task counts)",
-        saves: "—",
+        saves: "",
         description: "Zapier's free plan covers 100 tasks per month: far too limited for any meaningful Shopify automation. Most stores processing 50+ orders per month will hit the limit immediately. Make.com's free tier gives 10× more (1,000 credits/month). Included here for completeness: for Shopify automation, Make.com is the clear choice at every price point.",
         cta: "See why Make.com beats Zapier free",
         ctaHref: "/make-vs-zapier-cost-calculator/",
@@ -256,15 +258,15 @@ const categories = [
     id: "pandl",
     emoji: "📊",
     label: "Profit & Loss Reporting",
-    tagline: "Know your actual profit per order in real time, without paying $99/month for a BI tool",
+    tagline: "Know your actual profit per order in real time, without paying for a BI tool",
     tools: [
       {
         name: "P&L Auto",
         badge: "stack-pick",
         badgeLabel: "Stack Pick: Free Forever",
         price: "$0/month",
-        replaces: "TrueProfit ($19–$99/mo), BeProfit ($29+/mo), Glew.io",
-        saves: "$19–$299/mo",
+        replaces: "TrueProfit ($35–$200/mo), BeProfit ($49+/mo), Glew.io",
+        saves: "$35–$249/mo",
         description: "Writes every Shopify order to a Google Sheets workbook the instant payment confirms: ten fields per order (Order ID, date, channel, revenue, discount, shipping, Shopify fee, payment fee, COGS, gross profit), plus a COGS table and a live dashboard that auto-totals everything. Real-time P&L at $0/month, with your data in your own Google account: no vendor lock-in.",
         cta: "Deploy P&L Auto free",
         ctaHref: TOOLS.pandl,
@@ -276,7 +278,7 @@ const categories = [
         badgeLabel: "Shopify Native: Free",
         price: "$0/month",
         replaces: "Basic reporting",
-        saves: "—",
+        saves: "",
         description: "Shopify's built-in analytics covers orders, revenue, sessions, and basic conversion data. It does not show COGS, ad spend, or true net profit: it shows gross revenue only. P&L Auto adds the profitability layer Shopify Analytics is missing.",
         cta: "Already in Shopify Admin",
         ctaHref: "https://help.shopify.com/en/manual/reports-and-analytics",
@@ -288,7 +290,7 @@ const categories = [
         badgeLabel: "Free: DIY",
         price: "$0/month",
         replaces: "Paid BI tools",
-        saves: "—",
+        saves: "",
         description: "Google Sheets is the storage layer for P&L Auto: the pre-configured templates (included in the Complete Kit) have all formulas, COGS lookup tables, and monthly SUMIFS dashboards pre-built. Even without P&L Auto, a manually updated Sheets P&L is more accurate than Shopify's native analytics for profit tracking.",
         cta: "Get the pre-built template",
         ctaHref: TOOLS.pro,
@@ -300,20 +302,20 @@ const categories = [
     id: "support",
     emoji: "💬",
     label: "Customer Support & Live Chat",
-    tagline: "Handle support at scale without paying $300+/month for Gorgias",
+    tagline: "Handle support at scale without paying for Gorgias Pro",
     tools: [
       {
         name: "Tidio",
         badge: "affiliate",
         badgeLabel: "Recommended: Free Plan Available",
-        price: "$0/month (free plan), then $29+/mo",
-        replaces: "Intercom ($74/mo), Zendesk",
-        saves: "$29–$100/mo",
+        price: "$0/month (free plan), then from $24.17/mo",
+        replaces: "Intercom (from $19/seat/mo), Zendesk",
+        saves: "$19+/mo",
         description: "The best free live chat + AI support tool for Shopify. Tidio's free plan includes live chat, a basic chatbot, Shopify order lookup, and visitor tracking. Lyro AI is paid beyond the 50 one-time free conversations, and Tidio says Lyro resolves 67% of conversations instantly (tidio.com). The free plan is sufficient for stores handling under 100 conversations per month. For sites with higher volume, Tidio's paid plans are significantly cheaper than Gorgias or Zendesk.",
         cta: "Install Tidio free: Tidio says Lyro resolves 67% of conversations instantly",
         ctaHref: '', // affiliate button removed 24 Sep 2026 (one per page)
         ctaRel: "sponsored nofollow noopener",
-        detail: "Free: 50 conversations/month, live chat, basic bot. Paid from $29/month.",
+        detail: "Free: 50 conversations/month, live chat, basic bot. Paid from $24.17/month on tidio.com/pricing, read 25 Sep 2026.",
       },
       {
         name: "Shopify Inbox",
@@ -321,7 +323,7 @@ const categories = [
         badgeLabel: "Shopify Native: Free",
         price: "$0/month",
         replaces: "Basic live chat",
-        saves: "$0–$50/mo",
+        saves: "",
         description: "Shopify's built-in live chat for your storefront. Integrates directly with Shopify so agents can see customer order history during conversations. No AI, no chatbot, no email ticketing, but fully free and sufficient for stores wanting basic real-time chat without a third-party app.",
         cta: "Activate in Shopify Admin",
         ctaHref: "https://apps.shopify.com/shopify-inbox",
@@ -331,13 +333,13 @@ const categories = [
         name: "Gorgias",
         badge: "affiliate",
         badgeLabel: "Best for High Volume",
-        price: "From $40/month",
+        price: "From $10/month",
         replaces: "Zendesk, HelpScout",
         saves: "Varies",
-        description: "Gorgias is the best-in-class Shopify helpdesk for high-volume DTC stores (1,000+ tickets/month). Deep Shopify integration: agents can cancel, refund, and modify orders directly from the support inbox. Plans start at $40/month and are billed by ticket volume, not per agent. Tidio is the better free choice; Gorgias is better at volume.",
+        description: "Gorgias is the best-in-class Shopify helpdesk for high-volume DTC stores (1,000+ tickets/month). Deep Shopify integration: agents can cancel, refund, and modify orders directly from the support inbox. Plans start at $10/month for the helpdesk alone ($40 with AI Agent) and are billed by ticket volume, not per agent. Tidio is the better free choice; Gorgias is better at volume.",
         cta: "Try Gorgias",
         ctaHref: "/gorgias-shopify-guide/",
-        detail: "From $40/month per gorgias.com/pricing, read 11 Aug 2026. Billed by ticket volume. Best-in-class Shopify integration at scale.",
+        detail: "From $10/month (helpdesk only; $40 with AI Agent) per gorgias.com/pricing, read 25 Sep 2026. Billed by ticket volume. Best-in-class Shopify integration at scale.",
       },
     ],
   },
@@ -345,15 +347,15 @@ const categories = [
     id: "reviews",
     emoji: "⭐",
     label: "Reviews & Social Proof",
-    tagline: "Collect, display, and leverage customer reviews, without paying $30+/month",
+    tagline: "Collect, display, and leverage customer reviews, without paying $49.99/month for Loox Convert",
     tools: [
       {
         name: "Judge.me",
         badge: "free",
         badgeLabel: "Free: Unlimited Reviews",
         price: "$15/mo (free plan available)",
-        replaces: "Loox, Yotpo ($169+/mo), Okendo ($19+/mo)",
-        saves: "$9–$79/mo",
+        replaces: "Loox ($49.99+/mo), Yotpo ($89+/mo), Okendo ($19+/mo)",
+        saves: "$4–$74/mo vs Judge.me Awesome",
         description: "The best free reviews app for Shopify, period. Judge.me's free plan includes unlimited review collection, automated review request emails, Google Shopping review integration, review display widgets, and SEO-optimised star ratings in search results. Most stores never need the Pro plan. One of the most downloaded apps in the Shopify App Store with 20,000+ reviews at 5 stars.",
         cta: "Install Judge.me free",
         ctaHref: "https://apps.shopify.com/judgeme",
@@ -363,9 +365,9 @@ const categories = [
         name: "Ali Reviews",
         badge: "free",
         badgeLabel: "Free Plan Available",
-        price: "$0/month (Basic), $9.90+/mo",
+        price: "$0/month (Free), then $14.95+/mo",
         replaces: "Paid review apps for dropshippers",
-        saves: "$9–$30/mo",
+        saves: "",
         description: "Excellent reviews app specifically designed for dropshippers. The free plan allows you to import authentic reviews directly from AliExpress with photos, helping new stores build instant social proof. Great alternative to Judge.me if you source products from AliExpress.",
         cta: "Install Ali Reviews",
         ctaHref: "https://apps.shopify.com/ali-reviews",
@@ -377,7 +379,7 @@ const categories = [
         badgeLabel: "Shopify Native: Free",
         price: "$0/month",
         replaces: "Basic review display",
-        saves: "—",
+        saves: "",
         description: "Shopify's official product reviews app is free and handles basic review collection and display. It has been largely superseded by Judge.me for most use cases: Judge.me's free plan includes everything Shopify's native reviews provide plus automated emails, star ratings in Google search results, and Google Shopping integration.",
         cta: "Install from Shopify App Store",
         ctaHref: "https://apps.shopify.com/product-reviews",
@@ -389,15 +391,15 @@ const categories = [
     id: "seo",
     emoji: "🔍",
     label: "SEO & Store Performance",
-    tagline: "Rank higher in Google without paying $100+/month for SEO apps",
+    tagline: "Rank higher in Google without paying for SEO apps",
     tools: [
       {
         name: "Smart SEO",
         badge: "freemium",
         badgeLabel: "Freemium",
-        price: "Free plan available, then $4.99+/mo",
+        price: "Free plan available, then $14.99/mo",
         replaces: "Plug in SEO, SEO Manager",
-        saves: "$5–$30/mo",
+        saves: "",
         description: "Automates Shopify SEO tasks: meta titles, meta descriptions, image alt text, JSON-LD structured data, and sitemap management. The free plan covers the core SEO tasks for most stores. Paid plans add bulk editing and image compression.",
         cta: "Install Smart SEO",
         ctaHref: "https://apps.shopify.com/smart-seo",
@@ -407,9 +409,9 @@ const categories = [
         name: "TinyIMG",
         badge: "freemium",
         badgeLabel: "Freemium",
-        price: "Free (50 images/month), then $9.99+/mo",
+        price: "Free plan available",
         replaces: "Paid image optimisation apps",
-        saves: "$10–$30/mo",
+        saves: "",
         description: "Shopify's recommended image optimisation and SEO app. Compresses product images to improve Core Web Vitals and page speed: a direct ranking factor. The free plan handles 50 image optimisations per month, sufficient for small stores or for processing new product images as they are added.",
         cta: "Install TinyIMG",
         ctaHref: "https://apps.shopify.com/tiny-img",
@@ -421,7 +423,7 @@ const categories = [
         badgeLabel: "Free: Essential",
         price: "$0/month",
         replaces: "Paid rank tracking",
-        saves: "$50–$100/mo",
+        saves: "",
         description: "Google's own tool for monitoring how your Shopify store appears in search results. Shows which keywords drive clicks, which pages rank, crawl errors, Core Web Vitals scores, and sitemap status. Completely free. If you are not using Google Search Console, set it up today: it is the most important free SEO tool available.",
         cta: "Set up Google Search Console",
         ctaHref: "https://search.google.com/search-console",
@@ -432,8 +434,8 @@ const categories = [
         badge: "free",
         badgeLabel: "Free: Heatmaps & Session Recording",
         price: "$0/month: unlimited",
-        replaces: "Hotjar ($39+/mo), Lucky Orange ($10+/mo)",
-        saves: "$10–$39/mo",
+        replaces: "Hotjar, Lucky Orange ($39/mo)",
+        saves: "$39/mo vs Lucky Orange Build",
         description: "Microsoft's free heatmaps and session recording tool: completely free with no limits on sessions, recordings, or heatmaps. Integrates with Shopify in 5 minutes via the Shopify App Store. Shows exactly where customers click, scroll, and drop off. Replaces Hotjar's paid plan entirely.",
         cta: "Install Microsoft Clarity",
         ctaHref: "https://apps.shopify.com/microsoft-clarity",
@@ -450,22 +452,22 @@ const categories = [
       {
         name: "Privy",
         badge: "freemium",
-        badgeLabel: "Freemium",
-        price: "Free (100 signups/month), then $30+/mo",
+        badgeLabel: "Free Trial, Then Paid",
+        price: "$24+/mo",
         replaces: "OptinMonster, Klaviyo popups",
-        saves: "$10–$30/mo",
-        description: "Email capture popups, exit-intent offers, and wheel-of-fortune style discount campaigns for Shopify. The free plan supports 100 email signups per month: sufficient for early-stage stores. Integrates directly with Systeme.io and most email platforms for list building.",
+        saves: "",
+        description: "Email capture popups, exit-intent offers, and wheel-of-fortune style discount campaigns for Shopify. Privy has no permanent free plan on its Shopify App Store listing: pop-ups start at $24/month and email at $30/month for 1,500 contacts, after a 15-day free trial.",
         cta: "Install Privy",
         ctaHref: "https://apps.shopify.com/privy",
-        detail: "Free: 100 signups/month, basic popups. Integrates with most email tools.",
+        detail: "15-day free trial, then from $24/month (Shopify App Store listing, read 25 Sep 2026). Integrates with most email tools.",
       },
       {
         name: "Shopify Free Shipping Bar",
         badge: "native",
         badgeLabel: "Free",
         price: "$0/month",
-        replaces: "Paid shipping bar apps ($5–$15/mo)",
-        saves: "$5–$15/mo",
+        replaces: "Paid shipping bar apps",
+        saves: "",
         description: "A progress bar showing how close customers are to free shipping: consistently one of the highest-ROI CRO elements for ecommerce stores. Multiple free apps exist in the Shopify App Store. The Hextom Free Shipping Bar app is the most widely used with 40,000+ reviews at 4.9 stars.",
         cta: "Install Free Shipping Bar",
         ctaHref: "https://apps.shopify.com/free-shipping-bar",
@@ -475,13 +477,13 @@ const categories = [
         name: "Vitals",
         badge: "freemium",
         badgeLabel: "Freemium: 40+ Tools",
-        price: "No permanent free plan: $29/mo",
+        price: "No permanent free plan: $29.99/mo",
         replaces: "Multiple individual CRO apps",
-        saves: "$50–$100/mo vs buying apps individually",
-        description: "Bundles 40+ Shopify conversion tools (upsells, volume discounts, reviews, urgency timers, currency conversion) into one $29/month app. Not free, but included here because it replaces 5–10 individual apps, often saving money on net. Listed as a 'smarter spend' option when stores have budget for one tool.",
+        saves: "",
+        description: "Bundles 40+ Shopify conversion tools (upsells, volume discounts, reviews, urgency timers, currency conversion) into one $29.99/month app (plus usage fees after about $1,000/month in Vitals-attributed sales). Not free, but included here because it replaces 5–10 individual apps, often saving money on net. Listed as a 'smarter spend' option when stores have budget for one tool.",
         cta: "See Vitals",
         ctaHref: "https://apps.shopify.com/vitals",
-        detail: "$29/month. Replaces 5–10 individual apps. 40+ tools in one. Consider vs. individual free apps.",
+        detail: "$29.99/month plus usage fees. Replaces 5–10 individual apps. 40+ tools in one. Consider vs. individual free apps.",
       },
     ],
   },
@@ -489,27 +491,27 @@ const categories = [
     id: "loyalty",
     emoji: "🤝",
     label: "Loyalty & Retention",
-    tagline: "Increase repeat purchase rate without paying $100+/month for loyalty software",
+    tagline: "Increase repeat purchase rate without paying for loyalty software",
     tools: [
       {
         name: "Smile.io",
         badge: "freemium",
         badgeLabel: "Freemium: Limited Free Plan",
-        price: "Free (limited), then $49+/mo",
-        replaces: "LoyaltyLion ($399+/mo), Yotpo Loyalty ($199+/mo)",
-        saves: "—",
-        description: "Points-based loyalty programme for Shopify. The free plan is limited (no referral programme, no VIP tiers) but adds a basic points system. For most stores wanting a full loyalty programme, Smile.io's $49/month Starter plan is the most cost-effective entry point in this category.",
+        price: "Free (up to 200 orders/month), then $15+/mo",
+        replaces: "LoyaltyLion ($199+/mo), Yotpo Loyalty ($199+/mo)",
+        saves: "",
+        description: "Points-based loyalty programme for Shopify. The free plan covers up to 200 orders a month with points, rewards and referrals. The Essential plan is $15/month for up to 500 monthly orders, and Standard $79/month for up to 1,000.",
         cta: "Install Smile.io",
         ctaHref: "https://apps.shopify.com/smile-io",
-        detail: "Free: basic points only. Full programme starts at $49/month.",
+        detail: "Free up to 200 orders/month. Essential $15/month, Standard $79/month (Shopify App Store listing, read 25 Sep 2026).",
       },
       {
         name: "Growave",
         badge: "freemium",
         badgeLabel: "Freemium",
-        price: "Free (100 orders/month), then $19+/mo",
+        price: "Free (200 orders/month), then $15+/mo",
         replaces: "Multiple loyalty + reviews apps",
-        saves: "$30–$50/mo vs separate apps",
+        saves: "",
         description: "All-in-one loyalty, reviews, wishlists, social login, and Q&A tool. The free plan is available for stores with under 100 orders per month: generous enough for early-stage stores wanting loyalty without paying for it. Scales affordably as stores grow.",
         cta: "Install Growave",
         ctaHref: "https://apps.shopify.com/growave",
@@ -527,11 +529,11 @@ const faqs = [
   },
   {
     q: "Which free Shopify apps save the most money?",
-    a: "The free apps saving the most money per month are: CAPI Shield ($225/month saved vs Elevar or Triple Whale), Systeme.io ($20+/month saved vs Klaviyo), Make.com ($19.99+/month saved vs Zapier), TikTok Events API ($39–$299/month saved), and P&L Auto ($19–$99/month saved vs TrueProfit or BeProfit). Stocky Swap is not on this list: it logs orders and does not replace a paid inventory app."
+    a: "The free apps saving the most money per month are: CAPI Shield ($225/month saved vs Elevar or Triple Whale), Systeme.io ($20+/month saved vs Klaviyo), Make.com ($19.99+/month saved vs Zapier), TikTok Events API ($39–$275/month saved), and P&L Auto ($35–$249/month saved vs TrueProfit or BeProfit). Stocky Swap is not on this list: it logs orders and does not replace a paid inventory app."
   },
   {
     q: "What Shopify apps can you get for free instead of paid versions?",
-    a: "In 2026, the major paid Shopify apps with free replacements are: Elevar → CAPI Shield (server-side tracking, $0 vs $225/month), Triple Whale → CAPI Shield + P&L Auto ($0 vs its GMV-based subscription), Klaviyo → Systeme.io ($0 vs $20+/month), Shopify Stocky → Shopify Admin for stock, plus Stocky Swap for a free order log (Stocky shut down on August 31, 2026), TrueProfit → P&L Auto ($0 vs $19–$99/month), WeltPixel TikTok → TikTok Events API free setup ($0 vs $39/month), Zapier → Make.com ($0/1,000 credits vs $19.99+/month), Loox → Judge.me ($0 vs $9+/month), and Hotjar → Microsoft Clarity ($0 vs $39+/month)."
+    a: "In 2026, the major paid Shopify apps with free replacements are: Elevar → CAPI Shield (server-side tracking, $0 vs $225/month), Triple Whale → CAPI Shield + P&L Auto ($0 vs its GMV-based subscription), Klaviyo → Systeme.io ($0 vs $20+/month), Shopify Stocky → Shopify Admin for stock, plus Stocky Swap for a free order log (Stocky shut down on August 31, 2026), TrueProfit → P&L Auto ($0 vs $35–$200/month), WeltPixel TikTok → TikTok Events API free setup ($0 vs $39/month), Zapier → Make.com ($0/1,000 credits vs $19.99+/month), Loox → Judge.me ($0 vs $49.99/month for Loox Convert), and Hotjar → Microsoft Clarity ($0)."
   },
   {
     q: "Are there genuinely free Shopify apps (not just free trials)?",
@@ -559,7 +561,7 @@ const faqs = [
   },
   {
     q: "Are free Shopify apps as good as paid ones?",
-    a: "For the use cases covered by the Stack Architect free stack, yes: the free tools are technically equivalent. CAPI Shield delivers server-side purchase events by the same server-to-server route Elevar uses, at $0 vs $225/month: we have not measured how the two compare on Event Match Quality, so we make no claim that they score alike. Stocky Swap is narrower than Stocky was: it keeps a log of paid orders, and does not track stock on hand or purchase orders. P&L Auto produces a more detailed real-time P&L than TrueProfit at $0 vs $19–$99/month. Where paid tools genuinely add value over free alternatives: Google Consent Mode v2 with behavioural modelling (Elevar Growth+), advanced multi-touch attribution modelling (Northbeam, Triple Whale's creative analytics), and Shopify-native helpdesk integrations at scale (Gorgias for 1,000+ tickets/month)."
+    a: "For the use cases covered by the Stack Architect free stack, yes: the free tools are technically equivalent. CAPI Shield delivers server-side purchase events by the same server-to-server route Elevar uses, at $0 vs $225/month: we have not measured how the two compare on Event Match Quality, so we make no claim that they score alike. Stocky Swap is narrower than Stocky was: it keeps a log of paid orders, and does not track stock on hand or purchase orders. P&L Auto produces a more detailed real-time P&L than TrueProfit at $0 vs $35–$200/month. Where paid tools genuinely add value over free alternatives: Google Consent Mode v2 with behavioural modelling (Elevar Growth+), advanced multi-touch attribution modelling (Northbeam, Triple Whale's creative analytics), and Shopify-native helpdesk integrations at scale (Gorgias for 1,000+ tickets/month)."
   },
 ];
 
@@ -584,7 +586,7 @@ const schemaGraph = {
       "@type": "WebPage",
       "@id": CANON + "#webpage",
       "url": CANON,
-      "name": "Best Free Shopify Apps 2026: 40+ Tools Ranked (Save $700+/Month)",
+      "name": "Best Free Shopify Apps 2026: 40+ Tools Ranked",
       "description": "The definitive list of the best free Shopify apps in 2026: 40+ tools across 10 categories. Server-side tracking, email marketing, inventory, automation, reviews, SEO, and more. All genuinely free, each verified against the vendor pricing pages linked throughout.",
       "datePublished": "2026-04-21",
       "dateModified": UPDATED,
@@ -668,13 +670,13 @@ const tocHeadings = [
 ];
 
 ---
-<Base title="Best Free Shopify Apps 2026 — 40+ Tools Ranked" description="Free Shopify apps by category: tracking, email, inventory, automation, support, reviews and SEO. What each free plan covers and where it stops.">
+<Base verifiedDate={READ_DATE} title="Best Free Shopify Apps 2026 — 40+ Tools Ranked" description="Free Shopify apps by category: tracking, email, inventory, automation, support, reviews and SEO. What each free plan covers and where it stops.">
 <Fragment slot="head">
 <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
 
 
   
-<script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps: server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
+<script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing paid apps: server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
   </Fragment>
 
 
@@ -683,7 +685,7 @@ const tocHeadings = [
 <div class="direct-answer" role="note" aria-label="Direct answer">
   <div class="direct-answer-inner">
     <span class="da-label">Direct answer</span>
-    <p>The best free Shopify apps in 2026 include CAPI Shield (free server-side Meta tracking, replaces Elevar), Stocky Swap (a free order log, since Shopify Stocky shut down on August 31), Systeme.io (2,000 contacts, unlimited email sends, replaces Klaviyo), Make.com (1,000 credits/month free, powers all automations), Judge.me (unlimited reviews free), and Microsoft Clarity (free heatmaps). Combined these save $465–$2,297 per month versus paid alternatives.</p>
+    <p>The best free Shopify apps in 2026 include CAPI Shield (free server-side Meta tracking, replaces Elevar), Stocky Swap (a free order log, since Shopify Stocky shut down on August 31), Systeme.io (2,000 contacts, unlimited email sends, replaces Klaviyo), Make.com (1,000 credits/month free, powers all automations), Judge.me (unlimited reviews free), and Microsoft Clarity (free heatmaps).</p>
   </div>
 </div>
 
@@ -727,7 +729,7 @@ const tocHeadings = [
     <div class="stat-strip">
       <div class="stat-pill"><span class="sv">40+</span><span class="sl">Free tools</span></div>
       <div class="stat-pill"><span class="sv">10</span><span class="sl">Categories</span></div>
-      <div class="stat-pill"><span class="sv">$700+</span><span class="sl">Saved/month</span></div>
+      <div class="stat-pill"><span class="sv">$0</span><span class="sl">Free stack cost</span></div>
       <div class="stat-pill"><span class="sv">40+</span><span class="sl">Free tools verified</span></div>
       <div class="stat-pill"><span class="sv">$0</span><span class="sl">Our top tools cost</span></div>
     </div>
@@ -753,14 +755,14 @@ const tocHeadings = [
     <p>Select the apps you currently pay for to see how much the free alternatives save you every month.</p>
     <div class="calc-grid">
       {[
-        {id:"elevar",label:"Elevar or Triple Whale",save:299},
-        {id:"klaviyo",label:"Klaviyo (email)",save:175},
-        {id:"stocky",label:"Inventory app (Linnworks, etc.)",save:49},
-        {id:"tiktok",label:"TikTok tracking app (WeltPixel)",save:39},
-        {id:"trueprofit",label:"P&L tool (TrueProfit, BeProfit)",save:29},
-        {id:"zapier",label:"Zapier (automation)",save:79},
-        {id:"reviews",label:"Paid reviews app (Loox, Yotpo)",save:29},
-        {id:"heatmaps",label:"Heatmaps (Hotjar, Lucky Orange)",save:39},
+        {id:"elevar",label:"Elevar (Core plan)",save:225},
+        {id:"klaviyo",label:"Klaviyo (Email, 251–500 contacts)",save:20},
+        {id:"stocky",label:"Inventory app (Prediko Starter)",save:49},
+        {id:"tiktok",label:"TikTok tracking app (WeltPixel Plus)",save:39},
+        {id:"trueprofit",label:"P&L tool (TrueProfit Basic)",save:35},
+        {id:"zapier",label:"Zapier (Professional)",save:19.99},
+        {id:"reviews",label:"Paid reviews app (Loox Convert)",save:49.99},
+        {id:"heatmaps",label:"Heatmaps (Lucky Orange Build)",save:39},
       ].map(item => (
         <div class="calc-row">
           <label class="calc-label" for={`chk-${item.id}`}>
@@ -773,7 +775,7 @@ const tocHeadings = [
     </div>
     <div class="calc-total">
       <span class="calc-total-label">Your monthly saving with free alternatives:</span>
-      <span class="calc-total-val" id="calc-result">$738/mo</span>
+      <span class="calc-total-val" id="calc-result">$477/mo</span>
     </div>
   </div>
 </div>
@@ -814,7 +816,7 @@ const tocHeadings = [
                 <div class="tool-top">
                   <div>
                     <div class="tool-name" itemprop="name">{tool.name}</div>
-                    {tool.saves && tool.saves !== "—" && tool.saves !== "Varies" && tool.saves !== "Time" && (
+                    {tool.saves && tool.saves !== "Varies" && tool.saves !== "Time" && (
                       <span class="saves-badge">Saves {tool.saves}</span>
                     )}
                   </div>
@@ -885,8 +887,8 @@ const tocHeadings = [
     <section style="margin-bottom:64px;">
       <div class="sec-head">
         <span class="cat-badge">Worked example</span>
-        <h2 id="stack-cost-h">A real stack, priced both ways</h2>
-        <p>A mid-sized store at roughly $50k–$150k monthly GMV, itemised, then the same six jobs done on free tiers. Inventory is left out: Stocky Swap logs orders, and does not forecast or reorder the way Inventory Planner does.</p>
+        <h2 id="stack-cost-h">An example stack, priced both ways</h2>
+        <p>Six jobs at each vendor's entry list price, read on 25 September 2026, then the same six jobs done on free tiers. Inventory is left out: Stocky Swap logs orders, and does not forecast or reorder the way Inventory Planner does.</p>
       </div>
 
       <div style="overflow-x:auto;margin-bottom:20px;">
@@ -905,14 +907,14 @@ const tocHeadings = [
             <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;color:var(--text-3);">Email marketing</td><td style="padding:10px 12px;color:var(--text-3);">Klaviyo, entry plan</td><td style="padding:10px 12px;text-align:right;color:var(--text);font-family:var(--mono);">$20+</td><td style="padding:10px 12px;color:var(--text-3);">Systeme.io / GetResponse</td><td style="padding:10px 12px;text-align:right;color:var(--g);font-family:var(--mono);">$0–$19</td></tr>
             <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;color:var(--text-3);">P&amp;L reporting</td><td style="padding:10px 12px;color:var(--text-3);">BeProfit</td><td style="padding:10px 12px;text-align:right;color:var(--text);font-family:var(--mono);">$49</td><td style="padding:10px 12px;color:var(--text-3);">P&amp;L Auto</td><td style="padding:10px 12px;text-align:right;color:var(--g);font-family:var(--mono);">$0</td></tr>
             <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;color:var(--text-3);">Customer support</td><td style="padding:10px 12px;color:var(--text-3);">Gorgias Basic</td><td style="padding:10px 12px;text-align:right;color:var(--text);font-family:var(--mono);">$60</td><td style="padding:10px 12px;color:var(--text-3);">Tidio free tier</td><td style="padding:10px 12px;text-align:right;color:var(--g);font-family:var(--mono);">$0</td></tr>
-            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;color:var(--text-3);">Automation</td><td style="padding:10px 12px;color:var(--text-3);">Zapier</td><td style="padding:10px 12px;text-align:right;color:var(--text);font-family:var(--mono);">$49</td><td style="padding:10px 12px;color:var(--text-3);">Make.com free tier</td><td style="padding:10px 12px;text-align:right;color:var(--g);font-family:var(--mono);">$0</td></tr>
-            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;color:var(--text-3);">TikTok tracking</td><td style="padding:10px 12px;color:var(--text-3);">WeltPixel</td><td style="padding:10px 12px;text-align:right;color:var(--text);font-family:var(--mono);">$49</td><td style="padding:10px 12px;color:var(--text-3);">TikTok Events API branch</td><td style="padding:10px 12px;text-align:right;color:var(--g);font-family:var(--mono);">$0</td></tr>
-            <tr style="border-bottom:2px solid var(--border);background:var(--g-bg);"><td style="padding:12px;color:var(--text);font-weight:700;">Total</td><td style="padding:12px;"></td><td style="padding:12px;text-align:right;color:var(--text);font-weight:700;font-family:var(--mono);">$607</td><td style="padding:12px;"></td><td style="padding:12px;text-align:right;color:var(--g);font-weight:700;font-family:var(--mono);">$0–$19</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;color:var(--text-3);">Automation</td><td style="padding:10px 12px;color:var(--text-3);">Zapier</td><td style="padding:10px 12px;text-align:right;color:var(--text);font-family:var(--mono);">$19.99</td><td style="padding:10px 12px;color:var(--text-3);">Make.com free tier</td><td style="padding:10px 12px;text-align:right;color:var(--g);font-family:var(--mono);">$0</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;color:var(--text-3);">TikTok tracking</td><td style="padding:10px 12px;color:var(--text-3);">WeltPixel</td><td style="padding:10px 12px;text-align:right;color:var(--text);font-family:var(--mono);">$39</td><td style="padding:10px 12px;color:var(--text-3);">TikTok Events API branch</td><td style="padding:10px 12px;text-align:right;color:var(--g);font-family:var(--mono);">$0</td></tr>
+            <tr style="border-bottom:2px solid var(--border);background:var(--g-bg);"><td style="padding:12px;color:var(--text);font-weight:700;">Total</td><td style="padding:12px;"></td><td style="padding:12px;text-align:right;color:var(--text);font-weight:700;font-family:var(--mono);">$413</td><td style="padding:12px;"></td><td style="padding:12px;text-align:right;color:var(--g);font-weight:700;font-family:var(--mono);">$0–$19</td></tr>
           </tbody>
         </table>
       </div>
 
-      <p style="font-size:14px;color:var(--text-3);line-height:1.8;margin-bottom:16px">That is <strong>$7,284 a year</strong> against <strong>$0–$228 a year</strong> for the same six jobs. The email line is one rung on a ladder that runs $20+/month with list size: 10,000 contacts is simply where a store of this size lands; every other figure in the column is a flat published rate. The point is not that every store should run the right-hand column: it is that the gap is large enough to be worth an hour of your attention, and most stores have never itemised it. Every price in the left-hand column is a published rate for the named vendor; your own quote will differ, which is exactly why the audit below is per-store rather than generic.</p>
+      <p style="font-size:14px;color:var(--text-3);line-height:1.8;margin-bottom:16px">That is about <strong>$4,956 a year</strong> against <strong>$0–$228 a year</strong> for the same six jobs. The email line is Klaviyo's entry price for 251–500 contacts; Klaviyo publishes nothing above that, so a bigger list costs more than shown. Every other figure in the column is the named vendor's entry rate. The point is not that every store should run the right-hand column: it is that the gap is large enough to be worth an hour of your attention, and most stores have never itemised it. Every price in the left-hand column is a published rate for the named vendor; your own quote will differ, which is exactly why the audit below is per-store rather than generic.</p>
 
       <div style="background:var(--g-bg);border:1px solid var(--g-border);border-radius:10px;padding:20px 24px">
         <div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--g);letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px">Price your own stack</div>
@@ -1038,6 +1040,7 @@ const tocHeadings = [
        region, so the visible attribution for it belongs in the same region.
        This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
+<PriceSources ids={['elevar', 'analyzify', 'weltpixel', 'stape', 'littledata', 'klaviyo', 'systeme', 'getresponse', 'beehiiv', 'make', 'zapier', 'cartcoders', 'trueprofit', 'beprofit', 'tidio', 'intercom', 'gorgias', 'judgeme', 'loox', 'yotpo', 'okendo', 'luckyorange', 'privy', 'vitals', 'smile', 'loyaltylion', 'growave', 'prediko', 'lifetimely']} />
 </main>
 
 
@@ -1048,9 +1051,9 @@ const tocHeadings = [
   function recalc() {
     var total = 0;
     document.querySelectorAll('.calc-checkbox:checked').forEach(function(cb) {
-      total += parseInt(cb.dataset.save) || 0;
+      total += parseFloat(cb.dataset.save) || 0;
     });
-    document.getElementById('calc-result').textContent = '$' + total + '/mo';
+    document.getElementById('calc-result').textContent = '$' + Math.round(total) + '/mo';
   }
 
   // FAQ accordion

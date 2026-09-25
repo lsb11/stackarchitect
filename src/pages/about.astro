@@ -1,6 +1,8 @@
 ---
 import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
+import { READ_DATE } from '../data/priceSources';
+import PriceSources from '../components/PriceSources.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import FeaturedIn from '../components/FeaturedIn.astro';
@@ -93,7 +95,7 @@ const stockLogSchema = {
   },
 };
 ---
-<Base title="About Luke Sandelands — Founder, Stack Architect" description="Luke Sandelands builds free, open-source Shopify automation tools that replace paid apps. Hands-on with Make.com, Meta CAPI and Google Enhanced Conversions." schema={stockLogSchema}>
+<Base verifiedDate={READ_DATE} title="About Luke Sandelands — Founder, Stack Architect" description="Luke Sandelands builds free, open-source Shopify automation tools that replace paid apps. Hands-on with Make.com, Meta CAPI and Google Enhanced Conversions." schema={stockLogSchema}>
 <Fragment slot="head">
 <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
@@ -148,7 +150,7 @@ const stockLogSchema = {
         </div>
       </div>
       <p id="answer" class="hero-lead">Luke Sandelands is a Shopify automation specialist and the founder of Stack Architect, which publishes free, open-source tools that replace paid Shopify apps. Every guide comes from hands-on implementation work: building Make.com scenarios, configuring Meta Conversions API and Google Enhanced Conversions, and testing each build in production stores before publishing.</p>
-      <p class="hero-lead">The same architecture that Elevar charges $225/month and Triple Whale charges $219+/month for is released here free, with the full source on GitHub, step-by-step setup, and no upsell.</p>
+      <p class="hero-lead">The same architecture that Elevar charges $225/month for, and Triple Whale prices by store revenue, is released here free, with the full source on GitHub, step-by-step setup, and no upsell.</p>
       <div class="cred-strip">
         <div class="cred"><span class="cred-dot"></span>Shopify automation specialist</div>
         <div class="cred"><span class="cred-dot"></span>Make.com · Meta CAPI · Google Enhanced Conversions</div>
@@ -349,15 +351,15 @@ const stockLogSchema = {
         </a>
         <a href="/shopify-google-ads-conversion-tracking/" class="tool-row">
           <span class="tool-name">Google Ads Enhanced Conversions: setup guide</span>
-          <span class="tool-saving">saves $29–$375/mo</span>
+          <span class="tool-saving">free setup</span>
         </a>
         <a href="/stocky-swap/" class="tool-row">
           <span class="tool-name">Stocky Swap: free order log replacing Shopify Stocky, which closed in August 2026</span>
-          <span class="tool-saving">saves $29–$199/mo</span>
+          <span class="tool-saving">saves $49–$119/mo</span>
         </a>
         <a href="/tiktok-events-api-shopify/" class="tool-row">
           <span class="tool-name">TikTok Events API: free server-side tracking via Make.com</span>
-          <span class="tool-saving">saves $39–$299/mo</span>
+          <span class="tool-saving">saves $39–$275/mo</span>
         </a>
         <a href="/replace-klaviyo-free/" class="tool-row">
           <span class="tool-name">Replace Klaviyo Free: Systeme.io unlimited emails</span>
@@ -365,7 +367,7 @@ const stockLogSchema = {
         </a>
         <a href="/shopify-profit-loss-automation/" class="tool-row">
           <span class="tool-name">P&amp;L Auto: live profit and loss in Google Sheets</span>
-          <span class="tool-saving">saves $19–$299/mo</span>
+          <span class="tool-saving">saves $35–$299/mo</span>
         </a>
       </div>
     </div>
@@ -417,6 +419,7 @@ const stockLogSchema = {
        region, so the visible attribution for it belongs in the same region.
        This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard press /></div>
+<PriceSources ids={['elevar', 'analyzify', 'prediko', 'weltpixel', 'klaviyo', 'trueprofit', 'lifetimely']} />
 </main>
 <div class="authorcard-wrap">
 </div>

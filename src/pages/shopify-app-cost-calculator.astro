@@ -1,11 +1,28 @@
 ---
 import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
+import { READ_DATE } from '../data/priceSources';
+import PriceSources from '../components/PriceSources.astro';
+import { faqPage, type Faq } from '../utils/faq';
+
+// One array renders the visible FAQ and the FAQPage node.
+const faqs: Faq[] = [
+  { q: "How much do Shopify stores spend on apps per month?",
+    a: "We have not found a sourced average for Shopify app spend, so we do not quote one: add up your own bill with the calculator above. The highest-cost categories are email marketing, server-side tracking, and inventory management." },
+  { q: "How do I reduce my Shopify app bill immediately?",
+    a: "Run this calculator to identify your biggest spend categories, then deploy the $0 Automation Stack. Start with CAPI Shield for tracking (saves the most per deployment) then Stocky Swap for inventory. Both deploy in under 10 minutes and cost $0 to run permanently." },
+  { q: "Is it safe to remove paid Shopify apps?",
+    a: "Yes. The $0 stack runs entirely in your own Google account and Make.com workspace. Nothing is installed on Shopify: everything connects via Shopify webhooks, a built-in feature on all plans. Remove it instantly by deleting the Make.com scenario. No data is stored outside your own accounts." },
+  { q: "Does replacing apps affect Shopify store speed?",
+    a: "Replacing installed apps with server-side webhook automations typically improves store performance. Every Shopify app loads JavaScript on your storefront, increasing page weight. The $0 stack runs server-side (nothing loads in the browser), so your Core Web Vitals scores improve." },
+  { q: "How accurate is this calculator?",
+    a: "It is as accurate as the spend you enter: the result is your own monthly figures, annualised. The recovery percentages (50%, 85%, 100%) are scenarios you choose for how much of the stack you replace, not measured results. The vendor prices elsewhere on this page were read on each vendor's pricing page on 25 September 2026." },
+];
 import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
 ---
-<Base title="Shopify App Cost Calculator — What You Overpay" description="Enter your monthly Shopify app spend to see the annual figure, which categories have free replacements, and what switching would actually save.")>
+<Base verifiedDate={READ_DATE} title="Shopify App Cost Calculator — What You Overpay" description="Enter your monthly Shopify app spend to see the annual figure, which categories have free replacements, and what switching would actually save.")>
 <Fragment slot="head">
 <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
@@ -15,7 +32,7 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
         "@id": "https://stackarchitect.xyz/#website",
         "url": "https://stackarchitect.xyz",
         "name": "Stack Architect",
-        "description": "Free Shopify automation stack: replace paid tracking, inventory, email, TikTok CAPI, and workflow apps. Save $700+ per month. No code required.",
+        "description": "Free Shopify automation stack: replace paid tracking, inventory, email, TikTok CAPI, and workflow apps. Replace paid apps. No code required.",
         "inLanguage": "en-GB",
         "publisher": { "@id": "https://stackarchitect.xyz/#org" }
       },
@@ -47,46 +64,24 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }}
     ]
   })}></script>
-<script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "How much do Shopify stores spend on apps per month?",
-        "acceptedAnswer": { "@type": "Answer", "text": "The average Shopify store spends $500–$1,200 per month on apps across tracking, inventory, marketing, and automation tools. Stores with overlapping tools often spend considerably more without realising it. Most of that spend is eliminable with free alternatives." }
-      },
-      {
-        "@type": "Question",
-        "name": "Is it safe to remove paid Shopify apps?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Yes. The $0 stack runs entirely in your own Google account and Make.com workspace. Nothing is installed on your Shopify store: everything connects via Shopify webhooks, a built-in feature available on all plans. Remove it instantly by deleting the Make.com scenario and Google Sheet. There is no data exposure or Shopify plan requirement." }
-      },
-      {
-        "@type": "Question",
-        "name": "Does replacing apps affect Shopify store speed?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Replacing installed apps with server-side webhooks typically improves store performance. Every Shopify app installed loads JavaScript on your storefront, increasing page weight and reducing Core Web Vitals scores. The $0 stack runs entirely server-side: nothing is loaded in the browser, so your store loads faster." }
-      }
-    ]
-  }
-  </script>
+<script type="application/ld+json" set:html={JSON.stringify(faqPage(faqs))}></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "ItemList",
   "name": "Shopify paid apps and their free replacements (2026)",
-  "description": "Reference table of common paid Shopify apps, their typical monthly cost, and the free alternative that replaces each one.",
+  "description": "Reference table of common paid Shopify apps, their list price read on 25 September 2026, and the free alternative that replaces each one.",
   "itemListElement": [
-    { "@type": "ListItem", "position": 1, "name": "Klaviyo (email), typically $20+/mo, free replacement: Systeme.io" },
+    { "@type": "ListItem", "position": 1, "name": "Klaviyo (email), from $20/mo, free replacement: Systeme.io" },
     { "@type": "ListItem", "position": 2, "name": "Triple Whale (attribution), GMV-based pricing, free replacement: CAPI Shield" },
-    { "@type": "ListItem", "position": 3, "name": "Northbeam (attribution), from $1,500+/mo, free replacement: CAPI Shield" },
-    { "@type": "ListItem", "position": 4, "name": "Elevar (tracking), typically $225/mo, free replacement: CAPI Shield" },
+    { "@type": "ListItem", "position": 3, "name": "Northbeam (attribution), Starter listed at $1,500 by quote, free replacement: CAPI Shield" },
+    { "@type": "ListItem", "position": 4, "name": "Elevar (tracking), from $225/mo, free replacement: CAPI Shield" },
     { "@type": "ListItem", "position": 5, "name": "Stocky (inventory, closed Aug 2026), free replacement: Stocky Swap" },
-    { "@type": "ListItem", "position": 6, "name": "Inventory Planner (inventory), typically $99–$299/mo, free replacement: Stocky Swap" },
-    { "@type": "ListItem", "position": 7, "name": "Linnworks (inventory), typically $449+/mo, free replacement: Stocky Swap" },
-    { "@type": "ListItem", "position": 8, "name": "Zapier (automation), typically $49–$149/mo, free replacement: Make.com free tier" },
+    { "@type": "ListItem", "position": 6, "name": "Inventory Planner (inventory), quote only, free replacement: Stocky Swap" },
+    { "@type": "ListItem", "position": 7, "name": "Prediko (inventory), $49–$119/mo, free replacement: Stocky Swap" },
+    { "@type": "ListItem", "position": 8, "name": "Zapier (automation), from $19.99/mo, free replacement: Make.com free tier" },
     { "@type": "ListItem", "position": 9, "name": "Loox / Yotpo (reviews): free replacement: Judge.me" },
-    { "@type": "ListItem", "position": 10, "name": "Glew.io / BeProfit (analytics), typically $49–$299/mo, free replacement: P&L Auto" }
+    { "@type": "ListItem", "position": 10, "name": "BeProfit (analytics), $49–$249/mo, free replacement: P&L Auto" }
   ]
 }
 </script>
@@ -116,12 +111,12 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
       <span class="dim">Shopify Apps?</span>
     </h1>
 
-    <p id="answer" class="hero-sub">This calculator turns your current Shopify app spend into an annual figure and shows which categories have free replacements: most stores waste <strong>$500–$2,500 a month</strong> on apps that can be replaced at no cost. It uses published vendor list prices, so a negotiated or grandfathered rate will differ.</p>
+    <p id="answer" class="hero-sub">This calculator turns what you pay each month for marketing, inventory and tracking apps into an annual figure, and shows which of those categories have a free replacement. It uses the numbers you enter, so the result is your own bill rather than an average. The vendor prices elsewhere on this page were read on 25 September 2026.</p>
     <p style="font-size:13px;color:var(--text-4);max-width:540px;margin:0 auto 24px;line-height:1.6;">
       Tempted to just build the missing feature instead of paying for another app? See <a href="/shopify-app-development-cost/" style="color:var(--g);text-decoration:underline;">what a custom Shopify app actually costs</a> before you commission one.
     </p>
     <div class="hero-stats">
-      <div class="hero-stat"><div class="hero-stat-v">$500–$2,500/mo</div><div class="hero-stat-l">Average wasted spend</div></div>
+      <div class="hero-stat"><div class="hero-stat-v">$0</div><div class="hero-stat-l">Cost of the free stack</div></div>
       <div class="hero-stat"><div class="hero-stat-v">3–7 apps</div><div class="hero-stat-l">Replaceable for $0</div></div>
       <div class="hero-stat"><div class="hero-stat-v">~10 minutes</div><div class="hero-stat-l">To deploy free stack</div></div>
       <div class="hero-stat"><div class="hero-stat-v">$0</div><div class="hero-stat-l">Monthly cost</div></div>
@@ -300,13 +295,13 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
     </div>
     <div class="why-grid">
       <div class="why-card">
-        <h3>Typical monthly Shopify app costs</h3>
+        <h3>What common Shopify apps cost</h3>
         <div class="why-list">
-          <div class="why-item"><span class="why-item-dot"></span><div>Marketing &amp; email apps: <strong>$225/mo</strong></div></div>
-          <div class="why-item"><span class="why-item-dot"></span><div>Inventory &amp; fulfilment apps: <strong>$30–$300/mo</strong></div></div>
-          <div class="why-item"><span class="why-item-dot"></span><div>Analytics &amp; tracking apps: <strong>$20–$200/mo</strong></div></div>
-          <div class="why-item"><span class="why-item-dot"></span><div>Automation &amp; connector apps: <strong>$49–$149/mo</strong></div></div>
-          <div class="why-item"><span class="why-item-dot"></span><div>Theme &amp; store enhancements: <strong>$10–$150/mo</strong></div></div>
+          <div class="why-item"><span class="why-item-dot"></span><div>Email: <strong>Klaviyo $20+/mo</strong></div></div>
+          <div class="why-item"><span class="why-item-dot"></span><div>Inventory: <strong>Prediko $49+/mo</strong></div></div>
+          <div class="why-item"><span class="why-item-dot"></span><div>Tracking: <strong>Analyzify $145–$275/mo, Elevar $225/mo and up</strong></div></div>
+          <div class="why-item"><span class="why-item-dot"></span><div>Automation: <strong>Zapier $19.99+/mo</strong></div></div>
+          <div class="why-item"><span class="why-item-dot"></span><div>Store enhancements: <strong>Vitals $29.99/mo</strong></div></div>
         </div>
       </div>
       <div class="why-card">
@@ -321,7 +316,7 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
       </div>
     </div>
     <div class="why-stat-bar">
-      <p>The average Shopify store runs <strong>10–25 apps</strong> and spends <strong>~$1,000/mo</strong>. Most of that is eliminable with one free workflow deployment: takes under 10 minutes.</p>
+      <p>List prices read on each vendor's pricing page on 25 September 2026. Much of that spend is replaceable with one free workflow deployment: it takes under 10 minutes.</p>
     </div>
     <div class="why-cta-card">
       <div class="why-cta-left">
@@ -342,19 +337,19 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
     </div>
     <div class="prose">
       <h3>What is the average Shopify app spend per month?</h3>
-      <p>The average Shopify store spends $500–$1,200 per month on third-party apps. Stores in the mid-market range ($50k–$500k monthly GMV) typically run 10–25 apps simultaneously, with annual app bills of $6,000–$15,000. The highest-cost categories are email marketing platforms ($20+/month), server-side tracking tools ($145–$650/month), and inventory management apps ($29–$199/month). Many stores have overlapping tools in the same category, compounding the waste.</p>
+      <p>We have not found a sourced average for Shopify app spend, so we do not quote one: add up your own bill with the calculator above. The highest-cost categories are email marketing platforms ($20+/month), server-side tracking tools ($145–$650/month), and inventory management apps ($49–$119/month for Prediko). Many stores have overlapping tools in the same category, compounding the waste.</p>
 
       <h3>Which Shopify apps cost the most?</h3>
-      <p>Server-side tracking and attribution apps are the most expensive category per store: <a href="/shopify-attribution-tools-compared/">Triple Whale uses GMV-based pricing, Elevar costs $225/month, and Northbeam starts at $1,500+/month</a>. Email marketing is the second highest: Klaviyo charges $20+/month after its February 2025 billing change that moved to per-profile pricing. Inventory management ranges from $29/month for basic tools to $499/month for Linnworks. Automation connectors like Zapier cost $19.99+/month for the operations most stores need.</p>
+      <p>Server-side tracking and attribution apps are the most expensive category per store: <a href="/shopify-attribution-tools-compared/">Triple Whale uses GMV-based pricing, Elevar costs $225/month, and Northbeam lists its Starter plan at $1,500, by quote</a>. Email marketing is the second highest: Klaviyo charges $20+/month after its February 2025 billing change that moved to per-profile pricing. Inventory management ranges from $19.99/month (Stockful Starter) to $599/month (Cin7 Core Pro). Automation connectors like Zapier cost $19.99+/month for the operations most stores need.</p>
 
       <h3>How much can you save by replacing paid Shopify apps?</h3>
-      <p>Stack Architect calculations based on verified vendor pricing show an average monthly saving of $700+ when deploying the full free stack. CAPI Shield replaces tracking apps at $0 vs $145–$650/month. <a href="/stocky-swap/">Stocky Swap</a> replaces inventory apps at $0 vs $29–$199/month. Make.com's free tier replaces Zapier at $0 vs $19.99+/month. <a href="/replace-klaviyo-free/">Systeme.io replaces Klaviyo</a> at $0 vs $20+/month. Combined annual saving: $6,000–$12,000 for a typical mid-market Shopify store.</p>
+      <p>It depends on which paid apps you run. On list prices read on 25 September 2026: CAPI Shield replaces tracking apps at $0 vs $145–$650/month. <a href="/stocky-swap/">Stocky Swap</a> replaces inventory apps at $0 vs $49–$119/month. Make.com's free tier replaces Zapier at $0 vs $19.99+/month. <a href="/replace-klaviyo-free/">Systeme.io replaces Klaviyo</a> at $0 vs $20+/month. Those four entry prices add up to about $234 a month, or $2,808 a year.</p>
 
       <h3>Does removing apps improve Shopify store speed?</h3>
       <p>Yes: significantly. Every Shopify app installed loads JavaScript on your storefront, increasing page weight and reducing Core Web Vitals scores. Stores that replace installed apps with server-side webhook automations remove that JavaScript load entirely. The $0 Automation Stack runs server-side with nothing loaded in the browser, which typically improves Lighthouse performance scores and reduces First Contentful Paint time.</p>
 
       <h3>What is the $0 Shopify Automation Stack?</h3>
-      <p>The <a href="/stack/">$0 Automation Stack</a> is a collection of six free tools from Stack Architect that collectively replace $500–$900/month of paid Shopify apps. The stack uses Make.com webhooks, Google Sheets, and Systeme.io's free plan to deliver server-side tracking, inventory management, TikTok Events API, email automation, and live P&L reporting: all at $0/month ongoing. Deploy time is under 10 minutes per tool. Over 500 Shopify stores are currently running the stack.</p>
+      <p>The <a href="/stack/">$0 Automation Stack</a> is a collection of six free tools from Stack Architect that collectively replace paid Shopify apps. The stack uses Make.com webhooks, Google Sheets, and Systeme.io's free plan to deliver server-side tracking, inventory management, TikTok Events API, email automation, and live P&L reporting: all at $0/month ongoing. Deploy time is under 10 minutes per tool. Over 500 Shopify stores are currently running the stack.</p>
     </div>
   </div>
 </section>
@@ -373,19 +368,19 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
   <div class="inner-sm">
     <div class="sec-head">
       <span class="tag tag-dim" style="margin-bottom:14px;display:inline-flex;">Worked example</span>
-      <h2 id="breakdown-h">A Real <span style="color:var(--g)">$537/Month</span> Stack, Replaced</h2>
-      <p>What the numbers actually look like for a typical mid-market store, and what it costs after switching.</p>
+      <h2 id="breakdown-h">An Example <span style="color:var(--g)">$513/Month</span> Stack, Replaced</h2>
+      <p>An example stack at each vendor's list price, read on 25 September 2026, and what it costs after switching.</p>
     </div>
 
     <div class="worked">
-      <div class="worked-label">before: a typical $50k–$150k/mo store</div>
+      <div class="worked-label">before: an example stack at list prices</div>
       <div class="worked-line"><span>Klaviyo (email, entry plan)</span><span class="v paid">$20+/mo</span></div>
-      <div class="worked-line"><span>Triple Whale (attribution, Foundation)</span><span class="v paid">$219+/mo</span></div>
+      <div class="worked-line"><span>Elevar (tracking, Core)</span><span class="v paid">$225/mo</span></div>
       <div class="worked-line"><span>Zapier (Professional)</span><span class="v paid">$19.99+/mo</span></div>
-      <div class="worked-line"><span>Yotpo (reviews)</span><span class="v paid">$169+/mo</span></div>
-      <div class="worked-line"><span>Lifetimely (P&amp;L dashboard)</span><span class="v paid">$79+/mo</span></div>
-      <div class="worked-line"><span>Privy (pop-ups)</span><span class="v paid">$30+/mo</span></div>
-      <div class="worked-total"><span>Total before</span><span class="v" style="color:var(--red)">$537/mo · $6,444/yr</span></div>
+      <div class="worked-line"><span>Yotpo (reviews, Pro)</span><span class="v paid">$169/mo</span></div>
+      <div class="worked-line"><span>Lifetimely (P&amp;L dashboard, S)</span><span class="v paid">$49/mo</span></div>
+      <div class="worked-line"><span>Privy (email and pop-ups)</span><span class="v paid">$30/mo</span></div>
+      <div class="worked-total"><span>Total before</span><span class="v" style="color:var(--red)">$513/mo · $6,156/yr</span></div>
     </div>
 
     <div class="worked">
@@ -397,7 +392,7 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
       <div class="worked-line"><span>Reviews &rarr; Judge.me free plan</span><span class="v free">$0</span></div>
       <div class="worked-line"><span>P&amp;L &rarr; <a href="/shopify-profit-loss-automation/">P&amp;L Auto</a> in Sheets</span><span class="v free">$0</span></div>
       <div class="worked-line"><span>Pop-ups &rarr; Systeme.io built-in</span><span class="v free">$0</span></div>
-      <div class="worked-total"><span>Total after</span><span class="v">$0/mo · $8,280/yr saved</span></div>
+      <div class="worked-total"><span>Total after</span><span class="v">$0/mo · $6,156/yr saved</span></div>
       <div class="worked-note">The only running cost is Make.com once a store exceeds ~1,000 credits/month (roughly 1,000 orders), at which point the Core plan is $9/month: still a 98%+ reduction. Everything above runs in your own Google and Make.com accounts, so there is no per-seat or per-contact escalation as you grow.</div>
     </div>
 
@@ -418,18 +413,17 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
         </thead>
         <tbody>
           <tr><td>Klaviyo</td><td class="cat">Email</td><td class="paid">$20+/mo</td><td class="freecol"><a href="/replace-klaviyo-free/">Systeme.io</a> <span class="free">$0</span></td></tr>
-          <tr><td>Omnisend</td><td class="cat">Email</td><td class="paid">$99/mo</td><td class="freecol">Systeme.io <span class="free">$0</span></td></tr>
           <tr><td>Triple Whale</td><td class="cat">Attribution</td><td class="paid">GMV-based</td><td class="freecol"><a href="/capi-shield/">CAPI Shield</a> <span class="free">$0</span></td></tr>
-          <tr><td>Northbeam</td><td class="cat">Attribution</td><td class="paid">From $1,500+/mo</td><td class="freecol"><a href="/capi-shield/">CAPI Shield</a> <span class="free">$0</span></td></tr>
+          <tr><td>Northbeam</td><td class="cat">Attribution</td><td class="paid">Starter $1,500, by quote</td><td class="freecol"><a href="/capi-shield/">CAPI Shield</a> <span class="free">$0</span></td></tr>
           <tr><td>Elevar</td><td class="cat">Tracking</td><td class="paid">$225/mo</td><td class="freecol"><a href="/capi-shield/">CAPI Shield</a> <span class="free">$0</span></td></tr>
           <tr><td>Analyzify</td><td class="cat">Tracking</td><td class="paid">$145–$275/mo</td><td class="freecol"><a href="/capi-shield/">CAPI Shield</a> <span class="free">$0</span></td></tr>
-          <tr><td>Stocky <span style="color:var(--red)">(closing Aug 2026)</span></td><td class="cat">Inventory</td><td class="paid">$0 → gone</td><td class="freecol"><a href="/stocky-swap/">Stocky Swap</a> <span class="free">$0</span></td></tr>
-          <tr><td>Inventory Planner</td><td class="cat">Inventory</td><td class="paid">$99–$299/mo</td><td class="freecol"><a href="/stocky-alternative/">Stocky Swap</a> <span class="free">$0</span></td></tr>
-          <tr><td>Linnworks</td><td class="cat">Inventory</td><td class="paid">$449+/mo</td><td class="freecol">Stocky Swap <span class="free">$0</span></td></tr>
-          <tr><td>Loox</td><td class="cat">Reviews</td><td class="paid">$30–$80/mo</td><td class="freecol">Judge.me <span class="free">$0</span></td></tr>
-          <tr><td>Yotpo</td><td class="cat">Reviews</td><td class="paid">$99+/mo</td><td class="freecol">Judge.me <span class="free">$0</span></td></tr>
-          <tr><td>Zapier</td><td class="cat">Automation</td><td class="paid">$49–$149/mo</td><td class="freecol">Make.com free tier <span class="free">$0</span></td></tr>
-          <tr><td>Glew.io / BeProfit</td><td class="cat">Analytics</td><td class="paid">$49–$299/mo</td><td class="freecol"><a href="/shopify-profit-loss-automation/">P&amp;L Auto</a> <span class="free">$0</span></td></tr>
+          <tr><td>Stocky <span style="color:var(--red)">(closed Aug 2026)</span></td><td class="cat">Inventory</td><td class="paid">$0 → gone</td><td class="freecol"><a href="/stocky-swap/">Stocky Swap</a> <span class="free">$0</span></td></tr>
+          <tr><td>Inventory Planner</td><td class="cat">Inventory</td><td class="paid">Quote only</td><td class="freecol"><a href="/stocky-alternative/">Stocky Swap</a> <span class="free">$0</span></td></tr>
+          <tr><td>Prediko</td><td class="cat">Inventory</td><td class="paid">$49–$119/mo</td><td class="freecol">Stocky Swap <span class="free">$0</span></td></tr>
+          <tr><td>Loox</td><td class="cat">Reviews</td><td class="paid">$49.99–$299.99/mo</td><td class="freecol">Judge.me <span class="free">$0</span></td></tr>
+          <tr><td>Yotpo</td><td class="cat">Reviews</td><td class="paid">$89+/mo</td><td class="freecol">Judge.me <span class="free">$0</span></td></tr>
+          <tr><td>Zapier</td><td class="cat">Automation</td><td class="paid">$19.99+/mo</td><td class="freecol">Make.com free tier <span class="free">$0</span></td></tr>
+          <tr><td>BeProfit</td><td class="cat">Analytics</td><td class="paid">$49–$249/mo</td><td class="freecol"><a href="/shopify-profit-loss-automation/">P&amp;L Auto</a> <span class="free">$0</span></td></tr>
           <tr><td>Gorgias</td><td class="cat">Helpdesk</td><td class="paid">$10–$360/mo</td><td class="freecol">Tidio free (low volume) <span class="free">$0</span></td></tr>
         </tbody>
       </table>
@@ -440,7 +434,7 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
       <p>The tool sums your monthly spend across three highest-cost categories (marketing, inventory, and tracking) then multiplies by twelve for annual exposure. The recovery slider applies a realistic replacement rate: <strong>conservative (50%)</strong> assumes you only swap the obvious overlaps; <strong>aggressive (85%)</strong> assumes you deploy the full free stack but keep one or two genuinely irreplaceable paid tools; <strong>full reset (100%)</strong> assumes every category moves to a free native or Make.com-based alternative. Most stores land in the 85% band, because a small number of tools (advanced SMS, true multi-channel inventory, enterprise loyalty) are worth keeping. The point of the calculator is not to argue every app is waste; it is to separate the spend that buys real differentiated value from the spend that simply duplicates what a webhook and a Google Sheet do for free.</p>
 
       <h3>Why app bills grow silently</h3>
-      <p>App spend is the most under-audited line in most Shopify P&amp;Ls because each individual app feels cheap. A $49 review app and a $99 attribution tool never trigger a budget review on their own, but ten of them compound into a four-figure monthly bill that scales <em>with revenue</em>, since most apps tier their pricing on order volume, contacts, or ad spend. That is the trap: the more successful your store becomes, the more these tools charge, even though the underlying job (fire an event, log a row, send an email) costs nothing to run server-side. Replacing them with a webhook-based stack breaks that link between revenue and tooling cost permanently, which is why the saving compounds rather than staying flat.</p>
+      <p>App spend is the most under-audited line in most Shopify P&amp;Ls because each individual app feels cheap. A review app and an attribution tool never trigger a budget review on their own, but ten of them compound into a four-figure monthly bill that scales <em>with revenue</em>, since most apps tier their pricing on order volume, contacts, or ad spend. That is the trap: the more successful your store becomes, the more these tools charge, even though the underlying job (fire an event, log a row, send an email) costs nothing to run server-side. Replacing them with a webhook-based stack breaks that link between revenue and tooling cost permanently, which is why the saving compounds rather than staying flat.</p>
     </div>
   </div>
 </section>
@@ -458,26 +452,12 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
       <p>Everything store owners ask before running their first audit.</p>
     </div>
     <div class="faq-list" id="faq-list">
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">How much do Shopify stores spend on apps per month?<span class="faq-icon">+</span></button>
-        <div class="faq-a">The average Shopify store spends $500–$1,200 per month on apps. Stores in the $50k–$500k monthly GMV range typically run 10–25 apps and spend $6,000–$15,000 per year. The highest-cost categories are email marketing, server-side tracking, and inventory management.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">How do I reduce my Shopify app bill immediately?<span class="faq-icon">+</span></button>
-        <div class="faq-a">Run this calculator to identify your biggest spend categories, then deploy the $0 Automation Stack. Start with CAPI Shield for tracking (saves the most per deployment) then Stocky Swap for inventory. Both deploy in under 10 minutes and cost $0 to run permanently.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">Is it safe to remove paid Shopify apps?<span class="faq-icon">+</span></button>
-        <div class="faq-a">Yes. The $0 stack runs entirely in your own Google account and Make.com workspace. Nothing is installed on Shopify: everything connects via Shopify webhooks, a built-in feature on all plans. Remove it instantly by deleting the Make.com scenario. No data is stored outside your own accounts.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">Does replacing apps affect Shopify store speed?<span class="faq-icon">+</span></button>
-        <div class="faq-a">Replacing installed apps with server-side webhook automations typically improves store performance. Every Shopify app loads JavaScript on your storefront, increasing page weight. The $0 stack runs server-side (nothing loads in the browser), so your Core Web Vitals scores improve.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">How accurate is this calculator?<span class="faq-icon">+</span></button>
-        <div class="faq-a">It uses verified vendor pricing data for each paid app and its free alternative. Enter your actual monthly spend for precise results. The recovery percentages (50%, 85%, 100%) reflect what's achievable at each deployment level depending on which apps you choose to replace.</div>
-      </div>
+      {faqs.map(({ q, a }) => (
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false"><span>{q}</span><span class="faq-icon">+</span></button>
+          <div class="faq-a" set:html={a} />
+        </div>
+      ))}
     </div>
   </div>
 </section>
@@ -487,6 +467,7 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
 <AuthorCard />
   </div>
 
+<PriceSources ids={['klaviyo', 'northbeam', 'elevar', 'analyzify', 'prediko', 'inventoryPlanner', 'loox', 'yotpo', 'zapier', 'beprofit', 'gorgias', 'stockful', 'cin7', 'vitals', 'lifetimely', 'privy', 'make']} />
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
@@ -495,9 +476,9 @@ var calcState={mkt:450,inv:200,trk:150,count:12,scenario:.85};
 var calcChart;
 
 var RANKS=[
-  {min:20000,label:'CRITICAL WASTE',color:'var(--red)',sub:'Your app bill is severely bloated — thousands avoidable per month.',tier:'Critical'},
+  {min:20000,label:'CRITICAL WASTE',color:'var(--red)',sub:'Your app bill is severely bloated: thousands avoidable per month.',tier:'Critical'},
   {min:10000,label:'HIGH INEFFICIENCY',color:'var(--red)',sub:'Most of your app spend can be replaced for $0 with the free stack.',tier:'High'},
-  {min:4000,label:'SIGNIFICANT WASTE',color:'var(--amber)',sub:'Clear opportunities to recover $300–$700/month.',tier:'Medium'},
+  {min:4000,label:'SIGNIFICANT WASTE',color:'var(--amber)',sub:'Clear opportunities to recover part of your app bill.',tier:'Medium'},
   {min:1000,label:'MODERATE SPEND',color:'var(--amber)',sub:'Some apps could be replaced. Free stack cuts costs further.',tier:'Low'},
   {min:0,label:'LEAN OPERATOR',color:'var(--g)',sub:'Your stack is already efficient. Free tools can optimise further.',tier:'Lean'}
 ];
@@ -632,7 +613,7 @@ function shareX(){
   readInputs();
   var mo=calcState.mkt+calcState.inv+calcState.trk;
   var save=Math.round(mo*12*calcState.scenario);
-  var txt='I just found $'+save.toLocaleString()+'/year in wasted Shopify app spend — all replaceable for $0. Free calculator:';
+  var txt='I just found $'+save.toLocaleString()+'/year in wasted Shopify app spend, all replaceable for $0. Free calculator:';
   window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(txt)+'&url='+encodeURIComponent('https://stackarchitect.xyz/shopify-app-cost-calculator/'));
 }
 function shareLinkedIn(){

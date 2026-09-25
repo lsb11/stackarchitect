@@ -12,12 +12,62 @@ import { pageUpdated, formatUpdatedMonth } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
 import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
+import PriceSources from '../components/PriceSources.astro';
+import { faqPage, type Faq } from '../utils/faq';
+import { READ_DATE } from '../data/priceSources';
 
 const pageTitle = 'Gorgias Review 2026 — Is It Worth It for Shopify?';
 const pageDescription = 'When Gorgias earns its cost on Shopify and when it does not. Real pricing maths, the three numbers that decide it, and the hidden AI Agent costs.';
 const canonicalUrl = 'https://stackarchitect.xyz/gorgias-shopify-guide/';
 const datePublished = '2026-04-30';
 const dateModified = pageUpdated('/gorgias-shopify-guide/')!;
+
+// Every Gorgias figure below was read on gorgias.com/pricing on READ_DATE
+// (see src/data/priceSources.ts for what the page said). One array renders the
+// visible FAQ and the FAQPage node.
+const G = '<a href="https://www.gorgias.com/pricing" target="_blank" rel="noopener">gorgias.com/pricing</a>';
+const faqs: Faq[] = [
+  {
+    q: 'Is Gorgias worth it for a Shopify store?',
+    a: 'Gorgias is worth it for Shopify stores doing roughly $50,000/month GMV or more, with 200+ support tickets per month, multi-channel customer queries (email, chat and social), and a team of 3+ agents. Below that volume the ticket-based pricing usually costs more than the time it saves. Stores under 100 tickets per month are typically better served by a free or lower-cost tool such as Tidio.',
+  },
+  {
+    q: 'How much does Gorgias cost in 2026?',
+    a: `Gorgias lists four self-serve plans on ${G} (read 25 September 2026). Helpdesk only, billed monthly: Starter $10 (50 tickets), Basic $60 (300), Pro $360 (2,000) and Advanced $900 (5,000). Billed annually, Basic, Pro and Advanced are $50, $300 and $750 a month; Starter is monthly only. With AI Agent added, the monthly prices are $40, $90, $550 and $1,430, or $77, $471 and $1,227 a month billed annually, and include 30, 30, 190 and 530 automated interactions. Ticket overage is $0.40 on Starter and Basic and $0.36 on Pro and Advanced. Enterprise is priced by quote.`,
+  },
+  {
+    q: 'Does Gorgias have a free trial?',
+    a: 'Yes. The Gorgias <a href="https://www.gorgias.com/signup" target="_blank" rel="noopener">signup page</a> says "30-day trial, all features unlocked, no credit card required", while the FAQ on its pricing page says the trial lasts 7 days. We read both on 25 September 2026, so confirm the length when you sign up. Use the trial to configure your real workflow: have your ticket history exported, your top 10 macros drafted and your Shopify connection details ready before you start.',
+  },
+  {
+    q: 'What counts as a billable ticket in Gorgias?',
+    a: 'Gorgias defines a billable ticket as a conversation on any Gorgias channel that includes a message from a human agent, a rule or AI Agent, counted once however many messages follow. Newsletters, spam and auto-responders are filtered out. A reply to an old thread can count as a new ticket after a period of inactivity, which the pricing page does not quantify. Replies to social comments made through Gorgias are conversations on a Gorgias channel, so a store with busy ad comment threads should check how many of those its team answers there.',
+  },
+  {
+    q: 'What is the difference between Gorgias Helpdesk and AI Agent?',
+    a: 'Helpdesk is the ticketing platform: shared inbox, macros, Shopify order actions, routing and reporting. AI Agent resolves conversations without a human. Gorgias says AI Agent is available on every plan; in practice it is a paid option on top of the helpdesk price, from $30 a month on Starter, with an allowance of automated interactions and $1.50 for each one past it. Each automated interaction also counts as a helpdesk ticket, so an AI-resolved conversation uses your ticket allowance too.',
+  },
+  {
+    q: 'How long does it take to set up Gorgias for Shopify?',
+    a: 'A serious rollout takes 30 days end to end. Initial Shopify connection and basic email and chat setup is 2 to 4 hours. Building the macro library and automation rules that make Gorgias pay back is another 8 to 12 hours over the first two weeks. Soft-launching with one agent before full team migration adds another week. Stores that move everyone in week one typically miss the productivity gains and pay for the platform without capturing the time savings.',
+  },
+  {
+    q: 'Can Gorgias replace Zendesk for a Shopify store?',
+    a: 'For ecommerce-focused workflows, yes. Refund processing, order editing and customer order history are native to Gorgias rather than needing custom apps. Gorgias prices by ticket volume and never per agent, where Zendesk prices per agent per month. For stores with non-ecommerce support needs (B2B, enterprise integrations, complex compliance workflows), Zendesk\'s broader feature set may justify its cost.',
+  },
+  {
+    q: 'Should I use Gorgias or Tidio for my Shopify store?',
+    a: 'Use Tidio if your store does under $50,000/month GMV, handles under 200 tickets a month, works mainly through chat and email, and has a small team or a solo operator. Tidio\'s free plan covers 50 conversations a month and includes 50 Lyro AI conversations once, not every month (<a href="https://www.tidio.com/pricing/" target="_blank" rel="noopener">tidio.com/pricing</a>, read 25 September 2026). Use Gorgias if your store does $50,000+/month GMV, handles 200+ tickets a month across several channels, your agents regularly edit orders or issue refunds, and your team has 3+ agents who need a shared inbox.',
+  },
+  {
+    q: 'What does a ticket cost on Gorgias\'s list prices?',
+    a: 'Divide the plan price by its ticket allowance. On monthly billing, helpdesk only, Basic works out at $0.20 per included ticket ($60 for 300) and Pro at $0.18 ($360 for 2,000); tickets past the allowance cost $0.40 on Basic and $0.36 on Pro. These are list-price figures, not what a resolved conversation costs once agent time is counted. Compare them with your current tool\'s monthly cost divided by the tickets it handles.',
+  },
+  {
+    q: 'Can I switch from Gorgias back to a cheaper tool later?',
+    a: 'Yes. Gorgias offers monthly and annual subscriptions; annual plans are billed upfront for 12 months, and you cancel from Settings, then Billing, in the Gorgias dashboard (pricing page FAQ, read 25 September 2026). Export ticket history, macros and customer data before you leave. The migration friction is real, but it is not lock-in. Stay on monthly billing for 60 to 90 days before you commit to an annual contract.',
+  },
+];
 
 // Schema: WebPage + Article + Review + SoftwareApplication + HowTo + FAQPage + BreadcrumbList
 const schema = {
@@ -66,10 +116,9 @@ const schema = {
       operatingSystem: 'Web',
       url: 'https://www.gorgias.com',
       description: 'Customer support helpdesk built for Shopify and ecommerce stores. Ticket-based pricing, deep Shopify integration (refunds, order edits, customer history native), multi-channel inbox (email, chat, social DMs, SMS, voice).',
-      // No `offers`. Gorgias pricing is unverified in src/data/apps.json (no
-      // priceVerifiedDate, no priceSourceUrl), and CLAUDE.md forbids asserting
-      // a vendor price in structured data without both. The prose below still
-      // discusses pricing in context, where it can be qualified.
+      // No `offers`. The prices are sourced in prose (gorgias.com/pricing, read
+      // READ_DATE), but Gorgias's own page shows two billing modes and two
+      // AI Agent states per plan, and one Offer cannot say which it means.
     },
     {
       '@type': 'Review',
@@ -77,7 +126,7 @@ const schema = {
       itemReviewed: { '@id': `${canonicalUrl}#software` },
       author: { '@id': 'https://stackarchitect.xyz/#luke' },
       datePublished: '2026-05-01', // the review's own date; a price fix is not a new review
-      reviewBody: 'Gorgias is the right call for Shopify stores doing $50,000+/month GMV, handling 200+ support tickets/month, with a team of 3+ agents on multi-channel queries. Below those thresholds the ticket-based pricing model usually costs more than the time it saves. Hidden costs (AI Agent at $0.90-$1.00 per resolution, voice/SMS add-ons, social comments counting as billable tickets) often push the real bill well above the advertised plan price.',
+      reviewBody: 'Gorgias is the right call for Shopify stores doing $50,000+/month GMV, handling 200+ support tickets/month, with a team of 3+ agents on multi-channel queries. Below those thresholds the ticket-based pricing model usually costs more than the time it saves. Hidden costs (AI Agent billed per automated interaction on top of the helpdesk price, voice and SMS add-ons, social replies counting as billable tickets) often push the real bill well above the advertised plan price.',
       reviewRating: {
         '@type': 'Rating',
         ratingValue: '4',
@@ -101,92 +150,7 @@ const schema = {
         { '@type': 'HowToStep', position: 6, name: 'Days 29-30: First month review', text: 'Review actual ticket volume vs plan allowance. Check overage charges. Audit macro hit rates. Adjust the plan tier if you over-bought or are heading for overages.' },
       ],
     },
-    {
-      '@type': 'FAQPage',
-      '@id': `${canonicalUrl}#faq`,
-      mainEntity: [
-        {
-          '@type': 'Question',
-          name: 'Is Gorgias worth it for a Shopify store?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Gorgias is worth it for Shopify stores doing roughly $50,000/month GMV or more, with 200+ support tickets per month, multi-channel customer queries (email + chat + social), and a team of 3+ agents. Below that volume the ticket-based pricing usually costs more than the time it saves. Stores under 100 tickets per month are typically better served by free or lower-cost alternatives like Tidio.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'How much does Gorgias cost in 2026?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Gorgias has five tiers in 2026: Starter from $40/month (50 tickets, 3 user limit), Basic at $60/month (300 tickets, unlimited users), Pro at $300/month (2,000 tickets, includes 1,000 AI Agent interactions), Advanced at $900/month (5,000 tickets, 2,500 AI interactions), and Enterprise on custom contracts. Annual billing is approximately 16-25% cheaper. AI Agent automation is billed separately at $0.90 per resolution on annual plans, $1.00 on monthly. Overage rates are $0.36-$0.40 per ticket on Starter or $36-$40 per 100 tickets on higher plans.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'Does Gorgias have a free trial?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Yes. The Gorgias signup page (gorgias.com/signup) says: 30-day trial, all features unlocked, no credit card required. Use it to configure your actual workflow rather than to browse. Plan accordingly: have your ticket history exported and macro requirements drafted before starting the trial.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'What counts as a billable ticket in Gorgias?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'A billable ticket is any customer conversation your team responds to. This includes email replies, live chat sessions, replies to social media comments and DMs, SMS exchanges, and phone calls (when using voice add-ons). Auto-replies and spam are filtered out. Critically, replying to a comment under a Facebook or Instagram ad counts as a billable ticket: for stores with high paid social spend this can dominate ticket volume unexpectedly. Reopened tickets within 7 days of original resolution do not generate a new charge; reopens after that window do.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'What is the difference between Gorgias Helpdesk and AI Agent?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Gorgias Helpdesk is the core ticketing platform: shared inbox, macros, Shopify integration, and routing. AI Agent is a separate add-on that fully resolves tickets without human involvement, billed per automated resolution at $0.90 (annual) or $1.00 (monthly). Higher tiers (Pro and Advanced) include a bundle of AI Agent interactions in the base plan; lower tiers must purchase AI Agent capacity on top. AI-resolved conversations still count as billable helpdesk tickets too, so you pay both fees on the same conversation.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'How long does it take to set up Gorgias for Shopify?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'A serious Gorgias rollout for a Shopify store takes 30 days end-to-end. Initial Shopify connection and basic email/chat setup takes 2-4 hours. Building the macro library and automation rules that make Gorgias actually pay back takes another 8-12 hours over the first two weeks. Soft-launching with one agent before full team migration adds another week. Stores that try to migrate everyone in week one typically miss productivity gains and end up paying for the platform without capturing the time savings.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'Can Gorgias replace Zendesk for a Shopify store?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Yes, for ecommerce-focused workflows Gorgias generally outperforms Zendesk on Shopify-specific tasks: refund processing, order editing, and customer order history are native to Gorgias rather than requiring custom apps as on Zendesk. Gorgias\'s ticket-based pricing also avoids per-agent fees, which Zendesk charges per seat. For stores with non-ecommerce support needs (B2B, enterprise integrations, complex compliance workflows), Zendesk\'s broader feature set may justify its cost.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'Should I use Gorgias or Tidio for my Shopify store?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Use Tidio if your store does under $50,000/month GMV, you handle under 200 support tickets per month, you operate primarily through chat and email, and you have a small team or solo operation. Tidio\'s Lyro AI on the free plan resolves a significant share of repetitive queries automatically. Use Gorgias if your store does $50,000+/month GMV, you handle 200+ tickets per month across multiple channels, your agents regularly modify orders or issue refunds, and your team has 3+ agents. The two tools target genuinely different stages of business maturity.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'What is the average cost per ticket in Gorgias?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Gorgias\'s own benchmark for human-resolved tickets is approximately $3.10 per ticket. AI Agent resolutions are $0.90-$1.00 plus the underlying helpdesk ticket fee. The break-even calculation: if your blended cost per ticket on your current tool exceeds $3.10, Gorgias is likely cheaper at sufficient volume. If it is below $3.10, the productivity gains rather than direct cost savings are what justifies the move.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'Can I switch from Gorgias back to a cheaper tool later?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Yes. Gorgias allows month-to-month cancellation on monthly billing (no refunds on annual plans). Ticket history, macros, and customer data can be exported. The migration friction is real (agents adjust to new tooling, customers may notice changed ticket numbers) but it is not lock-in in any meaningful sense. Annual contracts are the only real commitment, and you should only sign annually after 60-90 days on monthly to validate fit.',
-          },
-        },
-      ],
-    },
+    { ...faqPage(faqs, `${canonicalUrl}#faq`), '@context': undefined },
   ],
 };
 import TableOfContents from '../components/TableOfContents.astro';
@@ -232,6 +196,7 @@ const tocHeadings = [
   pageType="article"
   publishDate={datePublished}
   updatedDate={dateModified}
+  verifiedDate={READ_DATE}
   schema={schema}
 >
 
@@ -362,7 +327,7 @@ const tocHeadings = [
           <div style="background:var(--bg-3);border:1.5px solid var(--border);border-radius:12px;padding:28px 24px;">
             <div style="font-family:var(--mono);font-size:10px;color:var(--sky);letter-spacing:.1em;margin-bottom:10px;">NUMBER 2</div>
             <div style="font-size:32px;font-weight:700;color:var(--text);margin-bottom:8px;">$50k+</div>
-            <div style="font-size:14px;color:var(--text-2);line-height:1.55;">Monthly GMV. Below this revenue level, the $60-300/month base plan is a meaningful share of your operating margin. Gorgias is built for stores where $300/month is rounding error, not a debate.</div>
+            <div style="font-size:14px;color:var(--text-2);line-height:1.55;">Monthly GMV. Below this revenue level, a Basic or Pro plan ($60 to $360 a month on monthly billing, helpdesk only) is a meaningful share of your operating margin. Gorgias is built for stores where that is rounding error, not a debate.</div>
           </div>
 
           <div style="background:var(--bg-3);border:1.5px solid var(--border);border-radius:12px;padding:28px 24px;">
@@ -378,13 +343,13 @@ const tocHeadings = [
           <p>If any of these describe your store today, Gorgias is the wrong purchase regardless of how good the product is:</p>
 
           <ul>
-            <li><strong>Under 100 tickets/month.</strong> The Starter plan starts at $40/month for 50 tickets, the Basic plan at $60 covers 300. If you're at 80 tickets, you're paying $60/month for capacity you don't use, and the time savings on 80 tickets/month don't justify it. Free plans on alternatives like Tidio resolve a significant share of these queries with AI without paying anything.</li>
+            <li><strong>Under 100 tickets/month.</strong> Starter is $10/month for 50 tickets (helpdesk only; $40 with AI Agent) and Basic is $60/month for 300. At 80 tickets you are on Basic, paying for 220 tickets you don't use, and the time saved on 80 tickets a month doesn't justify it. Tidio's free plan covers 50 conversations a month at no cost.</li>
 
             <li><strong>Solo operator handling support yourself.</strong> Gorgias's collaboration features (assignment, internal notes, agent reporting) assume a team. As a solo founder you don't need any of that. A simple shared inbox in Gmail or a free Tidio account handles it.</li>
 
             <li><strong>Single channel (email only, or chat only).</strong> The strongest case for Gorgias is unifying email + chat + social DMs + SMS into one inbox. If your customers only ever email you, you're paying for a multi-channel inbox to do single-channel work. Use a focused single-channel tool.</li>
 
-            <li><strong>Heavy paid social with high comment volume.</strong> Counter-intuitive but important: Facebook and Instagram comments under your ads count as billable Gorgias tickets if your team responds via Gorgias. Stores spending heavily on Meta ads with thousands of comments per month can blow through ticket allowances on social engagement that doesn't actually need a helpdesk workflow. Audit before you migrate.</li>
+            <li><strong>Heavy paid social with high comment volume.</strong> Counter-intuitive but important: Facebook and Instagram comments under your ads count as billable Gorgias tickets if your team responds via Gorgias. Stores spending heavily on Meta ads with busy comment threads can blow through ticket allowances on social engagement that doesn't actually need a helpdesk workflow. Audit before you migrate.</li>
 
             <li><strong>Cost predictability is a hard constraint.</strong> Gorgias's pricing model is volume-based with overage charges. Most months are predictable. Black Friday, viral moments, or product issues can spike volume 3-5x and create overage bills you didn't plan for. If your support budget needs to be fixed, look at agent-based pricing models (Zendesk, HappyFox) instead: they cost more on a steady state but are predictable.</li>
           </ul>
@@ -394,15 +359,15 @@ const tocHeadings = [
           <p>Conversely, if any of these describe your store, Gorgias usually pays back within 60-90 days:</p>
 
           <ul>
-            <li><strong>Multi-channel support is fragmented across tools.</strong> Email in Gmail, chat in a separate widget, Instagram DMs in one phone, Facebook in another. Reuniting these into one inbox is genuinely worth $60-300/month in agent productivity for any team handling 200+ tickets/month.</li>
+            <li><strong>Multi-channel support is fragmented across tools.</strong> Email in Gmail, chat in a separate widget, Instagram DMs in one phone, Facebook in another. Reuniting these into one inbox is worth a Basic or Pro plan's cost in agent time for any team handling 200+ tickets/month.</li>
 
             <li><strong>Agents regularly modify orders.</strong> Issuing refunds, editing shipping addresses, applying discount codes, adding order notes: these actions are native to Gorgias rather than requiring tab-switching to Shopify admin. For agents who do this 20+ times a day, the time saved is meaningful.</li>
 
             <li><strong>You need revenue attribution per ticket.</strong> Gorgias tracks revenue generated through support interactions (recovered carts, post-support purchases, returns avoided). For stores actively managing support as a profit centre rather than a cost centre, this data justifies the platform on its own.</li>
 
-            <li><strong>Your team is 3+ agents and growing.</strong> Gorgias doesn't charge per agent on Basic and above: you can add 5, 10, 50 agents at the same price. Agent-based tools (Zendesk especially) get expensive fast as teams grow. For scaling teams Gorgias's economics improve over time, not worsen.</li>
+            <li><strong>Your team is 3+ agents and growing.</strong> Gorgias never prices per agent: Starter includes 3 user seats and Basic and above include 500, per its comparison table. Agent-based tools (Zendesk especially) get expensive fast as teams grow. For scaling teams Gorgias's economics improve over time, not worsen.</li>
 
-            <li><strong>You have repetitive queries that AI can resolve.</strong> Order status, shipping times, return policies, sizing questions. Gorgias's AI Agent (paid add-on) resolves these without human involvement. For stores with strong knowledge bases and predictable query patterns, AI Agent can take a real share of incoming volume and free up the team for complex queries.</li>
+            <li><strong>You have repetitive queries that AI can resolve.</strong> Order status, shipping times, return policies, sizing questions. Gorgias's AI Agent (a paid option on every plan) resolves these without human involvement. For stores with strong knowledge bases and predictable query patterns, AI Agent can take a real share of incoming volume and free up the team for complex queries.</li>
           </ul>
 
           <div style="background:linear-gradient(135deg, rgba(52,211,119,.08), rgba(52,211,119,.02));border:1px solid rgba(52,211,119,.3);border-radius:12px;padding:24px;margin:32px 0;text-align:center;">
@@ -430,75 +395,77 @@ const tocHeadings = [
         <div class="sec-head">
           <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Pricing</span>
           <h2 id="pricing-h" style="font-size:clamp(28px,4vw,40px);">Gorgias pricing in 2026: what each plan actually costs</h2>
-          <p style="font-size:17px;color:var(--text-3);max-width:640px;">Five tiers. Volume-based. Looks simple on the marketing page, has three or four cost traps that aren't disclosed up front. Here's the real picture.</p>
+          <p style="font-size:17px;color:var(--text-3);max-width:640px;">Four self-serve plans plus Enterprise, priced by ticket volume and never per agent. Each plan has two prices on Gorgias's page: helpdesk only, or with AI Agent added. This is exactly what the page showed when we read it.</p>
         </div>
 
         <div style="overflow-x:auto;margin:32px 0;">
-          <table style="width:100%;border-collapse:collapse;font-size:14px;">
+          <table style="width:100%;border-collapse:collapse;font-size:13px;">
+            <caption style="caption-side:bottom;text-align:left;font-size:13px;color:var(--text-4);padding-top:12px;line-height:1.6;">Gorgias plans as published on <a href="https://www.gorgias.com/pricing" target="_blank" rel="noopener">gorgias.com/pricing</a>, read on <time datetime={READ_DATE}>25 September 2026</time>. All prices USD per month. Annual prices are billed upfront for 12 months; the yearly total is in brackets.</caption>
             <thead>
               <tr style="background:var(--bg-3);border-bottom:2px solid var(--border);">
-                <th style="text-align:left;padding:14px 12px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">Plan</th>
-                <th style="text-align:left;padding:14px 12px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">Monthly</th>
-                <th style="text-align:left;padding:14px 12px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">Tickets</th>
-                <th style="text-align:left;padding:14px 12px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">Agent seats</th>
-                <th style="text-align:left;padding:14px 12px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">Overage</th>
+                <th scope="col" style="text-align:left;padding:12px 10px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">Plan</th>
+                <th scope="col" style="text-align:left;padding:12px 10px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">Tickets / month</th>
+                <th scope="col" style="text-align:left;padding:12px 10px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">User seats</th>
+                <th scope="col" style="text-align:left;padding:12px 10px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">Helpdesk, monthly billing</th>
+                <th scope="col" style="text-align:left;padding:12px 10px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">Helpdesk, annual billing (per month)</th>
+                <th scope="col" style="text-align:left;padding:12px 10px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">With AI Agent, monthly billing</th>
+                <th scope="col" style="text-align:left;padding:12px 10px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">With AI Agent, annual billing (per month)</th>
+                <th scope="col" style="text-align:left;padding:12px 10px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">Automated interactions included</th>
+                <th scope="col" style="text-align:left;padding:12px 10px;font-family:var(--mono);font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;">Ticket overage</th>
               </tr>
             </thead>
             <tbody style="color:var(--text-2);">
-              <tr style="border-bottom:1px solid var(--border);"><td style="padding:14px 12px;font-weight:600;">Starter</td><td style="padding:14px 12px;">$40+</td><td style="padding:14px 12px;">50</td><td style="padding:14px 12px;">3 max</td><td style="padding:14px 12px;">$0.40/ticket</td></tr>
-              <tr style="border-bottom:1px solid var(--border);"><td style="padding:14px 12px;font-weight:600;">Basic</td><td style="padding:14px 12px;">$60</td><td style="padding:14px 12px;">300</td><td style="padding:14px 12px;">Unlimited</td><td style="padding:14px 12px;">$40/100 tickets</td></tr>
-              <tr style="background:rgba(52,211,119,.025);border-bottom:1px solid var(--border);"><td style="padding:14px 12px;font-weight:600;">Pro <span style="font-family:var(--mono);font-size:10px;color:var(--g);">recommended</span></td><td style="padding:14px 12px;">$300</td><td style="padding:14px 12px;">2,000</td><td style="padding:14px 12px;">Unlimited</td><td style="padding:14px 12px;">$36/100 tickets</td></tr>
-              <tr style="border-bottom:1px solid var(--border);"><td style="padding:14px 12px;font-weight:600;">Advanced</td><td style="padding:14px 12px;">$900</td><td style="padding:14px 12px;">5,000</td><td style="padding:14px 12px;">Unlimited</td><td style="padding:14px 12px;">$36/100 tickets</td></tr>
-              <tr><td style="padding:14px 12px;font-weight:600;">Enterprise</td><td style="padding:14px 12px;">Custom</td><td style="padding:14px 12px;">Custom</td><td style="padding:14px 12px;">Unlimited</td><td style="padding:14px 12px;">Negotiated</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:12px 10px;font-weight:600;">Starter</td><td style="padding:12px 10px;">50</td><td style="padding:12px 10px;">3</td><td style="padding:12px 10px;">$10</td><td style="padding:12px 10px;">Monthly only</td><td style="padding:12px 10px;">$40</td><td style="padding:12px 10px;">Monthly only</td><td style="padding:12px 10px;">30</td><td style="padding:12px 10px;">$0.40</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:12px 10px;font-weight:600;">Basic</td><td style="padding:12px 10px;">300</td><td style="padding:12px 10px;">500</td><td style="padding:12px 10px;">$60</td><td style="padding:12px 10px;">$50 ($600/yr)</td><td style="padding:12px 10px;">$90</td><td style="padding:12px 10px;">$77 ($924/yr)</td><td style="padding:12px 10px;">30</td><td style="padding:12px 10px;">$0.40</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:12px 10px;font-weight:600;">Pro</td><td style="padding:12px 10px;">2,000</td><td style="padding:12px 10px;">500</td><td style="padding:12px 10px;">$360</td><td style="padding:12px 10px;">$300 ($3,600/yr)</td><td style="padding:12px 10px;">$550</td><td style="padding:12px 10px;">$471 ($5,652/yr)</td><td style="padding:12px 10px;">190</td><td style="padding:12px 10px;">$0.36</td></tr>
+              <tr style="border-bottom:1px solid var(--border);"><td style="padding:12px 10px;font-weight:600;">Advanced</td><td style="padding:12px 10px;">5,000</td><td style="padding:12px 10px;">500</td><td style="padding:12px 10px;">$900</td><td style="padding:12px 10px;">$750 ($9,000/yr)</td><td style="padding:12px 10px;">$1,430</td><td style="padding:12px 10px;">$1,227 ($14,724/yr)</td><td style="padding:12px 10px;">530</td><td style="padding:12px 10px;">$0.36</td></tr>
+              <tr><td style="padding:12px 10px;font-weight:600;">Enterprise</td><td style="padding:12px 10px;">Over 5,000</td><td style="padding:12px 10px;" colspan="7">Custom pricing, by quote</td></tr>
             </tbody>
           </table>
         </div>
 
-        <p style="font-size:13px;color:var(--text-4);margin-bottom:24px;">All prices USD. Gorgias's pricing page shows Basic, Pro and Advanced cheaper on annual billing than monthly, and Starter on monthly billing only (<a href="https://www.gorgias.com/pricing" target="_blank" rel="noopener">gorgias.com/pricing</a>, read 25 September 2026). Per-ticket overage rates may vary by contract. AI Agent fees are billed separately: see hidden costs below.</p>
+        <div class="body-text">
+          <p><strong>Is AI Agent included?</strong> Gorgias's page says "AI Agent on every plan, pay only when it resolves a conversation", and its comparison table heads the AI Agent rows "included on every plan". That means available on every plan, not free with it: the helpdesk-only prices above include no automated interactions, and switching AI Agent on adds a separate monthly charge (on monthly billing $30 on Starter and Basic, $190 on Pro, $530 on Advanced) that covers the allowance in the table. Past that allowance each automated interaction costs $1.50, and each one also counts as a helpdesk ticket.</p>
+          <p>The same page gives two other AI Agent rates that it does not reconcile with the $1.50: its comparison table lists $1.00, $0.90, $0.90 and $0.85 per automated interaction for Starter to Advanced, and its FAQ says "$0.90 each on annual plans or $1.00 on monthly plans". Ask which rate applies before you sign.</p>
+          <p>On annual billing, Basic, Pro and Advanced cost about 17% less than on monthly billing (helpdesk only) and about 14% less with AI Agent. Starter is monthly only.</p>
+        </div>
 
         <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:20px 0 32px 0;">
           <p style="margin:0;font-size:14px;color:var(--text-2);line-height:1.5;"><strong style="color:var(--text);">Want to see the real billing screen?</strong> <a href="/go/gorgias/?source=gorgias-shopify-guide-pricing" target="_blank" rel="sponsored nofollow noopener" style="color:var(--g);text-decoration:underline;">Start a Gorgias free trial</a> and check the plans against your own ticket volume.</p>
         </div>
 
-        <!-- $3.10 per-ticket benchmark — strong AI citation magnet -->
-        <div class="callout info" style="background:rgba(96,165,250,.04);border:1px solid rgba(96,165,250,.22);border-radius:8px;padding:20px;margin:24px 0;">
-          <div class="callout-label" style="font-family:var(--mono);font-size:11px;color:var(--sky);letter-spacing:.1em;margin-bottom:8px;">THE BENCHMARK</div>
-          <p style="margin:0;font-size:15px;color:var(--text-2);line-height:1.6;">Gorgias's own benchmark for a human-resolved ticket is approximately <strong style="color:var(--text);">$3.10 per ticket</strong>. AI Agent resolutions are $0.90–$1.00 plus the underlying helpdesk ticket fee (so you're billed twice for the same conversation when AI handles it). The break-even maths: if your blended cost per ticket on your current tool exceeds $3.10, Gorgias is likely cheaper at sufficient volume. If it's below $3.10, productivity gains rather than direct cost savings are what justify the move.</p>
-        </div>
-
         <div class="body-text" id="hidden-costs">
-          <h3>The hidden costs nobody mentions</h3>
+          <h3>The costs the plan price leaves out</h3>
 
-          <p>The plan price on the table above is the floor, not the typical bill. Stores running Gorgias seriously often pay well above the base plan. Where the extra goes:</p>
+          <p>The plan price in the table is the floor, not the typical bill. Where the extra goes:</p>
 
-          <p><strong>1. AI Agent is a separate add-on, and it double-bills.</strong> Pro and Advanced plans include a bundle of AI Agent interactions (1,000 and 2,500 respectively), but if you exceed those bundles or you're on a lower tier, AI Agent is billed at $0.90 per resolution on annual contracts or $1.00 on monthly. Critically: an AI-resolved conversation still counts as a billable helpdesk ticket too, so you pay both fees on the same interaction. A store automating 30% of 2,000 tickets pays roughly $540-$600/month in AI Agent fees on top of the $300 Pro plan. AI Agent is genuinely valuable, but model the cost honestly before turning it on.</p>
+          <p><strong>1. AI Agent bills on top, and uses your ticket allowance.</strong> The allowances are small next to the ticket counts: 190 automated interactions on Pro against 2,000 tickets. Each interaction past the allowance costs $1.50 on the plan cards, and every automated interaction also counts as a helpdesk ticket. Model the AI Agent line before you switch it on; example B below shows how quickly it grows.</p>
 
-          <p><strong>2. Voice and SMS are billed separately.</strong> Phone support and SMS messaging are usage-based add-ons. Voice tickets start around $1.00 per ticket; SMS tickets start around $0.16 per ticket plus carrier fees. For a store handling 400 voice + 250 SMS tickets/month this adds approximately $300/month on top of the base plan.</p>
+          <p><strong>2. Voice and SMS are separate add-ons.</strong> Gorgias says their pricing "scales with your call and text volume" and does not list the rates on its pricing page, so get a quote if phone or text support matters to you.</p>
 
-          <p><strong>3. Social comments count as billable tickets.</strong> If your team replies to comments under Facebook or Instagram ads via Gorgias, each comment thread counts as a ticket. Stores running heavy paid social can see 2-3x ticket volume from social comments alone. If your social manager replies to comments outside Gorgias (in the Meta Business Suite, for example), they don't count, but then you lose the unified inbox benefit.</p>
+          <p><strong>3. Social replies count as billable tickets.</strong> A reply your team sends through Gorgias to a Facebook or Instagram comment is a conversation on a Gorgias channel, so it counts. Replies sent from Meta Business Suite instead don't count, but then you lose the unified inbox.</p>
 
-          <p><strong>4. Reopened tickets after 7 days bill again.</strong> A customer who replies to a closed ticket within 7 days continues the original ticket without an extra charge. After 7 days, the same conversation generates a new billable ticket. This adds up for stores with longer purchase cycles or shipping windows.</p>
+          <p><strong>4. Old threads can bill again.</strong> Gorgias says a reply to an existing ticket thread "may count as a new billable ticket, but only after a defined period of inactivity", and does not say how long that period is. Stores with long shipping windows see more of these.</p>
 
-          <p><strong>5. Onboarding fees on Advanced and Enterprise.</strong> Setup, migration, and team training services for higher tiers commonly run into low four-figure amounts before the first paid month. Always ask explicitly during the sales conversation; the figure is rarely volunteered.</p>
+          <p><strong>5. Onboarding differs by plan.</strong> Gorgias's comparison table lists self-serve onboarding on Starter and Basic, 1:1 onboarding on Pro and white-glove on Advanced, and shows no onboarding fee. Ask in the sales conversation whether migration help is charged.</p>
 
-          <h3>What you actually pay: three real-world examples</h3>
+          <h3>What you actually pay: two worked examples</h3>
+
+          <p>Both use the list prices in the table above and nothing else. An earlier third example priced voice tickets; Gorgias does not publish voice rates, so it was removed.</p>
 
           <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:24px;margin:24px 0;">
-            <p style="margin:0 0 8px 0;font-family:var(--mono);font-size:11px;color:var(--g);letter-spacing:.1em;">EXAMPLE A: apparel brand, $100k/month GMV</p>
-            <p style="margin:0 0 12px 0;font-size:14px;color:var(--text-2);line-height:1.6;">450 tickets/month average, no voice/SMS, no AI Agent yet. <strong>Plan: Basic ($60/month).</strong> 150 tickets over the 300 allowance × $40/100 = $60 in overages. <strong>Real monthly cost: ~$120.</strong></p>
+            <p style="margin:0 0 8px 0;font-family:var(--mono);font-size:11px;color:var(--g);letter-spacing:.1em;">EXAMPLE A: apparel brand, 450 tickets a month, no AI Agent</p>
+            <p style="margin:0 0 12px 0;font-size:14px;color:var(--text-2);line-height:1.6;"><strong>Plan: Basic, helpdesk only.</strong> 150 tickets over the 300 allowance at $0.40 each is $60 of overage. <strong>Monthly billing: $60 + $60 = $120 a month. Annual billing: $50 + $60 = $110 a month.</strong></p>
           </div>
 
           <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:24px;margin:24px 0;">
-            <p style="margin:0 0 8px 0;font-family:var(--mono);font-size:11px;color:var(--sky);letter-spacing:.1em;">EXAMPLE B: DTC supplements, $440k/month GMV</p>
-            <p style="margin:0 0 12px 0;font-size:14px;color:var(--text-2);line-height:1.6;">2,400 tickets/month average, AI Agent automating 25% of repetitive queries (~600 resolutions). <strong>Plan: Pro ($300/month, annual billing).</strong> 400 tickets over allowance × $36/100 = $144 overage. AI Agent: 600 resolutions are within the 1,000 included bundle on annual Pro. <strong>Real monthly cost: ~$444.</strong> Without AI Agent automation, this store would be on Advanced ($900) within 3 months.</p>
+            <p style="margin:0 0 8px 0;font-family:var(--mono);font-size:11px;color:var(--sky);letter-spacing:.1em;">EXAMPLE B: supplements brand, 2,400 tickets a month, 600 resolved by AI Agent</p>
+            <p style="margin:0 0 12px 0;font-size:14px;color:var(--text-2);line-height:1.6;"><strong>Plan: Pro with AI Agent, annual billing ($471 a month).</strong> The 600 automated interactions count among the 2,400 tickets, so 400 tickets are over the 2,000 allowance: 400 at $0.36 is $144. The plan includes 190 automated interactions, so 410 are over: 410 at $1.50 is $615. <strong>Total: $471 + $144 + $615 = $1,230 a month.</strong> If Gorgias applies the $0.90 annual rate from its FAQ instead of the $1.50 on its plan cards, the AI Agent overage is $369 and the total $984 a month.</p>
           </div>
 
-          <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:24px;margin:24px 0;">
-            <p style="margin:0 0 8px 0;font-family:var(--mono);font-size:11px;color:var(--vio);letter-spacing:.1em;">EXAMPLE C: multi-channel beauty brand, $750k/month GMV</p>
-            <p style="margin:0 0 12px 0;font-size:14px;color:var(--text-2);line-height:1.6;">5,200 tickets/month including 800 social comments and 200 voice tickets, AI Agent at 35% (~1,820 resolutions). <strong>Plan: Advanced ($900/month).</strong> 200 tickets overage × $36/100 = $72. AI Agent overage: ~ -680 (within 2,500 bundle). Voice: 200 × ~$1 = $200. <strong>Real monthly cost: ~$1,172.</strong> Push AI to 50% automation and you exceed the 2,500 bundle, billed at $0.90 each on top.</p>
-          </div>
+          <p>The pattern: as volume grows, so do the variable costs that don't show up in the plan price. In example B the overage costs more than the plan itself. Plan accordingly.</p>
 
-          <p>The pattern: as volume grows, so do the variable costs that don't show up in the plan price. On the Pro and Advanced tiers in particular, add-ons can cost as much as the plan itself. Plan accordingly.</p>
+          <PriceSources ids={['gorgias', 'tidio', 'reamaze', 'freshdesk']} />
         </div>
       </div>
     </section>
@@ -573,7 +540,7 @@ const tocHeadings = [
               <div style="flex-shrink:0;font-family:var(--mono);font-size:11px;color:var(--g);font-weight:700;letter-spacing:.1em;line-height:1.4;">DAYS<br>29–30</div>
               <div>
                 <div style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px;">First-month review and tier reassessment</div>
-                <div style="font-size:15px;color:var(--text-2);line-height:1.65;">Compare against your day 1-3 baseline. Total tickets handled vs plan allowance: over or under? First-response time vs old tool: better, same, worse? Cost per ticket: actually cheaper or actually more expensive than the $3.10 benchmark? If you over-bought your plan, downgrade now (Basic to Starter is one click). If you're consistently in overage territory, the next month's bill projection will tell you whether to upgrade tiers or whether AI Agent is now worth turning on. This is also the meeting where you decide whether to renew on annual billing for the 16-25% discount.</div>
+                <div style="font-size:15px;color:var(--text-2);line-height:1.65;">Compare against your day 1-3 baseline. Total tickets handled vs plan allowance: over or under? First-response time vs old tool: better, same, worse? Cost per ticket: actually cheaper or more expensive than your old tool? If you over-bought your plan, downgrade now (Basic to Starter is one click). If you're consistently in overage territory, the next month's bill projection will tell you whether to upgrade tiers or whether AI Agent is now worth turning on. This is also the meeting where you decide whether to move to annual billing, which Gorgias prices about 14 to 17% below monthly.</div>
               </div>
             </div>
           </div>
@@ -604,7 +571,7 @@ const tocHeadings = [
 
           <h3>Gorgias vs Tidio: different stages, not different qualities</h3>
 
-          <p>Tidio's free plan resolves a meaningful share of repetitive queries automatically through Lyro AI. For Shopify stores under $50k/month GMV with under 200 tickets/month, the free plan handles the workload at zero cost. The decision rule is volume and channel complexity, not preference. Stores grow into Gorgias from Tidio, not from Gorgias to Tidio. <a href="/blog/tidio-vs-gorgias-shopify/">The full comparison covers the trigger points.</a></p>
+          <p>Tidio's free plan covers 50 conversations a month and includes 50 Lyro AI conversations once, not every month; Tidio's pricing page shows paid plans from $24.17 a month. For Shopify stores under $50k/month GMV with under 200 tickets/month, Tidio handles the workload for little or nothing. The decision rule is volume and channel complexity, not preference. Stores grow into Gorgias from Tidio, not from Gorgias to Tidio. <a href="/blog/tidio-vs-gorgias-shopify/">The full comparison covers the trigger points.</a></p>
 
           <p><strong>Use Tidio when:</strong> &lt;$50k/month GMV, &lt;200 tickets/month, single or dual-channel (chat + email), solo or small team. <strong>Use Gorgias when:</strong> the opposite of all of these. <strong>If you're in between:</strong> stay on Tidio paid until the cliff between you and Gorgias is clearer.</p>
 
@@ -612,15 +579,15 @@ const tocHeadings = [
 
           <p>Zendesk is a more capable general-purpose helpdesk with broader CRM integration, more customisation, and stronger enterprise compliance features. Gorgias is more capable specifically for Shopify ecommerce: refunds, order edits, customer order history, and revenue attribution are native rather than bolt-on. For a pure Shopify store, Gorgias's depth wins. For a multi-platform business (Shopify + Amazon + B2B + offline), Zendesk's flexibility usually wins.</p>
 
-          <p>Pricing models differ fundamentally. Zendesk charges per agent (typically $55-$199/agent/month). Gorgias charges per ticket regardless of agent count. For teams of 5+ agents, Gorgias's economics improve over Zendesk; for teams of 1-2 agents handling high ticket volume, Zendesk's per-agent model can be cheaper.</p>
+          <p>Pricing models differ fundamentally. Zendesk prices per agent per month. Gorgias prices per ticket regardless of agent count. For teams of 5+ agents, Gorgias's economics improve over Zendesk; for teams of 1-2 agents handling high ticket volume, Zendesk's per-agent model can be cheaper.</p>
 
           <h3>Gorgias vs Reamaze: the underrated alternative</h3>
 
-          <p>Reamaze sits between Tidio and Gorgias on price ($29-$59/month per agent) and offers comparable Shopify integration depth. Per-agent pricing means Reamaze gets expensive faster than Gorgias as teams grow but is cheaper for small teams handling moderate volume. For a 2-agent store handling 400 tickets/month, Reamaze can be the cost winner. For 5+ agents handling 2,000+ tickets, Gorgias's flat fee structure pulls ahead.</p>
+          <p>Reamaze sits between Tidio and Gorgias on price ($29 to $69 per team member per month, or a $59 flat Starter plan capped at 500 responded conversations) and offers comparable Shopify integration depth. Per-agent pricing means Reamaze gets expensive faster than Gorgias as teams grow but is cheaper for small teams handling moderate volume. For a 2-agent store handling 400 tickets/month, Reamaze can be the cost winner. For 5+ agents handling 2,000+ tickets, Gorgias's flat fee structure pulls ahead.</p>
 
           <h3>Gorgias vs Freshdesk: when budget is hard-capped</h3>
 
-          <p>Freshdesk has a free tier (up to 2 agents, basic features) and paid tiers from $15/agent/month. It lacks Gorgias's Shopify-native order management depth: refunds and order edits require switching to Shopify admin. For stores where the support workflow is "answer questions, occasionally refund", Freshdesk handles it at lower cost. For stores where the support workflow is "answer questions, modify orders, issue partial refunds, apply discount codes, retain customers": agent productivity in Gorgias usually justifies the cost difference.</p>
+          <p>Freshdesk's paid plans start at $19 per agent per month, billed annually. It lacks Gorgias's Shopify-native order management depth: refunds and order edits require switching to Shopify admin. For stores where the support workflow is "answer questions, occasionally refund", Freshdesk handles it at lower cost. For stores where the support workflow is "answer questions, modify orders, issue partial refunds, apply discount codes, retain customers": agent productivity in Gorgias usually justifies the cost difference.</p>
 
           <h3>The decision matrix</h3>
 
@@ -658,77 +625,14 @@ const tocHeadings = [
         </div>
 
         <div style="display:flex;flex-direction:column;gap:14px;margin:32px 0;">
-
-          <details style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
-            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">Is Gorgias worth it for a Shopify store?</summary>
-            <div style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
-              <p>Gorgias is worth it for Shopify stores doing roughly $50,000/month GMV or more, with 200+ support tickets per month, multi-channel customer queries (email + chat + social), and a team of 3+ agents. Below that volume the ticket-based pricing usually costs more than the time it saves. Stores under 100 tickets per month are typically better served by free or lower-cost alternatives like Tidio.</p>
-            </div>
-          </details>
-
-          <details style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
-            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">How much does Gorgias cost in 2026?</summary>
-            <div style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
-              <p>Five tiers in 2026: Starter from $40/month (50 tickets, 3 user limit), Basic $60/month (300 tickets, unlimited users), Pro $300/month (2,000 tickets, 1,000 included AI Agent interactions), Advanced $900/month (5,000 tickets, 2,500 AI interactions), and Enterprise on custom contracts. Annual billing is approximately 16-25% cheaper. AI Agent automation is billed separately at $0.90 per resolution (annual) or $1.00 (monthly). Overage rates are $0.36-$0.40 per ticket on Starter and $36-$40 per 100 tickets on higher plans.</p>
-            </div>
-          </details>
-
-          <details style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
-            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">Does Gorgias have a free trial?</summary>
-            <div style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
-              <p>Yes. The Gorgias <a href="https://www.gorgias.com/signup" target="_blank" rel="noopener">signup page</a> (gorgias.com/signup) says: 30-day trial, all features unlocked, no credit card required. Use it to configure your actual workflow rather than to browse. Plan accordingly: have your ticket history exported, your top 10 macro requirements drafted, and your Shopify connection details ready before you start. The trial is for evaluation through configuration, not for extended free use.</p>
-            </div>
-          </details>
-
-          <details style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
-            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">What counts as a billable ticket in Gorgias?</summary>
-            <div style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
-              <p>Any customer conversation your team responds to: email replies, live chat sessions, social media DMs and comments, SMS exchanges, and phone calls (with voice add-ons). Auto-replies and identified spam are filtered out. Critically, replying to a comment under a Facebook or Instagram ad counts as a billable ticket: for stores with high paid social spend this can dominate ticket volume unexpectedly. Reopened tickets within 7 days of original resolution don't generate a new charge; reopens after that window do.</p>
-            </div>
-          </details>
-
-          <details style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
-            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">What is the difference between Gorgias Helpdesk and AI Agent?</summary>
-            <div style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
-              <p>Gorgias Helpdesk is the core ticketing platform: shared inbox, macros, Shopify integration, routing, and reporting. AI Agent is a separate add-on that fully resolves tickets without human involvement, billed per automated resolution at $0.90 (annual) or $1.00 (monthly). Higher tiers (Pro and Advanced) include a bundle of AI Agent interactions in the base plan; lower tiers must purchase AI Agent capacity on top. AI-resolved conversations still count as billable helpdesk tickets too, so you pay both fees on the same conversation.</p>
-            </div>
-          </details>
-
-          <details style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
-            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">How long does it take to set up Gorgias for Shopify?</summary>
-            <div style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
-              <p>A serious rollout takes 30 days end-to-end. Initial Shopify connection and basic email/chat setup is 2-4 hours. Building the macro library and automation rules that make Gorgias actually pay back is another 8-12 hours over the first two weeks. Soft-launching with one agent before full team migration adds another week. Stores that try to migrate everyone in week one typically miss productivity gains and end up paying for the platform without capturing the time savings.</p>
-            </div>
-          </details>
-
-          <details style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
-            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">Can Gorgias replace Zendesk for a Shopify store?</summary>
-            <div style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
-              <p>For ecommerce-focused workflows, yes: Gorgias generally outperforms Zendesk on Shopify-specific tasks: refund processing, order editing, and customer order history are native to Gorgias rather than requiring custom apps. Gorgias's ticket-based pricing also avoids per-agent fees, which Zendesk charges per seat. For stores with non-ecommerce support needs (B2B, enterprise integrations, complex compliance workflows), Zendesk's broader feature set may justify its cost.</p>
-            </div>
-          </details>
-
-          <details style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
-            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">Should I use Gorgias or Tidio for my Shopify store?</summary>
-            <div style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
-              <p>Use Tidio if your store does under $50,000/month GMV, you handle under 200 tickets per month, you operate primarily through chat and email, and you have a small team or solo operation. Tidio's Lyro AI on the free plan resolves a significant share of repetitive queries automatically. Use Gorgias if your store does $50,000+/month GMV, you handle 200+ tickets per month across multiple channels, your agents regularly modify orders or issue refunds, and your team has 3+ agents who need a structured shared inbox. The two tools target genuinely different stages of business maturity.</p>
-            </div>
-          </details>
-
-          <details style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
-            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">What is the average cost per ticket in Gorgias?</summary>
-            <div style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
-              <p>Gorgias's own benchmark for human-resolved tickets is approximately $3.10 per ticket. AI Agent resolutions are $0.90-$1.00 plus the underlying helpdesk ticket fee. The break-even calculation: if your blended cost per ticket on your current tool exceeds $3.10, Gorgias is likely cheaper at sufficient volume. If it is below $3.10, the productivity gains rather than direct cost savings are what justifies the move.</p>
-            </div>
-          </details>
-
-          <details style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
-            <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">Can I switch from Gorgias back to a cheaper tool later?</summary>
-            <div style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
-              <p>Yes. Gorgias allows month-to-month cancellation on monthly billing (no refunds on annual plans). Ticket history, macros, and customer data can be exported. The migration friction is real (agents adjust to new tooling, customers may notice changed ticket numbers) but it's not lock-in in any meaningful sense. Annual contracts are the only real commitment, and you should only sign annually after 60-90 days on monthly to validate fit.</p>
-            </div>
-          </details>
-
+          {faqs.map(({ q, a }) => (
+            <details style="background:var(--bg-3);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+              <summary style="cursor:pointer;font-size:16px;font-weight:600;color:var(--text);">{q}</summary>
+              <div style="margin-top:12px;font-size:15px;color:var(--text-2);line-height:1.65;">
+                <p set:html={a} />
+              </div>
+            </details>
+          ))}
         </div>
       </div>
     </section>

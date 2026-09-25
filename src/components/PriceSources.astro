@@ -1,0 +1,39 @@
+---
+// Lists the vendor pricing pages behind the third-party prices on this page,
+// and the date they were read. See src/data/priceSources.ts.
+import { SOURCES, READ_DATE, type SourceId } from '../data/priceSources';
+import { formatUpdated } from '../data/pageUpdated';
+
+interface Props {
+  ids: SourceId[];
+}
+const { ids } = Astro.props;
+const list = ids.map((id) => SOURCES[id]);
+---
+
+<aside class="price-sources" aria-label="Pricing sources">
+  <p>
+    Vendor prices on this page were read on <time datetime={READ_DATE}>{formatUpdated(READ_DATE)}</time>, in USD, from:
+    {list.map((s, i) => (
+      <>
+        <a href={s.url} target="_blank" rel="noopener nofollow">{s.name}</a>{i < list.length - 1 ? ', ' : '.'}
+      </>
+    ))}
+    {' '}Vendors change prices without notice; check the vendor's page before you buy.
+  </p>
+</aside>
+
+<style>
+  .price-sources {
+    max-width: 860px;
+    margin: 32px auto;
+    padding: 14px 18px;
+    border: 1px solid #222825;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #93a09a;
+  }
+  .price-sources p { margin: 0; }
+  .price-sources a { color: #34d377; text-decoration: underline; }
+</style>

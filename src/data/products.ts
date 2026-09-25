@@ -15,10 +15,9 @@
  * the per-product price.
  *
  * VERIFY — third-party prices. The figures in `replaces[]` and `savingRange`
- * are carried over verbatim from src/pages/pro.astro, which is quarantined in
- * docs/claims-unverified.json as unverified against vendor sources. They
- * inherit that status; they have NOT been re-checked. Clearing them means
- * opening each vendor's pricing page and dating what you read there.
+ * were read on each vendor's pricing page or Shopify App Store listing on
+ * 25 September 2026; src/data/priceSources.ts records what each page said.
+ * A vendor with no readable price carries none ('quote only', 'GMV-based').
  * Note also that scripts/claims-guard.mjs reads only the top level of
  * src/pages, so neither this file nor src/pages/pro/ is scanned by it.
  */
@@ -187,11 +186,10 @@ export const PRODUCTS: Product[] = [
     ],
     replaces: [
       { name: 'Shopify Stocky', price: 'retired' },
-      { name: 'Linnworks', price: '' },
-      { name: 'Skubana', price: '' },
-      { name: 'Inventory Planner', price: '' },
+      { name: 'Prediko', price: '$49–$119/mo' },
+      { name: 'Inventory Planner', price: 'quote only' },
     ],
-    savingRange: '$29–$199/mo',
+    savingRange: '$49–$119/mo',
     guideUrl: '/stocky-swap/',
     stripeUrl: 'https://buy.stripe.com/aFa6oA8A51x50tbcVPfrW03',
     driveUrl: 'https://drive.google.com/drive/folders/1tXj9zqcwl26zf336O5OmU_N_zZ2npZIj',
@@ -318,10 +316,10 @@ export const PRODUCTS: Product[] = [
     replaces: [
       { name: 'Elevar', price: '$225/mo' },
       { name: 'Triple Whale', price: 'GMV-based' },
-      { name: 'Stape', price: '$29+/mo' },
+      { name: 'Stape', price: '$17/mo billed yearly' },
       { name: 'Littledata', price: '$159+/mo' },
     ],
-    savingRange: '$29–$225/mo',
+    savingRange: '$17–$225/mo',
     guideUrl: '/capi-shield/',
     stripeUrl: 'https://buy.stripe.com/7sY4gsaId4Jhek12hbfrW04',
     driveUrl: 'https://drive.google.com/drive/folders/1x2xGpAhtzHRvsppiwoc0uosgiauUv3do',
@@ -445,7 +443,7 @@ export const PRODUCTS: Product[] = [
       "You would rather build the request yourself and understand each field in it. The free guide covers the same scenario end to end.",
     files: ['Blueprint 02_TikTok_CAPI.json'],
     replaces: [
-      { name: 'WeltPixel', price: '$39+/mo' },
+      { name: 'WeltPixel', price: '$39/mo' },
       { name: 'Analyzify', price: '$145–$275/mo' },
     ],
     savingRange: '$39–$275/mo',
@@ -572,11 +570,10 @@ export const PRODUCTS: Product[] = [
       "You want to change the maths (cost every line item, or use your own fee model) and would rather build the scenario knowing how each step works.",
     files: ['Blueprint 04_P_and_L_Auto.json', 'SA_Template_2_PnL_Auto.xlsx'],
     replaces: [
-      { name: 'TrueProfit', price: '$19+/mo' },
-      { name: 'BeProfit', price: '$29+/mo' },
-      { name: 'Glew.io', price: '' },
+      { name: 'TrueProfit', price: '$35+/mo' },
+      { name: 'BeProfit', price: '$49+/mo' },
     ],
-    savingRange: '$19–$99/mo',
+    savingRange: '$35–$249/mo',
     guideUrl: '/shopify-profit-loss-automation/',
     stripeUrl: 'https://buy.stripe.com/5kQfZaeYtdfNb7P8FzfrW06',
     driveUrl: 'https://drive.google.com/drive/folders/1qnL9uKBa86-qvqqk_e4NjE_oU4Ep3prL',

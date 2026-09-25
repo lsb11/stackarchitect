@@ -5,8 +5,10 @@ import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
 import { analysePage, check, parseRedirects, loadDist, updatedClaims, anchorWarnings, internalPath } from '../scripts/content-quality-guard.mjs';
 
-const page = ({ main = '', head = '', outside = '' } = {}) =>
-  `<!doctype html><html><head>${head}</head><body><nav class="sa-nav"><a class="sa-nav-cta" href="/pro/">Kit</a></nav>` +
+// The three tags rule 9 requires in <head> on every page.
+const HEAD = '<title>T</title><link rel="canonical" href="https://stackarchitect.xyz/a/"><meta name="robots" content="index, follow">';
+const page = ({ main = '', head = '', outside = '', before = '' } = {}) =>
+  `<!doctype html>${before}<html><head>${HEAD}${head}</head><body><nav class="sa-nav"><a class="sa-nav-cta" href="/pro/">Kit</a></nav>` +
   `<main>${main}</main>${outside}<footer class="sa-footer"><a href="/go/make/">Make</a></footer></body></html>`;
 const dated = (d = '2026-09-01') =>
   `<p data-page-updated>Updated <time datetime="${d}">${Number(d.slice(8))} September 2026</time></p>`;
@@ -93,7 +95,7 @@ test('an FAQPage question that is not visible fails', () => {
 });
 
 test('a sitemap URL that is noindex or a redirect source fails', () => {
-  const noindex = good().replace('<head>', '<head><meta name="robots" content="noindex, follow">');
+  const noindex = good().replace('content="index, follow"', 'content="noindex, follow"');
   assert.deepEqual(rules(run({ '/a/': noindex })), ['sitemap']);
   assert.deepEqual(rules(run({ '/a/': good(), '/b/': good() }, { redirects: '/a/ /b/ 301' })), ['sitemap']);
 });
@@ -132,6 +134,44 @@ test('an em dash in visible page text fails; nav, footer and scripts do not coun
   assert.deepEqual(run({ '/a/': good('<script>const s = "a \u2014 b";</script>') }), []);
   const chrome = good().replace('>Kit<', '>Kit \u2014 now<');
   assert.deepEqual(run({ '/a/': chrome }), []);
+});
+
+test('a stray element before <html> pushes the head tags into the body, and fails', () => {
+  // The /tools/ bug of 25 Sep 2026: a <div> written outside <Base>, so it
+  // came out ahead of <html>. The parser opens <body> there.
+  const html = page({ before: '<div id="reading-progress"></div>', head: ld({ '@type': 'WebPage', dateModified: '2026-09-01' }), main: dated() });
+  const f = run({ '/a/': html }).filter((x) => x.rule === 'head').map((x) => x.msg);
+  assert.ok(f.includes('1 <title> outside <head>'), f.join(' | '));
+  assert.ok(f.includes('1 canonical link outside <head>'));
+  assert.ok(f.includes('1 meta robots outside <head>'));
+  assert.ok(f.includes('1 JSON-LD script outside <head>'));
+  assert.ok(f.includes('<head> opened implicitly: an element comes before it'));
+});
+
+test('a non-head element inside <head> fails, even with the tags still in place', () => {
+  // The parser closes <head> at the <div> and moves it into <body>. The
+  // tags before it are still in <head>, so only the early close shows.
+  const html = good().replace('</head>', '<div>x</div></head>');
+  assert.deepEqual(rules(run({ '/a/': html })), ['head']);
+  assert.ok(run({ '/a/': html }).some((x) => x.msg === '<head> closed early by an element not allowed in it'));
+});
+
+test('a JSON-LD script in the body fails; one in the head passes', () => {
+  assert.deepEqual(rules(run({ '/a/': good(ld({ '@type': 'ItemList' })) })), ['head']);
+  assert.deepEqual(run({ '/a/': good() }), []);
+});
+
+test('a page with no canonical, robots or title fails; JSON-LD is required only on sitemap pages', () => {
+  const bare = good().replace(HEAD, '');
+  const f = run({ '/a/': bare }).map((x) => x.msg);
+  assert.ok(f.includes('no <title>') && f.includes('no canonical link') && f.includes('no meta robots'), f.join(' | '));
+  const noLd = page({ main: dated() }).replace('<meta name="robots" content="index, follow">', '<meta name="robots" content="noindex">');
+  assert.deepEqual(run({ '/a/': good(), '/embed/x/': noLd }, { sitemap: ['/a/'] }), []);
+  assert.ok(run({ '/a/': page({ main: dated() }) }).some((x) => x.msg === 'no JSON-LD script'));
+});
+
+test('an SVG <title> in the body is not a page title outside <head>', () => {
+  assert.deepEqual(run({ '/a/': good('<svg><title>Chart</title></svg>') }), []);
 });
 
 test('an anchor that shares no word with its target is a warning, not a failure', () => {

@@ -1,6 +1,8 @@
 ---
 import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
+import { READ_DATE } from '../data/priceSources';
+import PriceSources from '../components/PriceSources.astro';
 import Disclosure from "../components/Disclosure.astro";
 import AuthorCard from '../components/AuthorCard.astro';
 /**
@@ -78,53 +80,40 @@ const stripStats = [
 ];
 
 // ─── Klaviyo pricing tiers ───────────────────────────────────────────────────
-// SOURCING: Klaviyo publishes only its free tier and its entry paid tiers as
-// fixed figures on klaviyo.com/pricing (verified 2026-08-11: $0 for up to 250
-// active profiles; $20/mo Email and $35/mo Email+SMS for 251–500). Every tier
-// above 500 profiles is behind an account-gated estimator and is NOT published
-// by the vendor. The rows below 500 are vendor-verified; the rest are
-// merchant-reported estimates and are labelled as such wherever they render.
+// SOURCING: Klaviyo publishes only its free tier and its entry Email tier as
+// fixed figures (klaviyo.com/pricing and its Shopify App Store listing, read
+// READ_DATE): $0 up to 250 active profiles, $20/month for 251-500. Every tier
+// above 500 profiles sits behind an in-account estimator. The page used to
+// show merchant-reported estimates for those tiers; it now shows none, and the
+// calculator asks for the reader's own bill instead.
 const TIER_SOURCE_NOTE =
-  "Verified against klaviyo.com/pricing on 11 August 2026: free up to 250 active " +
-  "profiles, $20/month from 251. Klaviyo does not publish its higher tiers: the " +
-  "figures above 500 profiles are merchant-reported estimates, not vendor-verified.";
+  "Read on klaviyo.com/pricing and Klaviyo's Shopify App Store listing on 25 September 2026: " +
+  "free up to 250 active profiles, $20/month for 251–500. Klaviyo does not publish a price " +
+  "above 500 profiles; it quotes those in an in-account estimator, so we show none.";
 const pricingTiers = [
-  { contacts: "500",    price: "$20" },
-  { contacts: "5,000",  price: "$100" },
-  { contacts: "10,000", price: "$175" },
-  { contacts: "25,000", price: "$400" },
-  { contacts: "50,000", price: "$720" }
-];
-
-// ─── Klaviyo vs GetResponse, per tier ────────────────────────────────────────
-// The saving column is a delta between two vendors, not a price claim for
-// either — hence the explicit "saved" wording, which keeps it out of the
-// price-divergence guard's comparison set.
-const grRows = [
-  { contacts: "1,000",  k: "$30/month",  g: "$19/month",  delta: "$11/month saved"  },
-  { contacts: "5,000",  k: "$100/month", g: "$54/month",  delta: "$46/month saved"  },
-  { contacts: "10,000", k: "$175/month", g: "$79/month",  delta: "$96/month saved"  },
-  { contacts: "25,000", k: "$400/month", g: "$139/month", delta: "$261/month saved" },
-  { contacts: "50,000", k: "$720/month", g: "$199/month", delta: "$521/month saved" }
+  { contacts: "Up to 250", price: "$0" },
+  { contacts: "251–500",   price: "$20" },
+  { contacts: "Above 500", price: "Not published" },
 ];
 
 // ─── Calculator options ──────────────────────────────────────────────────────
+// The reader enters their own Klaviyo bill; the options are Systeme.io's
+// published plans (systeme.io/pricing, read READ_DATE). value = "price,contacts".
 const calcOptions = [
-  { value: "20,500",   label: "Up to 500 contacts: $20/mo" },
-  { value: "30,1000",  label: "Up to 1,000 contacts: $30/mo" },
-  { value: "100,5000", label: "Up to 5,000 contacts: $100/mo" },
-  { value: "175,10000",label: "Up to 10,000 contacts: $175/mo" },
-  { value: "400,25000",label: "Up to 25,000 contacts: $400/mo" },
-  { value: "720,50000",label: "Up to 50,000 contacts: $720/mo" }
+  { value: "0,2000",   label: "Up to 2,000 contacts: Systeme.io Free, $0/mo" },
+  { value: "17,5000",  label: "2,001 to 5,000 contacts: Startup, $17/mo" },
+  { value: "47,10000", label: "5,001 to 10,000 contacts: Webinar, $47/mo" },
+  { value: "97,0",     label: "Over 10,000 contacts: Unlimited, $97/mo" },
 ];
+
 
 // ─── Features that Systeme.io replaces ───────────────────────────────────────
 const features = [
   { icon: "✉️", title: "Email marketing & automation",       desc: "Unlimited email sends. Welcome sequences, abandoned cart, post-purchase flows, broadcast campaigns. All the automation logic that sits behind Klaviyo's active-profile tiers.",                              saves: "Replaces Klaviyo: saves $20+/mo" },
-  { icon: "⏽",  title: "Sales funnels & landing pages",      desc: "Build opt-in pages, sales funnels, upsell flows, and squeeze pages. Drag-and-drop builder: no ClickFunnels subscription required.",                                                            saves: "Replaces ClickFunnels: saves $97–$297/mo" },
-  { icon: "👥", title: "CRM & contact management",           desc: "Tag contacts, build segments, track purchase behaviour, and manage your entire customer database, without a separate CRM tool.",                                                                saves: "Replaces standalone CRM tools: saves $50–$200/mo" },
-  { icon: "🎓", title: "Online course hosting",              desc: "Host digital products, courses, and memberships directly on Systeme.io. No Teachable or Thinkific subscription needed.",                                                                         saves: "Replaces Teachable: saves $39–$119/mo" },
-  { icon: "🤝", title: "Affiliate programme management",     desc: "Run your own affiliate programme (track referrals, manage commission payouts, and recruit affiliates) all included free.",                                                                     saves: "Replaces affiliate software: saves $30–$100/mo" },
+  { icon: "⏽",  title: "Sales funnels & landing pages",      desc: "Build opt-in pages, sales funnels, upsell flows, and squeeze pages. Drag-and-drop builder: no ClickFunnels subscription required.",                                                            saves: "Replaces ClickFunnels: $97–$297/mo" },
+  { icon: "👥", title: "CRM & contact management",           desc: "Tag contacts, build segments, track purchase behaviour, and manage your entire customer database, without a separate CRM tool.",                                                                saves: "Replaces a standalone CRM tool" },
+  { icon: "🎓", title: "Online course hosting",              desc: "Host digital products, courses, and memberships directly on Systeme.io. No Teachable or Thinkific subscription needed.",                                                                         saves: "Replaces Teachable: $39–$189/mo" },
+  { icon: "🤝", title: "Affiliate programme management",     desc: "Run your own affiliate programme (track referrals, manage commission payouts, and recruit affiliates) all included free.",                                                                     saves: "Replaces affiliate software" },
   { icon: "📊", title: "Analytics & reporting",              desc: "Email open rates, click rates, funnel conversion rates, and revenue attribution: all in one dashboard, no add-on required.",                                                                    saves: "Replaces paid analytics add-ons: free" }
 ];
 
@@ -141,7 +130,7 @@ const compRows = [
   { feature: "Auto tier upgrades",       klaviyo: "Automatic: unpredictable cost",          systeme: "Manual: you control upgrades", kClass: "lose", sClass: "win" },
   { feature: "Shopify integration",      klaviyo: "Native deep integration",                 systeme: "Webhook + Zapier/Make",         kClass: "win",  sClass: "neutral" },
   { feature: "Shopify segmentation",     klaviyo: "Deep ecommerce segments",                 systeme: "Standard tags and segments",    kClass: "win",  sClass: "neutral" },
-  { feature: "Annual cost (10k contacts)", klaviyo: "$1,800–$2,100/year",                    systeme: "$0–$204/year",                  kClass: "lose", sClass: "win", highlight: true }
+  { feature: "Annual cost (10k contacts)", klaviyo: "Not published: in-account estimate",    systeme: "$564/year (Webinar plan)",                  kClass: "lose", sClass: "win", highlight: true }
 ];
 
 // ─── Setup steps ─────────────────────────────────────────────────────────────
@@ -157,12 +146,12 @@ const setupSteps = [
 
 // ─── Cross-links ──────────────────────────────────────────────────────────────
 const crosslinks = [
-  { href: "/capi-shield/",                    hoverClass: "",    tag: "Ad tracking",            tagClass: "",         name: "CAPI Shield",       desc: "Close the browser tracking gap iOS opens. Free server-side tracking replacing paid tools like Triple Whale and Elevar: deploy in 6 minutes.", save: "Saves $150–$299/mo",  saveColor: "var(--g)"    },
-  { href: "/stocky-swap/",                    hoverClass: "sky", tag: "Inventory",   tagClass: "tag-sky",  name: "Stocky Swap",       desc: "Replace the retired Stocky app. Every order auto-logged to Google Sheets in real time. Free forever: no paid inventory apps needed.", save: "Saves $29–$199/mo",  saveColor: "var(--sky)"    },
-  { href: "/tiktok-events-api-shopify/",      hoverClass: "tt",  tag: "TikTok tracking",        tagClass: "",         name: "TikTok Events API", desc: "Recover lost TikTok conversion data free. Server-side tracking via Make.com: replaces WeltPixel at $0, deploys in 6 minutes.", save: "Saves $39–$99/mo",   saveColor: "#ff2e63"       },
-  { href: "/shopify-profit-loss-automation/", hoverClass: "",    tag: "P&L reporting",          tagClass: "tag-dim",  name: "Shopify P&L automation", desc: "Every order writes to a live Google Sheets P&L automatically. Revenue, COGS, fees, and net margin tracked in real time: free, no code, 10 minutes.", save: "Saves $19–$299/mo",  saveColor: "var(--g)"    },
-  { href: "/autocrat-quota-fix/",             hoverClass: "vio", tag: "Stability",              tagClass: "tag-vio",  name: "Autocrat Quota Fix",desc: "Stop Google Apps Script quota errors breaking your document workflows. Handles 10,000+ rows per day at $0: keeps the entire stack running reliably.", save: "Saves $49–$99/mo",   saveColor: "var(--vio)"    },
-  { href: "/",                               hoverClass: "",    tag: "Full stack",             tagClass: "tag-dim",  name: "$0 Automation Stack",desc: "All six free tools in one place: tracking, inventory, TikTok, email, P&L, and workflow stability. Deploy the entire backend for $0/month.", save: "Save $700+/mo total", saveColor: "var(--text-4)" }
+  { href: "/capi-shield/",                    hoverClass: "",    tag: "Ad tracking",            tagClass: "",         name: "CAPI Shield",       desc: "Close the browser tracking gap iOS opens. Free server-side tracking replacing paid tools like Triple Whale and Elevar: deploy in 6 minutes.", save: "Saves $145–$650/mo",  saveColor: "var(--g)"    },
+  { href: "/stocky-swap/",                    hoverClass: "sky", tag: "Inventory",   tagClass: "tag-sky",  name: "Stocky Swap",       desc: "Replace the retired Stocky app. Every order auto-logged to Google Sheets in real time. Free forever: no paid inventory apps needed.", save: "Saves $49–$119/mo",  saveColor: "var(--sky)"    },
+  { href: "/tiktok-events-api-shopify/",      hoverClass: "tt",  tag: "TikTok tracking",        tagClass: "",         name: "TikTok Events API", desc: "Recover lost TikTok conversion data free. Server-side tracking via Make.com: replaces WeltPixel at $0, deploys in 6 minutes.", save: "Saves $39–$275/mo",   saveColor: "#ff2e63"       },
+  { href: "/shopify-profit-loss-automation/", hoverClass: "",    tag: "P&L reporting",          tagClass: "tag-dim",  name: "Shopify P&L automation", desc: "Every order writes to a live Google Sheets P&L automatically. Revenue, COGS, fees, and net margin tracked in real time: free, no code, 10 minutes.", save: "Saves $35–$299/mo",  saveColor: "var(--g)"    },
+  { href: "/autocrat-quota-fix/",             hoverClass: "vio", tag: "Stability",              tagClass: "tag-vio",  name: "Autocrat Quota Fix",desc: "Stop Google Apps Script quota errors breaking your document workflows. Handles 10,000+ rows per day at $0: keeps the entire stack running reliably.", save: "Runs on Make's free plan",   saveColor: "var(--vio)"    },
+  { href: "/",                               hoverClass: "",    tag: "Full stack",             tagClass: "tag-dim",  name: "$0 Automation Stack",desc: "All six free tools in one place: tracking, inventory, TikTok, email, P&L, and workflow stability. Deploy the entire backend for $0/month.", save: "$0 a month for the stack", saveColor: "var(--text-4)" }
 ];
 
 // ─── FAQs ─────────────────────────────────────────────────────────────────────
@@ -174,7 +163,7 @@ const faqs = [
   { q: "What is the Klaviyo free plan limit in 2026?", a: "Klaviyo's free plan in 2026 is limited to 250 active profiles and 500 email sends per month. Systeme.io's free plan allows 2,000 contacts with unlimited email sends: 8× more contacts and no sending cap at zero cost." },
   { q: "Why did my Klaviyo bill go up in 2025–2026?", a: "Klaviyo changed its billing model in February 2025. Previously you paid based on contacts you actively emailed. Now you pay for all active profiles in your account: every subscribed contact whether or not you send to them." },
   { q: "Does Systeme.io have abandoned cart emails for Shopify?", a: "Yes. Systeme.io supports triggered automation workflows including abandoned cart sequences via Shopify webhook integration. Connect Shopify to Systeme.io under Settings → Integrations, or use a Make.com webhook for more advanced triggers." },
-  { q: "What does Systeme.io replace besides Klaviyo?", a: "Systeme.io's free plan replaces: Klaviyo and Mailchimp for email marketing, ClickFunnels ($97–$297/month) for sales funnels, Teachable ($39–$119/month) for course hosting, and most standalone CRM tools." },
+  { q: "What does Systeme.io replace besides Klaviyo?", a: "Systeme.io's free plan replaces: Klaviyo and Mailchimp for email marketing, ClickFunnels ($97–$297/month) for sales funnels, Teachable ($39–$189/month) for course hosting, and most standalone CRM tools." },
   { q: "Is there a free trial or do I need a credit card?", a: "No credit card required. Systeme.io's free plan is permanently free, not a trial. You create an account, access the full platform up to the free plan limits, and never need to enter payment details unless you choose to upgrade." },
   { q: "Is Beehiiv a good alternative to Klaviyo for Shopify?", a: "Beehiiv is a strong alternative for content-led Shopify brands running newsletter-first growth strategies. Free up to 2,500 subscribers with built-in referral tools. It is not a direct Klaviyo replacement for ecommerce automation: it lacks abandoned cart and post-purchase triggers. But for stores where the newsletter is the primary acquisition channel, it outperforms both Klaviyo and Systeme.io on ease of use and organic list growth." }
 ];
@@ -311,13 +300,13 @@ const tocHeadings = [
 ];
 
 ---
-<Base title="Replace Klaviyo Free — Systeme.io & GetResponse 2026" description="Klaviyo bills every active profile. Systeme.io covers 2,000 contacts free, GetResponse is a cheaper paid option above that. UK VAT, and a 30-minute migration.">
+<Base verifiedDate={READ_DATE} title="Replace Klaviyo Free — Systeme.io & GetResponse 2026" description="Klaviyo bills every active profile. Systeme.io covers 2,000 contacts free, GetResponse is a cheaper paid option above that. UK VAT, and a 30-minute migration.">
 <Fragment slot="head">
 <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
 
   <!-- ─── Fonts ─── -->
   
-<script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps: server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
+<script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing paid apps: server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
   </Fragment>
 
 
@@ -384,8 +373,9 @@ const tocHeadings = [
     <!-- ── CALCULATOR ── -->
     <div class="calc-wrap" id="klaviyo-savings-calculator" aria-label="Klaviyo savings calculator">
       <span class="calc-label">Calculate_Your_Klaviyo_Savings</span>
-      <p style="font-size:14px;color:var(--text-3);margin-bottom:20px;">How many contacts do you have in Klaviyo?</p>
-      <select class="calc-select" id="contact-select" aria-label="Select your Klaviyo contact list size">
+      <p style="font-size:14px;color:var(--text-3);margin-bottom:20px;">What is your monthly Klaviyo bill, and how many contacts do you have?</p>
+      <input type="number" class="calc-select" id="klaviyo-bill" min="0" step="1" inputmode="decimal" placeholder="Monthly Klaviyo bill, USD" aria-label="Your monthly Klaviyo bill in USD" style="margin-bottom:12px;" />
+      <select class="calc-select" id="contact-select" aria-label="Select your contact list size">
         <option value="">Select your list size</option>
         {calcOptions.map(o => (
           <option value={o.value}>{o.label}</option>
@@ -531,7 +521,7 @@ const tocHeadings = [
 
     <div class="callout" style="margin-top:40px;">
       <div class="callout-label">Free plan limits</div>
-      <p>Systeme.io's free plan supports <strong>2,000 contacts with unlimited email sends</strong>. Klaviyo's free plan caps at 250 contacts and 500 emails per month. For stores larger than 2,000 contacts, Systeme.io's Startup plan at <strong>$17/month</strong> covers up to 5,000 contacts. On Klaviyo's ladder that same list sits at the $100 tier. For stores needing advanced email marketing features with larger lists, GetResponse offers AI-powered automation, landing pages, and webinar hosting: compared tier by tier further down this page.</p>
+      <p>Systeme.io's free plan supports <strong>2,000 contacts with unlimited email sends</strong>. Klaviyo's free plan caps at 250 contacts and 500 emails per month. For stores larger than 2,000 contacts, Systeme.io's Startup plan at <strong>$17/month</strong> covers up to 5,000 contacts; Klaviyo does not publish a price for that list size. For stores needing advanced email marketing features with larger lists, GetResponse offers AI-powered automation, landing pages, and webinar hosting: compared further down this page.</p>
     </div>
   </div>
 </section>
@@ -627,26 +617,8 @@ const tocHeadings = [
     <div class="body-text" style="max-width:860px;margin:0 auto;">
       <p>The billing models diverge in a way headline prices hide. Klaviyo charges on all active profiles; <strong>GetResponse charges on contacts in your list with no engagement penalty</strong>. For a store holding 10,000 contacts but emailing only 6,000, that difference is the entire argument.</p>
 
-      <div class="comp-wrap" style="margin:24px 0;">
-        <table class="comp-table" aria-label="Klaviyo versus GetResponse pricing by list size">
-          <thead>
-            <tr><th>Contacts</th><th>Klaviyo</th><th>GetResponse</th><th>Difference</th></tr>
-          </thead>
-          <tbody>
-            {grRows.map(r => (
-              <tr>
-                <td>{r.contacts}</td>
-                <td class="lose">{r.k}</td>
-                <td class="win">{r.g}</td>
-                <td>{r.delta}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <p>GetResponse's monthly plans start at <strong>$19 for 1,000 subscribers</strong> and rise by list size (<a href="https://www.getresponse.com/pricing" target="_blank" rel="noopener">getresponse.com/pricing</a>, read 25 September 2026). Neither vendor publishes its full price ladder as fixed figures, so compare GetResponse's quote for your list with the Klaviyo line on your own invoice rather than with a table of estimates.</p>
       <p style="font-size:12px;color:var(--text-4);line-height:1.6;margin:12px 0 0;">{TIER_SOURCE_NOTE}</p>
-
-      <p>At 25,000 contacts that is <strong>$3,132 a year</strong>. The gap is consistent at every tier and widens as the list grows, because the two platforms scale on different curves.</p>
 
       <h3>Where the feature gap actually is</h3>
       <p>Klaviyo's Shopify integration is genuinely best-in-class: real-time sync of products viewed, collections browsed, search queries, checkout started and order placed, with flows that can trigger on category affinity, cart-value thresholds, purchase frequency or predicted next order date. <strong>GetResponse covers the core reliably</strong> (orders sync, abandoned cart triggers fire on live cart data, purchase history is available for segmentation) but without the granular event-level tracking behind browse abandonment and predictive triggers.</p>
@@ -878,12 +850,12 @@ const tocHeadings = [
     </a>
     <a href="/stocky-swap/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
       <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Stocky Swap: Replace Shopify Stocky for $0
-            Stocky closed 31 Aug 2026. Export still open</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $29–$199/mo</span></span>
+            Stocky closed 31 Aug 2026. Export still open</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $49–$119/mo</span></span>
       <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">Free replacement in 4 minutes</span>
     </a>
     <a href="/shopify-profit-loss-automation/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
       <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">P&amp;L Auto: See Your Real Profit After Saving on Klaviyo
-            Live profit dashboard in Google Sheets</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $19–$299/mo</span></span>
+            Live profit dashboard in Google Sheets</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $35–$299/mo</span></span>
       <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">Know exactly what you save switching from Klaviyo</span>
     </a>
     <a href="/pro/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
@@ -897,6 +869,7 @@ const tocHeadings = [
        region, so the visible attribution for it belongs in the same region.
        This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
+<PriceSources ids={['klaviyo', 'systeme', 'getresponse', 'clickfunnels', 'teachable', 'elevar', 'analyzify', 'prediko', 'weltpixel', 'trueprofit', 'lifetimely']} />
 </main>
 
 <!-- ── RELATED GUIDES ── -->
@@ -990,27 +963,39 @@ const tocHeadings = [
   if (cr) cr.textContent = `© ${new Date().getFullYear()} STACK_ARCHITECT // KLAVIYO_REPLACED`;
 
   // ── Calculator ──
+  // Saving = the bill the reader enters minus Systeme.io's published plan for
+  // their list size. Klaviyo publishes no tier above 500 profiles, so the page
+  // does not guess the bill.
   const sel = document.getElementById('contact-select');
-  if (sel) {
-    sel.addEventListener('change', function () {
-      const result = document.getElementById('calc-result');
-      const saving = document.getElementById('calc-saving');
-      const context = document.getElementById('calc-context');
-      if (!this.value) { result.style.display = 'none'; return; }
-      const parts = this.value.split(',');
-      const monthly = parseInt(parts[0]);
-      const contacts = parseInt(parts[1]);
-      const annual = monthly * 12;
+  const bill = document.getElementById('klaviyo-bill');
+  function recalc() {
+    const result = document.getElementById('calc-result');
+    const saving = document.getElementById('calc-saving');
+    const context = document.getElementById('calc-context');
+    const paid = parseFloat(bill && bill.value);
+    if (!sel.value || !(paid >= 0) || bill.value === '') { result.style.display = 'none'; return; }
+    const parts = sel.value.split(',');
+    const systeme = parseFloat(parts[0]);
+    const monthly = Math.round((paid - systeme) * 100) / 100;
+    const annual = Math.round(monthly * 12);
+    if (monthly <= 0) {
+      saving.textContent = 'No saving';
+      context.innerHTML = 'Systeme.io\'s plan for your list is <strong>$' + systeme + '/month</strong>, which is not less than the <strong>$' + paid + '/month</strong> you pay Klaviyo.';
+    } else {
       saving.textContent = '$' + annual.toLocaleString() + '/year saved';
-      context.innerHTML = 'You are paying Klaviyo <strong>$' + monthly + '/month</strong> for ' + contacts.toLocaleString() + ' contacts. Systeme.io handles the same list for <strong>$0/month</strong> — saving you <strong>$' + annual.toLocaleString() + ' every year, forever.</strong>';
-      result.style.display = 'block';
-      document.getElementById('calc-capture-form').style.display = 'block';
-      document.getElementById('calc-capture-done').style.display = 'none';
-      document.getElementById('calc-affiliate-btn').style.display = 'none';
-      if (window.innerWidth < 640) {
-        setTimeout(() => result.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
-      }
-    });
+      context.innerHTML = 'You pay Klaviyo <strong>$' + paid + '/month</strong>. Systeme.io\'s plan for your list is <strong>$' + systeme + '/month</strong>, a saving of <strong>$' + monthly + '/month</strong>, or $' + annual.toLocaleString() + ' a year.';
+    }
+    result.style.display = 'block';
+    document.getElementById('calc-capture-form').style.display = 'block';
+    document.getElementById('calc-capture-done').style.display = 'none';
+    document.getElementById('calc-affiliate-btn').style.display = 'none';
+    if (window.innerWidth < 640) {
+      setTimeout(() => result.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+    }
+  }
+  if (sel) {
+    sel.addEventListener('change', recalc);
+    if (bill) bill.addEventListener('input', recalc);
   }
 
   // ── Email capture ──

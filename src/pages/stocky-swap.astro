@@ -1,6 +1,10 @@
 ---
 import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
+import { READ_DATE } from '../data/priceSources';
+import PriceSources from '../components/PriceSources.astro';
+import { faqPage, type Faq } from '../utils/faq';
+
 import Disclosure from '../components/Disclosure.astro';
 import StockLogPromo from '../components/StockLogPromo.astro';
 import RelatedGuides from '../components/RelatedGuides.astro';
@@ -83,6 +87,36 @@ const SYSTEME_AFFILIATE = "/go/systeme/";
 // Verifiable artefacts
 const SCENARIO_URL = "https://eu1.make.com/public/shared-scenario/YKK7FScMAx2/shopify-order-to-google-sheets-stock-log";
 const SETUP_GUIDE_PDF = "https://d1yei2z3i6k35z.cloudfront.net/16370908/699ce1532f77d_Manual_The0ShopifyInventoryBridge.pdf";
+
+// One array renders the visible FAQ and the FAQPage node.
+const faqs: Faq[] = [
+  { q: "What is the best free Stocky alternative in 2026?",
+    a: "<p><strong>Stocky Swap</strong> is the leading free Stocky alternative for Shopify in 2026. It logs every Shopify order to a Google Sheet in real-time via a public Make.com scenario, deploys in under 5 minutes, runs on Make.com's free tier, and stores data in a Google Sheet you own. Paid alternatives like Qoblex, SKUSavvy, Sumtracker, and Inventory Planner offer deeper forecasting features but cost between $49 and $599/month, or a quoted price.</p>" },
+  { q: "What is the cheapest Stocky alternative for Shopify?",
+    a: "<p>Stocky Swap at <strong>$0/month</strong> is the cheapest Stocky alternative in 2026. It runs on Make.com's free tier with no Stack Architect fees. Paid options start around $9/month for Make.com Core (if you outgrow free), or $49/month for entry-tier paid Shopify inventory apps like Prediko.</p>" },
+  { q: "Is Stocky Swap actually free?",
+    a: "<p>Yes. Stocky Swap is a free Make.com scenario. It runs on Make.com's free tier: 1,000 credits/month (formerly called operations) at no cost. Stack Architect earns a small affiliate commission if you create a Make.com account through this page, which is how the guides stay free. There are no Stack Architect fees, no setup charges, no hidden costs.</p>" },
+  { q: "Do I need to know how to code to use Stocky Swap?",
+    a: "<p>No coding required. The Make.com scenario is pre-built and shared publicly: you click Clone, connect your Shopify and Google Sheet via OAuth, and switch the scenario on. Setup typically takes under 5 minutes. The <a href=\"" + SETUP_GUIDE_PDF + "\" target=\"_blank\" rel=\"noopener\">PDF setup guide</a> covers every step with screenshots.</p>" },
+  { q: "What does Stocky Swap log to Google Sheets?",
+    a: "<p>Each new Shopify order produces a Google Sheet row containing: order ID, order timestamp, customer name, line item SKU, product name, quantity sold, line revenue, and fulfilment status. The webhook fires from Shopify the moment an order is created, not on a polling interval, so the Sheet updates within seconds.</p>" },
+  { q: "Will Stocky Swap interfere with my Shopify store or other apps?",
+    a: "<p>No. Stocky Swap is a one-way listener: it reads Shopify order data via webhook and writes to your Google Sheet. It does not modify products, inventory levels, customer records, or any other Shopify data. It runs independently of Stocky and any inventory app, so it can run alongside whatever you use now while you check its output.</p>" },
+  { q: "What are the paid Stocky alternatives in 2026?",
+    a: "<p>The paid Stocky alternatives most-cited by independent reviewers in 2026: <strong>Qoblex</strong> (multi-channel inventory + procurement, $99–$179/mo), <strong>SKUSavvy</strong> (mobile-first WMS, $0/mo plus $0.06–$0.20 per order), <strong>Sumtracker</strong> (bundles and kits, $59–$269/mo), <strong>Inventory Planner by Sage</strong> (advanced forecasting, quote only), <strong>Cin7 Core</strong> (multi-warehouse, $349–$599/mo), <strong>Prediko</strong> (AI demand forecasting, $49–$119/mo). <a href=\"#comparison\">See the full comparison table →</a></p>" },
+  { q: "Can Stocky Swap import my historical Stocky data?",
+    a: "<p>Stocky Swap is a forward-only logger: it begins recording orders from the moment you switch it on. To preserve historical Stocky data, export your purchase orders, stocktakes, and supplier records from inside Stocky while its read-only export is still open. The <a href=\"/blog/shopify-stocky-data-export-before-shutdown/\">Stocky data export guide</a> covers what to save and how.</p>" },
+  { q: "Does Stocky Swap handle refunds, returns, or multi-location stock?",
+    a: "<p>Stocky Swap is a forward-only order ledger: every paid Shopify order produces a Google Sheet row. For full inventory accounting that handles refunds, returns, and multi-location stock-on-hand calculations, rely on native Shopify Admin inventory tracking (which manages these correctly).</p>" },
+  { q: "Is Stocky Swap better than the native Shopify inventory tools?",
+    a: "<p>They serve different purposes. Native Shopify Admin inventory handles stock-on-hand, transfers between locations, and basic receiving: already free. Stocky Swap adds an independent, externally-owned audit log of every order in a Google Sheet you control: useful for finance reconciliation, accountant handoff, custom reporting, and as insurance against future Shopify changes. Most stores benefit from running both.</p>" },
+  { q: "How do I migrate from Stocky to Stocky Swap?",
+    a: "<p>Migration is three phases. <strong>First</strong>, export Stocky's historical data (purchase orders, stocktakes, supplier records) while its read-only export is still open. <strong>Second</strong>, deploy Stocky Swap and check its first two weeks of rows against your Shopify orders to verify they are logging correctly. <strong>Third</strong>, after verification, you can switch off Stocky's daily use and rely on Stocky Swap as your forward order ledger. <a href=\"#migration-timeline-what-to-do-when\">Full migration timeline →</a></p>" },
+  { q: "Can I use Stocky Swap with multiple Shopify stores?",
+    a: "<p>Yes. Each Shopify store needs its own Make.com webhook connection, but the Stocky Swap scenario can be cloned and configured separately per store. Multi-store operators typically point each store's webhook to a separate tab or sheet within one master Google Sheets workbook for unified reporting. Make.com free tier operations are counted across all your scenarios: high multi-store volume may require upgrading to Make.com Core ($9/mo).</p>" },
+  { q: "What if my store outgrows the Make.com free tier?",
+    a: "<p>Make.com's free tier covers 1,000 credits/month (formerly called operations). When your order volume requires more, Make.com's Core plan starts at $9/month for 10,000 credits: still significantly cheaper than any paid Shopify inventory app. The same Stocky Swap scenario keeps running on the higher tier without modification.</p>" },
+];
 const LINKEDIN = "https://www.linkedin.com/company/stack-architect-xyz/";
 const PRO_URL = `${SITE_URL}/pro/`;
 
@@ -285,78 +319,7 @@ const jsonLd = {
       },
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" }
     },
-    {
-      "@type": "FAQPage",
-      "@id": `${PAGE_URL}#faq`,
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: "What is the best free Stocky alternative in 2026?",
-          acceptedAnswer: { "@type": "Answer", text: "Stocky Swap is the leading free Stocky alternative for Shopify in 2026. It logs every Shopify order to Google Sheets in real-time via a public Make.com scenario, deploys in under 5 minutes, runs on Make.com's free tier with no monthly fees, and stores all data in a Google Sheet you own. Paid alternatives like Qoblex, SKUSavvy, Sumtracker, Inventory Planner, and Prediko offer deeper forecasting features but cost between $59 and $999 per month." }
-        },
-        
-        {
-          "@type": "Question",
-          name: "Is Stocky Swap actually free?",
-          acceptedAnswer: { "@type": "Answer", text: "Yes. Stocky Swap is a free Make.com scenario that runs on Make.com's free tier: 1,000 credits/month (formerly called operations) at zero cost. There are no Stack Architect fees, no setup charges, and no hidden costs. Stack Architect earns a small affiliate commission if you create a new Make.com account through this page, which keeps the guides free to access." }
-        },
-        {
-          "@type": "Question",
-          name: "Do I need to know how to code to use Stocky Swap?",
-          acceptedAnswer: { "@type": "Answer", text: "No coding is required. The Make.com scenario is pre-built and publicly shared: you click Clone, connect your Shopify store and a Google Sheet via OAuth, and switch the scenario on. Setup typically takes under 5 minutes. The full PDF setup guide walks through every step with screenshots." }
-        },
-        {
-          "@type": "Question",
-          name: "What does Stocky Swap log to Google Sheets?",
-          acceptedAnswer: { "@type": "Answer", text: "Each new Shopify order produces a Google Sheet row containing: order ID, order timestamp, customer name, line item SKU, product name, quantity sold, line revenue, and fulfilment status. The webhook fires from Shopify the moment an order is created, so the Sheet updates within seconds." }
-        },
-        {
-          "@type": "Question",
-          name: "Will Stocky Swap interfere with my Shopify store or other apps?",
-          acceptedAnswer: { "@type": "Answer", text: "No. Stocky Swap is a one-way listener: it reads new order data via Shopify's webhook API and writes to your own Google Sheet. It does not modify products, inventory levels, customer records, or other Shopify data. It runs independently of Stocky and any other inventory app, so it can run alongside whatever you use now while you check its output." }
-        },
-        {
-          "@type": "Question",
-          name: "What are the paid Stocky alternatives in 2026?",
-          acceptedAnswer: { "@type": "Answer", text: "The paid Stocky alternatives most-cited by independent reviewers in 2026: Qoblex (multi-channel inventory and procurement, ~$99-$249/mo), SKUSavvy (mobile-first warehouse management, ~$99-$499/mo), Sumtracker (bundles and kits, ~$59-$199/mo), Inventory Planner by Sage (advanced forecasting, ~$249-$999/mo), Cin7 Core (multi-warehouse, ~$349+/mo), and Prediko (AI demand forecasting, ~$119-$499/mo). Stocky Swap is positioned for stores wanting order logging at $0 rather than full inventory accounting." }
-        },
-        {
-          "@type": "Question",
-          name: "Can Stocky Swap import my historical Stocky data?",
-          acceptedAnswer: { "@type": "Answer", text: "Stocky Swap is a forward-only logger: it begins recording orders from the moment you switch it on. To preserve historical Stocky data, export your purchase orders, stocktakes, and supplier records from inside Stocky while its read-only export is still open. The Stocky data export guide on Stack Architect walks through what to save and how." }
-        },
-        {
-          "@type": "Question",
-          name: "Does Stocky Swap handle refunds, returns, or multi-location stock?",
-          acceptedAnswer: { "@type": "Answer", text: "Stocky Swap is built as a forward-only order ledger: it logs every new paid Shopify order. For full inventory accounting that handles refunds, returns, and multi-location stock movements, pair Stocky Swap with native Shopify Admin inventory tracking (which manages stock-on-hand correctly across these scenarios)." }
-        },
-        {
-          "@type": "Question",
-          name: "What if my store outgrows the Make.com free tier?",
-          acceptedAnswer: { "@type": "Answer", text: "Make.com's free tier covers 1,000 credits/month (formerly called operations). When your order volume requires more, Make.com's Core plan starts at $9 per month for 10,000 credits: still significantly cheaper than any paid Shopify inventory app. The same Stocky Swap scenario continues to run on the higher tier without modification." }
-        },
-        {
-          "@type": "Question",
-          name: "Is Stocky Swap better than the native Shopify inventory tools?",
-          acceptedAnswer: { "@type": "Answer", text: "They serve different purposes. Native Shopify Admin inventory handles stock-on-hand, transfers between locations, and basic receiving, and that's already free. Stocky Swap adds an independent, externally-owned audit log of every order in a Google Sheet you control: useful for finance reconciliation, accountant handoff, custom reporting, and as insurance against future Shopify changes. Most Shopify stores benefit from running both: native inventory for stock control, Stocky Swap for the order ledger." }
-        },
-        {
-          "@type": "Question",
-          name: "How do I migrate from Stocky to Stocky Swap?",
-          acceptedAnswer: { "@type": "Answer", text: "Migration takes three phases. First, export Stocky's historical data (purchase orders, stocktakes, supplier records) before any export functions are restricted. Second, deploy Stocky Swap and run it in parallel with Stocky for at least two weeks to verify orders are logging correctly. Third, after verification, you can switch off Stocky's daily use and rely on Stocky Swap as your forward order ledger. The full migration playbook is on the Stack Architect Stocky shutdown page." }
-        },
-        {
-          "@type": "Question",
-          name: "What is the cheapest Stocky alternative for Shopify?",
-          acceptedAnswer: { "@type": "Answer", text: "Stocky Swap at $0 per month is the cheapest Stocky alternative for Shopify in 2026. It runs on Make.com's free tier with no Stack Architect fees. The next cheapest paid options start at approximately $9 per month for Make.com Core (if you outgrow free) or around $59 per month for entry-tier paid Shopify inventory apps like Sumtracker." }
-        },
-        {
-          "@type": "Question",
-          name: "Can I use Stocky Swap with multiple Shopify stores?",
-          acceptedAnswer: { "@type": "Answer", text: "Yes. Each Shopify store needs its own Make.com webhook connection, but the Stocky Swap scenario can be cloned and configured separately per store. Multi-store operators typically point each store's webhook to a separate tab or sheet within one master Google Sheets workbook for unified reporting. Note that Make.com free tier operations are counted across all your scenarios: high multi-store volume may require upgrading to Make.com Core." }
-        }
-      ]
-    },
+    { ...faqPage(faqs, `${PAGE_URL}#faq`), "@context": undefined },
     {
       "@type": "BreadcrumbList",
       itemListElement: [
@@ -426,7 +389,7 @@ const tocHeadings = [
 ];
 
 ---
-<Base title={SEO.title} description={SEO.description}>
+<Base verifiedDate={READ_DATE} title={SEO.title} description={SEO.description}>
 <Fragment slot="head">
 <script type="application/ld+json" set:html={JSON.stringify(jsonLd, null, 2)} />
 
@@ -1327,7 +1290,7 @@ const tocHeadings = [
     <div class="speakable-answer">
       <div class="label">↳ Quick answer</div>
       <p>
-        <strong>Stocky Swap is a free Stocky alternative for Shopify in 2026.</strong> It uses a public Make.com scenario to log every new Shopify order to a Google Sheet you own, in real time, with no monthly fees and no code. Setup takes under 5 minutes. It runs forward-only on Make.com's free tier, making it the cheapest direct path off Stocky now that it has closed. For deeper inventory features (forecasting, multi-warehouse, purchase orders), see the paid alternatives comparison below: Qoblex, SKUSavvy, Sumtracker, Inventory Planner, and Prediko range from $59 to $999 per month.
+        <strong>Stocky Swap is a free Stocky alternative for Shopify in 2026.</strong> It uses a public Make.com scenario to log every new Shopify order to a Google Sheet you own, in real time, with no monthly fees and no code. Setup takes under 5 minutes. It runs forward-only on Make.com's free tier, making it the cheapest direct path off Stocky now that it has closed. For deeper inventory features (forecasting, multi-warehouse, purchase orders), see the paid alternatives comparison below: Qoblex, SKUSavvy, Sumtracker, Inventory Planner, and Prediko range from $49 to $599 per month, with SKUSavvy charging per order and Inventory Planner by quote.
       </p>
     </div>
 
@@ -1389,7 +1352,7 @@ const tocHeadings = [
       </p>
 
       <p>
-        For most stores, the immediate question isn't "which $99/month replacement do I buy?" It's <strong>"where do new orders go starting September 1?"</strong> That's what Stocky Swap solves. It's not a full inventory accounting system: it's a real-time order ledger that lives in a Google Sheet you control, deployed in minutes, free forever via Make.com.
+        For most stores, the immediate question isn't "which paid replacement do I buy?" It's <strong>"where do new orders go starting September 1?"</strong> That's what Stocky Swap solves. It's not a full inventory accounting system: it's a real-time order ledger that lives in a Google Sheet you control, deployed in minutes, free forever via Make.com.
       </p>
 
       <p>
@@ -1598,11 +1561,11 @@ const tocHeadings = [
       </div>
 
       {/* ── PRICE LADDER ──────────────────────────────────────────────────
-          The page's central argument is $0 against $59–$999/mo, and it was
+          The page's central argument is $0 against $49–$599/mo, and it was
           only ever available as a grey table you had to read row by row. This
           is the same data as magnitude, so the gap is seen before it is read.
 
-          Form: horizontal range bars, sorted ascending, shared 0–$999 axis.
+          Form: horizontal range bars, sorted ascending, shared 0 to 600 USD axis.
           Colour: a status pair, not a categorical palette, green marks the
           free option, neutral grey is recessive for paid. Validated against
           the dark surface: CVD ΔE 15.9 deutan / 21.8 normal, contrast ≥3:1.
@@ -1611,7 +1574,7 @@ const tocHeadings = [
           is not already printed on the row. */}
       <figure class="ladder" aria-labelledby="ladder-cap">
         <div class="ladder-scale" aria-hidden="true">
-          <span>$0</span><span>$250</span><span>$500</span><span>$750</span><span>$999</span>
+          <span>$0</span><span>$150</span><span>$300</span><span>$450</span><span>$600</span>
         </div>
 
         <div class="ladder-row is-free">
@@ -1631,56 +1594,57 @@ const tocHeadings = [
         </div>
 
         <div class="ladder-row">
-          <div class="ladder-label">Sumtracker <span class="ladder-sub">bundles &amp; kits</span></div>
-          <div class="ladder-track">
-            <div class="ladder-bar" style="margin-left:5.9%;width:14.0%"></div>
-            </div>
-            <div class="ladder-val">$59–$199</div>
-        </div>
-
-        <div class="ladder-row">
-          <div class="ladder-label">Qoblex <span class="ladder-sub">multi-channel + POs</span></div>
-          <div class="ladder-track">
-            <div class="ladder-bar" style="margin-left:9.9%;width:15.0%"></div>
-            </div>
-            <div class="ladder-val">$99–$249</div>
-        </div>
-
-        <div class="ladder-row">
           <div class="ladder-label">SKUSavvy <span class="ladder-sub">warehouse / WMS</span></div>
           <div class="ladder-track">
-            <div class="ladder-bar" style="margin-left:9.9%;width:40.0%"></div>
+            <div class="ladder-bar" style="margin-left:0%;width:1%"></div>
             </div>
-            <div class="ladder-val">$99–$499</div>
+            <div class="ladder-val">$0 + per order</div>
         </div>
 
         <div class="ladder-row">
           <div class="ladder-label">Prediko <span class="ladder-sub">AI forecasting</span></div>
           <div class="ladder-track">
-            <div class="ladder-bar" style="margin-left:11.9%;width:38.0%"></div>
+            <div class="ladder-bar" style="margin-left:8.2%;width:11.7%"></div>
             </div>
-            <div class="ladder-val">$119–$499</div>
+            <div class="ladder-val">$49–$119</div>
+        </div>
+
+        <div class="ladder-row">
+          <div class="ladder-label">Sumtracker <span class="ladder-sub">bundles &amp; kits</span></div>
+          <div class="ladder-track">
+            <div class="ladder-bar" style="margin-left:9.8%;width:35.0%"></div>
+            </div>
+            <div class="ladder-val">$59–$269</div>
+        </div>
+
+        <div class="ladder-row">
+          <div class="ladder-label">Qoblex <span class="ladder-sub">multi-channel + POs</span></div>
+          <div class="ladder-track">
+            <div class="ladder-bar" style="margin-left:16.5%;width:13.3%"></div>
+            </div>
+            <div class="ladder-val">$99–$179</div>
         </div>
 
         <div class="ladder-row">
           <div class="ladder-label">Cin7 Core <span class="ladder-sub">multi-warehouse + B2B</span></div>
           <div class="ladder-track">
-            <div class="ladder-bar is-open" style="margin-left:34.9%;width:65.1%"></div>
+            <div class="ladder-bar" style="margin-left:58.2%;width:41.7%"></div>
             </div>
-            <div class="ladder-val">$349+</div>
+            <div class="ladder-val">$349–$599</div>
         </div>
 
         <div class="ladder-row">
           <div class="ladder-label">Inventory Planner <span class="ladder-sub">Sage · forecasting</span></div>
           <div class="ladder-track">
-            <div class="ladder-bar" style="margin-left:24.9%;width:75.1%"></div>
+            
             </div>
-            <div class="ladder-val">$249–$999</div>
+            <div class="ladder-val">Quote only</div>
         </div>
 
         <figcaption id="ladder-cap" class="ladder-cap">
-          Entry pricing, public vendor pages as of June 2026. Ranges span each vendor's
-          lowest to highest published tier; Cin7 publishes a floor only. The two free
+          List prices on each vendor's own pricing page or Shopify App Store listing, read
+          25 September 2026. Ranges span each vendor's lowest to highest published tier;
+          SKUSavvy charges $0.06–$0.20 per order on top, and Inventory Planner publishes no price. The two free
           rows are not a discount or a trial: Native Shopify inventory is already in
           your plan, and Stocky Swap runs on infrastructure you own.
         </figcaption>
@@ -1716,42 +1680,42 @@ const tocHeadings = [
             <tr>
               <td class="row-tool">Qoblex<span class="sub">qoblex.com</span></td>
               <td class="neutral">Multi-channel inventory + procurement</td>
-              <td class="miss">~$99–$249/mo</td>
+              <td class="miss">$99–$179/mo</td>
               <td class="miss">Hours</td>
               <td class="miss">Vendor-locked</td>
             </tr>
             <tr>
               <td class="row-tool">SKUSavvy<span class="sub">skusavvy.com</span></td>
               <td class="neutral">Mobile-first warehouse management (WMS)</td>
-              <td class="miss">~$99–$499/mo</td>
+              <td class="miss">$0/mo plus $0.06–$0.20 per order</td>
               <td class="miss">Hours</td>
               <td class="miss">Vendor-locked</td>
             </tr>
             <tr>
               <td class="row-tool">Sumtracker<span class="sub">sumtracker.com</span></td>
               <td class="neutral">Bundles, kits, multi-store</td>
-              <td class="miss">~$59–$199/mo</td>
+              <td class="miss">$59–$269/mo</td>
               <td class="miss">Hours</td>
               <td class="miss">Vendor-locked</td>
             </tr>
             <tr>
               <td class="row-tool">Inventory Planner<span class="sub">inventory-planner.com (Sage)</span></td>
               <td class="neutral">Advanced demand forecasting</td>
-              <td class="miss">~$249–$999/mo</td>
+              <td class="miss">quote only</td>
               <td class="miss">Days</td>
               <td class="miss">Vendor-locked</td>
             </tr>
             <tr>
               <td class="row-tool">Prediko<span class="sub">prediko.io</span></td>
               <td class="neutral">AI forecasting + raw materials</td>
-              <td class="miss">~$119–$499/mo</td>
+              <td class="miss">$49–$119/mo</td>
               <td class="miss">Hours</td>
               <td class="miss">Vendor-locked</td>
             </tr>
             <tr>
               <td class="row-tool">Cin7 Core<span class="sub">cin7.com</span></td>
               <td class="neutral">Multi-warehouse + B2B</td>
-              <td class="miss">~$349+/mo</td>
+              <td class="miss">$349–$599/mo</td>
               <td class="miss">Days</td>
               <td class="miss">Vendor-locked</td>
             </tr>
@@ -1792,7 +1756,7 @@ const tocHeadings = [
         <div class="vs-card">
           <div class="vs-card-title win">Stocky Swap wins on</div>
           <ul class="vs-list pros">
-            <li>Cost: $0 vs $99–$249/month</li>
+            <li>Cost: $0 vs $99–$179/month</li>
             <li>Setup speed: 4 minutes vs hours</li>
             <li>Data ownership: your Google Sheet, never locked in</li>
             <li>No vendor risk: Make.com and Google are independent of each other</li>
@@ -1818,7 +1782,7 @@ const tocHeadings = [
         <div class="vs-card">
           <div class="vs-card-title win">Stocky Swap wins on</div>
           <ul class="vs-list pros">
-            <li>Cost: $0 vs $99–$499/month</li>
+            <li>Cost: $0 vs usage-based pricing ($0.06–$0.20 per order)</li>
             <li>No mobile app needed</li>
             <li>No staff training required</li>
             <li>Works for stores with no warehouse (3PL, dropship, single fulfilment location)</li>
@@ -1843,7 +1807,7 @@ const tocHeadings = [
         <div class="vs-card">
           <div class="vs-card-title win">Stocky Swap wins on</div>
           <ul class="vs-list pros">
-            <li>Cost: $0 vs $59–$199/month</li>
+            <li>Cost: $0 vs $59–$269/month</li>
             <li>Simplicity: no bundle configuration needed</li>
             <li>Stores selling individual products with no kits</li>
           </ul>
@@ -1860,13 +1824,13 @@ const tocHeadings = [
       </div>
 
       <h3>Stocky Swap vs Inventory Planner (by Sage)</h3>
-      <p>Inventory Planner is the heavyweight here: Sage acquired it because it's enterprise-grade demand forecasting. If you're spending $50,000+/month on stock and need to optimise reorder timing across hundreds of SKUs, this is the right tool. For everyone else, it's overkill at $249–$999/month.</p>
+      <p>Inventory Planner is the heavyweight here: Sage acquired it because it's enterprise-grade demand forecasting. If you're spending $50,000+/month on stock and need to optimise reorder timing across hundreds of SKUs, this is the right tool. For everyone else, it's overkill at a quoted enterprise price.</p>
 
       <div class="vs-grid">
         <div class="vs-card">
           <div class="vs-card-title win">Stocky Swap wins on</div>
           <ul class="vs-list pros">
-            <li>Cost: $0 vs $249–$999/month</li>
+            <li>Cost: $0 vs a quoted price</li>
             <li>Speed to deploy: minutes vs days/weeks</li>
             <li>Stores under ~$500k annual revenue typically don't need this</li>
           </ul>
@@ -1889,7 +1853,7 @@ const tocHeadings = [
         <div class="vs-card">
           <div class="vs-card-title win">Stocky Swap wins on</div>
           <ul class="vs-list pros">
-            <li>Cost: $0 vs $119–$499/month</li>
+            <li>Cost: $0 vs $49–$119/month</li>
             <li>No data lock-in: leave any time, your Sheet is yours</li>
             <li>No commitment to forecast accuracy claims</li>
           </ul>
@@ -2000,8 +1964,8 @@ const tocHeadings = [
           <ul class="playbook-list">
             <li>Stocky Swap on Make.com Core ($9/mo)</li>
             <li>One paid tool only: don't stack 3+</li>
-            <li>If POs matter most: Qoblex (~$99)</li>
-            <li>If bundles matter most: Sumtracker (~$59)</li>
+            <li>If POs matter most: Qoblex ($99)</li>
+            <li>If bundles matter most: Sumtracker ($59)</li>
           </ul>
         </div>
 
@@ -2165,98 +2129,12 @@ const tocHeadings = [
       </div>
 
       <div class="faq-list-s">
-
-        <details class="faq-item-s">
-          <summary>What is the best free Stocky alternative in 2026? <span class="faq-ico" aria-hidden="true"></span></summary>
-          <div class="faq-ans-s">
-            <p><strong>Stocky Swap</strong> is the leading free Stocky alternative for Shopify in 2026. It logs every Shopify order to a Google Sheet in real-time via a public Make.com scenario, deploys in under 5 minutes, runs on Make.com's free tier, and stores data in a Google Sheet you own. Paid alternatives like Qoblex, SKUSavvy, Sumtracker, and Inventory Planner offer deeper forecasting features but cost between $59 and $999/month.</p>
-          </div>
-        </details>
-
-        <details class="faq-item-s">
-          <summary>What is the cheapest Stocky alternative for Shopify? <span class="faq-ico" aria-hidden="true"></span></summary>
-          <div class="faq-ans-s">
-            <p>Stocky Swap at <strong>$0/month</strong> is the cheapest Stocky alternative in 2026. It runs on Make.com's free tier with no Stack Architect fees. Paid options start around $9/month for Make.com Core (if you outgrow free), or ~$59/month for entry-tier paid Shopify inventory apps like Sumtracker.</p>
-          </div>
-        </details>
-
-        <details class="faq-item-s">
-          <summary>Is Stocky Swap actually free? <span class="faq-ico" aria-hidden="true"></span></summary>
-          <div class="faq-ans-s">
-            <p>Yes. Stocky Swap is a free Make.com scenario. It runs on Make.com's free tier: 1,000 credits/month (formerly called operations) at no cost. Stack Architect earns a small affiliate commission if you create a Make.com account through this page, which is how the guides stay free. There are no Stack Architect fees, no setup charges, no hidden costs.</p>
-          </div>
-        </details>
-
-        <details class="faq-item-s">
-          <summary>Do I need to know how to code to use Stocky Swap? <span class="faq-ico" aria-hidden="true"></span></summary>
-          <div class="faq-ans-s">
-            <p>No coding required. The Make.com scenario is pre-built and shared publicly: you click Clone, connect your Shopify and Google Sheet via OAuth, and switch the scenario on. Setup typically takes under 5 minutes. The <a href={SETUP_GUIDE_PDF} target="_blank" rel="noopener">PDF setup guide</a> covers every step with screenshots.</p>
-          </div>
-        </details>
-
-        <details class="faq-item-s">
-          <summary>What does Stocky Swap log to Google Sheets? <span class="faq-ico" aria-hidden="true"></span></summary>
-          <div class="faq-ans-s">
-            <p>Each new Shopify order produces a Google Sheet row containing: order ID, order timestamp, customer name, line item SKU, product name, quantity sold, line revenue, and fulfilment status. The webhook fires from Shopify the moment an order is created, not on a polling interval, so the Sheet updates within seconds.</p>
-          </div>
-        </details>
-
-        <details class="faq-item-s">
-          <summary>Will Stocky Swap interfere with my Shopify store or other apps? <span class="faq-ico" aria-hidden="true"></span></summary>
-          <div class="faq-ans-s">
-            <p>No. Stocky Swap is a one-way listener: it reads Shopify order data via webhook and writes to your Google Sheet. It does not modify products, inventory levels, customer records, or any other Shopify data. It runs independently of Stocky and any inventory app, so it can run alongside whatever you use now while you check its output.</p>
-          </div>
-        </details>
-
-        <details class="faq-item-s">
-          <summary>What are the paid Stocky alternatives in 2026? <span class="faq-ico" aria-hidden="true"></span></summary>
-          <div class="faq-ans-s">
-            <p>The paid Stocky alternatives most-cited by independent reviewers in 2026: <strong>Qoblex</strong> (multi-channel inventory + procurement, ~$99–$249/mo), <strong>SKUSavvy</strong> (mobile-first WMS, ~$99–$499/mo), <strong>Sumtracker</strong> (bundles and kits, ~$59–$199/mo), <strong>Inventory Planner by Sage</strong> (advanced forecasting, ~$249–$999/mo), <strong>Cin7 Core</strong> (multi-warehouse, ~$349+/mo), <strong>Prediko</strong> (AI demand forecasting, ~$119–$499/mo). <a href="#comparison">See the full comparison table →</a></p>
-          </div>
-        </details>
-
-        <details class="faq-item-s">
-          <summary>Can Stocky Swap import my historical Stocky data? <span class="faq-ico" aria-hidden="true"></span></summary>
-          <div class="faq-ans-s">
-            <p>Stocky Swap is a forward-only logger: it begins recording orders from the moment you switch it on. To preserve historical Stocky data, export your purchase orders, stocktakes, and supplier records from inside Stocky while its read-only export is still open. The <a href="/blog/shopify-stocky-data-export-before-shutdown/">Stocky data export guide</a> covers what to save and how.</p>
-          </div>
-        </details>
-
-        <details class="faq-item-s">
-          <summary>Does Stocky Swap handle refunds, returns, or multi-location stock? <span class="faq-ico" aria-hidden="true"></span></summary>
-          <div class="faq-ans-s">
-            <p>Stocky Swap is a forward-only order ledger: every paid Shopify order produces a Google Sheet row. For full inventory accounting that handles refunds, returns, and multi-location stock-on-hand calculations, rely on native Shopify Admin inventory tracking (which manages these correctly).</p>
-          </div>
-        </details>
-
-        <details class="faq-item-s">
-          <summary>Is Stocky Swap better than the native Shopify inventory tools? <span class="faq-ico" aria-hidden="true"></span></summary>
-          <div class="faq-ans-s">
-            <p>They serve different purposes. Native Shopify Admin inventory handles stock-on-hand, transfers between locations, and basic receiving: already free. Stocky Swap adds an independent, externally-owned audit log of every order in a Google Sheet you control: useful for finance reconciliation, accountant handoff, custom reporting, and as insurance against future Shopify changes. Most stores benefit from running both.</p>
-          </div>
-        </details>
-
-        <details class="faq-item-s">
-          <summary>How do I migrate from Stocky to Stocky Swap? <span class="faq-ico" aria-hidden="true"></span></summary>
-          <div class="faq-ans-s">
-            <p>Migration is three phases. <strong>First</strong>, export Stocky's historical data (purchase orders, stocktakes, supplier records) before any export functions are restricted. <strong>Second</strong>, deploy Stocky Swap and run it in parallel with Stocky for at least two weeks to verify orders are logging correctly. <strong>Third</strong>, after verification, you can switch off Stocky's daily use and rely on Stocky Swap as your forward order ledger. <a href="#migration-timeline-what-to-do-when">Full migration timeline →</a></p>
-          </div>
-        </details>
-
-        <details class="faq-item-s">
-          <summary>Can I use Stocky Swap with multiple Shopify stores? <span class="faq-ico" aria-hidden="true"></span></summary>
-          <div class="faq-ans-s">
-            <p>Yes. Each Shopify store needs its own Make.com webhook connection, but the Stocky Swap scenario can be cloned and configured separately per store. Multi-store operators typically point each store's webhook to a separate tab or sheet within one master Google Sheets workbook for unified reporting. Make.com free tier operations are counted across all your scenarios: high multi-store volume may require upgrading to Make.com Core ($9/mo).</p>
-          </div>
-        </details>
-
-        <details class="faq-item-s">
-          <summary>What if my store outgrows the Make.com free tier? <span class="faq-ico" aria-hidden="true"></span></summary>
-          <div class="faq-ans-s">
-            <p>Make.com's free tier covers 1,000 credits/month (formerly called operations). When your order volume requires more, Make.com's Core plan starts at $9/month for 10,000 credits: still significantly cheaper than any paid Shopify inventory app. The same Stocky Swap scenario keeps running on the higher tier without modification.</p>
-          </div>
-        </details>
-
+        {faqs.map(({ q, a }) => (
+          <details class="faq-item-s">
+            <summary>{q} <span class="faq-ico" aria-hidden="true"></span></summary>
+            <div class="faq-ans-s" set:html={a} />
+          </details>
+        ))}
       </div>
     </div>
   </section>
@@ -2292,7 +2170,8 @@ const tocHeadings = [
        region, so the visible attribution for it belongs in the same region.
        This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
-  </main>
+  <PriceSources ids={['make', 'prediko', 'sumtracker', 'qoblex', 'skusavvy', 'inventoryPlanner', 'cin7']} />
+</main>
 
 <!-- Sticky bottom CTA — appears after scroll, dismissible -->
 

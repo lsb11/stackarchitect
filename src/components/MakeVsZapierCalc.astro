@@ -100,39 +100,41 @@ const { embed = false } = Astro.props;
     const steps = parseInt(stepsEl.value);
     const ops = runs * steps;
 
-    // Both vendors publish these tiers in USD. Nothing here is converted. The
-    // output below used to mix a dollar sign for the figure with a pound sign
-    // for the zero case, inside one expression — a symbol slip, not a currency.
-    let makeCost, makePlan;
-    if (ops <= 1000) { makeCost = 0; makePlan = 'Free tier'; }
-    else if (ops <= 10000) { makeCost = 9; makePlan = 'Core — 10k ops'; }
-    else if (ops <= 40000) { makeCost = 16; makePlan = 'Pro — 40k ops'; }
-    else if (ops <= 150000) { makeCost = 29; makePlan = 'Teams — 150k ops'; }
-    else { makeCost = 99; makePlan = 'Enterprise'; }
+    // Tiers as each vendor publishes them in USD, read 25 September 2026
+    // (make.com/en/pricing, zapier.com/pricing). Make lists Free (1,000
+    // credits) and Core ($9 for 10,000); above that it prices by volume and
+    // shows no single figure. Zapier lists Professional "starting from $19.99"
+    // without a task count, so paid Zapier volume is costed as at least that.
+    let makeCost: number | null, makePlan: string;
+    if (ops <= 1000) { makeCost = 0; makePlan = 'Free: 1,000 credits a month'; }
+    else if (ops <= 10000) { makeCost = 9; makePlan = 'Core: $9 for 10,000 credits'; }
+    else { makeCost = null; makePlan = 'Above 10,000 credits: priced by volume on make.com'; }
 
-    let zapierCost, zapierPlan;
-    if (ops <= 100) { zapierCost = 0; zapierPlan = 'Free tier'; }
-    else if (ops <= 750) { zapierCost = 17; zapierPlan = 'Starter — 750 tasks'; }
-    else if (ops <= 2000) { zapierCost = 44; zapierPlan = 'Professional — 2k tasks'; }
-    else if (ops <= 50000) { zapierCost = 89; zapierPlan = 'Team — 50k tasks'; }
-    else { zapierCost = 299; zapierPlan = 'Company'; }
+    let zapierCost: number, zapierPlan: string;
+    const zapierFrom = ops > 100;
+    if (ops <= 100) { zapierCost = 0; zapierPlan = 'Free: 100 tasks a month'; }
+    else { zapierCost = 19.99; zapierPlan = 'Professional: from $19.99, rising with task volume'; }
 
-    const saving = zapierCost - makeCost;
+    const money = (n: number) => '$' + (Number.isInteger(n) ? n : n.toFixed(2));
+    const plus = zapierFrom ? '+' : '';
+    const saving = makeCost === null ? null : Math.round((zapierCost - makeCost) * 100) / 100;
     const set = (id: string, v: string) => { const el = document.getElementById(id); if (el) el.textContent = v; };
 
     const makeEl = document.getElementById('mz-make');
-    if (makeEl) { makeEl.textContent = makeCost === 0 ? 'FREE' : '$' + makeCost + '/mo'; (makeEl as HTMLElement).style.color = '#34d377'; }
+    if (makeEl) { makeEl.textContent = makeCost === null ? 'By volume' : makeCost === 0 ? 'FREE' : money(makeCost) + '/mo'; (makeEl as HTMLElement).style.color = '#34d377'; }
     set('mz-make-plan', makePlan + ' (' + ops.toLocaleString() + ' ops needed)');
-    set('mz-zapier', zapierCost === 0 ? 'FREE' : '$' + zapierCost + '/mo');
+    set('mz-zapier', zapierCost === 0 ? 'FREE' : money(zapierCost) + plus + '/mo');
     set('mz-zapier-plan', zapierPlan);
 
     const savingEl = document.getElementById('mz-saving');
-    if (savingEl) { savingEl.textContent = saving > 0 ? '$' + saving + '/mo' : '$0'; (savingEl as HTMLElement).style.color = saving > 0 ? '#34d377' : '#93a09a'; }
-    set('mz-annual', saving > 0 ? '$' + (saving * 12).toLocaleString() : '$0');
+    if (savingEl) { savingEl.textContent = saving === null ? 'By volume' : saving > 0 ? money(saving) + plus + '/mo' : '$0'; (savingEl as HTMLElement).style.color = saving !== null && saving > 0 ? '#34d377' : '#93a09a'; }
+    set('mz-annual', saving === null ? 'See both pricing pages' : saving > 0 ? money(Math.round(saving * 12)) + plus : '$0');
 
-    const insight = saving > 0
-      ? '<strong>Switching to Make.com saves $' + saving + '/month</strong> ($' + (saving * 12) + '/year) at your automation volume. Make.com also handles the multi-path routing required for Shopify CAPI, TikTok Events API, and Google Sheets simultaneously — which Zapier cannot do in a single workflow.'
-      : 'At this volume both platforms are in a similar price bracket. Make.com\'s advantage is in capability — complex multi-path scenarios, data transformation, and running the full $0 Shopify automation stack in a single scenario.';
+    const insight = saving === null
+      ? 'Above 10,000 credits a month, Make.com prices by volume and publishes no single figure, so compare its pricing page with Zapier\'s at your volume. Make.com also handles the multi-path routing Shopify CAPI, TikTok Events API and Google Sheets need in one scenario.'
+      : saving > 0
+      ? '<strong>Make.com costs at least ' + money(saving) + ' a month less</strong> (at least ' + money(Math.round(saving * 12)) + ' a year) at your automation volume. Zapier publishes its Professional plan as a starting price, so the real gap is at least this. Make.com also handles the multi-path routing required for Shopify CAPI, TikTok Events API, and Google Sheets in one scenario, which Zapier cannot do in a single workflow.'
+      : 'At this volume both platforms are free. Make.com\'s advantage is in capability: complex multi-path scenarios, data transformation, and running the full $0 Shopify automation stack in a single scenario.';
     const insightEl = document.getElementById('mz-insight');
     if (insightEl) insightEl.innerHTML = insight;
     const resultEl = document.getElementById('mz-result');

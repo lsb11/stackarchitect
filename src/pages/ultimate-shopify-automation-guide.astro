@@ -1,6 +1,30 @@
 ---
 import { pageUpdated, formatUpdatedMonth } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
+import { READ_DATE } from '../data/priceSources';
+import PriceSources from '../components/PriceSources.astro';
+import { faqPage, type Faq } from '../utils/faq';
+
+// One array renders the visible FAQ and the FAQPage node.
+const faqs: Faq[] = [
+              { q:"What is the best Shopify automation guide in 2026?", a:"This guide covers the complete $0 Automation Stack: the fastest way to automate your Shopify store in 2026 across tracking, inventory, workflow, email, and AI discoverability. For individual deep-dives on each topic, the Shopify automation guides library covers 40+ step-by-step guides across every operational area." },
+              { q:"How do I automate my Shopify store in 2026?", a:"Use the $0 Automation Stack: Make.com free tier as the central webhook hub, CAPI Shield for server-side ad tracking, Stocky Swap for inventory management, Systeme.io for email automation, and Google Apps Script Quota Fix for document workflow stability. The complete setup takes 35 minutes and costs $0/month for stores processing under 200 orders per month." },
+              { q:"Why did my Shopify ROAS drop in January 2026?", a:'Two events hit simultaneously: iOS 26 stripped fbclid parameters from Private Browsing links and links shared via Mail and Messages, breaking click-level attribution. On January 13 2026, Shopify changed App Pixels to "Optimised" mode: silently throttling third-party tracking pixel data. Together they open a conversion data gap whose size tracks how much of your traffic arrives through the affected routes. Server-side tracking via CAPI Shield fixes both issues simultaneously.' },
+              { q:"What happened to Shopify's pixel on January 13 2026?", a:'Shopify changed App Pixels to "Optimised" mode on January 13 2026. This change throttles the data that third-party pixel apps receive from Shopify\'s checkout events, without throwing an error or notifying merchants. Server-side tracking via CAPI Shield bypasses the App Pixel system entirely.' },
+              { q:"When did Shopify Stocky close?", a:"Shopify closed Stocky on 31 August 2026: the app can no longer be used and its APIs stopped that day. Read-only export stays open for at least 90 days after that, and Shopify has published no end date. Export your data now via Stocky → Settings → Export, then deploy Stocky Swap as your replacement. The migration takes 4 minutes and your data lives in a Google Sheet you own permanently." },
+              { q:"How do I automate my Shopify store for free?", a:"Use the $0 Automation Stack: Make.com (free tier) as the central hub, Google Sheets for inventory, the Conversions API for tracking, and Systeme.io for email marketing. This replaces paid tracking, inventory, automation, and email apps at zero cost. Deploy in under 35 minutes with no code." },
+              { q:"Make.com vs Zapier for Shopify?", a:"Make.com. It offers 1,000 free credits per month versus Zapier's 100, supports multi-step workflows on the free tier, and handles Shopify webhooks in real time (Zapier's free tier polls every 15 minutes). For Shopify automation specifically, Make.com is the stronger choice at every price point." },
+              { q:"How do I replace Shopify Stocky for free?", a:"Use Stocky Swap: a free Make.com workflow that logs every paid Shopify order to a Google Sheet in real time, with order ID, SKU, quantity, revenue and fulfilment status. It does not calculate stock on hand, manage purchase orders or send alerts: Shopify Admin covers stock and purchase orders, with Shopify Flow for low-stock alerts." },
+              { q:"Can I automate Shopify without coding?", a:"Yes. The entire $0 Automation Stack requires zero coding. Make.com uses a visual drag-and-drop builder, Google Sheets requires no scripting for basic inventory tracking, and the Conversions API integration is configured via point-and-click webhook setup in Shopify Admin." },
+              { q:"What is Klaviyo's billing change and how does it affect my costs?", a:"In February 2025, Klaviyo changed to billing on all active profiles, including unengaged contacts. Stores with large historical email lists saw their bill increase significantly. Systeme.io's free plan provides unlimited contacts and email sends with no profile billing surprises." },
+              { q:"How do I get my Shopify store found by ChatGPT and Google AI Mode?", a:"Optimise for Generative Engine Optimisation (GEO): add structured product schema markup, create FAQ content that matches conversational queries, and ensure your product data is programmatically accessible. AI-driven traffic to Shopify grew 8x year-on-year in 2025." },
+              
+              { q:"What is Shopify automation?", a:"Shopify automation connects Shopify to external tools via webhooks and APIs so that repetitive tasks (order logging, ad tracking, inventory updates, email sequences) happen automatically without manual work or paid app subscriptions." },
+              { q:"How much can I save by automating my Shopify store?", a:"It depends on which paid apps you run now. On list prices read on 25 September 2026: server-side tracking apps cost $145–$650/month, paid inventory apps start at $49/month, Zapier at $19.99+/month and Klaviyo's email plan at $20/month. The free stack replaces those jobs at $0." },
+              { q:"Is the $0 Automation Stack safe?", a:"Completely safe. The stack runs in your own Google account and Make.com workspace. Nothing is installed on your Shopify store: data flows via secure webhooks. Remove it entirely by deleting the Make.com scenario and Google Sheet." },
+              { q:"How long does full setup take?", a:"Each individual workflow deploys in 4–6 minutes. Full stack deployment (CAPI Shield, Stocky Swap, Quota Fix, Systeme.io, and basic AI discoverability setup) takes 35 minutes total. Zero ongoing maintenance required after deployment." },
+              { q:"Do I need Google Workspace?", a:"Not initially. Free Gmail works for most stores. Google Workspace raises the Apps Script quotas, such as daily trigger runtime from 90 minutes to 6 hours, which matters only if you run Apps Script at high volume. It does not remove limits." },
+            ];
 import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 
@@ -11,7 +35,7 @@ const DATE_PUBLISHED = '2025-01-01';
 const DATE_MODIFIED = pageUpdated('/ultimate-shopify-automation-guide/')!;
 
 const title       = 'Shopify Automation Guide 2026 — Deploy in 35 Minutes';
-const description = 'Free 2026 Shopify automation guide: save $700+/month, fix ROAS from iOS 26 tracking changes, replace paid apps, automate inventory, no code, 35 minutes.';
+const description = 'Free 2026 Shopify automation guide: replace paid apps, fix ROAS from iOS 26 tracking changes, replace paid apps, automate inventory, no code, 35 minutes.';
 
 const articleSchema = {
   "@context":"https://schema.org","@type":["Article","TechArticle"],
@@ -80,29 +104,13 @@ const howToInventorySchema = {
   ]
 };
 
-const faqSchema = {
-  "@context":"https://schema.org","@type":"FAQPage",
-  "mainEntity":[
-    {"@type":"Question","name":"What is the best Shopify automation guide in 2026?","acceptedAnswer":{"@type":"Answer","text":"The Stack Architect $0 Automation Stack guide covers every major area of Shopify automation in 2026: fixing the Q1 ROAS crisis from iOS 26 and the January 13 Shopify pixel change, replacing paid inventory apps now that Stocky has closed, workflow automation via Make.com, email marketing via Systeme.io, and AI discoverability. Free, no code, deployable in 35 minutes."}},
-    {"@type":"Question","name":"How do I automate my Shopify store in 2026?","acceptedAnswer":{"@type":"Answer","text":"Use the $0 Automation Stack: Make.com free tier as the central webhook hub, CAPI Shield for server-side ad tracking, Stocky Swap for inventory management, Systeme.io for email automation, and Google Apps Script Quota Fix for document workflow stability. The complete setup takes 35 minutes and costs $0/month for stores processing under 200 orders per month."}},
-    {"@type":"Question","name":"Why did my Shopify ROAS drop in January 2026?","acceptedAnswer":{"@type":"Answer","text":"Two events hit simultaneously: iOS 26 stripped fbclid parameters from Private Browsing links and links shared via Mail and Messages. On January 13 2026, Shopify changed App Pixels to Optimised mode, silently throttling third-party pixel data. Together they cost stores conversion data on the iOS sessions each one touches. Server-side tracking via CAPI Shield fixes both."}},
-    {"@type":"Question","name":"When did Shopify Stocky close?","acceptedAnswer":{"@type":"Answer","text":"Shopify closed Stocky on 31 August 2026: the app can no longer be used and its APIs stopped that day. Read-only export stays open for at least 90 days after that, and Shopify has published no end date. Export your data now via Stocky → Settings → Export, then deploy Stocky Swap as your replacement. The migration takes 4 minutes and your data lives in a Google Sheet you own permanently."}},
-    {"@type":"Question","name":"Make.com vs Zapier for Shopify?","acceptedAnswer":{"@type":"Answer","text":"Make.com offers 1,000 free credits per month versus Zapier's 100, supports multi-step workflows on the free tier, and handles Shopify webhooks in real time. Zapier's free tier polls every 15 minutes. Make.com is the stronger choice at every price point."}},
-    
-    {"@type":"Question","name":"How do I replace Shopify Stocky for free?","acceptedAnswer":{"@type":"Answer","text":"Use Stocky Swap: a free Make.com workflow that logs every Shopify order to a Google Sheet in real time. Deploy before August 31 2026 to avoid losing access to your Stocky data."}},
-    {"@type":"Question","name":"Can I automate Shopify without coding?","acceptedAnswer":{"@type":"Answer","text":"Yes. The entire $0 Automation Stack requires zero coding. Make.com uses a visual drag-and-drop builder, Google Sheets requires no scripting for basic inventory tracking, and the Conversions API integration is configured via point-and-click webhook setup in Shopify Admin."}},
-    
-    {"@type":"Question","name":"How do I get my Shopify store found by ChatGPT and Google AI Mode?","acceptedAnswer":{"@type":"Answer","text":"Optimise for Generative Engine Optimisation (GEO): add structured product schema markup, create FAQ content that matches conversational queries, and ensure your product data is programmatically accessible. AI-driven traffic to Shopify grew 8x year-on-year in 2025."}},
-    {"@type":"Question","name":"What is Klaviyo's billing change and how does it affect my costs?","acceptedAnswer":{"@type":"Answer","text":"In February 2025, Klaviyo changed to billing on all active profiles, including unengaged contacts that were previously suppressable. Stores with large historical email lists saw their bill increase significantly. Systeme.io's free plan provides unlimited contacts and email sends with no profile billing surprises."}},
-    {"@type":"Question","name":"What is Shopify automation?","acceptedAnswer":{"@type":"Answer","text":"Shopify automation connects Shopify to external tools via webhooks and APIs so that repetitive tasks (order logging, ad tracking, inventory updates, email sequences) happen automatically without manual work or paid app subscriptions."}}
-  ]
-};
+const faqSchema = faqPage(faqs);
 
 const softwareAppSchema = {
   "@context":"https://schema.org","@type":"SoftwareApplication",
   "name":"Stack Architect $0 Automation Stack","applicationCategory":"BusinessApplication","operatingSystem":"Web",
   "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
-  "description":"Free Shopify automation stack replacing $700/month of paid apps. Includes CAPI Shield server-side tracking, Stocky Swap inventory, Systeme.io email, and Make.com workflows.",
+  "description":"Free Shopify automation stack replacing paid apps. Includes CAPI Shield server-side tracking, Stocky Swap inventory, Systeme.io email, and Make.com workflows.",
   "url":PAGE_URL
 };
 
@@ -124,7 +132,7 @@ const tocHeadings = [
   },
   {
     "id": "ai-h",
-    "text": "AI-Driven Shopify Traffic: How to Capture the 8x Growth Wave from ChatGPT, Google AI Mode, and Copilot"
+    "text": "AI-Driven Shopify Traffic: How to Capture the Growth from ChatGPT, Google AI Mode, and Copilot"
   },
   {
     "id": "stability-h",
@@ -136,7 +144,7 @@ const tocHeadings = [
   },
   {
     "id": "freeapps-h",
-    "text": "8 Paid Shopify Apps You Can Replace Free Today: $700/Month Saved"
+    "text": "8 Paid Shopify Apps You Can Replace Free Today"
   },
   {
     "id": "action-h",
@@ -153,9 +161,9 @@ const tocHeadings = [
 ];
 
 ---
-<Base title={title} description={description} schema={allSchemas}>
+<Base verifiedDate={READ_DATE} title={title} description={description} schema={allSchemas}>
 <Fragment slot="head">
-<script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing $700+/month of paid apps: server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
+<script type="application/ld+json" set:html={JSON.stringify({"@context": "https://schema.org", "@type": "WebSite", "@id": "https://stackarchitect.xyz/#website", "url": "https://stackarchitect.xyz/", "name": "Stack Architect", "description": "Free Shopify automation tools replacing paid apps: server-side tracking, inventory, email, TikTok Events API, P&L.", "publisher": {"@id": "https://stackarchitect.xyz/#org"}, "inLanguage": "en-GB"})} />
   </Fragment>
 
 
@@ -221,7 +229,7 @@ const tocHeadings = [
           </p>
 
           <div class="guide-stats" role="list" aria-label="Guide summary metrics">
-            <div class="gs-cell" role="listitem"><div class="gs-v">$700+</div><div class="gs-l">Monthly savings</div></div>
+            <div class="gs-cell" role="listitem"><div class="gs-v">$0</div><div class="gs-l">Monthly cost</div></div>
             <div class="gs-cell" role="listitem"><div class="gs-v">35 min</div><div class="gs-l">Full deployment</div></div>
             <div class="gs-cell" role="listitem"><div class="gs-v">8 apps</div><div class="gs-l">Replaced free</div></div>
             <div class="gs-cell" role="listitem"><div class="gs-v">$0</div><div class="gs-l">Monthly cost</div></div>
@@ -341,9 +349,9 @@ const tocHeadings = [
           <p>Stocky Swap uses a Make.com webhook scenario to write every Shopify order to a Google Sheet the moment it is placed. The sheet maintains a running ledger of every SKU, quantity, fulfilment status, and order value. It updates in real time: no manual exports, no polling intervals, no sync errors.</p>
 
           <div class="stat-callout">
-            <div class="sc-val">$99</div>
+            <div class="sc-val">$49</div>
             <div class="sc-body">
-              <p><strong>Average monthly cost</strong> of paid Shopify inventory apps for stores processing 200–500 orders per month. Stocky Swap replaces this at $0. For a store running five years, that is $5,940 in savings from a four-minute setup.</p>
+              <p><strong>A month on Prediko's Starter plan</strong>, the entry price for a paid inventory app on the Shopify App Store (read 25 September 2026). Stocky Swap replaces the order log at $0. Over five years, that Starter plan alone comes to $2,940.</p>
             </div>
           </div>
 
@@ -432,13 +440,13 @@ const tocHeadings = [
         <!-- ══ SECTION 04 ══ -->
         <section class="guide-section" id="section-ai-traffic" aria-labelledby="ai-h">
           <span class="tag section-tag tag-amber" style="background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber);">04: AI Traffic &amp; GEO <span class="tag-new">✦ New</span></span>
-          <h2 id="ai-h">AI-Driven Shopify Traffic: How to Capture the 8x Growth Wave from ChatGPT, Google AI Mode, and Copilot</h2>
-          <p>The biggest organic traffic opportunity in Shopify in 2026 is not traditional SEO: it is being surfaced by AI systems. <strong>AI-driven traffic to Shopify stores grew 8x year-on-year in 2025</strong>, and the trajectory has accelerated into 2026 as ChatGPT's shopping features, Google AI Mode, and Microsoft Copilot all now actively recommend and surface products directly in their conversational interfaces.</p>
+          <h2 id="ai-h">AI-Driven Shopify Traffic: How to Capture the Growth from ChatGPT, Google AI Mode, and Copilot</h2>
+          <p>The biggest organic traffic opportunity in Shopify in 2026 is not traditional SEO: it is being surfaced by AI systems. <strong>AI-driven traffic to Shopify stores grew sharply through 2025</strong>, and it keeps growing in 2026 as ChatGPT's shopping features, Google AI Mode, and Microsoft Copilot all now actively recommend and surface products directly in their conversational interfaces.</p>
 
           <div class="stat-callout">
-            <div class="sc-val">8x</div>
+            <div class="sc-val">GEO</div>
             <div class="sc-body">
-              <p><strong>Year-on-year growth in AI-driven traffic to Shopify stores in 2025</strong>, continuing to accelerate in 2026. Stores that optimise for AI discovery now are building a compounding organic acquisition channel with no ad spend required. See the full <a href={`${SITE}/blog/shopify-ai-playbook-2026/`}>Shopify AI Playbook 2026</a> for the complete 7-stage framework.</p>
+              <p><strong>AI assistants now send shoppers to Shopify stores.</strong> We have not found a primary source for a growth multiple, so we publish none. Stores that optimise for AI discovery now are building a compounding organic acquisition channel with no ad spend required. See the full <a href={`${SITE}/blog/shopify-ai-playbook-2026/`}>Shopify AI Playbook 2026</a> for the complete 7-stage framework.</p>
             </div>
           </div>
 
@@ -458,7 +466,7 @@ const tocHeadings = [
 
           <div class="callout info">
             <div class="callout-label">Availability: US Only, Early Access, Currently Free</div>
-            <p>Shopify Agentic Storefronts are currently <strong>US-only, early access</strong>. They are enabled via the <strong>Knowledge Base App</strong>, which is free for Shopify Plus stores and <strong>$50/month for standard plan stores</strong>. See the <a href={`${SITE}/blog/shopify-agentic-storefronts-setup-guide-2026/`}>complete Agentic Storefronts setup guide</a> for the full configuration.</p>
+            <p>Shopify Agentic Storefronts are currently <strong>US-only, early access</strong>. They are enabled via the <strong>Knowledge Base App</strong>, which the Shopify App Store lists as <strong>free</strong> (read 25 September 2026). See the <a href={`${SITE}/blog/shopify-agentic-storefronts-setup-guide-2026/`}>complete Agentic Storefronts setup guide</a> for the full configuration.</p>
           </div>
 
           <div class="callout info">
@@ -540,10 +548,10 @@ const tocHeadings = [
           <h3>What Systeme.io's Free Plan Actually Covers</h3>
           <p>Systeme.io provides all of this on a permanently free plan. Not a trial: a free plan with no expiry date, no credit card required, and no feature locks that force an upgrade for basic functionality.</p>
           <ul>
-            <li><strong>Unlimited email contacts and sends</strong>: Klaviyo's email plan starts at $20+/month for 251–500 active profiles and rises with every profile beyond that. Systeme.io's free plan has no contact or send limit.</li>
+            <li><strong>Unlimited email contacts and sends</strong>: Klaviyo's email plan is $20/month for 251–500 active profiles and rises with every profile beyond that. Systeme.io's free plan covers 2,000 contacts with no send limit.</li>
             <li><strong>Email automation sequences</strong>: build multi-step email flows triggered by form submissions, purchases, or time delays. Welcome sequences, abandoned cart follow-ups, and post-purchase flows all supported on the free plan.</li>
-            <li><strong>Sales funnels and landing pages</strong>: ClickFunnels charges $97/month for this capability. Systeme.io includes up to 3 funnels on the free plan, with unlimited pages per funnel.</li>
-            <li><strong>Online course hosting</strong>: Teachable charges $39/month for basic course hosting. Systeme.io includes course hosting on the free tier.</li>
+            <li><strong>Sales funnels and landing pages</strong>: ClickFunnels charges $97/month for this on its Launch plan (<a href="https://www.clickfunnels.com/pricing" target="_blank" rel="noopener">clickfunnels.com/pricing</a>, read 25 September 2026). Systeme.io includes up to 3 funnels on the free plan, with unlimited pages per funnel.</li>
+            <li><strong>Online course hosting</strong>: Teachable charges $39/month for its Starter plan, or $29/month billed annually (<a href="https://teachable.com/pricing" target="_blank" rel="noopener">teachable.com/pricing</a>, read 25 September 2026). Systeme.io includes course hosting on the free tier.</li>
             <li><strong>Affiliate programme management</strong>: run your own affiliate programme for your Shopify products at $0/month.</li>
           </ul>
 
@@ -570,22 +578,22 @@ const tocHeadings = [
         <!-- ══ SECTION 07 ══ -->
         <section class="guide-section" id="section-freeapps" aria-labelledby="freeapps-h">
           <span class="tag section-tag tag-rose" style="background:var(--rose-bg);border-color:var(--rose-border);color:var(--rose);">07: Free App Replacements <span class="tag-new">✦ New</span></span>
-          <h2 id="freeapps-h">8 Paid Shopify Apps You Can Replace Free Today: $700/Month Saved</h2>
-          <p>Based on an audit of typical mid-stage Shopify stores, there are eight paid app categories where a free alternative now matches or exceeds the paid option's core functionality. The combined saving for a store running all eight paid versions is <strong>over $700/month</strong>.</p>
+          <h2 id="freeapps-h">8 Paid Shopify Apps You Can Replace Free Today</h2>
+          <p>Based on an audit of typical mid-stage Shopify stores, there are eight paid app categories where a free alternative now matches or exceeds the paid option's core functionality. On list prices read on 25 September 2026, the entry plans for the seven categories with a published price add up to <strong>about $379 a month</strong>.</p>
 
           <div style="overflow-x:auto;margin:20px 0;">
             <table class="compare-table" aria-label="Paid Shopify apps vs free replacements">
-              <thead><tr><th>Paid App Category</th><th>Typical Cost</th><th>Free Replacement</th><th>Notes</th></tr></thead>
+              <thead><tr><th>Paid App Category</th><th>List price, entry to top plan</th><th>Free Replacement</th><th>Notes</th></tr></thead>
               <tbody>
                 {[
-                  ["Server-side tracking","$145–$650/mo","CAPI Shield (Make.com free)","Full CAPI + Enhanced Conversions"],
-                  ["Inventory management","$29–$449/mo","Stocky Swap (Google Sheets)","Real-time ledger, data you own"],
-                  ["Email marketing","$45–$400/mo","Systeme.io free plan","Unlimited contacts, no profile billing"],
-                  ["Sales funnels","$97–$297/mo","Systeme.io free plan","3 funnels, unlimited pages each"],
-                  ["Order/workflow automation","$49–$99/mo","Make.com free tier","1,000 credits/month, instant webhooks"],
-                  ["Course & digital product hosting","$39–$119/mo","Systeme.io free plan","Replaces Teachable, Thinkific"],
-                  ["Affiliate management","$50–$100/mo","Systeme.io free plan","Full affiliate programme manager"],
-                  ["Script stability / document automation","$29–$79/mo","Autocrat Quota Fix (Google Apps Script)","Chunked processing, exponential backoff"],
+                  ["Server-side tracking","$145–$650/mo (Analyzify to Elevar)","CAPI Shield (Make.com free)","Full CAPI + Enhanced Conversions"],
+                  ["Inventory management","$49–$119/mo (Prediko)","Stocky Swap (Google Sheets)","Real-time ledger, data you own"],
+                  ["Email marketing","$20+/mo (Klaviyo)","Systeme.io free plan","2,000 contacts, unlimited sends"],
+                  ["Sales funnels","$97–$297/mo (ClickFunnels)","Systeme.io free plan","3 funnels, unlimited pages each"],
+                  ["Order/workflow automation","$19.99–$69/mo (Zapier)","Make.com free tier","1,000 credits/month, instant webhooks"],
+                  ["Course & digital product hosting","$39–$189/mo (Teachable)","Systeme.io free plan","Replaces Teachable, Thinkific"],
+                  ["Affiliate management","Priced separately","Systeme.io free plan","Full affiliate programme manager"],
+                  ["Script stability / document automation","$9+/mo (Make Core)","Autocrat Quota Fix (Google Apps Script)","Chunked processing, exponential backoff"],
                 ].map(([cat, cost, replacement, notes]) => (
                   <tr><td>{cat}</td><td class="loser">{cost}</td><td class="winner">{replacement}</td><td>{notes}</td></tr>
                 ))}
@@ -602,7 +610,7 @@ const tocHeadings = [
 
           <div class="section-cta">
             <div class="section-cta-left">
-              <div class="cta-h">Audit your app bill: find your $700/month</div>
+              <div class="cta-h">Audit your app bill: find what you overpay</div>
               <p>Free calculator · Shows which apps you can replace · Takes 2 minutes</p>
             </div>
             <a href={`${SITE}/shopify-app-cost-calculator/`} class="btn btn-sm" aria-label="Open free Shopify App Cost Calculator">Open App Calculator →</a>
@@ -685,32 +693,14 @@ const tocHeadings = [
           <p>Every question Shopify store owners ask before deploying the $0 Automation Stack, including the Q1 tracking problems, the Stocky closure and AI traffic.</p>
 
           <div class="static-faq">
-            {[
-              { q:"What is the best Shopify automation guide in 2026?", a:"This guide covers the complete $0 Automation Stack: the fastest way to automate your Shopify store in 2026 across tracking, inventory, workflow, email, and AI discoverability. For individual deep-dives on each topic, the Shopify automation guides library covers 40+ step-by-step guides across every operational area." },
-              { q:"How do I automate my Shopify store in 2026?", a:"Use the $0 Automation Stack: Make.com free tier as the central webhook hub, CAPI Shield for server-side ad tracking, Stocky Swap for inventory management, Systeme.io for email automation, and Google Apps Script Quota Fix for document workflow stability. The complete setup takes 35 minutes and costs $0/month for stores processing under 200 orders per month." },
-              { q:"Why did my Shopify ROAS drop in January 2026?", a:'Two events hit simultaneously: iOS 26 stripped fbclid parameters from Private Browsing links and links shared via Mail and Messages, breaking click-level attribution. On January 13 2026, Shopify changed App Pixels to "Optimised" mode: silently throttling third-party tracking pixel data. Together they open a conversion data gap whose size tracks how much of your traffic arrives through the affected routes. Server-side tracking via CAPI Shield fixes both issues simultaneously.' },
-              { q:"What happened to Shopify's pixel on January 13 2026?", a:'Shopify changed App Pixels to "Optimised" mode on January 13 2026. This change throttles the data that third-party pixel apps receive from Shopify\'s checkout events, without throwing an error or notifying merchants. Server-side tracking via CAPI Shield bypasses the App Pixel system entirely.' },
-              { q:"When did Shopify Stocky close?", a:"Shopify closed Stocky on 31 August 2026: the app can no longer be used and its APIs stopped that day. Read-only export stays open for at least 90 days after that, and Shopify has published no end date. Export your data now via Stocky → Settings → Export, then deploy Stocky Swap as your replacement. The migration takes 4 minutes and your data lives in a Google Sheet you own permanently." },
-              { q:"How do I automate my Shopify store for free?", a:"Use the $0 Automation Stack: Make.com (free tier) as the central hub, Google Sheets for inventory, the Conversions API for tracking, and Systeme.io for email marketing. This replaces paid tracking, inventory, automation, and email apps at zero cost. Deploy in under 35 minutes with no code." },
-              { q:"Make.com vs Zapier for Shopify?", a:"Make.com. It offers 1,000 free credits per month versus Zapier's 100, supports multi-step workflows on the free tier, and handles Shopify webhooks in real time (Zapier's free tier polls every 15 minutes). For Shopify automation specifically, Make.com is the stronger choice at every price point." },
-              { q:"How do I replace Shopify Stocky for free?", a:"Use Stocky Swap: a free Make.com workflow that logs every Shopify order to a Google Sheet in real time. It replicates Stocky's core inventory tracking functionality at $0/month, supports multi-location inventory, and stores all data in a Google Sheet you own. Deploy before August 31 2026." },
-              { q:"Can I automate Shopify without coding?", a:"Yes. The entire $0 Automation Stack requires zero coding. Make.com uses a visual drag-and-drop builder, Google Sheets requires no scripting for basic inventory tracking, and the Conversions API integration is configured via point-and-click webhook setup in Shopify Admin." },
-              { q:"What is Klaviyo's billing change and how does it affect my costs?", a:"In February 2025, Klaviyo changed to billing on all active profiles, including unengaged contacts. Stores with large historical email lists saw their bill increase significantly. Systeme.io's free plan provides unlimited contacts and email sends with no profile billing surprises." },
-              { q:"How do I get my Shopify store found by ChatGPT and Google AI Mode?", a:"Optimise for Generative Engine Optimisation (GEO): add structured product schema markup, create FAQ content that matches conversational queries, and ensure your product data is programmatically accessible. AI-driven traffic to Shopify grew 8x year-on-year in 2025." },
-              
-              { q:"What is Shopify automation?", a:"Shopify automation connects Shopify to external tools via webhooks and APIs so that repetitive tasks (order logging, ad tracking, inventory updates, email sequences) happen automatically without manual work or paid app subscriptions." },
-              { q:"How much can I save by automating my Shopify store?", a:"Most stores save $500–$900 per month by replacing paid tracking apps ($145–$650/mo), inventory apps ($29–$449/mo), automation connectors ($49–$99/mo), and email marketing tools ($45–$400/mo) with the free stack." },
-              { q:"Is the $0 Automation Stack safe?", a:"Completely safe. The stack runs in your own Google account and Make.com workspace. Nothing is installed on your Shopify store: data flows via secure webhooks. Remove it entirely by deleting the Make.com scenario and Google Sheet." },
-              { q:"How long does full setup take?", a:"Each individual workflow deploys in 4–6 minutes. Full stack deployment (CAPI Shield, Stocky Swap, Quota Fix, Systeme.io, and basic AI discoverability setup) takes 35 minutes total. Zero ongoing maintenance required after deployment." },
-              { q:"Do I need Google Workspace?", a:"Not initially. Free Gmail works for most stores. If you process more than 500 orders per month, Gmail API limits may throttle automations during peak periods. Google Workspace removes all limits and is recommended for high-volume stores." },
-            ].map((item) => (
+            {faqs.map((item) => (
               <details class="faq-item-g" itemscope itemtype="https://schema.org/Question">
                 <summary class="faq-btn-g">
                   <span class="faq-q-g">{item.q}</span>
                   <span class="faq-ico-g" aria-hidden="true"></span>
                 </summary>
                 <div class="faq-body-g" itemscope itemtype="https://schema.org/Answer" style="max-width:1140px;margin:48px auto 0;padding:0 24px;box-sizing:border-box;">
-                  <p>{item.a}</p>
+                  <p set:html={item.a} />
                 </div>
               </details>
             ))}
@@ -749,7 +739,8 @@ const tocHeadings = [
        region, so the visible attribution for it belongs in the same region.
        This card used to sit after the main element, in the footer block. -->
   <div class="sa-byline-wrap"><AuthorCard /></div>
-  </main>
+  <PriceSources ids={['analyzify', 'elevar', 'prediko', 'klaviyo', 'systeme', 'clickfunnels', 'teachable', 'zapier', 'make', 'getresponse', 'shopifyKnowledgeBase']} />
+</main>
 
   <!-- ══ SCROLL DEPTH CTA BAR ══ -->
   

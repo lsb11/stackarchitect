@@ -5,7 +5,11 @@ import AuthorCard from '../../components/AuthorCard.astro';
 import FactTable from '../../components/FactTable.astro';
 import TLDR from '../../components/TLDR.astro';
 import CrossLinkCallout from '../../components/CrossLinkCallout.astro';
+import FAQSection from '../../components/FAQSection.astro';
 import appsData from '../../data/apps.json';
+import { statusOf } from '../../data/appsIndex.js';
+import { formatUpdated } from '../../data/pageUpdated';
+import { faqPage } from '../../utils/faq';
 
 export async function getStaticPaths() {
   return appsData.map((app) => ({
@@ -48,29 +52,24 @@ const selectedTldr = tldrVariations[hash % tldrVariations.length];
 const isVolumeBased = app.pricingScaling && (app.pricingScaling.toLowerCase().includes('volume') || app.pricingScaling.toLowerCase().includes('tier') || app.pricingScaling.toLowerCase().includes('order') || app.pricingScaling.toLowerCase().includes('contact'));
 const showCalculator = isVolumeBased;
 
-// FAQ Schema for GEO (Generative Engine Optimization)
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: `What is the best free alternative to ${app.name} for Shopify?`,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: `The best alternative is ${app.replacement}, which saves Shopify merchants approximately ${app.savings} annually compared to the standard ${app.name} pricing of ${app.monthlyCost}.`,
-      },
-    },
-    {
-      '@type': 'Question',
-      name: `How much does ${app.name} cost?`,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: `${app.name} typically costs ${app.monthlyCost} depending on your Shopify store's volume, whereas the ${app.replacement} method is functionally free.`,
-      },
-    }
-  ],
-};
+// FAQ: one array renders the visible section and the FAQPage node, so the two
+// cannot differ. The cost answer follows the record's price status: only a
+// verified price is quoted, with the date it was read.
+const status = statusOf(app);
+const costAnswer =
+  status === 'verified'
+    ? `${app.name} listed ${app.monthlyCost} on its own pricing page when we read it on ${formatUpdated(app.priceVerifiedDate)}. Prices change, so check ${app.name}'s pricing page before you buy.`
+    : status === 'held'
+      ? `We checked ${app.name}'s pricing and did not record a figure. ${app.priceHeldReason}`
+      : `We have not checked ${app.name}'s current price against its own pricing page, so we do not quote one here. Check ${app.name}'s pricing page before you buy.`;
+const faqs = [
+  {
+    q: `What is the best free alternative to ${app.name} for Shopify?`,
+    a: `The free route we document is ${app.replacement}. The setup guide linked on this page walks through it step by step.`,
+  },
+  { q: `How much does ${app.name} cost?`, a: costAnswer },
+];
+const faqSchema = faqPage(faqs);
 
 // No `offers` property. This node describes the free replacement, not the paid
 // app, so "price: 0" was not the false vendor claim it looked like — but the
@@ -276,6 +275,8 @@ const schemas = [faqSchema, softwareSchema, articleSchema];
       </section>
 
     </article>
+
+    <FAQSection faqs={faqs.map(({ q, a }) => ({ question: q, answer: a }))} />
 
     {hasAlternativePage && (
       <CrossLinkCallout type="alternative" appSlug={app.id} appName={app.name} />

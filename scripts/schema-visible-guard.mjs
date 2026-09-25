@@ -31,6 +31,9 @@
  *  5. Stocky shutdown wording. Fails when visible text, a meta/alt/title
  *     attribute or a JSON-LD string still says Stocky is shutting down, or
  *     claims data is deleted. See CHECK 5.
+ *  6. FAQ parity. Fails when a FAQPage question or answer is not, after
+ *     stripping tags and all whitespace, the exact text of an element on the
+ *     page. See CHECK 6.
  *
  * Numbers are normalised (thousands separators, en/em dashes, $ and %
  * retained) so "$1,500" and "$1500" compare equal, and a range written
@@ -53,6 +56,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { parse } from 'parse5';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const DIST = path.join(ROOT, 'dist');
@@ -513,6 +517,86 @@ function decodeAttr(s) {
  * reads dist/ and exits non-zero, so it must not run on import. The body is
  * left at its original indentation so the wrapping shows as two lines of diff
  * rather than as a rewrite of the whole file. */
+/**
+ * ---------------------------------------------------------------------------
+ * CHECK 6: FAQ PARITY (added 25 Sep 2026)
+ *
+ * Check 1 only compares numbers, and only asks whether a number appears
+ * somewhere on the page. An FAQPage answer could say something the visible
+ * answer did not, as long as its figures turned up elsewhere, and on 25 Sep
+ * 2026 179 answers on 66 pages did: an older wording, a plan allowance the
+ * visible copy had corrected, or (on the 54 /apps/ pages) an FAQ that was
+ * never shown at all.
+ *
+ * The rule is exact. Every FAQPage question and every acceptedAnswer text
+ * must equal the full text of some element in <body>, once tags are removed,
+ * entities decoded and every whitespace character dropped. "Contains" is not
+ * enough: an answer that is a substring of a longer visible one has lost the
+ * rest of it. Pages build both from one array (src/utils/faq.ts), which makes
+ * the match true by construction.
+ */
+const FAQ_SKIP = new Set(['script', 'style', 'noscript', 'template', 'svg']);
+const squash = (s) => s.replace(/\s+/g, '');
+const FAQ_ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', '#39': "'" };
+/** JSON-LD answer text as a reader would see it: tags gone, entities decoded. */
+export function faqPlain(s) {
+  return String(s ?? '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&(amp|lt|gt|quot|apos|nbsp|#39);/g, (_, k) => FAQ_ENTITIES[k]);
+}
+
+/** Every FAQPage question/answer pair in a JSON-LD graph. */
+export function faqPairs(graph) {
+  const out = [];
+  const visit = (o) => {
+    if (!o || typeof o !== 'object') return;
+    if (Array.isArray(o)) return o.forEach(visit);
+    if ([].concat(o['@type'] || []).includes('FAQPage')) {
+      for (const q of [].concat(o.mainEntity || [])) {
+        const a = [].concat(q?.acceptedAnswer || [])[0];
+        out.push({ q: q?.name ?? '', a: a?.text ?? '' });
+      }
+    }
+    Object.values(o).forEach(visit);
+  };
+  visit(graph);
+  return out;
+}
+
+/** The whitespace-free text of every element in <body>. */
+export function visibleElementTexts(html) {
+  const doc = parse(html);
+  const texts = new Set();
+  const textOf = (n) => {
+    if (FAQ_SKIP.has(n.tagName)) return '';
+    if (n.nodeName === '#text') return n.value;
+    let t = '';
+    for (const c of n.childNodes || []) t += textOf(c);
+    if (n.tagName) texts.add(squash(t));
+    return t;
+  };
+  let body = null;
+  const find = (n) => { if (body) return; if (n.tagName === 'body') body = n; else (n.childNodes || []).forEach(find); };
+  find(doc);
+  if (body) textOf(body);
+  return texts;
+}
+
+/** FAQPage questions or answers with no exactly matching visible element. */
+export function faqParityViolations(html) {
+  const out = [];
+  const texts = visibleElementTexts(html);
+  for (const m of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+    let graph;
+    try { graph = JSON.parse(m[1]); } catch { continue; }
+    for (const { q, a } of faqPairs(graph)) {
+      if (!texts.has(squash(faqPlain(q)))) out.push({ part: 'question', q, text: q });
+      if (!texts.has(squash(faqPlain(a)))) out.push({ part: 'answer', q, text: a });
+    }
+  }
+  return out;
+}
+
 const isCli = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 if (isCli) main();
 
@@ -554,6 +638,7 @@ const offerQuarantine = new Map(
 const offerViolations = [];
 const placeholderViolations = [];
 const shutdownViolations = [];
+const faqViolations = [];
 
 for (const f of files) {
   const html = fs.readFileSync(f, 'utf8');
@@ -565,6 +650,7 @@ for (const f of files) {
   const visRaw = norm(vis);
 
   for (const h of shutdownWordingHits(html)) shutdownViolations.push({ url, ...h });
+  for (const v of faqParityViolations(html)) faqViolations.push({ url, ...v });
 
   for (const p of unrenderedPlaceholders(vis)) {
     placeholderViolations.push({ url, where: 'visible text', placeholder: p });
@@ -666,7 +752,19 @@ if (shutdownViolations.length && !process.argv.includes('--list')) {
   process.exit(1);
 }
 
+if (faqViolations.length && !process.argv.includes('--list')) {
+  console.error('\n\u2717 schema-visible-guard: FAQPage text does not match the visible FAQ\n');
+  for (const v of faqViolations) console.error(`  ${v.url}  ${v.part} of "${v.q.slice(0, 80)}"`);
+  console.error(
+    '\n  Every FAQPage question and answer must be the exact text a reader sees.\n' +
+      '  Build both from one array with faqPage() in src/utils/faq.ts.\n'
+  );
+  process.exit(1);
+}
+
 if (process.argv.includes('--list')) {
+  console.log(`schema-visible-guard: ${faqViolations.length} FAQ parity mismatch(es)`);
+  for (const v of faqViolations) console.log(`  ${v.url}  ${v.part} of "${v.q.slice(0, 80)}"`);
   console.log(`schema-visible-guard: ${shutdownViolations.length} Stocky shutdown wording hit(s)`);
   for (const v of shutdownViolations) console.log(`  ${v.url}  "${v.text}"  in ${v.where}`);
   console.log(`schema-visible-guard: ${placeholderViolations.length} unrendered placeholder(s)`);
@@ -738,6 +836,6 @@ console.log(
   `\u2713 schema-visible-guard: ${files.length} pages, no new schema-only numeric claims ` +
     `(${quarantine.size} quarantined), first-party prices match their constants, ` +
     `${offerViolations.length - liveOffers.length} third-party Offer(s) quarantined, ` +
-    `no unrendered placeholders, no Stocky shutdown wording.`
+    `no unrendered placeholders, no Stocky shutdown wording, FAQPage matches the visible FAQ.`
 );
 }
