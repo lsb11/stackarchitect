@@ -13,7 +13,7 @@ readTime: 20
 canonical: "https://stackarchitect.xyz/blog/shopify-ai-playbook-2026/"
 faqs:
   - question: "What AI tools should Shopify stores use in 2026?"
-    answer: "The highest-ROI AI tools for Shopify stores in 2026 are: Make.com (free automation for server-side tracking and workflows), Tidio Lyro AI (AI customer support; Tidio says it automates around 67% of customer inquiries on average, and the free plan includes 50 one-time Lyro conversations), Shopify Magic (free AI copywriting built into Shopify admin), ChatGPT or Claude for product descriptions and ad copy, and Systeme.io for AI-assisted email automation. Paid tools like AdCreative.ai and Writesonic are worth evaluating at scale."
+    answer: "The highest-ROI AI tools for Shopify stores in 2026 are: Make.com (free automation for server-side tracking and workflows), Tidio Lyro AI (AI customer support; Tidio says Lyro resolves 67% of conversations instantly, as stated on tidio.com, and the free plan includes 50 one-time Lyro conversations), Shopify Magic (free AI copywriting built into Shopify admin), ChatGPT or Claude for product descriptions and ad copy, and Systeme.io for AI-assisted email automation. Paid tools like AdCreative.ai and Writesonic are worth evaluating at scale."
   - question: "What is GEO for Shopify?"
     answer: "GEO stands for Generative Engine Optimisation — the practice of optimising your store and content to be cited by AI search engines like ChatGPT, Google AI Mode, and Perplexity. Unlike traditional SEO which targets Google's ranking algorithm, GEO optimises for AI citation probability by adding structured data (FAQ schema), clear factual answers, and content that AI engines can directly quote as authoritative sources."
   - question: "How do I use AI for Shopify ad creative?"
@@ -104,7 +104,7 @@ This is the AI-adjacent investment with the clearest ROI on this list. Better pu
 
 **What AI does well:** resolving repetitive queries (order status, shipping, returns, FAQs) — which account for 60–70% of Shopify support volume.
 
-**Free approach:** [Tidio's Lyro AI](/blog/tidio-for-shopify-complete-setup-guide/) on the free plan, which includes 50 one-time Lyro conversations rather than a monthly allowance. Tidio says Lyro automates around 67% of customer inquiries on average; your rate depends on how well its knowledge base is configured. Setup takes 30 minutes.
+**Free approach:** [Tidio's Lyro AI](/blog/tidio-for-shopify-complete-setup-guide/) on the free plan, which includes 50 one-time Lyro conversations rather than a monthly allowance. Tidio says Lyro resolves 67% of conversations instantly ([tidio.com](https://www.tidio.com/)); your rate depends on how well its knowledge base is configured. Setup takes 30 minutes.
 
 **The operational leverage:** Tidio lists Starter at $24.17/month against an "Annually (2 months free)" toggle — the annual-billing monthly equivalent ([tidio.com/pricing](https://www.tidio.com/pricing/), read 10 September 2026). How much human support time Lyro removes depends on your query mix, and we have not measured it. This line used to multiply an invented £25/hour operator value by an invented 3 hours a week to produce a £325/month return; neither input came from anywhere.
 

@@ -16,7 +16,7 @@ faqs:
   - question: "How much does Gorgias cost for Shopify?"
     answer: "Gorgias costs $10/month for the Starter plan (3 users, 50 tickets/month), $60/month for Basic (300 tickets/month), $360/month for Pro (2,000 tickets/month), and $900/month for Advanced. Tickets above the monthly allowance are billed at $0.04–$0.36 per ticket. The automation features that justify the platform — macros, revenue attribution, AI-suggested replies — are gated to the Pro tier at $360/month. For stores under 300 tickets/month, Tidio at $59/month typically offers better value."
   - question: "Can Tidio handle the same support volume as Gorgias?"
-    answer: "It depends on the volume and complexity. Tidio's Lyro AI handles repetitive queries (order status, shipping, FAQs) at high volume automatically. Tidio says Lyro automates around 67% of customer inquiries on average, and the rate depends on how well the AI is trained on store FAQs. For complex queries requiring deep Shopify data access, manual order editing, or multi-channel ticketing (email, social, SMS, voice), Gorgias has more comprehensive agent tooling. Stores under 500 tickets/month typically find Tidio sufficient. Stores above that threshold with a dedicated CX team usually upgrade to Gorgias."
+    answer: "It depends on the volume and complexity. Tidio's Lyro AI handles repetitive queries (order status, shipping, FAQs) at high volume automatically. Tidio says Lyro resolves 67% of conversations instantly (tidio.com), and the rate depends on how well the AI is trained on store FAQs. For complex queries requiring deep Shopify data access, manual order editing, or multi-channel ticketing (email, social, SMS, voice), Gorgias has more comprehensive agent tooling. Stores under 500 tickets/month typically find Tidio sufficient. Stores above that threshold with a dedicated CX team usually upgrade to Gorgias."
   - question: "Does Gorgias have AI like Tidio Lyro?"
     answer: "Yes. Gorgias has Auto Agent (AI-suggested replies, macro recommendations, and ticket auto-tagging). However, the primary workflow in Gorgias is still agent-driven — AI assists human agents rather than replacing them for first-response handling. Tidio's Lyro AI is designed to resolve queries without agent involvement, which is a different architectural approach. Gorgias Auto Agent requires the Pro tier ($360/month) and 2–4 weeks of training data to perform well."
   - question: "What is Gorgias best for?"
@@ -35,7 +35,7 @@ Three customer support platforms, three completely different price points, three
 
 ## The Core Difference
 
-**Tidio** is an AI-first support platform. Lyro AI handles first-response for most repetitive queries automatically — customers get immediate answers without waiting for an agent. Human agents handle the queries Lyro escalates. Tidio says Lyro automates around 67% of customer inquiries on average (order status, shipping, FAQ-type questions) when properly trained on the store's knowledge base.
+**Tidio** is an AI-first support platform. Lyro AI handles first-response for most repetitive queries automatically — customers get immediate answers without waiting for an agent. Human agents handle the queries Lyro escalates. Tidio says Lyro resolves 67% of conversations instantly ([tidio.com](https://www.tidio.com/)). How close a store gets depends on how well Lyro is trained on its knowledge base.
 
 **Gorgias** is a helpdesk platform built for human agents. It gives agents excellent tooling — deep Shopify data access, macro automation, multi-channel ticketing, revenue attribution — but the primary workflow is still agent-driven. AI features (Auto Agent) assist agents rather than replacing first-response handling.
 
@@ -62,7 +62,7 @@ The ticket overage model in Gorgias is a meaningful operational risk. A promotio
 
 | Feature | Tidio | Gorgias | Zendesk |
 | --- | --- | --- | --- |
-| AI first-response | **Yes. Tidio says Lyro automates around 67% of inquiries on average** | Auto Agent (assist mode, Pro tier+) | Enterprise tier only |
+| AI first-response | **Yes. Tidio says Lyro resolves 67% of conversations instantly** ([tidio.com](https://www.tidio.com/)) | Auto Agent (assist mode, Pro tier+) | Enterprise tier only |
 | Live chat | Yes | Yes | Yes |
 | Email support | Yes | Yes | Yes |
 | Social media | Basic | Deep (Facebook, Instagram, X) | Deepest (all major channels) |
