@@ -5,6 +5,7 @@ import RelatedGuides from '../components/RelatedGuides.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 import Disclosure from '../components/Disclosure.astro';
 import { pageUpdated } from '../data/pageUpdated';
+import { CLOAKS } from '../../functions/go/_cloaks.js';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -26,7 +27,15 @@ const {
   badge,
   faqs,
   relatedGuides,
+  affiliate,
+  affiliateLabel,
 } = entry.data;
+// Frontmatter `affiliate: <cloak-slug>` renders the page's one affiliate
+// button after the article body, with its own disclosure line directly above.
+const cloak = affiliate ? CLOAKS[affiliate as keyof typeof CLOAKS] : undefined;
+if (affiliate && !cloak) {
+  throw new Error(`${entry.id}: frontmatter affiliate "${affiliate}" is not a cloak in functions/go/_cloaks.js`);
+}
 // Posts that carry a /go/* affiliate cloak get an on-page disclosure above the body,
 // so it always precedes the first affiliate link rather than sitting in the footer.
 const hasAffiliateLink = entry.body?.includes('/go/') ?? false;
@@ -160,6 +169,13 @@ const pageTitle = (title + SUFFIX).length <= 60 ? title + SUFFIX : title;
       <slot />
     </article>
 
+    {cloak && (
+      <div class="sa-post-aff">
+        <Disclosure text={`I earn a commission if you sign up to ${cloak.vendor} through this link.`} />
+        <a href={`/go/${affiliate}/?source=${entry.id}-cta`} target="_blank" rel="sponsored nofollow noopener" class="cta-primary">{affiliateLabel ?? `Visit ${cloak.vendor}`}</a>
+      </div>
+    )}
+
     <!-- Author block -->
     <AuthorCard />
 
@@ -188,6 +204,11 @@ const pageTitle = (title + SUFFIX).length <= 60 ? title + SUFFIX : title;
 
   /* Inherits --text-body / --leading-body; the tint and rule carry the
      emphasis instead of a second font size. */
+  .sa-post-aff {
+    max-width: var(--measure);
+    margin: 32px auto 8px;
+  }
+
   .sa-answer {
     margin: 0 0 28px;
     padding: 18px 20px;

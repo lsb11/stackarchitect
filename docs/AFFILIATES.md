@@ -56,6 +56,13 @@ These are conventions. No guard checks them yet:
   `/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/`,
   keeps `google-apps-script-quotas-floating-cta`.
 
+A Markdown blog post gets inline links only, unless its frontmatter sets
+`affiliate: <cloak-slug>` (and optionally `affiliateLabel`). Then
+`BlogPost.astro` renders the page's one button after the article body, with
+a disclosure line directly above it, tagged `?source=<post-slug>-cta`. An
+unknown slug fails the build. Set on `/blog/tidio-for-shopify-complete-setup-guide/`
+(`tidio`, "Start Tidio free").
+
 GA4 receives `affiliate_click` with `partner` and `source_tag` from the single
 tracker in `Base.astro`. D1 counts every request in `clicks`. A new cloak
 needs no analytics change.
@@ -79,6 +86,17 @@ checked by hand in a browser. `make` blocks every scripted request with a
 403 challenge, but a browser reaches the sign-up page with `pc=techie123`.
 `workspace` forwards in JavaScript to
 `workspace.google.com/landing/partners/referral/…&utm_content=NSRLIO3`.
+
+`getresponse` is marked `blocksBots` in `TRACKING`. Its tracking domain,
+`try.getresponsetoday.com`, blocks automated visits, so a 403 or 429 from it
+reports UNVERIFIED rather than FAIL. When it does, it needs a manual browser
+check: open `/go/getresponse` and confirm it lands on getresponse.com with
+`ps_partner_key=ZDg3ZDUxZTJiYTM5`. On 25 Sep 2026 the script got through and
+reported OK; the flag only changes what a block means.
+
+The two Tidio deep links, `tidio-ai` (`/ai-agent/`) and `tidio-pricing`
+(`/pricing/`), are PartnerStack deep links and carry the same
+`ps_partner_key` as `/go/tidio`. Checked 25 Sep 2026.
 
 `tests/aff-check.test.js` (in `npm test`) fails if a cloak has no `TRACKING`
 entry, so a new cloak cannot go unmonitored.

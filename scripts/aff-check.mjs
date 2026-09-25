@@ -50,7 +50,10 @@ const PARTNERSTACK = { param: 'ps_partner_key', value: 'ZDg3ZDUxZTJiYTM5' };
  */
 export const TRACKING = {
   beehiiv:         { param: 'via', value: 'gym-extras' },
-  getresponse:     PARTNERSTACK,
+  // try.getresponsetoday.com has blocked scripted visits, so a 403/429 from
+  // it is UNVERIFIED (check it in a browser), not a failure. A 200 that keeps
+  // the partner key still reports OK.
+  getresponse:     { ...PARTNERSTACK, blocksBots: true },
   gorgias:         PARTNERSTACK,
   make:            { param: 'pc', value: 'techie123' },
   systeme:         { param: 'sa', value: 'sa02742252683e3d56c853555171a010913de57be6' },
@@ -67,6 +70,7 @@ export function verdict(slug, { status, finalUrl, challenge, error, loop }) {
   if (error) return { state: 'FAIL', why: error };
   if (loop) return { state: 'FAIL', why: 'more than 10 redirects' };
   if (challenge) return { state: 'UNVERIFIED', why: `HTTP ${status} bot challenge; open it in a browser` };
+  if (want.blocksBots && (status === 403 || status === 429)) return { state: 'UNVERIFIED', why: `HTTP ${status}, partner blocks scripted visits; open it in a browser` };
   if (status < 200 || status > 299) return { state: 'FAIL', why: `HTTP ${status}` };
   if (want.jsHop) return { state: 'UNVERIFIED', why: `HTTP ${status}, forwards in JavaScript; by hand it ${want.jsHop}` };
   const got = new URL(finalUrl).searchParams.get(want.param);

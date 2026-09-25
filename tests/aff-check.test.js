@@ -39,3 +39,15 @@ test('a bot challenge and a JavaScript hop are unverified, not passed', () => {
   // A dead JS-hop link is still a fail.
   assert.equal(verdict('workspace', { status: 404, finalUrl: 'x' }).state, 'FAIL');
 });
+
+test('GetResponse: a block from its tracking domain is unverified, a kept key passes, a 404 fails', () => {
+  assert.equal(verdict('getresponse', { status: 403, finalUrl: 'https://try.getresponsetoday.com/gejtf3pvvf1u' }).state, 'UNVERIFIED');
+  assert.equal(verdict('getresponse', { status: 429, finalUrl: 'https://try.getresponsetoday.com/gejtf3pvvf1u' }).state, 'UNVERIFIED');
+  assert.equal(verdict('getresponse', { status: 404, finalUrl: 'https://try.getresponsetoday.com/gejtf3pvvf1u' }).state, 'FAIL');
+  const finalUrl = 'https://www.getresponse.com/pricing/affiliates?ps_partner_key=ZDg3ZDUxZTJiYTM5';
+  assert.equal(verdict('getresponse', { status: 200, finalUrl }).state, 'OK');
+});
+
+test('a 403 without a challenge header still fails for a partner that does not block scripts', () => {
+  assert.equal(verdict('tidio', { status: 403, finalUrl: 'https://affiliate.tidio.com/5kfhrx3ot6tf' }).state, 'FAIL');
+});

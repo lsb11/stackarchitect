@@ -518,7 +518,8 @@ function hostMatches(host, domain) {
  */
 function checkDisclosure() {
   const problems = [];
-  const HAS_DISCLOSURE = /<Disclosure\s*\/?>/;
+  // Props allowed: <Disclosure text="..." /> is still the component.
+  const HAS_DISCLOSURE = /<Disclosure(\s[^>]*)?\/?>/;
 
   const layoutSrc = fs.existsSync(BLOG_LAYOUT)
     ? fs.readFileSync(BLOG_LAYOUT, 'utf8')

@@ -42,6 +42,12 @@ const blog = defineCollection({
     ogTitle: z.string().optional(),
     ogDescription: z.string().optional(),
     noindex: z.boolean().default(false),
+    // Optional affiliate button after the article body: a /go/ cloak slug
+    // from functions/go/_cloaks.js (BlogPost.astro fails the build on an
+    // unknown one), and the button text. Unset by default; most posts carry
+    // inline links only.
+    affiliate: z.string().optional(),
+    affiliateLabel: z.string().optional(),
     faqs: z
       .array(
         z.object({
