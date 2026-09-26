@@ -528,6 +528,7 @@ pre code{background:none;padding:0;color:inherit;}
     <p>A <code>doPost()</code> web app is capped at <strong>30 concurrent executions</strong> and the underlying Sheets service call rate limit. A flash sale generating several orders within the same second causes competing executions to queue or fail: surfacing as <strong>"Service invoked too many times."</strong> The 6-minute single-execution ceiling rarely matters here since one order write is fast; concurrency is the real constraint.</p>
     <h3>Scheduled pull (batch route)</h3>
     <p>A time-driven trigger is bound by the <strong>90-minute daily trigger runtime</strong> cap on consumer accounts (6 hours on Workspace). A growing store's nightly reconciliation pull can eat into this budget as order volume climbs, especially if it re-fetches more history than necessary on each run.</p>
+    <p>A custom function typed into a cell, such as a stock lookup filled down a SKU column, runs under a separate 30-second limit and its own errors: see <a href="/blog/google-sheets-custom-function-errors/">Google Sheets custom function errors</a>.</p>
     <div class="stat-callout" role="note">
       <div class="sc-val">90 min</div>
       <div class="sc-body">
