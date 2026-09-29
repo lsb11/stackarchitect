@@ -38,7 +38,7 @@
  * here does.
  */
 import { CLOAKS, sanitiseSource } from './_cloaks.js';
-import { landingFrom, recordClick, recordBotHit, NO_REFERER } from './_clicks.js';
+import { landingFrom, signalsFrom, recordClick, recordBotHit, NO_REFERER } from './_clicks.js';
 import { isLikelyBot, botResponse } from './_bots.js';
 
 export async function onRequest(context) {
@@ -63,6 +63,8 @@ export async function onRequest(context) {
       slug,
       source: source || NO_REFERER,
       landing: landingFrom(referer, url.origin),
+      // Coarse header buckets only; the User-Agent is not in the row (_clicks.js).
+      ...signalsFrom(request.headers),
     };
     const bot = isLikelyBot(request.headers.get('User-Agent'), referer);
     const count = bot ? recordBotHit(env?.DB, row) : recordClick(env?.DB, row);

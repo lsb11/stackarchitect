@@ -48,28 +48,75 @@
  *
  * Adding a token widens what gets gated, so a new one needs the same test a
  * price does: a real User-Agent string you have actually seen.
+ *
+ * The tokens are grouped so uaClass() below can say which kind of client a
+ * request came from. CRAWLER_UA is still every group joined in this order, so
+ * the gate matches exactly what it matched before the split
+ * (clicks.test.js pins its source).
  */
-const CRAWLER_UA = new RegExp(
-  [
-    // Self-declared crawlers. "bot", "crawl" and "spider" cover the long tail
-    // (Googlebot, bingbot, AhrefsBot, Bytespider, GPTBot, ClaudeBot, …).
-    'bot\\b', 'bot/', '\\bcrawl', 'spider', 'slurp', 'scrapy',
-    // Command-line and library clients. No browser sends these.
-    'curl/', 'wget', 'libwww', 'python-requests', 'python-urllib', 'aiohttp',
-    'go-http-client', 'okhttp', 'java/', 'apache-httpclient', 'axios/',
-    'node-fetch', 'guzzlehttp', 'httpx', 'postmanruntime',
-    // Headless and automation runtimes.
-    'headlesschrome', 'phantomjs', 'puppeteer', 'playwright', 'selenium',
-    // Link unfurlers and preview fetchers.
-    'facebookexternalhit', 'embedly', 'quora link preview', 'skypeuripreview',
-    'whatsapp', 'telegrambot', 'slackbot', 'discordbot', 'twitterbot',
-    'linkedinbot', 'redditbot', 'applebot', 'google-read-aloud',
-    // Monitors and auditors.
-    'lighthouse', 'pingdom', 'statuscake', 'uptimerobot', 'site24x7',
-    'dataforseo', 'serpstat', 'screaming frog',
-  ].join('|'),
-  'i'
-);
+
+// Self-declared crawlers. "bot", "crawl" and "spider" cover the long tail
+// (Googlebot, bingbot, AhrefsBot, Bytespider, GPTBot, ClaudeBot, …).
+const DECLARED_CRAWLERS = ['bot\\b', 'bot/', '\\bcrawl', 'spider', 'slurp', 'scrapy'];
+// Command-line and library clients. No browser sends these.
+const TOOLS = [
+  'curl/', 'wget', 'libwww', 'python-requests', 'python-urllib', 'aiohttp',
+  'go-http-client', 'okhttp', 'java/', 'apache-httpclient', 'axios/',
+  'node-fetch', 'guzzlehttp', 'httpx', 'postmanruntime',
+];
+// Headless and automation runtimes.
+const HEADLESS = ['headlesschrome', 'phantomjs', 'puppeteer', 'playwright', 'selenium'];
+// Link unfurlers and preview fetchers.
+const UNFURLERS = [
+  'facebookexternalhit', 'embedly', 'quora link preview', 'skypeuripreview',
+  'whatsapp', 'telegrambot', 'slackbot', 'discordbot', 'twitterbot',
+  'linkedinbot', 'redditbot', 'applebot', 'google-read-aloud',
+];
+// Monitors and auditors.
+const MONITORS = [
+  'lighthouse', 'pingdom', 'statuscake', 'uptimerobot', 'site24x7',
+  'dataforseo', 'serpstat', 'screaming frog',
+];
+
+const anyOf = (tokens) => new RegExp(tokens.join('|'), 'i');
+
+export const CRAWLER_UA = anyOf([...DECLARED_CRAWLERS, ...TOOLS, ...HEADLESS, ...UNFURLERS, ...MONITORS]);
+
+const HEADLESS_UA = anyOf(HEADLESS);
+const TOOL_UA = anyOf(TOOLS);
+const DECLARED_UA = anyOf([...DECLARED_CRAWLERS, ...UNFURLERS, ...MONITORS]);
+// What every mainstream browser's User-Agent opens with, and the engine token
+// that follows it. A script can copy this string, which is the point of the
+// bucket's name: it looks like a browser, it is not proof of one.
+const BROWSER_LIKE_UA = /^Mozilla\/5\.0 \(.*\b(AppleWebKit|Gecko|Trident)\//;
+
+/**
+ * A coarse bucket for the User-Agent, for the click counters. Only the bucket
+ * is ever stored; the User-Agent string itself is read here and discarded.
+ *
+ *   none          no User-Agent, or an empty one
+ *   headless      an automation runtime that names itself (HeadlessChrome, …)
+ *   tool          a command-line or HTTP library client (curl, python-requests, …)
+ *   declared-bot  a crawler, link unfurler or monitor that names itself
+ *   browser-like  shaped like a mainstream browser's User-Agent
+ *   other         anything else
+ *
+ * Checked in that order: HeadlessChrome also looks like a browser, and the
+ * headless answer is the useful one. "other" rather than "unknown", because
+ * "unknown" is what the tables use for rows written before this column
+ * existed (schema/005-click-signals.sql).
+ *
+ * @param {string|null|undefined} userAgent Raw User-Agent header.
+ */
+export function uaClass(userAgent) {
+  const ua = typeof userAgent === 'string' ? userAgent.trim() : '';
+  if (ua === '') return 'none';
+  if (HEADLESS_UA.test(ua)) return 'headless';
+  if (TOOL_UA.test(ua)) return 'tool';
+  if (DECLARED_UA.test(ua)) return 'declared-bot';
+  if (BROWSER_LIKE_UA.test(ua)) return 'browser-like';
+  return 'other';
+}
 
 /**
  * Classify one request.
