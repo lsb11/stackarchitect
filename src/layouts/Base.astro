@@ -939,16 +939,36 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
 
             // Fires once per page when a visitor interacts with any calculator
             // or diagnostic input — your tools are the top-of-funnel for the kit.
+            // A tool marked data-sa-tool reports its own result through
+            // sa:tool below, so its inputs are left out here.
             var toolFired = {};
             document.addEventListener('change', function (e) {
               var el = e.target;
               if (!el || !el.matches) return;
               if (!el.matches('input[type="number"], input[type="range"], input[type="checkbox"], select')) return;
+              if (el.closest && el.closest('[data-sa-tool]')) return;
               var p = window.location.pathname;
               if (toolFired[p]) return;
               toolFired[p] = true;
               track('tool_use', { tool_path: p, tool_name: document.title });
             }, true);
+
+            // A page's own tool reports a result by dispatching
+            //   new CustomEvent('sa:tool', { detail: { tool: 'capi_validator', fails: 2 } })
+            // on document. It goes out as tool_use through track(), so consent
+            // gates it like every other event. Only a short lowercase tool
+            // name and finite numbers are passed on: a tool that pastes text
+            // in (a CAPI payload, an Apps Script error) cannot leak it here by
+            // mistake, because strings other than the name are dropped.
+            document.addEventListener('sa:tool', function (e) {
+              var d = e && e.detail;
+              if (!d || typeof d.tool !== 'string' || !/^[a-z_]{1,40}$/.test(d.tool)) return;
+              var params = { tool: d.tool };
+              for (var k in d) {
+                if (k !== 'tool' && /^[a-z_]{1,40}$/.test(k) && typeof d[k] === 'number' && isFinite(d[k])) params[k] = d[k];
+              }
+              track('tool_use', params);
+            });
           }
 
           // Called by the banner on Accept: store the landing record that was

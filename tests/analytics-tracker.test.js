@@ -167,8 +167,23 @@ async function boot({
   /** gtag.js requests: the only way this page can reach Google. */
   const gtagLoads = () => injected.filter((el) => /googletagmanager\.com\/gtag\/js/.test(el.src || ''));
 
+  /** A page tool reporting a result, as src/scripts/capi-validator.ts does. */
+  const toolResult = (detail) => {
+    for (const fn of listeners.document['sa:tool'] || []) fn({ detail });
+  };
+
+  /** A change event on a form control, for the generic tool_use listener. */
+  const change = (tag, attrs = {}, insideSaTool = false) => {
+    const el = {
+      matches: (sel) => sel.includes(tag),
+      closest: (sel) => (sel === '[data-sa-tool]' && insideSaTool ? {} : null),
+      ...attrs,
+    };
+    for (const fn of listeners.document.change || []) fn({ target: el });
+  };
+
   return {
-    click, answer, events, globals, local, store, consentCalls, gtagLoads,
+    click, answer, events, globals, local, store, consentCalls, gtagLoads, toolResult, change,
     banner: bannerStub,
     cookie: () => documentStub.cookie,
     reloads: () => reloads,
@@ -429,4 +444,39 @@ test('an unrecognised data-consent value changes nothing', async () => {
   assert.equal(page.local.has('sa_consent'), false);
   assert.equal(page.gtagLoads().length, 0);
   assert.equal(page.banner.hidden, false);
+});
+
+test('sa:tool sends tool_use with the tool name and counts only', async () => {
+  const page = await boot({ path: '/meta-capi-payload-validator/' });
+  page.toolResult({ tool: 'capi_validator', fails: 3, warnings: 0 });
+  const e = page.last();
+  assert.equal(e.name, 'tool_use');
+  assert.deepEqual(JSON.parse(JSON.stringify(e.params)), { tool: 'capi_validator', fails: 3, warnings: 0 });
+});
+
+test('sa:tool drops strings, so pasted text cannot reach GA4', async () => {
+  const page = await boot({ path: '/meta-capi-payload-validator/' });
+  page.toolResult({ tool: 'capi_validator', fails: 1, payload: '{"em":"test@example.com"}', warnings: NaN });
+  const e = page.last();
+  assert.deepEqual(JSON.parse(JSON.stringify(e.params)), { tool: 'capi_validator', fails: 1 });
+  assert.doesNotMatch(JSON.stringify(page.dataLayer()), /example\.com/);
+
+  const before = page.events().length;
+  page.toolResult({ tool: 'Not A Tool Name!', fails: 1 });
+  page.toolResult(null);
+  assert.equal(page.events().length, before, 'a malformed report sends nothing');
+});
+
+test('sa:tool sends nothing before consent', async () => {
+  const page = await boot({ consent: null, path: '/meta-capi-payload-validator/' });
+  page.toolResult({ tool: 'capi_validator', fails: 3, warnings: 0 });
+  assert.equal(page.events().length, 0);
+});
+
+test('a select inside a data-sa-tool block does not fire the generic tool_use', async () => {
+  const page = await boot({ path: '/meta-capi-payload-validator/' });
+  page.change('select', {}, true);
+  assert.equal(page.events().filter((e) => e.name === 'tool_use').length, 0);
+  page.change('select', {}, false);
+  assert.equal(page.events().filter((e) => e.name === 'tool_use').length, 1, 'other calculators still report');
 });

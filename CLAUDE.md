@@ -8,14 +8,14 @@ Spec: docs/RUNBOOK-consolidation-v1.md — read it before any structural change.
 That runbook is a record of completed work, **not a to-do list**. Do not re-cut
 pages it describes; they are already cut.
 
-Measured against the build on 2026-09-26:
+Measured against the build on 2026-09-28:
 
 | Metric | Value |
 |---|---|
-| HTML pages built | 121 |
+| HTML pages built | 122 |
 | `noindex` pages | 69 (54 × `/apps/*`, 4 × `/pro/*/`, 4 × `/pro/*/success/`, 3 × `/embed/*`, the Klaviyo migration calculator, privacy/terms/refund) |
-| **Indexable pages** | **52** |
-| **URLs in sitemap-0.xml** | **50** |
+| **Indexable pages** | **53** |
+| **URLs in sitemap-0.xml** | **51** |
 
 The two indexable pages absent from the sitemap are `/404.html` and
 `/sitemap-page/`, both deliberate. Reproduce the whole table with
@@ -23,7 +23,8 @@ The two indexable pages absent from the sitemap are `/404.html` and
 
 The runbook's 88 → 58 target was met on 17 Aug at 120 pages / 58 URLs. The set
 grew to 63 through freeze exceptions #1 and #2, fell to 49 with exception
-#3 on 24 Sep, and rose to 50 with exception #4 on 26 Sep. See the freeze note below. An earlier
+#3 on 24 Sep, rose to 50 with exception #4 on 26 Sep, and to 51 with exception #5
+on 28 Sep. See the freeze note below. An earlier
 version of this file said the cut was still to be made; that was stale and caused
 wasted work, which is why these figures now carry the date they were measured
 and the command that reproduces them.
@@ -598,7 +599,7 @@ submitter, integration, workflow step or hook before then.
 `scripts/indexnow.mjs` (key `5da5f….txt`, which is live) stays **manual-only**.
 Do not wire it to a build, a workflow or a cron. After ~21 Oct it gets
 rebuilt with these rules:
-- **URLs:** only the canonical trailing-slash URLs in `dist/sitemap-0.xml` (50
+- **URLs:** only the canonical trailing-slash URLs in `dist/sitemap-0.xml` (51
   today). Never legacy redirect sources, noindex pages, `/go/*` or `/embed/*`.
 - **Change detection:** a URL counts as changed when its sitemap `lastmod`
   differs from the live production sitemap. Do not hash the HTML: every build
@@ -634,6 +635,16 @@ rebuilt with these rules:
   26 Sep 2026". One indexable URL, `/blog/google-sheets-custom-function-errors/`,
   sitemap 49 to 50. No existing URL changed. The pin in
   `tests/legacy-redirects.test.js` moved to 50 in the same commit.
+- URL freeze exception #5, 28 Sep 2026: "New tool page: Meta CAPI payload
+  validator, 28 Sep 2026". One indexable URL, `/meta-capi-payload-validator/`,
+  sitemap 50 to 51. No existing URL changed. The pin in
+  `tests/legacy-redirects.test.js` moved to 51 in the same commit. The page's
+  checks come from the `shopify-capi-validator` npm package, and the Apps
+  Script error explainer in the quotas post (`#explainer`, no new URL) from
+  `apps-script-quotas`; both are dependencies, so a package fix reaches the
+  site on upgrade. Neither tool makes a network request
+  (`tests/client-tools-privacy.test.js`), and the quotas post's limits tables
+  are pinned to the package's data (`tests/apps-script-quotas-parity.test.js`).
 - Merging content means DEDUPLICATING, never concatenating. A 4,500-word page
   assembled by stapling four 1,100-word posts together is still four thin pages.
 - **Never emit a schema.org Offer for a THIRD-PARTY price without both
@@ -669,7 +680,7 @@ rebuilt with these rules:
   tool that claims otherwise.
 - **Run `npm run a11y` before any CSS or colour-token change ships.** It builds
   nothing — run `npm run build` first — then measures every text node and every
-  link/button on all 50 sitemap URLs with proper alpha and gradient
+  link/button on all 51 sitemap URLs with proper alpha and gradient
   compositing. It must exit 0. Two bug classes it exists to catch, both found
   live on 23 Aug 2026:
   - **Dark Tailwind tokens used as text on a dark ground.** `#15803d`

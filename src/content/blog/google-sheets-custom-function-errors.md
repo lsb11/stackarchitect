@@ -47,6 +47,8 @@ Almost every custom function error comes from one of those four rules, and the f
 | An error saying the result would overwrite existing data | The returned array has no empty cells to spill into | [Clear the spill area](#the-result-would-overwrite-data) |
 | The value never updates | The function does not reference the cells it depends on | [Pass the range as an argument, or add a refresh cell](#the-value-never-updates) |
 
+For an error that is not in this table, such as a daily quota message from a triggered script, [paste your error into the Apps Script error explainer](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/#explainer).
+
 ## Why custom functions fail differently from other scripts
 
 A custom function is Apps Script code you call from a cell, like `=STOCK(A2)`. It runs under tighter rules than a script you start from the editor, a menu or a trigger. Google's guide sets out four of them.

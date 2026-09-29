@@ -139,7 +139,7 @@ After 7 days, check:
 - **Event Match Quality:** Read the score Meta shows for the Purchase event and track it over time. We publish no target figure for this setup.
 - **Deduplication:** Meta treats a Pixel event and a Conversions API event as the same purchase when the Pixel's `eventID` matches the server event's `event_id` and the event names match ([Meta: deduplicate Pixel and server events](https://developers.facebook.com/documentation/ads-commerce/conversions-api/deduplicate-pixel-and-server-events)). If the IDs do not match, purchases are counted twice.
 
-If the score is low, review the customer data sent with each server event (email, phone number, external ID). Meta requires contact details such as email and phone to be SHA256-hashed after normalising them, for example trimming spaces and lower-casing email ([Meta: customer information parameters](https://developers.facebook.com/documentation/ads-commerce/conversions-api/parameters/customer-information-parameters)).
+If the score is low, review the customer data sent with each server event (email, phone number, external ID). Meta requires contact details such as email and phone to be SHA256-hashed after normalising them, for example trimming spaces and lower-casing email ([Meta: customer information parameters](https://developers.facebook.com/documentation/ads-commerce/conversions-api/parameters/customer-information-parameters)). To check a server event before you send it, paste it into the [Meta Conversions API payload validator](/meta-capi-payload-validator/).
 
 ## Use Blended ROAS, Not Meta's Reported ROAS
 

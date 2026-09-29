@@ -10,7 +10,7 @@
 // live check.
 //
 // What it asserts, for every permutation of host, scheme and trailing slash:
-//   1. the 50 live pages reach their canonical URL in exactly one 301, or zero
+//   1. the 51 live pages reach their canonical URL in exactly one 301, or zero
 //      when already canonical;
 //   2. every legacy source reaches its FINAL destination in exactly one 301 —
 //      never an intermediate slash-adding hop;
@@ -79,7 +79,7 @@ test('generated legacy map is in sync with public/_redirects', () => {
   });
 });
 
-test('the 50 live pages resolve in at most one 301, to their canonical URL', async (t) => {
+test('the 51 live pages resolve in at most one 301, to their canonical URL', async (t) => {
   assert.ok(sitemapPaths.length > 0, 'run `npm run build` first — dist/sitemap-0.xml is missing');
   // 62 -> 63 on 23 Sep 2026: /stocklog/, the second recorded freeze exception
   // (see CLAUDE.md, Hard rules). Moving this number is the record of a new URL.
@@ -93,7 +93,11 @@ test('the 50 live pages resolve in at most one 301, to their canonical URL', asy
   // 49 -> 50 on 26 Sep 2026: freeze exception #4, "New page: custom functions
   // guide, 26 Sep 2026" (/blog/google-sheets-custom-function-errors/). No
   // existing URL changed.
-  assert.equal(sitemapPaths.length, 50, 'sitemap URL count changed — the URL set is frozen');
+  //
+  // 50 -> 51 on 28 Sep 2026: freeze exception #5, "New tool page: Meta CAPI
+  // payload validator, 28 Sep 2026" (/meta-capi-payload-validator/). No
+  // existing URL changed.
+  assert.equal(sitemapPaths.length, 51, 'sitemap URL count changed: the URL set is frozen');
 
   let checked = 0;
   for (const path of sitemapPaths) {

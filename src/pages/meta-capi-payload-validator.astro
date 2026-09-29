@@ -1,0 +1,342 @@
+---
+// /meta-capi-payload-validator/: URL freeze exception #5, 28 Sep 2026.
+//
+// The checks run in the visitor's browser, from the shopify-capi-validator
+// package (src/scripts/capi-validator.ts). Everything a reader needs without
+// JavaScript is rendered here: the rules, the format table and the FAQ. The
+// two tools are hidden only when JavaScript is off.
+import { pageUpdated } from '../data/pageUpdated';
+import Base from '../layouts/Base.astro';
+import Disclosure from '../components/Disclosure.astro';
+import AuthorCard from '../components/AuthorCard.astro';
+import { faqPage, type Faq } from '../utils/faq';
+
+const PATH = '/meta-capi-payload-validator/';
+const PAGE_URL = `https://stackarchitect.xyz${PATH}`;
+const TITLE = 'Meta Conversions API Payload Validator: Free, In-Browser';
+const DESCRIPTION =
+  'Paste a Meta Conversions API event and see what Meta will reject or fail to match: missing fields, unhashed PII, millisecond timestamps. Runs in your browser.';
+
+// Meta's parameter pages, read 28 September 2026. Each rule below links to
+// the page it comes from.
+const META = {
+  index: 'https://developers.facebook.com/documentation/ads-commerce/conversions-api/parameters',
+  server: 'https://developers.facebook.com/documentation/ads-commerce/conversions-api/parameters/server-event',
+  customer: 'https://developers.facebook.com/documentation/ads-commerce/conversions-api/parameters/customer-information-parameters',
+  custom: 'https://developers.facebook.com/documentation/ads-commerce/conversions-api/parameters/custom-data',
+};
+const SOURCE_LABEL = { server: 'Server event', customer: 'Customer information', custom: 'Custom data' } as const;
+type Src = keyof typeof SOURCE_LABEL;
+
+const failRules: { check: string; says: string; src: Src }[] = [
+  { check: '<code>event_name</code>, <code>event_time</code>, <code>action_source</code> and <code>user_data</code> are present', says: 'All four are required on every event', src: 'server' },
+  { check: '<code>event_time</code> is in seconds, not milliseconds', says: 'Unix time in seconds. <code>Date.now()</code> in JavaScript returns milliseconds, which is the most common cause', src: 'server' },
+  { check: '<code>event_time</code> is no more than 7 days old', says: 'If any event in a request is older than 7 days, Meta returns an error for the whole request and processes none of its events', src: 'server' },
+  { check: 'Website events include <code>event_source_url</code>', says: 'Required when <code>action_source</code> is <code>website</code>', src: 'server' },
+  { check: 'Website events include <code>user_data.client_user_agent</code>', says: 'Required when <code>action_source</code> is <code>website</code>', src: 'customer' },
+  { check: '<code>em</code>, <code>ph</code>, <code>fn</code>, <code>ln</code>, <code>ct</code>, <code>st</code>, <code>zp</code> and <code>country</code> are SHA-256 hashed', says: 'Meta requires hashing for each of these', src: 'customer' },
+  { check: '<code>client_ip_address</code>, <code>client_user_agent</code>, <code>fbc</code> and <code>fbp</code> are not hashed', says: 'Meta says not to hash these', src: 'customer' },
+  { check: '<code>Purchase</code> events include <code>value</code> and <code>currency</code>', says: 'Both are required for purchase events', src: 'custom' },
+];
+
+const warnRules: { check: string; says: string; src: Src }[] = [
+  { check: '<code>event_id</code> is present', says: 'Meta marks it optional but recommends it for deduplicating browser Pixel and server events. Send the same <code>event_id</code> from both', src: 'server' },
+  { check: 'At least one customer information parameter, such as <code>em</code> or <code>ph</code>', says: 'Meta says you must provide at least one, correctly formatted', src: 'customer' },
+  { check: '<code>external_id</code> is hashed', says: 'Meta recommends hashing it; it isn&apos;t required', src: 'customer' },
+  { check: '<code>fbc</code> and <code>fbp</code> look like <code>fb.1.&lt;timestamp&gt;.&lt;value&gt;</code>', says: 'Anything else usually means the cookie was read or rebuilt wrongly', src: 'customer' },
+  { check: '<code>event_time</code> isn&apos;t in the future', says: 'Meta&apos;s docs set no rule, but a future time usually means a timezone or milliseconds bug', src: 'server' },
+];
+
+const formatRows: { field: string; rule: string }[] = [
+  { field: '<code>em</code> email', rule: 'Trim spaces, lowercase' },
+  { field: '<code>ph</code> phone', rule: 'Digits only, no leading zeros, with country code' },
+  { field: '<code>fn</code>, <code>ln</code> names', rule: 'Lowercase, no punctuation' },
+  { field: '<code>ct</code> city', rule: 'Lowercase, no punctuation, special characters or spaces' },
+  { field: '<code>st</code> state', rule: 'Lowercase; US states as the 2-letter code' },
+  { field: '<code>zp</code> zip or postcode', rule: 'Lowercase, no spaces or dashes; first 5 digits for US zips' },
+  { field: '<code>country</code>', rule: 'Lowercase ISO 3166-1 alpha-2 code, such as <code>gb</code> or <code>us</code>' },
+];
+
+// One array renders the visible FAQ and the FAQPage node.
+const faqs: Faq[] = [
+  { q: 'Does Meta tell you when a Conversions API event is wrong?',
+    a: 'Not always. Missing required fields and events older than 7 days return an error. An unhashed email or a hashed IP address can be accepted and simply not matched, so the conversion goes missing without a warning.' },
+  { q: 'Is event_id required in the Meta Conversions API?',
+    a: 'Meta marks <code>event_id</code> as optional but recommends it for deduplication. If you send the same event from the browser Pixel and the server, give both the same <code>event_id</code> so Meta can recognise them as one event.' },
+  { q: 'What format should event_time be in for Meta CAPI?',
+    a: 'A Unix timestamp in seconds. JavaScript&apos;s <code>Date.now()</code> returns milliseconds, so divide it by 1,000. Events more than 7 days old cause Meta to reject the whole request.' },
+  { q: 'Which Meta CAPI fields must not be hashed?',
+    a: '<code>client_ip_address</code>, <code>client_user_agent</code>, <code>fbc</code> and <code>fbp</code>. Meta says not to hash them. Customer details such as email, phone, name, city, state, zip and country must be hashed with SHA-256.' },
+  { q: 'Is it safe to paste a real event here?',
+    a: 'The validator runs in your browser and makes no network requests, so what you paste isn&apos;t sent anywhere or stored. You can still replace real customer details with test values if you prefer.' },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    '@id': `${PAGE_URL}#app`,
+    name: 'Meta Conversions API Payload Validator',
+    url: PAGE_URL,
+    description: DESCRIPTION,
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'Requires JavaScript',
+    isAccessibleForFree: true,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    author: { '@type': 'Person', '@id': 'https://stackarchitect.xyz/#luke', name: 'Luke Sandelands' },
+    provider: { '@id': 'https://stackarchitect.xyz/#org' },
+    dateModified: pageUpdated(PATH),
+  },
+  faqPage(faqs, `${PAGE_URL}#faq`),
+];
+
+const breadcrumb = [
+  { label: 'Home', href: '/' },
+  { label: 'Tools', href: '/tools/' },
+  { label: 'Meta Conversions API Payload Validator' },
+];
+---
+
+<Base title={TITLE} description={DESCRIPTION} canonical={PAGE_URL} schema={schema} breadcrumb={breadcrumb}>
+  {/* Without JavaScript the tools would be dead forms, so they are hidden
+      here rather than with `hidden`, which moved the page when the script
+      revealed them (layout shift 0.12 in consent-check). */}
+  <Fragment slot="head"><noscript><style is:inline>#cv-tools,#hh-tool{display:none}</style></noscript></Fragment>
+  <main class="cv-page">
+    <div class="cv-wrap">
+      <header class="cv-hero">
+        <p class="cv-eyebrow">Free tool · Meta Conversions API</p>
+        <h1>Meta Conversions API Payload Validator</h1>
+        <p id="answer" class="cv-lede">Paste a Meta Conversions API event below to see what Meta will reject or fail to match: missing required fields, unhashed customer data, hashed fields that must stay raw, and millisecond timestamps. It runs entirely in your browser, so nothing you paste is sent anywhere.</p>
+      </header>
+
+      <noscript><p class="cv-noscript">The validator and the hash helper run in your browser and need JavaScript. The rules they check are listed below.</p></noscript>
+
+      <div id="cv-tools" class="cv-tool" data-sa-tool>
+        <label for="cv-input" class="cv-label">Event JSON: <code>{'{"data":[...]}'}</code>, an array of events, or one event object</label>
+        <textarea id="cv-input" class="cv-input" rows="16" spellcheck="false" autocomplete="off" autocapitalize="off"></textarea>
+        <div class="cv-actions">
+          <button type="button" id="cv-check" class="cv-btn cv-btn-primary">Check payload</button>
+          <button type="button" id="cv-example" class="cv-btn">Load example</button>
+        </div>
+        <div class="cv-output" aria-live="polite">
+          <p id="cv-summary" class="cv-summary"></p>
+          <div id="cv-results" class="cv-results"></div>
+        </div>
+      </div>
+
+      <p class="cv-source"><em>Rules checked against Meta&apos;s <a href={META.index} target="_blank" rel="noopener">Conversions API parameter documentation</a> on 28 September 2026. Meta can change them; the source is linked on every rule below.</em></p>
+
+      <section class="cv-section">
+        <h2 id="what-it-checks">What it checks</h2>
+        <p>Meta doesn&apos;t always tell you when an event is wrong. Some mistakes return an error. Others are accepted but never matched to a customer, so the conversion quietly goes missing from your reports. The validator flags both.</p>
+
+        <h3 id="fails">Fails: Meta requires these</h3>
+        <div class="cv-table-wrap">
+          <table class="cv-table">
+            <thead><tr><th scope="col">Check</th><th scope="col">What Meta says</th><th scope="col">Source</th></tr></thead>
+            <tbody>
+              {failRules.map((r) => (
+                <tr>
+                  <td set:html={r.check} />
+                  <td set:html={r.says} />
+                  <td><a href={META[r.src]} target="_blank" rel="noopener">{SOURCE_LABEL[r.src]}</a></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="warnings">Warnings: Meta recommends these, or they point to a bug</h3>
+        <div class="cv-table-wrap">
+          <table class="cv-table">
+            <thead><tr><th scope="col">Check</th><th scope="col">Why</th><th scope="col">Source</th></tr></thead>
+            <tbody>
+              {warnRules.map((r) => (
+                <tr>
+                  <td set:html={r.check} />
+                  <td set:html={r.says} />
+                  <td><a href={META[r.src]} target="_blank" rel="noopener">{SOURCE_LABEL[r.src]}</a></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="cv-section">
+        <h2 id="format-and-hash">Format and hash customer data the way Meta asks</h2>
+
+        <div id="hh-tool" class="cv-tool cv-hash" data-sa-tool>
+          <div class="cv-hash-grid">
+            <div class="cv-field">
+              <label for="hh-field" class="cv-label">Field</label>
+              <select id="hh-field">
+                <option value="em">em (email)</option>
+                <option value="ph">ph (phone)</option>
+                <option value="fn">fn (first name)</option>
+                <option value="ln">ln (last name)</option>
+                <option value="ct">ct (city)</option>
+                <option value="st">st (state)</option>
+                <option value="zp">zp (zip or postcode)</option>
+                <option value="country">country</option>
+              </select>
+            </div>
+            <div class="cv-field">
+              <label for="hh-value" class="cv-label">Value</label>
+              <input id="hh-value" type="text" spellcheck="false" autocomplete="off" autocapitalize="off" />
+            </div>
+          </div>
+          <p id="hh-note" class="cv-note" aria-live="polite"></p>
+          <dl class="cv-hash-out">
+            <dt>Normalised value</dt>
+            <dd><code id="hh-normalised"></code></dd>
+            <dt>SHA-256</dt>
+            <dd><code id="hh-hash"></code></dd>
+          </dl>
+        </div>
+
+        <p>A hash of a badly formatted value is still a valid-looking hash, so the validator can&apos;t tell it&apos;s wrong. Format first, then hash. <a href={META.customer} target="_blank" rel="noopener">Meta&apos;s rules</a>:</p>
+        <div class="cv-table-wrap">
+          <table class="cv-table">
+            <thead><tr><th scope="col">Field</th><th scope="col">Format before hashing</th></tr></thead>
+            <tbody>
+              {formatRows.map((r) => (
+                <tr><td set:html={r.field} /><td set:html={r.rule} /></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p><strong>The UK phone trap.</strong> A number written <code>+44 (0)7700 900123</code> becomes <code>4407700900123</code> if you only strip symbols and leading zeros. The zero after the country code is a national prefix, not part of the international number, so the correct value is <code>447700900123</code>. Remove it before hashing.</p>
+      </section>
+
+      <section class="cv-section">
+        <h2 id="common-mistakes">The mistakes it catches most often</h2>
+        <ul class="cv-bullets">
+          <li><strong>Milliseconds instead of seconds.</strong> <code>Math.floor(Date.now() / 1000)</code> in JavaScript, not <code>Date.now()</code>.</li>
+          <li><strong>Hashing everything.</strong> IP address, user agent, <code>fbc</code> and <code>fbp</code> must be sent as they are. A hashed IP can&apos;t be matched.</li>
+          <li><strong>Hashing nothing.</strong> An email sent in plain text isn&apos;t matched, and Meta doesn&apos;t always say so.</li>
+          <li><strong>Website events without the page URL or user agent.</strong> Server-side setups often drop them because the server doesn&apos;t see the browser. Capture both in the browser and pass them to the server with the order.</li>
+          <li><strong>Retrying old events.</strong> One event older than 7 days in a batch makes Meta reject the whole batch.</li>
+        </ul>
+      </section>
+
+      <section class="cv-section">
+        <h2 id="terminal-and-ci">Run it in your terminal or CI</h2>
+        <p>The same checks are in the open-source <a href="https://github.com/lsb11/shopify-capi-validator" target="_blank" rel="noopener">shopify-capi-validator</a> package. It exits with code 1 when any check fails, so it can stop a bad deploy:</p>
+        <pre class="cv-pre"><code>npx shopify-capi-validator --payload ./event.json</code></pre>
+      </section>
+
+      <section class="cv-section">
+        <h2 id="sending-events-from-shopify">Sending events from Shopify</h2>
+        <ul class="cv-bullets">
+          <li><a href="/capi-shield/">CAPI Shield</a> sends Shopify orders to Meta server-side, with these fields set.</li>
+          <li>The <a href="/meta-emq-score-estimator/">Meta EMQ score estimator</a> shows which customer parameters you send and what that means for match quality.</li>
+          <li>The <a href="/blog/shopify-server-side-tracking-complete-setup-guide/">server-side tracking setup guide</a> covers the whole flow.</li>
+        </ul>
+        <Disclosure />
+        <a href="/go/make/?source=meta-capi-payload-validator-cta" class="cta-primary" target="_blank" rel="sponsored nofollow noopener">Build it on Make.com&apos;s free plan</a>
+        <p class="cv-kit">The CAPI Shield blueprint is also in the <a href="/pro/">Complete Kit</a>.</p>
+      </section>
+
+      <section class="cv-section cv-faq" aria-labelledby="faq">
+        <h2 id="faq">Frequently asked questions</h2>
+        {faqs.map(({ q, a }) => (
+          <div class="cv-faq-item">
+            <h3 class="cv-faq-q">{q}</h3>
+            <p class="cv-faq-a" set:html={a} />
+          </div>
+        ))}
+      </section>
+
+      <div class="sa-byline-wrap"><AuthorCard /></div>
+    </div>
+  </main>
+</Base>
+
+<script>
+  import '../scripts/capi-validator';
+</script>
+
+<style>
+  .cv-page { background: #0c0f0d; color: #b6c0ba; padding: 32px 16px 64px; }
+  .cv-wrap { max-width: 860px; margin: 0 auto; }
+  .cv-hero h1 { font-size: clamp(26px, 4.5vw, 40px); font-weight: 700; color: #fff; letter-spacing: -0.02em; line-height: 1.1; margin: 0 0 14px; }
+  .cv-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #34d377; margin: 0 0 12px; }
+  .cv-lede { font-size: 17px; line-height: 1.7; color: #b6c0ba; margin: 0 0 24px; max-width: 68ch; }
+  .cv-noscript { border-left: 3px solid #34d377; padding-left: 12px; }
+
+  .cv-tool { border: 1px solid #262c29; border-radius: 10px; background: #000; padding: 20px; margin: 0 0 20px; }
+  .cv-label { display: block; font-size: 13px; font-weight: 600; color: #dfe6e2; margin: 0 0 8px; }
+  .cv-input, .cv-field input, .cv-field select {
+    width: 100%; box-sizing: border-box; background: #0c0f0d; color: #e6ece8; border: 1px solid #3a423e; border-radius: 6px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; line-height: 1.55; padding: 12px;
+  }
+  .cv-input { min-height: 260px; resize: vertical; }
+  .cv-input:focus, .cv-field input:focus, .cv-field select:focus { outline: 2px solid #34d377; outline-offset: 1px; }
+  .cv-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 0; }
+  .cv-btn { min-height: 44px; padding: 10px 18px; border-radius: 8px; border: 1px solid #34d377; background: transparent; color: #34d377; font: inherit; font-weight: 600; cursor: pointer; }
+  .cv-btn:hover { background: rgba(52, 211, 119, .1); }
+  .cv-btn-primary { background: #34d377; color: #04110a; }
+  .cv-btn-primary:hover { background: #5fe095; }
+  .cv-btn:focus-visible { outline: 2px solid #f0efe8; outline-offset: 2px; }
+
+  .cv-output { margin-top: 18px; }
+  .cv-summary { font-weight: 700; color: #fff; margin: 0 0 12px; }
+  .cv-summary:empty { display: none; }
+  .cv-summary[data-state='fail'] { color: #f87171; }
+  .cv-summary[data-state='warn'] { color: #f5b64d; }
+  .cv-summary[data-state='pass'] { color: #34d377; }
+  .cv-results :global(.cv-error) { color: #f87171; margin: 0; }
+  .cv-results :global(.cv-event) { border-top: 1px solid #222825; padding: 14px 0 4px; }
+  .cv-results :global(.cv-event-title) { font-size: 16px; color: #fff; margin: 0 0 4px; }
+  .cv-results :global(.cv-event-count) { font-size: 13px; color: #93a09a; margin: 0 0 10px; }
+  .cv-results :global(.cv-head) { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; margin: 12px 0 6px; }
+  .cv-results :global(.cv-head-fail) { color: #f87171; }
+  .cv-results :global(.cv-head-warn) { color: #f5b64d; }
+  .cv-results :global(.cv-list) { list-style: none; margin: 0; padding: 0; }
+  .cv-results :global(.cv-list li) { padding: 8px 0 8px 14px; border-left: 3px solid #3a423e; margin: 0 0 6px; }
+  .cv-results :global(.cv-fail li) { border-left-color: #f87171; }
+  .cv-results :global(.cv-warn li) { border-left-color: #f5b64d; }
+  .cv-results :global(.cv-pass li) { border-left-color: #34d377; }
+  .cv-results :global(.cv-msg) { display: block; color: #e6ece8; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; }
+  .cv-results :global(.cv-hint) { display: block; color: #b6c0ba; font-size: 14px; margin-top: 2px; }
+  .cv-results :global(.cv-passed) { margin: 10px 0 0; }
+  .cv-results :global(.cv-passed summary) { cursor: pointer; color: #34d377; font-weight: 600; }
+
+  .cv-hash-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 14px; }
+  @media (max-width: 600px) { .cv-hash-grid { grid-template-columns: 1fr; } }
+  .cv-note { color: #f5b64d; font-size: 14px; margin: 10px 0 0; }
+  .cv-note:empty { display: none; }
+  .cv-hash-out { margin: 14px 0 0; }
+  .cv-hash-out dt { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #93a09a; margin: 10px 0 4px; }
+  .cv-hash-out dd { margin: 0; min-height: 1.4em; }
+  .cv-hash-out code { color: #e6ece8; word-break: break-all; font-size: 13px; }
+
+  .cv-source { font-size: 14px; color: #93a09a; margin: 0 0 8px; }
+  .cv-section { margin: 36px 0 0; }
+  .cv-section h2 { font-size: clamp(20px, 3vw, 28px); color: #fff; letter-spacing: -0.01em; margin: 0 0 14px; }
+  .cv-section h3 { font-size: 17px; color: #fff; margin: 24px 0 10px; }
+  .cv-section p, .cv-bullets li { font-size: 16px; line-height: 1.75; color: #b6c0ba; }
+  .cv-section p { margin: 0 0 14px; }
+  .cv-section strong { color: #fff; }
+  .cv-page a:not(.cta-primary) { color: #34d377; text-decoration: underline; }
+  .cv-page code { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .9em; color: #dfe6e2; }
+  .cv-bullets { margin: 0 0 16px; padding-left: 20px; }
+  .cv-bullets li { margin: 0 0 8px; }
+
+  .cv-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid #222825; border-radius: 8px; margin: 8px 0 20px; }
+  .cv-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 560px; }
+  .cv-table th { text-align: left; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: #93a09a; padding: 12px 14px; border-bottom: 1px solid #222825; }
+  .cv-table td { padding: 12px 14px; border-bottom: 1px solid #171c19; vertical-align: top; line-height: 1.6; color: #b6c0ba; }
+  .cv-table tr:last-child td { border-bottom: none; }
+
+  .cv-pre { background: #000; border: 1px solid #262c29; border-radius: 8px; padding: 14px; overflow-x: auto; margin: 0 0 14px; }
+  .cv-kit { margin-top: 16px !important; }
+
+  .cv-faq-item { border-top: 1px solid #222825; padding: 16px 0; }
+  .cv-faq-q { font-size: 17px !important; margin: 0 0 8px !important; }
+  .cv-faq-a { margin: 0 !important; }
+</style>

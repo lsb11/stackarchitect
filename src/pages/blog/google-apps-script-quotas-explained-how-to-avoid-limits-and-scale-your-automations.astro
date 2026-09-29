@@ -114,6 +114,7 @@ const datasetSchema = {
 ---
 <Base title="Google Apps Script Quotas 2026 — Every Limit Explained" description="Google Apps Script quotas 2026: 6-minute execution limit, 90-minute trigger runtime, 20,000 UrlFetch calls/day, 100 emails/day — every limit, verified.">
 <Fragment slot="head">
+<noscript><style is:inline>#qx-app{display:none}</style></noscript>
 <script type="application/ld+json" set:html={JSON.stringify({
   "@context": "https://schema.org",
   "@graph": [
@@ -495,6 +496,21 @@ const datasetSchema = {
   </table>
   </div>
 
+  {/* Apps Script error explainer. Runs from the apps-script-quotas package in
+      src/scripts/quota-explainer.ts. Hidden only when JavaScript is off (the
+      noscript style in the head), so a reader without it sees the table above
+      rather than a dead form, and the page does not move when the script runs. */}
+  <div class="qx" id="explainer" data-sa-tool>
+    <h3 id="error-explainer">Apps Script error explainer</h3>
+    <div id="qx-app">
+      <label for="qx-input" class="qx-label">Paste the error your script or cell shows. It is matched in your browser and not sent anywhere.</label>
+      <textarea id="qx-input" class="qx-input" rows="3" spellcheck="false" autocomplete="off" placeholder="Service using too much computer time for one day"></textarea>
+      <button type="button" id="qx-explain" class="qx-btn">Explain error</button>
+      <div id="qx-result" class="qx-result" aria-live="polite"></div>
+    </div>
+    <noscript><p class="qx-label">The explainer needs JavaScript. The table above lists the common errors.</p></noscript>
+  </div>
+
   <h3 id="service-invoked-too-many-times">Fixing &ldquo;Service invoked too many times&rdquo;</h3>
   <p>This one is a rate limit, not a daily quota. The script called Sheets, Docs, Drive or Gmail too many times in a short window, so slowing it down or making fewer calls clears it without waiting for any reset. Google does not publish a per-minute figure for most services, so treat the fixes below as ways to call less often, not as ways to stay under a known number.</p>
   <p>The usual cause is a loop that touches the spreadsheet once per row. Three calls per row means 300 calls for 100 rows, fired as fast as the script can run:</p>
@@ -840,6 +856,9 @@ function scheduleNextChunk_() {
 </div>
 </main>
 
+<script>
+  import '../../scripts/quota-explainer';
+</script>
 
 <script is:inline set:html={`
 // Quota exhaustion calculator. Constants are handed in from the same verified
@@ -1121,6 +1140,23 @@ a{text-decoration:none;}
 .qcalc-track i.over{background:#f87171;}
 .qcalc-verdict{font-size:14px;line-height:1.7;color:var(--soft);margin:0;}
 .qcalc-verdict strong{color:var(--text);}
+/* Apps Script error explainer (#explainer). Output is built by
+   src/scripts/quota-explainer.ts. */
+.qx{border:1px solid var(--border-strong);border-radius:16px;background:var(--surface-2);padding:22px;margin:24px 0 32px;}
+.qx h3{margin-top:0;}
+.qx-label{display:block;font-size:15px;color:var(--muted);margin:0 0 10px;line-height:1.6;}
+.qx-input{width:100%;background:var(--bg);border:1px solid var(--border-strong);border-radius:8px;color:var(--text);
+  font-family:'JetBrains Mono',ui-monospace,monospace;font-size:14px;line-height:1.5;padding:10px 12px;resize:vertical;}
+.qx-input::placeholder{color:#7f8b85;}
+.qx-input:focus{outline:2px solid var(--accent);outline-offset:1px;}
+.qx-btn{margin-top:12px;min-height:44px;padding:10px 18px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:#07110a;font:inherit;font-weight:700;cursor:pointer;}
+.qx-btn:focus-visible{outline:2px solid #fff;outline-offset:2px;}
+.qx-result:empty{display:none;}
+.qx-result{margin-top:18px;border-top:1px solid var(--border);padding-top:6px;}
+.qx-result .qx-head{margin:16px 0 6px;font-size:12px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--accent);}
+.qx-result p{font-size:16px;margin-bottom:10px;}
+.qx-result .qx-table{margin:6px 0 12px;font-size:15px;}
+.architect-article .qx-result a{color:var(--accent);text-decoration:underline;}
 .qcalc-method{font-size:12px;line-height:1.6;color:var(--muted);border-top:1px solid var(--border);margin:18px 0 0;padding-top:14px;}
 
 /* Code blocks. This page is about a programming limit and shipped without a

@@ -330,6 +330,7 @@ const tocHeadings = [
 
       <h2 id="which-signals-move-the-score-and-by-how-much">Which signals move the score, and by how much</h2>
       <p>EMQ is cumulative: it rewards parameter <em>depth</em> on every event, not one perfect identifier. Hashed identifiers are matched deterministically; the browser and click IDs (fbc, fbp) carry the probabilistic load for anonymous visitors. <strong>Critical detail most setups get wrong:</strong> email, phone, external_id, names and address are SHA-256 hashed before sending, but <strong>fbc and fbp must never be hashed.</strong></p>
+      <p>To see whether a real event gets this right, paste it into the <a href="/meta-capi-payload-validator/">Meta Conversions API payload validator</a>. It flags customer fields sent unhashed, and fields such as <code>fbc</code> and <code>fbp</code> that were hashed when they must stay raw.</p>
 
       <div class="emq-table-wrap">
         <table class="emq-table">
