@@ -140,6 +140,11 @@ could report more, but `functions/go/_bots.js` and the `clicks`/`bot_hits`
 tables are the single source of truth for what is a crawler. A second,
 differently-filtered count in GA4 would not reconcile with D1. GA4 measures
 real browser clicks; D1 measures every request.
+How to read the D1 counts, which tables hold what, and ready-to-run queries
+(clicks by partner, by landing page, by placement, by day, and against
+`bot_hits`) are in `docs/AFFILIATE-CLICKS.md`. Read its first section before
+any figure: most rows have no Referer, and only those with a page path can be
+credited to a page.
 
 **Half of GA4 is not in this repo.** Key events, custom dimensions, the AI
 assistant channel group and the internal-traffic filter are property settings

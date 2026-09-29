@@ -53,6 +53,12 @@ const trial = `${STOCKLOG_TRIAL_DAYS}-day free trial`;
 
 const schemaIcon = await getImage({ src: icon, width: 512, height: 512, format: 'png' });
 const schemaShot = await getImage({ src: movementHistory, width: 1280, format: 'png' });
+// The hero icon is rendered as a plain <img> so its alt="" survives: Astro
+// writes an empty alt passed through <Image> as a bare `alt`, and this was
+// the only image on the site without a written alt when Bing's site scan
+// reported one missing. The icon is decorative; the H1 beside it names the
+// product.
+const heroIcon = await getImage({ src: icon, width: 64, height: 64, densities: [1, 2] });
 const abs = (src: string) => new URL(src, 'https://stackarchitect.xyz').href;
 
 const howSteps = [
@@ -262,7 +268,7 @@ const schema = [
     <div class="hero-grid">
       <div class="hero-copy">
         <div class="brand">
-          <Image src={icon} alt="" width={64} height={64} densities={[1, 2]} loading="eager" class="brand-icon" />
+          <img src={heroIcon.src} srcset={heroIcon.srcSet.attribute} alt="" width="64" height="64" loading="eager" decoding="async" class="brand-icon" />
           <h1 id="sl-h1">StockLog: stock history for Shopify</h1>
         </div>
         <p class="hero-sub">A stock ledger for Shopify. Every change to your stock, with the reason behind it.</p>
