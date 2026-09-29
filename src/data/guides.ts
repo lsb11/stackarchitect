@@ -33,7 +33,7 @@ export const NAV_GUIDES: NavGuide[] = [
   {
     href: '/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/',
     name: 'Apps Script quotas and errors',
-    line: 'Every limit, and the fix for each quota error.',
+    line: 'Every limit, plus an error explainer.',
   },
   {
     href: '/blog/the-ultimate-guide-to-shopify-inventory-management/',

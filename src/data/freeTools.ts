@@ -62,3 +62,27 @@ export const FREE_TOOLS: FreeTool[] = [
     line: "Moves Autocrat document runs to Make.com in batches that stay inside Google's Apps Script quota.",
   },
 ];
+
+/**
+ * The header's Free tools disclosure: FREE_TOOLS plus the in-browser checks,
+ * each placed after the setup it belongs with. The checks are not setups, so
+ * they stay out of FREE_TOOLS, which the footer's Free tools column and the
+ * "free Shopify setups" list on /stack/ render. One list still serves the
+ * header at both widths.
+ */
+const HEADER_CHECKS: { after: string; tool: FreeTool }[] = [
+  {
+    after: '/capi-shield/',
+    tool: {
+      href: '/meta-capi-payload-validator/',
+      name: 'Meta CAPI payload validator',
+      short: 'Check an event before Meta rejects it',
+      line: 'Checks a Meta Conversions API event in your browser for missing fields, unhashed customer data and millisecond timestamps.',
+    },
+  },
+];
+
+export const HEADER_FREE_TOOLS: FreeTool[] = FREE_TOOLS.flatMap((t) => [
+  t,
+  ...HEADER_CHECKS.filter((c) => c.after === t.href).map((c) => c.tool),
+]);

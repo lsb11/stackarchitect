@@ -3,7 +3,7 @@ import "@fontsource/sora/600.css";
 import "@fontsource/sora/700.css";
 import "@fontsource/jetbrains-mono/500.css";
 import { KIT_PRICE, SINGLE_PRICE, STOCKLOG_PRICE, formatPrice } from '../data/products';
-import { FREE_TOOLS } from '../data/freeTools';
+import { HEADER_FREE_TOOLS } from '../data/freeTools';
 import { NAV_GUIDES, GUIDES_INDEX, guideIndexHrefs } from '../data/guides';
 // Nav.astro: Stack Architect sitewide header.
 //
@@ -27,7 +27,8 @@ import { NAV_GUIDES, GUIDES_INDEX, guideIndexHrefs } from '../data/guides';
 //    same list as a panel, and each disclosure opens in place as a collapsed
 //    section, so the CTA sits after five rows and no link is rendered twice.
 //    A second mobile copy of every link is what took the chrome to 91 links.
-//  • Free tools renders src/data/freeTools.ts. Guides renders NAV_GUIDES from
+//  • Free tools renders HEADER_FREE_TOOLS from src/data/freeTools.ts (the free
+//    setups plus the in-browser checks). Guides renders NAV_GUIDES from
 //    src/data/guides.ts, and its count comes from the index's own list.
 //
 // STOCKY BANNER. The date branch below is chosen at BUILD time (isPostShutdown,
@@ -104,7 +105,7 @@ const GUIDE_COUNT = guideIndexHrefs().length;
           Free tools
         </button>
         <div class="sa-drop-panel sa-drop-panel--wide" id="panel-free">
-          {FREE_TOOLS.map((t) => (
+          {HEADER_FREE_TOOLS.map((t) => (
             <a href={t.href} class="sa-drop-item" aria-current={current(t.href)}>
               <span class="sa-drop-title">{t.name}</span>
               <span class="sa-drop-desc">{t.short}</span>
