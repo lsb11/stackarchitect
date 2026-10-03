@@ -82,6 +82,22 @@ def cards():
             'footer': '4 Make.com blueprints · 2 Sheets templates · 30-day guarantee',
             'depicts': {'KIT_PRICE': kit},
         },
+        # Brought under the generator 3 Oct 2026. The 14 Jul bitmap read
+        # "Recover 20-40% of lost TikTok conversions" — the figure retracted on
+        # 4 Sep and named in claims.json as attributionLossFigure — plus a
+        # "$39-$299/mo" struck range that appears on no page. Both were logged
+        # as `concerns` in the manifest in Sep and neither could be fixed,
+        # because nothing could redraw the bitmap. The replacement states the
+        # mechanism instead of a share, which is what /how-we-test/ says this
+        # site publishes.
+        'public/og/og-tiktok-events-api.png': {
+            'usedBy': ['/tiktok-events-api-shopify/'],
+            'eyebrow': 'TIKTOK EVENTS API · SHOPIFY',
+            'headline': ['Send TikTok purchases', 'server-side — free'],
+            'zero': '$0', 'aside': "on Make.com's free plan",
+            'footer': 'TikTok Events API · Past ITP and ad blockers · No app install',
+            'depicts': {},
+        },
     }
 
 

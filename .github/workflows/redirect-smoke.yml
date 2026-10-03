@@ -44,10 +44,35 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      # Cloudflare Pages deploys are near-instant but not atomic with the
-      # push event. Give the edge a moment to propagate before asserting.
-      - name: Wait for deploy propagation
-        if: github.event_name == 'push'
-        run: sleep 45
+      # Cloudflare Pages is not atomic with the push event: a build of 122
+      # Astro pages with image optimisation takes minutes, not seconds. A flat
+      # `sleep 45` was wrong for the whole of its life and only looked right
+      # because every earlier change edited a rule whose path already resolved
+      # — so the old target answered and the assertion passed against a stale
+      # deploy. The first rule for a genuinely new path (/sitemap.xml, PR #45,
+      # 3 Oct 2026) failed on merge for this reason and passed on a re-run
+      # with nothing changed.
+      #
+      # Retrying the assertions is better than a longer sleep in both
+      # directions: it returns the moment the deploy lands, and it keeps
+      # waiting when the build is slow. On a push it is allowed ~6 minutes;
+      # scheduled and manual runs assert once, since nothing is deploying.
       - name: Smoke test redirects
-        run: node scripts/redirect-smoke.mjs --concurrency 6
+        run: |
+          set -o pipefail
+          if [ "${{ github.event_name }}" != "push" ]; then
+            node scripts/redirect-smoke.mjs --concurrency 6
+            exit $?
+          fi
+          for attempt in 1 2 3 4 5 6; do
+            if node scripts/redirect-smoke.mjs --concurrency 6; then
+              echo "::notice::redirect smoke passed on attempt ${attempt}"
+              exit 0
+            fi
+            if [ "${attempt}" -lt 6 ]; then
+              echo "attempt ${attempt} failed — deploy may still be propagating; retrying in 60s"
+              sleep 60
+            fi
+          done
+          echo "::error::redirect smoke still failing after 6 attempts (~6 min). This is a real failure, not deploy lag."
+          exit 1
