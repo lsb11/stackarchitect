@@ -100,3 +100,88 @@ test('the rule catches the kit card as it shipped until 19 Sep 2026', () => {
   const shipped = ['THE COMPLETE KIT', 'Every scenario pre-built.', 'Live in 10 minutes.', '$29 one-time'].join('\n');
   assert.equal(retiredNearAnchor(shipped, { retired: kit.retired, ...kit.near }).length, 1);
 });
+
+/**
+ * The retracted 20-40% figure, applied to image text.
+ *
+ * claims-guard.mjs already fails the build on a quantified conversion-loss or
+ * recovery percentage, but its walker reads source files and a PNG is not one.
+ * og-tiktok-events-api.png carried "Recover 20-40% of lost TikTok conversions"
+ * from 14 Jul until 3 Oct 2026 — logged as a `concern` in the manifest on
+ * 19 Sep and shipped on every social share for another two weeks, because the
+ * concern was a note and nothing failed on it.
+ *
+ * The patterns are NOT restated here. They are read from the same claims.json
+ * entry claims-guard uses, so a change to the claim reaches images on the next
+ * run instead of drifting from them — which is the failure this whole file
+ * exists to catch.
+ *
+ * Both readings of a card's text are checked, because a card is not prose.
+ *
+ *  - joined by "\n": matches claims-guard exactly, `unless` scoped to the line
+ *    the match sits on.
+ *  - joined by " ": the card as a reader sees it. The patterns step over
+ *    `[^\n<]`, so they stop at a line break wherever a run of literal
+ *    whitespace does not bridge it — and a card wraps where a sentence would
+ *    not. On the TikTok card as it shipped, the line-by-line reading trips one
+ *    rule and the flattened reading trips three. Here `unless` is tested
+ *    against the whole string, since a flattened card has no lines to scope to.
+ *
+ * Checked against the full manifest when this was written: the flattened pass
+ * adds no hits of its own today, so it is a floor, not a new constraint.
+ */
+function forbiddenIn(text, rules) {
+  const lines = text.split('\n');
+  const flat = lines.join(' ');
+  const hits = new Set();
+  for (const f of rules) {
+    const excepts = (f.unless || []).map((u) => new RegExp(u, 'i'));
+    const note = (m) => hits.add(m[0].replace(/\s+/g, ' ').trim().slice(0, 60));
+
+    for (const m of text.matchAll(new RegExp(f.pattern, 'gi'))) {
+      const line = lines[text.slice(0, m.index).split('\n').length - 1] || '';
+      if (!excepts.some((u) => u.test(line))) note(m);
+    }
+    if (excepts.some((u) => u.test(flat))) continue;
+    for (const m of flat.matchAll(new RegExp(f.pattern, 'gi'))) note(m);
+  }
+  return [...hits];
+}
+
+test('no image states a conversion-loss percentage the site retracted', () => {
+  const rules = claims.thirdParty.attributionLossFigure.forbid;
+  for (const [p, e] of Object.entries(images)) {
+    assert.deepEqual(
+      forbiddenIn(e.text.join('\n'), rules), [],
+      `${p} states a loss/recovery percentage retracted on 4 Sep 2026. ` +
+      'An image is fixed by its generator, never by editing the manifest.',
+    );
+  }
+});
+
+test('the rule catches the TikTok card as it shipped until 3 Oct 2026', () => {
+  const rules = claims.thirdParty.attributionLossFigure.forbid;
+  const shipped = [
+    'TIKTOK EVENTS API FOR SHOPIFY',
+    'Recover 20–40% of lost',
+    'TikTok conversions — free',
+  ].join('\n');
+  assert.ok(forbiddenIn(shipped, rules).length > 0, 'the rule no longer catches the card it was written for');
+});
+
+// Pins the flattened pass, which otherwise could be deleted with this file
+// still green. On the card as it actually shipped, reading it line by line
+// trips one rule; reading it as a sentence trips three. The single rule is
+// the whole margin, and it is not one this file controls — narrowing it in
+// claims.json would silently stop catching this card.
+test('flattening a card widens which rules see a wrapped claim', () => {
+  const rules = claims.thirdParty.attributionLossFigure.forbid;
+  const shipped = [
+    'TIKTOK EVENTS API FOR SHOPIFY',
+    'Recover 20–40% of lost',
+    'TikTok conversions — free',
+  ].join('\n');
+  const firing = (t) => rules.filter((f) => new RegExp(f.pattern, 'gi').test(t)).length;
+  assert.equal(firing(shipped), 1, 'line-scoped reading of the shipped card');
+  assert.equal(firing(shipped.split('\n').join(' ')), 3, 'flattened reading of the same card');
+});
