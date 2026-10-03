@@ -193,6 +193,11 @@ export const LEGACY_RULES = [
     "status": 301
   },
   {
+    "from": "/sitemap.xml",
+    "to": "/sitemap-index.xml",
+    "status": 301
+  },
+  {
     "from": "/sitemap/",
     "to": "/sitemap-page/",
     "status": 301
