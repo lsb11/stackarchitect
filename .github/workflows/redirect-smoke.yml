@@ -4,17 +4,24 @@ name: Redirect smoke test
 # 2026-07-17), 404ing every legacy URL for weeks with no signal until GSC
 # reported it months later. This catches that in CI and nightly.
 
+# This file is in both path filters so that a change to the smoke test is
+# tested by the smoke test. It was not, and the PR that rewrote the deploy
+# wait (3 Oct 2026) triggered no checks at all — the one change most able to
+# break this workflow was the one change it could not see.
 on:
   pull_request:
     paths:
       - 'public/_redirects'
       - 'functions/_middleware.js'
       - 'scripts/redirect-smoke.mjs'
+      - '.github/workflows/redirect-smoke.yml'
   push:
     branches: [main]
     paths:
       - 'public/_redirects'
       - 'functions/_middleware.js'
+      - 'scripts/redirect-smoke.mjs'
+      - '.github/workflows/redirect-smoke.yml'
   schedule:
     # 07:00 UTC daily — catches breakage introduced by a deploy that didn't
     # touch _redirects (e.g. a middleware change swallowing static rules).
