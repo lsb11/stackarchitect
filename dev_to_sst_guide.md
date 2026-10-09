@@ -41,7 +41,7 @@ Your Shopify dashboard shows 68 orders. Meta shows 41. Google Ads shows 29. TikT
 
 
 
-[Start Free on Make.com &rarr;](https://stackarchitect.xyz/go/make)
+[Make.com setup and free-tier limits &rarr;](https://stackarchitect.xyz/make-com-shopify/)
 [Jump to Setup](#setup)
 
 
@@ -329,7 +329,7 @@ Both fire. Both share an <code>event_id</code>. Meta, Google and TikTok deduplic
 - **Hybrid (recommended):** the browser pixel supplies `fbc` and `fbp`, the server supplies hashed email, phone, IP and user agent, deduplicated on a shared `event_id`. The largest match-key set of the three; monthly cost $0–$500 depending on stack.
 
 
-The cheapest path to hybrid in 2026 is the Make.com webhook method documented in the setup section of this guide. Make.com's free tier covers up to 1,000 credits/month, which is sufficient for any Shopify store under approximately 250 orders per month. Above that volume, the Core plan at $9/month covers 10,000 credits — [free Make.com account here](https://stackarchitect.xyz/go/make).
+The cheapest path to hybrid in 2026 is the Make.com webhook method documented in the setup section of this guide. Make.com's free tier covers up to 1,000 credits/month, which is sufficient for any Shopify store under approximately 250 orders per month. Above that volume, the Core plan at $9/month covers 10,000 credits — [how to set up Make.com on the free tier](https://stackarchitect.xyz/make-com-shopify/).
 
 
 
@@ -417,7 +417,7 @@ PREREQUISITES
 You need four things before you begin. All are free. None require a developer.
 
 
-- **A Make.com account** — free plan covers 1,000 credits/month, sufficient for stores up to ~300 orders/month. [Sign up free here](https://stackarchitect.xyz/go/make).
+- **A Make.com account** — free plan covers 1,000 credits/month, sufficient for stores up to ~300 orders/month. [the free Make.com setup walkthrough](https://stackarchitect.xyz/make-com-shopify/).
 - **Meta Pixel ID and Conversions API Access Token** — found in Meta Events Manager &rarr; your pixel &rarr; Settings &rarr; Conversions API &rarr; Generate access token.
 - **Google Ads Conversion ID and label** — found in Google Ads &rarr; Tools &rarr; Measurement &rarr; Conversions &rarr; your purchase conversion &rarr; Tag setup.
 - **TikTok Pixel ID and Events API Access Token** — found in TikTok Events Manager &rarr; your pixel &rarr; Settings &rarr; Events API &rarr; Generate access token.
@@ -443,7 +443,7 @@ This method fires directly from Shopify's backend on payment confirmation — no
 
 Create your free Make.com account
 
-Sign up at [Make.com](https://stackarchitect.xyz/go/make) — no credit card required. The free plan gives you 1,000 credits/month. **One Shopify order = 4 credits** (the webhook trigger plus one HTTP module per platform), so the free plan covers ~250 orders/month. Create a new scenario and name it "Shopify Server-Side Tracking".
+Sign up at [Make.com](https://stackarchitect.xyz/make-com-shopify/) — no credit card required. The free plan gives you 1,000 credits/month. **One Shopify order = 4 credits** (the webhook trigger plus one HTTP module per platform), so the free plan covers ~250 orders/month. Create a new scenario and name it "Shopify Server-Side Tracking".
 
 &#9201; 2 minutes
 
@@ -547,7 +547,7 @@ All three should show green. If any shows yellow, see the Troubleshooting sectio
 
 No credit card. Free plan covers 250 orders/month. Full three-platform build takes ~18 minutes.
 
-[Start Free &rarr;](https://stackarchitect.xyz/go/make)
+[Start with the free setup guide &rarr;](https://stackarchitect.xyz/make-com-shopify/)
 
 
 
