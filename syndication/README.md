@@ -60,11 +60,38 @@ full replacement.
 
 ### Medium
 
-The dry run lists each Medium post, matches it to a site page by title, writes
-the replacement to `syndication/out/`, and prints the two edits to make by
-hand: replace the body, and set **Story settings → Advanced settings →
-Canonical link**. Medium's feed only shows the latest ten posts; check older
-ones the same way.
+Medium's feed has no canonical, so each post is matched to the page it copies
+by, in order: its own "Originally published at" footer (followed through
+`_redirects`), an entry in `pages.json` → `"medium"` (Medium URL slug prefix →
+site path, for copies with no footer), or a title overlap of at least 50%.
+Anything weaker is an original article and is never overwritten; flagged
+sentences in one are listed for you to edit by hand.
+
+Only posts that carry a retracted claim or a bare `/go/` link are listed as
+needing you. For each, the tool writes `syndication/out/<page>.html`:
+
+1. Open that file in your browser, ⌘A, ⌘C.
+2. On Medium: ⋯ → **Edit story**, click in the story, ⌘A, ⌘V, then
+   **Save and publish**. Medium keeps formatting pasted from a page; it does
+   not convert pasted Markdown.
+3. ⋯ → **Story settings → Advanced settings → Canonical link**: the URL the
+   tool printed.
+
+Medium's feed only shows the latest ten posts; check older ones the same way.
+
+### dev.to: two posts, one canonical
+
+dev.to refuses a second article with a canonical another one already holds
+(HTTP 422). When a retired canonical would resolve to a page another of your
+posts already claims, the tool keeps the old canonical (it 301s to the same
+page) and still replaces the body.
+
+### Hashnode: "a web page, not the API's JSON"
+
+The tool now says which HTTP status came back. 401/403: make a new token and
+`export HASHNODE_PAT=…` again. Anything else: a network block or a Hashnode
+outage; retry later. `HASHNODE_HOST` must be the blog's address
+(default `stocky-shutdown.hashnode.dev`).
 
 ## Adding a new cross-post
 

@@ -18,6 +18,7 @@ import path from 'node:path';
 import {
   loadSiteState, buildPack, scanText, planPost, applyPlan, rewriteGoLinks,
   setFrontMatterCanonical, replaceBodyKeepingFrontMatter, GO_TO_PAGE, SITE,
+  mediumSourcePage, dropTakenCanonical, packToHtml,
 } from '../scripts/lib/syndication.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
@@ -114,4 +115,54 @@ test('replacing a body keeps front matter, so a post cannot be unpublished or re
   assert.doesNotMatch(out, /old body/);
   assert.equal(replaceBodyKeepingFrontMatter('no front matter', 'new', {}), 'new');
   assert.match(setFrontMatterCanonical('---\ntitle: a\n---\nb', 'https://y/'), /^canonical_url: https:\/\/y\/$/m);
+});
+
+// Medium, 9 Oct 2026: the feed has no canonical, and the first sync forced a
+// title match at 20%. These are the real titles, URLs and footers.
+const MEDIUM_CFG = JSON.parse(fs.readFileSync(path.join(ROOT, 'syndication/pages.json'), 'utf8')).medium;
+const footer = (href) => `<p>Originally published at <a href="${href}">https://stackarchitect.xyz</a></p>`;
+
+test('a Medium copy is matched by its "Originally published at" footer, through _redirects', { skip: needsBuild }, () => {
+  const m = mediumSourcePage({
+    title: 'CAPI Shield: Closing the Conversion Tracking Gap',
+    url: 'https://medium.com/@stackarchitect123/capi-shield-closing-the-conversion-tracking-gap-f1e4e422e85a',
+    html: `<p>body</p>${footer('https://stackarchitect.xyz/blog/recover-lost-shopify-conversions-capi-shield/')}`,
+  }, state, { overrides: MEDIUM_CFG });
+  assert.equal(m.page, '/capi-shield/', 'it was matched to the iOS-updates guide by title');
+});
+
+test('a Medium copy with no footer is matched by the pages.json entry', { skip: needsBuild }, () => {
+  const m = mediumSourcePage({
+    title: 'Shopify Stocky Shutdown — August 31, 2026 | What Happens & What To Do',
+    url: 'https://medium.com/@stackarchitect123/shopify-stocky-shutdown-august-31-2026-what-happens-what-to-do-e4c072da5f7d',
+    html: '<p>Get the Complete Kit — $29 →</p>',
+  }, state, { overrides: MEDIUM_CFG });
+  assert.equal(m.page, '/stocky-alternative/');
+});
+
+test('an original Medium article is not matched to a page on a weak title overlap', { skip: needsBuild }, () => {
+  const m = mediumSourcePage({
+    title: "6 Reasons Your Meta Conversions API Events Don't Match (and How to Check Yours)",
+    url: 'https://medium.com/@stackarchitect123/6-reasons-your-meta-conversions-api-events-dont-match-and-how-to-check-yours-2ce88c9e2c52',
+    html: '<p>See <a href="https://stackarchitect.xyz/meta-capi-payload-validator/">the validator</a>.</p>',
+  }, state, { overrides: MEDIUM_CFG });
+  assert.equal(m.page, null, m.how);
+});
+
+test('dev.to: a canonical another post already holds is kept, not sent (HTTP 422)', () => {
+  const quotas = `${SITE}/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/`;
+  const old = `${SITE}/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script/`;
+  const plan = { actions: [{ type: 'canonical', from: old, to: quotas }, { type: 'body', page: '/x/' }] };
+  const heldBy = new Map([[quotas, 2]]);
+  const kept = dropTakenCanonical(plan, 1, heldBy);
+  assert.deepEqual(kept.actions.map((a) => a.type), ['body']);
+  assert.ok(kept.kept.because.includes('already the canonical'));
+  assert.equal(dropTakenCanonical(plan, 2, heldBy).actions.length, 2, 'the post that holds it may keep it');
+});
+
+test('the Medium HTML pack keeps headings, links and the link back', () => {
+  const html = packToHtml({ title: 'T', body: 'Answer with [a link](https://stackarchitect.xyz/a/) & **bold**.\n\n## Questions\n\n### Q?\n\nA.\n\n---\n\n*Originally published on [Stack Architect](https://stackarchitect.xyz/)*' });
+  for (const s of ['<h1>T</h1>', '<a href="https://stackarchitect.xyz/a/">a link</a>', '&amp;', '<strong>bold</strong>', '<h2>Questions</h2>', '<h3>Q?</h3>', '<hr>', '<em>Originally published on <a href="https://stackarchitect.xyz/">Stack Architect</a></em>']) {
+    assert.ok(html.includes(s), s);
+  }
 });

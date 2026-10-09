@@ -796,6 +796,17 @@ Hashnode; Medium has no edit API, so it prints the steps). Runbook:
 sentences above as fixtures, so a rule change that would let one survive a
 sync fails.
 
+**First `--apply`, 9 Oct 2026:** dev.to 8 updated; one 422 (two posts
+resolved to the same canonical, which dev.to forbids; the tool now keeps the
+old, redirecting canonical); Hashnode returned an HTML page instead of JSON
+(the error now names the status); Medium had matched two posts by a forced 20%
+title overlap, one of them an original article. Medium now matches by the
+post's "Originally published at" footer, then `pages.json` → `medium`, then
+title ≥ 50%, and never overwrites an original. Same day, IndexNow accepted all
+51 sitemap URLs (`data/indexnow-sent.json`); the next run sends only pages
+whose live `lastmod` moves, which is `src/data/page-updated.json`
+(`node scripts/page-updated.mjs --touch /route/` when a page is rewritten).
+
 **A gap in `claims.json`, recorded and not fixed.** Three of those live
 sentences pass every site `forbid` rule: "20–40% additional reported
 conversions, 1–3 point Meta EMQ improvement", "built on just 40% of your
