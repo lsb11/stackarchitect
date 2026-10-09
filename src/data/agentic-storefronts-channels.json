@@ -1,8 +1,8 @@
 {
   "title": "Shopify Agentic Storefronts: per-channel eligibility and capability matrix",
   "description": "Which AI channels Shopify Agentic Storefronts covers, who is eligible for each, whether checkout happens in-conversation or on the merchant's own store, and which product types, fulfilment methods and tracking pixels work in each path. Every field is sourced to Shopify's own documentation.",
-  "verifiedDate": "2026-08-24",
-  "verifiedAgainst": "help.shopify.com Agentic Storefronts documentation",
+  "verifiedDate": "2026-10-09",
+  "verifiedAgainst": "help.shopify.com Agentic Storefronts documentation: the overview, and the Google, Meta and built-in-checkout pages",
   "note": "Checkout behaviour inverted in March 2026. ChatGPT launched with in-conversation Instant Checkout and now redirects to the merchant's own checkout; Google, Copilot and Meta carry direct checkout. Guidance published before 24 March 2026 describes the opposite arrangement and is stale.",
 
   "channels": [
@@ -33,15 +33,15 @@
       "inShopifyAdmin": true,
       "checkoutModel": "direct",
       "checkoutDetail": "Checkout completes inside Google's interface. Direct checkout renders only for US-based customers; everyone else is redirected to the merchant's store.",
-      "storeLocationRule": "United States, United Kingdom, Australia or Canada",
-      "customerLocationRule": "Must sell to customers in one of those four countries",
-      "storeLocationQuote": "Your store must be based in the United States, the United Kingdom, Australia, or Canada, and you must sell to customers in one of those countries.",
+      "storeLocationRule": "United States only",
+      "customerLocationRule": "Must sell to customers in the United States",
+      "storeLocationQuote": "Your store must be based in the United States and you must sell to customers in the United States.",
       "fee": "None beyond standard payment processing",
       "productRestrictionsApply": true,
       "clientPixelsFire": false,
       "notes": [
-        "Early access: not yet available to all eligible stores.",
-        "Requires the Google & YouTube sales channel with product and shipping sync enabled."
+        "Still rolling out: Shopify says the channel is rolling out to eligible stores, and that direct checkout might not yet be available in yours.",
+        "Product discovery runs on Google Merchant Center, which Shopify feeds through the Google & YouTube sales channel."
       ],
       "source": "https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts/google"
     },
@@ -63,19 +63,21 @@
     },
     {
       "id": "meta",
-      "name": "Meta AI (Facebook & Instagram)",
+      "name": "Meta (Muse and other Meta surfaces)",
       "operator": "Meta",
       "inShopifyAdmin": true,
       "checkoutModel": "direct",
-      "checkoutDetail": "Checkout completes inside Meta's surfaces.",
+      "checkoutDetail": "Checkout completes inside Meta surfaces, including Muse where it is available. Direct checkout shows only to customers in the United States, Canada or Mexico; when Meta cannot collect what checkout needs, the shopper finishes on the store's own checkout in Meta's in-app browser.",
       "storeLocationRule": "Any country",
-      "customerLocationRule": "Must sell to customers in the United States",
-      "storeLocationQuote": "all eligible stores that sell to customers in the United States",
+      "customerLocationRule": "Must sell to customers in the United States, Canada or Mexico",
+      "storeLocationQuote": "You must sell to customers in the United States, Canada, or Mexico.",
       "fee": "None beyond standard payment processing",
       "productRestrictionsApply": true,
       "clientPixelsFire": false,
-      "notes": [],
-      "source": "https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts/ai-channels-with-built-in-checkout"
+      "notes": [
+        "Shopify names the surface as Muse, available on some Meta surfaces, rather than as Meta AI on Facebook and Instagram."
+      ],
+      "source": "https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts/meta"
     },
     {
       "id": "perplexity",
@@ -105,7 +107,6 @@
     "unsupportedProductTypes": [
       "Subscriptions",
       "Product bundles",
-      "Digital products",
       "Customizable products",
       "B2B-only products"
     ],
@@ -153,6 +154,15 @@
   ],
 
   "changelog": [
+    {
+      "date": "2026-10-09",
+      "changes": [
+        "Google AI Mode and Gemini: the store must now be based in, and sell to, the United States. The UK, Australia and Canada are no longer listed.",
+        "Google is described as rolling out rather than early access; discovery runs on Google Merchant Center through the Google & YouTube channel.",
+        "Meta: Shopify now names the surface Muse, on its own help page, with direct checkout for customers in the United States, Canada or Mexico.",
+        "Digital products removed from the unsupported list: none of the Google, Meta or Copilot pages lists them any more."
+      ]
+    },
     {
       "date": "2026-08-24",
       "changes": [
