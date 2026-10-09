@@ -753,6 +753,52 @@ rebuilt with these rules:
   is in `schema/004-bot-hits.sql`) over the next few weeks. Widen the token
   list only with a real User-Agent string someone has actually seen.
 
+### Off-site copies are generated, never hand-kept (9 Oct 2026)
+
+Every guide was cross-posted to dev.to, Hashnode and Medium, and those copies
+had drifted back to claims this repo retracted. Measured from the platforms'
+own APIs and feeds on 9 Oct 2026, with the site at one indexed page, so these
+copies on far stronger domains were the most findable version of its claims:
+
+- dev.to "Recover 20–40% of invisible Shopify conversions" carried the
+  retracted figure in its **title** and three more times, EMQ "4–5 to 8–9",
+  and "10–25% lower cost-per-purchase".
+- dev.to and Medium CAPI Shield posts: "EMQ 7.0 to 8.5", and "the Meta CAPI
+  and Google Ads endpoints" — Google was dropped from every page.
+- Medium Google Ads: 20–40% three times.
+- Bare `/go/*` cloaks in six posts. `rehypeSponsorAffiliateLinks` and
+  `affiliate-disclosure-guard` only run on this site's pipeline.
+- Five posts (dev.to ×2, Hashnode ×3) canonicalised to URLs retired on 24 Sep.
+- The agentic copies led with "11x", which the page's own source records as
+  superseded twice and removed. **So did `dev_to_agentic_guide.md` in this
+  repo**, after it had been "corrected". Both `dev_to_*.md` drafts were
+  deleted for that reason.
+
+**The rule now:** a syndicated body is generated from `dist/` by
+`scripts/lib/syndication.mjs` — answer paragraph, FAQ (held verbatim to the
+page by `schema-visible-guard`), link back — and pushed by
+`npm run syndication:sync` (dry run by default; `--apply` writes dev.to and
+Hashnode; Medium has no edit API, so it prints the steps). Runbook:
+`syndication/README.md`. `tests/syndication.test.js` replays the live
+sentences above as fixtures, so a rule change that would let one survive a
+sync fails.
+
+**A gap in `claims.json`, recorded and not fixed.** Three of those live
+sentences pass every site `forbid` rule: "20–40% additional reported
+conversions, 1–3 point Meta EMQ improvement", "built on just 40% of your
+actual data", "reduces the gap from 20–40% down to 10–20%". The off-site
+scanner catches them with deliberately broad `OFFSITE_EXTRA` patterns, where a
+false positive only means replacing a post with clean text. Widening the
+site's own rules needs the careful `unless` tuning described above, done
+deliberately, not as a side effect.
+
+**Agentic Storefronts needs a human re-check.** Its channel data in
+`src/data/agentic-storefronts-channels.json` was verified on 24 Aug 2026. It is
+the only page here that third parties cite unprompted (vevy.ai ×3,
+vectosolve.com in five languages, agentboss, whnex, ainews247), in the
+fastest-moving topic on the site. Re-read Shopify's Agentic Storefronts help
+pages and move `verifiedDate` only for what was actually re-read.
+
 ### Highest-leverage open work
 
 1. Get the iOS Attribution Gap Benchmark to N ≥ 10 real submissions so it
