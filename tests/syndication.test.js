@@ -166,3 +166,27 @@ test('the Medium HTML pack keeps headings, links and the link back', () => {
     assert.ok(html.includes(s), s);
   }
 });
+
+test('a sentence that names the figure to retract it is not flagged', () => {
+  const ok = 'Measure it yourself, and see why the 20–40% estimate was retracted.';
+  assert.equal(scanText(ok, state, { offsite: true }).filter((i) => i.kind === 'withdrawn').length, 0);
+  const bad = 'Browser pixels miss up to 40% of Shopify Google Ads purchases.';
+  assert.ok(scanText(bad, state, { offsite: true }).some((i) => i.kind === 'withdrawn'));
+});
+
+test("dev.to front matter: the description is rewritten, and a $ in it survives", () => {
+  const old = '---\ntitle: "Fixing Google Ads"\ndescription: Browser pixels miss up to 40% of purchases\npublished: true\n---\n\nold body';
+  const out = replaceBodyKeepingFrontMatter(old, 'new body', { description: 'From $9.99, one blueprint.' });
+  assert.ok(out.includes('description: "From $9.99, one blueprint."'), out);
+  assert.ok(!out.includes('40%'));
+  assert.ok(out.includes('published: true'));
+});
+
+test('Medium footer inside <em>, and a refreshed copy whose footer links the homepage', { skip: needsBuild }, () => {
+  const em = mediumSourcePage({ title: 'x', url: 'https://medium.com/@a/x-1',
+    html: '<p><em>Originally published at </em><a href="https://stackarchitect.xyz/blog/recover-lost-shopify-conversions-capi-shield/">stackarchitect.xyz</a></p>' }, state);
+  assert.equal(em.page, '/capi-shield/');
+  const refreshed = mediumSourcePage({ title: 'x', url: 'https://medium.com/@a/x-2',
+    html: '<p><strong>The full guide, with every step, source and date:</strong> <a href="https://stackarchitect.xyz/stocky-alternative/">Stocky</a></p><p><em>Originally published on <a href="https://stackarchitect.xyz/">Stack Architect</a></em></p>' }, state);
+  assert.equal(refreshed.page, '/stocky-alternative/');
+});
