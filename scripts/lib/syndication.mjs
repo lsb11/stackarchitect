@@ -301,3 +301,86 @@ export function replaceBodyKeepingFrontMatter(oldBody, newContent, { title, cano
   if (canonical) set('canonical_url', canonical);
   return `---\n${fm}\n---\n\n${newContent}`;
 }
+
+// ── Matching a Medium post to the page it copies ──────────────────────────
+// Medium's feed carries no canonical, so the first sync matched by title
+// alone, and forced a match at 20% token overlap. On 9 Oct 2026 that sent
+// "CAPI Shield: Closing the Conversion Tracking Gap" to the iOS-updates guide
+// (it copies /capi-shield/), and "6 Reasons Your Meta Conversions API Events
+// Don't Match", an original article, to the payload validator. Evidence now
+// comes in order of strength:
+//   1. the post's own "Originally published at <a href=…>" footer, resolved
+//      through _redirects (so a retired source lands on the live page);
+//   2. an explicit entry in syndication/pages.json "medium", keyed by the
+//      start of the Medium URL slug, for copies whose footer is missing;
+//   3. title overlap of at least MEDIUM_TITLE_MIN.
+// Below that it is an original article: never overwritten with a pack.
+export const MEDIUM_TITLE_MIN = 0.5;
+const STOP = new Set(['the', 'and', 'for', 'with', 'stack', 'architect', '2026', 'free', 'shopify', 'how', 'your', 'what']);
+const tokens = (s) => new Set(String(s).toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').split(/\s+/)
+  .filter((w) => w.length > 2 && !STOP.has(w)));
+
+export function mediumSourcePage({ title, url, html }, state, { overrides = {}, pageTitles = null } = {}) {
+  const footer = String(html).match(/Originally published at\s*<a\b[^>]*href=["']([^"']+)["']/i)?.[1];
+  if (footer) {
+    const c = resolveCanonical(footer, state);
+    if (c.status === 'live' || c.status === 'retired') return { page: c.path, how: `its "Originally published at" link (${footer.replace(SITE, '')})` };
+  }
+  const slug = String(url).split('/').pop() || '';
+  for (const [prefix, p] of Object.entries(overrides)) {
+    if (!slug.startsWith(prefix)) continue;
+    const c = resolveCanonical(`${SITE}${p}`, state);
+    if (c.status === 'live' || c.status === 'retired') return { page: c.path, how: `syndication/pages.json "medium" (${p})` };
+  }
+  const t = tokens(title);
+  const titles = pageTitles ?? [...state.live].map((p) => ({ p, t: tokens(buildPack(p, state).title) }));
+  let best = { p: null, score: 0 };
+  for (const { p, t: pt } of titles) {
+    const inter = [...t].filter((w) => pt.has(w)).length;
+    const score = inter / Math.max(1, new Set([...t, ...pt]).size);
+    if (score > best.score) best = { p, score };
+  }
+  if (best.score >= MEDIUM_TITLE_MIN) return { page: best.p, how: `title overlap ${(best.score * 100).toFixed(0)}%` };
+  return { page: null, how: best.p ? `best title overlap ${(best.score * 100).toFixed(0)}% (${best.p}), under ${MEDIUM_TITLE_MIN * 100}%` : 'no candidate' };
+}
+
+// dev.to refuses two articles with the same canonical_url (HTTP 422 "Canonical
+// url has already been taken"). On 9 Oct 2026 the "Service Invoked Too Many
+// Times" copy pointed at a retired URL that now 301s to the quotas guide, and
+// the quotas copy already held that canonical. Its old canonical is kept: it
+// redirects to the same page, so search engines still credit the original.
+// heldBy: Map(canonical url -> article id).
+export function dropTakenCanonical(plan, id, heldBy) {
+  const i = plan.actions.findIndex((a) => a.type === 'canonical' && heldBy.has(a.to) && heldBy.get(a.to) !== id);
+  if (i < 0) return plan;
+  const a = plan.actions[i];
+  const actions = plan.actions.filter((_, j) => j !== i);
+  return { ...plan, actions, kept: { canonical: a.from, because: `${a.to.replace(SITE, '')} is already the canonical of another of your dev.to posts; the old one 301s to the same page` } };
+}
+
+// Medium's editor does not turn pasted Markdown into formatting, but it keeps
+// formatting pasted from a rendered page. So for Medium the pack is also
+// written as HTML: open it in a browser, select all, copy, paste.
+// Only the Markdown that buildPack() emits needs handling.
+export function packToHtml({ title, body }) {
+  const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const inline = (s) => esc(s)
+    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2">$1</a>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>');
+  const blocks = body.split(/\n{2,}/).map((b) => {
+    if (b === '---') return '<hr>';
+    const h = b.match(/^(#{2,3}) (.*)$/);
+    if (h) return `<h${h[1].length}>${inline(h[2])}</h${h[1].length}>`;
+    return `<p>${inline(b)}</p>`;
+  });
+  return `<!doctype html><meta charset="utf-8"><title>${esc(title)}</title>`
+    + `<body style="max-width:680px;margin:2rem auto;font:18px/1.6 Georgia,serif"><h1>${esc(title)}</h1>\n${blocks.join('\n')}</body>\n`;
+}
+
+export function writePackHtml(pagePath, state) {
+  const file = writePack(pagePath, state).replace(/\.md$/, '.html');
+  fs.writeFileSync(file, packToHtml(buildPack(pagePath, state)));
+  return file;
+}
