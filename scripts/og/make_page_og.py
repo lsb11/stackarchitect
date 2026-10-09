@@ -98,6 +98,48 @@ def cards():
             'footer': 'TikTok Events API · Past ITP and ad blockers · No app install',
             'depicts': {},
         },
+        # Brought under the generator 9 Oct 2026. The 14 Jul bitmaps below each
+        # carried a figure or tense that no page states (logged as `concerns`
+        # in og-images.json on 19 Sep): the homepage card read "$514-$1,895/mo"
+        # and "Save $6,168-$22,740 / year" against $317-$1,452 on the page;
+        # the Stocky Swap card said Stocky "shuts down" a month after it did,
+        # over a "$29-$199/mo" range no page states; the server-side guide's
+        # "$149-$399/mo" appears nowhere; the methodology card said "every
+        # number" had a source while a quarantine existed. The homepage is the
+        # one page Google has indexed, so its card is the one most shared.
+        # These state the mechanism, not a total that would drift from the page.
+        'public/og/og-home.png': {
+            'usedBy': ['/'],
+            'eyebrow': 'FREE SHOPIFY AUTOMATION STACK',
+            'headline': ['Klaviyo. Triple Whale.', 'Stocky. Replaced free.'],
+            'zero': '$0', 'aside': 'on Make.com and Google Sheets free tiers',
+            'footer': 'Server-side tracking · Inventory · Email · P&L · No code',
+            'depicts': {},
+        },
+        'public/og/og-stocky-swap.png': {
+            'usedBy': ['/stocky-swap/'],
+            'eyebrow': 'STOCKY REPLACEMENT · SHOPIFY',
+            'headline': ['Stocky has closed.', 'Log stock in Sheets.'],
+            'zero': '$0', 'aside': "on Make.com's free plan",
+            'footer': 'Orders and stock to Google Sheets in real time · No app',
+            'depicts': {},
+        },
+        'public/og/og-server-side-tracking-guide.png': {
+            'usedBy': ['/blog/shopify-server-side-tracking-complete-setup-guide/'],
+            'eyebrow': 'SETUP GUIDE · SERVER-SIDE TRACKING',
+            'headline': ['Shopify server-side', 'tracking, step by step'],
+            'zero': '$0', 'aside': "on Make.com's free plan",
+            'footer': 'Meta CAPI · TikTok Events API · Pixel + server deduplication',
+            'depicts': {},
+        },
+        'public/og/og-how-we-test.png': {
+            'usedBy': ['/how-we-test/'],
+            'eyebrow': 'METHODOLOGY · HOW CLAIMS ARE CHECKED',
+            'headline': ['Read on the source,', 'dated, corrected.'],
+            'zero': '0', 'aside': 'unsourced price claims in the build',
+            'footer': 'Vendor pricing pages · Platform docs · Public retractions',
+            'depicts': {},
+        },
     }
 
 

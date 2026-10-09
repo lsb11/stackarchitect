@@ -518,18 +518,14 @@ a newer Pillow: commit the new bytes rather than reverting them, because the
 invariant this machinery rests on is that the committed PNG is what the
 generator writes.
 
-**Known problems in image text, recorded 19 Sep 2026 and not fixed.** Each one
-is also listed under `concerns` in the manifest.
-- `og-home.png`: "$514–$1,895/mo" and "Save $6,168–$22,740 / year", against
-  "$321–$1,887/month" in the homepage schema.
-- `og-how-we-test.png`: "Every number on this site has a source and a date",
-  while claims-guard is quarantining 43 claims.
-- `og-server-side-tracking-guide.png`: "$149–$399/mo", which appears nowhere on
-  the site.
-- `og-stocky-swap.png`, `og-stocky-shutdown.png`: future tense after 31 Aug.
-  `isPostShutdown()` branches the pages, but it cannot change a bitmap.
-  `og-stocky-shutdown.png` is not referenced by any page, but it is still
-  served.
+**Fixed 9 Oct 2026:** `og-home.png`, `og-stocky-swap.png`,
+`og-server-side-tracking-guide.png` and `og-how-we-test.png` are now drawn by
+`make_page_og.py` and state the mechanism, not a total (the homepage card had
+said "$514–$1,895/mo" against $317–$1,452 on the page, and the homepage is the
+one indexed page). **Still open, recorded 19 Sep 2026.** Each one is also
+listed under `concerns` in the manifest.
+- `og-stocky-shutdown.png`: future tense after 31 Aug. Not referenced by
+  any page, but still served.
 - `public/videos/poster-*.jpg`: the mock billing rows sum to **$847.32**, but
   the "Total this month" reads **$702.47**. Elevar is shown at $199, while the
   site cites $225.
