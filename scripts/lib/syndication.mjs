@@ -138,9 +138,21 @@ export function scanText(text, state, { offsite = false } = {}) {
       found.push({ kind: 'retracted', rule: f.id, text: m[0].replace(/\s+/g, ' ').trim().slice(0, 90) });
     }
   }
+  // A sentence that names a figure in order to say it was retracted is the
+  // record, not the claim (the site's own forbid rules make the same
+  // exception with `unless`). Without this the SST guide's "see why the 20-40%
+  // estimate was retracted" flagged every fresh copy of that guide as dirty.
+  const RETRACTION = /\b(?:retract|withdr[ae]w|no longer (?:publish|claim|state)|does not publish)/i;
   for (const w of [...WITHDRAWN, ...(offsite ? OFFSITE_EXTRA : [])]) {
-    const m = plain.match(w.re);
-    if (m) found.push({ kind: 'withdrawn', rule: w.why, text: m[0].replace(/\s+/g, ' ').trim().slice(0, 90) });
+    const re = new RegExp(w.re.source, w.re.flags.includes('g') ? w.re.flags : `${w.re.flags}g`);
+    for (const m of plain.matchAll(re)) {
+      const start = Math.max(plain.lastIndexOf('.', m.index), plain.lastIndexOf('\n', m.index)) + 1;
+      const endDot = plain.indexOf('.', m.index + m[0].length);
+      const sentence = plain.slice(start, endDot < 0 ? undefined : endDot);
+      if (RETRACTION.test(sentence)) continue;
+      found.push({ kind: 'withdrawn', rule: w.why, text: m[0].replace(/\s+/g, ' ').trim().slice(0, 90) });
+      break;
+    }
   }
   for (const h of retiredNearAnchor(plain, { retired: state.kit.retired, ...state.kit.near })) {
     found.push({ kind: 'retired-price', rule: 'ours.kitPrice', text: String(h.excerpt ?? h.found ?? h).slice(0, 90) });
@@ -215,6 +227,7 @@ export function buildPack(pagePath, state) {
   }
 
   const canonical = `${SITE}${pagePath}`;
+  const description = decode((html.match(/<meta name="description" content="([^"]*)"/) || [, ''])[1]).trim();
   const parts = [answer];
   if (faqs.length) {
     parts.push('## Questions this guide answers');
@@ -225,7 +238,7 @@ export function buildPack(pagePath, state) {
   parts.push(`*Originally published on [Stack Architect](${SITE}/) by Luke Sandelands. `
     + 'Figures there carry the date they were last checked; this copy does not, so prefer the original.*');
   const body = rewriteGoLinks(parts.join('\n\n'));
-  return { title, canonical, body, faqCount: faqs.length };
+  return { title, canonical, description, body, faqCount: faqs.length };
 }
 
 // What to do with one post already published somewhere.
@@ -288,17 +301,21 @@ export function writePack(pagePath, state) {
 // article's attributes. Replacing the body must keep that block (tags,
 // published, cover image) and only rewrite title/canonical inside it, or an
 // update could silently retag or unpublish the post.
-export function replaceBodyKeepingFrontMatter(oldBody, newContent, { title, canonical }) {
+// The description is rewritten too: dev.to's front-matter `description` is
+// the post's meta description and social snippet, and on 9 Oct 2026 the
+// Google Ads copy still said "miss up to 40%" there after its body was fixed.
+export function replaceBodyKeepingFrontMatter(oldBody, newContent, { title, canonical, description }) {
   if (!oldBody?.startsWith('---\n')) return newContent;
   const end = oldBody.indexOf('\n---', 4);
   if (end < 0) return newContent;
   let fm = oldBody.slice(4, end);
   const set = (k, v) => {
     const line = `${k}: ${k === 'title' ? JSON.stringify(v) : v}`;
-    fm = new RegExp(`^${k}:`, 'm').test(fm) ? fm.replace(new RegExp(`^${k}:.*$`, 'm'), line) : `${fm}\n${line}`;
+    fm = new RegExp(`^${k}:`, 'm').test(fm) ? fm.replace(new RegExp(`^${k}:.*$`, 'm'), () => line) : `${fm}\n${line}`;
   };
   if (title) set('title', title);
   if (canonical) set('canonical_url', canonical);
+  if (description) set('description', JSON.stringify(description));
   return `---\n${fm}\n---\n\n${newContent}`;
 }
 
@@ -321,10 +338,19 @@ const tokens = (s) => new Set(String(s).toLowerCase().replace(/[^a-z0-9 ]+/g, ' 
   .filter((w) => w.length > 2 && !STOP.has(w)));
 
 export function mediumSourcePage({ title, url, html }, state, { overrides = {}, pageTitles = null } = {}) {
-  const footer = String(html).match(/Originally published at\s*<a\b[^>]*href=["']([^"']+)["']/i)?.[1];
-  if (footer) {
-    const c = resolveCanonical(footer, state);
-    if (c.status === 'live' || c.status === 'retired') return { page: c.path, how: `its "Originally published at" link (${footer.replace(SITE, '')})` };
+  // A refreshed copy carries the pack's own footer, whose "Originally
+  // published on" link is the homepage; its "full guide" link is the page.
+  // So every candidate is tried, and the homepage never counts.
+  const SITE_HREF = String.raw`href=["'](https?:\/\/(?:www\.)?stackarchitect\.xyz[^"']*)["']`;
+  const candidates = [
+    ...String(html).matchAll(new RegExp(String.raw`The full guide[\s\S]{0,200}?${SITE_HREF}`, 'gi')),
+    ...String(html).matchAll(new RegExp(String.raw`Originally published (?:at|on)[\s\S]{0,200}?${SITE_HREF}`, 'gi')),
+  ].map((m) => m[1]);
+  for (const href of candidates) {
+    const c = resolveCanonical(href, state);
+    if ((c.status === 'live' || c.status === 'retired') && c.path !== '/') {
+      return { page: c.path, how: `its link back (${href.replace(SITE, '')})` };
+    }
   }
   const slug = String(url).split('/').pop() || '';
   for (const [prefix, p] of Object.entries(overrides)) {

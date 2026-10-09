@@ -1,0 +1,37 @@
+name: Edge freshness
+
+# WHY: from 25 Jul to 9 Oct 2026 public/_headers told Cloudflare's edge to
+# keep HTML for a year, and canonical URLs served content weeks older than
+# the deploy (scripts/lib/edge-freshness.mjs). Crawlers only fetch canonical
+# URLs, so a fix that deployed was not a fix crawlers could see. This asserts,
+# after each deploy and daily, that every sitemap URL serves the current bytes.
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '30 7 * * *'
+  workflow_dispatch:
+
+jobs:
+  fresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      # On a push the deploy is still building. Pages builds take minutes;
+      # keep checking until the edge and the deploy agree, or give up.
+      - name: Every sitemap URL serves the current deploy
+        run: |
+          if [ "${{ github.event_name }}" != "push" ]; then
+            node scripts/edge-freshness.mjs
+            exit $?
+          fi
+          sleep 180
+          for attempt in 1 2 3 4 5 6; do
+            if node scripts/edge-freshness.mjs; then exit 0; fi
+            [ "$attempt" -lt 6 ] && sleep 60
+          done
+          echo "::error::Canonical URLs still serve stale HTML. Purge Cloudflare's cache (Caching > Configuration > Purge Everything) and look for a Cache Rule."
+          exit 1

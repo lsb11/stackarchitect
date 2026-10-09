@@ -34,7 +34,7 @@ const ONLY = typeof args.only === 'string' ? args.only.toLowerCase() : null;
 const env = process.env;
 const platforms = (args.platform ? String(args.platform).split(',') : ['devto', 'hashnode', 'medium'])
   .filter((p) => p !== 'devto' || env.DEVTO_API_KEY)
-  .filter((p) => p !== 'hashnode' || env.HASHNODE_PAT);
+
 
 const state = loadSiteState(process.cwd());
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -81,15 +81,18 @@ async function devto() {
     report('dev.to', post, plan);
     if (!plan.actions.length || plan.actions.every((x) => x.type === 'manual')) continue;
     const next = applyPlan(post, plan, state);
-    const body = plan.actions.some((x) => x.type === 'body')
-      ? replaceBodyKeepingFrontMatter(post.body, next.body, { title: next.title !== post.title ? next.title : null, canonical: next.canonical })
+    const bodyAction = plan.actions.find((x) => x.type === 'body');
+    const description = bodyAction ? buildPack(bodyAction.page, state).description : null;
+    const body = bodyAction
+      ? replaceBodyKeepingFrontMatter(post.body, next.body, { title: next.title !== post.title ? next.title : null, canonical: next.canonical, description })
       : next.body;
-    if (norm(body) === norm(post.body) && next.title === post.title && next.canonical === post.canonical) { totals.clean++; continue; }
+    const sameDescription = !description || description === a.description;
+    if (norm(body) === norm(post.body) && sameDescription && next.title === post.title && next.canonical === post.canonical) { totals.clean++; continue; }
     totals.changed++;
     if (!APPLY) continue;
     const put = await fetch(`https://dev.to/api/articles/${a.id}`, {
       method: 'PUT', headers: h,
-      body: JSON.stringify({ article: { title: next.title, body_markdown: body, canonical_url: next.canonical || undefined, published: a.published } }),
+      body: JSON.stringify({ article: { title: next.title, body_markdown: body, canonical_url: next.canonical || undefined, description: description || undefined, published: a.published } }),
     });
     console.log(put.ok ? '  ✓ updated' : `  ✗ FAILED: HTTP ${put.status} ${await put.text()}`);
     if (!put.ok) totals.failed++;
@@ -116,6 +119,11 @@ async function gql(query, variables) {
     // On 9 Oct 2026 this returned an HTML page instead of JSON, which surfaced
     // as a bare "Unexpected token '<'". Say what came back instead.
     const title = text.match(/<title>([^<]*)<\/title>/i)?.[1]?.trim();
+    if (/paid/i.test(title ?? '')) {
+      const e = new Error(`Hashnode's GraphQL API now needs a paid plan ("${title}")`);
+      e.paidApi = true;
+      throw e;
+    }
     throw new Error(`Hashnode answered HTTP ${res.status} with a web page${title ? ` ("${title}")` : ''}, not the API's JSON. `
       + (res.status === 401 || res.status === 403
         ? 'Most likely the token: create a new one at hashnode.com → Settings → Developer, then `export HASHNODE_PAT=…` with no quotes or spaces.'
@@ -128,6 +136,50 @@ async function gql(query, variables) {
 
 async function hashnode() {
   const host = env.HASHNODE_HOST || 'stocky-shutdown.hashnode.dev';
+  if (!env.HASHNODE_PAT) return hashnodeManual(host);
+  try { return await hashnodeApi(host); } catch (e) {
+    if (!e.paidApi) throw e;
+    console.log(`\n[hashnode] ${e.message}. Falling back to the public blog: report, and print the steps.`);
+    return hashnodeManual(host);
+  }
+}
+
+// Since 9 Oct 2026 gql.hashnode.com answers with a "GraphQL API is moving to
+// a paid offering" page. The public blog still has an RSS feed, and each post
+// page carries its canonical, which is everything planPost() needs. Hashnode's
+// editor takes Markdown, so the .md pack is pasted as-is.
+async function hashnodeManual(host) {
+  const ua = { 'user-agent': 'stackarchitect-syndication-sync/1.0 (+https://stackarchitect.xyz/)' };
+  const res = await fetch(`https://${host}/rss.xml`, { headers: ua });
+  if (!res.ok) throw new Error(`Hashnode feed https://${host}/rss.xml: HTTP ${res.status}`);
+  const xml = await res.text();
+  const pick = (item, tag) => (item.match(new RegExp(`<${tag}>(?:<!\\[CDATA\\[)?([\\s\\S]*?)(?:\\]\\]>)?</${tag}>`)) || [, ''])[1].trim();
+  for (const item of xml.split('<item>').slice(1)) {
+    const title = pick(item, 'title');
+    const url = pick(item, 'link');
+    if (ONLY && !`${title} ${url}`.toLowerCase().includes(ONLY)) continue;
+    const page = await fetch(url, { headers: ua }).then((r) => r.text()).catch(() => '');
+    const canonical = page.match(/<link[^>]+rel=["']canonical["'][^>]*href=["']([^"']+)["']/i)?.[1]
+      ?? page.match(/<link[^>]+href=["']([^"']+)["'][^>]*rel=["']canonical["']/i)?.[1] ?? '';
+    const article = (page.match(/<article\b[\s\S]*?<\/article>/i) || [page])[0].replace(/<(script|style)[\s\S]*?<\/\1>/gi, '');
+    const post = { title, url, canonical: canonical && !canonical.includes('hashnode') ? canonical : '', body: article };
+    const plan = planPost(post, state, { minimal: MINIMAL });
+    report('hashnode', post, plan);
+    const target = plan.actions.find((a) => a.type === 'body')?.page;
+    if (target && !plan.issues.length && plan.canon.status !== 'retired') {
+      totals.clean++;
+      console.log(`  → nothing retracted; optional refresh from ${path.relative(process.cwd(), writePack(target, state))}`);
+    } else if (target) {
+      totals.manual++;
+      const file = path.relative(process.cwd(), writePack(target, state));
+      console.log(`  → MANUAL on Hashnode: open the post → Edit → select all in the editor, delete, paste everything below the second --- of ${file}`);
+      console.log(`                        Article settings → "Are you republishing?" on → Original article URL: ${SITE}${target} → Update`);
+    }
+    await sleep(500);
+  }
+}
+
+async function hashnodeApi(host) {
   const posts = [];
   let after = null;
   do {

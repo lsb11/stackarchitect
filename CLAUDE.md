@@ -91,6 +91,23 @@ on a non-primary host get `X-Robots-Tag: noindex`. `public/_redirects` (290 line
 affiliate cloaks and legacy URLs. Redirect edits are covered by `.github/workflows/redirect-smoke.yml`
 (parse-only on PR, live assertions after deploy, plus nightly).
 
+**Crawlers were being served stale HTML (found and fixed 9 Oct 2026).**
+From 25 Jul 2026 (`941cfb4`, an "html edge caching" commit) `public/_headers`
+sent `Cloudflare-CDN-Cache-Control: public, max-age=31536000` on `/*`. On
+9 Oct the agentic guide's canonical URL served its 24 Sep version hours after
+the correction deployed, and `/llms.txt` served 27 URLs, while the same URLs
+with a throwaway query string served the current deploy (9 Oct, 56 URLs).
+Crawlers fetch canonical URLs, so for up to eleven weeks Google, Bing and AI
+crawlers may have been read content that had since been fixed, retracted
+figures included. The header is removed; `tests/edge-freshness.test.js`
+fails if a long edge TTL on HTML comes back; `npm run edge:check` (and the
+`edge-freshness.yml` workflow, after each push to main and daily) fails when
+any sitemap URL serves different bytes bare than with a fresh query string.
+After the fix ships, Cloudflare's cache needs **Purge Everything** once, and
+any zone Cache Rule that makes HTML eligible for cache must go. Then
+`node scripts/indexnow.mjs --all --submit` once, because what Bing fetched
+after the first submission may have been the stale copy.
+
 **Build-time date branches need a scheduled build.** `isPostShutdown()` in
 `src/utils/stockyDeadline.ts` resolves at build time — six files branch on it: `Nav.astro` plus
 five page files (`index`, `pro`, `pro/[slug]` — four routes — `stocky-swap`
@@ -806,6 +823,15 @@ title ≥ 50%, and never overwrites an original. Same day, IndexNow accepted all
 51 sitemap URLs (`data/indexnow-sent.json`); the next run sends only pages
 whose live `lastmod` moves, which is `src/data/page-updated.json`
 (`node scripts/page-updated.mjs --touch /route/` when a page is rewritten).
+
+**Second run, 9 Oct 2026.** Hashnode's GraphQL API answered "GraphQL API is
+moving to a paid offering"; the sync now falls back to the blog's RSS feed and
+each post's own canonical, and prints paste-the-Markdown steps like Medium.
+The dev.to Google Ads copy kept "miss up to 40%" after its body was replaced
+because it lived in the front-matter `description`, which is now rewritten
+from the page's meta description. A sentence naming a figure in order to
+retract it ("see why the 20–40% estimate was retracted") is no longer flagged.
+Medium's footer link sits after an `</em>`, which the first matcher missed.
 
 **A gap in `claims.json`, recorded and not fixed.** Three of those live
 sentences pass every site `forbid` rule: "20–40% additional reported
