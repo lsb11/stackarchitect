@@ -7,7 +7,7 @@
 //   node scripts/indexnow.mjs --submit
 //   git add data/indexnow-sent.json && git commit -m "IndexNow: record submission"
 //
-// Options: --cap=N (default 60)   --i-know-the-freeze (submit before 21 Oct)
+// Options: --cap=N (default 60)
 //
 // Manual only. Never wire this to a build, a workflow, a hook or a cron:
 // that is how ~55,000 URLs reached Bing for a 62-page site. The rules, and
@@ -38,8 +38,7 @@ const redirectSources = new Set(fs.readFileSync('public/_redirects', 'utf8').spl
 const p = plan({ dist, live, sent, redirectSources, cap });
 console.log(`IndexNow ${SUBMIT ? 'SUBMIT' : 'DRY RUN'}: live sitemap ${live.size} URLs, built ${dist.size}`);
 console.log(`  unchanged since last sent: ${p.skipped.unchanged}`);
-if (p.skipped.notDeployed.length) console.log(`  skipped, not deployed yet (build differs from live): ${p.skipped.notDeployed.length}`);
-if (p.skipped.notInBuild.length) console.log(`  skipped, live but not in your build (pull main?): ${p.skipped.notInBuild.length}`);
+if (p.skipped.notInBuild.length) console.log(`  note: ${p.skipped.notInBuild.length} live URL(s) are not in your local build, so your checkout may be behind main (they are still sent)`);
 if (p.skipped.ineligible.length) console.log(`  refused, not a canonical sitemap page: ${p.skipped.ineligible.join(', ')}`);
 if (p.overCap.length) console.log(`  held back by --cap=${cap}: ${p.overCap.length} (run again next time)`);
 console.log(`  to send: ${p.send.length}`);
@@ -50,7 +49,7 @@ if (!SUBMIT || !p.send.length) {
   process.exit(0);
 }
 if (freezeBlocks() && !args.includes('--i-know-the-freeze')) {
-  console.error(`\n✗ Refusing: CLAUDE.md holds IndexNow silent until ${FREEZE_LIFTS} while Bing's trust recovers.`);
+  console.error(`\n✗ Refusing: IndexNow is held silent until ${FREEZE_LIFTS} (scripts/lib/indexnow-plan.mjs).`);
   process.exit(1);
 }
 const keyRes = await fetch(KEY_LOCATION);

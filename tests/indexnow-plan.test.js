@@ -16,15 +16,25 @@ test('only canonical sitemap pages are ever eligible', () => {
   }
 });
 
-test('sends changed pages, skips unchanged, undeployed and ineligible ones', () => {
-  const live = map({ [`${S}/a/`]: '2026-10-22', [`${S}/b/`]: '2026-10-01', [`${S}/c/`]: '2026-10-23', [`${S}/stocky-shutdown/`]: '2026-10-22' });
-  const dist = map({ [`${S}/a/`]: '2026-10-22', [`${S}/b/`]: '2026-10-01', [`${S}/c/`]: '2026-10-24', [`${S}/stocky-shutdown/`]: '2026-10-22' });
+test('sends changed live pages, skips unchanged and ineligible ones', () => {
+  const live = map({ [`${S}/a/`]: '2026-10-22', [`${S}/b/`]: '2026-10-01', [`${S}/stocky-shutdown/`]: '2026-10-22' });
   const sent = { [`${S}/b/`]: '2026-10-01' };
-  const p = plan({ dist, live, sent, redirectSources: redirects });
+  const p = plan({ dist: live, live, sent, redirectSources: redirects });
   assert.deepEqual(p.send.map((s) => s.url), [`${S}/a/`]);
   assert.equal(p.skipped.unchanged, 1);
-  assert.deepEqual(p.skipped.notDeployed, [`${S}/c/`]);
   assert.deepEqual(p.skipped.ineligible, [`${S}/stocky-shutdown/`]);
+});
+
+// The first version also required the local build's lastmod to equal the
+// live one. lastmod is partly derived from `git log`, and a laptop's clone and
+// Cloudflare's can date the same file differently, so a correct, deployed
+// page could be held back forever. The live sitemap alone decides.
+test('a lastmod that differs only in the local build does not hold a live page back', () => {
+  const live = map({ [`${S}/a/`]: '2026-10-09T10:00:00Z' });
+  const dist = map({ [`${S}/a/`]: '2026-10-09T18:30:00Z' });
+  const p = plan({ dist, live, sent: {}, redirectSources: redirects });
+  assert.deepEqual(p.send.map((s) => s.url), [`${S}/a/`]);
+  assert.equal(p.send[0].lastmod, '2026-10-09T10:00:00Z', 'the LIVE lastmod is what gets recorded');
 });
 
 test('a hard cap holds the rest back rather than sending everything', () => {
@@ -40,10 +50,9 @@ test('a second run after a successful submit sends nothing', () => {
   assert.equal(plan({ dist: live, live, sent, redirectSources: redirects }).send.length, 0);
 });
 
-test(`submission is blocked until the freeze lifts on ${FREEZE_LIFTS}`, () => {
-  assert.equal(freezeBlocks(new Date('2026-10-09T12:00:00Z')), true);
-  assert.equal(freezeBlocks(new Date('2026-10-20T23:59:00Z')), true);
-  assert.equal(freezeBlocks(new Date('2026-10-21T00:00:00Z')), false);
+test(`submission is blocked before ${FREEZE_LIFTS}, the date the owner lifted the freeze`, () => {
+  assert.equal(freezeBlocks(new Date('2026-10-08T23:59:00Z')), true);
+  assert.equal(freezeBlocks(new Date('2026-10-09T00:00:00Z')), false);
 });
 
 test('parses the sitemap Astro emits', () => {

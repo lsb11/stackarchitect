@@ -45,7 +45,7 @@ const prettyDate = (iso: string) =>
 const FAQ = [
   {
     q: 'What are Shopify Agentic Storefronts?',
-    a: "Shopify Agentic Storefronts connect your product catalog to AI assistants (ChatGPT, Google AI Mode and Gemini, Microsoft Copilot and Meta AI) through one setting in your Shopify admin, with no separate integration per platform. What each channel then does with a shopper differs: Google, Copilot and Meta complete the purchase inside their own interface, while ChatGPT sends the shopper to your own Shopify checkout. Announced in Shopify's Winter '26 Edition on 10 December 2025 and generally available to eligible merchants from 24 March 2026.",
+    a: "Shopify Agentic Storefronts connect your product catalog to AI assistants (ChatGPT, Google AI Mode and Gemini, Microsoft Copilot, and Meta surfaces such as Muse) through one setting in your Shopify admin, with no separate integration per platform. What each channel then does with a shopper differs: Google, Copilot and Meta complete the purchase inside their own interface, while ChatGPT sends the shopper to your own Shopify checkout. Announced in Shopify's Winter '26 Edition on 10 December 2025 and generally available to eligible merchants from 24 March 2026.",
   },
   {
     q: 'Does ChatGPT still let customers buy without leaving the chat?',
@@ -53,7 +53,7 @@ const FAQ = [
   },
   {
     q: 'Am I eligible for Shopify Agentic Storefronts?',
-    a: 'Eligibility is per channel, not one blanket rule, and it stacks two separate conditions: where your store is based, and where you sell. ChatGPT and Microsoft Copilot accept a store based in any country provided it sells to customers in the United States; Meta accepts one that sells to customers in the United States, Canada or Mexico. Google AI Mode and Gemini require the store itself to be based in the United States, United Kingdom, Australia or Canada and to sell into one of those four countries, and even then, direct checkout renders only for US-based customers, with everyone else redirected. Google also remains in early access and requires the Google & YouTube sales channel with product and shipping sync enabled. Agentic storefronts are active by default for eligible stores; the setting lives under Sales channels, then Agentic.',
+    a: 'Eligibility is per channel, not one blanket rule, and it stacks two separate conditions: where your store is based, and where you sell. ChatGPT and Microsoft Copilot accept a store based in any country provided it sells to customers in the United States; Meta accepts one that sells to customers in the United States, Canada or Mexico. Google AI Mode and Gemini require the store itself to be based in the United States and to sell to customers there, and direct checkout renders only for US-based customers, with everyone else redirected to the store. So a UK-based store cannot use Google, but can use ChatGPT and Copilot if it sells to US customers, and Meta if it sells to customers in the US, Canada or Mexico. Google is still rolling out, and its product discovery runs on Google Merchant Center, which Shopify feeds through the Google & YouTube sales channel. Agentic storefronts are active by default for eligible stores; the setting lives under Sales channels, then Agentic.',
   },
   {
     q: 'How much does the Shopify Knowledge Base app cost?',
@@ -69,7 +69,7 @@ const FAQ = [
   },
   {
     q: 'Will Google Analytics and my Meta pixel track agentic orders?',
-    a: 'Not in direct checkout. Shopify states that Google Analytics and custom pixels will not fire there: only server-to-server pixels for the started and completed events. So an order placed inside Google AI Mode, Copilot or Meta AI reaches your Shopify admin but arrives in GA4 and Meta Ads Manager with no client-side event behind it. If you buy ads and measure return on ad spend from browser pixels, those orders look like they came from nowhere. Server-side tracking is the fix, and it is worth having in place before you enable the channels rather than after. ChatGPT is unaffected: that checkout is yours, so your pixels fire normally.',
+    a: 'Not in direct checkout. Shopify states that Google Analytics and custom pixels will not fire there: only server-to-server pixels for the started and completed events. So an order placed inside Google AI Mode, Copilot or Meta reaches your Shopify admin but arrives in GA4 and Meta Ads Manager with no client-side event behind it. If you buy ads and measure return on ad spend from browser pixels, those orders look like they came from nowhere. Server-side tracking is the fix, and it is worth having in place before you enable the channels rather than after. ChatGPT is unaffected: that checkout is yours, so your pixels fire normally.',
   },
   {
     q: 'Does Shopify charge a fee for selling through AI channels?',
@@ -194,7 +194,7 @@ const graphSchema = {
 <div class="article-outer">
 <div class="sa-agentic">
 
-  <p id="answer" class="sa-answer">Shopify Agentic Storefronts connect your catalog to ChatGPT, Google AI Mode, Microsoft Copilot and Meta AI from one admin setting. Since 24 March 2026 the channels split: Google, Copilot and Meta complete checkout inside the AI surface, while ChatGPT redirects shoppers to your own Shopify checkout, which is why most limits apply to only some channels.</p>
+  <p id="answer" class="sa-answer">Shopify Agentic Storefronts connect your catalog to ChatGPT, Google AI Mode, Microsoft Copilot and Meta from one admin setting. Since 24 March 2026 the channels split: Google, Copilot and Meta complete checkout inside the AI surface, while ChatGPT redirects shoppers to your own Shopify checkout, which is why most limits apply to only some channels.</p>
 
   <div class="callout amber" id="stale-warning">
     <span class="callout-label">&#9888; If you have read other guides on this, check their date</span>
@@ -301,7 +301,7 @@ const graphSchema = {
   </blockquote>
 
   <div class="prose">
-    <p>Read carefully, that means an order placed inside Google AI Mode, Copilot or Meta AI reaches your Shopify admin correctly (revenue is not lost) but arrives in GA4 and in Meta Ads Manager with no client-side event behind it. Only two server-to-server events fire: <code>started</code> and <code>completed</code>.</p>
+    <p>Read carefully, that means an order placed inside Google AI Mode, Copilot or Meta reaches your Shopify admin correctly (revenue is not lost) but arrives in GA4 and in Meta Ads Manager with no client-side event behind it. Only two server-to-server events fire: <code>started</code> and <code>completed</code>.</p>
     <p>If you buy ads and measure return on ad spend from browser pixels, the consequence is specific: the AI channels will appear to convert at zero while quietly taking revenue, and the campaigns that fed them will be under-credited. Optimisation algorithms fed under-reported conversions bid down. You are not just missing a number in a dashboard; you are training your ad accounts on a false signal.</p>
     <h3 id="what-actually-closes-it">What actually closes it</h3>
     <ul>
@@ -332,7 +332,7 @@ const graphSchema = {
       <div class="step-num-col"><span class="step-n">1</span></div>
       <div class="step-body">
         <div class="step-title">Check eligibility, per channel <span class="step-req-tag sr-req">start here</span></div>
-        <div class="step-desc">Shopify admin &rarr; <strong>Sales channels &rarr; Agentic</strong>. Read your row in the matrix above before assuming a single yes or no: you may be eligible for three channels and not the fourth, and Google remains in early access even where you qualify on paper.</div>
+        <div class="step-desc">Shopify admin &rarr; <strong>Sales channels &rarr; Agentic</strong>. Read your row in the matrix above before assuming a single yes or no: you may be eligible for three channels and not the fourth, and Google is still rolling out, so its direct checkout may not have reached your store even where you qualify on paper.</div>
         <span class="step-time">&#9203; 2 minutes</span>
       </div>
     </div>

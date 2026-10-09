@@ -22,10 +22,16 @@
 //   the local build, that diff exists only BEFORE a deploy, when the new
 //   content is not yet live for Bing to fetch. Comparing live against what
 //   was last sent gives the same set, after the deploy, when it is true.
-// - Only URLs already deployed: live lastmod must equal the local build's.
+// - Only URLs that are live. The LIVE sitemap is the only source of truth for
+//   what is deployed and when it last changed. An earlier version also
+//   required the local build's lastmod to equal the live one; lastmod comes
+//   partly from `git log`, and Cloudflare's clone and a laptop's can date the
+//   same file differently, so that check could silently send nothing.
 // - A hard cap per run.
-// - Nothing before the URL freeze lifts.
-export const FREEZE_LIFTS = '2026-10-21';
+// - Nothing before FREEZE_LIFTS. Set to 21 Oct 2026 by CLAUDE.md's plan, and
+//   brought forward to 9 Oct 2026 by the owner, on the reasoning that with one
+//   page indexed there was no ranking left to protect.
+export const FREEZE_LIFTS = '2026-10-09';
 export const DEFAULT_CAP = 60;
 
 export function parseSitemap(xml) {
@@ -55,8 +61,7 @@ export function plan({ dist, live, sent, redirectSources, cap = DEFAULT_CAP }) {
   const skipped = { unchanged: 0, notDeployed: [], notInBuild: [], ineligible: [] };
   for (const [url, liveMod] of live) {
     if (!eligible(url, redirectSources)) { skipped.ineligible.push(url); continue; }
-    if (!dist.has(url)) { skipped.notInBuild.push(url); continue; }
-    if (dist.get(url) !== liveMod) { skipped.notDeployed.push(url); continue; }
+    if (dist && !dist.has(url)) skipped.notInBuild.push(url); // informational: your checkout may be behind main
     if (sent[url] && sent[url] === liveMod) { skipped.unchanged++; continue; }
     send.push({ url, lastmod: liveMod });
   }

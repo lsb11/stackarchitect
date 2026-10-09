@@ -647,6 +647,11 @@ original rules:
 
 ### Hard rules — still in force
 
+- **Lifted early by the owner on 9 Oct 2026**, together with the IndexNow
+  silence: with one page indexed there was no ranking left to protect. The
+  record below stays because the reasoning still applies to a site that HAS
+  rankings: a URL set that moves restarts reassessment. Change URLs for a
+  reason, not to look busy.
 - **The URL set is frozen until roughly 21 Oct 2026 (60 days from the cut).**
   No new pages. No new redirects. No renamed routes. A URL set that moves
   restarts Google's reassessment. Content improvements to existing pages are
@@ -799,6 +804,20 @@ scanner catches them with deliberately broad `OFFSITE_EXTRA` patterns, where a
 false positive only means replacing a post with clean text. Widening the
 site's own rules needs the careful `unless` tuning described above, done
 deliberately, not as a side effect.
+
+**Corrected 9 Oct 2026, the same day.** Each changed field was read twice
+from Shopify's pages (`/agentic-storefronts`, `/google`, `/meta`,
+`/ai-channels-with-built-in-checkout`) with verbatim quotes that agreed, and the
+quotes are stored in the JSON's `storeLocationQuote` fields. Google is US-only;
+Meta is "Muse and other Meta surfaces" for US, Canada and Mexico customers,
+cited to its own page; digital products came off the unsupported list. The
+page's FAQ gained the sentence a UK reader needs: a UK-based store cannot use
+Google, but can use ChatGPT and Copilot if it sells to US customers, and Meta
+if it sells to US, Canadian or Mexican ones. `/shopify-automation-guides/` and
+`/ultimate-shopify-automation-guide/` restated the stale version ("purchased
+directly inside ChatGPT", "US-only, early access", "enabled via the Knowledge
+Base App") and were corrected with it. The table below is the record of what
+was found:
 
 **Agentic Storefronts needs a human re-check — and probably a correction.**
 Its channel data in `src/data/agentic-storefronts-channels.json` was verified
