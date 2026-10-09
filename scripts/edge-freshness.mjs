@@ -5,8 +5,8 @@
 //   node scripts/edge-freshness.mjs            # every URL in the live sitemap, plus /llms.txt
 //   node scripts/edge-freshness.mjs /capi-shield/ /llms.txt
 //
-// Exit 1 when any URL serves different bytes bare than with a fresh query
-// string. Fix: Cloudflare dashboard → Caching → Configuration → Purge
+// Exit 1 when any URL serves different indexable content (title, meta,
+// canonical, robots, JSON-LD, <main>) bare than with a fresh query string. Fix: Cloudflare dashboard → Caching → Configuration → Purge
 // Everything, then re-run. If it comes back, look for a Cache Rule.
 import { compare } from './lib/edge-freshness.mjs';
 
@@ -31,7 +31,8 @@ for (let i = 0; i < paths.length; i += 6) {
     const c = compare(bare.text, fresh.text);
     const ok = c.same && bare.status === 200;
     if (!ok) stale++;
-    console.log(`${ok ? 'OK   ' : 'STALE'} ${p}  HTTP ${bare.status}  cf-cache-status ${bare.cache}  age ${bare.age}${ok ? '' : `  (bare ${c.bare} ≠ current ${c.fresh})`}`);
+    console.log(`${ok ? 'OK   ' : 'STALE'} ${p}  HTTP ${bare.status}  cf-cache-status ${bare.cache}  age ${bare.age}`);
+    if (!ok && c.diff) console.log(`        bare:    ${JSON.stringify(c.diff.bare)}\n        current: ${JSON.stringify(c.diff.fresh)}`);
   }));
 }
 console.log(`\nedge-freshness: ${paths.length - stale} current, ${stale} stale`);

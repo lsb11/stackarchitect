@@ -5,6 +5,8 @@ import Base from '../layouts/Base.astro';
 import { READ_DATE } from '../data/priceSources';
 import PriceSources from '../components/PriceSources.astro';
 import Disclosure from '../components/Disclosure.astro';
+import SiteIndex from '../components/SiteIndex.astro';
+import { SITE_INDEX_HREFS } from '../data/siteIndex';
 import { isPostShutdown } from '../utils/stockyDeadline';
 import { KIT_PRICE, formatPrice } from '../data/products';
 const kitPrice = formatPrice(KIT_PRICE);
@@ -1267,6 +1269,16 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
       </div>
     </div>
   </div>
+</section>
+
+<section class="section sec-minor" id="every-guide" aria-labelledby="every-guide-h">
+<div class="inner-md">
+  <div class="sec-head">
+    <h2 id="every-guide-h">Every guide and tool on this site</h2>
+    <p>All {SITE_INDEX_HREFS.length - 1} pages, grouped by the job they do. Each one opens with a short answer, then the full method, sources and dates.</p>
+  </div>
+  <SiteIndex self="/" />
+</div>
 </section>
 
 <!-- =============================================================== -->

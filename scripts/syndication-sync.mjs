@@ -32,7 +32,13 @@ const APPLY = Boolean(args.apply);
 const MINIMAL = Boolean(args.minimal);
 const ONLY = typeof args.only === 'string' ? args.only.toLowerCase() : null;
 const env = process.env;
-const platforms = (args.platform ? String(args.platform).split(',') : ['devto', 'hashnode', 'medium'])
+const requested = args.platform ? String(args.platform).split(',') : ['devto', 'hashnode', 'medium'];
+// 9 Oct 2026: a new terminal had no DEVTO_API_KEY, dev.to dropped out of the
+// run without a word, and the run looked complete. Say so, loudly.
+if (requested.includes('devto') && !env.DEVTO_API_KEY) {
+  console.log('✗ dev.to SKIPPED: DEVTO_API_KEY is not set in this terminal. Run `export DEVTO_API_KEY=…` and re-run.');
+}
+const platforms = requested
   .filter((p) => p !== 'devto' || env.DEVTO_API_KEY)
 
 
@@ -151,7 +157,19 @@ async function hashnode() {
 async function hashnodeManual(host) {
   const ua = { 'user-agent': 'stackarchitect-syndication-sync/1.0 (+https://stackarchitect.xyz/)' };
   const res = await fetch(`https://${host}/rss.xml`, { headers: ua });
-  if (!res.ok) throw new Error(`Hashnode feed https://${host}/rss.xml: HTTP ${res.status}`);
+  if (!res.ok) {
+    // 9 Oct 2026: the feed answers 403 to scripts as well. Nothing left to
+    // read automatically, so write every pack and give the by-hand steps.
+    const cfg = JSON.parse(fs.readFileSync('syndication/pages.json', 'utf8'));
+    totals.manual++;
+    console.log(`\n[hashnode] The API is paid and https://${host}/rss.xml answers HTTP ${res.status} to scripts, so Hashnode is by hand.`);
+    console.log('  In hashnode.com → your blog → Dashboard → Posts, for each post:');
+    console.log('   1. Open the post on the site it copies (its "Originally published" link, or the closest title below).');
+    console.log('   2. Edit → select all in the editor → paste everything below the second --- of that page\'s file:');
+    for (const page of cfg.pages) console.log(`        ${page.padEnd(60)} ${path.relative(process.cwd(), writePack(page, state))}`);
+    console.log('   3. Article settings → "Are you republishing?" on → Original article URL: https://stackarchitect.xyz<that page> → Update');
+    return;
+  }
   const xml = await res.text();
   const pick = (item, tag) => (item.match(new RegExp(`<${tag}>(?:<!\\[CDATA\\[)?([\\s\\S]*?)(?:\\]\\]>)?</${tag}>`)) || [, ''])[1].trim();
   for (const item of xml.split('<item>').slice(1)) {
