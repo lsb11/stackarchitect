@@ -451,7 +451,7 @@ Complete titles, 200+ word descriptions, all variants defined, accurate pricing 
 step 03
 Add FAQ schema to blog posts and product pages
 
-FAQ schema markup (JSON-LD <code>FAQPage</code> type) makes your content directly parseable by AI crawlers. Add FAQ schema to every blog post and key product pages. Tools like [Make.com](https://stackarchitect.xyz/go/make) can automate schema injection across your content at scale.
+FAQ schema markup (JSON-LD <code>FAQPage</code> type) makes your content directly parseable by AI crawlers. Add FAQ schema to every blog post and key product pages. Tools like [Make.com](https://stackarchitect.xyz/make-com-shopify/) can automate schema injection across your content at scale.
 
 
 
@@ -489,7 +489,7 @@ Make.com's free tier replaces email automation, order workflows, inventory alert
 
 
 
-[Start free on Make.com &rarr;](https://stackarchitect.xyz/go/make)
+[Make.com setup and free-tier limits &rarr;](https://stackarchitect.xyz/make-com-shopify/)
 
 
 
@@ -580,7 +580,7 @@ Replace your paid<br>Shopify apps for free
 Make.com's free tier handles email automation, order workflows, inventory alerts, and Slack notifications. Most stores save $400–$700/month. Setup takes under an hour.
 
 
-[Start free on Make.com &rarr;](https://stackarchitect.xyz/go/make)
+[Make.com setup and free-tier limits &rarr;](https://stackarchitect.xyz/make-com-shopify/)
 [See the full $0 stack &rarr;](https://stackarchitect.xyz/ultimate-shopify-automation-guide/)
 
 
