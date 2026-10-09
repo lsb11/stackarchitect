@@ -626,8 +626,16 @@ likely source is pre-April history and backlinks.
 submissions is the right state while Bing's trust recovers. Do not add a
 submitter, integration, workflow step or hook before then.
 `scripts/indexnow.mjs` (key `5da5f….txt`, which is live) stays **manual-only**.
-Do not wire it to a build, a workflow or a cron. After ~21 Oct it gets
-rebuilt with these rules:
+Do not wire it to a build, a workflow or a cron. **Rebuilt to the rules below
+on 9 Oct 2026** (`scripts/lib/indexnow-plan.mjs`, `tests/indexnow-plan.test.js`):
+dry run by default, `--submit` refuses before 21 Oct, cap of 60, and a
+committed `data/indexnow-sent.json` records what was sent. The old script
+defaulted to submitting every sitemap URL with no record, no cap and no date
+guard. One deviation from the wording below, deliberate: "changed" compares the
+live sitemap with what was last sent, not the local build with the live
+sitemap — that diff exists only before a deploy, when the new content is not
+yet live for Bing to fetch. Run it after a deploy and commit the log. The
+original rules:
 - **URLs:** only the canonical trailing-slash URLs in `dist/sitemap-0.xml` (51
   today). Never legacy redirect sources, noindex pages, `/go/*` or `/embed/*`.
 - **Change detection:** a URL counts as changed when its sitemap `lastmod`
@@ -792,12 +800,28 @@ false positive only means replacing a post with clean text. Widening the
 site's own rules needs the careful `unless` tuning described above, done
 deliberately, not as a side effect.
 
-**Agentic Storefronts needs a human re-check.** Its channel data in
-`src/data/agentic-storefronts-channels.json` was verified on 24 Aug 2026. It is
-the only page here that third parties cite unprompted (vevy.ai ×3,
-vectosolve.com in five languages, agentboss, whnex, ainews247), in the
-fastest-moving topic on the site. Re-read Shopify's Agentic Storefronts help
-pages and move `verifiedDate` only for what was actually re-read.
+**Agentic Storefronts needs a human re-check — and probably a correction.**
+Its channel data in `src/data/agentic-storefronts-channels.json` was verified
+on 24 Aug 2026. It is the only page here that third parties cite unprompted
+(vevy.ai ×3, vectosolve.com in five languages, agentboss, whnex, ainews247).
+On 9 Oct 2026 the Shopify help pages it cites, read through a summarising
+fetcher (so: leads, not verification), appeared to differ on five points:
+
+| Field in the JSON | Site says | Shopify's page appeared to say, 9 Oct |
+|---|---|---|
+| `google.storeLocationRule` / `customerLocationRule` | US, UK, Australia or Canada | "Your store must be based in the United States and you must sell to customers in the United States." (`/agentic-storefronts/google`) |
+| Google prerequisites (prose + FAQ) | early access; Google & YouTube channel required | "rolling out to eligible stores"; products must be in Google Merchant Center, via the Google & YouTube channel, a third-party feed or manual upload |
+| `directCheckoutLimits.unsupportedProductTypes` | includes Digital products | subscriptions, bundles, customizable, B2B-only — digital not listed on the Google or Copilot page |
+| `meta` channel | "Meta AI (Facebook & Instagram)", direct checkout | overview says "Meta surfaces such as Muse"; the built-in-checkout page now covers Copilot only |
+| pixels on direct checkout | client pixels do not fire | same, plus: "fires only server-to-server pixels (started, completed)" — Shopify's own support for this site's server-side thesis |
+
+The UK one matters most: this page tells UK, Australian and Canadian stores
+they qualify for Google direct checkout, to an audience that is largely UK.
+Re-read `/agentic-storefronts`, `/agentic-storefronts/google` and
+`/agentic-storefronts/ai-channels-with-built-in-checkout`, correct the JSON
+(the prose and FAQ read from it), and move `verifiedDate` to the day they were
+read. Then re-run `npm run syndication:sync -- --apply`: the copies are
+generated from the page, so the correction reaches dev.to and Hashnode too.
 
 ### Highest-leverage open work
 
