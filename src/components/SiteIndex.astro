@@ -1,0 +1,35 @@
+---
+// Every indexable page, grouped. One click from wherever this renders.
+// Data and the reason it exists: src/data/siteIndex.ts.
+import { SITE_INDEX } from '../data/siteIndex';
+
+interface Props {
+  /** Path of the page rendering this, so it does not link to itself. */
+  self?: string;
+  headingLevel?: 'h2' | 'h3';
+}
+const { self = '', headingLevel = 'h3' } = Astro.props;
+const H = headingLevel;
+const groups = SITE_INDEX
+  .map((g) => ({ ...g, pages: g.pages.filter((p) => p.href !== self) }))
+  .filter((g) => g.pages.length);
+---
+<div class="si-grid">
+  {groups.map((g) => (
+    <div class="si-group">
+      <H class="si-name">{g.name}</H>
+      <ul>
+        {g.pages.map((p) => <li><a href={p.href}>{p.label}</a></li>)}
+      </ul>
+    </div>
+  ))}
+</div>
+
+<style>
+  .si-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 28px 32px; }
+  .si-name { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #93a09a; margin: 0 0 10px; }
+  .si-group ul { list-style: none; margin: 0; padding: 0; }
+  .si-group li { margin: 0 0 8px; line-height: 1.45; }
+  .si-group a { color: #b6c0ba; text-decoration: none; font-size: 0.94rem; border-bottom: 1px solid #2f3733; }
+  .si-group a:hover, .si-group a:focus-visible { color: #34d377; border-bottom-color: #34d377; }
+</style>

@@ -2,22 +2,23 @@
 // page we last deployed? Pure helpers; the network lives in
 // scripts/edge-freshness.mjs.
 //
-// WHY (found 9 Oct 2026)
-// From 25 Jul 2026 (941cfb4) public/_headers sent every response
-//   Cloudflare-CDN-Cache-Control: public, max-age=31536000
-// telling Cloudflare's edge it could keep HTML for a year. On 9 Oct the
-// agentic guide's canonical URL still served the 24 Sep version (Google
-// listed for UK stores, a date of 24 Sep) hours after the correction
-// deployed, while the same URL with a throwaway query string served the
-// 9 Oct version. /llms.txt served 27 URLs at its canonical URL and 56 with a
-// query string. Crawlers fetch the canonical URL, so for up to eleven weeks
-// Googlebot, Bingbot and AI crawlers could have been read content that had
-// since been fixed, including figures this site had retracted.
+// WHY
+// On 9 Oct 2026 a summarising fetcher showed the agentic guide's canonical URL
+// with its 24 Sep content hours after the correction deployed, while a
+// throwaway query string showed the 9 Oct content. That was read as Cloudflare
+// serving crawlers stale HTML, and public/_headers did then send
+// `Cloudflare-CDN-Cache-Control: max-age=31536000` on /* (from 941cfb4,
+// 25 Jul). The first run of this check disproved it: every HTML response
+// came back `cf-cache-status: DYNAMIC`, i.e. not cached by Cloudflare at all
+// (Pages Functions middleware runs on every request), and the stale copy was
+// the fetcher's own cache. The header was removed anyway; it did nothing
+// useful and would start doing harm the day the middleware went away.
 //
-// A deploy that lands is not the same as a deploy that crawlers see. The
-// check: fetch each canonical URL twice, once bare and once with a unique
-// query string (which the edge has never cached, so it comes from the
-// current deploy), and require the same bytes.
+// The same run also showed every HTML page hashing differently on every
+// request, bare or not: something injects per-request bytes outside <main>
+// (Cloudflare's JS detection or beacon scripts do this). So pages are compared
+// by what a crawler indexes, not by raw bytes: title, meta description,
+// canonical, robots, JSON-LD, and <main> with scripts removed.
 import crypto from 'node:crypto';
 
 export const sha = (s) => crypto.createHash('sha256').update(s).digest('hex').slice(0, 12);
@@ -32,10 +33,30 @@ export function normalise(html) {
     .replace(/nonce="[^"]*"/g, 'nonce=""');
 }
 
+// What a search engine or AI crawler takes from the page.
+export function fingerprint(html) {
+  const h = normalise(html);
+  const pick = (re) => (h.match(re) || [, ''])[1];
+  const ld = [...h.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map((m) => m[1]).join('\n');
+  const main = pick(/<main\b[^>]*>([\s\S]*?)<\/main>/).replace(/<script\b[\s\S]*?<\/script>/g, '');
+  return [
+    pick(/<title>([\s\S]*?)<\/title>/),
+    pick(/<meta name="description" content="([^"]*)"/),
+    pick(/<link rel="canonical" href="([^"]*)"/),
+    pick(/<meta name="robots" content="([^"]*)"/),
+    ld,
+    main || h,
+  ].join('\n\u0000\n');
+}
+
 export function compare(bare, fresh) {
-  const a = sha(normalise(bare));
-  const b = sha(normalise(fresh));
-  return { same: a === b, bare: a, fresh: b };
+  const fa = fingerprint(bare);
+  const fb = fingerprint(fresh);
+  const a = sha(fa);
+  const b = sha(fb);
+  let at = -1;
+  if (a !== b) { at = 0; while (at < fa.length && fa[at] === fb[at]) at++; }
+  return { same: a === b, bare: a, fresh: b, diff: at < 0 ? null : { bare: fa.slice(at, at + 80), fresh: fb.slice(at, at + 80) } };
 }
 
 // A long edge TTL on HTML is what caused it. Header blocks in _headers whose

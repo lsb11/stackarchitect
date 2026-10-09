@@ -19,3 +19,11 @@ test('per-request Cloudflare tokens do not count as staleness; a content change 
   assert.ok(compare('<a data-cfemail="abc">x</a>', '<a data-cfemail="def">x</a>').same);
   assert.ok(!compare('<p>Updated 24 September 2026</p>', '<p>Updated 9 October 2026</p>').same);
 });
+
+test('bytes injected outside <main> per request do not count; a change inside <main> does', () => {
+  const page = (body, tail) => `<html><head><title>T</title></head><body><main>${body}</main>${tail}</body></html>`;
+  assert.ok(compare(page('<p>x</p>', "<script>window.__CF$cv$params={r:'a1'}</script>"), page('<p>x</p>', "<script>window.__CF$cv$params={r:'b2'}</script>")).same);
+  const c = compare(page('<p>Updated 24 September</p>', ''), page('<p>Updated 9 October</p>', ''));
+  assert.ok(!c.same);
+  assert.match(c.diff.bare, /^24 September/);
+});

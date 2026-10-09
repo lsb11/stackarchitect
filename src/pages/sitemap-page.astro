@@ -1,184 +1,30 @@
 ---
+// The HTML sitemap. Until 9 Oct 2026 this was a hand-kept list, linked from
+// nowhere, that omitted the agentic storefronts guide and the Gorgias review
+// and claimed "140+ pages indexed". It now renders the same list as the
+// homepage's "Every guide and tool" section (src/data/siteIndex.ts), which
+// tests/site-index.test.js holds equal to the built sitemap.
 import Base from '../layouts/Base.astro';
-import { isNoindexRoute } from '../data/noindexRoutes';
-import { getCollection } from 'astro:content';
-
-// Indexable pages only: a noindex page linked from the HTML sitemap is a
-// crawl path to a page we have asked Google not to index. The legal pages are
-// the exception and stay listed.
-const allBlogs = (await getCollection('blog')).filter((post) => !isNoindexRoute(`/blog/${post.slug || post.id}/`));
-
-const categories = {
-  'ai': 'Blog: AI & Agentic Commerce',
-  'support': 'Blog: AI Customer Support',
-  'tracking': 'Blog: Ad tracking & ROAS',
-  'inventory': 'Blog: Inventory & Analytics',
-  'email': 'Blog: Email & P&L',
-  'automation': 'Blog: Make.com & Automation',
-  'workflow': 'Blog: Workflow & stability'
-};
-
-const groupedBlogs = {};
-Object.keys(categories).forEach(key => groupedBlogs[key] = []);
-
-allBlogs.forEach(post => {
-  const cat = post.data.category || 'automation';
-  if (groupedBlogs[cat]) {
-    groupedBlogs[cat].push(post);
-  } else {
-    if (!groupedBlogs['other']) groupedBlogs['other'] = [];
-    groupedBlogs['other'].push(post);
-  }
-});
-// sitemap.astro: self-contained, no layout dependency
+import SiteIndex from '../components/SiteIndex.astro';
+import { SITE_INDEX_HREFS } from '../data/siteIndex';
+const COUNT = SITE_INDEX_HREFS.length;
 ---
-<Base title="Sitemap: Stack Architect | Free Shopify Automation Tools" description="Complete sitemap of all Stack Architect pages: free Shopify tools, automation guides, blog posts, and product pages.">
-<main class="wrap" id="main-content">
-  <a href="/" class="back">← Return to Stack Architect</a>
-
-  <div class="sitemap-header">
-    <div class="logo-block">
-      <img src="/icon-512.png" alt="Stack Architect logo" width="52" height="52">
-      <div class="logo-text">
-        <span class="name">Stack Architect</span>
-        <span class="tag">FREE_SHOPIFY_TOOLS</span>
-      </div>
-    </div>
-    <div class="sitemap-meta">
-      Last updated: July 2026<br>
-      140+ pages indexed
-    </div>
-  </div>
-
-  <h1>Stack Architect Sitemap</h1>
-  <p class="lead">Every page on stackarchitect.xyz: free tools, automation guides, blog posts, and product pages. All tools are free forever, no signup required.</p>
-
-  <div class="section">
-    <div class="section-label">Core pages <span class="section-count">10 pages</span></div>
-    <div class="grid">
-      <div class="item"><div class="item-main"><a href="/">Homepage: Free Shopify Automation Stack<span class="item-path">/</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/tools/">All Free Tools<span class="item-path">/tools</span></a></div><span class="badge bt">HUB</span></div>
-      <div class="item"><div class="item-main"><a href="/shopify-automation-guides/">Shopify Automation Guides Hub<span class="item-path">/shopify-automation-guides</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/ultimate-shopify-automation-guide/">Ultimate Shopify Automation Guide<span class="item-path">/ultimate-shopify-automation-guide</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/shopify-app-cost-calculator/">Shopify App Cost Calculator<span class="item-path">/shopify-app-cost-calculator/</span></a></div><span class="badge bt">TOOL</span></div>
-      <div class="item"><div class="item-main"><a href="/best-ai-tools-shopify/">Best Free AI Tools for Shopify 2026<span class="item-path">/best-ai-tools-shopify</span></a></div><span class="badge bn">NEW</span></div>
-      <div class="item"><div class="item-main"><a href="/privacy/">Privacy Policy<span class="item-path">/privacy</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/terms/">Terms of Service<span class="item-path">/terms</span></a></div></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">Product pages <span class="section-count">7 products</span></div>
-    <div class="grid">
-      <div class="item"><div class="item-main"><a href="/capi-shield/">CAPI Shield: Free Meta Server-Side Tracking<span class="item-path">/capi-shield</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/shopify-google-ads-conversion-tracking/">Free Shopify Google Ads Conversion Tracking: GCLID + Enhanced Conversions<span class="item-path">/shopify-google-ads-conversion-tracking</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/stocky-swap/">Stocky Swap: Free Shopify Inventory (Replaces Stocky Aug 2026)<span class="item-path">/stocky-swap</span></a></div><span class="badge bu">URGENT</span></div>
-      <div class="item"><div class="item-main"><a href="/tiktok-events-api-shopify/">TikTok Events API: Free Server-Side Tracking<span class="item-path">/tiktok-events-api-shopify</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/replace-klaviyo-free/">Replace Klaviyo Free: Systeme.io Email Marketing<span class="item-path">/replace-klaviyo-free</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/shopify-profit-loss-automation/">Shopify P&amp;L Automation: Free Profit Reporting<span class="item-path">/shopify-profit-loss-automation</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/autocrat-quota-fix/">Autocrat Quota Fix: Stop Google Script Crashes<span class="item-path">/autocrat-quota-fix</span></a></div></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">Pricing pages <span class="section-count">3 pages</span></div>
-    <div class="grid">
-      <div class="item"><div class="item-main"><a href="/best-free-shopify-apps-2026/">Best Free Shopify Apps 2026<span class="item-path">/best-free-shopify-apps-2026</span></a></div></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">App Pricing Index</div>
-    <div class="grid">
-      <div class="item"><div class="item-main"><a href="/apps/">Shopify App Pricing Index<span class="item-path">/apps/</span></a></div><span class="badge bt">HUB</span></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">FAQ pages <span class="section-count">5 pages</span></div>
-    <div class="grid">
-      <div class="item"><div class="item-main"><a href="/blog/shopify-server-side-tracking-complete-setup-guide/">What Is Server-Side Tracking? Explained Simply<span class="item-path">/what-is-server-side-tracking-for-shopify</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/capi-shield/">What Is the Shopify CAPI? Meta Conversions API Explained<span class="item-path">/what-is-the-shopify-capi</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/make-com-shopify/">Does Make.com Work With Shopify? Full Answer and Setup Guide<span class="item-path">/does-make-com-work-with-shopify</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/tiktok-events-api-shopify/">TikTok Events API: No Code? Free Setup in 10 Minutes<span class="item-path">/how-do-i-set-up-tiktok-events-api-on-shopify-without-code</span></a></div></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">Free calculator tools <span class="section-count">8 tools</span></div>
-    <div class="grid">
-      <div class="item"><div class="item-main"><a href="/shopify-app-cost-calculator/">Shopify App Cost Calculator<span class="item-path">/shopify-app-cost-calculator/</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/meta-emq-score-estimator/">Meta EMQ Score Estimator<span class="item-path">/meta-emq-score-estimator/</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/meta-capi-payload-validator/">Meta Conversions API Payload Validator<span class="item-path">/meta-capi-payload-validator/</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/shopify-vs-meta-attribution-gap-calculator/">Shopify vs Meta Attribution Gap Calculator<span class="item-path">/shopify-vs-meta-attribution-gap-calculator/</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/stocky-migration-risk-scorer/">Stocky Migration Risk Scorer<span class="item-path">/stocky-migration-risk-scorer/</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/make-vs-zapier-cost-calculator/">Make vs Zapier Cost Calculator<span class="item-path">/make-vs-zapier-cost-calculator/</span></a></div></div>
-      <div class="item"><div class="item-main"><a href="/shopify-app-stack-kill-or-keep-auditor/">Shopify App Stack Kill or Keep Auditor<span class="item-path">/shopify-app-stack-kill-or-keep-auditor/</span></a></div></div>
-    </div>
-  </div>
-
-  {Object.keys(categories).map(catKey => {
-    const posts = groupedBlogs[catKey] || [];
-    if (posts.length === 0) return null;
-    return (
-      <div class="section">
-        <div class="section-label">{categories[catKey]} <span class="section-count">{posts.length} posts</span></div>
-        <div class="grid">
-          {posts.map(post => (
-            <div class="item">
-              <div class="item-main">
-                <a href={`/blog/${post.slug || post.id}/`}>{post.data.title}<span class="item-path">/blog/{post.slug || post.id}</span></a>
-              </div>
-              {post.data.badge && <span class={`badge ${post.data.badgeType === 'new' ? 'bn' : (post.data.badgeType === 'urgent' ? 'bu' : 'bt')}`}>{post.data.badge}</span>}
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  })}
-
-  <div class="sitemap-foot">
-    <span>SITEMAP_LAST_UPDATED: 2026.07.24 · 140+ pages indexed</span>
-    <a href="/" style="color:var(--muted)">← Return to Stack Architect</a>
-  </div>
+<Base
+  title="All Pages: Stack Architect Sitemap"
+  description={`Every page on Stack Architect, grouped by topic: ${COUNT} guides, free tools, calculators and product pages for Shopify tracking, inventory, email and automation.`}
+>
+<main class="sm-wrap" id="main-content">
+  <h1>Every page on Stack Architect</h1>
+  <p class="sm-lead">This is the complete list of {COUNT} pages on stackarchitect.xyz, grouped by the job each one does: ad tracking, AI commerce, inventory and P&amp;L, email and support, automation, and free calculators. Every guide opens with a short answer, then gives the full method with its sources and the date each figure was checked.</p>
+  <SiteIndex headingLevel="h2" />
+  <p class="sm-legal"><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · <a href="/refund-policy/">Refund policy</a></p>
 </main>
 </Base>
 
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--green:#00C896;--dark:#0d0d1a;--dark2:#1a1a2e;--border:#2a2a42;--text:#e8e8f0;--muted:#8888aa;--dim:#555570;--radius:8px;--font:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono','Fira Code',monospace}
-html{font-size:16px;scroll-behavior:smooth}
-body{font-family:var(--font);color:var(--text);background:#0f0f1e;line-height:1.65;min-height:100vh}
-a{color:var(--green);text-decoration:none}
-a:hover{text-decoration:underline}
-.wrap{max-width:900px;margin:0 auto;padding:48px 24px 80px}
-.sitemap-header{display:flex;align-items:center;gap:20px;margin-bottom:40px;padding-bottom:28px;border-bottom:1px solid var(--border);flex-wrap:wrap}
-.logo-block{display:flex;align-items:center;gap:14px}
-.logo-block img{height:52px;width:auto;border-radius:6px}
-.logo-text .name{font-size:1.4rem;font-weight:700;color:#fff;font-family:var(--mono);display:block}
-.logo-text .tag{font-size:.72rem;color:var(--green);font-family:var(--mono);letter-spacing:.08em}
-.sitemap-meta{margin-left:auto;font-size:.75rem;color:var(--dim);font-family:var(--mono);text-align:right;line-height:1.7}
-h1{font-size:1.6rem;font-weight:700;color:#fff;margin-bottom:8px}
-.lead{font-size:.9rem;color:var(--muted);margin-bottom:44px;line-height:1.75;max-width:620px}
-.section{margin-bottom:36px}
-.section-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--green);font-family:var(--mono);margin-bottom:12px;display:flex;align-items:center;gap:10px}
-.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
-.section-count{color:var(--dim);font-size:.68rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:6px}
-.item{display:flex;align-items:flex-start;gap:8px;padding:10px 14px;border:1px solid var(--border);border-radius:6px;background:var(--dark2);transition:border-color .15s}
-.item:hover{border-color:var(--green)}
-.item-main{flex:1;min-width:0}
-.item-main a{color:var(--text);font-size:.85rem;line-height:1.4;display:block}
-.item-main a:hover{color:var(--green);text-decoration:none}
-.item-path{display:block;font-size:.7rem;color:var(--dim);font-family:var(--mono);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.badge{font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0;margin-top:2px;font-family:var(--mono);letter-spacing:.03em}
-.bn{background:rgba(0,200,150,.1);color:var(--green);border:1px solid rgba(0,200,150,.25)}
-.bu{background:rgba(239,68,68,.1);color:#ef4444;border:1px solid rgba(239,68,68,.25)}
-.bt{background:rgba(59,130,246,.1);color:#3b82f6;border:1px solid rgba(59,130,246,.25)}
-.sitemap-foot{margin-top:44px;padding-top:20px;border-top:1px solid var(--border);font-size:.75rem;color:var(--dim);font-family:var(--mono);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
-footer{background:var(--dark);border-top:1px solid var(--border);padding:20px 24px;text-align:center;font-size:.78rem;color:var(--dim);font-family:var(--mono)}
-footer a{color:var(--dim)}
-.back{color:var(--muted);font-size:.85rem;display:inline-flex;align-items:center;gap:6px;margin-bottom:28px}
-.back:hover{color:var(--green);text-decoration:none}
-@media(max-width:600px){.grid{grid-template-columns:1fr}.sitemap-meta{margin-left:0}}
+  .sm-wrap { max-width: 1040px; margin: 0 auto; padding: 48px 24px 80px; }
+  .sm-wrap h1 { font-size: 2rem; color: #f2f5f3; margin: 0 0 14px; }
+  .sm-lead { color: #b6c0ba; max-width: 68ch; margin: 0 0 36px; line-height: 1.7; }
+  .sm-legal { margin-top: 40px; color: #93a09a; font-size: 0.9rem; }
+  .sm-legal a { color: #b6c0ba; }
 </style>

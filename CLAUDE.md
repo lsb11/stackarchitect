@@ -91,22 +91,32 @@ on a non-primary host get `X-Robots-Tag: noindex`. `public/_redirects` (290 line
 affiliate cloaks and legacy URLs. Redirect edits are covered by `.github/workflows/redirect-smoke.yml`
 (parse-only on PR, live assertions after deploy, plus nightly).
 
-**Crawlers were being served stale HTML (found and fixed 9 Oct 2026).**
-From 25 Jul 2026 (`941cfb4`, an "html edge caching" commit) `public/_headers`
-sent `Cloudflare-CDN-Cache-Control: public, max-age=31536000` on `/*`. On
-9 Oct the agentic guide's canonical URL served its 24 Sep version hours after
-the correction deployed, and `/llms.txt` served 27 URLs, while the same URLs
-with a throwaway query string served the current deploy (9 Oct, 56 URLs).
-Crawlers fetch canonical URLs, so for up to eleven weeks Google, Bing and AI
-crawlers may have been read content that had since been fixed, retracted
-figures included. The header is removed; `tests/edge-freshness.test.js`
-fails if a long edge TTL on HTML comes back; `npm run edge:check` (and the
-`edge-freshness.yml` workflow, after each push to main and daily) fails when
-any sitemap URL serves different bytes bare than with a fresh query string.
-After the fix ships, Cloudflare's cache needs **Purge Everything** once, and
-any zone Cache Rule that makes HTML eligible for cache must go. Then
-`node scripts/indexnow.mjs --all --submit` once, because what Bing fetched
-after the first submission may have been the stale copy.
+**Edge freshness: a wrong diagnosis, corrected the same day (9 Oct 2026).**
+A summarising fetcher showed the agentic guide's canonical URL with its
+24 Sep content hours after a correction deployed, while a throwaway query
+string showed the new one. That was read as Cloudflare serving crawlers stale
+HTML, blamed on `Cloudflare-CDN-Cache-Control: max-age=31536000` on `/*` in
+`public/_headers` (from `941cfb4`, 25 Jul), and the owner was told to purge
+the cache and resend IndexNow. **It was wrong.** The first run of
+`npm run edge:check` showed every HTML response `cf-cache-status: DYNAMIC`:
+Cloudflare caches none of them, because the Pages Functions middleware runs
+on every request. The stale copy was the fetcher's own cache. Do not trust a
+summarising fetcher's view of "current" content; use `npm run edge:check`.
+The header stays removed (it did nothing, and would do harm the day the
+middleware went). The check now compares what a crawler indexes (title, meta
+description, canonical, robots, JSON-LD, `<main>` without scripts), because
+the same run showed every page's raw bytes differing per request: something
+injects per-request content outside `<main>`.
+
+**Every indexable page is one click from the homepage (9 Oct 2026).** The
+homepage is the only page Google has indexed, so it is the one page whose
+links are known to be followed. Ten sitemap pages had no link from it, and
+`/sitemap-page/` was linked from nowhere, omitted the agentic guide and the
+Gorgias review, and claimed "140+ pages indexed". `src/data/siteIndex.ts`
+now feeds an "Every guide and tool" section on the homepage and the whole of
+`/sitemap-page/` (now linked from the footer as "Every page");
+`tests/site-index.test.js` holds it equal to the built sitemap. **A new
+indexable page must be added to `siteIndex.ts`, or `npm test` fails.**
 
 **Build-time date branches need a scheduled build.** `isPostShutdown()` in
 `src/utils/stockyDeadline.ts` resolves at build time — six files branch on it: `Nav.astro` plus
@@ -832,6 +842,9 @@ because it lived in the front-matter `description`, which is now rewritten
 from the page's meta description. A sentence naming a figure in order to
 retract it ("see why the 20–40% estimate was retracted") is no longer flagged.
 Medium's footer link sits after an `</em>`, which the first matcher missed.
+Hashnode's RSS feed also answers 403 to scripts, so Hashnode is fully by
+hand: the sync writes every pack and prints the steps. dev.to is skipped
+silently when `DEVTO_API_KEY` is not exported in the current shell.
 
 **A gap in `claims.json`, recorded and not fixed.** Three of those live
 sentences pass every site `forbid` rule: "20–40% additional reported
