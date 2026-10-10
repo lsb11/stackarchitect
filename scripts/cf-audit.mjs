@@ -5,7 +5,8 @@
 //   node scripts/cf-audit.mjs                 # part 1 only: probe as each crawler
 //   CF_API_TOKEN=… node scripts/cf-audit.mjs  # parts 1 and 2: plus Cloudflare settings
 //
-// Token: Cloudflare dashboard → My Profile → API Tokens → Create Token →
+// No token needed if you are logged in to wrangler (`npx wrangler whoami`).
+// Otherwise: Cloudflare dashboard → My Profile → API Tokens → Create Token →
 // template "Read all resources" → limit Zone Resources to stackarchitect.xyz.
 // Read-only: this script never changes a setting. Do not commit the token.
 //
@@ -17,6 +18,10 @@
 // Redirect Rules. CLAUDE.md already records two of them causing harm
 // unseen (a zone trailing-slash rule; Crawler Hints sending ~55,000 IndexNow
 // URLs). This reads them all at once.
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+
 const SITE = 'https://stackarchitect.xyz';
 const ZONE = 'stackarchitect.xyz';
 const problems = [];
@@ -57,10 +62,36 @@ if (/Content-Signal|BEGIN Cloudflare Managed/i.test(robotsTxt)) flag('WARN', 'ro
 if (/User-agent:\s*(GPTBot|ClaudeBot|PerplexityBot|OAI-SearchBot)[\s\S]{0,200}?Disallow:\s*\/\s*$/im.test(robotsTxt)) flag('CRITICAL', 'robots.txt disallows an AI crawler from the whole site');
 
 // ── Part 2: Cloudflare settings ───────────────────────────────────────────
-const token = process.env.CF_API_TOKEN;
+// The token: CF_API_TOKEN if set, otherwise the OAuth token wrangler already
+// holds after `npx wrangler login` (run `npx wrangler whoami` first so it is
+// refreshed). On 10 Oct 2026 the first attempt passed the 32-character
+// Account ID as the token, which Cloudflare answers with "Invalid request
+// headers"; that case is now named instead of failing obscurely.
+function wranglerToken() {
+  const home = os.homedir();
+  for (const f of [
+    path.join(home, 'Library/Preferences/.wrangler/config/default.toml'),
+    path.join(home, '.config/.wrangler/config/default.toml'),
+    path.join(home, '.wrangler/config/default.toml'),
+  ]) {
+    try {
+      const t = fs.readFileSync(f, 'utf8').match(/^oauth_token\s*=\s*"([^"]+)"/m)?.[1];
+      if (t) return t;
+    } catch { /* not there */ }
+  }
+  return null;
+}
+let token = process.env.CF_API_TOKEN?.trim() || null;
+let tokenSource = 'CF_API_TOKEN';
+if (token && /^[0-9a-f]{32}$/i.test(token)) {
+  console.log('\n  ✗ CF_API_TOKEN is a 32-character hex string: that is your Account ID, not an API token. Falling back to your wrangler login.');
+  token = null;
+}
+if (!token) { token = wranglerToken(); tokenSource = 'your wrangler login'; }
 if (!token) {
-  console.log('\n2. Cloudflare settings: skipped (set CF_API_TOKEN to read them; see the top of this file)');
+  console.log('\n2. Cloudflare settings: skipped. Run `npx wrangler login` (or set CF_API_TOKEN), then re-run.');
 } else {
+  console.log(`\n  (reading Cloudflare with ${tokenSource})`);
   const api = async (p) => {
     const r = await fetch(`https://api.cloudflare.com/client/v4${p}`, { headers: { authorization: `Bearer ${token}` } });
     const j = await r.json().catch(() => ({}));
@@ -76,7 +107,7 @@ if (!token) {
     console.log(`  plan: ${zone.plan?.name}   status: ${zone.status}`);
 
     const bm = await api(`${z}/bot_management`);
-    console.log('\n  Bots:', JSON.stringify(bm));
+    console.log('\n  Bots:', bm?.error ? `not readable with this login (${bm.error}). Check by hand: Security → Bots.` : JSON.stringify(bm));
     if (bm && !bm.error) {
       if (bm.ai_bots_protection === 'block') flag('CRITICAL', '"Block AI bots" is ON: GPTBot, ClaudeBot, PerplexityBot etc. are refused at the edge, so no AI assistant can read or cite the site. Security → Bots → turn off "Block AI bots".');
       if (bm.fight_mode) flag('HIGH', 'Bot Fight Mode is ON: it challenges automated clients that are not on Cloudflare\'s verified list, including some AI and SEO crawlers, and it cannot be bypassed with rules on the Free plan. Security → Bots → turn it off for a content site.');
@@ -100,6 +131,7 @@ if (!token) {
 
     for (const phase of ['http_request_firewall_custom', 'http_ratelimit', 'http_request_dynamic_redirect', 'http_request_cache_settings', 'http_request_transform', 'http_response_headers_transform', 'http_request_late_transform']) {
       const rs = await api(`${z}/rulesets/phases/${phase}/entrypoint`);
+      if (rs?.error && !/not found|could not find/i.test(rs.error)) { console.log(`\n  ${phase}: not readable with this login (${rs.error})`); continue; }
       const rules = rs?.rules ?? [];
       if (!rules.length) continue;
       console.log(`\n  ${phase}:`);
