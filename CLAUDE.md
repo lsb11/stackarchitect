@@ -142,6 +142,18 @@ on 3+ other pages, the highest pair overlap is 16% (two calculators), and the
 only sitewide repeat is the author box. Do not rewrite pages to fix
 "duplication"; there is none to fix.
 
+**What the evidence says about indexing, 10 Oct 2026.** GSC URL Inspection of
+`/capi-shield/`: "Crawled – currently not indexed", last crawled 9 Oct 2026
+as Googlebot smartphone, fetch successful, crawl and indexing allowed,
+user-declared canonical correct, no Google-selected canonical (so Google is
+not preferring a dev.to/Medium copy), discovered via an external link
+(trendshift.io), "No referring sitemaps detected". `npm run cf:audit` the same
+day: every page tested answered 200 to a browser, Googlebot, Bingbot, GPTBot,
+OAI-SearchBot, ClaudeBot and PerplexityBot. Google can fetch the page and
+chooses not to index it: a site-level quality/reputation decision, not a
+technical fault. Do not look for another technical cause without new
+evidence; the levers are links, engagement and time.
+
 **Build-time date branches need a scheduled build.** `isPostShutdown()` in
 `src/utils/stockyDeadline.ts` resolves at build time — six files branch on it: `Nav.astro` plus
 five page files (`index`, `pro`, `pro/[slug]` — four routes — `stocky-swap`
