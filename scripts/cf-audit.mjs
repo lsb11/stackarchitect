@@ -68,16 +68,18 @@ if (/User-agent:\s*(GPTBot|ClaudeBot|PerplexityBot|OAI-SearchBot)[\s\S]{0,200}?D
 // Account ID as the token, which Cloudflare answers with "Invalid request
 // headers"; that case is now named instead of failing obscurely.
 function wranglerToken() {
+  // Newest file first: an old wrangler can leave an expired token in another
+  // of these places (10 Oct 2026: "Invalid access token" from a stale copy
+  // while `wrangler whoami` was reading ~/.wrangler).
   const home = os.homedir();
-  for (const f of [
+  const files = [
+    path.join(home, '.wrangler/config/default.toml'),
     path.join(home, 'Library/Preferences/.wrangler/config/default.toml'),
     path.join(home, '.config/.wrangler/config/default.toml'),
-    path.join(home, '.wrangler/config/default.toml'),
-  ]) {
-    try {
-      const t = fs.readFileSync(f, 'utf8').match(/^oauth_token\s*=\s*"([^"]+)"/m)?.[1];
-      if (t) return t;
-    } catch { /* not there */ }
+  ].filter((f) => fs.existsSync(f)).sort((a, b) => fs.statSync(b).mtimeMs - fs.statSync(a).mtimeMs);
+  for (const f of files) {
+    const t = fs.readFileSync(f, 'utf8').match(/^oauth_token\s*=\s*"([^"]+)"/m)?.[1];
+    if (t) return t;
   }
   return null;
 }
@@ -101,7 +103,10 @@ if (!token) {
   console.log('\n2. Cloudflare settings (read-only)\n');
   const zones = await api(`/zones?name=${ZONE}`);
   const zone = Array.isArray(zones) ? zones[0] : null;
-  if (!zone) { console.log(`  ✗ cannot read the zone: ${zones?.error ?? 'not found'}`); }
+  if (!zone) {
+    console.log(`  ✗ cannot read the zone: ${zones?.error ?? 'not found'}`);
+    if (/invalid access token|authentication/i.test(zones?.error || '')) console.log('    Run `npx wrangler login` (a fresh login, not whoami) and re-run.');
+  }
   else {
     const z = `/zones/${zone.id}`;
     console.log(`  plan: ${zone.plan?.name}   status: ${zone.status}`);
