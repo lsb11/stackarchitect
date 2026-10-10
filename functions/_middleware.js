@@ -46,11 +46,37 @@
 // scripts/gen-legacy-redirects.mjs; tests/legacy-redirects.test.js fails if the
 // two drift.
 import { resolveLegacy } from './_legacy-redirects.js';
+import { rowFor, recordPageview } from './_pageviews.js';
 
 const PRIMARY_HOST = 'stackarchitect.xyz';
 const FILE_RE = /\.[a-zA-Z0-9]{2,5}$/;
 
+// Every response, redirect or page, is counted on the way out: one daily
+// counter per page and kind of client, no cookie, no IP, no User-Agent stored.
+// Why, and what is never kept: schema/006-pageviews.sql. The count runs in
+// waitUntil after the response is decided, and recordPageview never throws, so
+// a missing table or binding costs a statistic and never a page.
 export async function onRequest(context) {
+  const response = await route(context);
+  try {
+    const req = context.request;
+    const row = rowFor({
+      url: req.url,
+      method: req.method,
+      status: response.status,
+      contentType: response.headers.get('content-type'),
+      userAgent: req.headers.get('user-agent'),
+      referer: req.headers.get('referer'),
+      country: req.cf?.country,
+    });
+    if (row && typeof context.waitUntil === 'function') context.waitUntil(recordPageview(context.env?.DB, row));
+  } catch {
+    // Counting must never cost the response.
+  }
+  return response;
+}
+
+async function route(context) {
   const url = new URL(context.request.url);
   let changed = false;
 

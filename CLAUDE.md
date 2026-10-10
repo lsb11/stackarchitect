@@ -118,6 +118,30 @@ now feeds an "Every guide and tool" section on the homepage and the whole of
 `tests/site-index.test.js` holds it equal to the built sitemap. **A new
 indexable page must be added to `siteIndex.ts`, or `npm test` fails.**
 
+**Cookieless page and crawler counts (10 Oct 2026).** GA4 sees only visitors
+who press Accept, and nothing recorded whether Googlebot, Bingbot or the AI
+crawlers fetched any page. `functions/_middleware.js` now adds one to a daily
+D1 counter (`pageviews`, `schema/006-pageviews.sql`, apply it once) per page,
+status, client kind, referring host and country, inside `waitUntil` and never
+throwing. No cookie, IP or User-Agent is stored, so it needs no consent;
+`/privacy/` says so. `npm run traffic` prints: who fetched pages, which pages
+each search/AI crawler fetched and when it was last seen, human referrers
+(AI assistants flagged), views vs affiliate clicks per page, and crawlers
+still requesting retired URLs. Crawler names are claimed, not verified.
+
+**`npm run cf:audit` reads what the dashboard hides.** Without a token it
+fetches pages as each crawler; with `CF_API_TOKEN` (read-only) it also reads
+Bot Fight Mode, "Block AI bots", managed robots.txt, security level, Crawler
+Hints, WAF/redirect/cache/transform rules and Page Rules, and ranks findings.
+Run it before concluding anything about crawling: two of this site's worst
+faults (a zone redirect rule, Crawler Hints) lived only in the dashboard.
+
+**Content is not duplicated (measured 10 Oct 2026).** Six-word shingles over
+`<main>` across the 51 sitemap pages: median 5% of a page's shingles appear
+on 3+ other pages, the highest pair overlap is 16% (two calculators), and the
+only sitewide repeat is the author box. Do not rewrite pages to fix
+"duplication"; there is none to fix.
+
 **Build-time date branches need a scheduled build.** `isPostShutdown()` in
 `src/utils/stockyDeadline.ts` resolves at build time — six files branch on it: `Nav.astro` plus
 five page files (`index`, `pro`, `pro/[slug]` — four routes — `stocky-swap`
