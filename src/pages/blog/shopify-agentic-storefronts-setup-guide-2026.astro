@@ -35,10 +35,47 @@ const directChannels = shopifyChannels.filter((c) => c.checkoutModel === 'direct
 const limits = CHANNELS.directCheckoutLimits;
 const kb = CHANNELS.knowledgeBaseApp;
 
+/* Every sentence that restates the data is built from it. On 9 Oct 2026 the
+   JSON was corrected (Google became US-only; digital products came off the
+   unsupported list) and four hand-written copies on this page kept the old
+   facts: the HowTo step in the JSON-LD, the FAQ answer, the visible step 4 and
+   the Dataset name. Those are exactly the sentences an AI assistant quotes.
+   tests/agentic-consistency.test.js now fails if a retired fact reappears. */
+const naturalList = (items: string[], { conj = 'and', keepCase = false } = {}) => {
+  const xs = keepCase ? items : items.map((x) => (/^[A-Z][A-Z0-9]/.test(x) ? x : x.charAt(0).toLowerCase() + x.slice(1)));
+  return xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} ${conj} ${xs[xs.length - 1]}`;
+};
+const capFirst = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
+const TYPES = naturalList(limits.unsupportedProductTypes);
+const FULFIL = naturalList(limits.unsupportedFulfilment);
+const FEATURES = naturalList(limits.unsupportedCheckoutFeatures);
+const DIRECT_NAMES = naturalList(directChannels.map((c) => c.name), { keepCase: true });
+const checkoutPhrase = (c: { checkoutModel: string }) =>
+  c.checkoutModel === 'direct' ? 'checkout happens inside the AI product'
+  : c.checkoutModel === 'redirect' ? 'the shopper is sent to your own Shopify checkout'
+  : 'checkout runs outside Shopify';
+const storePhrase = (rule: string) =>
+  rule === 'Any country' ? 'can be based in any country' : `must be based in the ${rule.replace(/ only$/, '')}`;
+const customerPhrase = (rule: string) => rule.charAt(0).toLowerCase() + rule.slice(1);
+const ruleLine = (c: { name: string; storeLocationRule: string; customerLocationRule: string }) =>
+  `${c.name}: the store ${storePhrase(c.storeLocationRule)} and ${customerPhrase(c.customerLocationRule)}`;
+const ELIGIBILITY_LINE = shopifyChannels.map(ruleLine).join('. ') + '.';
+const KEY_FACTS = [
+  ...shopifyChannels.map((c) => `${c.name}: ${checkoutPhrase(c)}. An eligible store ${storePhrase(c.storeLocationRule)} and ${customerPhrase(c.customerLocationRule)}.`),
+  `Direct-checkout limits apply to ${DIRECT_NAMES} only, never to ChatGPT. Unsupported product types: ${TYPES}. Unavailable delivery methods: ${FULFIL}. Checkout features that do not run: ${FEATURES}.`,
+  `Discount codes and automatic discounts work in direct checkout.`,
+  `In direct checkout, Google Analytics and client-side pixels do not fire; only server-to-server "started" and "completed" events do.`,
+  `Shopify charges no fee for selling through these channels, beyond standard payment processing.`,
+  `The Shopify Knowledge Base app is ${kb.price.toLowerCase()}.`,
+  `Perplexity is not a Shopify Agentic Storefronts channel: its in-chat buying runs on PayPal, outside the Shopify admin.`,
+];
+const DATASET_URL = 'https://stackarchitect.xyz/downloads/agentic-storefronts-channels.json';
+
 const prettyDate = (iso: string) =>
   new Date(iso + 'T00:00:00Z').toLocaleDateString('en-GB', {
     day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC',
   });
+const VERIFIED = prettyDate(CHANNELS.verifiedDate);
 
 /* FAQ — one array. The visible <details> list and the FAQPage graph are both
    generated from it, so the count and the wording cannot drift apart. */
@@ -61,7 +98,7 @@ const FAQ = [
   },
   {
     q: 'Which products cannot be sold through Agentic Storefronts?',
-    a: 'Subscriptions, product bundles, digital products, customizable products and B2B-only products are not supported in agentic storefront direct checkouts. Local delivery, pickup in store and pickup points are not available as delivery methods, and custom checkout fields, checkout upsells, checkout validations and required customer sign-in do not work either. Every one of those restrictions applies to the direct-checkout channels only: Google, Copilot and Meta. ChatGPT sends shoppers to your own checkout, where none of them apply.',
+    a: `${capFirst(TYPES)} are not supported in agentic storefront direct checkouts. ${capFirst(FULFIL)} are not available as delivery methods, and ${FEATURES} do not work either. Every one of those restrictions applies to the direct-checkout channels only: Google, Copilot and Meta. ChatGPT sends shoppers to your own checkout, where none of them apply.`,
   },
   {
     q: 'Do discount codes work in agentic checkout?',
@@ -89,13 +126,16 @@ const stripTags = (html: string) =>
   html.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 
 /* Dataset — the matrix is the citable artefact on this page. Naming each field
-   as a variableMeasured is what lets a model quote a single cell (\"Google
-   requires a store based in the US, UK, AU or CA\") and attribute it. */
+   as a variableMeasured is what lets a model quote a single cell ("Google
+   requires a store based in the United States") and attribute it. */
 const datasetSchema = {
   '@context': 'https://schema.org',
   '@type': 'Dataset',
   '@id': CANONICAL + '#matrix',
-  name: 'Shopify Agentic Storefronts: per-channel eligibility and capability matrix (August 2026)',
+  name: `Shopify Agentic Storefronts: per-channel eligibility and capability matrix (verified ${VERIFIED})`,
+  url: CANONICAL + '#matrix',
+  keywords: ['Shopify Agentic Storefronts', 'ChatGPT', 'Google AI Mode', 'Gemini', 'Microsoft Copilot', 'Meta', 'agentic commerce', 'direct checkout'],
+  distribution: [{ '@type': 'DataDownload', encodingFormat: 'application/json', contentUrl: DATASET_URL }],
   description: CHANNELS.description,
   license: 'https://creativecommons.org/licenses/by/4.0/',
   creator: { '@id': 'https://stackarchitect.xyz/#org' },
@@ -144,10 +184,10 @@ const graphSchema = {
       totalTime: 'PT45M',
       estimatedCost: { '@type': 'MonetaryAmount', currency: 'USD', value: '0' },
       step: [
-        { '@type': 'HowToStep', position: 1, name: 'Check eligibility, per channel', text: 'Open Shopify admin, then Sales channels, then Agentic. Eligibility is per channel: ChatGPT and Copilot accept any store location selling to US customers, and Meta any store selling to US, Canadian or Mexican customers; Google AI Mode and Gemini require a store based in the US, UK, Australia or Canada.' },
+        { '@type': 'HowToStep', position: 1, name: 'Check eligibility, per channel', text: `Open Shopify admin, then Sales channels, then Agentic. Eligibility is per channel. ${ELIGIBILITY_LINE}` },
         { '@type': 'HowToStep', position: 2, name: 'Install the free Knowledge Base app', text: 'Install the Shopify Knowledge Base app, which is free, and populate it with FAQs, return and shipping detail and brand voice guidance. It is invisible on your storefront and serves as the data source AI platforms read.' },
         { '@type': 'HowToStep', position: 3, name: 'Close the attribution gap before enabling', text: 'Direct checkout fires only server-to-server started and completed pixels. Get server-side tracking working first so agentic orders are attributed rather than appearing to come from nowhere.' },
-        { '@type': 'HowToStep', position: 4, name: 'Audit the catalog against the unsupported list', text: 'Subscriptions, bundles, digital products, customizable products and B2B-only products are unsupported in agentic direct checkout. Confirm which of your products are affected and on which channels.' },
+        { '@type': 'HowToStep', position: 4, name: 'Audit the catalog against the unsupported list', text: `${capFirst(TYPES)} are unsupported in agentic direct checkout. Confirm which of your products are affected and on which channels.` },
         { '@type': 'HowToStep', position: 5, name: 'Write product data for conversational queries', text: 'AI assistants match intent, not keywords. Give every product a descriptive title, a description of 200 words or more covering materials and use cases, every variant defined with accurate stock, and metafields for the specifics a description omits.' },
         { '@type': 'HowToStep', position: 6, name: 'Enable channels and verify', text: 'Agree to the Agentic Storefronts Supplemental Terms and toggle each channel individually. Use the Test Agent to confirm products surface correctly, then filter the Orders list by channel to monitor AI-attributed revenue.' },
       ],
@@ -200,14 +240,22 @@ const graphSchema = {
     <span class="callout-label">&#9888; If you have read other guides on this, check their date</span>
     <p>This feature reversed itself on <strong>24 March 2026</strong>. ChatGPT launched with in-conversation Instant Checkout; OpenAI retired it that day, and Shopify&rsquo;s documentation now describes ChatGPT as a discovery-focused referrer that sends shoppers to your own checkout. Meanwhile Google, Copilot and Meta gained direct checkout. Most guides still in circulation describe the launch arrangement, which is the opposite of the current one, and they inherit a set of restrictions from it that no longer apply the way they say.</p>
   </div>
-  <p style="font-size:14px;color:#93a09a;line-height:1.7;">Shopify&rsquo;s own pages, checked 24 September 2026: the <a href="https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts" target="_blank" rel="noopener">agentic storefronts overview</a> (the channels, on by default for eligible stores, managed under Sales channels &gt; Agentic); <a href="https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts/microsoft" target="_blank" rel="noopener">Microsoft Copilot</a> (direct checkout, shown only to customers in the United States); and <a href="https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts/meta" target="_blank" rel="noopener">Meta</a> (direct checkout on Meta surfaces, for stores selling to the United States, Canada or Mexico).</p>
+  <section class="key-facts" aria-labelledby="key-facts-h">
+    <h2 id="key-facts-h">Key facts, verified {VERIFIED}</h2>
+    <ul>
+      {KEY_FACTS.map((f) => <li>{f}</li>)}
+    </ul>
+    <p class="kf-src">Source for every line: Shopify Help Center, <a href="https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts" target="_blank" rel="noopener">Agentic Storefronts</a>, read {VERIFIED}. The same facts as data: <a href="/downloads/agentic-storefronts-channels.json">agentic-storefronts-channels.json</a> (CC BY 4.0).</p>
+  </section>
+
+  <p style="font-size:14px;color:#93a09a;line-height:1.7;">Shopify&rsquo;s own pages, checked {VERIFIED}: the <a href="https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts" target="_blank" rel="noopener">agentic storefronts overview</a> (the channels, on by default for eligible stores, managed under Sales channels &gt; Agentic); <a href="https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts/google" target="_blank" rel="noopener">Google AI Mode and Gemini</a> (store based in, and selling to, the United States; still rolling out); <a href="https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts/microsoft" target="_blank" rel="noopener">Microsoft Copilot</a> (direct checkout, shown only to customers in the United States); and <a href="https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts/meta" target="_blank" rel="noopener">Meta</a> (direct checkout on Meta surfaces, for stores selling to the United States, Canada or Mexico).</p>
   <p>Agentic storefronts are the last of seven stages in the <a href="/blog/shopify-ai-playbook-2026/">Shopify AI playbook</a>, which covers the earlier ones: product research, ad creative, email, tracking and support.</p>
 
   <!-- ═══════ THE MATRIX — the citable artefact ═══════ -->
   <div class="sec-mark" id="matrix">01: The matrix: who is eligible for what</div>
   <div class="prose">
     <h2 id="eligibility-and-capability-per-channel">Eligibility and capability, per channel</h2>
-    <p>Eligibility is not one rule. It stacks two independent conditions (where your store is based, and where you sell) and they differ by channel. A merchant in Manchester is eligible for three of the four channels and, for the fourth, eligible to appear but not to take checkout from most of their customers. That is genuinely hard to work out from Shopify&rsquo;s documentation, because it is spread across four pages.</p>
+    <p>Eligibility is not one rule. It stacks two independent conditions (where your store is based, and where you sell) and they differ by channel. A merchant in Manchester who sells to the United States qualifies for ChatGPT, Copilot and Meta, and does not qualify for Google at all, because Google requires the store itself to be based in the United States. That is genuinely hard to work out from Shopify&rsquo;s documentation, because it is spread across four pages.</p>
     <p>Every cell below is sourced. The linked page is Shopify&rsquo;s, not ours.</p>
   </div>
 
@@ -356,7 +404,7 @@ const graphSchema = {
       <div class="step-num-col"><span class="step-n">4</span></div>
       <div class="step-body">
         <div class="step-title">Audit your catalog against the unsupported list <span class="step-req-tag sr-rec">recommended</span></div>
-        <div class="step-desc">Subscriptions, bundles, digital products, customizable products and B2B-only products cannot go through direct checkout. Work out which of your products that covers, and remember it does not constrain ChatGPT traffic at all: a subscription brand is not locked out of agentic commerce, it is locked out of three of the four channels&rsquo; checkout.</div>
+        <div class="step-desc">{capFirst(TYPES)} cannot go through direct checkout. Work out which of your products that covers, and remember it does not constrain ChatGPT traffic at all: a subscription brand is not locked out of agentic commerce, it is locked out of three of the four channels&rsquo; checkout.</div>
         <span class="step-time">&#9203; Depends on catalog size</span>
       </div>
     </div>
@@ -470,6 +518,12 @@ const graphSchema = {
        renders the same card for every collection post; these hand-built posts
        predate it and never got one. -->
   <AuthorCard />
+
+  <section class="cite-box" aria-labelledby="cite-h">
+    <h2 id="cite-h">How to cite this page</h2>
+    <p>Sandelands, L. ({CHANNELS.verifiedDate.slice(0, 4)}). <em>Shopify Agentic Storefronts 2026: Eligibility, Checkout and Limits, Per Channel</em>. Stack Architect. Verified against Shopify&rsquo;s documentation on {VERIFIED}. {CANONICAL}</p>
+    <p>The channel matrix is published as open data under CC BY 4.0: <a href="/downloads/agentic-storefronts-channels.json">agentic-storefronts-channels.json</a>. Corrections are welcome: <a href="/how-we-test/">how we test and correct</a>.</p>
+  </section>
 
   <!-- ═══════ FAQ ═══════ -->
   <div class="sec-mark" id="faq">FAQ: {FAQ.length} questions</div>
@@ -705,6 +759,12 @@ const graphSchema = {
     .sa-agentic .prose ul, .sa-agentic .prose ol { padding-left: 20px; margin-bottom: 18px; display: flex; flex-direction: column; gap: 8px; }
     .sa-agentic .prose li { font-size: 15px; color: var(--text-3); line-height: 1.65; }
     .sa-agentic .prose li::marker { color: var(--purple); }
+    .sa-agentic .key-facts, .sa-agentic .cite-box { border: 1px solid var(--border-2); border-left: 3px solid var(--g); background: var(--bg-3); border-radius: 10px; padding: 18px 22px; margin: 22px 0 30px; }
+    .sa-agentic .key-facts h2, .sa-agentic .cite-box h2 { font-size: 17px; color: var(--text); margin: 0 0 10px; }
+    .sa-agentic .key-facts ul { margin: 0 0 10px; padding-left: 20px; display: flex; flex-direction: column; gap: 7px; }
+    .sa-agentic .key-facts li { font-size: 14.5px; color: var(--text-2); line-height: 1.6; }
+    .sa-agentic .key-facts .kf-src, .sa-agentic .cite-box p { font-size: 13.5px; color: var(--text-3); line-height: 1.65; margin: 0 0 6px; }
+    .sa-agentic .key-facts a, .sa-agentic .cite-box a { color: #34d377; text-decoration: underline; }
     .sa-agentic .callout {
       border-radius: 10px; padding: 17px 21px 17px 23px; margin: 22px 0;
       border-left: 3px solid var(--purple); background: var(--purple-bg);
