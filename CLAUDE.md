@@ -901,6 +901,20 @@ directly inside ChatGPT", "US-only, early access", "enabled via the Knowledge
 Base App") and were corrected with it. The table below is the record of what
 was found:
 
+**Four copies of the corrected facts were still wrong, fixed 10 Oct 2026.**
+The 9 Oct correction changed the JSON, but the HowTo step in the page's
+JSON-LD still said Google accepts US, UK, Australia or Canada stores, and the
+FAQ answer, the visible setup step and a HowTo step still listed digital
+products as unsupported; the Dataset name said "August 2026". Every one of
+those sentences is now built from the JSON, and
+`tests/agentic-consistency.test.js` fails if a retired fact returns. The page
+also gained a "Key facts, verified <date>" list (one self-contained sentence
+per channel, generated from the data, the form assistants quote), a "How to
+cite this page" block, and the matrix as open data at
+`/downloads/agentic-storefronts-channels.json` (CC BY 4.0, linked from the
+Dataset `distribution`). Re-run `npm run syndication:sync -- --apply` after it
+deploys: the dev.to copy's FAQ still carries the digital-products line.
+
 **Agentic Storefronts needs a human re-check — and probably a correction.**
 Its channel data in `src/data/agentic-storefronts-channels.json` was verified
 on 24 Aug 2026. It is the only page here that third parties cite unprompted
