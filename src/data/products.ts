@@ -71,10 +71,26 @@ export const STOCKLOG_URL = 'https://stocklog.onrender.com/';
 
 /**
  * StockLog's Shopify App Store listing. Every install button on the site reads
- * this: /stocklog/ and StockLogPromo.astro. PLACEHOLDER: this is the App Store
- * root, not the listing. Swap in the real listing URL here and nowhere else.
+ * this: /stocklog/ and StockLogPromo.astro.
+ *
+ * EMPTY UNTIL THE LISTING IS LIVE, and that is deliberate. Until 12 Oct 2026
+ * this held 'https://apps.shopify.com/' as a placeholder, so all four
+ * "Install from the Shopify App Store" buttons on /stocklog/ and the promo
+ * blocks sent a merchant to the App Store's own homepage: a dead end, on the
+ * only product on this site that bills monthly. An empty string makes every
+ * one of them fall back to the waitlist instead, which is a real address that
+ * collects a real email. tests/stocklog-cta.test.js fails if a bare App Store
+ * root is ever shipped as an install button again.
+ *
+ * Swap in the real listing URL here and nowhere else the day it is approved.
  */
-export const STOCKLOG_APP_STORE_URL = 'https://apps.shopify.com/';
+export const STOCKLOG_APP_STORE_URL = '';
+
+/**
+ * Where an install button points while STOCKLOG_APP_STORE_URL is empty.
+ * Shared by /stocklog/ and StockLogPromo.astro so the two cannot diverge.
+ */
+export const STOCKLOG_NOTIFY_URL = 'https://stackarchitect.beehiiv.com/subscribe';
 
 export type Accent = 'green' | 'sky' | 'tiktok' | 'amber';
 

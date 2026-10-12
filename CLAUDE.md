@@ -938,6 +938,34 @@ Re-read `/agentic-storefronts`, `/agentic-storefronts/google` and
 read. Then re-run `npm run syndication:sync -- --apply`: the copies are
 generated from the page, so the correction reaches dev.to and Hashnode too.
 
+### The buy path for the only monthly product was dead (fixed 12 Oct 2026)
+
+`STOCKLOG_APP_STORE_URL` held `https://apps.shopify.com/` as a placeholder, so
+all four "Install from the Shopify App Store" buttons on `/stocklog/` and in
+`StockLogPromo` sent a merchant to the App Store's own homepage. Seven months
+in, with the site at one indexed page and no revenue, the only product billed
+monthly had no working purchase path and no submitted listing.
+
+The constant is now `''` until the listing is approved, every install button
+falls back to the waitlist, and `tests/stocklog-cta.test.js` fails if the App
+Store root is ever shipped as a destination again or if a button still reads
+"Install from the Shopify App Store" while no listing exists. `StockLogPromo`
+was also added to `/stocky-alternative/`, the page a displaced Stocky merchant
+actually lands on, which had mentioned StockLog in one clause while three
+lesser pages carried the full block.
+
+Listing copy, the submission blockers (order history depth and the
+`read_all_orders` scope, the three mandatory privacy webhooks, Billing API,
+Render cold starts) and the one-line change for launch day are in
+`docs/STOCKLOG-APP-STORE-LISTING.md`.
+
+**Why this is the priority over anything SEO.** GSC export, 12 Oct 2026: 88
+days, 96 impressions, 1 page indexed, 212 not indexed. Bing Site Explorer the
+same day: 18 URLs known, mostly 301s on slashless legacy paths, 11 impressions
+in total. The App Store has its own search index and does not care about this
+domain's authority, so it is the only channel available that is not gated on a
+recovery that has not come in the three months since the redirects were fixed.
+
 ### Highest-leverage open work
 
 1. Get the iOS Attribution Gap Benchmark to N ≥ 10 real submissions so it

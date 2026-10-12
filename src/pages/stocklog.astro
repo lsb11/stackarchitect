@@ -36,6 +36,7 @@ import {
   STOCKLOG_TRIAL_DAYS,
   STOCKLOG_URL,
   STOCKLOG_APP_STORE_URL,
+  STOCKLOG_NOTIFY_URL,
   formatMonthly,
   formatPrice,
 } from '../data/products';
@@ -50,6 +51,14 @@ import importSync from '../assets/stocklog/import-sync.png';
 const PAGE_URL = 'https://stackarchitect.xyz/stocklog/';
 const monthly = formatMonthly(STOCKLOG_PRICE);
 const trial = `${STOCKLOG_TRIAL_DAYS}-day free trial`;
+
+/* One pair of values for every install button on this page. While the App
+   Store listing does not exist, an "Install" button that lands on the App
+   Store homepage is worse than no button: it asks for the click and then
+   loses the merchant. The waitlist keeps the lead. */
+const ctaHref = STOCKLOG_APP_STORE_URL || STOCKLOG_NOTIFY_URL;
+const ctaLabel = STOCKLOG_APP_STORE_URL ? 'Install from the Shopify App Store' : 'Get notified the day it launches';
+const ctaRel = STOCKLOG_APP_STORE_URL ? 'noopener' : 'noopener nofollow';
 
 const schemaIcon = await getImage({ src: icon, width: 512, height: 512, format: 'png' });
 const schemaShot = await getImage({ src: movementHistory, width: 1280, format: 'png' });
@@ -281,7 +290,7 @@ const schema = [
         </p>
         <p class="hero-sub">Moving off Shopify Stocky? The <a href="/stocky-alternative/">Stocky alternatives guide</a> compares every option.</p>
         <div class="cta-block">
-          <a class="btn" href={STOCKLOG_APP_STORE_URL} rel="noopener">Install from the Shopify App Store</a>
+          <a class="btn" href={ctaHref} rel={ctaRel}>{ctaLabel}</a>
           <p class="cta-note">{monthly}, {trial}</p>
         </div>
       </div>
@@ -387,7 +396,7 @@ const schema = [
           <li>Cancel any time from the Shopify admin</li>
           <li>No tiers and no per-SKU charges</li>
         </ul>
-        <a class="btn" href={STOCKLOG_APP_STORE_URL} rel="noopener">Install from the Shopify App Store</a>
+        <a class="btn" href={ctaHref} rel={ctaRel}>{ctaLabel}</a>
       </div>
     </div>
   </section>
@@ -412,7 +421,7 @@ const schema = [
     <div class="inner inner-sm">
       <h2 id="final-h">See where every unit went</h2>
       <p>Install StockLog, sync once, and the next number that looks wrong comes with its reason.</p>
-      <a class="btn" href={STOCKLOG_APP_STORE_URL} rel="noopener">Install from the Shopify App Store</a>
+      <a class="btn" href={ctaHref} rel={ctaRel}>{ctaLabel}</a>
       <p class="cta-note">{monthly}, {trial}</p>
       <p class="disc">StockLog is built by Stack Architect. It is our own product, not an affiliate recommendation.</p>
     </div>
