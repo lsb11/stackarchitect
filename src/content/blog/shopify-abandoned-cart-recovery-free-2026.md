@@ -19,7 +19,7 @@ faqs:
   - question: "Can Shopify Flow send abandoned checkouts to Make.com?"
     answer: "Shopify Flow has a Customer abandons checkout trigger, but the Send HTTP request action needed to pass that data to Make.com is only available on the Shopify Plus, Advanced and Grow plans, according to Shopify's Flow documentation read on 15 October 2026. On other plans, use Shopify Messaging or the webhook approach in this guide."
   - question: "Is Systeme.io's free plan enough for an abandoned cart sequence?"
-    answer: "Possibly, but check before building. On 15 October 2026 systeme.io's pricing page listed the free plan at 2,000 contacts, unlimited emails and one automation rule, and did not show whether multi-step workflows are included. Confirm in your own account that you can build a sequence with delays and a purchase check before connecting Shopify."
+    answer: "Possibly, but check before building. On 15 October 2026 systeme.io's pricing page listed the free plan at 2,000 contacts, unlimited emails, one email campaign and one automation rule. One campaign covers this sequence, but it is the only one the free plan allows. Confirm in your own account that you can build it with delays and a purchase check before connecting Shopify."
   - question: "How many abandoned cart emails should I send?"
     answer: "A common pattern is three: one within a few hours while the purchase is still on the shopper's mind, one the next day, and a final one two or three days later. No sequence length suits every store. Start with Shopify's single automated email, measure how many checkouts it recovers, and add more emails only if each one recovers more than it costs you in unsubscribes."
 relatedGuides:
@@ -85,7 +85,7 @@ If you already run an `orders/create` scenario, such as [CAPI Shield](/capi-shie
 All three limits below were read on the vendors' pricing pages on 15 October 2026.
 
 - **[Make.com free](/go/make/?source=shopify-abandoned-cart-recovery-free-2026-n2)**: up to 1,000 credits a month and 2 active scenarios ([make.com/pricing](https://www.make.com/en/pricing)). Every checkout update and every order uses credits. `checkouts/update` can fire several times for one checkout, so watch the credit counter for the first week and drop the sequence back to Route 1 if it runs out.
-- **[Systeme.io free](/go/systeme/?source=shopify-abandoned-cart-recovery-free-2026-n1)**: 2,000 contacts, unlimited emails and one automation rule ([systeme.io/pricing](https://systeme.io/pricing)). The pricing page did not show whether multi-step workflows are part of the free plan. Before connecting Shopify, confirm in your account that you can build a sequence with delays and a tag check.
+- **[Systeme.io free](/go/systeme/?source=shopify-abandoned-cart-recovery-free-2026-n1)**: 2,000 contacts, unlimited emails, one email campaign and one automation rule ([systeme.io/pricing](https://systeme.io/pricing), FAQ). One campaign is enough for this one sequence, but it uses the free plan's only campaign. Before connecting Shopify, confirm in your account that you can build the sequence with delays and a tag check.
 - **Shopify**: webhooks are available on every plan, under **Settings → Notifications → Webhooks**.
 
 ### Building it
