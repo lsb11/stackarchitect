@@ -1,157 +1,112 @@
 ---
-title: "Tidio vs Gorgias vs Zendesk for Shopify 2026"
-heading: "Tidio vs Gorgias vs Zendesk for Shopify 2026: Which Is Worth It?"
-description: "Pick by monthly revenue: Tidio under $50k, Gorgias $50k-$500k, Zendesk only above $500k with a 5+ person CX team. USD pricing and sourced AI benchmarks."
-answer: "Choose a Shopify helpdesk by monthly revenue rather than by feature list. Tidio suits stores under $50k a month, where AI resolution and live chat cover most volume. Gorgias earns its cost between $50k and $500k with a dedicated CX person. Zendesk only makes sense above $500k with a five-plus agent team."
+title: "Tidio vs Gorgias vs Zendesk for Shopify: How to Choose"
+heading: "Tidio vs Gorgias vs Zendesk for Shopify: Choose by Workflow, Not Revenue"
+description: "How Tidio, Gorgias and Zendesk differ for Shopify support: what each charges for, what each can do with Shopify orders, and the workload where each one makes sense. Prices read on vendor pages."
+answer: "Choose a Shopify helpdesk by how your support works, not by store revenue. Tidio is chat-first and suits stores whose questions are mostly repetitive. Gorgias is a ticket helpdesk priced by ticket volume, built for teams handling email, chat and social in one queue. Zendesk is priced per agent and suits larger teams with complex routing needs."
 publishDate: "2026-03-22"
-updatedDate: "2026-09-25"
+updatedDate: "2026-10-15"
 verifiedDate: "2026-09-25"
 category: "support"
 badge: "Comparison"
 badgeType: "comparison"
-readTime: 14
+readTime: 9
 canonical: "https://stackarchitect.xyz/blog/tidio-vs-gorgias-shopify/"
 faqs:
   - question: "Is Tidio or Gorgias better for Shopify?"
-    answer: "For Shopify stores under $50,000/month revenue, Tidio is better: the free plan plus Lyro AI handles most repetitive queries (order status, shipping, FAQs) without an agent, and pricing stays flat as ticket volume grows. For $50,000–$500,000/month stores with a dedicated CX person and 300+ tickets/month, Gorgias is better because of its native Shopify ticketing (refund and edit-order from inside the ticket) and revenue attribution per agent. For $500,000+/month enterprise stores with 5+ CX agents and multi-channel support needs (voice, SMS, social), Zendesk is the only platform of the three with the routing depth required."
-  - question: "How much does Gorgias cost for Shopify?"
-    answer: "Gorgias lists Starter at $40/month billed monthly (50 tickets a month; $10 of that is the helpdesk and $30 its AI Agent), Basic at $90/month or $77/month billed annually (300 tickets), Pro at $550/month or $471/month billed annually (2,000 tickets) and Advanced at $1,430/month or $1,227/month billed annually (5,000 tickets), each shown with its AI Agent included (gorgias.com/pricing, read 25 September 2026). Tickets past the allowance cost $0.40 each on Starter and Basic and $0.36 on Pro and Advanced. For stores under 300 tickets a month, Tidio, from $24.17/month (tidio.com/pricing, read 25 September 2026), usually costs less."
-  - question: "Can Tidio handle the same support volume as Gorgias?"
-    answer: "It depends on the volume and complexity. Tidio's Lyro AI handles repetitive queries (order status, shipping, FAQs) at high volume automatically. Tidio says Lyro resolves 67% of conversations instantly (tidio.com), and the rate depends on how well the AI is trained on store FAQs. For complex queries requiring deep Shopify data access, manual order editing, or multi-channel ticketing (email, social, SMS, voice), Gorgias has more comprehensive agent tooling. Stores under 500 tickets/month typically find Tidio sufficient. Stores above that threshold with a dedicated CX team usually upgrade to Gorgias."
-  - question: "Does Gorgias have AI like Tidio Lyro?"
-    answer: "Yes. Gorgias has Auto Agent (AI-suggested replies, macro recommendations, and ticket auto-tagging). However, the primary workflow in Gorgias is still agent-driven: AI assists human agents rather than replacing them for first-response handling. Tidio's Lyro AI is designed to resolve queries without agent involvement, which is a different architectural approach. Gorgias Auto Agent requires the Pro tier ($360/month) and 2–4 weeks of training data to perform well."
-  - question: "What is Gorgias best for?"
-    answer: "Gorgias is best for Shopify stores doing $50,000–$500,000/month revenue with high support volume (300–2,000 tickets/month) where human agents handle complex queries across multiple channels (email, chat, social media), and where deep integration with Shopify order data (refund-from-ticket, order-edit-from-ticket, customer tagging) is needed directly from the helpdesk interface without switching to the Shopify admin."
-  - question: "Why isn't Zendesk recommended for most Shopify stores?"
-    answer: "Zendesk is the most powerful customer support platform of the three, but its per-agent pricing model makes cost rise with every agent you add, and its Shopify integration is via third-party app rather than native. Zendesk only becomes the right choice for enterprise Shopify Plus stores doing $500,000+/month revenue with a dedicated CX team of 5+ agents and complex multi-channel needs (voice, SMS, social media, email). For most Shopify stores, the per-agent cost and setup overhead outweigh the additional capabilities."
-  - question: "Can I switch from Gorgias to Tidio?"
-    answer: "Yes. Tidio supports CSV import of customer and conversation history. Macro and automation logic doesn't transfer directly: you'll need to rebuild it inside Tidio. Most stores complete the switch in 4–8 hours of focused work. The reverse migration (Tidio to Gorgias) is also supported but typically takes longer because Gorgias macros are more sophisticated and require redesign rather than direct translation."
+    answer: "It depends on your support workload. Tidio is built around live chat and its Lyro AI agent, and has a free plan, so it suits stores whose questions are mostly repetitive and arrive through chat. Gorgias is a ticket-based helpdesk priced by monthly ticket volume, which suits a team answering email, chat and social messages from one queue with Shopify order actions alongside."
+  - question: "How does Gorgias charge for Shopify support?"
+    answer: "Gorgias prices its helpdesk by tickets per month rather than per agent; its pricing page says the helpdesk scales from 50 to 5,000 tickets a month and that its AI Agent is available on every plan, charged when it resolves a conversation. On 25 September 2026 its Starter plan was $10 a month for 50 tickets, or $40 with the AI Agent bundle."
+  - question: "Can Tidio refund or edit Shopify orders?"
+    answer: "Tidio's Shopify App Store listing says its Lyro AI agent acts within rules you set on order status, refunds, cancellations and order edits, and that human agents can send products, discounts and order updates from the Tidio inbox. Check which of these your plan includes before relying on them, because Lyro is a paid add-on beyond its free allowance."
+  - question: "Does Zendesk have a native Shopify integration?"
+    answer: "Yes. The Zendesk app on the Shopify App Store is developed by Zendesk, and its listing says agents can process refunds and cancellations from the Zendesk Support sidebar. Zendesk is priced per agent; the listing showed plans from $55 a month on 15 October 2026."
+  - question: "Do I need a paid helpdesk for a small Shopify store?"
+    answer: "Often not. A shared inbox plus Shopify's order pages handles a low volume of messages well. A helpdesk starts paying for itself when messages are being missed, when more than one person answers them, or when the same questions take up a large part of each day. Those are workload signals, which is why this comparison does not use revenue thresholds."
+relatedGuides:
+  - title: "Tidio for Shopify: setup guide"
+    href: "/blog/tidio-for-shopify-complete-setup-guide/"
+  - title: "Gorgias review: is it worth it for Shopify?"
+    href: "/gorgias-shopify-guide/"
+  - title: "Best AI tools for Shopify"
+    href: "/best-ai-tools-shopify/"
 ---
 
-> **The verdict, fast:** Tidio if you're under **$50k/mo** revenue. Gorgias if you're **$50k–$500k/mo** with a CX person. Zendesk only if you're **$500k+/mo** with a 5+ person CX team. Pick by your monthly revenue, not by the marketing pages.
+Most comparisons of these three tools sort stores into revenue bands. Revenue is a poor guide: a £30,000-a-month store selling made-to-order furniture can have a heavier support load than a £300,000-a-month store selling phone cases. What decides the right tool is how many conversations you handle, through which channels, how many people answer them, and how often an answer needs an action in Shopify.
 
-Three customer support platforms, three completely different price points, three different best-fit merchants. This comparison covers pricing in USD, AI resolution rates with sources, Shopify integration depth, and the decision framework by store size, so you pick the right one once and stop researching.
+An earlier version of this page got three things wrong, all corrected below: it said Tidio cannot act on Shopify orders, that Zendesk's Shopify integration is third-party, and that Gorgias's AI needs its Pro tier.
 
-> 📌 **Already decided?** Skip to the [Tidio setup guide for smaller Shopify stores](https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide/) or the [Gorgias review for $50k+ Shopify stores](https://stackarchitect.xyz/gorgias-shopify-guide/) for full pricing breakdowns and the three-numbers framework.
+## How each one is built
 
-## The Core Difference
+**Tidio** is chat-first. Its centre is a live chat widget and **Lyro**, an AI agent that answers from a knowledge base you write. Tidio has a free plan.
 
-**Tidio** is an AI-first support platform. Lyro AI handles first-response for most repetitive queries automatically: customers get immediate answers without waiting for an agent. Human agents handle the queries Lyro escalates. Tidio says Lyro resolves 67% of conversations instantly ([tidio.com](https://www.tidio.com/)). How close a store gets depends on how well Lyro is trained on its knowledge base.
+**Gorgias** is a ticket helpdesk built for ecommerce. Email, chat and social messages land in one queue, with the customer's Shopify orders alongside each ticket. It is priced by **tickets per month**, not per agent.
 
-**Gorgias** is a helpdesk platform built for human agents. It gives agents excellent tooling (deep Shopify data access, macro automation, multi-channel ticketing, revenue attribution) but the primary workflow is still agent-driven. AI features (Auto Agent) assist agents rather than replacing first-response handling.
+**Zendesk** is a general-purpose helpdesk used well beyond ecommerce, with deep routing and reporting. It is priced **per agent**.
 
-**Zendesk** is enterprise customer support software. It's the most powerful of the three at scale, with the deepest routing, reporting, and multi-channel capabilities, but it's also the most expensive, the slowest to set up, and its Shopify integration is via third-party app rather than native.
+## What each charges for
 
-This architectural difference matters for cost. Tidio's free plan costs nothing and reduces the human support hours required. Gorgias Basic, at $90/month billed monthly for 300 tickets with its AI Agent included (gorgias.com/pricing, read 25 September 2026), still requires a human agent for most of those tickets. Zendesk prices per agent, which makes headcount the dominant variable.
+| | Tidio | Gorgias | Zendesk |
+|---|---|---|---|
+| Pricing unit | Conversations, with Lyro AI conversations as a separate allowance | Tickets per month | Agents (seats) |
+| Free plan | Yes | No | No |
+| AI | Lyro, with a small free allowance, then paid | AI Agent on every plan, charged per resolution | Available; check your plan |
+| Entry price | Starter $24.17/mo on tidio.com | Starter $10/mo helpdesk (50 tickets), $40/mo with AI Agent bundle | From $55/mo per its Shopify listing |
 
-Tidio also appears in our [ranking of AI tools for Shopify](/best-ai-tools-shopify/), next to the automation and email tools a small store is likely to run with it.
+Sources: [Tidio pricing](https://www.tidio.com/pricing/), read 15 October 2026 (free plan: 50 billable conversations a month and the first 50 Lyro conversations in total, not monthly). [Gorgias pricing](https://www.gorgias.com/pricing), plan figures read 25 September 2026; on 15 October its page also stated "AI Agent on every plan, pay only when it resolves a conversation" and that the helpdesk scales from 50 to 5,000 tickets a month. Zendesk: [Shopify App Store listing](https://apps.shopify.com/zendesk), read 15 October 2026.
 
-## Pricing Comparison (USD)
+Tidio's prices on its Shopify App Store listing are presented differently from tidio.com (for example, separate Customer Service, Flows and Lyro plans), so compare like with like and check which billing period a figure belongs to.
 
-| Plan | Tidio | Gorgias (AI Agent included) | Zendesk |
-| --- | --- | --- | --- |
-| Free | Live chat + 50 one-off Lyro AI conversations | None | None |
-| Entry paid | Starter, $24.17/month: 50 one-off Lyro conversations | Starter, $40/month billed monthly: 50 tickets/month | Priced per agent |
-| Next tier | Growth, from $49.17/month: upgradeable Lyro limit | Basic, $90/month ($77 billed annually): 300 tickets/month | Priced per agent |
-| Higher tiers | Plus, from $300/month plus usage | Pro, $550/month ($471 billed annually): 2,000 tickets/month. Advanced, $1,430/month ($1,227 billed annually): 5,000 tickets/month | Enterprise (custom) |
-| Overage | Not applicable | $0.40 per ticket on Starter and Basic, $0.36 on Pro and Advanced | Not applicable |
+### What the pricing units mean in practice
 
-Tidio figures are from [tidio.com/pricing](https://www.tidio.com/pricing/) and Gorgias figures from [gorgias.com/pricing](https://www.gorgias.com/pricing), both read 25 September 2026. Gorgias shows each plan with its AI Agent add-on included and lists the helpdesk share separately. We have not re-read Zendesk's pricing for this table, so it shows no Zendesk figures; check [zendesk.com/pricing](https://www.zendesk.com/pricing/) for your region.
+- **Per ticket (Gorgias):** cost follows your volume. Adding a second agent costs nothing extra, but a spike in tickets from a delivery problem or a sale raises the bill. Gorgias's plans have a ticket allowance with a per-ticket charge above it.
+- **Per agent (Zendesk):** cost follows headcount. Volume spikes cost nothing extra; every new team member does.
+- **Per conversation (Tidio):** cost follows chat volume, with AI conversations counted separately. The free plan's Lyro allowance is a one-off trial, not a monthly quota.
 
-The ticket overage model in Gorgias is a meaningful operational risk. A promotion or product issue that spikes support volume can generate unexpected costs without warning. Zendesk's per-agent pricing model is more predictable (you pay for seats, not tickets) but the per-agent cost adds up fast for any team beyond 2–3 agents.
+## What each can do with Shopify orders
 
-## Feature Comparison
+| | Tidio | Gorgias | Zendesk |
+|---|---|---|---|
+| Who builds the Shopify app | Tidio | Gorgias | Zendesk |
+| See customer orders beside the conversation | Yes | Yes | Yes |
+| Refunds and cancellations | Listing says Lyro can act on refunds, cancellations and order edits within your rules | Yes, from the ticket | Listing says refunds and cancellations from the sidebar |
+| Send products and discounts in chat | Yes, per its listing | Yes | Check your setup |
 
-| Feature | Tidio | Gorgias | Zendesk |
-| --- | --- | --- | --- |
-| AI first-response | **Yes. Tidio says Lyro resolves 67% of conversations instantly** ([tidio.com](https://www.tidio.com/)) | Auto Agent (assist mode, Pro tier+) | Enterprise tier only |
-| Live chat | Yes | Yes | Yes |
-| Email support | Yes | Yes | Yes |
-| Social media | Basic | Deep (Facebook, Instagram, X) | Deepest (all major channels) |
-| Voice / SMS | No | Limited (Pro tier+) | **Yes: native** |
-| Shopify order data in chat | Yes: sidebar view | **Yes: deep, native** | Via third-party app |
-| Issue refunds from helpdesk | No | **Yes** | Via app |
-| Edit orders from helpdesk | No | **Yes** | Via app |
-| Macro automation | Basic | **Advanced** | Most powerful |
-| Revenue attribution | Basic | **Advanced: per-ticket revenue** | Custom reports only |
-| Free plan | **Yes: functional** | None | None |
-| Setup time | 30 minutes | 2–4 hours | 1–2 weeks (with admin) |
+All three can now take some Shopify actions without switching to the Shopify admin. What differs is how much of the workflow is designed around it: Gorgias is built so that a human agent's whole day happens in its ticket view; Tidio is built so that AI answers first and a person takes over; Zendesk is built for routing work across a larger team.
 
-The Gorgias advantages are real: direct order editing, refund processing, and multi-channel ticketing from within the helpdesk are genuinely better for stores with complex support workflows. The Zendesk advantages only matter at enterprise scale: multi-channel routing, voice/SMS, and the most flexible reporting in the category. The question is whether the cost is justified for your support volume.
+## Which workload suits which tool
 
-## Shopify Integration Depth
+**Tidio fits when:**
 
-**Tidio's Shopify integration** pulls order status, tracking numbers, purchase history, and product data into the chat sidebar. Agents see relevant customer data during conversations. Lyro AI uses this data to answer order-specific queries without agent involvement.
+- most questions arrive through chat on your store;
+- the same questions recur (delivery times, returns, sizing, order status), so a knowledge base can answer many of them;
+- one or two people answer messages part-time.
 
-What Tidio cannot do from the helpdesk: issue refunds, edit order details, add notes to Shopify orders, or tag customers, these require switching to the Shopify admin.
+Start on the free plan to test whether chat and Lyro reduce your inbox. The [Tidio setup guide](/blog/tidio-for-shopify-complete-setup-guide/) covers writing the knowledge base Lyro answers from.
 
-**Gorgias's Shopify integration** is the deepest of the three. Agents can issue refunds, edit orders, apply discount codes, add order notes, and tag customers directly from the Gorgias ticket view. For stores where support agents regularly modify orders, this eliminates context-switching to Shopify admin entirely.
+**Gorgias fits when:**
 
-**Zendesk's Shopify integration** is via the official third-party app. It pulls order data into ticket sidebars but doesn't match Gorgias's depth for in-ticket actions. Refunds and order edits typically require switching to Shopify admin or building custom apps via Zendesk's developer platform.
+- messages arrive by email, chat, Instagram and Facebook, and you want them in one queue;
+- one or more people spend a large part of their day on support;
+- answers often involve an order action: a refund, an address change, a replacement.
 
-This depth matters at scale. For a team of 3+ agents handling 500+ tickets/month, the time saved by not switching to Shopify admin for every order action is meaningful. For a solo operator or small team handling under 200 tickets/month, it is less significant.
+Price it on your ticket count, including your busiest month, not your average. The [Gorgias review](/gorgias-shopify-guide/) covers choosing a tier.
 
-## Decision Framework by Store Size
+**Zendesk fits when:**
 
-**Under $20,000/month revenue: Use Tidio Free**
+- several agents work in shifts or teams, and tickets need routing by skill, language or priority;
+- support covers more than the Shopify store, such as wholesale or a separate service business;
+- you need reporting across teams.
 
-At this size, support volume is typically under 100 tickets/month. Lyro AI's free allowance (50 one-off conversations, not a monthly allowance) handles a meaningful share of queries automatically. Human response handles the rest. Total cost: $0/month.
+Because it is priced per agent, its cost is easiest to predict for a stable team size.
 
-→ [Get Tidio free, with 50 one-time Lyro AI conversations](/go/tidio/?source=tidio-vs-gorgias-shopify-n1)
+## How to decide in an afternoon
 
-**$20,000–$50,000/month revenue: Tidio Paid**
+1. **Count last month's customer messages** by channel: chat, email, social, phone.
+2. **Tag a sample of 50** by type. If more than half are the same handful of questions, an AI agent with a good knowledge base will remove real work.
+3. **Count how many needed a Shopify action** (refund, cancellation, edit). If it is a large share, weight order actions heavily.
+4. **Count the people** who answer messages and the hours they spend.
+5. **Price each tool on those numbers**, using your busiest month for ticket- or conversation-priced tools.
 
-Support volume typically 100–300 tickets/month. Tidio's Growth plan, from $49.17/month with an upgradeable Lyro limit, covers most stores in this range with AI-first resolution. Gorgias Basic at $90/month billed monthly requires more human agent time for the same ticket volume.
+Then trial the strongest candidate on real messages for two weeks. Every option here offers either a free plan or a free trial.
 
-
-**$50,000–$500,000/month revenue: Gorgias Basic or Pro**
-
-Support volume typically 300–2,000 tickets/month. This is where Gorgias's economics start working: native Shopify integration, revenue attribution, and macro automation justify the $90–$550/month cost (billed monthly, AI Agent included). Tidio's free and starter plans become limiting; the AI-only model breaks down for complex multi-step support flows.
-
-
-**$500,000+/month revenue with 5+ agent CX team: Evaluate Zendesk**
-
-At this size, support complexity and multi-channel needs justify the per-agent cost. Multiple agents, multi-channel queries (email, social, SMS, voice), complex order modifications, and enterprise-grade reporting become important. Zendesk's tooling is purpose-built for this scale, but most Shopify stores never reach the volume where it pays back the setup overhead.
-
-For most $500k+ Shopify stores, **Gorgias Pro or Advanced** is still the right answer unless voice/SMS support is critical. Zendesk only wins when the multi-channel routing complexity exceeds what Gorgias supports.
-
-## The Verdict
-
-**Choose Tidio if:**
-
-- You're under $50,000/month revenue
-- Most of your queries are repetitive (order status, shipping, FAQs)
-- You want to reduce support cost from the start
-- You're a solo operator or small team under 500 tickets/month
-- You want AI to handle first-response, not just assist agents
-
-**Choose Gorgias if:**
-
-- You're $50,000–$500,000/month revenue
-- You have 1+ dedicated CX person with a structured helpdesk workflow
-- Your agents regularly modify orders, issue refunds, or tag customers from the helpdesk
-- You need multi-channel ticketing (email + social + chat) in one place
-- Revenue attribution per support interaction matters for your reporting
-
-**Choose Zendesk if (and only if):**
-
-- You're $500,000+/month revenue
-- You have 5+ CX agents
-- You need native voice + SMS + multi-channel routing in one platform
-- Your team can absorb 1–2 weeks of setup overhead
-
-**For most Shopify stores, Tidio is the right starting point.** The free plan is genuinely functional. Lyro AI reduces human support time meaningfully when properly configured. Tidio's paid plans, from $24.17/month, extend this for growing stores at a fraction of Gorgias's cost.
-
-Start with [Tidio's free plan](/go/tidio/?source=tidio-vs-gorgias-shopify-n2). The [Tidio setup guide](https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide/) covers when the free plan is enough and when it isn't. The [Tidio setup guide](https://stackarchitect.xyz/blog/tidio-for-shopify-complete-setup-guide/) covers the full configuration including the Lyro knowledge base structure.
-
-Once you cross 300 tickets/month or hit Tidio's seat cap, [book a Gorgias demo or start a free trial](/go/gorgias/?source=tidio-vs-gorgias-shopify-verdict). The [Gorgias review for $50k+ stores](https://stackarchitect.xyz/gorgias-shopify-guide/) covers the upgrade decision and which Gorgias tier matches your ticket volume.
-
-Both the Tidio and the Gorgias links in this post are affiliate links, so Stack Architect may earn a commission whichever you choose. The revenue and ticket thresholds above decide the recommendation, not which one pays.
-
----
-
-## Complete your free stack alongside whichever helpdesk you choose
-
-The Complete Kit handles the rest of your automation: server-side tracking (replaces Elevar/Triple Whale), a Stocky replacement (Stocky closed on 31 August 2026), and live P&L reporting. Four pre-built Make.com JSON blueprints. $19.99 one-time, $0/month ongoing.
-
-**[Get the Complete Kit: $19.99 →](https://stackarchitect.xyz/pro/)**
+Both the Tidio and Gorgias links on this site are affiliate links, so Stack Architect may earn a commission whichever you choose. The workload test above decides the recommendation, not which one pays. [Try Tidio free](/go/tidio/?source=tidio-vs-gorgias-shopify-n1) or [start a Gorgias trial](/go/gorgias/?source=tidio-vs-gorgias-shopify-verdict).
