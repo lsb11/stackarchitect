@@ -4,7 +4,7 @@ heading: "When to Upgrade from Free Make.com to Google Workspace: Shopify Operat
 description: "7 signals it's time to upgrade from free Make.com to Google Workspace for Shopify automation — what the upgrade actually changes, and how to migrate with zero downtime."
 answer: "Upgrade from the free Shopify automation stack when you hit a real ceiling, not on principle. The three signals are Make.com credits exhausted before month end, Apps Script runs exceeding six minutes, and daily trigger runtime running out. What you buy is quota headroom, not features, so the decision follows the symptom rather than the price."
 publishDate: "2026-03-25"
-updatedDate: "2026-09-04"
+updatedDate: "2026-10-15"
 verifiedDate: "2026-08-29"
 category: "automation"
 badge: "Decision Guide"
@@ -13,7 +13,7 @@ readTime: 14
 canonical: "https://stackarchitect.xyz/blog/when-to-upgrade-free-make-google-workspace/"
 faqs:
   - question: "How many operations does Make.com give you for free?"
-    answer: "Make.com's free plan gives 1,000 credits per month. A 4-5 branch Shopify automation scenario uses approximately 5-6 operations per order. This covers roughly 160-200 orders per month on the full automation stack before needing to upgrade to Make.com Core at $9/month."
+    answer: "Make.com's free plan gives up to 1,000 credits a month. How many orders that covers depends on your scenario: each module that runs typically uses one credit, so open one run in the scenario's history, note its credit count, and divide 1,000 by it. A scenario using ten credits per order covers about 100 orders a month."
   - question: "What does upgrading to Google Workspace actually change?"
     answer: "It raises Google Apps Script daily quotas, and that is the whole reason to do it for automation. The 6-minute per-execution ceiling is identical on both consumer and Workspace accounts: upgrading does not change it. What Workspace raises is the daily headroom: trigger runtime goes from 90 minutes to 6 hours, UrlFetch calls from 20,000 to 100,000, document creates from 250 to 1,500, and email recipients from 100 to 1,500. Workspace is priced per seat, so a second person is a second full seat rather than a marginal add-on."
   - question: "Do I need Google Workspace for Make.com to work?"
@@ -21,7 +21,7 @@ faqs:
   - question: "Does upgrading to Google Workspace fix Apps Script timeouts?"
     answer: "No. The 6-minute per-execution ceiling is identical on consumer and Workspace accounts, so 'Exceeded maximum execution time' will keep happening after you pay. The fixes are structural: batch reads and writes so each run does less work, split the job into chunks that each finish inside 6 minutes and save progress with PropertiesService between runs, or move the heavy work onto Make.com, which has no per-execution time limit. Upgrading raises daily quotas, not the per-run ceiling."
   - question: "When should I upgrade Make.com from free to paid?"
-    answer: "Upgrade Make.com when you consistently hit the 1,000 credits/month limit. Signs include: scenarios failing with 'operations limit exceeded' errors, having to disable some automation branches to stay within the limit, or processing more than 160-200 orders per month on the full automation stack."
+    answer: "Upgrade Make.com when you consistently run out of the free plan's 1,000 credits a month. Signs include scenarios stopping before the month ends, or switching off branches to stay inside the limit. Work out your own ceiling from the credits one order uses in your scenario history, rather than from a typical figure."
 relatedGuides:
   - title: "Make.com vs Zapier cost calculator"
     href: "/make-vs-zapier-cost-calculator/"
@@ -31,7 +31,7 @@ relatedGuides:
     href: "/shopify-google-sheets-automation/"
 ---
 
-The free stack (Make.com free + Gmail + Google Sheets on a consumer account) covers most Shopify stores indefinitely. The upgrade to Make.com Core and Google Workspace makes sense at specific trigger points, and not before. This guide covers the 7 signals, what the upgrade actually changes, and how to migrate with zero downtime.
+The free stack (Make.com free + Gmail + Google Sheets on a consumer account) is enough for many small stores for a long time. The upgrade to Make.com Core and Google Workspace makes sense at specific trigger points, and not before. This guide covers the 7 signals, what the upgrade actually changes, and how to migrate with zero downtime.
 
 ## The Free Stack and Its Limits
 
@@ -41,17 +41,17 @@ The free automation stack runs on:
 - **Gmail/Google account (consumer):** Google Apps Script execution limited to 6 minutes per run, 90 minutes total daily trigger runtime, 250 document creates/day
 - **Google Sheets (consumer):** No meaningful limits for most stores
 
-For stores under approximately 200 orders/month on a 5-branch scenario, this covers everything. The limits only become relevant as order volume increases or as you add more complex automations.
+How far the free plan stretches depends on how many credits one order uses in your scenarios. Open a recent run in Make.com's history and note its credit count: 1,000 divided by that number is roughly your monthly order ceiling on the free plan.
 
 ## The 7 Upgrade Signals
 
 ### Signal 1: Make.com operations limit exceeded
 
-You start receiving "Operations limit exceeded" errors in your Make.com scenario history. This means you've consumed 1,000 credits in the current calendar month and Make.com has paused the scenario until the next month.
+Your scenarios stop before the month ends because the account has used its credits. Orders placed after that point are not processed until the allowance renews or you upgrade, and Shopify only retries a failed webhook for about four hours, so those orders are not simply queued.
 
-**What to do:** Upgrade to Make.com Core ($9/month, 10,000 credits). This covers stores up to approximately 2,000 orders/month on the full 5-branch stack.
+**What to do:** Upgrade to Make.com Core ($9/month for 10,000 credits). Divide 10,000 by the credits one order uses in your scenario history to see how far it stretches for you.
 
-Before committing, work out whether the overrun is structural or seasonal, because the answer changes what you buy. Sustained growth justifies a permanent upgrade. A single spike does not: a store averaging 50 orders a day that processes 300 on Black Friday burns roughly 1,200 operations that day alone (past the free tier's monthly ceiling inside twenty-four hours) and then drops back to normal. That is an October upgrade and a January downgrade, not a plan change. The [BFCM automation checklist](/blog/shopify-bfcm-automation-checklist-2026/) sets out the full pre-season sequence and the deadline each piece has to be live by.
+Before committing, work out whether the overrun is structural or seasonal, because the answer changes what you buy. Sustained growth justifies a permanent upgrade. A single spike does not: a store whose Black Friday weekend alone uses more credits than the free plan allows for the month needs a paid plan for that month, then can drop back. That is a November upgrade and a December downgrade, not a permanent change. The [BFCM automation checklist](/blog/shopify-bfcm-automation-checklist-2026/) shows how to budget credits for a peak from your own scenario history.
 
 ### Signal 2: Google Apps Script timing out mid-run
 
@@ -73,7 +73,7 @@ If you use Autocrat or any document generation workflow and documents are being 
 
 ### Signal 5: You need multiple team members accessing automations
 
-Consumer Google accounts are single-user. If a second person needs to edit Make.com scenarios, view Google Sheets dashboards with proper permissions, or access Tidio / other tools from a shared business account, Google Workspace becomes necessary for organisational reasons.
+Consumer Google accounts belong to one person. If several people need company-owned Google files, shared drives, or addresses on your own domain, Google Workspace is the tidy way to do it. Make.com itself does not need Workspace: its team access is a Make.com plan feature, separate from your Google account.
 
 **What to do:** Upgrade to Google Workspace. Note that it is priced per seat, so a second person is a second full seat, not a marginal add-on: the cost of this signal scales with headcount in a way the other six do not.
 
@@ -100,22 +100,14 @@ Google Workspace we hold. Google's pricing page geo-locks to the country you loa
 This is less of a problem than it sounds, because the number was never what the decision turned on. What you are buying is quota headroom, and that is fixed and checkable:
 
 **What this gets you:**
-- 10,000 Make.com credits/month (covers ~2,000 orders/month on the full stack)
+- 10,000 Make.com credits/month
 - 6 hours of daily Apps Script trigger runtime (up from 90 minutes)
 - 100,000 UrlFetch calls/day (up from 20,000)
 - 1,500 document creates per day
 - Custom domain email
 - Google Workspace SLA
 
-**The payback calculation:**
-
-At 500 orders/month with a 5-branch scenario running server-side tracking, inventory, and P&L reporting:
-
-- Time saved by automated inventory vs manual logging: approximately 2 hours/week
-- Time saved by automated P&L vs manual calculation: approximately 1 hour/week
-- What those three hours a week are worth is your own number, and this guide does not have it.
-
-Against three hours a week of recovered time, a two-line subscription bill is not usually the deciding variable, which is the point. At this volume the upgrade is not a close call, and whatever Google is charging in your region this quarter does not change the answer. If it *is* a close call for you, that is the signal you have not actually hit a ceiling yet.
+**The payback calculation** is yours to make, and it is short: what do the failures you are seeing cost? An order that is never logged, a document that is never generated, or a tracking event that never reaches an ad platform each has a cost you can estimate for your own store. If that cost is clearly larger than the two subscriptions, upgrade. If it is a close call, you have probably not hit a real ceiling yet.
 
 If you have read the signals above and you are past the ceiling, the two accounts to open are [Make.com Core](/go/make/?source=when-to-upgrade-free-make-google-workspace-decision-make) and [Google Workspace](/go/workspace/?source=when-to-upgrade-free-make-google-workspace-decision-workspace).
 
@@ -129,7 +121,7 @@ Sign up for Google Workspace Business Starter at workspace.google.com. Verify yo
 
 **Step 2: Move Google Sheets to the new account**
 
-In your consumer Google account, go to each Sheets file used in your automation stack. Share it with your new Workspace email with Editor access. In the Workspace account, make a copy (File → Make a copy) so the Workspace account owns the file.
+In your consumer Google account, go to each Sheets file used in your automation stack. Share it with your new Workspace email with Editor access. In the Workspace account, make a copy (File → Make a copy) so the Workspace account owns the file. The copy has a new file ID, so every Make.com module and script that points at the old file must be updated. An Apps Script project bound to the sheet is copied with it, but its triggers are not.
 
 **Step 3: Update Make.com connections**
 
@@ -137,7 +129,7 @@ In Make.com, go to **Connections** and reconnect your Google Sheets and Google D
 
 **Step 4: Move Google Apps Script projects**
 
-In the Workspace account, create new Apps Script projects. Copy the script code from your consumer account. In the Workspace Apps Script project, set up the same triggers (time-based, form submission, etc.).
+Scripts bound to a copied sheet came across with it. For standalone scripts, create new projects in the Workspace account and copy the code. In every project, recreate the triggers (time-based, form submission and so on), because triggers belong to the account that created them and are never copied.
 
 **Step 5: Test with a live order**
 
@@ -147,17 +139,10 @@ Place a test order in Shopify and verify the entire scenario runs correctly: Mak
 
 Once confirmed, delete or disable the triggers in your consumer Apps Script projects. This prevents duplicate automation runs during the transition.
 
-The full migration takes 2–4 hours of active work and causes zero downtime if you keep both accounts running in parallel until you've verified the Workspace setup is working correctly.
+Keep both accounts running in parallel until a real order has passed through every step on the Workspace side. That parallel period is what keeps downtime at zero; switch the old triggers off straight after, or orders will be processed twice.
 
 ## The Bottom Line
 
 Stay on the free stack until one of the 7 signals appears. When it does, the upgrade (Make.com Core + Google Workspace) is straightforward to justify. The [Make.com beginner's guide](/make-com-shopify/) covers the initial setup, and the [Google Apps Script quota guide](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/) covers the specific limits you'll hit as volume grows.
 
 
----
-
-## Get the pre-built Make.com files while you're on the free tier
-
-The Complete Kit is designed for Make.com's free tier: four JSON blueprints (CAPI Shield, TikTok CAPI, Stocky Swap, P&L Auto) that run within 1,000 credits/month for most Shopify stores. $19.99 one-time.
-
-**[Get the Complete Kit: $19.99 →](/pro/)**
