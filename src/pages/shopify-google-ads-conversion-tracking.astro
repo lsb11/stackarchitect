@@ -53,11 +53,11 @@ const flowSteps = [
   { num: "Step 01", color: "var(--g)",     title: "Order paid in Shopify",       tool: "Shopify backend",        desc: "Customer completes checkout. Shopify confirms payment in its backend: independent of what the customer's browser does." },
   { num: "Step 02", color: "var(--sky)",   title: "Webhook fires server-to-server", tool: "Shopify → Make.com",   desc: "Shopify sends an Order payment webhook to Make.com instantly. iOS restrictions, Safari ITP, and ad blockers cannot intercept a server-to-server signal." },
   { num: "Step 03", color: "var(--vio)",   title: "Customer data hashed",        tool: "Make.com processing",    desc: "Make.com hashes the customer email with SHA-256 and prepares the conversion upload. Shopify's order data carries no Google Click ID (gclid), so there is none to extract: the upload has only the hashed email to match on." },
-  { num: "Step 04", color: "var(--amber)", title: "Sent to Google Ads API",       tool: "Google Ads Conversions", desc: "Purchase event delivered server-side to the Google Ads Conversions API. Smart Bidding, Performance Max, and ROAS targets receive complete, accurate conversion data." }
+  { num: "Step 04", color: "var(--amber)", title: "Sent to Google Ads API",       tool: "Google Ads Conversions", desc: "Purchase event delivered server-side to the Google Ads Conversions API. What Google can do with it depends on matching: Shopify orders carry no Google click ID, so the upload has only the hashed email." }
 ];
 
 const setupSteps = [
-  { pos: 1, title: "Create a free Make.com account",            tool: "make.com: free tier, no credit card",                     desc: "Sign up for Make.com free: 1,000 credits/month (formerly called operations) at no cost. For most Shopify stores processing under 300 orders/month, the free tier covers Google Ads Enhanced Conversions running indefinitely." },
+  { pos: 1, title: "Create a free Make.com account",            tool: "make.com: free tier, no credit card",                     desc: "Sign up for Make.com free: 1,000 credits/month (formerly called operations) at no cost. How many orders that covers depends on the credits one order uses in your scenario." },
   { pos: 2, title: "Create a scenario with a Webhooks trigger",  tool: "Make.com → Create scenario → Webhooks",                    desc: "In Make.com, create a new scenario. Add a Webhooks module as the trigger. Copy the webhook URL: you will paste this into Shopify in step 3." },
   { pos: 3, title: "Add the Shopify Order payment webhook",       tool: "Shopify Admin → Settings → Notifications → Webhooks",     desc: "In Shopify Admin → Settings → Notifications → Webhooks, create a new webhook. Event: Order payment. Format: JSON. Paste the Make.com webhook URL. Save. This is the server-to-server trigger: no browser required." },
   { pos: 4, title: "Add the Google Ads module",   tool: "Make.com → Google Ads → Upload a Click Conversion",                        desc: "Add the Google Ads module and choose Upload a Click Conversion. Connect your Google Ads account, then select your Customer ID and Conversion Action ID from the dropdowns. Map conversion value and currency from the Shopify order. No raw API URLs: the native module handles the Google Ads Conversions API for you. The module's two consent fields must be set to match your own consent setup; do not mark them Granted for customers who have not consented." },
@@ -71,23 +71,22 @@ const compRows = [
   { feature: "GCLID recovery",                        ga: "No",             stape: "Yes",        little: "Yes",      anal: "Partial",   gaWin: false },
   { feature: "Server-to-server (not browser)",        ga: "Yes",            stape: "Yes",        little: "Partial",  anal: "Partial",   gaWin: true },
   { feature: "Data in your own account",              ga: "Yes: Make.com", stape: "Their infra", little: "Their infra", anal: "Their infra", gaWin: true },
-  { feature: "Smart Bidding signal improvement",      ga: "Yes",            stape: "Yes",        little: "Yes",      anal: "Yes",       gaWin: true },
   { feature: "Vendor lock-in",                        ga: "None",           stape: "Medium",     little: "High",     anal: "High",      gaWin: true },
   { feature: "Annual cost",                           ga: "$0",             stape: "$200",      little: "$1,908+",  anal: "$1,740+",   gaWin: true, highlight: true }
 ];
 
 
 const faqs = [
-  { q: "Why is my Shopify Google Ads conversion tracking wrong in 2026?",                  a: "Three causes account for most Google Ads attribution gaps on Shopify in 2026: iOS Link Tracking Protection stripping gclid click IDs from URLs before customers open them in Safari, Mail, or Messages; Safari Intelligent Tracking Prevention (ITP) clearing attribution cookies before the purchase completes; and ad blockers preventing the gTag from loading. Server-side Google Enhanced Conversions fixes all three because events are sent from Shopify's server to Google directly, bypassing the browser." },
+  { q: "Why is my Shopify Google Ads conversion tracking wrong in 2026?",                  a: "Three causes account for most gaps: Apple's Link Tracking Protection (iOS 17 and later) strips the gclid from links opened in Mail, Messages and Private Browsing; Safari's Intelligent Tracking Prevention shortens the life of the cookie that stores the click; and ad blockers stop the Google tag loading. Turning on enhanced conversions in Shopify's Google & YouTube app adds hashed customer data so Google can match more of the conversions its tag does record." },
   { q: "What is Google Enhanced Conversions for Shopify?",                                 a: "Google Enhanced Conversions is Google's server-side conversion tracking supplement. It sends hashed first-party customer data (email, phone, name) alongside each conversion event via API. Google uses this to match conversions to signed-in Google accounts with greater accuracy, improving Smart Bidding and Performance Max optimisation even when cookies and gclid are blocked. For Shopify stores, it carries purchase events that the browser-based gTag misses when iOS and Safari strip the click ID or clear the cookie. We have not measured what share of events that is, and are not aware of a published figure for Google Ads specifically, so this page does not quote one." },
-  { q: "How do I set up Google Ads conversion tracking on Shopify for free?",              a: "The free two-layer approach: first, ensure the Google & YouTube sales channel is installed in Shopify for baseline browser-side tracking. Then add Google Enhanced Conversions via Make.com: create a Make.com free account, add a Webhooks module as the trigger, create a Shopify Order payment webhook pointing to your Make.com URL, add an HTTP module calling the Google Ads Conversions API endpoint, and hash customer email and phone with SHA-256. Full setup takes 6 minutes. No code, no GTM, no paid apps." },
+  { q: "How do I set up Google Ads conversion tracking on Shopify for free?",              a: "Install Shopify's Google & YouTube app and connect your Google Ads account; Google suggests purchase, add to cart and checkout started conversion actions by default. Then, in the app's Settings tab under Google Ads settings, find Enhanced conversions, select Turn on and accept the customer data terms. Remove any older Google Ads tags from your theme or custom pixels so conversions are not counted twice." },
   { q: "What is GCLID and why does it matter for Shopify Google Ads?",                    a: "GCLID (Google Click ID) is the unique identifier Google appends to your ad URLs when someone clicks an ad: for example, ?gclid=CjwKCAjw8. Shopify's thank-you page uses this ID to attribute the purchase back to the specific Google Ads click. When iOS Link Tracking Protection or Safari ITP strips or clears the gclid, the conversion is unattributed. Google's Enhanced Conversions adds hashed customer data to help Google match purchases. A server-side upload built on Shopify's Order payment webhook has no gclid to send, because Shopify's order data has no field for one, so whether Google matches it depends on how your conversion action is set up." },
-  { q: "Do I need Google Tag Manager for Shopify Google Ads conversion tracking?",        a: "No. The Make.com approach sends Google Enhanced Conversions events directly to the Google Ads Conversions API via HTTP request: no Google Tag Manager container required. GTM is one implementation route. Direct server-to-server API calls via Make.com are simpler and more reliable for Shopify stores because the entire flow operates without a browser." },
+  { q: "Do I need Google Tag Manager for Shopify Google Ads conversion tracking?",        a: "No. Shopify's Google & YouTube app places the Google tag, records purchase conversions and can send enhanced conversions without Google Tag Manager. Tag Manager is useful only if you need custom events beyond what the app tracks; if you use it, make sure it does not fire a second purchase conversion alongside the app." },
   { q: "What is the difference between standard conversion tracking and Enhanced Conversions?", a: "Standard Google Ads conversion tracking fires a browser-based gTag when the order confirmation page loads. It fails when iOS or Safari blocks the gclid, when ad blockers prevent the gTag from loading, or when the browser session expires before the customer reaches the thank-you page. Google Enhanced Conversions supplements this by sending hashed customer data server-to-server, independently of browser state. Running both simultaneously gives Google the most accurate conversion picture." },
   { q: "How do I fix Google Ads showing fewer conversions than Shopify?",                 a: "If Google Ads reports significantly fewer conversions than Shopify shows orders for the same period, you are losing attribution due to iOS restrictions or ad blockers. A server-side upload via Make.com runs independently of the browser, but it only helps if Google can match what it sends: Shopify's order data has no Google click ID, so the upload carries hashed customer email alone, and whether Google accepts that depends on how your conversion action is set up." },
-  { q: "Will server-side Google Ads tracking improve my Smart Bidding performance?",      a: "Yes. Smart Bidding, Target ROAS, and Performance Max all optimise based on the conversion signals Google receives. When real conversions are invisible due to browser-based tracking failures, the algorithm is bidding on incomplete data: underbidding on high-intent traffic and over-bidding on low-converting segments. Completing conversion data with server-side Enhanced Conversions typically improves Smart Bidding performance within 14–21 days as the model relearns with full data." },
-  { q: "Does this work alongside my existing Google Ads conversion tag?",                 a: "Yes. Google Enhanced Conversions is designed to supplement, not replace, your existing conversion tags. The browser-side gTag continues to fire as normal. The server-side Enhanced Conversions layer adds hashed customer data on top. Google automatically deduplicates events using the order ID, so the same purchase is not counted twice. Running both layers together gives maximum conversion accuracy." },
-  { q: "How much does it cost to fix Google Ads conversion tracking on Shopify?",        a: "The complete free setup costs $0/month. The Make.com free plan (1,000 credits/month (formerly called operations)) covers Enhanced Conversions for stores processing under 500 orders per month. Above that, Make.com Core at $9/month covers 10,000 credits. Every paid alternative, Stape ($17/month billed yearly), Littledata ($159+/month), Analyzify ($145–$275/month), charges a monthly subscription for the same server-side outcome Make.com delivers free." },
+  { q: "Will server-side Google Ads tracking improve my Smart Bidding performance?",      a: "It can, but nobody can promise a figure for your store. Smart Bidding learns from the conversions Google receives, so matching more real purchases gives it more to learn from. We have not measured the effect across stores. Compare Google Ads conversions with Shopify orders over the same weeks before and after a change, and judge bidding on results over a month or more." },
+  { q: "Does this work alongside my existing Google Ads conversion tag?",                 a: "Enhanced conversions in the Google & YouTube app works with the app's own tag, so there is nothing extra to deduplicate. A separate server-side upload is different: unless it is set up so Google treats it as the same conversion as the tag, the same purchase can be counted twice. If you add one, compare conversion counts with Shopify orders for a week to check." },
+  { q: "How much does it cost to fix Google Ads conversion tracking on Shopify?",        a: "Turning on enhanced conversions in Shopify's Google & YouTube app costs nothing. A Make.com upload is also free within Make.com's free plan of 1,000 credits a month, and the number of orders that covers depends on the credits each order uses in your scenario. Paid tools such as Stape ($17/month billed yearly), Littledata ($159+/month) and Analyzify ($145-$275/month) charge a subscription for managed setups." },
   { q: "Is this GDPR compliant?",                                                        a: "All customer PII (email, phone, name) is hashed with SHA-256 inside Make.com before transmission to Google, as required by Google's Enhanced Conversions specification. The hashed data flows through your own Make.com workspace. Ensure your privacy policy discloses that hashed customer data is shared with Google for conversion matching purposes." }
 ];
 
@@ -132,11 +131,8 @@ const schemaGraph = {
       "description": "Free Shopify Google Ads conversion tracking using Make.com server-side webhooks. Sends purchase events to Google Enhanced Conversions API, carrying conversions lost to iOS and Safari ITP. A free alternative to Stape, Littledata and Analyzify.",
       "featureList": [
         "Google Enhanced Conversions integration",
-        "GCLID extraction and recovery",
         "Server-to-server purchase event delivery",
-        "iOS and Safari ITP bypass",
         "SHA-256 customer data hashing",
-        "Smart Bidding signal improvement",
         "Performance Max optimisation data",
         "No code required",
         "Deploys in 6 minutes",
@@ -290,7 +286,7 @@ const tocHeadings = [
       <span class="dim">never sees. Fix it free.</span>
     </h1>
 
-    <p id="answer">Google Ads under-reports Shopify purchases because its conversion tag fires in the browser, where iOS restrictions and ad blockers stop it. A server-side upload through a Make.com webhook can add hashed customer email, but Shopify's order data carries no Google click ID, so what Google can match depends on how your conversion action is set up.</p>
+    <p id="answer">The free fix for most Shopify stores is to turn on enhanced conversions in Shopify's Google &amp; YouTube app: Settings, Google Ads settings, Enhanced conversions, Turn on. Google then receives hashed customer data with each purchase its tag records. A Make.com server-side upload is an extra route with limits: Shopify orders carry no Google click ID.</p>
 
   <TableOfContents headings={tocHeadings} />
 
@@ -390,7 +386,7 @@ const tocHeadings = [
       <div class="flow-step">
         <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--red);letter-spacing:.12em;margin-bottom:12px;">CAUSE 02</div>
         <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;">Safari Intelligent Tracking Prevention</div>
-        <p style="font-size:13px;color:var(--text-3);line-height:1.7;">Safari ITP limits cookie lifetimes to 24 hours, sometimes 1 hour. If a customer clicks your ad, leaves, and returns later to purchase, the attribution cookie is gone. Google sees a conversion with no source, or attributes it incorrectly to direct traffic.</p>
+        <p style="font-size:13px;color:var(--text-3);line-height:1.7;">Safari ITP limits how long tracking cookies last, as short as 24 hours when the click ID arrived in the link. If a customer clicks your ad, leaves, and returns later to purchase, the attribution cookie is gone. Google sees a conversion with no source, or attributes it incorrectly to direct traffic.</p>
       </div>
       <div class="flow-step">
         <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--red);letter-spacing:.12em;margin-bottom:12px;">CAUSE 03</div>
@@ -492,6 +488,7 @@ const tocHeadings = [
     <ol style="color:var(--text-2);line-height:1.75;margin:0 0 18px 20px;">
       <li>In Shopify, add the Google &amp; YouTube sales channel if it is not installed, and connect your Google Ads account in its settings.</li>
       <li>In Google Ads, open Goals and find the purchase conversion action Shopify created. If it is not recording conversions, the channel is not connected yet.</li>
+      <li>In the Google &amp; YouTube app's Settings tab, under Google Ads settings, turn on Enhanced conversions and accept the customer data terms. For many stores this step alone is the fix, and the Make.com route below is optional.</li>
       <li>Note the conversion ID, which starts <code>AW-</code>, and the conversion label. The Make.com module asks for both.</li>
     </ol>
     <p style="color:var(--text-2);line-height:1.75;margin-bottom:10px;">If Enhanced Conversions shows no data after a day or two, check these first:</p>
@@ -512,7 +509,7 @@ const tocHeadings = [
     <div class="sec-head">
       <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Comparison · free vs paid</span>
       <h2 id="compare-h">Free Make.com setup vs paid Google Ads tracking tools</h2>
-      <p>The technical outcome is identical. The cost is not.</p>
+      <p>They are not equivalent: the paid tools can capture the Google click ID, and a Make.com webhook cannot.</p>
     </div>
 
     <div role="table" aria-label="Comparison of free Make.com Google Ads tracking vs paid tools">
@@ -537,7 +534,7 @@ const tocHeadings = [
 
     <div class="hl-box" style="margin-top:20px;">
       <div class="hl-box-label">The honest summary</div>
-      <div class="hl-box-body">Stape, Littledata, and Analyzify add management dashboards and easier configuration on top of the same Google Enhanced Conversions API. If you need a managed service with ongoing support, they are reasonable choices. If you are comfortable running a Make.com scenario (which takes 6 minutes to set up and runs unattended) the technical outcome is identical at $0/month.</div>
+      <div class="hl-box-body">For most stores the free answer is neither column: it is turning on enhanced conversions in Shopify's Google &amp; YouTube app. Paid tools such as Stape and Littledata capture the Google click ID in the browser and send it server-side, which a Make.com webhook cannot do, because Shopify's order data does not contain it. The Make.com route is a free experiment with real limits, set out above, not a like-for-like replacement.</div>
     </div>
   </div>
 </section>
@@ -553,7 +550,7 @@ const tocHeadings = [
 
     <div class="seo-prose" itemscope itemtype="https://schema.org/Article">
       <h3>What is the best free way to fix Shopify Google Ads conversion tracking in 2026?</h3>
-      <p>The best free way to fix Shopify Google Ads conversion tracking in 2026 is <strong>server-side Google Enhanced Conversions via Make.com</strong>. This approach sends purchase events directly from Shopify's server to the Google Ads Conversions API the instant an order is paid, completely bypassing the customer's browser. It reports conversions lost to iOS Link Tracking Protection, Safari Intelligent Tracking Prevention, and ad blockers, at $0/month on Make.com's free tier. No code, no Google Tag Manager, no paid app required.</p>
+      <p>For most stores, the best free fix is to <strong>turn on enhanced conversions in Shopify's Google &amp; YouTube app</strong>: in the app's Settings tab, under Google Ads settings, find Enhanced conversions and select Turn on (<a href="https://support.google.com/google-ads/answer/13494537">Google Ads Help</a>). It adds hashed customer data to the conversions the app's tag records, with no other accounts and nothing to maintain. A Make.com upload, covered on this page, is an extra route with real limits: Shopify's order data has no Google click ID, and the upload method is moving to Google's Data Manager API.</p>
 
       <h3>Why is my Shopify Google Ads conversion tracking wrong?</h3>
       <p>The most common cause of Shopify Google Ads underreporting in 2026 is <strong>iOS Link Tracking Protection stripping the GCLID parameter</strong> from ad URLs before customers open them. When Safari, Mail, or Messages removes ?gclid= from the URL, Google has no click ID to attribute the purchase to. The second cause is Safari ITP clearing attribution cookies, often within 24 hours, before longer research journeys complete with a purchase. The third is ad blockers preventing the Google Ads conversion tag from loading on the order confirmation page. Server-side Enhanced Conversions resolves all three because it never touches the browser.</p>

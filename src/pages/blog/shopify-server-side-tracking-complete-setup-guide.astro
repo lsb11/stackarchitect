@@ -22,9 +22,9 @@ const faqs: Faq[] = [
   { q: "Will server-side tracking keep working as iOS tightens privacy further?",
     a: "<p>Yes. Server-side tracking is specifically designed to be immune to iOS browser-level restrictions because the event originates from Shopify’s server, not the customer’s iPhone. Every iOS release since 17 has extended Link Tracking Protection and tightened Safari’s Intelligent Tracking Prevention: both of which only affect browser pixels. CAPI, Google Enhanced Conversions, and TikTok Events API will continue to function exactly as documented. If anything, server-side tracking becomes more valuable with each iOS release.</p>" },
   { q: "Do I still need server-side tracking if I’m using Shopify’s native Customer Events / Web Pixels?",
-    a: "<p>Yes. Shopify’s Web Pixels framework is still browser-based: it loads in a sandboxed iframe in the customer’s browser and is subject to the same ad blocker and ITP restrictions as a regular pixel. It improves reliability slightly versus a raw Meta Pixel install, but does not match the recovery rate of a true server-side webhook firing from Shopify’s backend on confirmed payment. Run Web Pixels for upper-funnel events (PageView, AddToCart) and the Make.com webhook method for the Purchase event.</p>" },
+    a: "<p>Yes. Shopify’s Web Pixels framework is still browser-based: it loads in a sandboxed iframe in the customer’s browser and is subject to the same ad blocker and ITP restrictions as a regular pixel. A Shopify order webhook, by contrast, fires from Shopify’s backend when an order is paid and does not depend on the browser. Web Pixels remain the way to send browsing events (PageView, AddToCart); a server route is what makes the Purchase independent of the browser.</p>" },
   { q: "What is the difference between Meta CAPI and Shopify’s native data sharing?",
-    a: "<p>Shopify’s native Maximum data sharing setting enables their own CAPI integration, but it is still partially browser-triggered: if the thank-you page pixel fails to execute, the server event may not fire. The Make.com webhook method fires directly from Shopify’s backend on payment confirmation with zero browser dependency, making it more reliable.</p>" },
+    a: "<p>Shopify’s help centre says its Facebook &amp; Instagram app uses Meta’s Conversions API at the Enhanced and Maximum data sharing levels, and for a Meta-only store that may be all you need. Shopify does not document exactly what triggers each server event. The Make.com webhook method is triggered by Shopify’s order webhook with no browser involved, and the same trigger can feed TikTok. Use one server route for Meta, not both, unless you have confirmed their event IDs match.</p>" },
   { q: "Can I set up Shopify server-side tracking without a developer?",
     a: "<p>Yes. The Make.com webhook setup requires no code. You configure a Shopify webhook in Settings, build an HTTP module in Make.com’s visual drag-and-drop interface, and paste your API credentials. Most store owners complete the setup in under 20 minutes. No developer, no agency, no Shopify app installation required.</p>" },
   { q: "Does server-side tracking work with Shopify’s native Maximum data sharing?",
@@ -132,7 +132,7 @@ const articleSchema = {
           "@type": "HowToStep",
           "position": 1,
           "name": "Create your free Make.com account",
-          "text": "Sign up at Make.com: no credit card required. The free plan covers 1,000 credits/month, enough for stores processing up to 300 orders per month."
+          "text": "Sign up at Make.com: no credit card required. The free plan covers 1,000 credits/month; how many orders that is depends on the credits one order uses in your scenario."
         },
         {
           "@type": "HowToStep",

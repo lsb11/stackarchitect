@@ -88,7 +88,7 @@ const flowSteps = [
 
 // ─── Setup steps ─────────────────────────────────────────────────────────────
 const setupSteps = [
-  { pos: 1, title: "Activate Make.com free",                        tool: "make.com/en/register: free tier, no credit card",         desc: "Sign up for Make.com free: 1,000 credits/month (formerly called operations) at no cost, enough for stores processing up to 300 orders per month. No credit card required. This is your automation hub routing Shopify order data to TikTok." },
+  { pos: 1, title: "Activate Make.com free",                        tool: "make.com/en/register: free tier, no credit card",         desc: "Sign up for Make.com free: 1,000 credits/month (formerly called operations) at no cost. How many orders that covers depends on the credits one order uses in your scenario. No credit card required. This is your automation hub routing Shopify order data to TikTok." },
   { pos: 2, title: "Import the TikTok Events API scenario",         tool: "import",                                                   desc: "One click imports the pre-built scenario into your Make.com workspace. The Webhooks trigger and HTTP module are already configured: no building from scratch, no technical knowledge needed. Once imported, open the Webhooks module and copy the generated webhook URL for Step 3." },
   { pos: 3, title: "Add Shopify webhook for order payment",         tool: "Shopify Admin → Settings → Notifications → Webhooks",      desc: "In Shopify Admin → Settings → Notifications → Webhooks, create a new webhook. Select Order payment as the event. Paste your Make.com webhook URL as the destination. Set format to JSON and save. This is the server-to-server trigger: entirely independent of the browser." },
   { pos: 4, title: "Add your Pixel ID and Access Token",            tool: "Make.com → HTTP module",                    desc: "In the imported scenario, open the HTTP module. Paste your Access Token into the Access-Token header, and replace YOUR_PIXEL_ID in the body's event_source_id field with your TikTok Pixel ID. Keep the quotes around the pixel ID so the body stays valid JSON." },
@@ -506,9 +506,9 @@ const tocHeadings = [
 
       <h3>Why TikTok's native CAPI has the same limitation as Meta</h3>
 
-      <p>TikTok Ads Manager lets you enable Maximum data sharing under Web Events settings. Most guides stop there. The limitation: <strong>TikTok's native integration is still partially browser-triggered</strong>. If the thank-you page Web Pixel does not execute (because of an ad blocker, slow connection, or the user navigating away) the server event may not fire even though the purchase completed in Shopify's backend.</p>
+      <p>TikTok's own Shopify integration offers data sharing levels, and its higher levels send events server-side. For a store that only needs TikTok tracking, that may be enough, and it is the simplest route. Neither TikTok nor Shopify documents exactly what triggers each server event, so if you want a purchase signal that cannot depend on the browser, use the order webhook below. <strong>Use one server route for TikTok, not both</strong>, unless both send the same event ID.</p>
 
-      <p>The Make.com webhook approach fixes this at the root. The Shopify webhook fires from Shopify's server the moment payment is confirmed: completely independent of what happens in any browser. No pixel, no JavaScript, no browser dependency. The same webhook also powers <a href="/capi-shield/">CAPI Shield for Meta</a>: one Shopify webhook trigger feeds TikTok and Meta at once.</p>
+      <p>The Make.com webhook approach takes the browser out of the purchase signal. The Shopify webhook fires from Shopify's server the moment payment is confirmed: completely independent of what happens in any browser. No pixel, no JavaScript, no browser dependency. The same webhook also powers <a href="/capi-shield/">CAPI Shield for Meta</a>: one Shopify webhook trigger feeds TikTok and Meta at once.</p>
 
       <div class="callout green">
         <div class="callout-label">Same webhook: three platforms</div>
