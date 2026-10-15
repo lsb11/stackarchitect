@@ -4,7 +4,7 @@ heading: "The Ultimate Guide to Shopify Inventory Management 2026: Free Systems 
 description: "Send Shopify orders to Google Sheets free in 2026 and build stock counts, reorder flags and alerts on top. What replaces the order record Stocky kept, and what it does not."
 answer: "You can run Shopify inventory tracking free by sending each paid order into Google Sheets through Make.com. That gives you an order ledger you own. Stock counts, reorder flags and low-stock alerts are formulas and extra scenarios you add yourself. Shopify Stocky shut down on 31 August 2026, and paid replacements such as Prediko start at $49 a month."
 publishDate: "2026-03-28"
-updatedDate: "2026-09-25"
+updatedDate: "2026-10-15"
 verifiedDate: "2026-09-25"
 category: "inventory"
 badge: "Complete Guide"
@@ -148,22 +148,33 @@ In Google Sheets, use **Extensions → Apps Script** to write a simple Apps Scri
 
 Understanding how fast products sell tells you when to reorder before you run out, not after. With your Orders Log populated, add these calculations to Sheet 2:
 
-**30-day velocity** (units sold in last 30 days):
+Add four columns to Sheet 2. Each formula is written for row 2; fill it down.
+
+**K: units sold in the last 30 days.** Sum the quantity column, not a count of rows, because one order line can contain several units:
 ```
-=COUNTIFS(Orders!E:E, A2, Orders!B:B, ">="&TODAY()-30)
+=SUMIFS(Orders!F:F, Orders!E:E, A2, Orders!B:B, ">="&(TODAY()-30))
 ```
 
-**Days of stock remaining** (at current velocity):
+**L: average units sold per day:**
 ```
-=IF(F2=0, "OUT OF STOCK", IF(velocity=0, "SLOW MOVER", ROUND(F2/velocity, 0)))
-```
-
-**Recommended reorder date** (based on lead time):
-```
-=IF(days_remaining<=lead_time, "ORDER NOW", TODAY()+(days_remaining-lead_time))
+=K2/30
 ```
 
-These formulas give you a live view of which products are running low based on actual sales rate, not arbitrary stock level thresholds.
+**M: days of stock remaining at that rate:**
+```
+=IF(F2<=0, "OUT OF STOCK", IF(L2=0, "NO SALES IN 30 DAYS", ROUND(F2/L2, 0)))
+```
+
+**N: when to reorder**, using the supplier lead time in column J:
+```
+=IF(ISNUMBER(M2), IF(M2<=J2, "ORDER NOW", TODAY()+(M2-J2)), "")
+```
+
+Format column N as a date. A worked check: 60 units in stock, 90 sold in the last 30 days (3 a day) and a 14-day lead time gives 20 days of stock, so the reorder date is six days from today.
+
+Column B of the Orders Log must hold real dates, not text, for the 30-day filter to work. If Make.com writes the date as text, wrap it with `DATEVALUE` in a helper column or change the module's date format.
+
+These columns show which products will run out before a new delivery could arrive, based on how fast each one is actually selling.
 
 ## Multi-Location Inventory
 
@@ -217,10 +228,3 @@ Paid inventory apps start at $49 a month for Prediko's Starter plan, and Invento
 Every step above is free. The only ongoing cost is Make.com's Core plan at $9/month for 10,000 credits ([make.com/en/pricing](https://www.make.com/en/pricing), read 25 September 2026) if your order volume outgrows the free plan's 1,000 credits a month.
 
 
----
-
-## Get the Stocky Swap files
-
-The Complete Kit includes the Stocky Swap Make.com JSON blueprint. Import it and it logs one row per order line to your sheet from the next paid order. It does not record restocks, returns or adjustments; you add those as rows by hand. The kit also includes CAPI Shield (Meta purchase events), TikTok CAPI and P&L Auto. $19.99 one-time.
-
-**[Get the Complete Kit: $19.99 →](/pro/)**
