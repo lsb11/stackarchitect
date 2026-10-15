@@ -966,6 +966,44 @@ in total. The App Store has its own search index and does not care about this
 domain's authority, so it is the only channel available that is not gated on a
 recovery that has not come in the three months since the redirects were fixed.
 
+### Content quality pass, 15 Oct 2026 (PR #63)
+
+The owner chose to keep every page indexed and rewrite the generic guides
+rather than noindex them. Each guide was checked against vendor documentation
+read that day. Several gave instructions that did not work, which is a worse
+problem than generic writing. **Do not reintroduce any of these:**
+- Shopify has **no abandoned-checkout webhook**. `checkouts/create` fires
+  when checkout starts, so sending it straight into an email sequence emails
+  buyers. Any sequence needs an `orders/create` purchase check before every
+  email.
+- GA4 Measurement Protocol `client_id` must match the GA tag's ID (Google's
+  docs). A Shopify webhook does not have it; `customer.id` creates
+  source-less, possibly duplicate purchases. The recipe was removed.
+- Meta removed Aggregated Event Measurement **event prioritisation** in May
+  2023. Do not tell readers to rank eight events.
+- Link Tracking Protection is **iOS 17** (Mail, Messages, Private Browsing).
+  Independent tests found Safari 26 did not enable it in ordinary browsing.
+  Do not write "iOS 26 strips fbclid".
+- Shopify's Facebook & Instagram data sharing: **Enhanced and Maximum both
+  use CAPI** (Shopify help centre). Never advise that AND a webhook CAPI for
+  Meta: two server routes can double-send.
+- Shopify retries webhooks **8 times over 4 hours** and can remove the
+  subscription, not 19 over 48 hours.
+- Make.com: recommend **Break + stored incomplete executions** for outside
+  APIs. Ignore/Resume are what hid the v19.0 failure.
+- Shopify's Product Reviews app is no longer installable. Tidio's free plan
+  has 50 Lyro conversations **lifetime**. Systeme.io's free plan lists **one
+  automation rule**. Zendesk's Shopify app is built by Zendesk and does
+  refunds and cancellations. Gorgias: AI Agent on every plan.
+- Stocky's "at least 90 days" read-only floor ends **29 Nov 2026** at the
+  earliest.
+
+The closing $19.99 kit pitch was removed from every blog post it was on.
+Product links that fit the context stay. What no rewrite can supply,
+first-hand evidence, is listed per page in `docs/EVIDENCE-CHECKLIST.md`,
+along with claims only the owner can confirm (Systeme.io free-plan flows, the
+"160–250 orders" figure, deploy-time claims).
+
 ### Highest-leverage open work
 
 1. Get the iOS Attribution Gap Benchmark to N ≥ 10 real submissions so it
