@@ -1,222 +1,133 @@
 ---
-title: "Shopify BFCM Automation Checklist 2026"
-heading: "Shopify BFCM Automation Checklist 2026: 14 Things to Set Up Before Black Friday"
-description: "14 automation tasks to complete before Black Friday 2026, ordered by deadline. Tracking first: ad platforms need 60-90 days of clean data to calibrate."
-answer: "The BFCM automation work that matters happens months before November. Ad platforms need 60-90 days of clean conversion data to optimise, so server-side tracking has to be live by September. Inventory logging, email flows and a Make.com operations budget follow. Fourteen tasks, ordered by deadline rather than by effort."
+title: "Shopify BFCM 2026 Checklist: The Last Six Weeks"
+heading: "Shopify BFCM 2026 Automation Checklist: What to Do in the Last Six Weeks"
+description: "Black Friday is 27 November 2026. A week-by-week checklist for Shopify automations: test tracking, budget Make.com credits for peak volume, fix email deliverability and run one end-to-end test order."
+answer: "Black Friday 2026 falls on 27 November and Cyber Monday on 30 November. With six weeks to go, the priority is not adding new tools but proving the ones you have work under load: test every tracking event with a real order, budget automation credits for peak volume, warm up your email list, and freeze changes a week before."
 publishDate: "2026-04-21"
-updatedDate: "2026-09-25"
-verifiedDate: "2026-09-25"
+updatedDate: "2026-10-15"
+verifiedDate: "2026-10-15"
 category: "automation"
 badge: "BFCM 2026"
 badgeType: "urgent"
-readTime: 14
+readTime: 9
 canonical: "https://stackarchitect.xyz/blog/shopify-bfcm-automation-checklist-2026/"
 faqs:
-  - question: "When should I start preparing my Shopify store's automation for BFCM 2026?"
-    answer: "Start in August or September at the latest. Server-side tracking needs 60–90 days of learning data before Smart Bidding and Advantage+ Shopping can optimise effectively for Black Friday traffic. Email list warm-up and deliverability preparation should begin 8 weeks before your first BFCM campaign. Inventory automation setup needs to be stable before your pre-BFCM stock arrives."
-  - question: "What is the biggest automation mistake Shopify stores make before BFCM?"
-    answer: "The biggest mistake is running paid ads with broken conversion tracking during the highest-spend period of the year. Stores spending $10,000–$100,000+ on Black Friday ads with browser-only tracking are optimising their campaigns on an incomplete picture of real conversion data. Every mis-attributed conversion during BFCM corrupts Smart Bidding models right when they matter most. Setting up server-side tracking via Make.com before BFCM is the highest-ROI automation task for most Shopify stores."
-  - question: "How many Make.com operations does a Shopify store use during BFCM?"
-    answer: "During BFCM, a typical Shopify store processes 3–10x its normal daily order volume. If your store averages 50 orders per day and processes 300 orders on Black Friday, and each order consumes 4 Make.com operations across CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto, that is 1,200 operations on Black Friday alone: already over the free tier's 1,000 monthly limit. For BFCM, upgrade to Make.com Core ($9/month, 10,000 credits) in October and downgrade in January."
-  - question: "Should I use Klaviyo or Systeme.io for my BFCM email campaigns?"
-    answer: "For BFCM broadcast campaigns, both work. The key consideration is your contact list size and sending volume. Systeme.io's free plan supports 2,000 contacts with unlimited sends: sufficient for most small stores. For stores with 5,000+ contacts running complex abandoned cart and browse abandonment sequences during BFCM, Klaviyo's advanced segmentation may justify its cost during the peak period. Either way, set up your abandonment sequences at least 6 weeks before BFCM to allow time for testing."
-  - question: "How do I make sure my Google Ads and Meta Ads tracking is accurate during BFCM?"
-    answer: "Deploy server-side tracking before BFCM. Set up CAPI Shield for Meta Conversions API via Make.com: this ensures every purchase event is captured server-to-server regardless of iOS restrictions or ad blockers. During BFCM a large share of purchases on most Shopify stores comes from iPhones, where iOS limits browser tracking. Without server-side tracking, your ad platforms spend your biggest budgets of the year on the conversions they can still see, which is not all of them."
+  - question: "When is Black Friday and Cyber Monday 2026?"
+    answer: "Black Friday 2026 is Friday 27 November, the day after US Thanksgiving on Thursday 26 November. Cyber Monday is Monday 30 November. Many stores run offers across the whole weekend and the week before, so plan for higher volume from around 20 November."
+  - question: "Is it too late to set up server-side tracking before BFCM 2026?"
+    answer: "No, but test it properly. A server-side setup can be built in a day; the risk is a setup that looks live but silently fails or double-counts. Send a real test order, confirm the event appears in each ad platform with the same order ID as the browser event, and do it at least two weeks before Black Friday so there is time to fix problems."
+  - question: "How many Make.com credits will my store use during Black Friday?"
+    answer: "Open your scenario's history and note how many credits one order uses; each module that runs typically uses one. Multiply by the most orders you expect over the peak week. If that, plus your normal usage for the month, is over your plan's allowance, upgrade before the week starts. Make.com's free plan includes up to 1,000 credits a month."
+  - question: "Should I change my store's apps or theme before Black Friday?"
+    answer: "Make changes early and then stop. Any new app, theme edit or automation added in the final week has had no time to be tested under real traffic. Set a change freeze about a week before Black Friday, and keep a note of what you changed and when so you can undo it quickly if something breaks."
+  - question: "What should I test with a Black Friday test order?"
+    answer: "Place a real paid order and refund it. Check that it appears in Shopify, that each ad platform receives one purchase rather than two, that any spreadsheet or inventory log records it once, and that it does not trigger an abandoned checkout email. Repeat the test after any change you make before the freeze."
 relatedGuides:
-  - title: "Replace Klaviyo free with Systeme.io"
-    href: "/replace-klaviyo-free/"
-  - title: "Free Shopify abandoned cart recovery"
+  - title: "Free abandoned cart recovery for Shopify"
     href: "/blog/shopify-abandoned-cart-recovery-free-2026/"
-  - title: "Make.com for Shopify: free automation guide"
-    href: "/make-com-shopify/"
+  - title: "Free Shopify conversion rate optimisation"
+    href: "/blog/shopify-conversion-rate-optimisation-free-2026/"
   - title: "When to upgrade from free Make.com to Google Workspace"
     href: "/blog/when-to-upgrade-free-make-google-workspace/"
 ---
 
-Black Friday Cyber Monday 2026 starts in approximately 7 months. That sounds like plenty of time. It isn't: not if you want your tracking, inventory, email, and automation infrastructure to be fully calibrated before you start spending serious money on ads.
+**Key dates:** Black Friday is **Friday 27 November 2026**. Cyber Monday is **Monday 30 November**. This checklist was revised on 15 October, six weeks out.
 
-This checklist covers the 14 automation tasks every Shopify store should complete before BFCM 2026, ordered by urgency. The first three items need to happen now. Everything else has a deadline.
+At this distance, the most expensive mistakes are not missing tools. They are tools that look switched on and quietly fail when order volume jumps: a tracking event that stops firing, an automation that runs out of credits on Friday afternoon, an email list that lands in spam because it has not been mailed since summer. This checklist is ordered by week, and almost every step is a test, not a new build.
 
----
+## Six weeks out (from 16 October)
 
-## Part 1: Tracking (Complete Before September)
+### 1. List every automation that touches an order
 
-Your ad platforms need 60–90 days of clean conversion data to optimise effectively. If you set up server-side tracking in October, it will not be calibrated in time for Black Friday.
+Write down everything that runs when an order is placed: ad platform pixels and server-side connections, Make.com or Shopify Flow scenarios, spreadsheet logs, inventory tools, email automations. For each, note where you would see it fail. This list is the basis of every later test.
 
-### ✅ 1. Deploy server-side Meta Conversions API
+### 2. Test conversion tracking with a real order
 
-**Deadline: now**
+Place a real paid order on a live product and refund it. Then check each platform:
 
-If you are running Meta Ads without server-side tracking, your Advantage+ Shopping campaigns and Manual campaigns are optimising on incomplete data right now, and that problem compounds exponentially during BFCM when iOS-heavy mobile traffic peaks.
+- **Meta**: Events Manager shows the Purchase. If you send it both from the browser and from the server (for example with [CAPI Shield](/capi-shield/)), both copies must carry the same event ID so Meta counts one purchase, not two.
+- **Google Ads**: the conversion appears in the Conversions summary within the platform's normal reporting delay. The [Google Ads conversion tracking guide](/shopify-google-ads-conversion-tracking/) covers what to check.
+- **TikTok**: Events Manager shows CompletePayment, if you advertise there. See the [TikTok Events API guide](/tiktok-events-api-shopify/).
+- **GA4**: a `purchase` appears in Realtime. Compare GA4's purchase count with Shopify's order count over the last month and note the gap, so you can tell on Black Friday if it suddenly widens. The [GA4 guide](/blog/shopify-google-analytics-4-setup-free-2026/) explains why a gap is normal.
 
-[CAPI Shield](/capi-shield/) sends purchase events directly from Shopify's server to Meta Conversions API via Make.com webhook. It takes 6 minutes to deploy and costs $0/month. Every day you delay is a day of corrupted bidding signals.
+If anything is missing or doubled, you have time to fix it now. You will not on 27 November.
 
-**What to do:** Deploy CAPI Shield. Verify in Meta Events Manager → Test Events that server Purchase events appear alongside browser events. Check your Event Match Quality score in Events Manager before September and note where it sits: we publish no target figure for this setup.
+### 3. Check you are not running two of the same tag
 
-### ✅ 2. Deploy server-side Google Enhanced Conversions
+Peak traffic magnifies double-counting. Look in **Settings → Customer events** and your theme code for a second copy of any pixel that an app or sales channel already installs. Two Meta pixels or two GA4 tags make every result look better than it is, and ad platforms will bid on the inflated figure.
 
-**Deadline: now**
+## Five weeks out (from 23 October)
 
-Google Smart Bidding and Performance Max need conversion history to optimise. During BFCM, you will spend your highest ad budgets of the year: likely 3–10x your normal daily spend. If your Google Ads conversion data is missing real purchases due to iOS and Safari restrictions, you are feeding bad signals into the algorithm at the worst possible time.
+### 4. Budget automation credits for the peak
 
-[Free Shopify Google Ads Conversion Tracking](/shopify-google-ads-conversion-tracking/) via Make.com recovers these lost conversions server-side. Same webhook as CAPI Shield: add it as a second branch in your existing Make.com scenario.
+If you use Make.com, open each scenario's history, click one recent run and note the credits it used; each module that runs typically uses one. Then:
 
-**What to do:** Add Google Enhanced Conversions to your Make.com scenario. Verify in Google Ads → Conversions → Diagnostics. Allow 30+ days of data before BFCM for Smart Bidding to incorporate the new signals.
+> **Credits needed for the peak week** = credits per order × the most orders you expect that week
+> Add your normal usage for the rest of the month.
 
-### ✅ 3. Set up server-side TikTok Events API
+If the total is over your allowance, upgrade before 20 November. Make.com's free plan includes up to 1,000 credits a month ([make.com/pricing](https://www.make.com/en/pricing), read 15 October 2026); its Core plan was $9 a month for 10,000 credits when last read on 25 September 2026. When a scenario runs out of credits it stops, so orders placed afterwards are not tracked or logged until the next billing period or an upgrade.
 
-**Deadline: September**
+### 5. Make failures reach you
 
-If you advertise on TikTok, the same iOS tracking problem applies: arguably worse, because TikTok's audience skews younger and more iOS-heavy than Meta. [TikTok Events API](/tiktok-events-api-shopify/) via Make.com adds TikTok server-side tracking as a third branch on the same Shopify webhook. No additional Shopify setup required.
+Check that Make.com's error emails go to an address you read on your phone (your Make profile's notification settings). Open each scenario and confirm what happens on an error. A scenario set to ignore errors will show a successful run even when the request it made was rejected, so check one recent run's output, not just its green tick.
 
-### ✅ 4. Verify your attribution windows before BFCM
+### 6. Check inventory before stock arrives
 
-**Deadline: October**
+If you track stock in a spreadsheet alongside Shopify, check that the two agree for your top 20 products by sales. A discrepancy found now is a stock count; found on Black Friday it is an oversold order. Shopify Admin remains the record of stock on hand. If you were a Stocky user, the [Stocky export guide](/blog/shopify-stocky-data-export-before-shutdown/) covers getting your history out.
 
-BFCM is when attribution window mismatches cause the most confusion. Check:
-- Meta: are you using 7-day click, 1-day view? Confirm this is your reporting window across all campaigns
-- Google Ads: is your conversion window set to 30 days? Extend to 90 days for BFCM if you sell considered-purchase products
-- Shopify Analytics: understand the difference between Shopify's attribution model and Meta/Google, they will never match exactly, but the gap should narrow once server-side tracking is live
+## Four weeks out (from 30 October)
 
----
+### 7. Warm up your email list
 
-## Part 2: Inventory (Complete Before October)
+If you have not emailed your whole list for a while, a sudden run of Black Friday emails can hurt deliverability. From now until Black Friday, send at least one genuinely useful email a week. Remove contacts who have not opened anything in several months before your big sends, or move them to a smaller re-engagement send first.
 
-### ✅ 5. Deploy Stocky Swap to replace the retired Stocky app
+### 8. Write the Black Friday emails now
 
-**Deadline: now, while the read-only export is open**
+Draft every email you plan to send: early access, launch, reminder, Cyber Monday and last chance. Writing them in November, while answering customers, is how mistakes ship. Schedule what you can.
 
-Shopify closed Stocky on August 31, 2026, and its APIs stopped that day with no grace period. Read-only access to export your data continues for at least 90 days after that date, with no end date published, so if you relied on Stocky, export now and migrate.
+### 9. Check abandoned checkout recovery
 
-[Stocky Swap](/stocky-swap/) deploys in 4 minutes: a Make.com JSON blueprint that logs every order to Google Sheets in real time. It captures SKU data, fulfilment status and full order history. It does not calculate stock on hand or send low-stock alerts; Shopify Admin and Shopify Flow do. The Complete Kit includes the pre-built JSON file, ready to import.
+Confirm your abandoned checkout email is switched on and sends at a delay you chose deliberately. If you use a multi-email sequence outside Shopify, re-run the buyer test from the [abandoned cart guide](/blog/shopify-abandoned-cart-recovery-free-2026/): complete an order and confirm no recovery email follows.
 
-**For BFCM specifically:** Having real-time inventory data in Google Sheets during BFCM is essential for preventing overselling on high-demand SKUs. The Sheets dashboard gives you live visibility across all variants without needing to refresh Shopify admin constantly.
+## Three weeks out (from 6 November)
 
-### ✅ 6. Pre-build your BFCM inventory Google Sheets dashboard
+### 10. Check your margins on the offer
 
-**Deadline: October**
+Before the discount is final, calculate profit per order at the discounted price: price minus product cost, Shopify and payment fees, shipping and the ad cost you expect per order. A discount that is profitable at full-price ad costs may not be at Black Friday ad costs, which are often higher. If you log orders to a spreadsheet, pre-fill product costs now so every order on the day is costed automatically; the [P&L automation guide](/shopify-profit-loss-automation/) shows one way to do this.
 
-Add a BFCM tab to your Stocky Swap Sheets that flags SKUs at risk of stockout. Use conditional formatting to highlight any variant with under 20 units (or whatever your threshold is). Set up a COUNTIF formula that tracks daily velocity and projects days-to-stockout based on your BFCM order rate forecast.
+### 11. Run the full test order again
 
-### ✅ 7. Audit your Make.com operations budget
+Repeat step 2 with every automation from step 1 running. Also confirm the order appears exactly once in every log and does not trigger an abandoned checkout email.
 
-**Deadline: October, before BFCM**
+## Two weeks out (from 13 November)
 
-The [Make.com free tier](/go/make/?source=shopify-bfcm-automation-checklist-2026-credits) covers 1,000 credits per month. During BFCM, your order volume may multiply 5–10x. Each order triggers 3–5 operations across your automation stack.
+### 12. Prepare for support volume
 
-**Calculate your BFCM operations budget:**
-- Forecast your Black Friday order count (use last year × 1.2 as a baseline)
-- Multiply by 4 operations per order (CAPI Shield + Google CAPI + Stocky Swap + P&L Auto)
-- If the result exceeds 1,000, upgrade to **Make.com Core ($9/month, 10,000 credits; [make.com/en/pricing](https://www.make.com/en/pricing), read 25 September 2026)** in October
+More orders mean more "where is my order?" messages. Put delivery cut-off dates for Christmas on your shipping page and in order confirmation emails now. If you use a chat tool, add the answers to the questions you get most.
 
-Downgrade back to free in January. The $27 cost for three months of Core tier during BFCM is worth it.
+### 13. Write down how to undo things
 
----
+For each automation, note how to pause it quickly. If a scenario starts failing on Black Friday, pausing it and catching up afterwards is better than letting it run half-broken.
 
-## Part 3: Email (Complete Before October)
+## One week out (from 20 November)
 
-### ✅ 8. Build your BFCM email sequence structure
+### 14. Freeze changes
 
-**Deadline: September**
+No new apps, theme edits or automation changes from here until after Cyber Monday unless something is broken. Anything added now has had no time to be tested under real traffic.
 
-Before you write a single BFCM campaign email, document your sequence architecture:
+## During the weekend
 
-- **Pre-BFCM warm-up** (2 weeks before): tease upcoming deals, build exclusivity with your list
-- **VIP early access** (48 hours before Black Friday): reward engaged subscribers with early access
-- **Black Friday launch** (send at midnight or 6am): main offer email
-- **Abandoned cart recovery** (1 hour, 24 hours, 48 hours after abandonment): automated, not manual
-- **Cyber Monday** (Monday): separate angle, different creative, genuine reason to send again
-- **Last chance** (Tuesday): closes the window, real urgency
+- Check order counts against your tracking dashboards once in the morning and once in the evening. A sudden widening of the gap between Shopify orders and ad platform purchases means something has stopped firing.
+- Watch your automation credit balance.
+- Note anything that breaks, with the time. That note is the start of next year's checklist.
 
-This architecture works identically on Klaviyo and Systeme.io. Build it in September so you have time to test every trigger.
+## Summary
 
-### ✅ 9. Warm up your email list before BFCM
-
-**Deadline: October**
-
-If your list has been quiet (low send frequency, high dormancy) a sudden spike in BFCM email volume will trigger spam filters and tank your deliverability exactly when you need it most.
-
-From October onwards: send at least one email per week to your full list. Clean unengaged contacts (no open in 90+ days) before BFCM to protect your sender reputation. A list of 5,000 engaged contacts will out-perform a list of 20,000 with 60% dormancy every time.
-
-### ✅ 10. Set up your abandoned cart automation now
-
-**Deadline: September**
-
-Abandoned cart sequences win back sales that would otherwise be lost, at no extra ad spend. Set yours up now so it accumulates revenue through October and is fully tested before November.
-
-On Systeme.io: create an automation triggered by a tag that fires when someone adds to cart but doesn't purchase within 1 hour. Sequence: 1 hour, 24 hours, 48 hours. Include the product image, price, and a direct link back to cart.
-
----
-
-## Part 4: P&L and Profitability (Complete Before October)
-
-### ✅ 11. Deploy P&L Auto before BFCM
-
-**Deadline: October**
-
-BFCM is when stores make expensive profitability mistakes: running promotions that look profitable in Shopify Analytics but are actually loss-making when COGS, transaction fees, and ad spend are included.
-
-[P&L Auto](/shopify-profit-loss-automation/) logs every order's revenue, COGS, Shopify fees, and estimated ad spend to a Google Sheets dashboard in real time. During BFCM, you can see your actual net profit per order as orders come in, not weeks later when you reconcile.
-
-### ✅ 12. Pre-load your COGS data before November
-
-**Deadline: October**
-
-The P&L Auto scenario uses a COGS lookup table in Google Sheets: a tab where you map each Variant_ID to its cost price. Pre-populate this table before BFCM so every order is automatically profit-calculated from the first sale. Check your supplier invoices and update costs if they have changed for BFCM stock.
-
----
-
-## Part 5: Stability and Monitoring (Complete Before November)
-
-### ✅ 13. Add Make.com error notifications
-
-**Deadline: October**
-
-Set up Make.com to email or Slack-notify you if any scenario errors out. During BFCM, you will not be watching your Make.com dashboard: you will be managing orders, customer service, and ad spend. An error notification means you catch a tracking failure within minutes, not days.
-
-In Make.com: go to each scenario → Settings → Error Handling → add an email notification for any failed execution. Route to an email you check on your phone.
-
-### ✅ 14. Run a full end-to-end test order in October
-
-**Deadline: October**
-
-Before BFCM, place a real paid test order (then immediately refund it) and verify:
-- ✓ Meta Events Manager shows a server-side Purchase event within 5 minutes
-- ✓ Google Ads Conversions diagnostics shows an Enhanced Conversion event
-- ✓ TikTok Events Manager shows a CompletePayment event (if applicable)
-- ✓ Stocky Swap Google Sheet adds a new row with correct stock data
-- ✓ P&L Auto Google Sheet adds a new row with correct revenue and COGS data
-- ✓ Your abandoned cart sequence does NOT trigger (test order should complete)
-
-If all five fire correctly, your automation stack is BFCM-ready.
-
----
-
-## The Fastest Path to BFCM-Ready
-
-If you have not set up any of the above, the Complete Kit gives you four Make.com JSON blueprints (CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto) ready to import in 10 minutes instead of building each one from scratch.
-
-**[Get the Complete Kit: $19.99 →](/pro/)**
-
-Deploy all four automations today. Run the test order checklist in October. Enter BFCM with a complete, verified automation stack.
-
----
-
-## BFCM Automation Timeline Summary
-
-| Task | Deadline | Priority |
-|---|---|---|
-| Deploy Meta CAPI Shield | **Now** | Critical |
-| Deploy Google Enhanced Conversions | **Now** | Critical |
-| Deploy Stocky Swap | **Aug 31** | Hard deadline |
-| Deploy TikTok Events API | September | High |
-| Build email sequence architecture | September | High |
-| Set up abandoned cart automation | September | High |
-| Verify attribution windows | October | Medium |
-| Warm up email list | October | High |
-| Audit Make.com operations budget | October | Medium |
-| Deploy P&L Auto | October | High |
-| Pre-load COGS data | October | Medium |
-| Add Make.com error notifications | October | Medium |
-| Upgrade Make.com to Core tier | October | Medium |
-| Run full end-to-end test order | October | Critical |
+| When | Task |
+|---|---|
+| From 16 Oct | List every order automation; test tracking with a real order; remove duplicate tags |
+| From 23 Oct | Budget automation credits; route error alerts to your phone; reconcile stock |
+| From 30 Oct | Warm up email list; draft every BFCM email; re-test abandoned checkout recovery |
+| From 6 Nov | Check offer margins; full test order |
+| From 13 Nov | Support answers and delivery cut-offs; write undo steps |
+| From 20 Nov | Change freeze |

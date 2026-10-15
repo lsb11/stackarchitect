@@ -1,169 +1,133 @@
 ---
-title: "Reliable Shopify Automations 2026 — Architecture Guide"
-heading: "The Complete Guide to Reliable Shopify Automations 2026"
-description: "Build Shopify automations that run reliably at scale — error handling, monitoring, deduplication, fallback logic, and what separates stable from fragile."
-answer: "A Shopify automation is reliable when one failure cannot take down the rest of it. In practice that means an error handler on every external call so a dead API does not halt the other branches, deduplication keyed on order ID so webhook retries cannot double-count, and monitoring that tells you when a run fails."
+title: "Reliable Shopify Automations: Make Failures Visible"
+heading: "Reliable Shopify Automations: How to Make Every Failure Visible"
+description: "Why Make.com Shopify automations fail silently, and the patterns that stop it: error handlers that keep failed runs, deduplication on order ID, a daily count check, and what Shopify does when webhooks keep failing."
+answer: "A Shopify automation is reliable when every failure is either retried or reported, never silently skipped. In Make.com that means error handlers that store failed runs instead of ignoring them, independent branches so one dead API cannot block the rest, deduplication on order ID, and a daily check that your log's order count matches Shopify's."
 publishDate: "2026-03-25"
-updatedDate: "2026-04-16"
+updatedDate: "2026-10-15"
+verifiedDate: "2026-10-15"
 category: "workflow"
 badge: "Architecture Guide"
 badgeType: "new"
-readTime: 14
+readTime: 11
 canonical: "https://stackarchitect.xyz/blog/the-complete-guide-to-reliable-shopify-automations/"
 faqs:
-  - question: "Why do Shopify automation workflows break?"
-    answer: "Shopify automation workflows break for five main reasons: missing error handling means a single failed request stops the entire scenario; Shopify webhook delivery is not guaranteed so some events are missed without a fallback polling system; API rate limits cause transient failures that are treated as permanent; data mapping errors when Shopify changes payload structure cause silent failures; and concurrent execution of multiple triggers can cause race conditions in shared data stores like Google Sheets."
-  - question: "How do I make a Make.com Shopify scenario more reliable?"
-    answer: "Five changes make Make.com scenarios significantly more reliable: enable error handlers on every HTTP module so a single failed API call doesn't stop the scenario; set retry logic on HTTP modules (3 retries with backoff); use a Router module to separate concerns so one branch failing doesn't affect others; add a logging module that records every run result to a Google Sheet; and set up Make.com email alerts for scenario errors so you know immediately when something fails."
-  - question: "Does Shopify guarantee webhook delivery?"
-    answer: "No. Shopify guarantees at-least-once delivery for webhooks with retry logic: if your endpoint doesn't return a 200 status within 5 seconds, Shopify retries up to 19 times over 48 hours. However, if your Make.com webhook endpoint is unavailable for a prolonged period, or if Make.com's free plan operations limit is exhausted, webhook events can be permanently missed. For critical workflows, add a daily reconciliation check that compares your Google Sheets order log against Shopify's Orders API."
+  - question: "Why do Make.com Shopify automations fail without anyone noticing?"
+    answer: "Usually because the failure is being hidden on purpose. An error handler set to Ignore, or an HTTP module told not to treat error responses as errors, makes a rejected request finish as a successful run. The scenario history stays green while nothing reaches its destination. Check the output of a real run, not just its status."
+  - question: "How many times does Shopify retry a failed webhook?"
+    answer: "Shopify's developer documentation says it waits five seconds for a response and retries a failed webhook up to eight times over four hours. If failures continue, the webhook subscription can be removed, after which it receives nothing until it is created again. An automation that is down for an afternoon can therefore stop for good."
   - question: "What is webhook deduplication and why does it matter for Shopify?"
-    answer: "Webhook deduplication prevents the same event from being processed twice. Shopify may deliver the same webhook multiple times if your endpoint returns an error on first delivery. Without deduplication, a single order could write two rows to your inventory sheet, send two confirmation emails, or fire two server-side conversion events. Deduplication checks whether the order ID has been seen before processing: if it has, skip it."
-  - question: "How do I monitor Shopify automation workflows?"
-    answer: "Three levels of monitoring cover most scenarios: Make.com's built-in execution history shows every scenario run with success/failure status; a logging Google Sheet that records each order processed with timestamp and status lets you verify completeness; and Make.com email alerts notify you immediately when a scenario fails. For critical workflows, add a daily count check: if yesterday's Google Sheets order count doesn't match Shopify's order count for the same day, something was missed."
+    answer: "Shopify asks receivers to handle duplicate webhook deliveries, so the same order can arrive more than once. Without a check, one order can write two spreadsheet rows or send two purchase events to an ad platform. Deduplication means looking up the order ID before acting and skipping it if it has already been processed."
+  - question: "Which Make.com error handler should I use for Shopify automations?"
+    answer: "For calls to outside services that can fail temporarily, such as ad platform APIs, use Break with storage of incomplete executions turned on in the scenario settings, so a failed run is kept and retried rather than lost. Use Ignore only where losing the data truly does not matter, and never on a step whose failure you would want to know about."
+  - question: "How do I know my Shopify automation missed an order?"
+    answer: "Compare counts. Once a day, count yesterday's paid orders in Shopify and the rows your automation logged for the same day. If they differ, an order was missed or duplicated. This check catches every kind of failure, including ones that never produce an error, which is why it matters more than any single error handler."
 relatedGuides:
-  - title: "Fix Google Apps Script quota errors: the Autocrat fix"
-    href: "/autocrat-quota-fix/"
+  - title: "Make.com for Shopify: free automation guide"
+    href: "/make-com-shopify/"
   - title: "When to upgrade from free Make.com to Google Workspace"
     href: "/blog/when-to-upgrade-free-make-google-workspace/"
-  - title: "Make.com vs Zapier cost calculator"
-    href: "/make-vs-zapier-cost-calculator/"
+  - title: "Shopify to Google Sheets automation"
+    href: "/shopify-google-sheets-automation/"
 ---
 
-Getting a Make.com scenario to run once is easy. Getting it to run correctly every time (handling API failures gracefully, recovering from missed events, processing concurrent orders without data corruption) requires deliberate architecture decisions.
+Getting a Make.com scenario to run once is easy. The hard part is knowing, a month later, that it is still doing what you think. The dangerous failures are not the ones that stop a scenario with a red error. They are the ones that let it finish green while nothing reaches the destination.
 
-This guide covers the patterns that separate fragile Shopify automations from reliable ones.
+## What we got wrong, and what it taught us
 
-## Why Automations Break
+This site's own CAPI Shield blueprint is the clearest example we have. Its request to Meta was written against a specific Graph API version. Meta retires versions about two years after release, and once that version was retired every request returned an error. Nobody saw it for about four months, because three settings combined to hide it:
 
-Most Shopify automation failures fall into five categories:
+1. The HTTP module was told **not to treat error responses as errors**, so a rejected request looked like a successful one.
+2. The step had an **Ignore** error handler, so even a real error would have been discarded.
+3. **Storing incomplete executions was off**, so there was no record of failed runs to retry or inspect.
 
-**No error handling.** When an HTTP module call fails (API timeout, rate limit, temporary outage), Make.com stops the entire scenario at that module. All subsequent branches (inventory logging, P&L recording, other platform events) never execute. An error handler that catches the failure and continues allows the other branches to succeed even when one destination is temporarily unavailable.
+Each of those settings is common advice for keeping a scenario "running smoothly". Together they made a broken integration look healthy. The blueprint now uses a current version and visible failures, and the rest of this guide is built around not repeating that.
 
-**Assumed webhook delivery.** Shopify retries failed webhooks, but if your Make.com endpoint is unavailable when retries are exhausted, the event is permanently lost. A scenario that processes 99.5% of orders but silently drops 0.5% will have a cumulative miss rate of 3–4 orders per thousand: invisible until you run a reconciliation check.
+## The four ways Shopify automations fail
 
-**No deduplication.** Shopify guarantees at-least-once delivery, not exactly-once. If your endpoint returns an error on first delivery, Shopify will retry: potentially delivering the same event 2–3 times. Without checking for duplicate order IDs before writing to Sheets, you get duplicate rows.
+**A hidden failure.** As above: the run is green, the destination received nothing. The only defence is checking outcomes, not statuses.
 
-**Silent failures.** A Make.com scenario that encounters an error may continue running while silently skipping failed operations. Without a logging layer, you don't know a branch is failing until you manually check: often days later.
+**A blocked branch.** In Make.com, if a module fails with no error handler, the run stops there. Later steps never execute, including unrelated ones such as logging the order to a spreadsheet.
 
-**Concurrent execution race conditions.** If two Shopify orders arrive within seconds of each other and Make.com processes them simultaneously, both scenarios may read the same "last row" from a Google Sheet and write to the same position, overwriting each other's data.
+**A missed event.** Shopify's developer documentation says it waits five seconds for a webhook response and retries a failed delivery up to eight times over four hours. If failures continue, the subscription can be removed entirely ([Shopify: troubleshooting webhooks](https://shopify.dev/docs/apps/build/webhooks/troubleshooting-webhooks)). So if your scenario is switched off, out of credits or erroring for an afternoon, you can lose orders, and possibly the webhook itself.
 
-## Error Handling: The Foundation
+**A duplicate event.** Shopify tells receivers to handle duplicate deliveries. One order arriving twice can write two rows or send two purchases to an ad platform.
 
-Every HTTP module in your Make.com scenario should have an error handler attached. Without it, any failed API call aborts the entire scenario run.
+## Pattern 1: Choose error handlers by what a failure costs
 
-**Setting up error handlers in Make.com:**
+Make.com offers several error handlers. They behave very differently:
 
-Right-click any module → Add error handler. Select **Resume** as the handler type. This tells Make.com: if this module fails, skip it and continue with the next branch.
+| Handler | What it does | Use it for |
+|---|---|---|
+| **Break** | Stops this run and, if incomplete executions are stored, keeps it for automatic or manual retry | Calls to outside services that fail temporarily: Meta, TikTok, Google, Sheets |
+| **Resume** | Carries on using a substitute output you define | Steps where a default value is genuinely acceptable |
+| **Ignore** | Discards the error and carries on | Only steps whose failure you would never want to know about |
+| **Rollback / Commit** | Stops the run, marking it failed or successful | Rarely needed for Shopify order flows |
 
-For critical modules where you need to know about failures:
+To make Break useful, open the scenario's **Settings** and turn on **Allow storing of incomplete executions**. Failed runs then appear under the scenario's incomplete executions, where they can be retried once the outside service is back.
 
-Right-click → Add error handler → Select **Ignore** but add a Google Sheets → Append Row module inside the error handler that logs: timestamp, order ID, which module failed, and the error message. This creates an automatic error log you can review daily.
+On HTTP modules, leave error responses treated as errors. If a 400 or 500 response is allowed through as a success, no error handler will ever see it.
 
-**The Router pattern for independent branches:**
+## Pattern 2: Keep branches independent
 
-Use a Router module after your webhook trigger instead of chaining modules sequentially. Each Router branch operates independently: if the Meta CAPI branch fails, the Google Sheets branch still executes. Without a Router, a failure in any module stops all subsequent modules regardless of whether they are related.
+Put a **Router** straight after the webhook and give each destination its own branch, each with its own error handler:
 
 ```
-Shopify webhook
+Shopify webhook (orders/create)
     ↓
-Router (4 branches, each independent)
-    ├── Branch 1: Meta CAPI HTTP module + Error handler
-    ├── Branch 2: Google Sheets order log + Error handler  
-    ├── Branch 3: TikTok Events API HTTP module + Error handler
-    └── Branch 4: P&L Google Sheets + Error handler
+Router
+    ├── Branch 1: Meta Conversions API    → Break handler
+    ├── Branch 2: TikTok Events API       → Break handler
+    ├── Branch 3: Google Sheets order log → Break handler
+    └── Branch 4: P&L sheet               → Break handler
 ```
 
-Any branch that fails is caught by its error handler. The other three branches complete successfully regardless.
+A failing Meta branch then cannot stop the order being logged. Put the cheapest, most important branch (usually the order log) first, because a Router runs its branches in order.
 
-## Deduplication: Preventing Duplicate Processing
+## Pattern 3: Deduplicate on order ID
 
-Before processing any Shopify webhook event, check whether you've already processed that order ID.
-
-**Simple deduplication with Google Sheets:**
-
-In your Make.com scenario, before writing to Sheets, add a Google Sheets → Search Rows module that looks for the incoming order ID in your existing data. If a match is found, use a filter to stop further processing. If no match, continue.
+Before acting on an order, check whether you have already processed it:
 
 ```
 Webhook receives order
     ↓
-Google Sheets: Search Rows for order_id
+Google Sheets: Search rows where order_id = this order's ID
     ↓
-Filter: if rows found = 0, continue. If rows found > 0, stop.
+Filter: continue only if no rows were found
     ↓
-Process order (deduplicated)
+Process the order
 ```
 
-This adds one operation to your scenario per order but prevents duplicate processing entirely.
+This costs one extra credit per order. For ad platforms, also send a stable event ID (the Shopify order ID works) with every purchase. Meta and TikTok use it to merge a browser event and a server event for the same purchase, so even if a duplicate slips through, it is counted once.
 
-**For high-volume stores**, searching the entire sheet on every order becomes slow. Use a dedicated "processed IDs" sheet with only order IDs, limited to the last 30 days. Duplicate webhooks typically arrive within hours of the original, so 30 days of history provides full protection.
+If your scenario writes to shared sheets and several orders can arrive at once, consider turning on **sequential processing** in the scenario settings so runs happen one at a time.
 
-## Reconciliation: Catching Missed Events
+## Pattern 4: A daily count check
 
-Webhook processing should be treated as best-effort delivery. Even with retry logic, some events will be missed: endpoint downtime, rate limit exhaustion, or network issues during Shopify's retry window.
+This is the one pattern that catches every failure, including the silent kind:
 
-**Daily reconciliation check:**
+1. Create a second scenario, scheduled once each morning.
+2. Ask Shopify for yesterday's paid orders. Make.com's Shopify app can search orders by date; if you call the Admin API directly, use a currently supported API version, because Shopify retires versions on a published schedule.
+3. Count the rows your order log recorded for yesterday.
+4. If the two numbers differ, email yourself both.
 
-Create a separate [Make.com](/go/make/?source=the-complete-guide-to-reliable-shopify-automations-reconcile) scenario that runs every morning:
+When the check finds a gap, look at the scenario's history and incomplete executions for that day. For ad platforms, a missed purchase can often be sent late: Meta's Conversions API accepts events up to seven days old, so a gap found the next morning can still be filled.
 
-1. Calls Shopify's Orders API: `GET /admin/api/2024-01/orders.json?status=paid&created_at_min=YESTERDAY_DATE`
-2. Gets the count of yesterday's paid orders from Shopify
-3. Reads the count of rows written to your Google Sheets order log with yesterday's date
-4. If the counts don't match, sends you an email alert with both numbers
+## Pattern 5: Watch the things that switch automations off
 
-This catches any missed webhook events within 24 hours, before the discrepancy compounds.
+- **Credits.** When a Make.com account runs out of credits, scenarios stop. Check usage weekly and before busy periods; the [BFCM checklist](/blog/shopify-bfcm-automation-checklist-2026/) covers budgeting for a peak.
+- **Webhook subscriptions.** After any outage of more than a few hours, open **Settings → Notifications → Webhooks** in Shopify and confirm your webhooks still exist.
+- **Pinned API versions.** If a scenario calls an API with a version in its URL (`/v21.0/`, `/2025-01/`), write down the vendor's retirement date for that version and set a reminder months ahead. This is exactly the failure described at the top.
+- **Error emails.** Make.com can email you when scenarios fail. Make sure those go to an address you actually read.
 
-For missed events found by reconciliation, manually add the order data to your Sheets log. For server-side conversion events specifically, Meta and Google accept events up to 7 days after the purchase: you can backfill them if caught within that window.
+## Before you call a scenario finished
 
-## Handling Shopify API Rate Limits
+- [ ] Each destination is on its own Router branch.
+- [ ] Outside API calls use Break, and incomplete executions are stored.
+- [ ] No HTTP module lets error responses through as successes.
+- [ ] Order ID is checked before processing; ad platform events carry a stable event ID.
+- [ ] A daily scenario compares Shopify's paid order count with your log.
+- [ ] Any pinned API version has its retirement date written down.
+- [ ] You have tested with a real order and inspected each destination, not just the green tick.
 
-Shopify's API allows 2 requests per second on standard plans and 4 requests per second on Shopify Plus. Make.com scenarios that call the Shopify API (as opposed to receiving webhooks) can hit this limit when processing bulk operations.
-
-**Add delays between API calls:**
-
-In Make.com, between any two Shopify API calls, add a **Sleep** module set to 500ms (for standard plans) or 250ms (for Plus). This paces your requests within the rate limit.
-
-**Use the Shopify API's `since_id` parameter for pagination:**
-
-When polling the Shopify API for new orders rather than using webhooks, always use `since_id` rather than date filtering. `since_id` is indexed and fast; date filtering on `created_at` can be slow on large order histories and may return inconsistent results.
-
-## Monitoring Your Automation Stack
-
-Three layers of monitoring catch different types of failures:
-
-**Layer 1: Make.com execution history (always-on)**
-
-Make.com logs every scenario execution with success/failure status and module-level detail. Review this weekly: Automation → Scenarios → [your scenario] → History. Look for any failed runs and identify which module failed.
-
-**Layer 2: Error logging Google Sheet (build this)**
-
-Your error handler modules should write to a dedicated Error Log sheet: timestamp, order ID, failed module, error message, scenario name. Check this sheet daily. Zero rows = everything working. Any rows require investigation.
-
-**Layer 3: Daily count reconciliation (critical for production)**
-
-The daily Shopify Orders API vs Google Sheets count comparison described above. Automate this via a second Make.com scenario. Run it every morning. Get an email alert only when counts diverge: zero noise when everything is working, immediate signal when something is wrong.
-
-## The Reliable Architecture Checklist
-
-Apply these to every Shopify automation scenario before treating it as production-ready:
-
-- [ ] Router module separates all destination branches
-- [ ] Every HTTP module has an error handler set to Resume
-- [ ] Error handler logs failures to a Google Sheets error log
-- [ ] Deduplication check prevents duplicate order processing
-- [ ] Daily reconciliation scenario compares Shopify order count vs Sheets row count
-- [ ] Make.com email alerts enabled for scenario errors (Settings → Notifications)
-- [ ] Retry logic configured on HTTP modules (3 retries, exponential backoff)
-- [ ] Test with a real order after building, not just Make.com's test data
-- [ ] Run scenario manually after any Shopify plan change or API version update
-
-The [Make.com beginner's guide](/make-com-shopify/) covers the initial scenario setup. The [Shopify to Google Sheets guide](/shopify-google-sheets-automation/) covers the Google Sheets patterns that support reliable data writing at volume. The [Google Apps Script quotas guide](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/) covers the Apps Script limits that affect any workflow using scheduled scripts alongside Make.com.
-
-
----
-
-## Get production-ready automations with built-in reliability
-
-The Complete Kit includes Make.com JSON blueprints with deduplication, error handling, and retry logic already built in: CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto. $19.99 one-time.
-
-**[Get the Complete Kit: $19.99 →](/pro/)**
+The [Make.com for Shopify guide](/make-com-shopify/) covers first-time scenario setup, and the [Google Apps Script quotas guide](/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/) covers the limits that apply if any of your automation runs in Apps Script.

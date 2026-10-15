@@ -1,289 +1,111 @@
 ---
-title: "Set Up Google Analytics 4 on Shopify Free 2026 — No Code"
-heading: "How to Set Up Google Analytics 4 on Shopify Free in 2026: No Apps, No Code"
-description: "Free GA4 setup for Shopify in 2026. Google & YouTube channel for basic tracking, Make.com server-side events for complete data. No apps, no GTM, no fees."
-answer: "Google Analytics 4 installs on Shopify free through the official Google and YouTube sales channel, which handles browser-side event tracking without code or Google Tag Manager. Because browser events are lost to iOS and ad blockers, a Make.com webhook sending purchase events server-side completes the picture. Total setup takes under 20 minutes."
+title: "Set Up GA4 on Shopify Free, and Read It Correctly"
+heading: "How to Set Up Google Analytics 4 on Shopify for Free (and Avoid Double-Counting)"
+description: "Connect GA4 to Shopify through the free Google & YouTube app, check it works, change the two settings that matter, and understand why GA4 will always show fewer orders than Shopify."
+answer: "Google Analytics 4 connects to Shopify free through the Google & YouTube app: install it, choose the Google Analytics 4 setup on its Overview page, and connect your GA4 property. Shopify then sends standard ecommerce events, including purchases. Never add a GA4 tag to your theme too, and treat Shopify's order count, not GA4's, as the true number of sales."
 publishDate: "2026-04-16"
-updatedDate: "2026-04-16"
+updatedDate: "2026-10-15"
+verifiedDate: "2026-10-15"
 category: "tracking"
 badge: "Free Setup"
 badgeType: "new"
-readTime: 16
+readTime: 9
 canonical: "https://stackarchitect.xyz/blog/shopify-google-analytics-4-setup-free-2026/"
 faqs:
-  - question: "How do I set up Google Analytics 4 on Shopify for free?"
-    answer: "Install the Google & YouTube sales channel from the Shopify App Store (free) and connect your GA4 property during setup. Shopify automatically sends key ecommerce events (page_view, view_item, add_to_cart, begin_checkout, and purchase) to GA4 without any additional configuration. For more complete purchase data recovery, add a Make.com webhook that sends server-side purchase events to GA4's Measurement Protocol. The entire setup is free and requires no code or Google Tag Manager."
-  - question: "Do I need Google Tag Manager to connect Shopify to GA4?"
-    answer: "No. Shopify's native Google & YouTube sales channel connects directly to GA4 without Google Tag Manager. GTM is an option for stores that need custom event tracking beyond Shopify's standard ecommerce events, but for the standard purchase, add-to-cart, and checkout events that most stores need, the native integration is sufficient and requires no technical setup."
-  - question: "What events does Shopify send to GA4 automatically?"
-    answer: "When connected via the Google & YouTube sales channel, Shopify automatically sends the following GA4 events: page_view (every page load), view_item (product page views), add_to_cart (cart additions), begin_checkout (checkout started), add_payment_info (payment step), and purchase (order completed). These cover the complete ecommerce funnel without any additional configuration."
-  - question: "Why is my GA4 showing fewer purchases than Shopify?"
-    answer: "GA4 purchase events are sent by the browser-based Shopify pixel, which is subject to iOS tracking restrictions, ad blockers, and cookie limitations. Stores with significant iOS traffic, users of privacy browsers, and customers using ad blockers will show fewer purchases in GA4 than Shopify actually recorded. The server-side fix is Make.com sending purchase events to GA4's Measurement Protocol directly: bypassing browser restrictions entirely."
-  - question: "Is Google Analytics 4 free for Shopify stores?"
-    answer: "Yes. Google Analytics 4 is permanently free for standard use. There are no tier limits on the free version that would affect normal Shopify store analytics. Google Analytics 360 (the paid enterprise version) adds higher sampling thresholds and SLA guarantees: relevant only for extremely high-traffic stores. For the vast majority of Shopify stores, GA4 free provides complete analytics at no cost."
-  - question: "What is the difference between GA4 and Google Ads conversion tracking for Shopify?"
-    answer: "GA4 is an analytics platform that tracks user behaviour across your entire Shopify store (sessions, page views, product views, cart events, and purchases) for analysis and reporting. Google Ads conversion tracking is specifically for attributing purchases back to Google Ads clicks to measure campaign performance. They are separate systems. GA4 can be linked to Google Ads to import key events as conversions, but setting them up separately ensures each works correctly. This guide covers GA4; the Google Ads conversion tracking setup is covered in a separate guide."
-  - question: "How long does it take to set up GA4 on Shopify?"
-    answer: "The native GA4 setup via the Google & YouTube sales channel takes approximately 5 minutes. The additional server-side Make.com layer for complete purchase data recovery takes approximately 10 minutes. The full setup (native layer plus server-side layer plus verification) is complete in under 20 minutes with no technical skills required."
+  - question: "How do I connect Google Analytics 4 to Shopify?"
+    answer: "Create a GA4 property with a web data stream, then install Shopify's Google & YouTube app. On the app's Overview page, find the section for setting up Google Analytics 4 only, click Get started, choose your property under your Google account, click Connect and then Confirm. Google documents these steps in its help article Shopify: Set up your Google tag."
+  - question: "Do I need Google Tag Manager to use GA4 on Shopify?"
+    answer: "No. The Google & YouTube app sends Shopify's standard ecommerce events to GA4 without Google Tag Manager. If you add GA4 through Tag Manager, a theme snippet or a custom pixel as well, the same visit and purchase can be recorded twice, so use one method only."
+  - question: "Why does GA4 show fewer purchases than Shopify?"
+    answer: "Shopify records every order on its own servers. GA4 only records a purchase if the tag in the shopper's browser runs, and ad blockers, declined cookie consent and browser privacy limits all stop it. A gap is expected. Use Shopify's order count as the true figure and use GA4 for what it is good at: where visitors come from and where they leave."
+  - question: "Should I send Shopify purchases to GA4 through the Measurement Protocol?"
+    answer: "Usually not. Google's Measurement Protocol documentation says the client_id should match the ID generated by the Google Analytics tag on your site, which a Shopify order webhook does not contain. Sending purchases with another ID, such as the customer number, creates purchases with no traffic source and risks counting orders twice alongside the browser tag."
+  - question: "Is GA4 free for Shopify stores?"
+    answer: "Yes. The standard version of Google Analytics 4 is free, and so is Shopify's Google & YouTube app. The paid version, Google Analytics 360, is aimed at very large sites and is not needed by a typical Shopify store."
 relatedGuides:
+  - title: "Free Shopify conversion rate optimisation"
+    href: "/blog/shopify-conversion-rate-optimisation-free-2026/"
+  - title: "Google Ads conversion tracking for Shopify"
+    href: "/shopify-google-ads-conversion-tracking/"
   - title: "Which iOS changes break Shopify conversion tracking"
     href: "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/"
-  - title: "Shopify server-side tracking setup guide"
-    href: "/blog/shopify-server-side-tracking-complete-setup-guide/"
-  - title: "Shopify vs Meta attribution gap calculator"
-    href: "/shopify-vs-meta-attribution-gap-calculator/"
----
-> **Deep Dive:** This article is part of our comprehensive tracking series. For how the paid attribution tools compare with the free server-side route, see [Shopify attribution tools compared](/shopify-attribution-tools-compared/).
-
-
-Every Shopify store needs GA4. It tells you where your traffic comes from, which products get viewed most, where customers drop out of the checkout funnel, and what your actual conversion rate is. Without it, you're making every growth decision blind.
-
-In 2026, setting up GA4 on Shopify is free and takes under 20 minutes. No apps to install. No Google Tag Manager required. No monthly fees. This guide covers the complete setup: native browser-side tracking and server-side purchase event recovery.
-
-## What GA4 Tracks on Shopify
-
-Before setting anything up, understand what GA4 gives you and what it doesn't. [Google Analytics 4](https://support.google.com/analytics/answer/10089681) is Google's current analytics platform, replacing Universal Analytics which was sunset in July 2023. Shopify's native integration with GA4 is delivered through the [Google & YouTube sales channel](https://apps.shopify.com/google), which handles event tracking without requiring Google Tag Manager.
-
-**What GA4 tracks automatically on Shopify (via native integration):**
-
-- Traffic sources: where every session came from (Google organic, Meta ads, direct, email, referral)
-- Page views across every page of your store
-- Product views: which products are being seen
-- Add-to-cart events: which products are being added
-- Checkout funnel: where customers drop out of the checkout process
-- Purchase completions: orders and revenue
-- User demographics: approximate location, device type, browser
-- Session duration and bounce rates
-
-**What GA4 does not track without additional setup:**
-
-- Profit per order (revenue minus COGS and fees): covered by [Shopify P&L Automation](/shopify-profit-loss-automation/)
-- Attribution to specific ad clicks for campaign optimisation: covered by Google Ads Enhanced Conversions (separate system)
-- Customer lifetime value across multiple orders: requires GA4 User ID implementation or a CRM
-
-For most Shopify stores, particularly smaller ones, the native GA4 integration covers everything needed to make informed decisions about traffic, products, and funnel optimisation.
-
-## What You Need Before Starting
-
-- A Google account (free)
-- A GA4 property (create one at analytics.google.com if you don't have one)
-- Your Shopify Admin access
-- Your GA4 Measurement ID (format: `G-XXXXXXXXXX`): found in GA4 Admin → Data Streams → your stream → Measurement ID
-
-That's it. No additional tools required for the basic setup.
-
-## Step 1: Create Your GA4 Property (5 Minutes)
-
-If you already have a GA4 property connected to your Shopify store, skip to Step 2 to verify it's configured correctly.
-
-**Create a new GA4 property:**
-
-Go to [analytics.google.com](https://analytics.google.com). Click **Admin (gear icon) → Create → Property**.
-
-- Property name: your store name
-- Reporting time zone: your local time zone
-- Currency: your store's currency (GBP for UK stores)
-
-Click **Next**. Select **Ecommerce** as your business category. Select your business size. Click **Create**.
-
-**Create a Web Data Stream:**
-
-In your new property: **Admin → Data Streams → Add stream → Web**.
-
-- Website URL: `stackarchitect.xyz` (your store URL without https://)
-- Stream name: your store name
-
-Copy your **Measurement ID** (`G-XXXXXXXXXX`). You'll need this in Step 2.
-
-**Enable Enhanced Measurement:**
-
-In your data stream settings, verify Enhanced Measurement is toggled on. This enables automatic tracking of scrolls, outbound clicks, site search, video engagement, and file downloads without any additional configuration.
-
-## Step 2: Connect Shopify to GA4 via Google & YouTube Channel (5 Minutes)
-
-**Install the Google & YouTube sales channel:**
-
-In Shopify Admin: **Sales channels (+ icon in left sidebar) → Google & YouTube**. If already installed, open it.
-
-**Connect your Google account:**
-
-Click **Connect Google account** and sign in with the Google account that owns your GA4 property.
-
-**Connect your GA4 property:**
-
-In the Google & YouTube channel: **Settings → Measurement → Google Analytics 4**. Select your GA4 property from the dropdown. Your Measurement ID (`G-XXXXXXXXXX`) should appear. Click **Connect**.
-
-**Verify the connection:**
-
-After connecting, the channel should show "Connected" next to your GA4 property. Shopify will now automatically send ecommerce events to GA4 on every customer interaction.
-
-**What this enables:**
-
-Shopify sends the following events to GA4 automatically from this point forward:
-- `page_view`: every page load
-- `view_item`: product page views
-- `add_to_cart`: cart additions
-- `view_cart`: cart page views
-- `begin_checkout`: checkout started
-- `add_shipping_info`: shipping details entered
-- `add_payment_info`: payment details entered
-- `purchase`: order completed with revenue, tax, and shipping
-
-These cover the complete ecommerce event funnel without any further configuration.
-
-## Step 3: Verify Data Is Flowing (5 Minutes)
-
-Before adding the server-side layer, verify the native integration is working.
-
-**Real-time check:**
-
-In GA4: **Reports → Realtime**. Open your Shopify store in another browser tab and navigate a few pages. Within 30 seconds, you should see yourself appear as an active user in GA4 Realtime with your page path showing.
-
-**Purchase event verification:**
-
-Place a test order in your Shopify store (use a 100% discount code on any product). In GA4 Realtime, look for a `purchase` event to appear within 30–60 seconds. If it appears, your native integration is working correctly.
-
-**DebugView check:**
-
-For more detail: In GA4, go to **Admin → DebugView**. In your browser, open your store URL with `?gtm_debug=x` appended. Browse and add to cart: you should see events appearing in DebugView in near-real-time.
-
-If no events appear: verify the Google & YouTube channel shows "Connected" status, check that your GA4 property is in the same Google account as the channel connection, and ensure your store has at least one active product.
-
-## Step 4: Configure Your GA4 Ecommerce Settings (5 Minutes)
-
-The default GA4 setup works, but three configuration changes significantly improve the quality of your data.
-
-**Enable Google Signals:**
-
-In GA4: **Admin → Data Settings → Data Collection → Google Signals**. Toggle on. This allows GA4 to combine anonymous behavioural data from signed-in Google users for demographic reporting and cross-device tracking. No personal data is exposed: Google aggregates it.
-
-**Set your data retention to 14 months:**
-
-In GA4: **Admin → Data Settings → Data Retention → Event data retention → 14 months**. The default is 2 months: too short for year-over-year comparison. 14 months is the maximum on the free tier.
-
-**Connect GA4 to Google Search Console:**
-
-In GA4: **Admin → Property Settings → Product Links → Search Console**. Connect your Search Console property. This brings Google organic search query data into GA4: you can see exactly which search terms are driving traffic to your store, directly in GA4's reports.
-
-**Mark your purchase event as a key event:**
-
-In GA4: **Admin → Events → Mark as key event** next to the `purchase` event. This surfaces purchase data in GA4's conversion reports and makes it available for Google Ads import if you connect the two later.
-
-## Step 5: Server-Side Purchase Event Recovery via Make.com (10 Minutes)
-
-The native GA4 integration sends events from the customer's browser. This means iOS tracking restrictions, ad blockers, and Safari ITP can prevent purchase events from reaching GA4: creating a gap between your Shopify order count and your GA4 purchase count.
-
-The server-side fix: Make.com receives the Shopify Order Payment webhook and sends a purchase event to GA4's Measurement Protocol directly from the server. Browser state is irrelevant.
-
-**What you need:**
-
-- Make.com account ([free plan](/go/make/?source=shopify-google-analytics-4-setup-free-2026-n1): 1,000 credits a month at $0)
-- Your GA4 Measurement ID (`G-XXXXXXXXXX`)
-- Your GA4 API Secret: in GA4: **Admin → Data Streams → [your stream] → Measurement Protocol API secrets → Create**. Name it "Make.com" and copy the secret value.
-
-**Setting up the Make.com scenario:**
-
-If you already have a Make.com scenario running (CAPI Shield, Stocky Swap, or P&L Auto), add a new branch to your existing scenario. If starting fresh, set up the Shopify webhook first following the [Make.com beginner's guide](/make-com-shopify/).
-
-**Add an HTTP module for GA4 Measurement Protocol:**
-
-- **URL:** `https://www.google-analytics.com/mp/collect?measurement_id=G-XXXXXXXXXX&api_secret=YOUR_API_SECRET`
-- **Method:** POST
-- **Body type:** Raw
-- **Content type:** JSON
-
-**Request body:**
-
-```json
-{
-  "client_id": "{{webhook.customer.id}}",
-  "events": [
-    {
-      "name": "purchase",
-      "params": {
-        "transaction_id": "{{webhook.order_number}}",
-        "value": {{webhook.total_price}},
-        "currency": "{{webhook.currency}}",
-        "tax": {{webhook.total_tax}},
-        "shipping": {{webhook.total_shipping_price_set.shop_money.amount}},
-        "items": [
-          {
-            "item_id": "{{webhook.line_items[].variant_id}}",
-            "item_name": "{{webhook.line_items[].title}}",
-            "quantity": {{webhook.line_items[].quantity}},
-            "price": {{webhook.line_items[].price}}
-          }
-        ]
-      }
-    }
-  ]
-}
-```
-
-**Test:** Place a test order in Shopify. Run the Make.com scenario. In GA4 Realtime, you should see a `purchase` event arrive within 30 seconds tagged with your order details.
-
-## Step 6: Link GA4 to Google Ads (Optional, 2 Minutes)
-
-If you run Google Ads, linking GA4 allows you to import GA4 key events as Google Ads conversions and build remarketing audiences from GA4 behavioural data.
-
-**In GA4:** Admin → Product Links → Google Ads Links → Link.
-
-Select your Google Ads account. Enable Personalised advertising (required for remarketing audiences). Click Submit.
-
-Once linked: in Google Ads, go to **Goals → Conversions → Import → Google Analytics 4 properties** and import your `purchase` key event. This gives Google Ads campaigns access to GA4's more complete purchase data, particularly for stores using server-side Measurement Protocol events.
-
-## Reading Your GA4 Data: The Reports That Matter for Shopify
-
-Once data is flowing, these are the reports that give you actionable information:
-
-**Reports → Acquisition → Traffic Acquisition**
-
-Where your sessions come from: Google organic, Meta paid, direct, email, referral. This tells you which channels are actually driving traffic. Sort by "Sessions" to see volume, then by "Purchases" to see which channels convert.
-
-**Reports → Engagement → Pages and screens**
-
-Which pages get the most views. For a Shopify store, this shows you which products are being viewed most, and which product pages have high views but low add-to-cart rates (potential product page optimisation opportunities).
-
-**Reports → Monetisation → Ecommerce purchases**
-
-Product-level purchase data: which items are actually selling, at what quantity, generating what revenue. Compare this against your views data to find high-view low-purchase products.
-
-**Reports → Monetisation → Checkout journey**
-
-Where customers drop out of your checkout process. A high drop-off at the payment step suggests friction (payment method issues, trust signals, shipping cost shock). A high drop-off at address entry suggests checkout UX problems.
-
-**Explore → Funnel exploration**
-
-Build a custom funnel: `view_item` → `add_to_cart` → `begin_checkout` → `purchase`. This shows your end-to-end conversion rate at each step. Compare each step's rate with your own previous months: the step whose rate falls is where to look first.
-
-## The Complete Free Analytics Stack
-
-GA4 covers the traffic and behaviour layer. Two additional free tools complete your analytics picture:
-
-**[Shopify P&L Automation](/shopify-profit-loss-automation/)**: GA4 shows revenue but not profit. P&L Auto writes COGS, Shopify transaction fees, and net profit for every order to a Google Sheet automatically. Revenue from GA4 plus profit from P&L Auto gives you a complete financial picture.
-
-**[CAPI Shield](/capi-shield/)**: if you run Meta Ads, CAPI Shield sends server-side purchase events to Meta's Conversions API, giving Meta the conversion data it needs to optimise campaigns. Its Google branch cannot match Shopify orders as shipped. This is the ad attribution layer that complements GA4's organic analytics layer.
-
-**[Make.com](/go/make/?source=shopify-google-analytics-4-setup-free-2026-n2)** (free, 1,000 ops/month) is the automation engine connecting all three. One Shopify Order Payment webhook fans out to: GA4 Measurement Protocol, Meta CAPI, Google Enhanced Conversions, and your P&L spreadsheet, simultaneously, at $0/month on the free plan for stores under 250 orders per month.
-
-## What to Check After 7 Days
-
-After your GA4 setup has been running for a week, verify these metrics to confirm everything is working:
-
-- **Session count:** should broadly match your Shopify Analytics visitor count (some variance is normal because of ad blockers and bot filtering)
-- **Purchase count:** compare GA4 purchases to Shopify orders. A gap is normal with browser-only tracking, and how wide depends on your store's iOS and ad-blocker traffic. If you've deployed the Make.com server-side layer, the gap should narrow: read the change against your own pre-deployment baseline rather than against a target figure.
-- **Average session duration:** under 30 seconds across the board indicates a configuration problem (bot traffic or misconfigured filters). Over 1 minute is healthy for a product-browsing store.
-- **Bounce rate equivalent:** in GA4, look for "Engaged sessions": sessions with more than 10 seconds, a conversion, or 2+ page views. A low or falling share of engaged sessions on a landing page means the page needs work.
-
-If your purchase count in GA4 is significantly lower than Shopify order count after deploying the server-side layer, check: GA4 API Secret is correct, Measurement ID matches your live data stream (not a test property), and the Make.com scenario is actually running (check execution history for errors).
-
-GA4 is now your analytics foundation. Every traffic decision, every product decision, every funnel optimisation decision has data behind it, and it costs nothing.
-
-
 ---
 
-## Complete your free tracking stack
+GA4 tells you where your visitors come from and where they leave. It is free, and on Shopify it takes one app to connect. The setup is the easy part. Most of the mistakes come afterwards: adding a second tag, trusting GA4's order count, or bolting on a server-side fix that makes the numbers look better while making them less accurate. This guide covers both.
 
-GA4 handles analytics. For ad attribution and conversion recovery, add CAPI Shield (server-side Meta Conversions API), included in the Complete Kit as a ready-to-import Make.com JSON blueprint. $19.99 one-time, deploys in 10 minutes. For Google Ads, the [Google Ads conversion tracking guide](/shopify-google-ads-conversion-tracking/) covers Enhanced Conversions and the gclid it needs.
+## Before you start
 
-**[Get the Complete Kit: $19.99 →](/pro/)**
+You need:
+
+- A Google account, and a **GA4 property with a web data stream** ([analytics.google.com](https://analytics.google.com), Admin, Create, Property). Set the property's time zone and currency to match your store.
+- **Your store open to the public.** Shopify's help centre notes that Google Analytics cannot track events while the online store is password protected ([Shopify Help Center](https://help.shopify.com/en/manual/reports-and-analytics/google-analytics/google-analytics-setup)).
+- **No other GA4 tag on the store.** Check your theme code, any Google Tag Manager container and **Settings → Customer events** for an older GA4 tag or custom pixel. If one exists, remove it before connecting, or every page view and purchase may be counted twice.
+
+## Step 1: Connect GA4 through the Google & YouTube app
+
+These steps follow Google's own article, [Shopify: Set up your Google tag](https://support.google.com/tagmanager/answer/12183125?hl=en), read on 15 October 2026:
+
+1. In Shopify admin, search for **Google & YouTube** and install the app.
+2. On the app's **Overview** page, find the section for setting up **Google Analytics 4** only and click **Get started**.
+3. Under **Your Google Account**, choose to connect a property.
+4. Select your GA4 property, click **Connect**, then **Confirm**.
+
+You do not need Google Merchant Center for this. Shopify's help page says so directly.
+
+### What Shopify sends
+
+Once connected, the app sends standard ecommerce events, including product views, cart additions, checkout starts and purchases. Google's article lists the events added most recently: `view_item_list` when a collection is viewed, `remove_from_cart`, `view_cart`, and `add_shipping_info` when shipping details are entered at checkout. That is enough to build the funnel described below without Tag Manager.
+
+## Step 2: Check it is recording
+
+1. In GA4, open **Reports → Realtime**.
+2. In another browser, visit your store and click through a few products. You should appear as an active user within a minute.
+3. Place a test order, for example with a 100% discount code. A `purchase` event should appear in Realtime shortly afterwards.
+
+If nothing appears, check in this order: the app shows your property as connected; the store is not password protected; your own browser is not blocking Google Analytics (try a private window without extensions); and no cookie banner choice is preventing collection for your visit.
+
+## Step 3: Change the two settings that matter
+
+**Data retention.** GA4 keeps detailed event data for two months by default, which is too short to compare this month with the same month last year in Explorations. In **Admin → Data collection and modification → Data retention**, set event data retention to **14 months**, the maximum on the free version.
+
+**Search Console link.** In **Admin → Product links → Search Console links**, link your Search Console property. GA4 then shows which Google searches bring visitors to your store.
+
+`purchase` is treated as a key event by default, so you do not need to mark it yourself.
+
+## Why GA4 will always show fewer orders than Shopify
+
+Shopify records every order on its own servers. GA4 records a purchase only when the Google tag runs in the shopper's browser. It will not run, or will run with limited data, when:
+
+- the shopper uses an ad blocker or a browser that blocks analytics;
+- the shopper declines analytics cookies on your consent banner (in the UK and EU, consent is required before analytics cookies are set);
+- the session crosses devices or the browser clears its storage between visit and purchase.
+
+So a gap between Shopify orders and GA4 purchases is normal, and its size depends on your visitors. **Use Shopify's order count as the true number of sales.** Use GA4 for what it does better than Shopify: traffic sources, landing pages and the path visitors take.
+
+### Why this guide no longer recommends a Measurement Protocol "fix"
+
+An earlier version of this guide, like many others, suggested sending every Shopify order to GA4 from a Make.com scenario through Google's Measurement Protocol, using the customer's ID as the `client_id`. We have removed it because it does more harm than good:
+
+- Google's documentation says the `client_id` **should match the ID generated by the Google Analytics tag on your website** ([Measurement Protocol guide](https://developers.google.com/analytics/devguides/collection/protocol/ga4/sending-events)). An order webhook does not contain that ID. A purchase sent with another ID belongs to a "user" who never visited, so it arrives with no traffic source.
+- GA4 deduplicates purchases that share a transaction ID, but Google describes this in terms of transactions from the same user ([Google Analytics Help](https://support.google.com/analytics/answer/12313109)). A server copy under a different ID, or with a transaction ID formatted differently from the browser's, can be counted as a second sale.
+
+The result is a GA4 purchase count that moves closer to Shopify's for the wrong reason. If you need complete conversion data for **ad bidding**, that is a different problem with a different fix: see [Google Ads conversion tracking for Shopify](/shopify-google-ads-conversion-tracking/) and, for Meta, [CAPI Shield](/capi-shield/).
+
+## The reports worth opening
+
+**Reports → Acquisition → Traffic acquisition.** Sessions by channel. Add the purchases column to see which channels convert, not just which bring visitors.
+
+**Reports → Engagement → Landing page.** Which pages visitors arrive on. A landing page with many sessions and few engaged sessions needs work before it gets more traffic.
+
+**Reports → Monetisation → Checkout journey.** Where shoppers leave between starting checkout and buying.
+
+**Explore → Funnel exploration.** Build the steps `view_item`, `add_to_cart`, `begin_checkout`, `purchase`, and break it down by device or by session default channel group. Compare each step with your own previous months; the step that has weakened is the place to look. The [free conversion rate optimisation guide](/blog/shopify-conversion-rate-optimisation-free-2026/) shows what to do once you have found it.
+
+## A one-week check
+
+After seven days, compare:
+
+- **GA4 sessions with Shopify's sessions** for the same dates. They will not match exactly, because the two count differently and GA4 misses visitors who decline consent, but they should move together day by day.
+- **GA4 purchases with Shopify orders.** Note the gap. You now have a baseline; if it suddenly widens later, something has broken, such as a theme change or a second tag.
+
+If the purchase gap shrinks to almost nothing without you changing anything, look for a duplicate tag before celebrating.

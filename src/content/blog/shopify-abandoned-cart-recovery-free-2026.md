@@ -1,180 +1,136 @@
 ---
-title: "Shopify Abandoned Cart Recovery Free 2026"
-heading: "Shopify Abandoned Cart Recovery Free 2026: No Apps, No Monthly Fees"
-description: "Recover Shopify abandoned carts free: a Make.com webhook on checkouts/create feeding a Systeme.io email sequence. No app, no monthly fee, 30-minute setup."
-answer: "Shopify abandoned cart recovery runs free by catching the native checkouts/create webhook in Make.com and routing it into a Systeme.io email sequence. There is no app to install and no monthly fee, on any Shopify plan. Baymard Institute puts average documented cart abandonment at 70.22%, so most started checkouts are worth a follow-up email."
+title: "Free Shopify Abandoned Cart Recovery: Two Routes"
+heading: "Free Shopify Abandoned Cart Recovery: Shopify's Own Email, or a Multi-Email Sequence"
+description: "Two free ways to recover abandoned Shopify checkouts: Shopify Messaging's built-in automation, or a Make.com and Systeme.io sequence, with the logic that stops emails reaching people who already bought."
+answer: "The simplest free abandoned cart recovery on Shopify is the Abandoned checkout emails by Shopify automation in the Shopify Messaging app, which includes 10,000 free emails a month. For a sequence of several different emails, a Make.com and Systeme.io setup works on free plans, provided a completed order removes the buyer from the sequence before the next email sends."
 publishDate: "2026-04-21"
-updatedDate: "2026-04-21"
-verifiedDate: "2026-08-11"
+updatedDate: "2026-10-15"
+verifiedDate: "2026-10-15"
 category: "email"
 badge: "Free Setup"
 badgeType: "new"
-readTime: 10
+readTime: 9
 canonical: "https://stackarchitect.xyz/blog/shopify-abandoned-cart-recovery-free-2026/"
 faqs:
-  - question: "How do I set up abandoned cart recovery on Shopify for free?"
-    answer: "The free method uses Make.com and Systeme.io. In Shopify Admin, create a webhook for the 'Checkout abandoned' event pointing to a Make.com scenario. Make.com receives the checkout data and sends it to Systeme.io via API, where a pre-built automation sequence sends the recovery emails. The complete setup takes approximately 30 minutes and costs $0/month on both platforms' free tiers. You do not need the Shopify abandoned checkout notification: this webhook fires on all abandoned checkouts regardless of whether the customer provided their email at checkout."
-  - question: "Does Shopify have built-in abandoned cart recovery?"
-    answer: "Yes, but with significant limitations. Shopify's built-in abandoned checkout notification sends one email to customers who reached the checkout and provided their email address. It has no sequence capability (only one email), no timing customisation beyond basic delays, and no segmentation. The Make.com + Systeme.io approach supports a full 3-email sequence with custom timing, subject line A/B testing, and segmentation by cart value or product category."
-  - question: "How much revenue does abandoned cart recovery generate?"
-    answer: "It depends on how many checkouts you lose, your average order value and the share your emails win back, which varies with niche and email quality. We have not measured recovery rates across stores and publish no typical figure. Multiply your monthly abandoned checkouts by your average order value and by your own recovery rate after the first month. The three-email sequence (1 hour, 24 hours, 72 hours) gives a shopper three chances to come back where Shopify's native email gives one."
-  - question: "What is the difference between Shopify's abandoned cart email and server-side recovery?"
-    answer: "Shopify's native abandoned checkout email fires only when a customer has provided their email address before abandoning. Make.com webhooks fire on all checkout abandonment events, including cases where Shopify has a pre-existing customer email on file from a previous order. This captures abandonment from returning customers even if they did not enter their email in the current checkout session."
-  - question: "Is Systeme.io free for abandoned cart automation?"
-    answer: "Yes. Systeme.io's free plan includes 2,000 contacts, unlimited email sends, full automation sequences with conditional logic, and API access. The abandoned cart sequence (three emails with conditional branching to stop sending after a purchase) runs entirely within the free tier for most Shopify stores."
-  - question: "Do I need to install a Shopify app for abandoned cart recovery?"
-    answer: "No. The Make.com + Systeme.io approach uses Shopify's native checkout abandonment webhook: a built-in feature available on every Shopify plan. No app installation is required on Shopify. Make.com receives the webhook and Systeme.io sends the emails. The entire system runs externally to Shopify with no app permissions required."
+  - question: "Does Shopify send abandoned checkout emails for free?"
+    answer: "Yes. Shopify sends them through the Shopify Messaging app, using an automation called Abandoned checkout emails by Shopify. You choose who receives it and how long after abandonment it sends. Shopify Messaging includes 10,000 free emails a month and then charges from $1 per 1,000, according to its App Store listing on 15 October 2026."
+  - question: "Is there a Shopify webhook for abandoned checkouts?"
+    answer: "No. Shopify's checkout webhooks are checkouts/create, checkouts/update and checkouts/delete. None of them means a checkout was abandoned: checkouts/create fires as soon as a checkout starts, including for people who go on to pay. Any setup built on those webhooks has to stop the sequence when an order arrives, or it will email buyers."
+  - question: "Can Shopify Flow send abandoned checkouts to Make.com?"
+    answer: "Shopify Flow has a Customer abandons checkout trigger, but the Send HTTP request action needed to pass that data to Make.com is only available on the Shopify Plus, Advanced and Grow plans, according to Shopify's Flow documentation read on 15 October 2026. On other plans, use Shopify Messaging or the webhook approach in this guide."
+  - question: "Is Systeme.io's free plan enough for an abandoned cart sequence?"
+    answer: "Possibly, but check before building. On 15 October 2026 systeme.io's pricing page listed the free plan at 2,000 contacts, unlimited emails and one automation rule, and did not show whether multi-step workflows are included. Confirm in your own account that you can build a sequence with delays and a purchase check before connecting Shopify."
+  - question: "How many abandoned cart emails should I send?"
+    answer: "A common pattern is three: one within a few hours while the purchase is still on the shopper's mind, one the next day, and a final one two or three days later. No sequence length suits every store. Start with Shopify's single automated email, measure how many checkouts it recovers, and add more emails only if each one recovers more than it costs you in unsubscribes."
 relatedGuides:
+  - title: "Free Shopify conversion rate optimisation"
+    href: "/blog/shopify-conversion-rate-optimisation-free-2026/"
   - title: "Replace Klaviyo free with Systeme.io"
     href: "/replace-klaviyo-free/"
   - title: "Make.com for Shopify: free automation guide"
     href: "/make-com-shopify/"
-  - title: "Shopify BFCM automation checklist"
-    href: "/blog/shopify-bfcm-automation-checklist-2026/"
 ---
 
-Most online carts are never checked out: Baymard Institute puts the average documented cart abandonment rate at 70.22%, across 50 studies of ecommerce generally rather than Shopify alone ([baymard.com](https://baymard.com/lists/cart-abandonment-rate), read 25 September 2026). The usual way to recover them is a paid email tool: Klaviyo starts at $20/month ([klaviyo.com/pricing](https://www.klaviyo.com/pricing), read 11 August 2026) and rises with your contact count. The free alternative (a Make.com webhook routing to a Systeme.io automation sequence) does the same job at $0/month.
+Most started checkouts are never completed. Baymard Institute puts the average documented cart abandonment rate at 70.22%, across 50 studies of ecommerce in general rather than Shopify alone ([baymard.com](https://baymard.com/lists/cart-abandonment-rate), read 25 September 2026). Some of those shoppers will come back if reminded, and on Shopify the reminder can be free.
 
-This guide covers the complete free setup in 30 minutes.
+There are two free routes. Start with the first. Move to the second only if you want several different emails and are willing to maintain a small automation.
 
-## What the Free Stack Does
+## Route 1: Shopify's own abandoned checkout email
 
-Before building it, understand exactly what you're getting:
+Shopify sends abandoned checkout emails through the **Shopify Messaging** app (previously Shopify Email). The automation is called **Abandoned checkout emails by Shopify**. In it you choose:
 
-- **Trigger:** Shopify fires a `checkouts/create` webhook the moment a checkout is abandoned: no app required, available on all Shopify plans
-- **Router:** Make.com receives the webhook and extracts the customer email, cart contents, checkout URL, and order value
-- **Sender:** Systeme.io sends a three-email recovery sequence with conditional logic that stops after purchase
+- **Who receives it**: everyone who abandoned with an email address, or only customers subscribed to marketing.
+- **When it sends**: how long after abandonment the email goes out.
 
-The sequence: email 1 at 1 hour (soft reminder, cart contents shown), email 2 at 24 hours (add urgency or social proof), email 3 at 72 hours (final nudge, optionally with discount).
+([Shopify Help Center: abandoned checkouts](https://help.shopify.com/en/manual/orders/abandoned-checkouts))
 
-The recovery rate for this sequence depends on your niche, average order value and email quality. Measure your own after the first month rather than assuming one.
+**Cost.** Shopify Messaging includes 10,000 free emails a month, then charges from $1 per 1,000 ([App Store listing](https://apps.shopify.com/shopify-email), read 15 October 2026). Abandoned checkout emails are a small share of that for most small stores.
 
-## What You Need
+**Why start here.** Shopify knows when an order is completed, so its email never reaches someone who has already paid. It needs no other accounts, no webhook and no maintenance. Its limit is that Shopify's help page describes a single recovery email, not a series with different content.
 
-- A [Systeme.io free account](/go/systeme/?source=shopify-abandoned-cart-recovery-free-2026-n1): 2,000 contacts and unlimited sends at $0
-- A [Make.com free account](/go/make/?source=shopify-abandoned-cart-recovery-free-2026-n2): 1,000 credits a month, enough for ~200 orders
-- Your Shopify Admin access (Settings → Notifications → Webhooks)
+**Before you switch it on:**
 
-## Step 1: Create the Systeme.io Automation
+1. Edit the email so it sounds like your store, not a template. Keep the checkout button prominent.
+2. Choose the delay deliberately. A shorter delay reaches shoppers while they still remember the product. A longer one avoids pestering people who were only comparing prices.
+3. Check **Orders → Abandoned checkouts** after two weeks. Shopify marks which ones were recovered, which gives you your own recovery rate to judge any further work against.
 
-Set up the email sequence in Systeme.io before configuring the webhook, so you have a destination ready.
+## Route 2: A multi-email sequence with Make.com and Systeme.io
 
-**In Systeme.io**: using the free account from the prerequisites above:
+Use this route if you want, for example, a reminder after an hour, a different message the next day and a final email after three days.
 
-1. Go to **Automations → Create automation**
-2. Set trigger: **Contact subscribes to a tag**: create a tag called `abandoned-cart`
-3. Add Email step: delay: **1 hour** after trigger
+### First, the trap in most tutorials
 
-**Email 1 subject:** `You left something behind...`
+Shopify has **no abandoned checkout webhook**. Its checkout webhooks are `checkouts/create`, `checkouts/update` and `checkouts/delete` ([Shopify webhook reference](https://shopify.dev/docs/api/webhooks)). `checkouts/create` fires the moment a checkout starts, including for shoppers who pay a minute later.
 
-Write a short, personal email showing what they left in their cart. Include the checkout link. Keep it under 100 words. No hard sell: just a reminder.
+So a setup that sends `checkouts/create` straight into an email sequence emails your buyers "you left something behind". An earlier version of this guide made exactly that mistake, and many free tutorials still do.
 
-4. Add **Condition** step: check if contact has made a purchase (use the `purchased` tag if you're tagging buyers). If yes → end automation.
-5. Add **Email** step: delay: **24 hours** after trigger
+The fix is in the logic: a shopper enters the sequence when they start checkout with an email address, and **a completed order takes them out of it** before each email sends, including the first.
 
-**Email 2 subject:** `Still thinking about it?`
+### How the pieces fit
 
-Add a line of social proof (e.g. "Over 500 customers bought this last month") or address a common objection. Include the checkout link again.
+| Piece | Job |
+|---|---|
+| Shopify webhook: `checkouts/update` | Tells Make.com a checkout now has an email address |
+| Make.com scenario A | Creates or updates the contact in Systeme.io and adds the tag `abandoned-cart` |
+| Systeme.io sequence | Waits, checks for the tag `purchased`, sends email 1; repeats for emails 2 and 3 |
+| Shopify webhook: `orders/create` | Tells Make.com an order was completed |
+| Make.com scenario B | Adds the tag `purchased` to that customer in Systeme.io |
 
-6. Add **Condition** step: same purchase check.
-7. Add **Email** step: delay: **72 hours** after trigger
+Use `checkouts/update` rather than `checkouts/create` because a checkout often starts before the shopper has typed an email address. In Make.com, add a filter so the scenario continues only when the email field is not empty.
 
-**Email 3 subject:** `Last chance: your cart expires soon`
+If you already run an `orders/create` scenario, such as [CAPI Shield](/capi-shield/) for Meta server-side tracking, add scenario B's step as an extra branch there instead of building a second scenario.
 
-Create gentle urgency. Optionally include a discount code if your margins support it. This is the last email: keep it short.
+### Check your free plan limits first
 
-8. Save the automation. Note the **tag name** (`abandoned-cart`): you'll use this in Make.com.
+All three limits below were read on the vendors' pricing pages on 15 October 2026.
 
-## Step 2: Get Your Systeme.io API Key
+- **[Make.com free](/go/make/?source=shopify-abandoned-cart-recovery-free-2026-n2)**: up to 1,000 credits a month and 2 active scenarios ([make.com/pricing](https://www.make.com/en/pricing)). Every checkout update and every order uses credits. `checkouts/update` can fire several times for one checkout, so watch the credit counter for the first week and drop the sequence back to Route 1 if it runs out.
+- **[Systeme.io free](/go/systeme/?source=shopify-abandoned-cart-recovery-free-2026-n1)**: 2,000 contacts, unlimited emails and one automation rule ([systeme.io/pricing](https://systeme.io/pricing)). The pricing page did not show whether multi-step workflows are part of the free plan. Before connecting Shopify, confirm in your account that you can build a sequence with delays and a tag check.
+- **Shopify**: webhooks are available on every plan, under **Settings → Notifications → Webhooks**.
 
-In Systeme.io: **Profile icon → Settings → API keys → Generate new key**
+### Building it
 
-Copy the key. You'll paste it into Make.com in the next step.
+**In Systeme.io**
 
-## Step 3: Build the Make.com Scenario
+1. Create two tags: `abandoned-cart` and `purchased`.
+2. Create the sequence, triggered when the tag `abandoned-cart` is added to a contact.
+3. Before each email, add a condition: if the contact has the tag `purchased`, end the sequence.
+4. Write three short emails. Include the checkout link in each, which you will store in a custom contact field (for example `checkout_url`). If you use social proof, use only figures that are true for your store.
 
-**In Make.com**: using the free account from the prerequisites above:
+**In Make.com, scenario A**
 
-1. Create a new scenario
-2. Add **Webhooks → Custom webhook** as the trigger
-3. Copy the generated webhook URL
+1. Trigger: **Webhooks → Custom webhook**. Copy its URL.
+2. Filter: continue only if the checkout's email is not empty.
+3. Use Make.com's systeme.io app to create or update the contact with the email, first name and `abandoned_checkout_url` from the payload.
+4. Add the tag `abandoned-cart`. systeme.io's tag step expects the **contact ID** returned by the previous step, not the email address; mapping the email here is a common cause of failed runs.
 
-**The scenario needs two modules after the webhook trigger:**
+**In Make.com, scenario B (or a branch of an existing orders scenario)**
 
-**Module 2: HTTP → Make a request**
-- URL: `https://api.systeme.io/api/contacts`
-- Method: POST
-- Headers: `X-API-Key: [your Systeme.io API key]`
-- Body (JSON):
-```json
-{
-  "email": "{{email}}",
-  "firstName": "{{first_name}}",
-  "fields": [
-    {"slug": "cart_value", "value": "{{total_price}}"},
-    {"slug": "checkout_url", "value": "{{abandoned_checkout_url}}"}
-  ],
-  "tags": ["abandoned-cart"]
-}
-```
+1. Trigger on the `orders/create` webhook.
+2. Find the contact in systeme.io by the order's email and add the tag `purchased`.
 
-Map `email`, `first_name`, `total_price`, and `abandoned_checkout_url` from the Shopify webhook payload. Systeme.io creates or updates the contact and immediately triggers the `abandoned-cart` automation sequence.
+**In Shopify**
 
-**Module 3: Filter (optional but recommended)**
+Under **Settings → Notifications → Webhooks**, create one webhook for **Checkout update** pointing at scenario A's URL, and one for **Order creation** pointing at scenario B's (skip the second if you added a branch to an existing orders scenario). Use JSON format.
 
-Add a filter before Module 2: only proceed if `{{email}}` is not empty. This prevents failed runs when anonymous browsing creates checkouts without an email address.
+### Testing it
 
-Save the scenario and click **Run once** to activate the webhook listener.
+1. Start a checkout on your store with an email address you control, then close the tab. Within a few minutes, scenario A should show a run and the contact should carry the `abandoned-cart` tag.
+2. Start a second checkout with a different address and complete the order. That contact should receive the `purchased` tag, and **no** recovery email.
+3. Leave both for a day and confirm only the first address received anything.
 
-## Step 4: Add the Webhook in Shopify
+The second test is the one that matters. Do not switch the sequence on for real customers until it passes.
 
-In Shopify Admin: **Settings → Notifications → Webhooks → Create webhook**
+## Which route to choose
 
-- Event: **Checkout abandonment**
-- Format: **JSON**
-- URL: paste your Make.com webhook URL
-- Save
+| | Route 1: Shopify Messaging | Route 2: Make.com + Systeme.io |
+|---|---|---|
+| Emails | One, per Shopify's help page | As many as you build |
+| Never emails buyers | Yes, Shopify knows the order state | Only if the purchase check is built and tested |
+| Accounts needed | None beyond Shopify | Make.com and Systeme.io |
+| Maintenance | None | Watch credits; re-test after changes |
+| Cost | Free up to 10,000 emails a month | Free within both free plans' limits |
 
-[Shopify's checkout abandonment webhook documentation](https://shopify.dev/docs/api/admin-rest/2024-01/resources/webhook) confirms this event fires when a checkout has been created but not completed for longer than 10 minutes.
+For most small stores, Route 1 recovers most of what a sequence would, with none of the risk. Measure its recovery rate for a month first. If it is recovering orders and you think more emails would add to that, build Route 2.
 
-## Step 5: Test the Sequence
-
-1. On your store, add a product to cart, begin checkout, enter a real email address you control, then close the browser
-2. Wait 10–15 minutes for Shopify to fire the abandonment webhook
-3. Check Make.com → the scenario should show a successful run
-4. Check Systeme.io → Contacts → find the email → verify it has the `abandoned-cart` tag
-5. Check your inbox: the first email should arrive within the hour
-
-If the Make.com run fails, check the webhook payload in Make.com's execution history to see the exact error. The most common issues are an empty email field (add the filter from Step 3) or an incorrect Systeme.io API key.
-
-## What Recovery Rates to Expect
-
-Recovery rate depends on four factors: email timing, subject lines, average order value, and your niche.
-
-We have not measured recovery rates across stores, so this guide publishes no typical figure. What holds is the direction: higher order values and well-written emails recover more, low-value impulse products recover less, and sending no recovery emails recovers nothing.
-
-The 1-hour email reaches the shopper while the purchase is still on their mind. Don't skip it.
-
-Worth keeping the arithmetic in view, though: recovery works on carts that were already abandoned. Lifting a 6% recovery rate to 9% on 100 abandoned carts wins back three orders: meaningful, and cheaper than the alternative of paying for the traffic twice. But the same three orders come from stopping six abandonments happening at all, and the levers for that sit earlier, on the product page and in the checkout. [Free Shopify conversion rate optimisation](/blog/shopify-conversion-rate-optimisation-free-2026/) covers that side of it, and the two compound rather than compete.
-
-## Free vs Paid: Is This Actually Equivalent to Klaviyo?
-
-Klaviyo's abandoned cart flow is more feature-rich: it supports dynamic product blocks showing the exact abandoned items with images, price drop triggers, and deep Shopify property access.
-
-The free stack gives you: email content, checkout link, total cart value, and the customer's name. No product images in the email (unless you build them manually), no dynamic blocks. For most Shopify stores, particularly smaller ones, this difference does not materially affect recovery rates.
-
-The sequence logic (timing, conditions, stopping after purchase) is functionally equivalent on Systeme.io's free plan.
-
-## Connect It to Your Full Free Stack
-
-This abandoned cart sequence uses the same Make.com scenario you're running for CAPI Shield and server-side tracking. Add the Systeme.io HTTP module as a parallel branch alongside your existing Meta CAPI and Google Enhanced Conversions branches: one Shopify webhook, abandoned cart recovery running simultaneously with server-side tracking at $0/month.
-
-Full stack: [CAPI Shield](/capi-shield/) + [Stocky Swap](/stocky-swap/) + [P&L Auto](/shopify-profit-loss-automation/) + abandoned cart recovery: all running from a single Make.com free account.
-
----
-
-## Complete your free Shopify automation stack
-
-While Make.com + Systeme.io handles abandoned cart recovery, the Complete Kit adds the rest of your automation layer: server-side tracking (CAPI Shield replaces Elevar), inventory logging (Stocky Swap, for stores that relied on Shopify Stocky), and live P&L reporting. Four pre-built Make.com JSON blueprints, $19.99 one-time, deploy in 10 minutes.
-
-**[Get the Complete Kit: $19.99 →](/pro/)**
+Recovery only works on checkouts that were already lost. Stopping shoppers leaving in the first place is the other half; the [free conversion rate optimisation guide](/blog/shopify-conversion-rate-optimisation-free-2026/) shows how to find the step where they leave.
