@@ -111,7 +111,7 @@ const aff = {
 const faqs = [
   {
     q: "How do I fix Shopify Meta ROAS dropping in 2026?",
-    a: `Three changes converged in Q1 2026 to break Meta tracking: iOS 26's Link Tracking Protection, Shopify's January 13 pixel default switching to Optimized mode, and Meta's algorithm shift. Fix: switch App Pixel to Always On in Settings → Customer Events, set Meta data sharing to Maximum, and implement server-side CAPI via Make.com. <strong>Measure your own result as Additional Conversions Reported in Meta Events Manager, typically within 7–14 days.</strong> The full guide is <a href="https://stackarchitect.xyz/blog/shopify-meta-roas-dropped-2026-fix/">free here</a>.`,
+    a: `Apple's Link Tracking Protection (since iOS 17) and cookie limits, plus Shopify's January 13 2026 pixel data sharing default, can all reduce what Meta sees. Fix: set the pixel to Always On in Settings → Customer Events, then send purchases server-side through one route: Shopify's Facebook & Instagram data sharing at Enhanced or Maximum, or a webhook connection via Make.com, not both. <strong>Measure your own result as Additional Conversions Reported in Meta Events Manager, typically within 7–14 days.</strong> The full guide is <a href="https://stackarchitect.xyz/blog/shopify-meta-roas-dropped-2026-fix/">free here</a>.`,
   },
   {
     q: "What replaces Shopify Stocky now that it shut down on 31 August 2026?",
@@ -489,7 +489,7 @@ const tocHeadings = [
       <div class="gpc-cta"><a href="https://stackarchitect.xyz/capi-shield/" class="btn-g">Deploy CAPI Shield →</a></div>
     </div>
     <div class="gpc-prose">
-      <p>If Meta Ads Manager shows significantly fewer purchases than your Shopify dashboard, you have a tracking problem, not a campaign problem. <strong>The January 13 2026 Shopify App Pixel update defaulted all pixels to "Optimized" mode</strong>, which throttles data when no attribution signals are detected. Combined with iOS 26's Link Tracking Protection stripping fbclid from Private Browsing, Mail, and Messages links, conversions are now going invisible to Meta's algorithm: how many depends on how much of your traffic arrives by the affected routes.</p>
+      <p>If Meta Ads Manager shows significantly fewer purchases than your Shopify dashboard, you have a tracking problem, not a campaign problem. <strong>Since January 13 2026, Shopify can pause a marketing pixel's data sharing</strong> when it sees no signals from it over days or weeks. Combined with Apple's Link Tracking Protection (since iOS 17) stripping fbclid from Private Browsing, Mail, and Messages links, conversions are now going invisible to Meta's algorithm: how many depends on how much of your traffic arrives by the affected routes.</p>
       <p>The fix: switch your App Pixel to "Always on" (Settings → Customer Events), set Meta data sharing to Maximum, and implement full server-side CAPI via <a href="https://stackarchitect.xyz/capi-shield/">CAPI Shield</a>. CAPI sends purchase events server-to-server: bypassing browsers, iOS restrictions, and Shopify's throttling entirely. Browser-only tracking loses purchase events to iOS, ITP and ad blockers; server-side delivery avoids that loss. Measure your own result as Additional Conversions Reported in Meta Events Manager, typically within 7–14 days.</p>
     </div>
     <nav class="gp-list" aria-label="Ad tracking guides">
