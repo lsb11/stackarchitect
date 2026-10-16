@@ -13,17 +13,17 @@ const kitPrice = formatPrice(KIT_PRICE);
 // One array renders the visible FAQ and the FAQPage node.
 const faqs: Faq[] = [
   { q: "Is Make.com free for Shopify automation?",
-    a: "Make.com's free plan gives 1,000 credits/month (formerly called operations) with no time limit and no credit card required. It includes webhook triggers and multi-step scenarios: enough to run CAPI Shield, Stocky Swap, TikTok CAPI, and P&L Auto simultaneously for stores under ~250 orders per month." },
+    a: "Make.com's free plan gives 1,000 credits/month (formerly called operations) with no time limit and no credit card required. It includes webhook triggers and multi-step scenarios: enough to run several order automations for a small store. How many orders it covers depends on the credits one order uses: open a run in the scenario's history and divide 1,000 by its credit count." },
   { q: "Does Make.com work with Shopify Basic?",
     a: "Yes. Make.com works with every Shopify plan including Basic. It connects via Shopify's built-in webhook system (Settings → Notifications → Webhooks) which is available on all plans. No Shopify app is required." },
   { q: "What is the Make.com free plan limit for Shopify stores?",
-    a: "1,000 credits/month (formerly called operations). Running all four Stack Architect scenarios simultaneously uses approximately 4–6 operations per order: covering roughly 166–250 orders per month free, as one scenario with router branches. Make's free plan allows two active scenarios, so importing the four blueprints separately needs Core. Above either limit, Make.com Core at $9/month gives 10,000 credits and unlimited active scenarios." },
+    a: "1,000 credits/month (formerly called operations). Each module that runs uses a credit, so cost per order depends on the scenario. The Complete Kit's README records 10 credits for a two-item order through its combined scenario, which is roughly 100 such orders a month on the free plan; single-item orders use fewer. Make's free plan allows two active scenarios, so importing the four blueprints separately needs Core. Above either limit, Make.com Core at $9/month gives 10,000 credits and unlimited active scenarios." },
   { q: "Can Make.com replace Zapier for Shopify?",
     a: "Yes: and it's significantly better value. Make.com provides 10× more free operations, includes webhook triggers on the free plan (Zapier requires a paid plan), and supports multi-step branching for free. For Shopify automation specifically, Make.com is the recommended platform at every price point." },
   { q: "How long does it take to set up Make.com with Shopify?",
     a: `Connecting Make.com to Shopify via webhook takes approximately 3 minutes. Building each individual automation (CAPI Shield, Stocky Swap, TikTok CAPI, P&L Auto) takes 4–8 minutes each from the free guides. The Complete Kit (${kitPrice}) provides the same automations as pre-built JSON blueprints, ready to import.` },
   { q: "What is a Make.com JSON blueprint for Shopify?",
-    a: "A Make.com JSON blueprint (also called a scenario file) is a complete export of a finished automation: every module, API endpoint, and field mapping is embedded in the file. Importing it recreates the entire scenario in one click with zero manual configuration. The Complete Kit contains four pre-built blueprints for CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto." },
+    a: "A Make.com JSON blueprint (also called a scenario file) is a complete export of a finished automation: every module, API endpoint, and field mapping is embedded in the file. Importing it recreates the scenario in one click; you then connect your own accounts and paste your own IDs and tokens before turning it on. The Complete Kit contains four pre-built blueprints for CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto." },
 ];
 
 const tocHeadings = [
@@ -169,7 +169,7 @@ const tocHeadings = [
 
   <TableOfContents headings={tocHeadings} />
 
-      <p id="answer" class="hero-sub speakable">Make.com is a no-code automation platform that connects to Shopify through a built-in order webhook in about three minutes, with no app install. One trigger fans out to Meta CAPI, Google Enhanced Conversions, TikTok Events API and Google Sheets at once. Its free tier gives 1,000 credits a month, covering roughly 200 orders.</p>
+      <p id="answer" class="hero-sub speakable">Make.com is a no-code automation platform that connects to Shopify through a built-in order webhook in about three minutes, with no app install. One order trigger can feed Meta's Conversions API, TikTok's Events API and Google Sheets at once. Its free tier gives 1,000 credits a month; how many orders that covers depends on the credits each order uses.</p>
       <!-- One action, and it is not a sale. The affiliate button used to sit
            here; since 25 Sep 2026 no affiliate button goes above the first H2,
            so the account sign-up is an inline link in step 1 of the setup and
@@ -226,13 +226,13 @@ const tocHeadings = [
         <a href="/shopify-profit-loss-automation/" class="tool-card">
           <div class="tool-card-tag">Scenario 04 · P&L Reporting</div>
           <h3>P&L Auto</h3>
-          <p>Auto-populates a Google Sheets P&L dashboard with revenue, COGS, fees, and net profit for every order the instant payment confirms. Real-time profitability at $0/mo.</p>
+          <p>Writes revenue, cost of goods and fees for every paid order to a Google Sheets P&amp;L; add ad spend monthly for net profit. Real-time profitability at $0/mo.</p>
           <div class="tool-card-saves">Replaces TrueProfit ($35/mo) · BeProfit ($49/mo) · Glew.io</div>
         </a>
         <a href="/replace-klaviyo-free/" class="tool-card">
           <div class="tool-card-tag">Bonus · Email Automation</div>
           <h3>Abandoned Cart + Email</h3>
-          <p>Make.com routes Shopify checkout abandonment webhooks to Systeme.io, triggering a 3-email abandoned cart sequence at $0/mo.</p>
+          <p>Make.com can add shoppers who start checkout to a Systeme.io sequence, with a completed order removing them before each email. Shopify has no abandoned-checkout webhook, so that purchase check is essential; the guide covers it.</p>
           <div class="tool-card-saves">Replaces Klaviyo ($20+/mo) · Systeme.io is free to 2,000 contacts</div>
         </a>
         <a href="/shopify-google-ads-conversion-tracking/" class="tool-card">
@@ -337,7 +337,7 @@ const tocHeadings = [
           </tbody>
         </table>
       </div>
-      <p style="margin-top:16px;font-size:13px;color:var(--text-4);">For Shopify automation, Make.com is the clear choice at every tier. The free plan alone covers the entire Stack Architect toolset for most stores.</p>
+      <p style="margin-top:16px;font-size:13px;color:var(--text-4);">For automations that send Shopify data to outside services, Make.com's free plan is the most generous of the three. Check your own credit use per order before relying on it.</p>
       <p style="margin-top:12px;font-size:13px;color:var(--text-4);">Those rows use a fixed example. To put your own order volume and branch count through it, the <a href="/make-vs-zapier-cost-calculator/" style="color:var(--g);text-decoration:underline;">Make vs Zapier cost calculator</a> returns the exact monthly and annual difference for your store. Volume is not flat through the year, so check the <a href="/blog/shopify-bfcm-automation-checklist-2026/" style="color:var(--g);text-decoration:underline;">Shopify BFCM automation checklist</a> before peak season.</p>
       <div style="margin-top:16px;">
       </div>
@@ -383,12 +383,12 @@ const tocHeadings = [
 
       <h3 style="margin-top:32px;">What Shopify Flow actually is</h3>
       <p>Flow triggers on Shopify-internal events (order created, order paid, order cancelled, customer created, product added, inventory level changed) and performs Shopify-internal actions: add tags, cancel orders, send internal notifications, update metafields. Within that boundary it is genuinely useful and genuinely free.</p>
-      <p>What it cannot do without paid third-party connectors is leave Shopify. It cannot write to Google Sheets, call the Meta Conversions API, post to Slack, or hit any external HTTP endpoint. <strong>Every automation on this page involves sending data outside Shopify, so none of them are buildable in Flow.</strong> It is also gated to the Shopify, Advanced and Plus plans: a Basic store does not have it at all.</p>
+      <p>What it cannot do on most plans is send data outside Shopify. Shopify's help centre says Flow is available on the Basic, Grow, Advanced and Plus plans, but its Send HTTP Request action, the one that calls an outside service, is limited to Grow, Advanced and Plus. <strong>Every automation on this page sends data outside Shopify, so on Basic none of them can be built in Flow; on Grow and above, Flow's HTTP action is an alternative to Make.com for simple calls.</strong></p>
       <p>The practical split: use Flow for internal store logic: auto-tagging high-value customers, hiding out-of-stock products, internal low-stock notifications. Use Make.com for anything that crosses the boundary. They are complements, not competitors, and a store on Advanced or Plus can reasonably run both.</p>
 
       <h3 style="margin-top:32px;">Why the webhook difference decides it against Zapier</h3>
       <p>Every automation described here starts with a Shopify Order Payment webhook. <strong>Zapier's free plan does not support webhook triggers</strong>, which means this stack cannot be built on free Zapier in any combination of Zaps: the blocker is structural, not a question of volume.</p>
-      <p>The fan-out compounds it. One Make.com scenario takes a single order webhook and branches in parallel to Meta CAPI, Google Enhanced Conversions, TikTok Events API, a Google Sheets inventory row and a Google Sheets P&amp;L row: five destinations, one trigger, roughly five operations. The same work in Zapier is five separate Zaps, each metering its own tasks, all requiring a paid tier for webhook support.</p>
+      <p>The fan-out compounds it. One Make.com scenario takes a single order webhook and branches to Meta's Conversions API, TikTok's Events API, a Google Sheets order row and a Google Sheets P&amp;L row: four destinations, one trigger, with credits charged per module that runs. The same work in Zapier is five separate Zaps, each metering its own tasks, all requiring a paid tier for webhook support.</p>
       <p>Legitimate reasons to pick Zapier anyway: you need a connector in Zapier's larger library that Make.com lacks, your team's existing Zapier fluency outweighs the price gap, or you depend on Zapier Tables or Interfaces, which have no Make.com equivalent. For the standard Shopify jobs (tracking, inventory, email, P&amp;L) none of those apply.</p>
     </div>
   </section>
@@ -431,7 +431,7 @@ const tocHeadings = [
       <p><strong>You are consistently hitting the credit ceiling before month end.</strong> This is the honest one. Scenarios stop running when credits are exhausted, and a tracking scenario that silently stops mid-month costs more in lost attribution than the $9 would have.</p>
       <p><strong>You need more than two active scenarios.</strong> The free plan caps active scenarios, which is why the recommended architecture is one scenario with a router rather than several small ones. If your logic genuinely will not consolidate, that is a real reason to move up.</p>
       <p><strong>You need scheduling tighter than the free interval.</strong> Webhook-triggered scenarios fire instantly on any plan, so this only bites for polling scenarios (reports, reconciliation, scheduled syncs) not for the order-driven automations on this page.</p>
-      <p>Everything else is premature. Most Shopify stores under 200 orders a month run the complete stack on the free tier indefinitely, and the correct move at 250 orders is to consolidate branches into one router before paying for headroom you have not earned.</p>
+      <p>Everything else is premature. Work out your own ceiling from the credits one order uses in your scenario history. When you approach it, consolidate separate scenarios into one router first, because that reduces credits per order, and pay for headroom only after that.</p>
     </div>
   </section>
 

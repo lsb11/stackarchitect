@@ -22,7 +22,7 @@ const faqs: Faq[] = [
   { q: "What is chunked processing and why does it fix quota errors?",
     a: "<p>Chunked processing breaks a large batch of rows into smaller groups (50–100 rows) and processes each group as a separate execution. Instead of one long script that hits the 6-minute time limit, you run many short executions that each complete well within Google's limits. Make.com handles this automatically with no manual configuration needed.</p>" },
   { q: "What is exponential backoff and does Autocrat Quota Fix use it?",
-    a: "<p>Exponential backoff is a retry strategy where a failed request waits progressively longer before retrying: 1 second, then 2, then 4, then 8. This prevents quota errors from cascading. Make.com has built-in error handling that implements exponential backoff automatically, so transient quota errors resolve without manual intervention.</p>" },
+    a: "<p>Exponential backoff is a retry strategy where a failed request waits progressively longer before retrying. Make.com's retry option works differently: a Break error handler, with storage of incomplete executions turned on, retries a failed run a set number of times at an interval you choose. That is what this scenario uses, so a temporary Google error is retried rather than lost.</p>" },
   { q: "Will my data be secure with Autocrat Quota Fix?",
     a: "<p>Your data flows through your own Make.com workspace: Stack Architect has zero access to your spreadsheet data or documents. Make.com connects to Google Sheets and Google Docs using your own Google account credentials via OAuth. Remove the integration at any time by disconnecting Make.com from Google.</p>" },
   { q: "How long does Autocrat Quota Fix setup take?",
@@ -30,7 +30,7 @@ const faqs: Faq[] = [
   { q: "Does this fix other Google Apps Script errors beyond Autocrat?",
     a: "<p>Yes. The same Make.com architecture fixes quota errors for any Google Apps Script workflow: Gmail sending limits, Google Sheets write quotas, Google Drive API limits, and any document generation pipeline. If the error message contains \"service invoked too many times\" or \"exceeded maximum execution time\", Autocrat Quota Fix resolves it.</p>" },
   { q: "Should I upgrade to Google Workspace instead?",
-    a: "<p>Google Workspace raises Apps Script quotas approximately 10x, which helps but does not eliminate the problem at high volume. Autocrat Quota Fix is the complete solution and works on free Gmail accounts. For stores processing 500+ orders per month, combining Google Workspace with Autocrat Quota Fix removes all practical limits. Workspace is not required to start.</p>" },
+    a: "<p>Your spreadsheet rows and generated documents stay in your own Google account. To create each document, the row data passes through your own Make.com account, which keeps a log of each run for a limited period; check Make.com's data retention settings if your documents contain sensitive information. Nothing passes through Stack Architect.</p>" },
   { q: "Why did Autocrat only merge 100 documents or stop partway through?",
     a: "<p>A run that stops after a fixed number of documents or partway through a batch is hitting a daily service quota or the 6-minute execution ceiling, not a permanent fault. Reduce the batch size, or for reliable high-volume generation move execution to Make.com, which processes in chunks and resumes from the exact row if interrupted rather than abandoning the remaining rows.</p>" },
   { q: "Why is Autocrat only doing one line or one row?",
@@ -78,7 +78,7 @@ const schema = JSON.stringify({
       "@id": `${PAGE}#webpage`,
       "url": PAGE,
       "name": "Fix Google Apps Script Quota Errors Free: Autocrat Fix 2026",
-      "description": "Free fix for Google Apps Script quota errors. Autocrat Quota Fix uses Make.com to route document workflows through a dedicated API, eliminating 'service invoked too many times' errors, not bound by Apps Script's six-minute runtime or its daily document quota, no code, 3 minutes. Free tier covers roughly 300 docs/day depending on your scenario's step count; scales to thousands/day on a paid Make.com plan.",
+      "description": "Free fix for Google Apps Script quota errors. Autocrat Quota Fix uses Make.com to route document workflows through a dedicated API, eliminating 'service invoked too many times' errors, not bound by Apps Script's six-minute runtime or its daily document quota, no code, 3 minutes. The free tier's 1,000 credits a month cover a few hundred documents a month, depending on your scenario's step count; paid Make.com plans cover more.",
       "datePublished": DATE_PUBLISHED,
       "dateModified": DATE_MODIFIED,
       "inLanguage": "en-GB",
@@ -114,7 +114,7 @@ const schema = JSON.stringify({
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Web",
       "url": PAGE,
-      "description": "Free fix for Google Apps Script 'service invoked too many times' quota errors. Routes Autocrat document workflows through Make.com to bypass shared consumer quota limits, not bound by Apps Script's six-minute runtime or its daily document quota. Free tier covers roughly 300 docs/day depending on your scenario's step count; scales to thousands/day on a paid Make.com plan.",
+      "description": "Free fix for Google Apps Script 'service invoked too many times' quota errors. Routes Autocrat document workflows through Make.com to bypass shared consumer quota limits, not bound by Apps Script's six-minute runtime or its daily document quota. The free tier's 1,000 credits a month cover a few hundred documents a month, depending on your scenario's step count; paid Make.com plans cover more.",
       "featureList": [
         "Eliminates service invoked too many times errors",
         "Moves document generation outside Apps Script's six-minute runtime and daily document quota",
@@ -138,7 +138,7 @@ const schema = JSON.stringify({
       "@type": ["Article","TechArticle"],
       "@id": `${PAGE}#article`,
       "headline": "Fix Google Apps Script Quota Errors Free — Autocrat Fix 2026",
-      "description": "How to permanently fix Google Apps Script 'service invoked too many times' quota exceeded errors using Make.com as a dedicated execution environment. Free, no code: moves document generation outside Apps Script's six-minute runtime and daily document quota via chunked processing, exponential backoff, and state persistence. Free tier handles ~300 docs/day; scales to thousands/day on a paid plan.",
+      "description": "How to permanently fix Google Apps Script 'service invoked too many times' quota exceeded errors using Make.com as a dedicated execution environment. Free, no code: moves document generation outside Apps Script's six-minute runtime and daily document quota via chunked processing, exponential backoff, and state persistence. Free tier covers a few hundred documents a month; paid plans cover more.",
       "author": { "@id": `${SITE}/#luke` },
       "publisher": { "@id": `${SITE}/#org` },
       "datePublished": DATE_PUBLISHED,
@@ -181,7 +181,7 @@ const schema = JSON.stringify({
         { "@type": "HowToStep", "position": 3, "name": "Connect Google Docs template generation",
           "text": "Add the Google Docs module and configure it to use your existing Autocrat templates. Map your spreadsheet fields to the template merge fields exactly as Autocrat does. Your output folder, naming conventions, and merge fields stay identical." },
         { "@type": "HowToStep", "position": 4, "name": "Enable error handling and test",
-          "text": "In Make.com scenario settings, enable the error handler and set retry to 3 attempts with exponential backoff. Run a test with 100+ rows. Verify every document generates correctly. Monitor the execution log: zero errors." }
+          "text": "In Make.com, add a Break error handler to the Google Docs step and turn on storing of incomplete executions in the scenario settings, so a failed document is retried rather than lost. Run a test with 100+ rows. Verify every document generates correctly. Monitor the execution log: zero errors." }
       ]
     },
     // FAQ
@@ -566,7 +566,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
 
   <div class="trust-row">
     <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Fixes Autocrat quota exceeded permanently</span>
-    <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Free tier covers ~300 docs/day</span>
+    <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Free tier: a few hundred docs a month</span>
     <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Deploys in 3 minutes</span>
     <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Keeps your existing templates</span>
   </div>
@@ -622,7 +622,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
   </div>
   <div class="body-text" style="max-width:860px;margin:0 auto;">
 
-    <p>Google Apps Script imposes hard limits on every account. Free Gmail accounts are capped at <strong>6 minutes per script execution</strong> and <strong>90 minutes of total daily execution time</strong>. Google Workspace accounts receive approximately 10x higher limits, but even Workspace accounts hit ceilings when processing high-volume order data through Autocrat.</p>
+    <p>Google Apps Script imposes hard limits on every account. Free Gmail accounts are capped at <strong>6 minutes per script execution</strong> and <strong>90 minutes of total daily execution time</strong>. Google Workspace accounts get higher daily quotas (for example 1,500 documents created a day instead of 250), but the same six-minute limit per run, so Workspace accounts hit ceilings too.</p>
     <div class="callout info">
       <div class="callout-label">First: is this actually your problem?</div>
       <p>If your error is <strong>"service invoked too many times"</strong> and it fires partway through a loop, you most likely have a row-by-row script and the fix is <strong>free</strong>: batch your reads and writes. Our <a href="/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/">step-by-step batching guide with code</a> resolves it in minutes: no new tools needed. The structural fix on this page is for high-volume document generation that hits the <strong>6-minute execution ceiling</strong> or the <strong>daily document-create cap</strong>: limits that batching alone cannot solve.</p>
@@ -644,7 +644,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
         </div>
         <div class="error-entry">
           <div class="error-type">Timeout</div>
-          <div class="error-detail"><strong>Exceeded maximum execution time</strong>: the script ran for more than 6 minutes in a single execution. Any unprocessed rows are abandoned. Affects trigger-based scripts on free accounts most severely. If the same message sits on a cell showing <code>#ERROR!</code>, it comes from a custom function, which has a 30-second limit: see <a href="/blog/google-sheets-custom-function-errors/">Google Sheets custom function errors</a>.</div>
+          <div class="error-detail"><strong>Exceeded maximum execution time</strong>: the script ran for more than 6 minutes in a single execution. Any unprocessed rows are abandoned. The limit is six minutes on free and Workspace accounts alike. If the same message sits on a cell showing <code>#ERROR!</code>, it comes from a custom function, which has a 30-second limit: see <a href="/blog/google-sheets-custom-function-errors/">Google Sheets custom function errors</a>.</div>
         </div>
         <div class="error-entry">
           <div class="error-type">Document lock</div>
@@ -745,14 +745,14 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
 
     <div class="callout info">
       <div class="callout-label">Google Workspace vs free Gmail</div>
-      <p>Google Workspace accounts receive approximately 10x higher Apps Script quotas than free Gmail accounts. If you process more than 500 orders per month, Google Workspace removes API limits entirely and is recommended alongside Autocrat Quota Fix for high-volume stores. But most stores never need it: the Make.com architecture handles high volume within Google's free limits.</p>
+      <p>Google Workspace accounts get higher daily Apps Script quotas than free Gmail accounts (for example 1,500 document creations a day instead of 250), but they still have limits, and the six-minute limit per run is the same on both. Consider Workspace only if you still hit a daily quota after moving the heavy work to Make.com. But most stores never need it: the Make.com architecture handles high volume within Google's free limits.</p>
     </div>
 
   </div>
   <div class="section-cta">
     <div class="section-cta-left">
       <div class="cta-h">Deploy all three techniques in 3 minutes</div>
-      <p>Free via Make.com · Chunked processing, exponential backoff, state persistence</p>
+      <p>Free via Make.com · Chunked processing, retries on failure, state persistence</p>
     </div>
     <a href="#how-it-works" class="btn btn-sm">See all three techniques →</a>
   </div>
@@ -863,7 +863,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
       <div class="step-num" itemprop="position">4</div>
       <div>
         <div class="step-title" itemprop="name">Enable error handling and test</div>
-        <div class="step-desc" itemprop="text">In Make.com scenario settings, enable the error handler and set retry to 3 attempts with exponential backoff. Run a test with 100+ rows. Verify every document generates correctly. Monitor the execution log: you should see zero errors.</div>
+        <div class="step-desc" itemprop="text">In Make.com, add a Break error handler to the Google Docs step and turn on storing of incomplete executions in the scenario settings, so a failed document is retried rather than lost. Run a test with 100+ rows. Verify every document generates correctly. Monitor the execution log: you should see zero errors.</div>
         <span class="step-tool">Make.com → Scenario settings → Error handler</span>
       </div>
     </div>
@@ -945,7 +945,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
     <a href="https://stackarchitect.xyz/stocky-swap/" class="crosslink-card sky" aria-label="Stocky Swap, the free replacement for Stocky">
       <span class="tag tag-sky" style="display:inline-flex;margin-bottom:10px;">Inventory</span>
       <div class="crosslink-name">Stocky Swap</div>
-      <div class="crosslink-desc">Stocky closed on 31 August 2026; replace it free. Every Shopify order logged to Google Sheets in real time: live stock tracking at $0/month forever.</div>
+      <div class="crosslink-desc">Stocky closed on 31 August 2026; replace it free. Every paid Shopify order logged to a Google Sheet you own, in real time, at $0/month. Stock on hand stays in Shopify Admin.</div>
       <div style="display:flex;align-items:center;justify-content:space-between;">
         <span class="crosslink-save" style="color:var(--sky);">Saves $49–$119/mo</span>
         <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);" aria-hidden="true">→</span>
@@ -963,7 +963,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
     <a href="https://stackarchitect.xyz/replace-klaviyo-free/" class="crosslink-card" aria-label="Replace Klaviyo Free: free email marketing via Systeme.io">
       <span class="tag" style="display:inline-flex;margin-bottom:10px;">Email Marketing</span>
       <div class="crosslink-name">Replace Klaviyo</div>
-      <div class="crosslink-desc"><strong style="color:var(--text-2);font-weight:600;">Systeme.io</strong> replaces Klaviyo entirely: unlimited emails, automations, funnels, and CRM on the free plan. 2,000 contacts, unlimited sends, $0.</div>
+      <div class="crosslink-desc"><strong style="color:var(--text-2);font-weight:600;">Systeme.io</strong>'s free plan holds 2,000 contacts with unlimited sends, one email sequence and one automation rule: enough to move a small list off Klaviyo for $0.</div>
       <div style="display:flex;align-items:center;justify-content:space-between;">
         <span class="crosslink-save" style="color:var(--g);">Saves $20+/mo</span>
         <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);" aria-hidden="true">→</span>
@@ -972,7 +972,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
     <a href="https://stackarchitect.xyz/shopify-profit-loss-automation/" class="crosslink-card sky" aria-label="Shopify P&L Automation: free profit and loss reporting in Google Sheets">
       <span class="tag tag-sky" style="display:inline-flex;margin-bottom:10px;">P&amp;L Reporting</span>
       <div class="crosslink-name">P&amp;L Auto</div>
-      <div class="crosslink-desc">Live profit and loss in Google Sheets: every Shopify order auto-calculates revenue, COGS, ad spend, and net profit instantly. Replaces TrueProfit and BeProfit at $0.</div>
+      <div class="crosslink-desc">Live profit and loss in Google Sheets: every Shopify order writes revenue, fees and cost of goods automatically; add ad spend monthly for net profit. Replaces TrueProfit and BeProfit at $0.</div>
       <div style="display:flex;align-items:center;justify-content:space-between;">
         <span class="crosslink-save" style="color:var(--sky);">Saves $35–$299/mo</span>
         <span style="font-family:var(--mono);font-size:11px;color:var(--text-4);" aria-hidden="true">→</span>

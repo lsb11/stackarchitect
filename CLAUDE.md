@@ -998,6 +998,26 @@ problem than generic writing. **Do not reintroduce any of these:**
 - Stocky's "at least 90 days" read-only floor ends **29 Nov 2026** at the
   earliest.
 
+Passes 2 and 3 (PRs #64, #65, 15–16 Oct 2026) added, all read on vendor pages:
+- The free Google Ads fix for most stores is the Google & YouTube app's
+  **Enhanced conversions** toggle (Settings → Google Ads settings). Lead
+  with it; the Make upload has no gclid.
+- CAPI Shield sends `event_id` = order ID; Shopify does not document its
+  pixel's Purchase ID. Never claim they deduplicate; tell readers to check
+  Test Events. Do not call Shopify's own CAPI "browser-triggered" (unsourced).
+- Systeme.io free: 2,000 contacts, unlimited emails, 3 funnels, **1 email
+  campaign, 1 automation rule**. Never "full automation sequences".
+- Shopify Flow is on **Basic**, Grow, Advanced, Plus; Send HTTP Request is
+  Grow and above.
+- Stocky: "Suppliers can't be exported" (Shopify); no deletion date; export
+  floor ends 29 Nov 2026 at the earliest.
+- Make.com has no "exponential backoff" setting; Workspace does not remove
+  Apps Script or Sheets limits and the 6-minute run limit is the same.
+- P&L Auto writes revenue, fees and COGS; ad spend is added by hand. Do not
+  say it computes net profit or ad spend automatically.
+- Free-plan order ceilings: no typed figures; credits per order from the
+  scenario history, or the kit README's 10 credits per two-item order.
+
 The closing $19.99 kit pitch was removed from every blog post it was on.
 Product links that fit the context stay. What no rewrite can supply,
 first-hand evidence, is listed per page in `docs/EVIDENCE-CHECKLIST.md`,
