@@ -93,23 +93,22 @@ you built.
 
 ## Priority 3: claims to confirm or correct
 
-Found during the pass and left unchanged because only you can settle them.
+Found during the passes and left for you because only you can settle them.
 
 - [ ] **/best-ai-tools-shopify/** says you rebuilt Klaviyo's welcome,
-      abandoned cart and post-purchase flows on Systeme.io's free plan.
-      Systeme.io's pricing page (15 Oct 2026) lists the free plan with one
-      automation rule. Was this a different plan, a workflow feature not
-      counted as a rule, or before a plan change?
-- [ ] **/best-ai-tools-shopify/** and **/make-com-shopify/** say the kit fits
-      "roughly 160–250 orders a month" on Make's free plan. CLAUDE.md records
-      10 credits for a two-item order in FILE_00, which gives about 100
-      two-item orders. State which order size the range assumes.
-- [ ] **/best-ai-tools-shopify/** is titled "AI tools" but one of five
-      entries is an AI product. Either retitle around what it is (free tools
-      you run) or add AI tools you have actually used.
-- [ ] Deploy-time claims ("deploys in 4 minutes", "under 6 minutes", "under
-      10 minutes") appear on the homepage, /stack/, /tools/ and others.
-      Replace each with a time you measured, or remove it.
+      abandoned cart and post-purchase flows in Systeme.io. Its pricing FAQ
+      (15 Oct 2026) lists one email campaign and one automation rule on the
+      free plan, so the page now says several flows need the $17 plan. If you
+      ran them all free (an older plan, or workflows not counted as rules),
+      tell me and the page can say so with the date.
+- [ ] **Deploy-time claims** ("deploys in 4 minutes", "6 minutes", "under 10
+      minutes", "migrate in 30 minutes") are still on the homepage, /stack/,
+      /tools/, CAPI Shield, TikTok, Replace Klaviyo and others. Time each one
+      on a fresh account and send the real figure, or they get removed.
+- [ ] **Credits per order.** Order ceilings now say "check your scenario
+      history", except where a documented figure exists (the kit README's 10
+      credits for a two-item order; Stocky Swap's 2 + 1 per line). Send one
+      real run's credit count per blueprint and the pages can state it.
 - [ ] Two pages state publish dates of 1 Jan 2026 (/shopify-profit-loss-automation/,
       /stocky-swap/) and the homepage 1 Feb 2026. If you know when each first
       went live, use that; six pages dated 2025-01-01 were moved to
