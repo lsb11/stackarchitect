@@ -91,7 +91,7 @@ const SETUP_GUIDE_PDF = "https://d1yei2z3i6k35z.cloudfront.net/16370908/699ce153
 // One array renders the visible FAQ and the FAQPage node.
 const faqs: Faq[] = [
   { q: "What is the best free Stocky alternative in 2026?",
-    a: "<p><strong>Stocky Swap</strong> is the leading free Stocky alternative for Shopify in 2026. It logs every Shopify order to a Google Sheet in real-time via a public Make.com scenario, deploys in under 5 minutes, runs on Make.com's free tier, and stores data in a Google Sheet you own. Paid alternatives like Qoblex, SKUSavvy, Sumtracker, and Inventory Planner offer deeper forecasting features but cost between $49 and $599/month, or a quoted price.</p>" },
+    a: "<p><strong>Stocky Swap</strong> is a free Stocky alternative for Shopify. It logs every Shopify order to a Google Sheet in real-time via a public Make.com scenario, deploys in under 5 minutes, runs on Make.com's free tier, and stores data in a Google Sheet you own. Paid alternatives like Qoblex, SKUSavvy, Sumtracker, and Inventory Planner offer deeper forecasting features but cost between $49 and $599/month, or a quoted price.</p>" },
   { q: "What is the cheapest Stocky alternative for Shopify?",
     a: "<p>Stocky Swap at <strong>$0/month</strong> is the cheapest Stocky alternative in 2026. It runs on Make.com's free tier with no Stack Architect fees. Paid options start around $9/month for Make.com Core (if you outgrow free), or $49/month for entry-tier paid Shopify inventory apps like Prediko.</p>" },
   { q: "Is Stocky Swap actually free?",
@@ -105,13 +105,13 @@ const faqs: Faq[] = [
   { q: "What are the paid Stocky alternatives in 2026?",
     a: "<p>The paid Stocky alternatives most-cited by independent reviewers in 2026: <strong>Qoblex</strong> (multi-channel inventory + procurement, $99–$179/mo), <strong>SKUSavvy</strong> (mobile-first WMS, $0/mo plus $0.06–$0.20 per order), <strong>Sumtracker</strong> (bundles and kits, $59–$269/mo), <strong>Inventory Planner by Sage</strong> (advanced forecasting, quote only), <strong>Cin7 Core</strong> (multi-warehouse, $349–$599/mo), <strong>Prediko</strong> (AI demand forecasting, $49–$119/mo). <a href=\"#comparison\">See the full comparison table →</a></p>" },
   { q: "Can Stocky Swap import my historical Stocky data?",
-    a: "<p>Stocky Swap is a forward-only logger: it begins recording orders from the moment you switch it on. To preserve historical Stocky data, export your purchase orders, stocktakes, and supplier records from inside Stocky while its read-only export is still open. The <a href=\"/blog/shopify-stocky-data-export-before-shutdown/\">Stocky data export guide</a> covers what to save and how.</p>" },
+    a: "<p>Stocky Swap is a forward-only logger: it begins recording orders from the moment you switch it on. To preserve historical Stocky data, export your purchase orders and stocktakes through Stocky's reports while its read-only export is still open, and copy supplier details by hand, because Shopify says suppliers cannot be exported. The <a href=\"/blog/shopify-stocky-data-export-before-shutdown/\">Stocky data export guide</a> covers what to save and how.</p>" },
   { q: "Does Stocky Swap handle refunds, returns, or multi-location stock?",
     a: "<p>Stocky Swap is a forward-only order ledger: every paid Shopify order produces a Google Sheet row. For full inventory accounting that handles refunds, returns, and multi-location stock-on-hand calculations, rely on native Shopify Admin inventory tracking (which manages these correctly).</p>" },
   { q: "Is Stocky Swap better than the native Shopify inventory tools?",
     a: "<p>They serve different purposes. Native Shopify Admin inventory handles stock-on-hand, transfers between locations, and basic receiving: already free. Stocky Swap adds an independent, externally-owned audit log of every order in a Google Sheet you control: useful for finance reconciliation, accountant handoff, custom reporting, and as insurance against future Shopify changes. Most stores benefit from running both.</p>" },
   { q: "How do I migrate from Stocky to Stocky Swap?",
-    a: "<p>Migration is three phases. <strong>First</strong>, export Stocky's historical data (purchase orders, stocktakes, supplier records) while its read-only export is still open. <strong>Second</strong>, deploy Stocky Swap and check its first two weeks of rows against your Shopify orders to verify they are logging correctly. <strong>Third</strong>, after verification, you can switch off Stocky's daily use and rely on Stocky Swap as your forward order ledger. <a href=\"#migration-timeline-what-to-do-when\">Full migration timeline →</a></p>" },
+    a: "<p>Migration is three phases. <strong>First</strong>, export Stocky's purchase orders and stocktakes while its read-only export is still open, and copy supplier details by hand. <strong>Second</strong>, deploy Stocky Swap and check its first two weeks of rows against your Shopify orders. <strong>Third</strong>, manage stock in Shopify Admin and rely on Stocky Swap as your own forward order log. <a href=\"#migration-timeline-what-to-do-when\">Full migration timeline →</a></p>" },
   { q: "Can I use Stocky Swap with multiple Shopify stores?",
     a: "<p>Yes. Each Shopify store needs its own Make.com webhook connection, but the Stocky Swap scenario can be cloned and configured separately per store. Multi-store operators typically point each store's webhook to a separate tab or sheet within one master Google Sheets workbook for unified reporting. Make.com free tier operations are counted across all your scenarios: high multi-store volume may require upgrading to Make.com Core ($9/mo).</p>" },
   { q: "What if my store outgrows the Make.com free tier?",
@@ -380,7 +380,7 @@ const tocHeadings = [
   },
   {
     "id": "stocky-closes-august-31-replace-it-free-in-4-minutes",
-    "text": "Stocky closes August 31. Replace it free in 4 minutes."
+    "text": "Stocky is gone. Replace it free in 4 minutes."
   },
   {
     "id": "sources-amp-primary-documentation",
@@ -1248,7 +1248,7 @@ const tocHeadings = [
 
         <p class="hero-sub">
           {shutdownPassed ? (
-            <>Stocky is read-only, not closed: Shopify says export access to your supplier records and stocktake history continues for at least 90 days past 31 August. <strong>Export that archive today, and get every order from now on landing somewhere you own.</strong></>
+            <>Stocky is read-only, not closed: Shopify says you can export your data through Stocky's reports for at least 90 days past 31 August, which means 29 November 2026 at the earliest. Suppliers cannot be exported, so copy them by hand. <strong>Export that archive now, and get every order from now on landing somewhere you own.</strong></>
           ) : (
             <>When the deadline passes you can no longer <em>use</em> Stocky, and its APIs stop dead, but read-only export access continues for at least 90 days. <strong>Export the archive, and make sure new orders have somewhere to go.</strong></>
           )}
@@ -1348,11 +1348,11 @@ const tocHeadings = [
       </div>
 
       <p>
-        On <strong>February 2, 2026</strong>, Shopify removed Stocky from the App Store. On <strong>{SHUTDOWN_DATE}</strong>, Stocky stopped being usable for inventory management, and <strong>Stocky's APIs stopped at the same moment with no grace period</strong>: every third-party tool wired into them broke that day. Your archive is on a different clock: Shopify says read-only access to export purchase orders, supplier records, stocktake history and demand forecasts continues for <strong>at least 90 days</strong> after the shutdown, with no deletion date published. Your Shopify Admin inventory levels were never affected: those live in Shopify, not in Stocky. (<a href="https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky" rel="nofollow">Shopify, "Transitioning from Stocky"</a>, read 5 September 2026.)
+        On <strong>February 2, 2026</strong>, Shopify removed Stocky from the App Store. On <strong>{SHUTDOWN_DATE}</strong>, Stocky stopped being usable for inventory management, and <strong>Stocky's APIs stopped at the same moment with no grace period</strong>: every third-party tool wired into them broke that day. Your archive is on a different clock: Shopify says read-only access to export your data, such as purchase orders and stocktakes through Stocky's built-in reports, continues for <strong>at least 90 days</strong> after the shutdown, so until 29 November 2026 at the earliest, with no end date published. Shopify also says suppliers cannot be exported from Stocky. Your Shopify Admin inventory levels were never affected: those live in Shopify, not in Stocky. (<a href="https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky" rel="nofollow">Shopify, "Transitioning from Stocky"</a>, read 16 October 2026.)
       </p>
 
       <p>
-        For most stores, the immediate question isn't "which paid replacement do I buy?" It's <strong>"where do new orders go starting September 1?"</strong> That's what Stocky Swap solves. It's not a full inventory accounting system: it's a real-time order ledger that lives in a Google Sheet you control, deployed in minutes, free forever via Make.com.
+        For most stores, the immediate question isn't "which paid replacement do I buy?" It's <strong>"where does my own record of new orders live now?"</strong> That's what Stocky Swap solves. It's not a full inventory accounting system: it's a real-time order ledger that lives in a Google Sheet you control, deployed in minutes, free forever via Make.com.
       </p>
 
       <p>
@@ -1421,62 +1421,46 @@ const tocHeadings = [
       <div class="sec-head">
         <span class="sec-eyebrow">Timeline</span>
         <h2 id="migration-timeline-what-to-do-when">Migration timeline: what to do, when</h2>
-        <p>The closer you get to August 31, the more risk. Here's the calmest path off Stocky.</p>
+        <p>Stocky closed on 31 August 2026. The export window runs to 29 November 2026 at the earliest. Here's the order to work in from now.</p>
       </div>
 
       <div class="timeline speakable-timeline">
         <div class="timeline-item">
-          <div class="timeline-date">This week</div>
+          <div class="timeline-date">Today</div>
           <div class="timeline-title">Export your Stocky data</div>
           <div class="timeline-desc">
-            Open Stocky in Shopify Admin. Export Purchase Orders, Stocktakes, and Transfers as CSV. Manually copy supplier contact details (Stocky's CSV export doesn't include them in full). Save everything to a Google Drive folder named <code>Stocky_Export_2026-Q2</code>. <a href="/blog/shopify-stocky-data-export-before-shutdown/">Full export guide →</a>
+            Open Stocky in Shopify Admin. If it still opens, export Purchase Orders, Stocktakes and Transfers as CSV through its reports, with the date range set to your full history. Shopify says suppliers cannot be exported, so copy each supplier's details by hand. Save everything to one dated cloud folder and open each file to check it is complete. <a href="/blog/shopify-stocky-data-export-before-shutdown/">Full export guide →</a>
           </div>
         </div>
 
         <div class="timeline-item">
-          <div class="timeline-date">This week (also)</div>
-          <div class="timeline-title">Deploy Stocky Swap in parallel</div>
+          <div class="timeline-date">Today (also)</div>
+          <div class="timeline-title">Deploy Stocky Swap</div>
           <div class="timeline-desc">
-            Create a free Make.com account, clone the <a href={SCENARIO_URL} target="_blank" rel="noopener">public Stocky Swap scenario</a>, connect Shopify and Google Sheets, switch on. Total time: ~4 minutes. Don't switch off Stocky yet: run both side-by-side as a verification system.
+            Create a free Make.com account, clone the <a href={SCENARIO_URL} target="_blank" rel="noopener">public Stocky Swap scenario</a>, connect Shopify and Google Sheets, and switch it on. It logs from the next paid order; it cannot fill in orders from before.
           </div>
         </div>
 
         <div class="timeline-item">
           <div class="timeline-date">Next 2 weeks</div>
-          <div class="timeline-title">Verify Stocky Swap matches Stocky</div>
+          <div class="timeline-title">Check the log against Shopify</div>
           <div class="timeline-desc">
-            Place a few real orders. Confirm each one shows up in your Google Sheet within seconds and that the line items match what Stocky records. Cross-check daily for two weeks. If discrepancies appear, the Make.com scenario History tab shows exactly which webhook was processed and why any failed.
+            Compare a few days of rows in the sheet with the same days in Shopify's Orders list. If an order is missing, the Make.com scenario's History tab shows which webhook arrived and which step failed.
           </div>
         </div>
 
         <div class="timeline-item">
-          <div class="timeline-date">June 2026</div>
-          <div class="timeline-title">Decide on paid features (if you need them)</div>
+          <div class="timeline-date">Before 29 November</div>
+          <div class="timeline-title">Final export and paid-tool decision</div>
           <div class="timeline-desc">
-            If your business genuinely needs purchase order workflows, demand forecasting, or multi-warehouse stock, this is the month to evaluate <a href="#comparison">Qoblex, SKUSavvy, Sumtracker, Inventory Planner, or Prediko</a>. Don't try to make this decision in August when everyone else is panic-migrating.
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-date">July 2026</div>
-          <div class="timeline-title">Run your final Stocky exports</div>
-          <div class="timeline-desc">
-            Take a final snapshot of all Stocky data. Verify your Google Drive backup is complete. Confirm Stocky Swap has been logging cleanly for 6+ weeks. Make a final go/no-go decision on any paid replacement.
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-date">August 31, 2026</div>
-          <div class="timeline-title">Stocky closed</div>
-          <div class="timeline-desc">
-            App stops working and Stocky's APIs stop dead: anything integrated with them breaks that day. Data moves to read-only export access, which Shopify says lasts at least 90 days. Stocky Swap continues running unchanged. Your Google Sheet keeps logging every new order. You don't lift a finger that day: that's the entire point of doing this in May rather than August.
+            Take a last export while Stocky still opens, then decide whether you need forecasting or automated purchase orders. If you do, trial <a href="#comparison">Qoblex, SKUSavvy, Sumtracker, Inventory Planner or Prediko</a> against your own data. If not, Shopify Admin plus this log is enough.
           </div>
         </div>
       </div>
 
       <div class="callout">
-        <div class="callout-label">↳ The honest reason to act early</div>
-        <p>Make.com's free tier is global and Shopify's webhooks are reliable, but support response times for everyone (Shopify, Make.com, Google) get worse as more merchants hit the August deadline simultaneously. Setting up in May means support is responsive if something breaks. Start Make.com setup now →</p>
+        <div class="callout-label">↳ Why not wait</div>
+        <p>Shopify has stated a minimum for the export window, not an end date. The only safe assumption is that it can close on 29 November 2026, which is also Black Friday weekend, when you will have less time than you do now.</p>
       </div>
     </div>
   </section>
@@ -1750,7 +1734,7 @@ const tocHeadings = [
       </div>
 
       <h3>Stocky Swap vs Qoblex</h3>
-      <p>Qoblex is the most-recommended paid Stocky alternative on Shopify Community forums in 2026. Genuinely strong product: multi-channel inventory, procurement workflows, and landed cost management. The right choice for stores with complex purchase order requirements or multiple sales channels (Amazon, eBay, POS, Shopify all feeding one inventory pool).</p>
+      <p>Qoblex is a paid inventory and procurement app often suggested as a Stocky replacement. Its strengths: multi-channel inventory, procurement workflows, and landed cost management. The right choice for stores with complex purchase order requirements or multiple sales channels (Amazon, eBay, POS, Shopify all feeding one inventory pool).</p>
 
       <div class="vs-grid">
         <div class="vs-card">
@@ -1776,7 +1760,7 @@ const tocHeadings = [
       </div>
 
       <h3>Stocky Swap vs SKUSavvy</h3>
-      <p>SKUSavvy is the leading mobile-first WMS for Shopify in 2026. If your team picks and packs in a warehouse with a barcode scanner, SKUSavvy is built for that. Stocky Swap is not: it's a passive order logger, not a warehouse operation system.</p>
+      <p>SKUSavvy is a mobile-first warehouse management app for Shopify. If your team picks and packs in a warehouse with a barcode scanner, SKUSavvy is built for that. Stocky Swap is not: it's a passive order logger, not a warehouse operation system.</p>
 
       <div class="vs-grid">
         <div class="vs-card">
@@ -1801,7 +1785,7 @@ const tocHeadings = [
       </div>
 
       <h3>Stocky Swap vs Sumtracker</h3>
-      <p>Sumtracker is most-recommended for stores selling product bundles and kits (e.g. you sell a "starter kit" comprising 3 separate SKUs from your inventory). Stocky Swap doesn't model bundles: it logs raw line items.</p>
+      <p>Sumtracker suits stores selling product bundles and kits (e.g. you sell a "starter kit" comprising 3 separate SKUs from your inventory). Stocky Swap doesn't model bundles: it logs raw line items.</p>
 
       <div class="vs-grid">
         <div class="vs-card">
@@ -1901,7 +1885,7 @@ const tocHeadings = [
         <li><strong>Stores data in your Google Sheet</strong>: full ownership, no vendor lock-in, exportable any time</li>
         <li><strong>Costs $0</strong> on Make.com's free tier</li>
         <li><strong>Runs alongside native Shopify inventory</strong>: it changes nothing in Shopify, so verify it is logging correctly before you rely on it</li>
-        <li><strong>Compatible with all Shopify plans</strong>: Basic, Shopify, Advanced, Plus, Starter</li>
+        <li><strong>Works on Shopify plans with webhooks</strong>: Basic, Grow, Advanced and Plus</li>
         <li><strong>Re-deployable across multiple stores</strong>: clone the same scenario per store, point each to a separate sheet or tab</li>
       </ul>
       </div>
@@ -1910,7 +1894,7 @@ const tocHeadings = [
       <h3>What it does NOT do</h3>
       <span class="scope-tag">Out of scope · use a paid tool</span>
       <ul>
-        <li><strong>Backfill historical Stocky data</strong>: it logs forward from the moment you switch it on. Export your Stocky purchase orders, stocktakes, and supplier records separately while the read-only export is still open.</li>
+        <li><strong>Backfill historical Stocky data</strong>: it logs forward from the moment you switch it on. Export your Stocky purchase orders and stocktakes separately while the read-only export is still open, and copy supplier details by hand.</li>
         <li><strong>Calculate stock-on-hand with refund/return adjustments</strong>: it's a forward order ledger, not an accounting system. For full inventory accounting, rely on native Shopify Admin inventory or pair with a paid alternative.</li>
         <li><strong>Manage purchase orders or supplier workflows</strong>: Stocky's strongest feature. If POs are critical to your operation, you need Qoblex, Inventory Planner, or similar.</li>
         <li><strong>Provide demand forecasting</strong>: for AI-driven forecasting, Prediko or Inventory Planner are the category leaders.</li>
@@ -2085,7 +2069,7 @@ const tocHeadings = [
         <a href="/blog/shopify-stocky-data-export-before-shutdown/" class="crosslink-card">
           <div class="crosslink-tag">↳ How-to</div>
           <div class="crosslink-name">Stocky data export: what to save while the app still opens</div>
-          <div class="crosslink-desc">Step-by-step export of purchase orders, stocktakes, transfers, and supplier records.</div>
+          <div class="crosslink-desc">Step-by-step export of purchase orders, stocktakes and transfers, and how to copy suppliers by hand.</div>
           <div class="crosslink-arrow">Read the guide →</div>
         </a>
 
