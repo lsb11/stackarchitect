@@ -1,7 +1,7 @@
 ---
 title: "Shopify BFCM 2026 Checklist: The Last Six Weeks"
 heading: "Shopify BFCM 2026 Automation Checklist: What to Do in the Last Six Weeks"
-description: "Black Friday is 27 November 2026. A week-by-week checklist for Shopify automations: test tracking, budget Make.com credits for peak volume, fix email deliverability and run one end-to-end test order."
+description: "Black Friday is 27 November 2026. A week-by-week Shopify automation checklist: test tracking, budget Make.com credits, fix deliverability, run a test order."
 answer: "Black Friday 2026 falls on 27 November and Cyber Monday on 30 November. With six weeks to go, the priority is not adding new tools but proving the ones you have work under load: test every tracking event with a real order, budget automation credits for peak volume, warm up your email list, and freeze changes a week before."
 publishDate: "2026-04-21"
 updatedDate: "2026-10-15"

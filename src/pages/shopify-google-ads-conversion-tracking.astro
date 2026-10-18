@@ -15,16 +15,12 @@ import AuthorCard from '../components/AuthorCard.astro';
  *            shopify gclid tracking, google ads shopify free setup, shopify google ads
  *            conversion tracking not working, shopify google enhanced conversions
  *
- * SEO / GEO / AI-search optimisations:
- *  • 5 JSON-LD blocks: WebPage, SoftwareApplication, HowTo, FAQPage, Article
- *  • SoftwareApplication with individual Review microdata (Google 2023 policy-compliant)
- *  • HowTo with estimatedCost $0 and totalTime PT6M
- *  • Article datePublished + dateModified for freshness signals
- *  • hreflang for en-GB, en-US, en-AU, en-CA, x-default
- *  • max-snippet:-1 robots meta — lets Google use full snippets
- *  • speakable schema for voice/AI extraction
- *  • Direct-answer block for AI citation extraction
- *  • aria-label / role / itemscope throughout
+ * Structure (18 Oct 2026): the free fix first (enhanced conversions in the
+ * Google & YouTube app, a settings toggle), the Make.com upload second and
+ * labelled optional, with its two limits stated before its steps: Shopify
+ * orders carry no gclid, and the upload method is moving to Google's Data
+ * Manager API. The schema describes the same order. No deploy-time figure:
+ * none has been measured (docs/EVIDENCE-CHECKLIST.md).
  */
 
 const SITE      = "https://stackarchitect.xyz";
@@ -43,10 +39,19 @@ const heroStats = [
 ];
 
 const stripStats = [
-  { value: "Server-side", label: "Where the event fires" },
-  { value: "6 min", label: "Full deployment" },
+  { value: "1 setting", label: "In the Google & YouTube app" },
+  { value: "No code", label: "No Tag Manager needed" },
   { value: "Free",  label: "No paid app needed" },
   { value: "$0",    label: "Monthly cost" }
+];
+
+// The free fix. Each step is Google's or Shopify's own wording of where the
+// setting lives (Google Ads Help 13494537; Shopify Help, Google & YouTube).
+const nativeSteps = [
+  { pos: 1, title: "Install and connect the Google & YouTube app", tool: "Shopify Admin → Apps → Google & YouTube", desc: "Add Shopify's Google & YouTube app if it is not installed, and connect your Google account and your Google Ads account in it. The app places the Google tag on your store and records purchases as a Google Ads conversion." },
+  { pos: 2, title: "Check Google Ads has a purchase conversion", tool: "Google Ads → Goals → Conversions", desc: "In Google Ads, open Goals and find the purchase conversion action the app created. If it shows no conversions after a few days of sales, the app is not connected to the right Google Ads account yet." },
+  { pos: 3, title: "Turn on enhanced conversions", tool: "Google & YouTube app → Settings → Google Ads settings", desc: "In the app's Settings tab, under Google Ads settings, find Enhanced conversions, select Turn on and accept Google's customer data terms. Google then receives hashed customer data with each purchase the tag records, which helps it match more of them to the ad clicks that led to them." },
+  { pos: 4, title: "Remove any second Google Ads tag", tool: "Theme code · Customer events · Tag Manager", desc: "If an older Google Ads purchase tag is still in your theme, a custom pixel or Google Tag Manager, remove it, or the same purchase is counted twice. Then compare Google Ads conversions with Shopify orders over the same two weeks. Some gap always remains, because not every buyer can be matched and not every order came from an ad." }
 ];
 
 const flowSteps = [
@@ -94,12 +99,12 @@ const crosslinks = [
   { href: "/capi-shield/",                    tag: "Meta tracking",  tagClass: "",           name: "CAPI Shield",           desc: "The same Make.com webhook can also send purchase events to Meta's Conversions API. That is CAPI Shield, the Meta side of this setup: no additional Shopify configuration.", save: "Saves $145–$650/mo", saveColor: "var(--g)"      },
   { href: "/tiktok-events-api-shopify/",      tag: "TikTok tracking",         tagClass: "tag-tiktok", name: "TikTok Events API",     desc: "Add TikTok as a third branch to the same Make.com scenario. Server-side CompletePayment events to TikTok's Events API: no additional Shopify webhook needed.", save: "Saves $39–$275/mo",  saveColor: "var(--tiktok)" },
   { href: "/stocky-swap/",                    tag: "Inventory",    tagClass: "tag-sky",    name: "Stocky Swap",           desc: "Shopify closed Stocky on 31 August 2026. Stocky Swap logs every order to Google Sheets in real time via the same webhook infrastructure, as free order logging in its place.", save: "Saves $49–$119/mo",  saveColor: "var(--sky)"    },
-  { href: "/shopify-profit-loss-automation/", tag: "P&L reporting",           tagClass: "tag-sky",    name: "P&L Auto",              desc: "The same Shopify webhook branches to a live P&L Google Sheets dashboard. Revenue, COGS, ad spend, and net profit updated on every order at $0/month.", save: "Saves $35–$299/mo",  saveColor: "var(--sky)"    },
+  { href: "/shopify-profit-loss-automation/", tag: "P&L reporting",           tagClass: "tag-sky",    name: "P&L Auto",              desc: "The same Shopify webhook branches to a P&L Google Sheet. Revenue, fees and COGS are written on every order; ad spend is added by hand each month.", save: "Saves $35–$299/mo",  saveColor: "var(--sky)"    },
   { href: "/replace-klaviyo-free/",           tag: "Email marketing",         tagClass: "",           name: "Replace Klaviyo Free",  desc: "Systeme.io's free plan holds 2,000 contacts with unlimited sends, one email sequence and one automation rule: enough to move a small list off Klaviyo for $0.", save: "Saves $20+/mo", saveColor: "var(--g)"      },
 ];
 
 const relatedGuides = [
-  { href: "/shopify-google-ads-conversion-tracking/",      label: "Fix Shopify Google Ads conversion tracking 2026: free server-side setup" },
+  { href: "/blog/shopify-google-analytics-4-setup-free-2026/", label: "Set up GA4 on Shopify free, and read it correctly" },
   { href: "/blog/shopify-server-side-tracking-complete-setup-guide/",           label: "Shopify server-side tracking: complete setup guide 2026" },
   { href: "/blog/shopify-meta-roas-dropped-2026-fix/",                          label: "Shopify Meta ROAS dropped in 2026: free fix" },
   { href: "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/",    label: "How to fix Shopify conversion tracking after iOS updates" }
@@ -111,10 +116,10 @@ const schemaGraph = {
     {
       "@type": "WebPage",
       "url": CANONICAL,
-      "name": "Free Shopify Google Ads Conversion Tracking 2026: GCLID + Enhanced Conversions",
-      "description": "Fix Shopify Google Ads conversion tracking free. Server-side Google Enhanced Conversions via Make.com webhook: carries purchase events blocked by iOS and Safari ITP. No code, 6 minutes.",
+      "name": "Fix Shopify Google Ads Conversion Tracking Free: Enhanced Conversions",
+      "description": "The free fix for most Shopify stores: turn on enhanced conversions in the Google & YouTube app. Why Google Ads shows fewer purchases than Shopify.",
       "dateModified": pageUpdated('/shopify-google-ads-conversion-tracking/'),
-      "speakable": { "@type": "SpeakableSpecification", "cssSelector": [".direct-answer", ".hero h1", ".sec-head h2"] },
+      "speakable": { "@type": "SpeakableSpecification", "cssSelector": ["#answer", ".hero h1", ".sec-head h2"] },
       "breadcrumb": {
         "@type": "BreadcrumbList",
         "itemListElement": [
@@ -124,30 +129,12 @@ const schemaGraph = {
       }
     },
     {
-      "@type": "SoftwareApplication",
-      "name": "Shopify Google Ads Conversion Tracking: Free Setup via Make.com",
-      "applicationCategory": "BusinessApplication",
-      "url": CANONICAL,
-      "description": "Free Shopify Google Ads conversion tracking using Make.com server-side webhooks. Sends purchase events to Google Enhanced Conversions API, carrying conversions lost to iOS and Safari ITP. A free alternative to Stape, Littledata and Analyzify.",
-      "featureList": [
-        "Google Enhanced Conversions integration",
-        "Server-to-server purchase event delivery",
-        "SHA-256 customer data hashing",
-        "Performance Max optimisation data",
-        "No code required",
-        "Deploys in 6 minutes",
-        "Free via Make.com"
-      ],
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-    },
-    {
       "@type": "HowTo",
-      "name": "How to set up free Shopify Google Ads conversion tracking with Enhanced Conversions",
-      "description": "Deploy server-side Google Enhanced Conversions on Shopify via Make.com webhook to recover lost purchase events blocked by iOS and Safari ITP. Free, no code, 6 minutes.",
-      "totalTime": "PT6M",
+      "name": "How to turn on enhanced conversions for Google Ads on Shopify",
+      "description": "Turn on enhanced conversions in Shopify's free Google & YouTube app so Google receives hashed customer data with each purchase its tag records.",
       "estimatedCost": { "@type": "MonetaryAmount", "currency": "USD", "value": "0" },
-      "supply": ["Make.com free account", "Shopify Admin access", "Google Ads account with a conversion action"],
-      "step": setupSteps.map(s => ({
+      "supply": ["Shopify Admin access", "Google Ads account"],
+      "step": nativeSteps.map(s => ({
         "@type": "HowToStep",
         "position": s.pos,
         "name": s.title,
@@ -165,7 +152,7 @@ const schemaGraph = {
     {
       "@type": "VideoObject",
       "name": "Fixing broken Shopify conversion tracking for Google Ads",
-      "description": "Learn how to fix broken Shopify Google Ads conversion tracking by sending purchase events server-side to Google Enhanced Conversions via Make.com.",
+      "description": "How a Make.com scenario sends Shopify purchase events server-side to Google Ads, and why Google Ads misses purchases its browser tag never sees.",
       "uploadDate": "2026-08-04T20:24:00+01:00",
       "contentUrl": "https://stackarchitect.xyz/videos/shopify-google-ads-v2.mp4",
       "thumbnailUrl": "https://stackarchitect.xyz/videos/poster-16x9.jpg"
@@ -173,8 +160,8 @@ const schemaGraph = {
     {
       "@type": "Article",
       "@id": `${CANONICAL}#article`,
-      "headline": "Free Shopify Google Ads Conversion Tracking 2026 — Server-Side Enhanced Conversions via Make.com",
-      "description": "Fix broken Shopify Google Ads conversion tracking for free. Server-side Google Enhanced Conversions via Make.com carries purchase events lost to iOS and Safari ITP. No code, 6 minutes, a free alternative to Stape and Littledata.",
+      "headline": "Fix Shopify Google Ads Conversion Tracking Free: Enhanced Conversions in the Google & YouTube App",
+      "description": "The free fix for most Shopify stores: turn on enhanced conversions in the Google & YouTube app. Why Google Ads shows fewer purchases than Shopify.",
       "author":    { "@id": "https://stackarchitect.xyz/#luke" },
       "publisher": { "@id": "https://stackarchitect.xyz/#org" },
       "datePublished": "2026-04-21",
@@ -190,46 +177,20 @@ import InlineOffer from '../components/InlineOffer.astro';
 import { KIT_PRICE, KIT_STRIPE_URL, buildStripeUrl, formatPrice } from '../data/products';
 
 const tocHeadings = [
-  {
-    "id": "why-h",
-    "text": "Why Shopify Google Ads shows fewer conversions than you actually made"
-  },
-  {
-    "id": "how-h",
-    "text": "Server-side: how the purchase reaches Google regardless of browser behaviour"
-  },
-  {
-    "id": "setup-h",
-    "text": "How to set up free Google Ads conversion tracking on Shopify"
-  },
-  {
-    "id": "compare-h",
-    "text": "Free Make.com setup vs paid Google Ads tracking tools"
-  },
-  {
-    "id": "about-h",
-    "text": "Shopify Google Ads conversion tracking: everything explained"
-  },
-  {
-    "id": "stack-h",
-    "text": "The same webhook powers your entire free stack"
-  },
-  {
-    "id": "faq-h",
-    "text": "Every question about Shopify Google Ads tracking answered"
-  },
-  {
-    "id": "guides-h",
-    "text": "Go deeper on Shopify tracking"
-  },
-  {
-    "id": "sources-amp-primary-documentation",
-    "text": "Sources &amp; primary documentation"
-  }
+  { "id": "why-h", "text": "Why Shopify Google Ads shows fewer conversions than you actually made" },
+  { "id": "setup-h", "text": "How to fix Google Ads conversion tracking on Shopify for free" },
+  { "id": "how-h", "text": "Optional: a server-side upload with Make.com, and its two limits" },
+  { "id": "make-setup-h", "text": "How to build the Make.com upload" },
+  { "id": "check-h", "text": "If the Make.com upload shows no data" },
+  { "id": "compare-h", "text": "Make.com upload vs paid Google Ads tracking tools" },
+  { "id": "about-h", "text": "Shopify Google Ads conversion tracking: everything explained" },
+  { "id": "faq-h", "text": "Every question about Shopify Google Ads tracking answered" },
+  { "id": "guides-h", "text": "Go deeper on Shopify tracking" },
+  { "id": "sources-amp-primary-documentation", "text": "Sources &amp; primary documentation" }
 ];
 
 ---
-<Base verifiedDate={READ_DATE} title="Fix Shopify Google Ads Tracking — Free Setup 2026" description="The free fix for most Shopify stores: turn on enhanced conversions in the Google &amp; YouTube app. Why Google Ads shows fewer purchases than Shopify, and the limits of a Make.com upload.")>
+<Base verifiedDate={READ_DATE} title="Fix Shopify Google Ads Tracking — Free Setup 2026" description="The free fix for most Shopify stores: turn on enhanced conversions in the Google &amp; YouTube app. Why Google Ads shows fewer purchases than Shopify.")>
 <Fragment slot="head">
 <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
 
@@ -257,14 +218,6 @@ const tocHeadings = [
   </div>
 </nav>
 
-<!-- ─── DIRECT ANSWER BLOCK (AI citation extraction) ─── -->
-<div class="direct-answer" role="note" aria-label="Quick answer">
-  <div class="direct-answer-inner">
-    <span class="direct-answer-label">DIRECT ANSWER</span>
-    <p>Server-side Google Enhanced Conversions via Make.com sends purchase events from Shopify's server to the Google Ads API, outside the browser. One limit decides whether it helps: Shopify's order data has no Google click ID (gclid), so the upload carries only hashed customer email, and whether Google accepts it without a click ID depends on how the conversion action is set up. Its consent fields must also be set to match your own consent setup.</p>
-  </div>
-</div>
-
 <main id="main-content">
 
 <!-- ─── HERO ─── -->
@@ -277,7 +230,7 @@ const tocHeadings = [
 
     <div class="hero-proof">
       <span class="dot"></span>
-      <span class="hero-proof-txt">Server-side, so iOS cannot strip it · Runs on Make.com's free tier · No monthly fee</span>
+      <span class="hero-proof-txt">One setting in Shopify's free Google &amp; YouTube app · No code · No monthly fee</span>
     </div>
 
     <h1>
@@ -292,8 +245,8 @@ const tocHeadings = [
 
 
     <p class="hero-sub">
-      iOS Link Tracking Protection and Safari ITP silently strip Google Click IDs before your customers even see your store.
-      <strong>Server-side uploads reach Google from Shopify's server, but Shopify orders carry no Google click ID: check how your conversion action matches before relying on it.</strong>
+      iOS Link Tracking Protection, Safari's cookie limits and ad blockers all stop Google Ads connecting some purchases to the clicks that led to them.
+      <strong>Enhanced conversions sends Google hashed customer data with each purchase, so it can match more of them. Turning it on is free and takes no code.</strong>
     </p>
 
     <div class="loss-row" aria-label="What you are losing without server-side tracking">
@@ -306,7 +259,7 @@ const tocHeadings = [
     </div>
 
     <div class="trust-row">
-      {["Google Enhanced Conversions server-side","Replaces Stape + Littledata at $0"].map(t => (
+      {["Enhanced conversions, free in Shopify","Make.com upload covered, with its limits"].map(t => (
         <span class="trust-item">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
           {t}
@@ -315,24 +268,18 @@ const tocHeadings = [
     </div>
 
     <div class="hero-ctas">
-      <a href="#how-it-works" class="btn-outline"
-         onclick="event.preventDefault();document.getElementById('how-it-works').scrollIntoView({behavior:'smooth'})"
-         aria-label="See how server-side Google Ads tracking works">
-        See how it works
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
-      </a>
-      <a href="#how-it-works" class="btn pulse" aria-label="See how server-side Google Ads tracking is set up">
-        See the setup steps
+      <a href="#setup" class="btn pulse" aria-label="See the four steps to turn on enhanced conversions">
+        See the 4-step free fix
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
-      <a href={SCENARIO_URL} target="_blank" rel="noopener" class="btn-outline" aria-label="Clone the pre-built Google Ads Enhanced Conversions scenario">
-        Clone the scenario →
+      <a href="#make-route" class="btn-outline" aria-label="Read about the optional Make.com server-side upload">
+        The optional Make.com route
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
       </a>
     </div>
 
     <p class="hero-cta-note">
-      Powered by Make.com:
-      free up to 1,000 credits/month. Replaces Stape, Littledata, and Analyzify for Google Ads conversion tracking.
+      Paid tools such as Stape, Littledata and Analyzify can also capture the Google click ID in the browser, which the free routes cannot. Compared below.
     </p>
 
     <!-- Self-hosted video -->
@@ -402,21 +349,46 @@ const tocHeadings = [
   </div>
 </section>
 
-  <!-- The kit CTA that sat here is gone: it asked a reader a fifth of the way
-       down, who had not yet seen the free method work, to buy all four
-       blueprints. It is still offered at the end of the guide. The Make link
-       stays: it is the tool this page's free route is built on. -->
-  <p style="max-width:760px;margin:-12px auto 32px;font-size:13px;color:#93a09a;">
-    <a href={`${MAKE_URL}?source=shopify-google-ads-conversion-tracking-n1`} target="_blank" rel="sponsored nofollow noopener" style="color:#93a09a;text-decoration:underline;">Build it free on Make.com →</a>
-  </p>
-
-<!-- ─── HOW IT WORKS ─── -->
-<section class="section-alt" id="how-it-works" aria-labelledby="how-h">
+<!-- ─── THE FREE FIX ─── -->
+<section class="section-alt" id="setup" aria-labelledby="setup-h" itemscope itemtype="https://schema.org/HowTo">
+  <meta itemprop="name" content="How to turn on enhanced conversions for Google Ads on Shopify" />
   <div class="inner">
     <div class="sec-head">
-      <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">How it works</span>
-      <h2 id="how-h">Server-side: how the purchase reaches Google regardless of browser behaviour</h2>
-      <p>The Make.com webhook fires from Shopify's server the instant an order is paid. iOS, Safari, and ad blockers never see it.</p>
+      <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">The free fix · 4 steps</span>
+      <h2 id="setup-h">How to fix Google Ads conversion tracking on Shopify <span style="color:var(--g);">for free</span></h2>
+      <p>No code, no Google Tag Manager and no other accounts. Everything happens in Shopify's own Google &amp; YouTube app and in Google Ads (<a href="https://support.google.com/google-ads/answer/13494537">Google Ads Help: enhanced conversions</a>).</p>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      {nativeSteps.map((s, i) => (
+        <div itemprop="step" itemscope itemtype="https://schema.org/HowToStep"
+             style={`display:grid;grid-template-columns:72px 1fr;gap:0;background:var(--bg);border-bottom:${i < nativeSteps.length-1 ? '1px solid var(--border)' : 'none'};`}>
+          <div style="background:var(--bg-2);display:flex;align-items:flex-start;justify-content:center;padding:28px 0;border-right:1px solid var(--border);">
+            <span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--g);">{String(s.pos).padStart(2,'0')}</span>
+          </div>
+          <div style="padding:24px 28px;">
+            <div itemprop="name" style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;">{s.title}</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--text-4);margin-bottom:10px;letter-spacing:.08em;">{s.tool}</div>
+            <p itemprop="text" style="font-size:13px;color:var(--text-3);line-height:1.75;margin:0;">{s.desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="hl-box">
+      <div class="hl-box-label">What it does and does not do</div>
+      <div class="hl-box-body">Enhanced conversions improves matching for the purchases the Google tag <strong>does</strong> record. It cannot report a purchase whose tag never ran, for example when an ad blocker stopped it loading. For most stores it is still the right first step, because it costs nothing and needs no upkeep. We have not measured how many extra conversions it matches, and are not aware of a published figure for Shopify stores, so this page does not quote one.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── HOW IT WORKS ─── -->
+<section class="section" id="make-route" aria-labelledby="how-h">
+  <div class="inner">
+    <div class="sec-head">
+      <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Optional · Make.com</span>
+      <h2 id="how-h">Optional: a server-side upload with Make.com, and its two limits</h2>
+      <p>A Make.com scenario can send each paid order to Google Ads from Shopify's server, so the browser never has to run a tag. Read its two limits before building it. <strong>First</strong>, Shopify's order data has no Google click ID, so the upload carries only a hashed email for Google to match on. <strong>Second</strong>, Google is moving this upload method, offline click conversion import, out of the Google Ads API and into its Data Manager API, and Make's Google Ads module warns that uploads may fail for developer tokens that have not recently sent click conversions.</p>
     </div>
 
     <div class="flow-grid" aria-label="Server-side tracking flow: Shopify to Google Ads">
@@ -431,34 +403,31 @@ const tocHeadings = [
     </div>
 
     <div class="hl-box">
-      <div class="hl-box-label">Server-side vs browser-side: the key difference</div>
-      <div class="hl-box-body">Your current Google Ads setup fires a gTag script when the customer's browser loads the thank-you page: it can be blocked, delayed, or never fire at all. The Make.com approach fires from <strong>Shopify's server</strong> the moment payment is confirmed. It does not depend on the customer's browser, device, or privacy settings. That is why it still reports conversions the gTag misses.</div>
+      <div class="hl-box-label">Server-side vs browser-side: the real difference</div>
+      <div class="hl-box-body">The Google tag runs in the customer's browser on the thank-you page, so it can be blocked or never load. The Make.com upload runs from <strong>Shopify's server</strong> when payment is confirmed, so the browser cannot stop it. Whether Google can use the upload is a separate question: with no click ID, it depends on matching the hashed email and on how your conversion action is set up. Run it alongside the app's tag, never instead of it.</div>
     </div>
   </div>
 </section>
 
 <!-- ─── SETUP STEPS ─── -->
-<section class="section" id="setup" aria-labelledby="setup-h" itemscope itemtype="https://schema.org/HowTo">
-  <meta itemprop="name" content="How to set up free Shopify Google Ads conversion tracking with Enhanced Conversions" />
-  <meta itemprop="totalTime" content="PT6M" />
+<section class="section-alt" id="make-setup" aria-labelledby="make-setup-h">
   <div class="inner">
     <div class="sec-head">
-      <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Setup · 6 steps · 6 minutes</span>
-      <h2 id="setup-h">How to set up free <span style="color:var(--g);">Google Ads conversion tracking</span> on Shopify</h2>
-      <p>No code. No Google Tag Manager. No paid apps. Just Make.com and a Shopify webhook.</p>
+      <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Make.com · 6 steps</span>
+      <h2 id="make-setup-h">How to build the <span style="color:var(--g);">Make.com upload</span></h2>
+      <p>Do the four free steps above first: the upload needs the purchase conversion action they create. Then a free <a href={`${MAKE_URL}?source=shopify-google-ads-conversion-tracking-n1`} target="_blank" rel="sponsored nofollow noopener">Make.com</a> account and one Shopify webhook.</p>
     </div>
 
     <div style="display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:12px;overflow:hidden;">
       {setupSteps.map((s, i) => (
-        <div itemprop="step" itemscope itemtype="https://schema.org/HowToStep"
-             style={`display:grid;grid-template-columns:72px 1fr;gap:0;background:var(--bg);border-bottom:${i < setupSteps.length-1 ? '1px solid var(--border)' : 'none'};`}>
+        <div style={`display:grid;grid-template-columns:72px 1fr;gap:0;background:var(--bg);border-bottom:${i < setupSteps.length-1 ? '1px solid var(--border)' : 'none'};`}>
           <div style="background:var(--bg-2);display:flex;align-items:flex-start;justify-content:center;padding:28px 0;border-right:1px solid var(--border);">
             <span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--g);">{String(s.pos).padStart(2,'0')}</span>
           </div>
           <div style="padding:24px 28px;">
-            <div itemprop="name" style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;">{s.title}</div>
+            <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;">{s.title}</div>
             <div style="font-family:var(--mono);font-size:10px;color:var(--text-4);margin-bottom:10px;letter-spacing:.08em;">{s.tool}</div>
-            <p itemprop="text" style="font-size:13px;color:var(--text-3);line-height:1.75;margin:0;">{s.desc}</p>
+            <p style="font-size:13px;color:var(--text-3);line-height:1.75;margin:0;">{s.desc}</p>
           </div>
         </div>
       ))}
@@ -466,7 +435,7 @@ const tocHeadings = [
 
     <div style="background:rgba(52,211,119,.04);border:1px solid rgba(52,211,119,.2);border-left:3px solid var(--g);border-radius:10px;padding:22px 24px;margin-top:28px;text-align:left;">
       <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--g);margin-bottom:8px;">Pre-built &amp; ready to import</div>
-      <p style="font-size:14px;color:var(--text-2);line-height:1.7;margin:0 0 16px;">Skip the manual build. This exact scenario is published free: the Google Ads module and the hashed-email Enhanced Conversions mapping are already configured. Clone it, connect your Google Ads account, select your Customer ID and Conversion Action, and you're live.</p>
+      <p style="font-size:14px;color:var(--text-2);line-height:1.7;margin:0 0 16px;">Skip the manual build. This scenario is published free with the Google Ads module and the hashed-email mapping already configured. Clone it, connect your Google Ads account, select your Customer ID and conversion action, then set the two consent fields to match your own consent setup and place a test order.</p>
       <a href={SCENARIO_URL} target="_blank" rel="noopener" class="btn btn-sm" style="display:inline-flex;background:var(--g);">
         Clone the free scenario →
       </a>
@@ -478,25 +447,19 @@ const tocHeadings = [
 
 <!-- ─── BEFORE YOU START / CHECK IT WORKS ─── merged from
      /shopify-google-ads-conversion-tracking/ on 24 Sep 2026 -->
-<section class="section" aria-labelledby="check-h">
+<section class="section-alt" aria-labelledby="check-h">
   <div class="inner-sm">
     <div class="sec-head">
-      <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Before and after</span>
-      <h2 id="check-h">Before you start, and how to check it is working</h2>
+      <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Make.com · checks</span>
+      <h2 id="check-h">If the Make.com upload shows no data</h2>
     </div>
-    <p style="color:var(--text-2);line-height:1.75;margin-bottom:14px;">The server-side route adds to Shopify's own Google tracking; it does not replace it. Set up the native layer first, so Google Ads already has a purchase conversion action to attach Enhanced Conversions to.</p>
-    <ol style="color:var(--text-2);line-height:1.75;margin:0 0 18px 20px;">
-      <li>In Shopify, add the Google &amp; YouTube sales channel if it is not installed, and connect your Google Ads account in its settings.</li>
-      <li>In Google Ads, open Goals and find the purchase conversion action Shopify created. If it is not recording conversions, the channel is not connected yet.</li>
-      <li>In the Google &amp; YouTube app's Settings tab, under Google Ads settings, turn on Enhanced conversions and accept the customer data terms. For many stores this step alone is the fix, and the Make.com route below is optional.</li>
-      <li>Note the conversion ID, which starts <code>AW-</code>, and the conversion label. The Make.com module asks for both.</li>
-    </ol>
-    <p style="color:var(--text-2);line-height:1.75;margin-bottom:10px;">If Enhanced Conversions shows no data after a day or two, check these first:</p>
+    <p style="color:var(--text-2);line-height:1.75;margin-bottom:10px;">Give it a day or two after a test order, then check these first:</p>
     <ul style="color:var(--text-2);line-height:1.75;margin:0 0 18px 20px;">
-      <li>The conversion ID and label are copied from Google Ads exactly, not retyped.</li>
+      <li>The conversion ID (it starts <code>AW-</code>) and the conversion label are copied from Google Ads exactly, not retyped.</li>
       <li>The Google Ads customer ID is entered as ten digits with no hyphens.</li>
       <li>Email addresses are trimmed and lower-cased before they are hashed with SHA-256. A hash of the raw string will not match.</li>
-      <li>You are comparing like with like: Google Ads conversions against Shopify orders over the same one to two weeks. The gap should narrow but will not close, because some buyers cannot be matched to any Google account.</li>
+      <li>The scenario's run history shows the Google Ads module succeeding, not an error such as <code>CUSTOMER_NOT_ALLOWLISTED_FOR_THIS_FEATURE</code>, the error reported for developer tokens that had not recently uploaded click conversions when Google began moving this method to its Data Manager API.</li>
+      <li>You are comparing like with like: Google Ads conversions against Shopify orders over the same one to two weeks. Some gap always remains, because some buyers cannot be matched to any Google account.</li>
     </ul>
   </div>
 </section>
@@ -508,7 +471,7 @@ const tocHeadings = [
   <div class="inner">
     <div class="sec-head">
       <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Comparison · free vs paid</span>
-      <h2 id="compare-h">Free Make.com setup vs paid Google Ads tracking tools</h2>
+      <h2 id="compare-h">Make.com upload vs paid Google Ads tracking tools</h2>
       <p>They are not equivalent: the paid tools can capture the Google click ID, and a Make.com webhook cannot.</p>
     </div>
 
@@ -553,16 +516,16 @@ const tocHeadings = [
       <p>For most stores, the best free fix is to <strong>turn on enhanced conversions in Shopify's Google &amp; YouTube app</strong>: in the app's Settings tab, under Google Ads settings, find Enhanced conversions and select Turn on (<a href="https://support.google.com/google-ads/answer/13494537">Google Ads Help</a>). It adds hashed customer data to the conversions the app's tag records, with no other accounts and nothing to maintain. A Make.com upload, covered on this page, is an extra route with real limits: Shopify's order data has no Google click ID, and the upload method is moving to Google's Data Manager API.</p>
 
       <h3>Why is my Shopify Google Ads conversion tracking wrong?</h3>
-      <p>The most common cause of Shopify Google Ads underreporting in 2026 is <strong>iOS Link Tracking Protection stripping the GCLID parameter</strong> from ad URLs before customers open them. When Safari, Mail, or Messages removes ?gclid= from the URL, Google has no click ID to attribute the purchase to. The second cause is Safari ITP clearing attribution cookies, often within 24 hours, before longer research journeys complete with a purchase. The third is ad blockers preventing the Google Ads conversion tag from loading on the order confirmation page. Server-side Enhanced Conversions resolves all three because it never touches the browser.</p>
+      <p>The most common cause of Shopify Google Ads underreporting in 2026 is <strong>iOS Link Tracking Protection stripping the GCLID parameter</strong> from ad URLs before customers open them. When Safari, Mail, or Messages removes ?gclid= from the URL, Google has no click ID to attribute the purchase to. The second cause is Safari ITP clearing attribution cookies, often within 24 hours, before longer research journeys complete with a purchase. The third is ad blockers preventing the Google Ads conversion tag from loading on the order confirmation page. Enhanced conversions helps with the first two by giving Google hashed customer data to match on when the click ID is gone. Nothing free fully solves the third, because a purchase whose tag never loaded sends Google nothing to enhance.</p>
 
       <h3>What is Google Enhanced Conversions and how does it work with Shopify?</h3>
-      <p><strong>Google Enhanced Conversions</strong> is Google's supplementary server-side conversion tracking system. When the standard browser-based gTag fires, Enhanced Conversions supplements it by sending hashed first-party customer data (SHA-256 hashed email address, phone number, and name) directly to Google's API. Google uses this to match purchases to signed-in Google accounts with greater accuracy, recovering conversions that would otherwise be unattributed due to iOS and Safari restrictions. For Shopify stores, Enhanced Conversions recovers purchase events that the browser pixel misses.</p>
+      <p><strong>Google Enhanced Conversions</strong> is Google's supplementary server-side conversion tracking system. When the standard browser-based gTag fires, Enhanced Conversions supplements it by sending hashed first-party customer data (SHA-256 hashed email address, phone number, and name) directly to Google's API. Google uses this to match purchases to signed-in Google accounts with greater accuracy, so fewer conversions go unattributed when iOS or Safari has removed the click ID. On Shopify, the Google &amp; YouTube app sends it for the purchases its tag records once you turn it on.</p>
 
       <h3>What is GCLID and why does losing it hurt your Google Ads?</h3>
       <p>GCLID, Google Click Identifier, is the unique parameter Google appends to ad destination URLs when a customer clicks your ad. Shopify reads this parameter when the customer lands and stores it as a session cookie. When the customer reaches the order confirmation page, Shopify's gTag fires with the gclid, telling Google "this specific click led to this purchase." When iOS strips the gclid from the URL, or Safari clears the session cookie, that connection is broken. <strong>Shopify does not pass the gclid on to the order</strong>: the order data a webhook delivers has no gclid field, so a server-side upload built on the Order payment webhook has only hashed customer data to match on.</p>
 
       <h3>How does this compare to Shopify's built-in Google channel?</h3>
-      <p>Shopify's Google & YouTube sales channel installs a browser-based conversion tag on the thank-you page, which is subject to the same iOS and Safari restrictions as all browser-based tracking. The Make.com server-side approach is a <strong>supplement to Shopify's native channel</strong>, not a replacement. Run both simultaneously: the native channel for upper-funnel events and browser-covered purchases; the Make.com webhook for server-side purchase events that the native channel misses. Google automatically deduplicates events using the order ID.</p>
+      <p>Shopify's Google & YouTube sales channel installs a browser-based conversion tag on the thank-you page, which is subject to the same iOS and Safari restrictions as all browser-based tracking. Turning on enhanced conversions in the same app is the free improvement to it. A Make.com upload is a <strong>supplement to Shopify's native channel</strong>, never a replacement. Unless it is set up so Google treats it as the same conversion as the tag, the same purchase can be counted twice, so compare Google Ads conversions with Shopify orders for a week after adding it.</p>
     </div>
   </div>
 </section>
@@ -572,8 +535,8 @@ const tocHeadings = [
   <div class="inner">
     <div class="sec-head">
       <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Full stack</span>
-      <h2 id="stack-h">The same webhook powers your <span style="color:var(--g);">entire free stack</span></h2>
-      <p>One Shopify order webhook. Multiple branches. Every automation runs simultaneously (Google Ads, Meta, TikTok, inventory, and P&L) at $0/month.</p>
+      <h2 id="stack-h">One order webhook, <span style="color:var(--g);">several free automations</span></h2>
+      <p>If you build the Make.com scenario, the same Shopify order webhook can feed other branches: Meta, TikTok, an order log and a P&amp;L sheet. Each branch uses credits, so check your scenario history against Make.com's free 1,000 a month.</p>
     </div>
 
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
@@ -641,23 +604,26 @@ const tocHeadings = [
   <div style="max-width:640px;margin:0 auto;text-align:center;">
     <div class="hero-proof" style="justify-content:center;margin-bottom:20px;">
       <span class="dot"></span>
-      <span style="font-size:12px;color:var(--text-3);">Bypasses gclid stripping · Runs on Make.com's free tier · $0/month</span>
+      <span style="font-size:12px;color:var(--text-3);">Google &amp; YouTube app · Enhanced conversions · $0/month</span>
     </div>
     <h3 style="font-size:clamp(24px,4vw,36px);font-weight:700;color:var(--text);letter-spacing:-.03em;line-height:1.05;margin-bottom:16px;">
-      Fix your Google Ads tracking.<br />
-      <span style="color:var(--g);">Free. In 6 minutes.</span>
+      Start with the free setting.<br />
+      <span style="color:var(--g);">Add the upload only if you need it.</span>
     </h3>
     <p style="font-size:15px;color:var(--text-3);margin-bottom:28px;line-height:1.7;">
-      Server-side Enhanced Conversions via Make.com. Reports conversions the browser tag loses. Improves Smart Bidding. $0/month forever.
+      Turn on enhanced conversions, remove any duplicate tag, and compare Google Ads with Shopify for two weeks. If you still want a server-side route, the Make.com upload above runs on Make.com's free plan.
     </p>
     <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:20px;">
-      <a href={`${MAKE_URL}?source=shopify-google-ads-conversion-tracking-n2`} target="_blank" rel="sponsored nofollow noopener" class="btn pulse" style="font-size:16px;padding:16px 32px;">
-        Create a free Make.com account
+      <a href="#setup" class="btn pulse" style="font-size:16px;padding:16px 32px;">
+        Back to the 4 free steps
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href={`${MAKE_URL}?source=shopify-google-ads-conversion-tracking-n2`} target="_blank" rel="sponsored nofollow noopener" class="btn-outline" style="font-size:15px;">
+        Create a free Make.com account
       </a>
     </div>
     <div class="risk-strip" style="justify-content:center;">
-      {["6-minute setup","No code required","Make.com free tier","$0/month ongoing","Any Shopify plan"].map(t => (
+      {["No code required","Any Shopify plan","$0/month","No Tag Manager"].map(t => (
         <div class="risk-item">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
           {t}
@@ -673,9 +639,8 @@ const tocHeadings = [
   <p style="letter-spacing:.18em;font-size:12px;color:#34d399;font-weight:700;margin:0 0 16px;text-transform:uppercase;">Related free tools</p>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;">
     <a href="/capi-shield/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
-      <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">CAPI Shield: Also Fix Meta Ads Attribution
-            The same Make</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $145–$650/mo</span></span>
-      <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">com webhook sends events to Meta CAPI simultaneously. One setup, all platforms</span>
+      <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">CAPI Shield: Meta Conversions API on the Same Webhook</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $145–$650/mo</span></span>
+      <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">A Make.com branch that sends Shopify purchases to Meta's Conversions API.</span>
     </a>
     <a href="/tiktok-events-api-shopify/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
       <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">TikTok Events API: Add TikTok to the Same Webhook
@@ -693,8 +658,8 @@ const tocHeadings = [
       <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">Free tool</span>
     </a>
     <a href="/shopify-attribution-tools-compared/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
-      <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Elevar Alternative: Full Comparison
-            CAPI Shield + Google Ads tracking vs Elevar: full feature breakdown at $0 vs $225/mo</span></span>
+      <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Shopify Attribution Tools Compared
+            Elevar, Triple Whale, Littledata and free routes, feature by feature</span></span>
       <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">vs $225/mo</span>
     </a>
   </div>

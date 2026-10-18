@@ -1,7 +1,7 @@
 ---
 title: "Set Up GA4 on Shopify Free, and Read It Correctly"
 heading: "How to Set Up Google Analytics 4 on Shopify for Free (and Avoid Double-Counting)"
-description: "Connect GA4 to Shopify through the free Google & YouTube app, check it works, change the two settings that matter, and understand why GA4 will always show fewer orders than Shopify."
+description: "Connect GA4 to Shopify free through the Google & YouTube app, check it works, change the two settings that matter, and why GA4 shows fewer orders."
 answer: "Google Analytics 4 connects to Shopify free through the Google & YouTube app: install it, choose the Google Analytics 4 setup on its Overview page, and connect your GA4 property. Shopify then sends standard ecommerce events, including purchases. Never add a GA4 tag to your theme too, and treat Shopify's order count, not GA4's, as the true number of sales."
 publishDate: "2026-04-16"
 updatedDate: "2026-10-15"
