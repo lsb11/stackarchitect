@@ -1,7 +1,7 @@
 ---
 title: "Reliable Shopify Automations: Make Failures Visible"
 heading: "Reliable Shopify Automations: How to Make Every Failure Visible"
-description: "Why Make.com Shopify automations fail silently, and the patterns that stop it: error handlers that keep failed runs, deduplication on order ID, a daily count check, and what Shopify does when webhooks keep failing."
+description: "Why Make.com Shopify automations fail silently, and how to stop it: error handlers that keep failed runs, order-ID deduplication and a daily count check."
 answer: "A Shopify automation is reliable when every failure is either retried or reported, never silently skipped. In Make.com that means error handlers that store failed runs instead of ignoring them, independent branches so one dead API cannot block the rest, deduplication on order ID, and a daily check that your log's order count matches Shopify's."
 publishDate: "2026-03-25"
 updatedDate: "2026-10-15"

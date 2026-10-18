@@ -1,7 +1,7 @@
 ---
 title: "Tidio for Shopify: Setup, Lyro AI and Free Plan Limits"
 heading: "Tidio for Shopify: Setup Guide, Lyro Knowledge Base, and When the Free Plan Is Enough"
-description: "Install Tidio on Shopify, write the knowledge base its Lyro AI answers from, set escalation to a person, and understand exactly what the free plan includes. Limits read on Tidio's pricing page."
+description: "Install Tidio on Shopify, write the knowledge base its Lyro AI answers from, set escalation to a person, and see exactly what the free plan includes."
 answer: "Tidio installs on Shopify from the App Store and adds live chat to your store. Its Lyro AI agent answers from a knowledge base you write, so it is only as good as those answers. The free plan includes 50 conversations a month and 50 Lyro conversations in total, making it a trial rather than a permanent free helpdesk."
 publishDate: "2026-03-20"
 updatedDate: "2026-10-15"

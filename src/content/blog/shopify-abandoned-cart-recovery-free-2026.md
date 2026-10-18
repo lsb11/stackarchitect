@@ -1,7 +1,7 @@
 ---
 title: "Free Shopify Abandoned Cart Recovery: Two Routes"
 heading: "Free Shopify Abandoned Cart Recovery: Shopify's Own Email, or a Multi-Email Sequence"
-description: "Two free ways to recover abandoned Shopify checkouts: Shopify Messaging's built-in automation, or a Make.com and Systeme.io sequence, with the logic that stops emails reaching people who already bought."
+description: "Two free ways to recover abandoned Shopify checkouts: Shopify Messaging's own email, or a Make.com and Systeme.io sequence with a check that skips buyers."
 answer: "The simplest free abandoned cart recovery on Shopify is the Abandoned checkout emails by Shopify automation in the Shopify Messaging app, which includes 10,000 free emails a month. For a sequence of several different emails, a Make.com and Systeme.io setup works on free plans, provided a completed order removes the buyer from the sequence before the next email sends."
 publishDate: "2026-04-21"
 updatedDate: "2026-10-15"

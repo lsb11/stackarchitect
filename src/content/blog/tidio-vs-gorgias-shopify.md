@@ -1,7 +1,7 @@
 ---
 title: "Tidio vs Gorgias vs Zendesk for Shopify: How to Choose"
 heading: "Tidio vs Gorgias vs Zendesk for Shopify: Choose by Workflow, Not Revenue"
-description: "How Tidio, Gorgias and Zendesk differ for Shopify support: what each charges for, what each can do with Shopify orders, and the workload where each one makes sense. Prices read on vendor pages."
+description: "Tidio vs Gorgias vs Zendesk for Shopify support: what each charges for, what each can do with Shopify orders, and the store each one suits."
 answer: "Choose a Shopify helpdesk by how your support works, not by store revenue. Tidio is chat-first and suits stores whose questions are mostly repetitive. Gorgias is a ticket helpdesk priced by ticket volume, built for teams handling email, chat and social in one queue. Zendesk is priced per agent and suits larger teams with complex routing needs."
 publishDate: "2026-03-22"
 updatedDate: "2026-10-15"
