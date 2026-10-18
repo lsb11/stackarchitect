@@ -1024,6 +1024,29 @@ first-hand evidence, is listed per page in `docs/EVIDENCE-CHECKLIST.md`,
 along with claims only the owner can confirm (Systeme.io free-plan flows, the
 "160–250 orders" figure, deploy-time claims).
 
+### Search Console, read directly on 18 Oct 2026
+
+Read in the owner's Chrome, not inferred:
+- **1 indexed (the homepage), 167 not.** "Crawled - currently not
+  indexed" holds 141 URLs: **43 of the 51 sitemap pages**, plus 97 retired
+  or www/slashless URLs whose last crawl predates their 301 (every one
+  checked resolves through `public/_redirects`). Validation started 13 Oct.
+- **6 sitemap pages were "URL is unknown to Google"**, never crawled, though
+  the sitemap was read with 51 URLs on 17 Oct: /replace-klaviyo-free/,
+  /meta-emq-score-estimator/, /best-free-shopify-apps-2026/, and the
+  abandoned-cart, CRO and when-to-upgrade posts. Indexing was requested for
+  those six and for /shopify-google-ads-conversion-tracking/ on 18 Oct.
+- The "Failed" rows are expected: www/http homepage variants redirecting,
+  and `?ref=producthunt` blocked by the robots.txt rule removed 17 Aug.
+- Manual actions and security issues: none. Sitemaps: both read 17 Oct,
+  Success, 51 discovered.
+- Links report: 56 external links, **all to the homepage** (medium.com 14,
+  dev.to 9, github.com 7). No external link points at any inner page.
+  Homepage last crawled 17 Oct, so its links to every page have been seen.
+
+The Ahrefs connector returns "Insufficient plan" on every endpoint,
+including the free ones; do not plan work around it.
+
 ### Highest-leverage open work
 
 1. Get the iOS Attribution Gap Benchmark to N ≥ 10 real submissions so it
