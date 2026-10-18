@@ -73,7 +73,7 @@ const heroStats = [
 ];
 const stripStats = [
   { value: "Server-side", label: "Where the event fires" },
-  { value: "6 min", label: "Full deployment" },
+  { value: "No code", label: "Make.com + one webhook" },
   { value: "Full",  label: "Advanced Matching fields sent" },
   { value: "$0",    label: "Monthly cost forever" }
 ];
@@ -119,14 +119,14 @@ const crosslinks = [
 
 // ─── FAQs ─────────────────────────────────────────────────────────────────────
 const faqs = [
-  { q: "How do I set up TikTok Events API on Shopify without code?", a: "Create a Make.com scenario with a Webhook trigger, add an order-paid webhook in Shopify Admin pointing to your Make.com URL, then configure an HTTP POST in Make.com to send a CompletePayment event to TikTok's Events API endpoint with your access token. Takes 6 minutes, no code required, free on Make.com's free tier." },
+  { q: "How do I set up TikTok Events API on Shopify without code?", a: "Create a Make.com scenario with a Webhook trigger, add an order-paid webhook in Shopify Admin pointing to your Make.com URL, then configure an HTTP POST in Make.com to send a CompletePayment event to TikTok's Events API endpoint with your access token. No code is required, and it runs on Make.com's free tier." },
   { q: "What is TikTok Events API for Shopify?",                          a: "TikTok Events API is a server-to-server connection that sends Shopify purchase events directly to TikTok without going through the browser. This bypasses iOS ITP, ad blockers, and privacy settings that interfere with the browser Pixel. The free Make.com setup sends CompletePayment events with full Advanced Matching data." },
-  { q: "How to set up TikTok Events API for Shopify free?",               a: "Sign up for Make.com free, import the pre-built TikTok Events API scenario with one click, add a Shopify Order Payment webhook pointing to your Make.com URL, enter your Pixel ID and Access Token in the HTTP module, then test with a sample order. Takes 6 minutes, no code, free forever on Make.com's free tier." },
+  { q: "How to set up TikTok Events API for Shopify free?",               a: "Sign up for Make.com free, import the pre-built TikTok Events API scenario with one click, add a Shopify Order Payment webhook pointing to your Make.com URL, enter your Pixel ID and Access Token in the HTTP module, then test with a sample order in TikTok's Test Events. No code is required, and it runs on Make.com's free tier." },
   { q: "What is the TikTok purchase event name?",                          a: "TikTok uses CompletePayment as the purchase event name, not Purchase like Meta and Google. Using the wrong event name will result in events not contributing to campaign optimisation. Always use CompletePayment for TikTok purchase tracking." },
-  { q: "Can I run TikTok Events API alongside my existing TikTok Pixel?",  a: "Yes: TikTok officially recommends running Events API alongside the browser Pixel, not instead of it. The Pixel captures upper-funnel events (ViewContent, AddToCart). Events API adds server-side CompletePayment on top. Set a matching event_id in Make.com to match the browser Pixel event_id so TikTok deduplicates automatically and you do not double-count conversions." },
+  { q: "Can I run TikTok Events API alongside my existing TikTok Pixel?",  a: "Yes: TikTok officially recommends running Events API alongside the browser Pixel, not instead of it. The Pixel captures upper-funnel events (ViewContent, AddToCart). Events API adds server-side CompletePayment on top. TikTok can only deduplicate the browser and server events if both carry the same event_id. This setup uses the Shopify order ID. Shopify's TikTok app does not document the event_id its pixel sends, so do not assume they match: after a test order, check Test Events and Diagnostics in TikTok Events Manager for duplicate purchases." },
   { q: "Does this replace WeltPixel or Analyzify?",                        a: "Yes. WeltPixel charges $39/month on its Plus plan and Analyzify charges $145–$275/month for TikTok server-side tracking. The Make.com webhook approach achieves the same CompletePayment server-side delivery at $0/month on Make.com's free tier. The data flows through your own Make.com workspace rather than a third-party's servers." },
   { q: "What is TikTok Advanced Matching?",                                a: "TikTok Advanced Matching sends hashed customer data (email, phone number, IP address, and user agent) alongside purchase events to improve event matching accuracy and EMQ scores. The Make.com setup hashes all available Shopify order fields with SHA-256 before transmission, as required by TikTok's API specification." },
-  { q: "What EMQ score will I achieve?",                                   a: "We have not sampled EMQ across Shopify stores, so we do not publish a typical score for this setup: what we can say is that it sends full Advanced Matching data, which is what the score is calculated from. EMQ measures how well TikTok can match server-side events to TikTok user accounts. Scores of 6 and above are considered strong by TikTok's own guidelines. Including hashed email, phone, IP, and user agent from the Shopify order webhook maximises your score." },
+  { q: "What EMQ score will I achieve?",                                   a: "We have not sampled EMQ across Shopify stores, so we do not publish a typical score for this setup: what we can say is that it sends full Advanced Matching data, which is what the score is calculated from. EMQ measures how well TikTok can match server-side events to TikTok user accounts. Including hashed email and phone, plus IP and user agent, from the Shopify order webhook gives TikTok the most to match on; read your own score in Events Manager after a week of orders." },
   { q: "Can I set up TikTok and Meta CAPI from the same Make.com scenario?", a: "Yes. Add a Router module to the same scenario and branch to Meta Conversions API and Google Enhanced Conversions simultaneously. One Shopify Order Payment webhook feeds all three platforms: still within Make.com's free tier for most stores." }
 ];
 
@@ -135,7 +135,7 @@ const relatedGuides = [
   { href: "/capi-shield/",                                                label: "CAPI Shield: recover Meta conversion data free" },
   { href: "/blog/shopify-server-side-tracking-complete-setup-guide/",     label: "Shopify server-side tracking: complete setup guide 2026" },
   { href: "/stocky-swap/",                                                label: "Stocky Swap, the free Stocky replacement" },
-  { href: "https://github.com/lsb11/shopify-automation-blueprints",      label: "Free TikTok Events API blueprint on GitHub: import in 6 minutes" }
+  { href: "https://github.com/lsb11/shopify-automation-blueprints",      label: "Free TikTok Events API blueprint on GitHub" }
 ];
 
 // ─── Code template ───────────────────────────────────────────────────────────
@@ -146,16 +146,14 @@ const codeTemplate = `{
     {
       "event": "CompletePayment",
       "event_id": "{{1.id}}",
-      "event_time": {{formatDate(now; "X")}},
+      "event_time": {{formatDate(1.created_at; "X")}},
       "properties": {
         "value": {{1.total_price}},
         "currency": "{{1.currency}}"
       },
-      "context": {
-        "user": {
-          "email": "{{sha256(lower(trim(1.email)))}}",
-          "phone": "{{sha256(replace(1.phone; \\" \\"; \\"\\"))}}"
-        },
+      "user": {
+        "email": "{{sha256(lower(trim(1.email)))}}",
+        "phone": "{{if(1.phone; sha256(replace(1.phone; \\" \\"; \\"\\")); \\"\\")}}",
         "ip": "{{1.client_details.browser_ip}}",
         "user_agent": "{{1.client_details.user_agent}}"
       }
@@ -194,7 +192,6 @@ const schemaGraph = {
         "Advanced Matching support",
         "Full Advanced Matching data sent",
         "No code required",
-        "Deploys in 6 minutes",
         "Free via Make.com"
       ],
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
@@ -202,7 +199,7 @@ const schemaGraph = {
     {
       "@type": "HowTo",
       "name": "How to set up free TikTok Events API for Shopify",
-      "description": "Deploy TikTok server-side tracking for Shopify free via Make.com. Sends CompletePayment events server-side, where iOS and ad blockers cannot intercept them. No code, 6 minutes.",
+      "description": "Deploy TikTok server-side tracking for Shopify free via Make.com. Sends CompletePayment events server-side, where iOS and ad blockers cannot intercept them. No code.",
       "totalTime": "PT6M",
       "estimatedCost": { "@type": "MonetaryAmount", "currency": "USD", "value": "0" },
       "step": setupSteps.map(s => ({
@@ -232,7 +229,7 @@ const schemaGraph = {
       "@type": "Article",
       "@id": `${CANONICAL}#article`,
       "headline": "TikTok Events API for Shopify — Free Server-Side Setup 2026",
-      "description": "How to set up free TikTok server-side tracking for Shopify using Make.com. Send CompletePayment events to TikTok Events API server-side in 6 minutes.",
+      "description": "How to set up free TikTok server-side tracking for Shopify using Make.com. Send CompletePayment events to TikTok Events API server-side, step by step.",
       "author":    { "@id": "https://stackarchitect.xyz/#luke" },
       "publisher": { "@id": "https://stackarchitect.xyz/#org" },
       "datePublished": "2026-04-05",
@@ -275,7 +272,7 @@ const tocHeadings = [
   },
   {
     "id": "setup-h",
-    "text": "Deploy TikTok Events API in 6 minutes: step by step"
+    "text": "Deploy TikTok Events API: step by step"
   },
   {
     "id": "compare-h",
@@ -359,10 +356,10 @@ const tocHeadings = [
     <h1>
       Your TikTok ads are<br />
       <span class="tiktok">flying blind.</span><br />
-      <span class="dim">Fix it free in 6 minutes.</span>
+      <span class="dim">Fix it free, no code.</span>
     </h1>
 
-    <p id="answer">TikTok Events API is a server-to-server connection that sends Shopify purchase events directly to TikTok without passing through the browser, bypassing iOS restrictions and ad blockers. To connect it, add a Shopify order-paid webhook pointing to a free Make.com scenario that posts a CompletePayment event to TikTok with your Pixel ID and Access Token, a six-minute, no-code setup.</p>
+    <p id="answer">TikTok Events API is a server-to-server connection that sends Shopify purchase events directly to TikTok without passing through the browser, bypassing iOS restrictions and ad blockers. To connect it, add a Shopify order-paid webhook pointing to a free Make.com scenario that posts a CompletePayment event to TikTok with your Pixel ID and Access Token. It is a no-code setup.</p>
       <p class="hero-sub" style="font-size:14px;margin-top:10px;">TikTok says the Events API reports conversions the Pixel misses through &ldquo;connectivity issues and browser inconsistency&rdquo;, and recommends running it alongside your existing Pixel (<a href="https://ads.tiktok.com/help/article/events-api" target="_blank" rel="noopener">About Events API</a>). Its <a href="https://ads.tiktok.com/help/article/advanced-matching-web" target="_blank" rel="noopener">Advanced Matching</a> matches email, phone and other identifiers to events sent through the Pixel or the Events API. On Safari, <a href="https://webkit.org/tracking-prevention/" target="_blank" rel="noopener">Intelligent Tracking Prevention</a> deletes cookies set by script after seven days without a visit. Checked 24 September 2026.</p>
 
   <TableOfContents headings={tocHeadings} />
@@ -383,7 +380,7 @@ const tocHeadings = [
     </div>
 
     <div class="trust-row">
-      {["CompletePayment events server-side","Full Advanced Matching data","Deploys in 6 minutes","Replaces WeltPixel at $0"].map(t => (
+      {["CompletePayment events server-side","Full Advanced Matching data","No code","Replaces WeltPixel at $0"].map(t => (
         <span class="trust-item">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff2e63" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
           {t}
@@ -476,7 +473,7 @@ const tocHeadings = [
 
     <div class="callout info" style="margin-top:16px;">
       <div class="callout-label">What to do if you have a standard mode pixel</div>
-      <p>The Make.com webhook approach works with <strong>any pixel mode</strong>. You do not need developer mode to send server-side CompletePayment events via the Events API HTTP endpoint. Create a second pixel in developer mode only if you want custom event tracking. Run it alongside your existing pixel: TikTok deduplicates events using the event_id parameter so you will not double-count conversions.</p>
+      <p>The Make.com webhook approach works with <strong>any pixel mode</strong>. You do not need developer mode to send server-side CompletePayment events via the Events API HTTP endpoint. Create a second pixel in developer mode only if you want custom event tracking. Run it alongside your existing pixel. TikTok can only deduplicate the browser and server events if both carry the same event_id. This setup uses the Shopify order ID. Shopify's TikTok app does not document the event_id its pixel sends, so do not assume they match: after a test order, check Test Events and Diagnostics in TikTok Events Manager for duplicate purchases.</p>
     </div>
   </div>
 </section>
@@ -547,13 +544,13 @@ const tocHeadings = [
 
     <div class="callout info" style="margin-top:16px;">
       <div class="callout-label">Keep your TikTok Pixel running</div>
-      <p>TikTok officially recommends running Events API as a second channel alongside your existing Pixel, not instead of it. The Pixel captures upper-funnel events (ViewContent, AddToCart). Events API adds server-side CompletePayment on top. Set a matching <strong>event_id</strong> in Make.com so TikTok deduplicates browser and server events automatically.</p>
+      <p>TikTok officially recommends running Events API as a second channel alongside your existing Pixel, not instead of it. The Pixel captures upper-funnel events (ViewContent, AddToCart). Events API adds server-side CompletePayment on top. TikTok can only deduplicate the browser and server events if both carry the same <strong>event_id</strong>. This setup uses the Shopify order ID. Shopify's TikTok app does not document the event_id its pixel sends, so do not assume they match: after a test order, check Test Events and Diagnostics in TikTok Events Manager for duplicate purchases.</p>
     </div>
 
     <div class="section-cta">
       <div class="section-cta-left">
         <div class="cta-h">Deploy TikTok Events API free via Make.com</div>
-        <p>Takes 6 minutes · No code · Free forever on Make.com free plan</p>
+        <p>No code · One Shopify webhook · Runs on Make.com's free plan</p>
       </div>
     </div>
   </div>
@@ -599,8 +596,8 @@ const tocHeadings = [
   <div class="inner">
     <div class="sec-head">
       <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Setup guide</span>
-      <h2 id="setup-h">Deploy TikTok Events API in 6 minutes: step by step</h2>
-      <p>No developer required. No paid apps. Tested against TikTok Events Manager.</p>
+      <h2 id="setup-h">Deploy TikTok Events API: step by step</h2>
+      <p>No developer required and no paid apps. Confirm every step with a test order in TikTok's Test Events before relying on it.</p>
     </div>
 
     <div class="step-cards" itemscope itemtype="https://schema.org/HowTo">
@@ -772,7 +769,7 @@ const tocHeadings = [
       <span style="color:var(--tt);">needs complete data.</span>
     </h2>
     <p style="font-size:17px;color:var(--text-3);max-width:520px;margin:0 auto 32px;line-height:1.7;">
-      Stop losing TikTok conversion data to iOS and ad blockers. Deploy server-side CompletePayment events free: 6 minutes, no code, no paid apps.
+      Stop losing TikTok conversion data to iOS and ad blockers. Deploy server-side CompletePayment events free: no code, no paid apps.
     </p>
     <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-bottom:16px;">
       <a href="/capi-shield/" class="btn-outline" aria-label="Also add Meta CAPI with CAPI Shield">Also add Meta CAPI</a>
