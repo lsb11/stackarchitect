@@ -177,7 +177,7 @@ const schema = JSON.stringify({
         { "@type": "Question", "name": "How is this different from Shopify's built-in financial reports?",
           "acceptedAnswer": { "@type": "Answer", "text": "Shopify's built-in reports show revenue, units sold, and average order value. They do not calculate net profit: they have no concept of COGS, Shopify subscription fee, ad spend, or operating expenses. The automated P&L in Google Sheets adds all of these in a single live view you own and customise, with zero monthly fees." } },
         { "@type": "Question", "name": "How do I track COGS automatically in the Shopify P&L?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Store your cost price per variant in a COGS Table tab. Make.com pulls the variant ID from each Shopify order. A VLOOKUP formula in your Order Data tab matches each variant ID to its cost automatically. Update COGS in the table when supplier prices change and every historical order row recalculates." } },
+          "acceptedAnswer": { "@type": "Answer", "text": "Store your unit cost per variant in a COGS Table tab, keyed on Shopify's variant ID. When an order is paid, Make.com looks up the variant of the order's first line item in that table and writes its cost into the row. Further line items, and quantities above one, add revenue but no cost, so on multi-item orders treat gross profit as indicative. A cost you change later applies to new orders, not rows already written." } },
         { "@type": "Question", "name": "How do refunds appear in the automated Shopify P&L?",
           "acceptedAnswer": { "@type": "Answer", "text": "A second Make.com scenario monitors the Shopify Refund created webhook. When a refund occurs, it writes a negative revenue row to the same Order Data tab. SUMIF formulas in your P&L Summary automatically net refunds against gross revenue with no manual adjustment needed." } },
         { "@type": "Question", "name": "Do I need Google Workspace or does free Gmail work?",
@@ -778,7 +778,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
     </div>
 
     <h3>Tab 3: COGS Table (one-time setup)</h3>
-    <p>Enter your cost per SKU or variant in this tab. Make.com pulls the variant ID from each order. A VLOOKUP in Tab 1 matches each variant to its cost automatically. Update COGS here when supplier prices change: every historical order row recalculates.</p>
+    <p>Enter a unit cost for each variant in this tab, keyed on Shopify's variant ID (it appears in the variant's URL in Shopify admin). When an order is paid, Make.com looks up the first line item's variant here and writes that cost into the order's row. <strong>Known limitation:</strong> further line items and quantities above one add revenue but no cost, so on multi-item orders gross profit reads high; reconcile monthly. Until this table holds your products, every order reports its full revenue as profit.</p>
   </div>
 </div>
 </section>
@@ -1010,7 +1010,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
 
     <details class="faq-item-pl">
       <summary><span>How do I track COGS automatically in the Shopify P&amp;L?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-pl"><p>Store your cost price per variant in a COGS Table tab. Make.com pulls the variant ID from each Shopify order. A VLOOKUP formula in your Order Data tab matches each variant ID to its cost automatically. Update COGS in the table when supplier prices change and every historical order row recalculates.</p></div>
+      <div class="faq-ans-pl"><p>Store your unit cost per variant in a COGS Table tab, keyed on Shopify's variant ID. When an order is paid, Make.com looks up the variant of the order's first line item in that table and writes its cost into the row. Further line items, and quantities above one, add revenue but no cost, so on multi-item orders treat gross profit as indicative. A cost you change later applies to new orders, not rows already written.</p></div>
     </details>
 
     <details class="faq-item-pl">

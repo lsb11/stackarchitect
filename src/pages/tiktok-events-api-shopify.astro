@@ -6,6 +6,7 @@ import { READ_DATE } from '../data/priceSources';
 import PriceSources from '../components/PriceSources.astro';
 import Disclosure from "../components/Disclosure.astro";
 import AuthorCard from '../components/AuthorCard.astro';
+import BlueprintAnatomy from '../components/BlueprintAnatomy.astro';
 /**
  * src/pages/tiktok-events-api-shopify.astro
  * stackarchitect.xyz/tiktok-events-api-shopify
@@ -83,7 +84,7 @@ const stripStats = [
 const flowSteps = [
   { num: "Step 01", color: "var(--tt)",    title: "Order paid in Shopify",           tool: "Shopify backend",        desc: "Customer completes checkout. Shopify marks the order paid in its backend: independent of what happens in the browser. iOS and ad blockers are irrelevant at this point." },
   { num: "Step 02", color: "var(--sky)",   title: "Webhook fires instantly",          tool: "Shopify → Make.com",     desc: "Shopify sends the order data to Make.com the moment payment confirms. Server-to-server signal. Cannot be blocked by iOS, ad blockers, or any browser privacy setting." },
-  { num: "Step 03", color: "var(--vio)",   title: "Data enriched and hashed",         tool: "Make.com HTTP module",   desc: "Make.com extracts order value, currency, and customer data. Email, phone, IP address, and user agent are hashed with SHA-256 for TikTok Advanced Matching." },
+  { num: "Step 03", color: "var(--vio)",   title: "Data enriched and hashed",         tool: "Make.com HTTP module",   desc: "Make.com extracts order value, currency, and customer data. Email and phone are hashed with SHA-256; IP address and user agent are sent unhashed, which is how TikTok's Events API takes them." },
   { num: "Step 04", color: "var(--amber)", title: "CompletePayment sent to TikTok",   tool: "TikTok Events API",      desc: "Purchase event delivered directly to TikTok Events API with full Advanced Matching data. Algorithm receives conversion data for every order, every time." }
 ];
 
@@ -126,7 +127,7 @@ const faqs = [
   { q: "What is the TikTok purchase event name?",                          a: "TikTok uses CompletePayment as the purchase event name, not Purchase like Meta and Google. Using the wrong event name will result in events not contributing to campaign optimisation. Always use CompletePayment for TikTok purchase tracking." },
   { q: "Can I run TikTok Events API alongside my existing TikTok Pixel?",  a: "Yes: TikTok officially recommends running Events API alongside the browser Pixel, not instead of it. The Pixel captures upper-funnel events (ViewContent, AddToCart). Events API adds server-side CompletePayment on top. TikTok can only deduplicate the browser and server events if both carry the same event_id. This setup uses the Shopify order ID. Shopify's TikTok app does not document the event_id its pixel sends, so do not assume they match: after a test order, check Test Events and Diagnostics in TikTok Events Manager for duplicate purchases." },
   { q: "Does this replace WeltPixel or Analyzify?",                        a: "Yes. WeltPixel charges $39/month on its Plus plan and Analyzify charges $145–$275/month for TikTok server-side tracking. The Make.com webhook approach achieves the same CompletePayment server-side delivery at $0/month on Make.com's free tier. The data flows through your own Make.com workspace rather than a third-party's servers." },
-  { q: "What is TikTok Advanced Matching?",                                a: "TikTok Advanced Matching sends hashed customer data (email, phone number, IP address, and user agent) alongside purchase events to improve event matching accuracy and EMQ scores. The Make.com setup hashes all available Shopify order fields with SHA-256 before transmission, as required by TikTok's API specification." },
+  { q: "What is TikTok Advanced Matching?",                                a: "TikTok Advanced Matching sends customer data alongside purchase events so TikTok can match them to its users. In this Make.com setup, email is lowercased, trimmed and hashed with SHA-256, and phone is hashed with spaces removed; IP address and user agent are sent unhashed, which is how TikTok's Events API takes them. A phone stored without its country code, or with hyphens, is hashed as-is and will not match." },
   { q: "What EMQ score will I achieve?",                                   a: "We have not sampled EMQ across Shopify stores, so we do not publish a typical score for this setup: what we can say is that it sends full Advanced Matching data, which is what the score is calculated from. EMQ measures how well TikTok can match server-side events to TikTok user accounts. Including hashed email and phone, plus IP and user agent, from the Shopify order webhook gives TikTok the most to match on; read your own score in Events Manager after a week of orders." },
   { q: "Can I set up TikTok and Meta CAPI from the same Make.com scenario?", a: "Yes. Add a Router module to the same scenario and branch to Meta's Conversions API alongside TikTok. Skip the Meta branch if Shopify's Facebook & Instagram app already sends the Conversions API at Enhanced or Maximum data sharing, or Meta can receive each purchase twice. For Google Ads, turn on enhanced conversions in Shopify's Google & YouTube app instead of adding a branch." }
 ];
@@ -648,6 +649,32 @@ const tocHeadings = [
 
 
 <!-- ── COMPARISON TABLE ── -->
+<BlueprintAnatomy
+  title="What the free TikTok blueprint actually does"
+  file="scenarios/tiktok-events-api/blueprint.json"
+  read="2026-10-19"
+  caption="What each event carries"
+  heads={['Field', 'Taken from', 'How']}
+  modules={[
+    { name: 'Custom webhook', does: 'Receives the Shopify order payload. In Shopify, add an Order payment webhook (JSON) pointing at its URL.' },
+    { name: 'HTTP: Make a request', does: 'POSTs one CompletePayment event to TikTok\u2019s Events API (open_api v1.3, /event/track/) with your access token in the Access-Token header and your pixel ID as event_source_id.' },
+  ]}
+  columns={[
+    { col: 'event_id', header: 'Shopify order ID', value: 'The same ID TikTok would need from the browser pixel to deduplicate.' },
+    { col: 'event_time', header: 'Order created_at', value: 'Converted to a Unix timestamp, so a delayed run still reports when the order was placed.' },
+    { col: 'value', header: 'Order total_price', value: 'The order total as Shopify reports it, shipping and tax included.' },
+    { col: 'currency', header: 'Order currency', value: 'The store currency code from the order.' },
+    { col: 'email', header: 'SHA-256 hash', value: 'Lowercased and trimmed before hashing.' },
+    { col: 'phone', header: 'SHA-256 hash', value: 'Spaces removed before hashing; left empty when the order has no phone.' },
+    { col: 'ip, user_agent', header: 'Unhashed', value: 'From the order\u2019s client_details, which can be empty for orders not placed through the online store.' },
+  ]}
+  notes={[
+    '<strong>A rejected call is not a green run.</strong> The request stops on an HTTP error and the scenario stores incomplete executions, so a TikTok rejection shows as a failed run you can fix and retry.',
+    '<strong>One event per order, paid orders only.</strong> Refunds and cancellations are not sent, and nothing upstream of the purchase (ViewContent, AddToCart) is, which is why it runs beside the pixel.',
+    '<strong>Until 18 October 2026 it sent a fixed test event</strong> for every order. If you imported it before then, re-import it from the repository.',
+  ]}
+/>
+
 <section class="section-alt" aria-labelledby="compare-h">
   <div class="inner">
     <div class="sec-head">
