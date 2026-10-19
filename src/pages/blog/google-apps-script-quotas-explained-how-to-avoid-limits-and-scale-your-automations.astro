@@ -808,6 +808,12 @@ function scheduleNextChunk_() {
     <li>Write results back only after the heavy work is complete</li>
   </ul>
 
+  <p>Two upgrades, and which limit each one actually moves:</p>
+  <ul>
+    <li><strong>A Google Workspace account</strong> raises the daily quotas: total trigger runtime goes from 90 minutes to 6 hours a day, and UrlFetch calls from 20,000 to 100,000. It does not change the 6-minute limit on a single execution, so it fixes a script that runs out of daily budget, not one that times out mid-run. <a href="/go/workspace/?source=quotas-outgrown" target="_blank" rel="sponsored nofollow noopener">Try Google Workspace</a>.</li>
+    <li><strong>Moving the heavy step to Make.com</strong> takes it out of Apps Script's quotas: Make counts one credit per module operation rather than Apps Script runtime, and has execution limits of its own, so check them for a long job. Its free plan is enough to test the move. <a href="/go/make/?source=quotas-outgrown" target="_blank" rel="sponsored nofollow noopener">Create a free Make.com account</a>.</li>
+  </ul>
+
   <h2 id="best-architecture">Best Architecture for Scale</h2>
   <p>Keep lightweight logic close to the spreadsheet (change detection, simple calculations, notification sends) and move heavy lifting to a system built for throughput.</p>
   <p><strong>Apps Script detects the event. Make.com or a dedicated service does the processing. The result lands back in Sheets.</strong> This pattern removes the quota ceiling from every expensive operation. The <a href="https://stackarchitect.xyz/make-com-shopify/">Make.com for Shopify complete guide</a> covers exactly how to set this up from scratch.</p>
