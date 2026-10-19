@@ -96,18 +96,17 @@ test('first-party Offers are left to check 2', () => {
   assert.deepEqual(thirdPartyOffers(kit), []);
 });
 
-test('the quarantine holds exactly the Analyzify entry, with a reason', () => {
+// The Analyzify entry was cleared on 19 Oct 2026: the page now prices it per
+// month from Analyzify's own page ($145 Standard, $275 Plus), matching the Offer.
+test('the quarantine is empty, and any entry carries a reason', () => {
   const q = JSON.parse(
     fs.readFileSync(path.join(ROOT, 'docs', 'schema-claims-unverified.json'), 'utf8')
   );
-  assert.deepEqual(
-    q.thirdPartyOffers.map((e) => e.key),
-    ['/shopify-attribution-tools-compared/|Analyzify']
-  );
+  assert.deepEqual(q.thirdPartyOffers.map((e) => e.key), []);
   assert.ok(q.thirdPartyOffers.every((e) => typeof e.why === 'string' && e.why.length > 40));
 });
 
-test('every other built third-party Offer is clean', (t) => {
+test('every built third-party Offer is clean', (t) => {
   const dist = path.join(ROOT, 'dist');
   if (!fs.existsSync(dist)) {
     t.skip('dist/ not built — run npm run build');
@@ -132,6 +131,8 @@ test('every other built third-party Offer is clean', (t) => {
       for (const v of thirdPartyOfferViolations(graph, visible)) bad.push(`/${p}/|${v.owner}`);
     }
   }
-  assert.ok(checked >= 30, `expected at least 30 third-party Offers, saw ${checked}`);
-  assert.deepEqual(bad, ['/shopify-attribution-tools-compared/|Analyzify']);
+  // 30 -> 29 on 19 Oct 2026: Triple Whale stopped publishing paid prices and
+  // its Offers were withdrawn, not replaced.
+  assert.ok(checked >= 29, `expected at least 29 third-party Offers, saw ${checked}`);
+  assert.deepEqual(bad, []);
 });
