@@ -65,9 +65,15 @@ const GUIDE_COUNT = guideIndexHrefs().length;
     <a href="/stocky-alternative/">
       <span class="sa-announce-dot" aria-hidden="true"></span>
       {postShutdown ? (
-        <Fragment>Stocky shut down on <strong class="figure">31 August 2026</strong>. See your replacement options</Fragment>
+        <span class="sa-announce-text">
+          <span class="sa-announce-long">Stocky shut down on <strong class="figure">31 August 2026</strong>. See your replacement options</span>
+          <span class="sa-announce-short">Stocky closed <strong class="figure">31 Aug</strong>: export window and replacements</span>
+        </span>
       ) : (
-        <Fragment>Shopify Stocky end of service: <strong class="figure">31 Aug 2026</strong>. Export, recover and replace it free</Fragment>
+        <span class="sa-announce-text">
+          <span class="sa-announce-long">Shopify Stocky end of service: <strong class="figure">31 Aug 2026</strong>. Export, recover and replace it free</span>
+          <span class="sa-announce-short">Stocky ends <strong class="figure">31 Aug 2026</strong>: export and replace it</span>
+        </span>
       )}
       <span class="sa-announce-arrow" aria-hidden="true">→</span>
     </a>
@@ -184,7 +190,10 @@ const GUIDE_COUNT = guideIndexHrefs().length;
     background: var(--color-urgent, #f59e0b);
     animation: sa-pulse 2.4s ease-in-out infinite;
   }
-  .sa-announce-arrow { color: var(--color-urgent, #f59e0b); transition: transform .18s ease; }
+  .sa-announce-text { min-width: 0; text-align: center; }
+  .sa-announce-short { display: none; }
+  .sa-announce-arrow { color: var(--color-urgent, #f59e0b); transition: transform .18s ease; flex: none; }
+  .sa-announce-dot { flex: none; }
   .sa-announce a:hover .sa-announce-arrow { transform: translateX(3px); }
   @keyframes sa-pulse { 0%,100% { opacity: 1 } 50% { opacity: .35 } }
 
@@ -388,7 +397,9 @@ const GUIDE_COUNT = guideIndexHrefs().length;
   }
   @media (max-width: 480px) {
     .sa-nav-inner { padding: 0 16px; height: 58px; }
-    .sa-announce a { font-size: 12px; padding: 7px 12px; }
+    .sa-announce a { font-size: 12.5px; padding: 7px 12px; }
+    .sa-announce-long { display: none; }
+    .sa-announce-short { display: inline; white-space: nowrap; }
   }
 </style>
 
