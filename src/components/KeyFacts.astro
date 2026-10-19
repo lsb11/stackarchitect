@@ -1,0 +1,52 @@
+---
+// Renders the sourced key facts for the current route, plus how to cite it.
+// Data and rules: src/data/keyFacts.ts. Renders nothing on a route with no facts.
+import { factsFor, formatReadDate } from '../data/keyFacts';
+
+interface Props {
+  title?: string;
+}
+const { title } = Astro.props;
+const route = Astro.url.pathname;
+const facts = factsFor(route);
+const latest = facts.map((f) => f.src.read).sort().at(-1);
+const canonical = new URL(route, 'https://stackarchitect.xyz').href;
+---
+
+{facts.length > 0 && latest && (
+  <section class="sa-keyfacts" aria-labelledby="sa-keyfacts-h">
+    <h2 id="sa-keyfacts-h">Key facts, checked on the source</h2>
+    <ul>
+      {facts.map((f) => (
+        <li id={`fact-${f.id}`}>
+          {f.text}{' '}
+          <span class="kf-src">
+            Source: <a href={f.src.url} target="_blank" rel="noopener">{f.src.publisher}, {f.src.title}</a>, read <time datetime={f.src.read}>{formatReadDate(f.src.read)}</time>.
+          </span>
+        </li>
+      ))}
+    </ul>
+    <p class="kf-cite">
+      <strong>How to cite this page:</strong> Sandelands, L. ({latest.slice(0, 4)}). {title ? <em>{title}</em> : 'Stack Architect'}. Stack Architect. {canonical}
+      {' '}These facts are published as open data under CC BY 4.0: <a href="/downloads/key-facts.json">key-facts.json</a>. Found one out of date? <a href="/how-we-test/">How we check and correct</a>.
+    </p>
+  </section>
+)}
+
+<style>
+  .sa-keyfacts {
+    max-width: 860px;
+    margin: 32px auto;
+    padding: 18px 22px;
+    border: 1px solid #222825;
+    border-left: 3px solid #34d377;
+    border-radius: 10px;
+    background: #0c0f0d;
+  }
+  .sa-keyfacts h2 { font-size: 17px; color: #f2f5f3; margin: 0 0 10px; }
+  .sa-keyfacts ul { margin: 0 0 12px; padding-left: 20px; }
+  .sa-keyfacts li { color: #b6c0ba; font-size: 15px; line-height: 1.65; margin: 0 0 10px; }
+  .sa-keyfacts .kf-src, .sa-keyfacts .kf-cite { font-size: 13px; color: #93a09a; line-height: 1.65; }
+  .sa-keyfacts .kf-cite { margin: 0; }
+  .sa-keyfacts a { color: #34d377; text-decoration: underline; }
+</style>
