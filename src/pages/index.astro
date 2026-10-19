@@ -1,4 +1,6 @@
 ---
+import MissionStrip from '../components/MissionStrip.astro';
+import { MISSION_ONE_LINE } from '../data/mission';
 import KeyFacts from '../components/KeyFacts.astro';
 import { pageUpdated, formatUpdatedMonth } from '../data/pageUpdated';
 import PageUpdated from '../components/PageUpdated.astro';
@@ -182,7 +184,7 @@ const kitSchema = {
 ---
 <Base verifiedDate={READ_DATE} 
   title="Free Shopify Automation Stack 2026 — Replace Paid Apps" 
-  description={`Replace ${toolCount} paid Shopify apps with free tools: Meta CAPI, TikTok CAPI, Stocky replacement, Klaviyo alternative, live P&L and an Apps Script quota fix.`}
+  description={MISSION_ONE_LINE}
   schema={kitSchema}
 >
   <Fragment slot="head">
@@ -234,7 +236,7 @@ const kitSchema = {
       "numberOfItems": 13,
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "CAPI Shield: Free Server-Side Tracking", "url": "https://stackarchitect.xyz/capi-shield/", "description": "Free Meta Conversions API server-side tracking for Shopify. Sends hashed email, phone, name, IP and user-agent as match keys. A free alternative to Elevar, Triple Whale and Northbeam. Addresses the conversion data lost to iOS privacy restrictions and ad blockers. Runs on Make.com free tier." },
-        { "@type": "ListItem", "position": 2, "name": "Google Ads Conversion Tracking: Free Enhanced Conversions", "url": "https://stackarchitect.xyz/shopify-google-ads-conversion-tracking/", "description": "Free Google Ads Enhanced Conversions for Shopify via Make.com server-side webhook. Addresses purchase events lost to iOS Link Tracking Protection stripping gclid." },
+        { "@type": "ListItem", "position": 2, "name": "Google Ads Conversion Tracking: Free Enhanced Conversions", "url": "https://stackarchitect.xyz/shopify-google-ads-conversion-tracking/", "description": "Turn on enhanced conversions in Shopify's Google & YouTube app, free, and check the purchase conversion action Google Ads counts." },
         { "@type": "ListItem", "position": 3, "name": "Stocky Swap: Free Inventory Management", "url": "https://stackarchitect.xyz/stocky-swap/", "description": "Free Shopify inventory management replacing Shopify Stocky, which became unusable on August 31, 2026. Stocky data stays exportable read-only for at least 90 days after that date; Stocky's APIs stopped dead on the day. Stocky Swap logs every order to Google Sheets in real time via Make.com. Deploys without code. Free forever." },
         { "@type": "ListItem", "position": 4, "name": "TikTok Events API: Free Server-Side Tracking", "url": "https://stackarchitect.xyz/tiktok-events-api-shopify/", "description": "Free TikTok server-side tracking for Shopify via Make.com. Sends CompletePayment events server-to-server, bypassing iOS ITP and ad blockers. A free alternative to WeltPixel ($39/mo) and Analyzify ($145–$275/mo)." },
         { "@type": "ListItem", "position": 5, "name": "Replace Klaviyo Free: Systeme.io", "url": "https://stackarchitect.xyz/replace-klaviyo-free/", "description": "Replace Klaviyo with Systeme.io free plan: 2,000 contacts, unlimited email sends, one email campaign and one automation rule. Saves $20+/month for small lists. Klaviyo changed billing in February 2025 to charge for all active profiles." },
@@ -252,7 +254,6 @@ const kitSchema = {
       "@type": "HowTo",
       "name": "How to Replace Paid Shopify Apps With Free Automation",
       "description": "Three-step process to replace paid Shopify apps (Klaviyo, Elevar, Triple Whale, Stocky, Zapier) with free tools using Make.com, Google Sheets, and Systeme.io.",
-      "totalTime": "PT6M",
       "estimatedCost": { "@type": "MonetaryAmount", "currency": "USD", "value": "0" },
       "step": [
         { "@type": "HowToStep", "position": 1, "name": "Connect Shopify via webhook", "text": "Add a webhook in Shopify Admin that fires the instant an order is placed or paid. No app install required: it's a built-in Shopify feature, with no code." },
@@ -312,9 +313,9 @@ const kitSchema = {
 <div class="hero-inner">
   <div class="hero-dateline">Updated {formatUpdatedMonth(pageUpdated('/')!)} · Verified free tier · No code required</div>
 
-  <h1 itemprop="headline">Klaviyo. Triple Whale. Stocky.<br><span class="green">Replaced: free.</span></h1>
+  <h1 itemprop="headline">Run your Shopify store<br><span class="green">on fewer paid apps.</span></h1>
 
-  <p id="answer" class="hero-sub" itemprop="description">{ToolCount} of the most expensive Shopify app categories have free replacements on this site: {categoryList}. Most run on Make.com's free tier, email runs on Systeme.io's free plan, and none needs code. Full walkthrough: <a href="/ultimate-shopify-automation-guide/">Ultimate Shopify Automation Guide</a>.</p>
+  <p id="answer" class="hero-sub" itemprop="description">{ToolCount} of the costliest Shopify app categories have free, no-code replacements here: {categoryList}. All run on free plans, and every price and fact is checked on the vendor's own page. Start with the <a href="/ultimate-shopify-automation-guide/">Ultimate Shopify Automation Guide</a>.</p>
 
   <div class="hero-primary-cta">
     <a href="#sa-scanner" class="btn btn-lg btn-g">See What Your Store Is Overpaying <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
@@ -326,6 +327,9 @@ const kitSchema = {
     <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Your data, your accounts</span>
     <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Remove anytime</span>
   </div>
+
+  <MissionStrip />
+
   
   <div class="ledger reveal" aria-label="What the free stack replaces">
     <div class="ledger-row"><span class="ledger-app">Klaviyo <em>email</em></span><span class="ledger-fill"></span><span class="ledger-was">$20+/mo</span><span class="ledger-now">$0</span></div>
