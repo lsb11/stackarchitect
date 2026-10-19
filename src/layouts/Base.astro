@@ -1,6 +1,6 @@
 ---
 import { MISSION, MISSION_ONE_LINE } from '../data/mission';
-import { KEY_FACTS, SOURCES as FACT_SOURCES } from '../data/keyFacts';
+import { KEY_FACTS, SOURCES as FACT_SOURCES, factsFor } from '../data/keyFacts';
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
@@ -327,6 +327,30 @@ const keyFactsDataset = canonicalPath === '/' ? {
   isBasedOn: [...new Set(KEY_FACTS.map((f) => FACT_SOURCES[f.source].url))],
 } : null;
 
+// Sources this page relies on, as data (19 Oct 2026). The KeyFacts block
+// shows them to readers; this node states the same thing to search engines
+// and AI systems: which vendor pages back the page, when they were checked,
+// and which passages are the quotable ones. Own @id so it never collides
+// with a page's own WebPage node.
+const pageFacts = factsFor(canonicalPath);
+const pageSources = [...new Map(pageFacts.map((f) => [f.src.url, f.src])).values()];
+const sourcesNode = pageSources.length && !noindex ? {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': canonical + '#sources',
+  url: canonical,
+  isPartOf: { '@id': 'https://stackarchitect.xyz/#website' },
+  lastReviewed: pageSources.map((x) => x.read).sort().at(-1),
+  reviewedBy: { '@id': 'https://stackarchitect.xyz/#luke' },
+  citation: pageSources.map((x) => ({
+    '@type': 'CreativeWork',
+    name: x.title,
+    url: x.url,
+    publisher: { '@type': 'Organization', name: x.publisher },
+  })),
+  speakable: { '@type': 'SpeakableSpecification', cssSelector: ['#answer', '.sa-keyfacts li'] },
+} : null;
+
 const allSchemas = [
   ...schemaArray,
   siteNavSchema,
@@ -336,6 +360,7 @@ const allSchemas = [
   ...(autoBreadcrumbSchema ? [autoBreadcrumbSchema] : []),
   ...(articleSchema ? [articleSchema] : []),
   ...(keyFactsDataset ? [keyFactsDataset] : []),
+  ...(sourcesNode ? [sourcesNode] : []),
 ];
 
 const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
