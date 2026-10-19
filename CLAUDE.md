@@ -1104,6 +1104,29 @@ file changed.
 Meta's Graph API changelog, read 19 Oct 2026: v26.0 released 29 July 2026;
 v25.0 (the blueprints) is available until 29 July 2028.
 
+### Design and reading rules (19 Oct 2026, PRs #79 to #82)
+
+Measured over all 51 sitemap pages in a real browser, then fixed:
+- **No text under 11px.** 1,107 fragments rendered at 9 to 10.5px; 459
+  declarations in 47 files were raised. `tests/type-floor.test.js` fails on
+  a new one.
+- **Blog lead-ins are sentence case.** `strong` lead-ins in `.sa-prose`
+  ("In Stocky:") were 10px uppercase mono; now 14px in the body face.
+- **FAQ answers are 15px** sitewide (global.css, READING FLOOR block).
+- **Long URLs in prose wrap** (`overflow-wrap: anywhere` on links in
+  p/li/td/dd). One unwrapped URL made a page 519px wide at 390px.
+- **The pricing-verified strip is hidden under 700px**, so the answer
+  paragraph opens on a phone's first screen. `npm run mobile:check` holds
+  both (no sideways scroll, answer above the fold); run it with `npm run
+  a11y` before any layout change.
+- **Blog title, answer and breadcrumb share the text column.**
+- **`<StockyTimeline />`** draws Shopify's Stocky dates as HTML, cited to
+  the page they were read on. Its dates are also `stocky-*` facts in
+  `keyFacts.ts`: change both together.
+- A smooth-scrolling headless screenshot shows large blank grey blocks
+  mid-page. They are not a bug: scroll with `behavior: 'instant'` before
+  capturing.
+
 ### Highest-leverage open work
 
 1. Get the iOS Attribution Gap Benchmark to N ≥ 10 real submissions so it
