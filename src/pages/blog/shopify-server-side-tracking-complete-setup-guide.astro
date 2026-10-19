@@ -1,5 +1,6 @@
 ---
 import KeyFacts from '../../components/KeyFacts.astro';
+import ToolShot from '../../components/ToolShot.astro';
 import { pageUpdated } from '../../data/pageUpdated';
 import Base from '../../layouts/Base.astro';
 import { READ_DATE } from '../../data/priceSources';
@@ -421,6 +422,8 @@ const articleSchema = {
       <li><strong>Broken:</strong> missing or malformed payloads. Investigate immediately; events are likely not being attributed.</li>
     </ul>
 
+    <ToolShot id="emq-checker-example" />
+
     <h3 id="match-key-impact-ranked-by-lift">Match-key impact, ranked by lift</h3>
     <p>Not all match keys carry the same weight. Meta does not publish a per-key point value and we have not measured one, so the list below is a ranking, not an arithmetic. Follow it top-down:</p>
     <ul>
@@ -434,6 +437,7 @@ const articleSchema = {
       <li><strong>User agent (client_user_agent):</strong> The order&rsquo;s <code>client_details.user_agent</code> field.</li>
     </ul>
     <p>Check a payload before you send it with the <a href="/meta-capi-payload-validator/">Meta Conversions API payload validator</a>. It flags an unhashed email or phone, a hashed IP address or user agent, and an <code>event_time</code> in milliseconds.</p>
+    <ToolShot id="capi-validator-example" />
 
     <h3 id="google-enhanced-conversions-match-rate-benchmarks">Reading Google enhanced conversions</h3>
     <p>Google does not publish an equivalent of Meta&rsquo;s match score. With enhanced conversions turned on in Shopify&rsquo;s Google &amp; YouTube app, Google Ads shows its status in the purchase conversion action&rsquo;s diagnostics. We publish no benchmark for it; read it against its own trend after a few weeks of orders. Guest checkouts with throwaway email addresses give Google less to match on, whatever route you use.</p>

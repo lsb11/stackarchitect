@@ -1127,6 +1127,29 @@ Measured over all 51 sitemap pages in a real browser, then fixed:
   mid-page. They are not a bug: scroll with `behavior: 'instant'` before
   capturing.
 
+### Tool screenshots and the tool-first layout (19 Oct 2026)
+
+- **Screenshots of the free tools are generated, never hand-made.**
+  `scripts/screens/capture.mjs` (build, serve `dist/` on :4400, run it) opens
+  each tool on its own default example inputs, captures it to
+  `public/screens/*.webp`, and writes every line of text the image shows into
+  `scripts/og/og-images.json`, so the image checks (retired prices, the
+  retracted loss figure) read them. Dimensions live in `src/data/toolShots.ts`;
+  `tests/tool-shots.test.js` fails if a file and its recorded size disagree.
+  Re-run the script after changing a tool, then sync the sizes.
+  `<ToolShot id=... />` renders one with its date and a link to the tool;
+  blog posts get theirs from `POST_SHOT` in `BlogPost.astro`.
+- Capturing the text found claims inside the tools that no guard read,
+  because the text is written by script at runtime: the attribution gap
+  calculator printed "Tracking loss confirmed" and "Significant tracking loss
+  detected", and the app cost calculator labelled its 50/85/100% options
+  "recovery". All reworded. The image check now reads tool output, so a
+  claim like that fails `npm test` once the screenshots are re-run.
+- **Calculators are tool-first.** The five calculator pages had a second
+  paragraph restating the answer and a tick list between the h1 and the tool,
+  which put every tool below the first screen. Both are gone, and the reading
+  text is 15 to 17px. Keep the tool directly under the answer.
+
 ### Highest-leverage open work
 
 1. Get the iOS Attribution Gap Benchmark to N ≥ 10 real submissions so it
