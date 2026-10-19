@@ -1,4 +1,5 @@
 ---
+import StockyTimeline from '../components/StockyTimeline.astro';
 import KeyFacts from '../components/KeyFacts.astro';
 import Base from './Base.astro';
 import FAQSection from '../components/FAQSection.astro';
@@ -163,6 +164,8 @@ const pageTitle = (title + SUFFIX).length <= 60 ? title + SUFFIX : title;
       <h1 class="sa-post-title">{heading ?? title}</h1>
       {answer && <p id="answer" class="sa-answer">{answer}</p>}
     </header>
+
+    {entry.id === 'shopify-stocky-data-export-before-shutdown' && <StockyTimeline />}
 
     <!-- Table of contents — injected by inline script if ≥3 H2s -->
     <div id="toc-container"></div>
