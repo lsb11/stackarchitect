@@ -9,10 +9,10 @@ import { faqPage, type Faq } from '../utils/faq';
 // One array renders the visible FAQ and the FAQPage node.
 const faqs: Faq[] = [
               { q:"What is the best Shopify automation guide in 2026?", a:"This guide covers the complete $0 Automation Stack: the fastest way to automate your Shopify store in 2026 across tracking, inventory, workflow, email, and AI discoverability. For individual deep-dives on each topic, the Shopify automation guides library covers 40+ step-by-step guides across every operational area." },
-              { q:"How do I automate my Shopify store in 2026?", a:"Use the $0 Automation Stack: Make.com free tier as the central webhook hub, CAPI Shield for server-side ad tracking, Stocky Swap for inventory management, Systeme.io for email automation, and Google Apps Script Quota Fix for document workflow stability. The complete setup needs no code and costs $0/month for stores processing under 200 orders per month." },
+              { q:"How do I automate my Shopify store in 2026?", a:"Use the $0 Automation Stack: Make.com free tier as the central webhook hub, CAPI Shield for server-side ad tracking, Stocky Swap for inventory management, Systeme.io for email automation, and Google Apps Script Quota Fix for document workflow stability. The complete setup needs no code and starts at $0/month on the tools' free plans; how many orders a free plan covers depends on the credits each order uses in your own scenario history." },
               { q:"Why did my Shopify ROAS drop in January 2026?", a:'Two things can combine: Link Tracking Protection, in iOS 17 and later, strips fbclid from links opened in Private Browsing, Mail and Messages, and since January 13 2026 Shopify can pause data sharing for a marketing pixel when it sees no signals from it over days or weeks. Together they open a conversion data gap whose size tracks how much of your traffic arrives through the affected routes. Server-side tracking via CAPI Shield fixes both issues simultaneously.' },
-              { q:"What happened to Shopify's pixel on January 13 2026?", a:'Shopify changed App Pixels to "Optimised" mode on January 13 2026. This change throttles the data that third-party pixel apps receive from Shopify\'s checkout events, without throwing an error or notifying merchants. Server-side tracking via CAPI Shield bypasses the App Pixel system entirely.' },
-              { q:"When did Shopify Stocky close?", a:"Shopify closed Stocky on 31 August 2026: the app can no longer be used and its APIs stopped that day. Read-only export stays open for at least 90 days after that, and Shopify has published no end date. Export your data now via Stocky → Settings → Export, then deploy Stocky Swap as your replacement. The migration needs no code and your data lives in a Google Sheet you own permanently." },
+              { q:"What happened to Shopify's pixel on January 13 2026?", a:'On 13 January 2026 Shopify changed the default data sharing setting for App Pixels from Always on to Optimized. Under Optimized, Shopify pauses a pixel\'s data sharing when it sees zero signals from it over days or weeks, until signals return, and does not notify you. Set the pixel to Always on under Settings, then Customer events. Server-side tracking via CAPI Shield does not depend on the App Pixel at all.' },
+              { q:"When did Shopify Stocky close?", a:"Shopify closed Stocky on 31 August 2026: the app can no longer be used and its APIs stopped that day. Read-only export stays open for at least 90 days after that, and Shopify has published no end date. Export your data now through Stocky's built-in reports (Shopify says suppliers cannot be exported, so copy those by hand), then deploy Stocky Swap as your replacement. The migration needs no code and your data lives in a Google Sheet you own permanently." },
               { q:"How do I automate my Shopify store for free?", a:"Use the $0 Automation Stack: Make.com (free tier) as the central hub, Google Sheets for inventory, the Conversions API for tracking, and Systeme.io for email marketing. This replaces paid tracking, inventory, automation, and email apps at zero cost, with no code." },
               { q:"Make.com vs Zapier for Shopify?", a:"Make.com. It offers 1,000 free credits per month versus Zapier's 100, supports multi-step workflows on the free tier, and handles Shopify webhooks in real time (Zapier's free tier polls every 15 minutes). For Shopify automation specifically, Make.com is the stronger choice at every price point." },
               { q:"How do I replace Shopify Stocky for free?", a:"Use Stocky Swap: a free Make.com workflow that logs every paid Shopify order to a Google Sheet in real time, with order ID, SKU, quantity, revenue and fulfilment status. It does not calculate stock on hand, manage purchase orders or send alerts: Shopify Admin covers stock and purchase orders, with Shopify Flow for low-stock alerts." },
@@ -79,8 +79,7 @@ const breadcrumbSchema = {
 const howToTrackingSchema = {
   "@context":"https://schema.org","@type":"HowTo",
   "name":"How to deploy CAPI Shield server-side tracking for Shopify",
-  "description":"Fix Q1 2026 ROAS loss by deploying server-side Conversions API tracking via Make.com. Bypasses iOS 26 and Shopify pixel throttle. Free, no code, 6 minutes.",
-  "totalTime":"PT6M","estimatedCost":{"@type":"MonetaryAmount","currency":"USD","value":"0"},
+  "description":"Send Shopify purchases to Meta's Conversions API from the server with a free Make.com scenario, so a blocked or paused browser pixel does not drop them. Free and no code.","estimatedCost":{"@type":"MonetaryAmount","currency":"USD","value":"0"},
   "supply":[{"@type":"HowToSupply","name":"Make.com free account"},{"@type":"HowToSupply","name":"Shopify admin access"},{"@type":"HowToSupply","name":"Meta Business Suite access"}],
   "step":[
     {"@type":"HowToStep","position":1,"name":"Activate Make.com","text":"Sign up for the Make.com free tier: 1,000 credits/month (formerly called operations), no credit card required."},
@@ -220,9 +219,9 @@ const tocHeadings = [
 
 
           <p class="guide-hero-desc" itemprop="description">
-            Q1 2026 broke Shopify ad tracking for many stores: iOS 26 and a silent Shopify pixel
-            change hit simultaneously, and plenty of stores paying for tracking apps still don't know.
-            This guide covers every major area of Shopify automation: the ROAS crisis fix,
+            Meta ROAS fell for many Shopify stores in early 2026: Apple's link tracking limits had
+            been removing click IDs since iOS 17, and on 13 January Shopify began pausing marketing
+            pixels it sees no signals from. This guide covers every major area of Shopify automation: the ROAS fix,
             inventory now that Stocky has closed, workflow automation, AI-driven traffic
             capture, and email marketing: using tools you already have access to. No code and no
             developers; <a href="/shopify-app-development-cost/" style="color:#34d377;text-decoration:underline;">what a custom Shopify app costs</a>
@@ -233,12 +232,12 @@ const tocHeadings = [
             <div class="gs-cell" role="listitem"><div class="gs-v">$0</div><div class="gs-l">Monthly cost</div></div>
             <div class="gs-cell" role="listitem"><div class="gs-v">No code</div><div class="gs-l">Full deployment</div></div>
             <div class="gs-cell" role="listitem"><div class="gs-v">8 apps</div><div class="gs-l">Replaced free</div></div>
-            <div class="gs-cell" role="listitem"><div class="gs-v">$0</div><div class="gs-l">Monthly cost</div></div>
+            <div class="gs-cell" role="listitem"><div class="gs-v">Sheets</div><div class="gs-l">Your data, your account</div></div>
           </div>
 
           <div class="callout">
             <div class="callout-label">What this guide covers</div>
-            <p>Q1 2026 ROAS crisis fix (iOS 26 + Shopify pixel change) · Server-side tracking (CAPI Shield) · Inventory automation now that Stocky has closed (Stocky Swap) · Workflow automation (Make.com) · AI-driven traffic and Agentic Storefronts · Script stability (Quota Fix) · Email and funnel automation (Systeme.io) · 8 free app replacements · A complete deployment action plan.
+            <p>Meta ROAS fix (Apple link tracking limits + Shopify's January 2026 pixel setting) · Server-side tracking (CAPI Shield) · Inventory automation now that Stocky has closed (Stocky Swap) · Workflow automation (Make.com) · AI-driven traffic and Agentic Storefronts · Script stability (Quota Fix) · Email and funnel automation (Systeme.io) · 8 free app replacements · A complete deployment action plan.
               <a href={`${SITE}/shopify-automation-guides/`}>Browse all 40+ individual topic guides in the full automation library →</a>
             </p>
           </div>
@@ -247,45 +246,45 @@ const tocHeadings = [
         <!-- ══ SECTION 01 ══ -->
         <section class="guide-section" id="section-tracking" aria-labelledby="tracking-h">
           <span class="tag section-tag">01: Ad Tracking</span>
-          <h2 id="tracking-h">Shopify Conversion Tracking in 2026: The Q1 ROAS Crisis and How to Fix It Free</h2>
-          <p>If your Meta or Google ROAS dropped in Q1 2026, you are not alone, and the cause is more specific than "iOS tracking." Two separate events compounded into a tracking crisis for thousands of Shopify stores in the first weeks of January 2026.</p>
+          <h2 id="tracking-h">Shopify Conversion Tracking in 2026: Why Meta ROAS Dropped and How to Fix It Free</h2>
+          <p>If your Meta or Google ROAS dropped in Q1 2026, you are not alone, and the cause is more specific than "iOS tracking." Two separate things weaken what Meta can see, and a Shopify setting changed on 13 January 2026 made one of them more likely.</p>
 
           <span id="section-q1crisis" style="display:block;height:80px;margin-top:-80px;visibility:hidden;"></span>
-          <h3>What Actually Happened in Q1 2026: The Two-Hit Combination</h3>
+          <h3>What Changed: Two Separate Causes</h3>
           <p>The first factor: <strong>Apple's Link Tracking Protection, introduced in iOS 17, strips <code>fbclid</code> from links opened in Private Browsing, Mail and Messages</strong>. Independent tests found Safari 26 did not extend this to ordinary browsing by default. This is distinct from cookie limits: it is not Safari's ITP throttling pixel fires, it is the click identifier itself being removed before the user even lands on your store. Without fbclid, Meta cannot attribute the click to an ad campaign, and your ROAS attribution becomes structurally broken for a meaningful segment of users.</p>
-          <p>The second hit: <strong>Shopify changed App Pixels to "Optimised" mode on January 13 2026</strong>. This change silently throttled the data volume that third-party pixels receive from Shopify's checkout. Stores noticed ROAS declines in their dashboards but had no clear signal about why, because no error was thrown and no notification was sent.</p>
+          <p>The second: <strong>on 13 January 2026 Shopify changed the default data sharing setting for App Pixels from Always on to Optimized</strong> (<a href="https://changelog.shopify.com/posts/new-default-setting-for-pixel-data-sharing" target="_blank" rel="noopener">Shopify changelog</a>). Under Optimized, when Shopify sees zero signals from a pixel over days or weeks, it pauses that pixel's data sharing until signals return. A working pixel keeps sharing; the risk is a pixel Shopify judges inactive, which then stops without telling you. Setting it back to Always on, under Settings, then Customer events, is free.</p>
 
           <div class="impact-grid">
             <div class="impact-cell">
-              <div class="ic-val" style="color:var(--rose);">iOS 26</div>
-              <div class="ic-label">Hit 1</div>
+              <div class="ic-val" style="color:var(--rose);">iOS 17+</div>
+              <div class="ic-label">Cause 1</div>
               <div class="ic-desc">fbclid stripped from Private Browsing, Mail, and Messages links: attribution broken at click level</div>
             </div>
             <div class="impact-cell">
               <div class="ic-val" style="color:var(--amber);">Jan 13</div>
-              <div class="ic-label">Hit 2</div>
-              <div class="ic-desc">Shopify "Optimised" pixel mode throttles third-party app pixel data: silently, no error notification</div>
+              <div class="ic-label">Cause 2</div>
+              <div class="ic-desc">Shopify's Optimized setting can pause a pixel it sees no signals from, without a notification</div>
             </div>
             <div class="impact-cell">
               <div class="ic-val" style="color:var(--g);">CAPI Fix</div>
               <div class="ic-label">The Solution</div>
-              <div class="ic-desc">Server-side tracking bypasses both: events sent direct from Shopify server, browser and pixel irrelevant</div>
+              <div class="ic-desc">Server-side events do not depend on the browser pixel, and carry hashed customer details Meta can match on</div>
             </div>
           </div>
 
-          <p>The combination means stores relying solely on browser pixels are now <strong>losing conversion data on every affected session</strong>: how much in total depends on how much of their traffic arrives by the routes iOS 26 strips. The fix: server-side tracking via the Conversions API sends purchase events from Shopify's servers directly to Meta and Google, completely bypassing iOS restrictions, fbclid stripping, and the Optimised pixel throttle.</p>
+          <p>Stores relying only on a browser pixel lose the purchases that pixel never reports; how many depends on how much of their traffic arrives through the routes Apple strips and whether Shopify has paused the pixel. Server-side tracking through the Conversions API sends each purchase from the server to Meta, so a blocked or paused pixel does not drop it. It cannot restore a click ID Apple removed before the visit; what it adds is hashed customer details, such as email and phone, that Meta can match on instead.</p>
 
           <div class="callout danger">
             <div class="callout-label">⚠ If your ROAS dropped in January 2026</div>
-            <p>Check your Meta Events Manager → Data Sources. If your Event Match Quality dropped from "Good" to "Fair" around January 13 2026, the Shopify pixel change is the likely cause. <strong>CAPI Shield restores full event quality within 24 hours of deployment.</strong> See the <a href={`${SITE}/blog/shopify-meta-roas-dropped-2026-fix/`}>Q1 2026 ROAS fix guide</a> for the full diagnosis.</p>
+            <p>First check Settings, then Customer events, then the App pixels tab in Shopify: if your Meta pixel's data sharing says Optimized, switch it to <strong>Always on</strong>. That is free and is the one-minute part of the fix. See the <a href={`${SITE}/blog/shopify-meta-roas-dropped-2026-fix/`}>Meta ROAS fix guide</a> for the full diagnosis.</p>
           </div>
 
 
           <p>The knock-on effects compound quickly. Meta's Advantage+ and Google's Smart Bidding both rely on conversion signals to optimise ad delivery. When those signals are incomplete, your campaigns bid on audiences that look like your visible converters: missing the conversions you cannot see.</p>
 
           <h3>What Server-Side Tracking Is and Why It Solves This</h3>
-          <p>Server-side tracking sends the conversion event directly from Shopify's servers to the ad platform's API. The browser is not involved. iOS has no opportunity to interfere. The "Optimised" pixel throttle is irrelevant because you are not using App Pixels at all.</p>
-          <p>The technical architecture: when a customer completes a purchase, Shopify fires a webhook to Make.com. Make.com receives the event, enriches it with the order data, and forwards it to Meta's Conversions API and Google's Enhanced Conversions endpoint simultaneously.</p>
+          <p>Server-side tracking sends the conversion event from a server to the ad platform's API. The browser is not involved, so an ad blocker or a paused App Pixel does not stop it.</p>
+          <p>The technical architecture: when a customer completes a purchase, Shopify fires a webhook to Make.com. Make.com receives the event, enriches it with the order data, and forwards it to Meta's Conversions API. For Google Ads, the free route is the Enhanced conversions setting in Shopify's Google &amp; YouTube app, not this scenario.</p>
 
           <div class="callout info">
             <div class="callout-label">What the platforms report</div>
@@ -294,7 +293,7 @@ const tocHeadings = [
 
           <span id="section-capi" style="display:block;height:80px;margin-top:-80px;visibility:hidden;"></span>
           <h3>How to Deploy CAPI Shield: Step by Step</h3>
-          <p>CAPI Shield connects Shopify to Make.com via a webhook, then routes purchase events to Meta's Conversions API. Its Google branch cannot match Shopify orders as shipped. The entire setup needs no code and requires zero code.</p>
+          <p>CAPI Shield connects Shopify to Make.com via a webhook, then routes purchase events to Meta's Conversions API. Its Google branch cannot match Shopify orders as shipped. No code is needed.</p>
 
           <div class="step-cards" itemscope itemtype="https://schema.org/HowTo">
             <meta itemprop="name" content="How to deploy CAPI Shield server-side tracking for Shopify" />
@@ -323,8 +322,8 @@ const tocHeadings = [
 
           <div class="section-cta">
             <div class="section-cta-left">
-              <div class="cta-h">Deploy CAPI Shield: recover your Q1 2026 ROAS</div>
-              <p>Free via Make.com · Bypasses iOS 26 + Shopify pixel throttle</p>
+              <div class="cta-h">Deploy CAPI Shield: send Meta purchases from the server</div>
+              <p>Free via Make.com · Not stopped by a blocked or paused pixel</p>
             </div>
             <a href="/capi-shield/" class="btn btn-sm pulse">Read the CAPI Shield setup guide →</a>
           </div>
@@ -629,7 +628,7 @@ const tocHeadings = [
             <span class="pdf-spec"><span class="pdf-spec-dot"></span>deployment plan</span>
             <span class="pdf-spec"><span class="pdf-spec-dot"></span>All webhook configurations</span>
             <span class="pdf-spec"><span class="pdf-spec-dot"></span>Google Sheets templates</span>
-            <span class="pdf-spec"><span class="pdf-spec-dot"></span>iOS 26 tracking fix</span>
+            <span class="pdf-spec"><span class="pdf-spec-dot"></span>Server-side Meta tracking</span>
             <span class="pdf-spec"><span class="pdf-spec-dot"></span>Script library included</span>
           </div>
           <a href="https://d1yei2z3i6k35z.cloudfront.net/16370908/69a2ac505857c_The_Master_Library.pdf"
@@ -714,7 +713,7 @@ const tocHeadings = [
           <div style="display:flex;flex-direction:column;gap:8px;">
             {[
               { href:`${SITE}/shopify-automation-guides/`, label:"All 40+ Free Shopify Automation Guides: Browse the Full Topic Library", badge:false, style:"background:var(--g-bg);border:1px solid var(--g-border);" },
-              { href:`${SITE}/blog/shopify-meta-roas-dropped-2026-fix/`, label:"Q1 2026 ROAS Crisis: iOS 26 + Shopify Pixel Fix", badge:true, style:"background:var(--rose-bg);border:1px solid var(--rose-border);" },
+              { href:`${SITE}/blog/shopify-meta-roas-dropped-2026-fix/`, label:"Shopify Meta ROAS Dropped in 2026: The Free Fix", badge:true, style:"background:var(--rose-bg);border:1px solid var(--rose-border);" },
               { href:`${SITE}/blog/shopify-ai-playbook-2026/`, label:"Complete Shopify AI Playbook 2026: 7 Stages", badge:true, style:"background:var(--amber-bg);border:1px solid var(--amber-border);" },
               { href:`${SITE}/blog/shopify-agentic-storefronts-setup-guide-2026/`, label:"Shopify Agentic Storefronts Setup Guide", badge:true, style:"background:var(--sky-bg);border:1px solid var(--sky-border);" },
               { href:`${SITE}/best-free-shopify-apps-2026/`, label:"Best Free Shopify Apps 2026: What Apps Cost and What to Cut", badge:true, style:"background:var(--g-bg);border:1px solid var(--g-border);" },

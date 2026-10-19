@@ -956,3 +956,19 @@ main#main-content { min-width: 0; }
     flex-wrap: wrap !important;
   }
 }
+
+
+/* ── READING FLOOR (19 Oct 2026) ───────────────────────────────
+   FAQ answers are main content, not microcopy: several pages set them at
+   13px. Long URLs in prose were the one thing pushing a page wider than a
+   phone (/ultimate-shopify-automation-guide/ measured 519px at 390px).
+   The pricing-verified strip costs a phone a full row above the answer
+   paragraph; each page states its own read dates in PriceSources/KeyFacts. */
+.faq-a, .faq-a p, .faq-ans p, .faq-ans-inner, .faq-ans-inner > span, dd.faq-a {
+  font-size: 15px !important;
+  line-height: 1.7 !important;
+}
+main :is(p, li, td, dd) a { overflow-wrap: anywhere; }
+@media (max-width: 700px) {
+  .verified-date-bar { display: none !important; }
+}

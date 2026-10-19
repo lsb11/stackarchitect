@@ -39,6 +39,7 @@ and the command that reproduces them.
 | `npm test` | `node --test` — runs `tests/*.test.js` and `functions/api/*.test.js` |
 | `node --test tests/ios-attribution-gap-benchmark.json.test.js` | Single test file |
 | `npm run a11y` | Playwright contrast audit over `dist/` (needs a build first). Mandatory before any CSS/token change. |
+| `npm run mobile:check` | Every sitemap page at a 390px phone: fails on sideways scroll or an answer paragraph below the first screen (needs a build first). Run with `a11y` before any layout change. |
 | `npm run claims` / `npm run claims:burndown` | List unverified price claims / burndown report |
 | `npm run claims:register` | Regenerate `docs/CLAIMS-REGISTER.md` |
 | `node scripts/word-count.mjs` | Per-page word count inside `<main>` over the sitemap (needs a build first). Reports; never fails. |
