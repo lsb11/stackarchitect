@@ -1047,6 +1047,35 @@ Read in the owner's Chrome, not inferred:
 The Ahrefs connector returns "Insufficient plan" on every endpoint,
 including the free ones; do not plan work around it.
 
+### 19 Oct 2026: crawl data, Bing, and Crawler Hints back on
+
+- **Cloudflare Crawler Hints was ON again** and sending IndexNow notices to
+  Bing for `/_astro/*.woff` font files and `/diagrams/*.svg` about every 15
+  minutes (Bing Webmaster Tools → IndexNow, source "Cloudflare"). This is
+  the submitter recorded above as turned off on 18 Sep. Turned off again on
+  19 Oct 2026 in Caching → Configuration and confirmed after a reload. It
+  came back without a commit, so check that toggle (or the zone flag
+  `crawlhints_enabled`) whenever Bing's IndexNow page lists Cloudflare.
+- **Search Console Crawl stats (90 days to 17 Oct):** 1.38K requests, 86%
+  200, 14% 301, <1% 404, 111 ms average, no host problems. Crawling is
+  healthy. The D1 `pageviews` table had shown 302 of 518 "Googlebot"
+  requests as 404s: most were scanners using a Googlebot or Bingbot UA to
+  probe `/.env`, `/.ssh/id_rsa` and similar. Treat D1 crawler names as
+  claimed; Crawl stats is the truth.
+- **Indexing requests get a crawl, not an index.** Pages requested on
+  18 Oct were crawled within minutes and stayed "Crawled - currently not
+  indexed". The quota is a rolling 24 hours, not a calendar day.
+- **62 noindex pages had broken og:image URLs** (`/og/apps/<app>.png`,
+  `/og/pro/<slug>.png`), because the OG route renders per file and not per
+  dynamic param. Fixed in PR #70: they use the hub card.
+- **Bing, 19 Oct:** 0 clicks and 0 impressions in 90 days; Site Explorer
+  lists no indexed URL; `/stocky-alternative/` is "Discovered but not
+  crawled". Sitemaps read 18 Oct (51 URLs). All 51 sitemap URLs were
+  submitted through URL Submission on 19 Oct (quota 100 a day).
+- The free TikTok blueprint in `lsb11/shopify-automation-blueprints` sent
+  a fixed test event (`test_123`, March 2025, $10) for every order until
+  18 Oct; fixed there in PR #1, along with that repo's retracted figures.
+
 ### Highest-leverage open work
 
 1. Get the iOS Attribution Gap Benchmark to N ≥ 10 real submissions so it
