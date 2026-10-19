@@ -1,4 +1,5 @@
 ---
+import { KEY_FACTS, SOURCES as FACT_SOURCES } from '../data/keyFacts';
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
@@ -303,6 +304,27 @@ const articleSchema = pageType === 'article' ? {
   'mainEntityOfPage': { '@type': 'WebPage', '@id': canonical }
 } : null;
 
+// The key-facts dataset is declared once, on the homepage, where the
+// KeyFacts block links its download. One Dataset, not one per page: the same
+// file declared 48 times would read as duplication to Dataset Search.
+const factsRead = Object.values(FACT_SOURCES).map((s) => s.read).sort();
+const keyFactsDataset = canonicalPath === '/' ? {
+  '@context': 'https://schema.org',
+  '@type': 'Dataset',
+  '@id': 'https://stackarchitect.xyz/downloads/key-facts.json#dataset',
+  name: 'Stack Architect key facts: Shopify, Meta, Google and Apple tracking and automation',
+  description: 'Self-contained facts about Shopify webhooks, Stocky, Meta Conversions API, TikTok Events API, Google enhanced conversions, Apps Script quotas and Shopify app billing. Each fact names the vendor page it was read on and the date it was read.',
+  url: 'https://stackarchitect.xyz/downloads/key-facts.json',
+  license: 'https://creativecommons.org/licenses/by/4.0/',
+  isAccessibleForFree: true,
+  creator: { '@id': 'https://stackarchitect.xyz/#luke' },
+  publisher: { '@id': 'https://stackarchitect.xyz/#org' },
+  dateModified: factsRead.at(-1),
+  keywords: ['Shopify', 'Meta Conversions API', 'TikTok Events API', 'Google Ads enhanced conversions', 'Shopify Stocky', 'Google Apps Script quotas', 'Shopify webhooks'],
+  distribution: [{ '@type': 'DataDownload', encodingFormat: 'application/json', contentUrl: 'https://stackarchitect.xyz/downloads/key-facts.json' }],
+  isBasedOn: [...new Set(KEY_FACTS.map((f) => FACT_SOURCES[f.source].url))],
+} : null;
+
 const allSchemas = [
   ...schemaArray,
   siteNavSchema,
@@ -311,6 +333,7 @@ const allSchemas = [
   ...(alreadyHasWebSiteSchema ? [] : [webSiteSchema]),
   ...(autoBreadcrumbSchema ? [autoBreadcrumbSchema] : []),
   ...(articleSchema ? [articleSchema] : []),
+  ...(keyFactsDataset ? [keyFactsDataset] : []),
 ];
 
 const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
