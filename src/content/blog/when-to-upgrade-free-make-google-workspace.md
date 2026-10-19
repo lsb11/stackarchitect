@@ -1,7 +1,7 @@
 ---
 title: "When to Upgrade Free Make.com to Google Workspace"
 heading: "When to Upgrade from Free Make.com to Google Workspace: Shopify Operator's Guide 2026"
-description: "7 signals it's time to upgrade from free Make.com to Google Workspace for Shopify automation — what the upgrade actually changes, and how to migrate with zero downtime."
+description: "When free Make.com or a free Google account stops being enough for Shopify automation, what each upgrade actually changes, and how to tell which one you need."
 answer: "Upgrade from the free Shopify automation stack when you hit a real ceiling, not on principle. The three signals are Make.com credits exhausted before month end, Apps Script runs exceeding six minutes, and daily trigger runtime running out. What you buy is quota headroom, not features, so the decision follows the symptom rather than the price."
 publishDate: "2026-03-25"
 updatedDate: "2026-10-15"

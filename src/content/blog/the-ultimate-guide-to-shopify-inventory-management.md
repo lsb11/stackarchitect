@@ -1,7 +1,7 @@
 ---
 title: "Shopify Inventory in Google Sheets 2026"
 heading: "The Ultimate Guide to Shopify Inventory Management 2026: Free Systems That Scale"
-description: "Send Shopify orders to Google Sheets free in 2026 and build stock counts, reorder flags and alerts on top. What replaces the order record Stocky kept, and what it does not."
+description: "Send Shopify orders to Google Sheets free and build stock counts, reorder flags and alerts on top: what replaces Stocky's order record, and what does not."
 answer: "You can run Shopify inventory tracking free by sending each paid order into Google Sheets through Make.com. That gives you an order ledger you own. Stock counts, reorder flags and low-stock alerts are formulas and extra scenarios you add yourself. Shopify Stocky shut down on 31 August 2026, and paid replacements such as Prediko start at $49 a month."
 publishDate: "2026-03-28"
 updatedDate: "2026-10-15"
