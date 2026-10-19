@@ -14,7 +14,11 @@
 @theme {
   --font-display: "Sora", "Inter", -apple-system, sans-serif;
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* Labels, meta lines, eyebrows and tags were set in JetBrains Mono, which
+     read as a developer console to an audience of store owners. Since
+     19 Oct 2026 the label token is the body face; real code uses --font-code. */
+  --font-mono: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-code: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --color-accent: #34d377;
   --color-accent-dim: #15803d;
@@ -513,7 +517,7 @@ body::after {
 
 /* ── CODE ──────────────────────────────────────────────────── */
 .sa-prose code {
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
   font-size: 0.875em;
   color: var(--color-accent);
   background: color-mix(in srgb, var(--color-accent) 8%, transparent);
@@ -530,7 +534,7 @@ body::after {
   padding: 20px 24px;
   margin: 24px 0;
   overflow-x: auto;
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
   font-size: 0.875em;    /* derived step, not a second scale */
   line-height: 1.6;      /* monospace needs tighter leading */
   color: var(--color-body);
@@ -974,3 +978,12 @@ main :is(p, li, td, dd) a { overflow-wrap: anywhere; }
 @media (max-width: 700px) {
   .verified-date-bar { display: none !important; }
 }
+
+
+/* ── EDITORIAL LABELS (19 Oct 2026) ────────────────────────────
+   About 800 page-scoped rules set interface labels in var(--mono), and some
+   inline styles name JetBrains Mono directly. They all now render in the
+   body face; code, keyboard input and sample output stay monospaced. */
+:root { --mono: var(--font-mono) !important; }
+[style*="JetBrains Mono"] { font-family: var(--font-mono) !important; }
+pre, code, kbd, samp, pre *, code * { font-family: var(--font-code) !important; }
