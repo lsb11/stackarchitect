@@ -15,6 +15,7 @@ test('crawlers are named, the rest bucketed, and no UA is kept', () => {
   assert.equal(agentOf('Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; GPTBot/1.1; +https://openai.com/gptbot'), 'GPTBot');
   assert.equal(agentOf('Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ClaudeBot/1.0; +claudebot@anthropic.com)'), 'ClaudeBot');
   assert.equal(agentOf('Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; PerplexityBot/1.0; +https://perplexity.ai/perplexitybot)'), 'PerplexityBot');
+  assert.equal(agentOf('Googlebot-Image/1.0'), 'Googlebot-Image');
   assert.equal(agentOf(CHROME), 'human');
   assert.equal(agentOf('curl/8.4.0'), 'other-bot');
   assert.equal(agentOf(''), 'no-ua');
@@ -42,6 +43,8 @@ test('pages are counted; assets, API, /go/ and POSTs are not', () => {
 
 test('404s are bucketed; redirects keep their path only for named search and AI crawlers', () => {
   assert.equal(rowFor({ ...base, url: 'https://stackarchitect.xyz/wp-login.php', status: 404 }).path, '(404)');
+  // A named search crawler's 404 keeps its path, so the URL can be found and fixed.
+  assert.equal(rowFor({ ...base, userAgent: 'Googlebot-Image/1.0', url: 'https://stackarchitect.xyz/og/apps/klaviyo.png', status: 404 }).path, '/og/apps/klaviyo.png');
   assert.equal(rowFor({ ...base, url: 'https://stackarchitect.xyz/stocky-shutdown/', status: 301 }).path, '(redirect)');
   assert.equal(rowFor({ ...base, userAgent: 'Mozilla/5.0 (compatible; Googlebot/2.1)', url: 'https://stackarchitect.xyz/stocky-shutdown/', status: 301 }).path, '/stocky-shutdown/');
 });

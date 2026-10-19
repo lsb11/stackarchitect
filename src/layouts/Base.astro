@@ -276,7 +276,14 @@ if (!alreadyHasBreadcrumbSchema && !noindex && canonicalPath !== '/') {
   };
 }
 
-const routeSlug = canonicalPath === '/' ? 'home' : canonicalPath.replace(/^\/|\/$/g, '');
+// The OG route (src/pages/og/[...route].ts) renders one card per .astro FILE,
+// so dynamic routes (/apps/[app], /pro/[slug], /pro/[slug]/success) have no
+// card of their own: their og:image pointed at /og/apps/<app>.png, which does
+// not exist, and Googlebot-Image (counted as "Googlebot" in pageviews) spent
+// most of its crawl on those 404s (D1 pageviews, 10-19 Oct 2026). They borrow
+// their hub's card instead. All of them are noindex.
+const rawSlug = canonicalPath === '/' ? 'home' : canonicalPath.replace(/^\/|\/$/g, '');
+const routeSlug = /^apps\/[^/]+$/.test(rawSlug) ? 'apps' : /^pro\/.+/.test(rawSlug) ? 'pro' : rawSlug;
 const computedOgImage = ogImage 
   ? (ogImage.startsWith('http') ? ogImage : 'https://stackarchitect.xyz' + ogImage) 
   : routeSlug === 'home'
