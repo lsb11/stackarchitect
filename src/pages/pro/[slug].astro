@@ -88,7 +88,7 @@ const schema = [
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: `${name} — ${blueprint}`,
-    description: `${name} is a ready-to-import Make.com blueprint: ${tagline}. Import the file, paste your own API credentials, live in ${deployTime}. ${single} one-time, no subscription. Replaces ${replaces.map((r) => r.name).join(', ')}.`,
+    description: `${name} is a ready-to-import Make.com blueprint: ${tagline}. Import the file and paste your own API credentials. ${single} one-time, no subscription. Replaces ${replaces.map((r) => r.name).join(', ')}.`,
     url: pageUrl,
     sku: `SA-${slug.toUpperCase()}-001`,
     brand: { '@type': 'Brand', name: 'Stack Architect' },
@@ -138,7 +138,7 @@ const quote = PRESS[0];
 <Base
   noindex={isNoindexRoute(Astro.url.pathname)}
   title={pageTitle}
-  description={`${problem} ${name} is the finished Make.com blueprint that fixes it — live in ${deployTime}, ${single} once, no subscription.`}
+  description={`${problem} ${name} is the finished Make.com blueprint that fixes it, ${single} once, no subscription.`}
   pageType="product"
   schema={schema}
 >
@@ -162,7 +162,7 @@ const quote = PRESS[0];
           away from the H1, so it names the product rather than saying "it". */}
       <p id="answer" class="hero-sub">
         {job} <strong>{name}</strong> is the finished Make.com file: import it, add your own
-        {' '}credentials, and it is live in <strong>{deployTime}</strong>. {single} once, no subscription.
+        {' '}credentials, and test it with one order. {single} once, no subscription.
       </p>
 
       {stockyLine && <div class="urgency" style="margin-bottom:22px;">{stockyLine}</div>}
@@ -273,13 +273,13 @@ const quote = PRESS[0];
   <section class="section" aria-labelledby="how-h">
     <div class="inner">
       <div class="sec-head">
-        <h2 id="how-h">Live in <span class="acc-ink">{deployTime}</span></h2>
+        <h2 id="how-h">Set up in <span class="acc-ink">{steps.length} steps</span></h2>
         <p>No developer, no agency, no configuration screens. Three steps.</p>
       </div>
       <div class="how-grid how-grid-3">
         {steps.map((s, i) => (
           <div class="how-step">
-            <div class="how-n">Step 0{i + 1} // {s.time}</div>
+            <div class="how-n">Step 0{i + 1}</div>
             <div class="how-title">{s.title}</div>
             <p class="how-body">{s.body}</p>
             <span class="how-tool">{s.tool}</span>

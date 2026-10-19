@@ -127,7 +127,7 @@ const faqs = [
   { q: "Does this replace WeltPixel or Analyzify?",                        a: "Yes. WeltPixel charges $39/month on its Plus plan and Analyzify charges $145–$275/month for TikTok server-side tracking. The Make.com webhook approach achieves the same CompletePayment server-side delivery at $0/month on Make.com's free tier. The data flows through your own Make.com workspace rather than a third-party's servers." },
   { q: "What is TikTok Advanced Matching?",                                a: "TikTok Advanced Matching sends hashed customer data (email, phone number, IP address, and user agent) alongside purchase events to improve event matching accuracy and EMQ scores. The Make.com setup hashes all available Shopify order fields with SHA-256 before transmission, as required by TikTok's API specification." },
   { q: "What EMQ score will I achieve?",                                   a: "We have not sampled EMQ across Shopify stores, so we do not publish a typical score for this setup: what we can say is that it sends full Advanced Matching data, which is what the score is calculated from. EMQ measures how well TikTok can match server-side events to TikTok user accounts. Including hashed email and phone, plus IP and user agent, from the Shopify order webhook gives TikTok the most to match on; read your own score in Events Manager after a week of orders." },
-  { q: "Can I set up TikTok and Meta CAPI from the same Make.com scenario?", a: "Yes. Add a Router module to the same scenario and branch to Meta Conversions API and Google Enhanced Conversions simultaneously. One Shopify Order Payment webhook feeds all three platforms: still within Make.com's free tier for most stores." }
+  { q: "Can I set up TikTok and Meta CAPI from the same Make.com scenario?", a: "Yes. Add a Router module to the same scenario and branch to Meta's Conversions API alongside TikTok. Skip the Meta branch if Shopify's Facebook & Instagram app already sends the Conversions API at Enhanced or Maximum data sharing, or Meta can receive each purchase twice. For Google Ads, turn on enhanced conversions in Shopify's Google & YouTube app instead of adding a branch." }
 ];
 
 // ─── Related guides ───────────────────────────────────────────────────────────
@@ -268,7 +268,7 @@ const tocHeadings = [
   },
   {
     "id": "prereq-h",
-    "text": "What you need: takes under 5 minutes to get"
+    "text": "What you need before you start"
   },
   {
     "id": "setup-h",
@@ -508,8 +508,8 @@ const tocHeadings = [
       <p>The Make.com webhook approach takes the browser out of the purchase signal. The Shopify webhook fires from Shopify's server the moment payment is confirmed: completely independent of what happens in any browser. No pixel, no JavaScript, no browser dependency. The same webhook also powers <a href="/capi-shield/">CAPI Shield for Meta</a>: one Shopify webhook trigger feeds TikTok and Meta at once.</p>
 
       <div class="callout green">
-        <div class="callout-label">Same webhook: three platforms</div>
-        <p>If you are also running Meta Ads or Google Ads, the same Make.com scenario can branch to Meta CAPI, Google Enhanced Conversions, and TikTok Events API simultaneously using a Router module. One Shopify webhook, all three platforms recovered, still within Make.com's free tier for most stores. <a href="/capi-shield/">Deploy CAPI Shield free →</a></p>
+        <div class="callout-label">Same webhook: Meta too</div>
+        <p>If you also run Meta Ads, the same Make.com scenario can branch to Meta's Conversions API with a Router module, unless Shopify's Facebook &amp; Instagram app already sends it. For Google Ads, turn on enhanced conversions in Shopify's Google &amp; YouTube app instead. Each branch uses credits, so check your scenario history. <a href="/capi-shield/">Deploy CAPI Shield free →</a></p>
       </div>
     </div>
   </div>
@@ -563,7 +563,7 @@ const tocHeadings = [
   <div class="inner-md">
     <div class="sec-head">
       <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Before you start</span>
-      <h2 id="prereq-h">What you need: takes under 5 minutes to get</h2>
+      <h2 id="prereq-h">What you need before you start</h2>
       <p>Two things from TikTok Ads Manager. Both free to access.</p>
     </div>
 
@@ -630,7 +630,7 @@ const tocHeadings = [
 
     <div class="callout green" style="margin-top:24px;">
       <div class="callout-label">Also running Meta or Google Ads?</div>
-      <p>Add a Router module to your Make.com scenario and branch to Meta Conversions API and Google Enhanced Conversions simultaneously: no additional Shopify setup needed. The same Order Payment webhook feeds all three platforms. <a href="/capi-shield/">Deploy CAPI Shield for Meta free →</a></p>
+      <p>For Meta, add a Router module to your Make.com scenario and branch to Meta&rsquo;s Conversions API, unless Shopify&rsquo;s Facebook &amp; Instagram app already sends it. For Google Ads, turn on enhanced conversions in Shopify&rsquo;s Google &amp; YouTube app: no Make.com branch needed. <a href="/capi-shield/">Deploy CAPI Shield for Meta free →</a></p>
     </div>
 
 
@@ -690,7 +690,7 @@ const tocHeadings = [
     <div class="sec-head">
       <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Complete the stack</span>
       <h2 id="stack-h">TikTok tracking is one part of the $0 automation stack</h2>
-      <p>The same webhook that fixes TikTok also powers Meta CAPI, Google Enhanced Conversions, inventory tracking, and live P&L: all free.</p>
+      <p>The same webhook that sends TikTok purchases can also feed Meta CAPI, an inventory log and a P&amp;L sheet, all on free plans.</p>
     </div>
     <div class="crosslink-grid">
       {crosslinks.map(c => (

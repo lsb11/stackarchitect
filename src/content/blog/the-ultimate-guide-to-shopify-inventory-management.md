@@ -16,9 +16,9 @@ faqs:
   - question: "Does Shopify have free inventory management?"
     answer: "Yes. Shopify Admin tracks stock levels per variant and location, handles transfers and adjustments, and lets you track and receive purchase orders from suppliers. Low-stock alerts come through Shopify Flow. What it does not give you is a copy of every order in a system you own, or sales velocity and reorder calculations. A Make.com and Google Sheets ledger covers those at no cost."
   - question: "What replaces Shopify Stocky after August 2026?"
-    answer: "Shopify Admin is the replacement Shopify names for purchase orders, transfers and adjustments. For the order record, Stocky Swap is a free Make.com scenario that logs every paid Shopify order to a Google Sheet. It deploys in about 4 minutes and works on every Shopify plan. It does not manage purchase orders, forecast demand or calculate stock on hand. Stocky was removed from the Shopify App Store on February 2, 2026 and stopped functioning entirely on August 31, 2026. (Source: Shopify, \"Transitioning from Stocky\", help.shopify.com/en/manual/products/inventory/transitioning-from-stocky, read 10 September 2026.)"
+    answer: "Shopify Admin is the replacement Shopify names for purchase orders, transfers and adjustments. For the order record, Stocky Swap is a free Make.com scenario that logs every paid Shopify order to a Google Sheet. It deploys without code and works on every Shopify plan. It does not manage purchase orders, forecast demand or calculate stock on hand. Stocky was removed from the Shopify App Store on February 2, 2026 and stopped functioning entirely on August 31, 2026. (Source: Shopify, \"Transitioning from Stocky\", help.shopify.com/en/manual/products/inventory/transitioning-from-stocky, read 10 September 2026.)"
   - question: "How do I track Shopify inventory in Google Sheets for free?"
-    answer: "Create a Make.com account, set up a Shopify Order Payment webhook, and configure a Google Sheets module to append a row for every order. Each row captures: order ID, date, product title, variant, quantity, price, customer name, fulfilment status, and any custom fields. Setup takes approximately 20 minutes and requires no code."
+    answer: "Create a Make.com account, set up a Shopify Order Payment webhook, and configure a Google Sheets module to append a row for every order. Each row captures: order ID, date, product title, variant, quantity, price, customer name, fulfilment status, and any custom fields. Setup requires no code."
   - question: "How do I get low stock alerts for Shopify for free?"
     answer: "Shopify Flow can send low-stock alerts from Shopify Admin at no cost. If you keep your own ledger in Google Sheets, use a formula to calculate running stock from your order log and a conditional formatting rule to highlight rows below your threshold. Then add a daily scheduled Make.com scenario that checks the sheet and sends an email or Slack message. Stocky Swap does not do this for you. You build it on top of its order log."
   - question: "What is the difference between Shopify inventory tracking and inventory management?"
@@ -36,7 +36,7 @@ Most Shopify inventory management guides end with a recommendation to pay for an
 
 This guide covers the complete inventory management layer for Shopify stores, from basic order logging through supplier management, stock alerts, velocity analysis, and multi-location tracking. It also covers what to do now that **Shopify Stocky has shut down. It stopped working on 31 August 2026.**
 
-> **Don't want to build the order log yourself?** I've already built that part. It's called Stocky Swap. It's free, it runs on Make.com, and you can deploy it to your store in about 4 minutes. It logs every paid order to your sheet. The stock counts, reorder flags and alerts below are still yours to add.  
+> **Don't want to build the order log yourself?** I've already built that part. It's called Stocky Swap. It's free, it runs on Make.com, and you can deploy it to your store. It logs every paid order to your sheet. The stock counts, reorder flags and alerts below are still yours to add.  
 > 👉 [Get Stocky Swap for free here](/stocky-swap/).
 
 ## What Shopify's Built-In Inventory Actually Covers
@@ -190,7 +190,7 @@ Shopify removed Stocky from the App Store on February 2, 2026. On August 31, 202
 
 1. Export what you can now. Open Stocky in Shopify Admin and, if it still opens, export your purchase order history and stocktake records as CSV. Store the files in Google Drive. The read-only window has a floor of 90 days and no published end, so do not count on it lasting.
 2. Move purchase orders, transfers and adjustments into Shopify Admin, which is where Shopify now handles them.
-3. If you want your own copy of every order, deploy Stocky Swap. The [Stocky Swap setup](/stocky-swap/) takes about 4 minutes. It logs forward from the moment you switch it on and cannot fill in orders placed before then.
+3. If you want your own copy of every order, deploy Stocky Swap. The [Stocky Swap setup](/stocky-swap/) needs no code. It logs forward from the moment you switch it on and cannot fill in orders placed before then.
 4. Rebuild any supplier tracking you kept in Stocky using Sheet 3 above, or in Shopify's purchase orders.
 
 **If you never used Stocky:** Shopify Admin already tracks your stock. The Make.com and Google Sheets ledger is worth adding if you want an order record you own and the velocity and reorder views that Shopify does not calculate.
@@ -216,10 +216,10 @@ Below these thresholds, Shopify Admin plus the Make.com and Google Sheets ledger
 
 Paid inventory apps start at $49 a month for Prediko's Starter plan, and Inventory Planner publishes no price at all, only a quote form.
 
-> **Don't want to build the order log yourself?** I've already built that part. It's called Stocky Swap. It's free, it runs on Make.com, and you can deploy it to your store in about 4 minutes. It logs every paid order to your sheet. The stock counts, reorder flags and alerts below are still yours to add.  
+> **Don't want to build the order log yourself?** I've already built that part. It's called Stocky Swap. It's free, it runs on Make.com, and you can deploy it to your store. It logs every paid order to your sheet. The stock counts, reorder flags and alerts below are still yours to add.  
 > 👉 [Get Stocky Swap for free here](/stocky-swap/).
 
-1. **Deploy Stocky Swap.** The [setup](/stocky-swap/) takes about 4 minutes and gets order logging running from the next paid order.
+1. **Deploy Stocky Swap.** The [setup](/stocky-swap/) needs no code and gets order logging running from the next paid order.
 2. **Set up the sheet structure.** Use the three-sheet layout above and copy the SUMIF formulas into Sheet 2.
 3. **Add stock alert notifications.** Build a second Make.com scenario or branch for email alerts on low stock, or use Shopify Flow.
 4. **Export Stocky data** if Stocky still opens in your admin. Its end of service was 31 August 2026. Shopify says read-only export access continues for at least 90 days after that date and has published no end date.
