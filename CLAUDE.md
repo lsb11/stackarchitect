@@ -1150,6 +1150,30 @@ Measured over all 51 sitemap pages in a real browser, then fixed:
   which put every tool below the first screen. Both are gone, and the reading
   text is 15 to 17px. Keep the tool directly under the answer.
 
+### Free-tool pages share one hero: `<ToolHero>` (19 Oct 2026)
+
+CAPI Shield, TikTok, Google Ads, P&L, Klaviyo and Autocrat used centred heroes
+with an oversized headline (six lines on CAPI Shield), two to four paragraphs
+restating the answer, stat tiles and "Replaces X at $0" lines, which put the
+setup button below the first screen. They now use `src/components/ToolHero.astro`,
+on the /stocky-swap/ pattern: headline, the 40-60 word answer and two buttons
+on the left; an "At a glance" list of checkable facts on the right. Rules in
+the component header. The stat strips under those heroes were removed with
+them; several stated things nothing supports ("3 hrs saved a week", "0 script
+failures", "No 6-min execution ceiling" on a plan that stops a run at five
+minutes).
+
+Corrections made in the same pass, do not reintroduce:
+- Autocrat templates do not carry over unchanged: Autocrat uses
+  double-angle-bracket merge tags and Make's Google Docs module looks for
+  double curly braces. Make has no exponential backoff setting. No "permanent"
+  fix and no set-up time.
+- /pro/ is not sold on savings: no "$X/mo saved" badges, no "replaces"; paid
+  apps are listed for comparison with what they do that the kit does not. The
+  guarantee is the refund policy's: 30 days, full refund, no questions asked,
+  with no "if it doesn't save you 2 hours" condition.
+- Stocky Swap is an order log, everywhere, including `products.ts`.
+
 ### Highest-leverage open work
 
 1. Get the iOS Attribution Gap Benchmark to N ≥ 10 real submissions so it
