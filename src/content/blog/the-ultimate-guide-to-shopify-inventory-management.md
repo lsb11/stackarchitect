@@ -84,7 +84,7 @@ The foundation of free Shopify inventory management is a single Make.com scenari
 5. Map the fields: order ID, date, product title, variant, SKU, quantity, price, fulfilment status, customer name
 6. Activate the scenario
 
-From this point forward, every paid order in Shopify writes a new row to your sheet within seconds. That order log is what Stocky Swap does, and all it does. Stock counts, supplier tracking and alerts are the layers you build on top of it in the sections below. Stocky's end of service was 31 August 2026.
+From this point forward, every paid order in Shopify writes a new row to your sheet within seconds. Stocky Swap ships a narrower version of this log: one row per line item with six columns (timestamp, SKU, quantity out, order ID, product and a note). The wider ledger below is what you get if you map the extra fields yourself. Stock counts, supplier tracking and alerts are the layers you build on top of it in the sections below. Stocky's end of service was 31 August 2026.
 
 ## The Google Sheets Inventory Ledger Structure
 

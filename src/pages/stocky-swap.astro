@@ -1,4 +1,5 @@
 ---
+import BlueprintAnatomy from '../components/BlueprintAnatomy.astro';
 import KeyFacts from '../components/KeyFacts.astro';
 import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
@@ -100,7 +101,7 @@ const faqs: Faq[] = [
   { q: "Do I need to know how to code to use Stocky Swap?",
     a: "<p>No coding required. The Make.com scenario is pre-built and shared publicly: you click Clone, connect your Shopify and Google Sheet via OAuth, and switch the scenario on. Setup needs no code. The <a href=\"" + SETUP_GUIDE_PDF + "\" target=\"_blank\" rel=\"noopener\">PDF setup guide</a> covers every step with screenshots.</p>" },
   { q: "What does Stocky Swap log to Google Sheets?",
-    a: "<p>Each new Shopify order produces a Google Sheet row containing: order ID, order timestamp, customer name, line item SKU, product name, quantity sold, line revenue, and fulfilment status. The webhook fires from Shopify the moment an order is created, not on a polling interval, so the Sheet updates within seconds.</p>" },
+    a: "<p>Each line item on a paid Shopify order becomes one row in the Inventory_Log tab, with six columns: Timestamp, SKU, Change_Amount (the quantity as a negative number, such as -2), Order_ID, Product, and Notes, a fixed label marking the row as an order stock-out. It does not record revenue, customer names or fulfilment status. The Order payment webhook fires when the order is paid, not on a polling interval, so the row arrives within seconds.</p>" },
   { q: "Will Stocky Swap interfere with my Shopify store or other apps?",
     a: "<p>No. Stocky Swap is a one-way listener: it reads Shopify order data via webhook and writes to your Google Sheet. It does not modify products, inventory levels, customer records, or any other Shopify data. It runs independently of Stocky and any inventory app, so it can run alongside whatever you use now while you check its output.</p>" },
   { q: "What are the paid Stocky alternatives in 2026?",
@@ -1861,6 +1862,29 @@ const tocHeadings = [
     </div>
   </section>
 
+  <BlueprintAnatomy
+    title="Inside the Stocky Swap blueprint"
+    file="stocky_swap.json"
+    read="2026-10-19"
+    modules={[
+      { name: 'Webhooks: custom webhook', does: 'Receives Shopify’s Order payment webhook, once per paid order.' },
+      { name: 'Iterator over line_items', does: 'Splits the order into one bundle per product line, so a three-item order produces three rows.' },
+      { name: 'Google Sheets: add a row', does: 'Appends one row per line item to the Inventory_Log tab of your sheet, using your own Google connection.' },
+    ]}
+    columns={[
+      { col: 'A', header: 'Timestamp', value: 'The time Make writes the row ({{now}}), not the time the order was placed' },
+      { col: 'B', header: 'SKU', value: 'The line item’s SKU' },
+      { col: 'C', header: 'Change_Amount', value: 'The quantity as a negative number, for example -2' },
+      { col: 'D', header: 'Order_ID', value: 'Shopify’s order ID' },
+      { col: 'E', header: 'Product', value: 'The line item’s title' },
+      { col: 'F', header: 'Notes', value: 'A fixed label marking the row as an order stock-out' },
+    ]}
+    notes={[
+      '<strong>No revenue, customer or fulfilment columns.</strong> It is a stock-movement log. Add a tab with a SUMIF over column C by SKU, seeded with one opening-stock row per SKU, to see a running count.',
+      '<strong>A row that fails to write is skipped, not retried.</strong> The Sheets module uses Make’s Ignore error handler and the scenario does not store incomplete executions. If missing rows would hurt, switch the handler to Break and turn on “Allow storing of incomplete executions” in the scenario settings, so a failed row waits for a retry.',
+      '<strong>Refunds, returns and manual adjustments are not logged,</strong> because only the Order payment webhook triggers it. Shopify Admin stays the record of stock on hand.',
+    ]}
+  />
   <section class="section tex-dots">
     <div class="inner-md body-text">
       <div class="sec-head">
@@ -1881,7 +1905,7 @@ const tocHeadings = [
       <h3>What it does</h3>
       <span class="scope-tag">In scope · free</span>
       <ul>
-        <li><strong>Logs every paid Shopify order</strong> to a Google Sheet row in real time (order ID, timestamp, customer, SKU, product, quantity, revenue, fulfilment status)</li>
+        <li><strong>Logs every paid Shopify order</strong> to Google Sheets in real time, one row per line item: timestamp, SKU, quantity out (as a negative number), order ID, product name and a note</li>
         <li><strong>Runs via Shopify webhook</strong>: not polling, so updates arrive within seconds of an order being placed</li>
         <li><strong>Stores data in your Google Sheet</strong>: full ownership, no vendor lock-in, exportable any time</li>
         <li><strong>Costs $0</strong> on Make.com's free tier</li>

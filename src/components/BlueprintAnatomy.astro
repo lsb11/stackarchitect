@@ -1,0 +1,67 @@
+---
+// What a blueprint actually does, read from the blueprint file itself, not
+// from a description of it. Pass the modules and columns as they appear in
+// the JSON; `read` is the date someone opened the file and checked them.
+interface Module { name: string; does: string }
+interface Column { col: string; header: string; value: string }
+interface Props {
+  title: string;
+  file: string;
+  read: string; // YYYY-MM-DD
+  modules: Module[];
+  columns?: Column[];
+  notes?: string[];
+  caption?: string;
+  heads?: [string, string, string];
+}
+const { title, file, read, modules, columns = [], notes = [], caption = 'What each row contains', heads = ['Column', 'Header', 'Value written'] } = Astro.props;
+const readLabel = new Date(read + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+
+<section class="sa-anat" aria-labelledby="sa-anat-h">
+  <h2 id="sa-anat-h">{title}</h2>
+  <p class="sa-anat-lede">Read from the blueprint file itself (<code>{file}</code>) on <time datetime={read}>{readLabel}</time>, so this is what the scenario does, not what we hoped it would.</p>
+  <ol class="sa-anat-flow">
+    {modules.map((m) => (
+      <li><strong>{m.name}</strong><span>{m.does}</span></li>
+    ))}
+  </ol>
+  {columns.length > 0 && (
+    <div class="sa-anat-table-wrap">
+      <table class="sa-anat-table">
+        <caption>{caption}</caption>
+        <thead><tr>{heads.map((h) => <th scope="col">{h}</th>)}</tr></thead>
+        <tbody>
+          {columns.map((c) => <tr><td>{c.col}</td><td>{c.header}</td><td>{c.value}</td></tr>)}
+        </tbody>
+      </table>
+    </div>
+  )}
+  {notes.length > 0 && (
+    <ul class="sa-anat-notes">
+      {notes.map((n) => <li set:html={n} />)}
+    </ul>
+  )}
+</section>
+
+<style>
+  .sa-anat { max-width: 860px; margin: 40px auto; padding: 22px 24px; border: 1px solid #222825; border-radius: 12px; background: #0c0f0d; text-align: left; }
+  .sa-anat h2 { font-size: 22px; color: #f2f5f3; margin: 0 0 8px; }
+  .sa-anat-lede { font-size: 14px; color: #93a09a; margin: 0 0 18px; line-height: 1.6; }
+  .sa-anat-flow { list-style: none; counter-reset: step; margin: 0 0 20px; padding: 0; display: grid; gap: 10px; }
+  .sa-anat-flow li { counter-increment: step; display: grid; grid-template-columns: 32px 1fr; column-gap: 12px; align-items: baseline; }
+  .sa-anat-flow li::before { content: counter(step); grid-row: span 2; width: 26px; height: 26px; border-radius: 50%; border: 2px solid #34d377; color: #34d377; font-size: 13px; font-weight: 700; display: grid; place-items: center; }
+  .sa-anat-flow strong { color: #f2f5f3; font-size: 15px; }
+  .sa-anat-flow span { color: #b6c0ba; font-size: 15px; line-height: 1.55; }
+  .sa-anat-table-wrap { overflow-x: auto; margin: 0 0 16px; }
+  .sa-anat-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .sa-anat-table caption { text-align: left; color: #f2f5f3; font-weight: 700; font-size: 15px; padding-bottom: 8px; }
+  .sa-anat-table th, .sa-anat-table td { border-bottom: 1px solid #1f2622; padding: 8px 10px; text-align: left; vertical-align: top; }
+  .sa-anat-table th { color: #93a09a; font-weight: 600; }
+  .sa-anat-table td { color: #b6c0ba; }
+  .sa-anat-table td:first-child { color: #34d377; font-weight: 700; }
+  .sa-anat-notes { margin: 0; padding-left: 18px; }
+  .sa-anat-notes li { color: #b6c0ba; font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
+  .sa-anat-notes :global(strong) { color: #f2f5f3; }
+  .sa-anat code { font-size: 13px; color: #dfe6e2; }
+</style>
