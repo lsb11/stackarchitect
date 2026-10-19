@@ -186,6 +186,7 @@ const schema = JSON.stringify({
     }
   ]
 });
+import ToolHero from '../components/ToolHero.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import InlineOffer from '../components/InlineOffer.astro';
 import { KIT_PRICE, SINGLE_PRICE, formatPrice } from '../data/products';
@@ -527,71 +528,29 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
 <main id="main-content">
 
 <!-- ══ HERO ══ -->
-<section class="hero bg-grid" aria-labelledby="hero-headline">
-<div class="hero-inner">
-
-  <div class="expert-byline" role="doc-subtitle">
-    <span>By <strong>Stack Architect</strong> · <time datetime={DATE_MODIFIED}>Updated {UPDATED_LABEL}</time> · ~12 min read</span>
-  </div>
-
-  <div class="hero-proof">
-    <span class="dot"></span>
-    <span class="hero-proof-txt">Live P&amp;L · Updates on every order · $0 forever</span>
-  </div>
-
-  <h1 id="hero-headline">
-    Your Shopify P&amp;L<br />
-    <span class="green">should write itself.</span><br />
-    <span class="dim">Now it does. Free.</span>
-  </h1>
-
-  <p id="answer">Building an automated Shopify P&amp;L means connecting a Make.com webhook to a three-tab Google Sheet: Order Data, COGS Table, and P&amp;L Summary. Each order writes its revenue, fees, and variant IDs automatically; a VLOOKUP matches variant IDs to cost data, and SUMIF formulas aggregate monthly revenue, COGS, and net profit. Setup needs no code and is free.</p>
-
+<ToolHero
+  label="Shopify P&amp;L automation in Google Sheets"
+  eyebrow="Free Shopify P&amp;L in Google Sheets"
+  updated={UPDATED_LABEL}
+  readTime="12 min read"
+  answer="Building an automated Shopify P&amp;L means connecting a Make.com webhook to a three-tab Google Sheet: Order Data, COGS Table, and P&amp;L Summary. Each order writes its revenue, fees, and variant IDs automatically; a VLOOKUP matches variant IDs to cost data, and SUMIF formulas aggregate monthly revenue, COGS, and net profit. Setup needs no code and is free."
+  primary={{ href: '#setup', label: 'See the setup steps' }}
+  secondary={{ href: SCENARIO_URL, label: 'Preview the scenario', external: true }}
+  glance={[
+    { k: 'Writes', v: 'Revenue, Shopify fees and cost of goods for each order, to a three-tab Google Sheet you own' },
+    { k: 'Trigger', v: 'A Shopify order webhook into a Make.com scenario' },
+    { k: 'Product costs', v: 'Looked up in your COGS tab for the first line item on each order, at the time of the order' },
+    { k: 'You add by hand', v: 'Ad spend, and the cost of each product in the COGS tab' },
+    { k: 'Refunds', v: 'A second scenario on Shopify&rsquo;s Refund created webhook writes negative rows (step 5)' },
+    { k: 'Cost', v: "Make.com's free plan: 1,000 credits a month (<a href='https://www.make.com/en/pricing' target='_blank' rel='noopener'>Make pricing</a>)" },
+  ]}
+  glanceFoot="What the scenario writes is checked against the blueprint file, not a description of it."
+>
+  <Fragment slot="title">Your Shopify P&amp;L <span class="acc">should write itself.</span> <span class="dim">Now it does. Free.</span></Fragment>
   <TableOfContents headings={tocHeadings} />
+</ToolHero>
 
 
-  <p class="hero-sub">
-    Most stores find out they sold at a loss weeks after the money left.
-    <strong>By the time the spreadsheet is reconciled, the discount that ate the margin has already run for a full campaign</strong>: and the product you thought was your bestseller turns out to have been your most expensive mistake.
-  </p>
-
-  <div class="pain-row" role="list">
-    <div class="pain-pill" role="listitem"><div class="pain-v">Manual exports</div><div class="pain-l">Every time you want data</div></div>
-    <div class="pain-pill" role="listitem"><div class="pain-v">$35–$299/mo</div><div class="pain-l">P&amp;L apps charge</div></div>
-    <div class="pain-pill" role="listitem"><div class="pain-v">Days old</div><div class="pain-l">Reporting lag</div></div>
-    <div class="pain-pill" role="listitem" style="background:var(--g-bg);border-color:var(--g-border);"><div class="pain-v" style="color:var(--g);">$0</div><div class="pain-l">This setup costs</div></div>
-  </div>
-
-  <div class="trust-row">
-    <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Updates on every order: zero manual input</span>
-    <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Revenue, COGS, fees, net margin tracked live</span>
-    <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Refunds handled automatically</span>
-    <span class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Your data, your Google account forever</span>
-  </div>
-
-  <!-- The clone link carries no affiliate code: Make documents pc= on
-       /register only. The Make.com account button sits after the setup steps. -->
-  <div class="hero-ctas">
-    <a href={SCENARIO_URL} target="_blank" rel="noopener" class="btn-outline" aria-label="Clone the tested Shopify P&L scenario">
-      Clone the tested scenario →
-    </a>
-  </div>
-  <p class="hero-cta-note">
-    Cloning needs a free Make.com account: 1,000 credits a month. Replaces TrueProfit, Lifetimely, and manual spreadsheets.
-  </p>
-
-</div>
-</section>
-
-<!-- ══ STATS ══ -->
-<div style="background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:0 24px;" role="region" aria-label="Key metrics">
-  <div class="stat-strip" style="max-width:860px;margin:0 auto;border-radius:0;border:none;" role="list">
-    <div class="stat-cell" role="listitem"><div class="stat-v">Real-time</div><div class="stat-l">P&amp;L updates</div></div>
-    <div class="stat-cell" role="listitem"><div class="stat-v">No code</div><div class="stat-l">Full deployment</div></div>
-    <div class="stat-cell" role="listitem"><div class="stat-v">$0</div><div class="stat-l">Forever cost</div></div>
-    <div class="stat-cell" role="listitem"><div class="stat-v">3 hrs</div><div class="stat-l">Avg time saved/week</div></div>
-  </div>
-</div>
 
 <!-- ══ LIVE SHEET PREVIEW ══ -->
 <section class="section" aria-labelledby="preview-h">
@@ -1117,9 +1076,8 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
       <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">com webhook logs inventory alongside your P&amp;L data automatically</span>
     </a>
     <a href="/replace-klaviyo-free/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
-      <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Replace Klaviyo: Cut Your Biggest Recurring Cost
-            Systeme</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $20+/mo</span></span>
-      <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">io replaces Klaviyo entirely at $0. Your P&amp;L will look very different</span>
+      <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Replace Klaviyo free with Systeme.io</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $20+/mo</span></span>
+      <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">2,000 contacts and unlimited emails on Systeme.io&rsquo;s free plan, with one automation rule.</span>
     </a>
     <a href="/shopify-google-ads-conversion-tracking/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
       <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Fix Google Ads Tracking: Know Your Real ROAS

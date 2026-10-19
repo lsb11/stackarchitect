@@ -188,7 +188,7 @@ export const PRODUCTS: Product[] = [
     pageTitle: 'Shopify Inventory to Sheets — Import-Ready Blueprint',
     name: 'Stocky Swap',
     blueprint: 'Blueprint 03',
-    tagline: 'Live inventory to Google Sheets',
+    tagline: 'Every order to Google Sheets',
     problem: 'Stocky is gone and I have no inventory tracking.',
     job:
       "Writes every unit sold through Shopify into a Google Sheet you own, one row per order line as each order is paid, so you keep a record of what sold and when.",

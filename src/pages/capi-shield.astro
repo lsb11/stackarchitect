@@ -233,6 +233,7 @@ const schemaGraph = {
     },
   ],
 };
+import ToolHero from '../components/ToolHero.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import InlineOffer from '../components/InlineOffer.astro';
 import { KIT_PRICE, SINGLE_PRICE, formatPrice } from '../data/products';
@@ -330,107 +331,31 @@ const tocHeadings = [
 <main id="main-content">
 
 <!-- ── HERO ── -->
-<section class="hero bg-grid" aria-label="CAPI Shield: free Shopify server-side tracking">
-  <div class="hero-inner">
-
-    <div style="font-family:var(--mono);font-size:11.5px;color:var(--text-4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;opacity:.6;">
-      Updated {formatUpdatedMonth(pageUpdated('/capi-shield/')!)} · Free Shopify server-side tracking · ~8 min read
-    </div>
-
-    <div class="hero-proof">
-      <span class="dot"></span>
-      <span class="hero-proof-txt">Closes the browser tracking gap · Runs on Make.com's free tier · No monthly fee</span>
-    </div>
-
-    <h1>
-      <span class="green">CAPI Shield</span>: send Shopify purchases to Meta&rsquo;s Conversions API<br />
-      <span class="dim">A free Make.com scenario, set up step by step</span>
-    </h1>
-
-    <p id="answer">CAPI Shield is a free Make.com scenario that takes each paid Shopify order from a webhook and sends it to Meta's Conversions API as a Purchase event, so iOS, Safari and ad blockers cannot stop it. This page is the setup. If your Meta results dropped and you do not yet know why, start with <a href="/blog/shopify-meta-roas-dropped-2026-fix/" style="color:var(--g);">the ROAS guide</a>.</p>
-
-    <p style="font-size:15px;color:var(--text-2);max-width:640px;margin:0 auto 24px;line-height:1.7;text-align:left;">
-      Shopify server-side tracking sends purchase events from Shopify's backend to Meta's Conversions API, so ad blockers and browser privacy limits cannot stop them being sent. CAPI Shield sets this up free: connect a Make.com webhook to your Shopify order-paid event, then check the first test purchase in Meta's Test Events.
-    </p>
-
+<ToolHero
+  label="CAPI Shield: free Shopify server-side tracking for Meta"
+  eyebrow="Free Meta server-side tracking"
+  updated={formatUpdatedMonth(pageUpdated('/capi-shield/')!)}
+  readTime="8 min read"
+  answer="CAPI Shield is a free Make.com scenario that takes each paid Shopify order from a webhook and sends it to Meta's Conversions API as a Purchase event, so iOS, Safari and ad blockers cannot stop it. This page is the setup. If your Meta results dropped and you do not yet know why, start with <a href='/blog/shopify-meta-roas-dropped-2026-fix/'>the ROAS guide</a>."
+  primary={{ href: '#setup', label: 'See the setup steps' }}
+  secondary={{ href: SCENARIO_URL, label: 'Preview the scenario', external: true }}
+  note="We publish no loss figure. <a href='/shopify-vs-meta-attribution-gap-calculator/'>Measure your own gap</a> before and after."
+  glance={[
+    { k: 'Sends', v: 'One <code>Purchase</code> event per paid order to Meta&rsquo;s Conversions API, with <code>event_id</code> set to the order ID' },
+    { k: 'Trigger', v: 'A Shopify order-paid webhook into a Make.com scenario' },
+    { k: 'You need', v: 'Your Meta dataset (Pixel) ID and a Conversions API access token' },
+    { k: 'Cost', v: "Make.com's free plan: 1,000 credits a month (<a href='https://www.make.com/en/pricing' target='_blank' rel='noopener'>Make pricing</a>)" },
+    { k: 'Do not combine', v: 'With Shopify&rsquo;s Facebook &amp; Instagram data sharing on Enhanced or Maximum: both already use the Conversions API, so each purchase could be sent twice.' },
+    { k: 'Not covered', v: 'Google Ads. Shopify&rsquo;s order payload has no Google click ID; see the <a href=\'/shopify-google-ads-conversion-tracking/\'>Google Ads fix</a>.' },
+  ]}
+  glanceFoot="Shopify does not document the event ID its own pixel sends, so after your first order check Test Events in Meta Events Manager for duplicates."
+  video={{ src: '/videos/capi-shield.mp4', title: 'How CAPI Shield sends Shopify purchases to Meta', caption: 'CAPI Shield overview' }}
+>
+  <Fragment slot="title"><span class="acc">CAPI Shield:</span> Shopify purchases to Meta&rsquo;s Conversions API, <span class="dim">free on Make.com.</span></Fragment>
   <TableOfContents headings={tocHeadings} />
-
-    <p style="font-size:clamp(15px,2vw,18px);color:var(--text-3);max-width:580px;margin:0 auto 24px;line-height:1.6;">
-      iOS and ad blockers stop purchase events reaching Meta from the browser. <strong style="color:var(--g);font-weight:600;">Send them server-side instead</strong>: free. <a href="/shopify-vs-meta-attribution-gap-calculator/" style="color:var(--g);">Measure your own gap</a>; we publish no loss figure.
-    </p>
-
-    <p class="hero-sub">
-      Every iOS update, ad blocker, and privacy restriction silently erases purchase events before they reach Meta and Google Ads.
-      <strong>CAPI Shield sends them server-side: free Shopify server-side tracking, no code.</strong>
-    </p>
-
-    <div class="loss-row" aria-label="What you are losing without server-side tracking">
-      {heroStats.map(s => (
-        <div class="loss-pill">
-          <div class="loss-v">{s.value}</div>
-          <div class="loss-l">{s.label}</div>
-        </div>
-      ))}
-    </div>
-
-    <div class="trust-row">
-      {["Meta Conversions API, server-side","Deploys without code","No code required","Replaces Elevar at $0"].map(t => (
-        <span class="trust-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
-          {t}
-        </span>
-      ))}
-    </div>
-
-    <!-- The clone link carries no affiliate code: Make documents pc= on
-         /register only. The Make.com account button sits after the setup
-         steps, once the reader has seen what the account is for. -->
-    <div class="hero-ctas">
-      <a href={SCENARIO_URL} target="_blank" rel="noopener" class="btn-outline" aria-label="Clone the pre-built CAPI Shield scenario">
-        Clone the scenario →
-      </a>
-    </div>
-
-    <p class="hero-cta-note">
-      Cloning needs a free Make.com account: 1,000 credits a month. Replaces Northbeam, Elevar, and Triple Whale for ad attribution tracking.
-    </p>
-
-    <p class="hero-cta-note">
-      CAPI Shield is the Meta piece of a complete setup. For the full picture across every platform, see the <a href="/blog/shopify-server-side-tracking-complete-setup-guide/">complete Shopify server-side tracking guide</a>.
-    </p>
-
-    <!-- Self-hosted video -->
-    <div class="hero-video-wrap" style="margin-top: 32px;">
-      <div class="hero-video-glow"></div>
-      <div class="hero-video-box">
-        <video
-          controls
-          preload="metadata"
-          poster="/videos/poster-16x9.jpg"
-          playsinline
-          title="How CAPI Shield fixes iOS attribution on Shopify">
-          <source src="/videos/capi-shield.mp4" type="video/mp4">
-          Your browser does not support video playback. <a href="/videos/capi-shield.mp4">Download the video</a>.
-        </video>
-      </div>
-      <div class="hero-video-caption">CAPI Shield overview · How to fix iOS attribution</div>
-    </div>
+</ToolHero>
 
 
-  </div>
-</section>
-
-<!-- ── STATS STRIP ── -->
-<div style="background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:0 24px;">
-  <div class="stat-strip" style="max-width:860px;margin:0 auto;border-radius:0;border:none;" role="list">
-    {stripStats.map(s => (
-      <div class="stat-cell" role="listitem">
-        <div class="stat-v">{s.value}</div>
-        <div class="stat-l">{s.label}</div>
-      </div>
-    ))}
-  </div>
-</div>
 
 <!-- ── WHY TRACKING FAILS ── -->
 <section class="section" aria-labelledby="why-h">

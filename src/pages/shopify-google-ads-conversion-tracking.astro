@@ -120,7 +120,7 @@ const schemaGraph = {
       "name": "Fix Shopify Google Ads Conversion Tracking Free: Enhanced Conversions",
       "description": "The free fix for most Shopify stores: turn on enhanced conversions in the Google & YouTube app. Why Google Ads shows fewer purchases than Shopify.",
       "dateModified": pageUpdated('/shopify-google-ads-conversion-tracking/'),
-      "speakable": { "@type": "SpeakableSpecification", "cssSelector": ["#answer", ".hero h1", ".sec-head h2"] },
+      "speakable": { "@type": "SpeakableSpecification", "cssSelector": ["#answer", "#hero-headline", ".sec-head h2"] },
       "breadcrumb": {
         "@type": "BreadcrumbList",
         "itemListElement": [
@@ -173,6 +173,7 @@ const schemaGraph = {
     }
   ]
 };
+import ToolHero from '../components/ToolHero.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import InlineOffer from '../components/InlineOffer.astro';
 import { KIT_PRICE, KIT_STRIPE_URL, buildStripeUrl, formatPrice } from '../data/products';
@@ -222,98 +223,30 @@ const tocHeadings = [
 <main id="main-content">
 
 <!-- ─── HERO ─── -->
-<section class="hero bg-grid" aria-label="Free Shopify Google Ads conversion tracking: server-side Enhanced Conversions">
-  <div class="hero-inner">
-
-    <div style="font-family:var(--mono);font-size:11.5px;color:var(--text-4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;opacity:.6;">
-      Updated {formatUpdatedMonth(pageUpdated('/shopify-google-ads-conversion-tracking/')!)} · Free Shopify Google Ads tracking · ~10 min read
-    </div>
-
-    <div class="hero-proof">
-      <span class="dot"></span>
-      <span class="hero-proof-txt">One setting in Shopify's free Google &amp; YouTube app · No code · No monthly fee</span>
-    </div>
-
-    <h1>
-      Shopify Google Ads is<br />
-      <span class="green">missing purchases it</span><br />
-      <span class="dim">never sees. Fix it free.</span>
-    </h1>
-
-    <p id="answer">The free fix for most Shopify stores is to turn on enhanced conversions in Shopify's Google &amp; YouTube app: Settings, Google Ads settings, Enhanced conversions, Turn on. Google then receives hashed customer data with each purchase its tag records. A Make.com server-side upload is an extra route with limits: Shopify orders carry no Google click ID.</p>
-
+<ToolHero
+  label="Free Shopify Google Ads conversion tracking"
+  eyebrow="Free Shopify Google Ads tracking"
+  updated={formatUpdatedMonth(pageUpdated('/shopify-google-ads-conversion-tracking/')!)}
+  readTime="10 min read"
+  answer="The free fix for most Shopify stores is to turn on enhanced conversions in Shopify's Google &amp; YouTube app: Settings, Google Ads settings, Enhanced conversions, Turn on. Google then receives hashed customer data with each purchase its tag records. A Make.com server-side upload is an extra route with limits: Shopify orders carry no Google click ID."
+  primary={{ href: '#setup', label: 'See the 4-step free fix' }}
+  secondary={{ href: '#make-route', label: 'The optional Make.com route' }}
+  note="Paid tools such as Stape, Littledata and Analyzify can capture the Google click ID in the browser, which the free routes cannot. <a href='#comparison'>Compared below</a>."
+  glance={[
+    { k: 'The free fix', v: 'Enhanced conversions in Shopify&rsquo;s Google &amp; YouTube app: Settings, Google Ads settings, Enhanced conversions, Turn on' },
+    { k: 'What it adds', v: 'Hashed customer data with each purchase the Google tag records, so Google can match more of them' },
+    { k: 'Cost', v: 'Free, no code' },
+    { k: 'Not covered', v: 'Purchases where the Google tag never fired' },
+    { k: 'Make.com route', v: 'Optional, with limits: no Google click ID in Shopify orders, and Google is moving click-conversion uploads to its Data Manager API' },
+  ]}
+  glanceFoot="Each of these is read on Shopify&rsquo;s or Google&rsquo;s own pages; sources and dates are under <a href='#sa-keyfacts-h'>Key facts</a>."
+  video={{ src: '/videos/shopify-google-ads-v2.mp4', title: 'How Google Ads enhanced conversions works', caption: 'Google Ads conversion tracking overview' }}
+>
+  <Fragment slot="title">Shopify Google Ads is <span class="acc">missing purchases it never sees.</span> <span class="dim">Fix it free.</span></Fragment>
   <TableOfContents headings={tocHeadings} />
+</ToolHero>
 
 
-    <p class="hero-sub">
-      iOS Link Tracking Protection, Safari's cookie limits and ad blockers all stop Google Ads connecting some purchases to the clicks that led to them.
-      <strong>Enhanced conversions sends Google hashed customer data with each purchase, so it can match more of them. Turning it on is free and takes no code.</strong>
-    </p>
-
-    <div class="loss-row" aria-label="What you are losing without server-side tracking">
-      {heroStats.map(s => (
-        <div class="loss-pill">
-          <div class="loss-v">{s.value}</div>
-          <div class="loss-l">{s.label}</div>
-        </div>
-      ))}
-    </div>
-
-    <div class="trust-row">
-      {["Enhanced conversions, free in Shopify","Make.com upload covered, with its limits"].map(t => (
-        <span class="trust-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
-          {t}
-        </span>
-      ))}
-    </div>
-
-    <div class="hero-ctas">
-      <a href="#setup" class="btn pulse" aria-label="See the four steps to turn on enhanced conversions">
-        See the 4-step free fix
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-      <a href="#make-route" class="btn-outline" aria-label="Read about the optional Make.com server-side upload">
-        The optional Make.com route
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
-      </a>
-    </div>
-
-    <p class="hero-cta-note">
-      Paid tools such as Stape, Littledata and Analyzify can also capture the Google click ID in the browser, which the free routes cannot. Compared below.
-    </p>
-
-    <!-- Self-hosted video -->
-    <div class="hero-video-wrap" style="margin-top: 32px;">
-      <div class="hero-video-glow"></div>
-      <div class="hero-video-box">
-        <video
-          controls
-          preload="metadata"
-          poster="/videos/poster-16x9.jpg"
-          playsinline
-          title="How Google Ads Enhanced Conversions works">
-          <source src="/videos/shopify-google-ads-v2.mp4" type="video/mp4">
-          Your browser does not support video playback. <a href="/videos/shopify-google-ads-v2.mp4">Download the video</a>.
-        </video>
-      </div>
-      <div class="hero-video-caption">Server-side Google Ads tracking overview · Free automation</div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ─── STATS STRIP ─── -->
-<div style="background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:0 24px;">
-  <div class="stat-strip" style="max-width:860px;margin:0 auto;border-radius:0;border:none;" role="list">
-    {stripStats.map(s => (
-      <div class="stat-cell" role="listitem">
-        <div class="stat-v">{s.value}</div>
-        <div class="stat-l">{s.label}</div>
-      </div>
-    ))}
-  </div>
-</div>
 
 <!-- ─── WHY TRACKING FAILS ─── -->
 <section class="section" aria-labelledby="why-h">

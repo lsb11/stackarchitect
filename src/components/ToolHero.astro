@@ -1,0 +1,134 @@
+---
+// The hero for every free-tool page (CAPI Shield, TikTok, Google Ads, P&L,
+// Klaviyo, Autocrat), on the pattern /stocky-swap/ proved: the headline,
+// the answer and the next step on the left, read top to bottom; the facts a
+// reader checks before committing on the right, as a list someone can quote.
+//
+// Rules, from what the old centred heroes got wrong (19 Oct 2026):
+// - One answer paragraph (#answer, 40 to 60 words). No second, third or
+//   fourth paragraph restating it: those pushed the setup below the fold.
+// - No "Replaces X at $0" lines and no stat tiles. A glance row states what
+//   the setup does or needs, each one checkable on the page or its source.
+// - No affiliate button here; the first one sits after the setup steps.
+interface Row { k: string; v: string } // v may hold links (set:html)
+interface Cta { href: string; label: string; external?: boolean }
+interface Props {
+  label: string;           // aria-label for the section
+  eyebrow: string;         // category, e.g. "Free Meta server-side tracking"
+  updated: string;         // already formatted, e.g. "October 2026"
+  readTime: string;        // e.g. "8 min read"
+  answer: string;          // the 40 to 60 word answer, HTML allowed
+  primary: Cta;
+  secondary?: Cta;
+  note?: string;           // one line under the buttons, HTML allowed
+  glanceTitle?: string;
+  glance: Row[];
+  glanceFoot?: string;     // HTML allowed
+  accent?: 'green' | 'tiktok';
+  video?: { src: string; title: string; caption: string };
+}
+const { label, eyebrow, updated, readTime, answer, primary, secondary, note, glanceTitle = 'At a glance', glance, glanceFoot, accent = 'green', video } = Astro.props;
+---
+
+<section class={`sa-th sa-th--${accent}`} aria-label={label}>
+  <div class="sa-th-inner">
+    <div class="sa-th-lede">
+      <p class="sa-th-eyebrow"><span class="lead">{eyebrow}</span><span class="sep">/</span><span>Updated {updated}</span><span class="sep">/</span><span>{readTime}</span></p>
+      <h1 id="hero-headline" class="sa-th-h1"><slot name="title" /></h1>
+      <p id="answer" class="sa-th-answer" set:html={answer} />
+      <div class="sa-th-ctas">
+        <a href={primary.href} class="sa-th-btn sa-th-btn--primary" {...(primary.external ? { target: '_blank', rel: 'noopener' } : {})}>{primary.label}</a>
+        {secondary && <a href={secondary.href} class="sa-th-btn" {...(secondary.external ? { target: '_blank', rel: 'noopener' } : {})}>{secondary.label}</a>}
+      </div>
+      {note && <p class="sa-th-note" set:html={note} />}
+      <p class="sa-th-by"><span class="sa-th-av" aria-hidden="true">L</span>Built and tested by <a href="/about/">Luke Sandelands</a>. <a href="/how-we-test/">How we check</a>.</p>
+      <slot />
+    </div>
+
+    <aside class="sa-th-side" aria-labelledby="sa-th-glance-h">
+      <div class="sa-th-card">
+        <h2 id="sa-th-glance-h" class="sa-th-card-h">{glanceTitle}</h2>
+        <dl class="sa-th-dl">
+          {glance.map((r) => (<div class="sa-th-row"><dt>{r.k}</dt><dd set:html={r.v} /></div>))}
+        </dl>
+        {glanceFoot && <p class="sa-th-foot" set:html={glanceFoot} />}
+      </div>
+      {video && (
+        <figure class="sa-th-video">
+          <video controls preload="metadata" poster="/videos/poster-16x9.jpg" playsinline title={video.title}>
+            <source src={video.src} type="video/mp4" />
+            Your browser does not support video playback. <a href={video.src}>Download the video</a>.
+          </video>
+          <figcaption>{video.caption}</figcaption>
+        </figure>
+      )}
+    </aside>
+  </div>
+</section>
+
+<style>
+  .sa-th {
+    --acc: #34d377; --acc-soft: rgba(52,211,119,.10); --acc-line: rgba(52,211,119,.55);
+    position: relative; overflow: hidden; padding: 44px 24px 56px; text-align: left;
+    background-color: #0a0d0b;
+    background-image: radial-gradient(ellipse 46% 60% at 76% 18%, var(--acc-soft) 0%, transparent 68%), radial-gradient(circle, #1a201d 1px, transparent 1px);
+    background-size: 100% 100%, 44px 44px;
+    border-bottom: 1px solid #1c2320;
+  }
+  .sa-th--tiktok { --acc: #ff4f7b; --acc-soft: rgba(255,46,99,.10); --acc-line: rgba(255,79,123,.6); }
+  .sa-th-inner { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr); gap: 28px 56px; align-items: start; }
+
+  .sa-th-eyebrow { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; margin: 0 0 20px; font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #93a09a; }
+  .sa-th-eyebrow .lead { color: var(--acc); }
+  .sa-th-eyebrow .sep { opacity: .35; }
+
+  .sa-th-h1 { font-size: clamp(34px, 4.3vw, 56px); line-height: 1.02; letter-spacing: -.04em; font-weight: 700; color: #f2f5f3; margin: 0 0 22px; max-width: 17ch; text-wrap: balance; }
+  .sa-th-h1 :global(.acc) { color: var(--acc); }
+  .sa-th-h1 :global(.dim) { color: #7f8b85; }
+
+  .sa-th-answer { font-size: 18px; line-height: 1.7; color: #dfe6e2; max-width: 60ch; margin: 0 0 26px; padding-left: 18px; border-left: 2px solid var(--acc-line); }
+  .sa-th-answer :global(a) { color: var(--acc); text-decoration: underline; }
+
+  .sa-th-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 14px; }
+  .sa-th-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border-radius: 10px; font-size: 15px; font-weight: 700; text-decoration: none; border: 1px solid #2f3733; color: #f2f5f3; background: rgba(255,255,255,.02); transition: border-color .2s, background .2s, transform .2s; }
+  .sa-th-btn:hover { border-color: var(--acc); transform: translateY(-1px); }
+  .sa-th-btn--primary { background: var(--acc); border-color: var(--acc); color: #04110a !important; }
+  .sa-th--tiktok .sa-th-btn--primary { color: #19020a !important; }
+  .sa-th-btn--primary:hover { filter: brightness(1.06); }
+  .sa-th-note { font-size: 14px; line-height: 1.6; color: #93a09a; max-width: 60ch; margin: 0 0 18px; }
+  .sa-th-note :global(a) { color: var(--acc); text-decoration: underline; }
+  .sa-th-by { font-size: 14px; line-height: 26px; color: #93a09a; margin: 0; }
+  .sa-th-by a { color: #dfe6e2; text-decoration: underline; text-decoration-color: rgba(223,230,226,.35); }
+  .sa-th-av { width: 26px; height: 26px; border-radius: 50%; display: inline-grid; place-items: center; vertical-align: middle; background: var(--acc-soft); border: 1px solid var(--acc-line); color: var(--acc); font-size: 12px; font-weight: 700; margin-right: 8px; }
+
+  .sa-th-card { position: relative; border: 1px solid #262c29; border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.01)); padding: 22px 22px 18px; box-shadow: 0 30px 60px -40px rgba(0,0,0,.9); }
+  .sa-th-card::before { content: ''; position: absolute; left: 22px; right: 22px; top: -1px; height: 1px; background: linear-gradient(90deg, transparent, var(--acc), transparent); opacity: .7; }
+  .sa-th-card-h { font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--acc); margin: 0 0 12px; }
+  .sa-th-dl { margin: 0; }
+  .sa-th-row { display: grid; grid-template-columns: 112px 1fr; gap: 12px; padding: 11px 0; border-top: 1px solid #1f2622; }
+  .sa-th-row:first-child { border-top: 0; padding-top: 4px; }
+  .sa-th-row dt { font-size: 13px; font-weight: 600; color: #93a09a; line-height: 1.5; }
+  .sa-th-row dd { margin: 0; font-size: 15px; line-height: 1.55; color: #dfe6e2; }
+  .sa-th-row dd :global(a) { color: var(--acc); text-decoration: underline; }
+  .sa-th-row dd :global(code) { font-size: 13px; color: #f2f5f3; }
+  .sa-th-foot { margin: 12px 0 0; padding-top: 12px; border-top: 1px solid #1f2622; font-size: 13px; line-height: 1.55; color: #93a09a; }
+  .sa-th-foot :global(a) { color: var(--acc); text-decoration: underline; }
+
+  .sa-th-video { margin: 18px 0 0; }
+  .sa-th-video video { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; border: 1px solid #262c29; background: #000; }
+  .sa-th-video figcaption { margin-top: 8px; font-size: 13px; color: #93a09a; }
+
+  @media (max-width: 960px) {
+    .sa-th { padding: 28px 16px 40px; }
+    .sa-th-inner { grid-template-columns: 1fr; }
+    .sa-th-h1 { max-width: none; }
+  }
+  @media (max-width: 560px) {
+    .sa-th-eyebrow { font-size: 11px; margin-bottom: 14px; }
+    .sa-th-eyebrow .sep { display: none; }
+    .sa-th-answer { font-size: 17px; padding-left: 14px; }
+    .sa-th-btn { width: 100%; }
+    .sa-th-row { grid-template-columns: 1fr; gap: 2px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .sa-th-btn { transition: none; } .sa-th-btn:hover { transform: none; } }
+</style>

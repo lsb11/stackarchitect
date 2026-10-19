@@ -249,6 +249,7 @@ const schemaGraph = {
     }
   ]
 };
+import ToolHero from '../components/ToolHero.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import { KIT_PRICE, formatPrice } from '../data/products';
 const kitPrice = formatPrice(KIT_PRICE);
@@ -343,35 +344,29 @@ const tocHeadings = [
 <main id="main-content">
 
 <!-- ── HERO ── -->
-<section class="hero bg-grid" aria-label="Replace Klaviyo free with Systeme.io">
-  <div class="hero-inner">
-
-    <div style="font-family:var(--mono);font-size:11.5px;color:var(--text-4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;opacity:.6;">
-      Updated {UPDATED_LABEL} · Free plan covers 2,000 contacts · No code required
-    </div>
-
-    <div class="hero-proof">
-      <span class="dot"></span>
-      <span class="hero-proof-txt">2,000 contacts on Systeme.io free tier · Unlimited sends · No monthly fee</span>
-    </div>
-
-    <h1>
-      Stop paying Klaviyo<br />
-      <span class="green">$20+/month.</span><br />
-      <span class="dim">Replace it free today.</span>
-    </h1>
-
-    <p id="answer">Systeme.io's free plan holds 2,000 contacts with unlimited email sends, against Klaviyo's 250, which makes it a free home for a small Shopify list. Its pricing FAQ lists one email campaign and one automation rule on the free plan, so one main flow plus broadcasts is free; several flows need its $17 plan.</p>
-
+<ToolHero
+  label="Replace Klaviyo free with Systeme.io"
+  eyebrow="Free Klaviyo alternative"
+  updated={UPDATED_LABEL}
+  readTime="10 min read"
+  answer="Systeme.io's free plan holds 2,000 contacts with unlimited email sends, against Klaviyo's 250, which makes it a free home for a small Shopify list. Its pricing FAQ lists one email campaign and one automation rule on the free plan, so one main flow plus broadcasts is free; several flows need its $17 plan."
+  primary={{ href: '#klaviyo-savings-calculator', label: 'Compare your Klaviyo bill' }}
+  secondary={{ href: '#how-it-works', label: 'See the migration steps' }}
+  glance={[
+    { k: 'Free home', v: 'Systeme.io&rsquo;s free plan: 2,000 contacts and unlimited emails' },
+    { k: 'Free plan limits', v: 'One email campaign, one automation rule and three funnels' },
+    { k: 'Klaviyo free', v: '250 active profiles; $20 a month from 251 to 500' },
+    { k: 'Best for', v: 'A small list with one main flow plus broadcasts' },
+    { k: 'Outgrow it', v: 'Several flows need Systeme.io&rsquo;s $17 plan' },
+  ]}
+  glanceFoot="Prices and limits are read on each vendor&rsquo;s own pricing page; sources and dates are under <a href='#sa-keyfacts-h'>Key facts</a>."
+>
+  <Fragment slot="title">Stop paying Klaviyo <span class="acc">$20+/month.</span> <span class="dim">Replace it free.</span></Fragment>
   <TableOfContents headings={tocHeadings} />
+</ToolHero>
 
-
-    <p class="hero-sub">
-      The bill grows with your audience, not with what your audience earns you.
-      <strong>Every dormant subscriber, every duplicate, every address that has not opened anything in two years is charged at the same rate as your best buyer.</strong> Most operators discover this only when a seasonal signup spike lands on the invoice.
-    </p>
-
-    <!-- ── CALCULATOR ── -->
+<section class="section klaviyo-calc-section" aria-label="Klaviyo savings calculator" style="padding-top:40px;padding-bottom:40px;">
+  <div class="inner" style="max-width:720px;margin:0 auto;">
     <div class="calc-wrap" id="klaviyo-savings-calculator" aria-label="Klaviyo savings calculator">
       <span class="calc-label">Calculate your Klaviyo savings</span>
       <p style="font-size:14px;color:var(--text-3);margin-bottom:20px;">What is your monthly Klaviyo bill, and how many contacts do you have?</p>
@@ -408,43 +403,6 @@ const tocHeadings = [
         <a href="#how-it-works" class="btn btn-sm pulse" id="calc-affiliate-btn" style="margin-top:20px;display:none;">See the migration steps →</a>
       </div>
     </div>
-
-    <div class="cost-row" aria-label="What Klaviyo costs vs Systeme.io">
-      {heroStats.map(s => (
-        <div class={`cost-pill${s.isGreen ? "" : ""}`}
-             style={s.isGreen ? "background:var(--g-bg);border-color:var(--g-border);" : ""}>
-          <div class="cost-v" style={s.isGreen ? "color:var(--g);" : ""}>{s.value}</div>
-          <div class="cost-l">{s.label}</div>
-        </div>
-      ))}
-    </div>
-
-    <div class="trust-row">
-      {["Unlimited emails on free plan","2,000 contacts free (8× Klaviyo)","Migrate without a developer","Replaces ClickFunnels too"].map(t => (
-        <span class="trust-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
-          {t}
-        </span>
-      ))}
-    </div>
-
-    <!-- Systeme.io is what this page recommends, so it is the page's one
-         affiliate button. Since 25 Sep 2026 it sits after the migration steps,
-         not here: no affiliate button goes above the first H2. -->
-    <div class="hero-ctas">
-      <a href="#how-it-works" class="btn-outline"
-         onclick="event.preventDefault();document.getElementById('how-it-works').scrollIntoView({behavior:'smooth'})"
-         aria-label="See how Klaviyo replacement works">
-        See how it works
-      </a>
-    </div>
-
-    <p class="hero-cta-note">
-      Powered by Systeme.io:
-      free forever up to 2,000 contacts. Replaces Klaviyo, ClickFunnels, and Teachable at $0.
-    </p>
-
-
   </div>
 </section>
 
@@ -842,7 +800,7 @@ const tocHeadings = [
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;">
     <a href="#compare-h" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
       <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Klaviyo vs Systeme.io: Full Comparison</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">On this page</span></span>
-      <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">Every feature compared, and why most stores never need the Systeme.io paid plan</span>
+      <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">Every feature compared, and when the free plan stops being enough</span>
     </a>
     <a href="/capi-shield/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
       <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">CAPI Shield: Fix Broken Ad Tracking While You&#x27;re Here
