@@ -1,7 +1,7 @@
 ---
 title: "Fix Shopify Conversion Tracking After iOS Updates 2026"
 heading: "Which iOS Privacy Changes Break Shopify Conversion Tracking, and What Each One Stops"
-description: "App Tracking Transparency, Safari ITP and Link Tracking Protection each stop a different part of Shopify conversion tracking. Which one affects you, and the fix for each."
+description: "ATT, Safari ITP and Link Tracking Protection each break a different part of Shopify conversion tracking. Find which affects your store, and the fix for each."
 answer: "Three Apple privacy features break Shopify conversion tracking in different ways: App Tracking Transparency limits tracking inside apps, Safari's Intelligent Tracking Prevention shortens cookie lifetimes, and Link Tracking Protection strips click IDs from some links. This guide takes each in turn and gives the fix for each. The common fix is sending purchases server-side."
 publishDate: "2026-03-15"
 updatedDate: "2026-10-15"

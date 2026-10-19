@@ -1,7 +1,7 @@
 ---
 title: "Free Shopify CRO: Find Where Buyers Drop Off First"
 heading: "Free Shopify Conversion Rate Optimisation: Find the Leak Before You Buy a Fix"
-description: "A free, step-by-step way to find where a Shopify store loses buyers, using Shopify's own funnel report, GA4 and Microsoft Clarity, then the fix that matches each drop-off."
+description: "Find where your Shopify store loses buyers, free, with Shopify's funnel report, GA4 and Microsoft Clarity, then apply the fix that matches each drop-off."
 answer: "Free Shopify conversion rate optimisation starts with finding the step where buyers leave, not with installing apps. Shopify's Conversion rate breakdown report shows it at no cost: sessions, cart additions, checkout and purchase. Check that tracking agrees with Shopify's order count, find the weakest step, watch those sessions in Microsoft Clarity, then fix that step only."
 publishDate: "2026-04-21"
 updatedDate: "2026-10-15"
