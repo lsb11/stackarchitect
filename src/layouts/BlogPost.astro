@@ -1,5 +1,14 @@
 ---
 import StockyTimeline from '../components/StockyTimeline.astro';
+import ToolShot from '../components/ToolShot.astro';
+// A screenshot of the free tool each post sends readers to (src/data/toolShots.ts).
+const POST_SHOT: Record<string, string> = {
+  'shopify-meta-roas-dropped-2026-fix': 'attribution-gap-example',
+  'how-to-fix-shopify-conversion-tracking-after-ios-updates': 'attribution-gap-example',
+  'meta-one-click-conversions-api-shopify': 'capi-validator-example',
+  'shopify-stocky-data-export-before-shutdown': 'stocky-risk-example',
+  'when-to-upgrade-free-make-google-workspace': 'make-vs-zapier-example',
+};
 import KeyFacts from '../components/KeyFacts.astro';
 import Base from './Base.astro';
 import FAQSection from '../components/FAQSection.astro';
@@ -176,6 +185,8 @@ const pageTitle = (title + SUFFIX).length <= 60 ? title + SUFFIX : title;
     <article id="post-body" class="sa-prose">
       <slot />
     </article>
+
+    {POST_SHOT[entry.id] && <ToolShot id={POST_SHOT[entry.id]} />}
 
     {cloak && (
       <div class="sa-post-aff">

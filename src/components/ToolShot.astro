@@ -1,0 +1,34 @@
+---
+// A screenshot of one of the free tools in use, linked to the tool.
+// Data and dimensions: src/data/toolShots.ts.
+import { TOOL_SHOTS, TOOL_SHOTS_TAKEN } from '../data/toolShots';
+interface Props { id: string; caption?: string }
+const { id, caption } = Astro.props;
+const s = TOOL_SHOTS[id];
+if (!s) throw new Error(`ToolShot: unknown id ${id}`);
+const taken = new Date(TOOL_SHOTS_TAKEN + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+<figure class="sa-shot">
+  <a href={s.route} class="sa-shot-frame" aria-label={`Open the ${s.name}`}>
+    <span class="sa-shot-bar" aria-hidden="true"><i></i><i></i><i></i><span>stackarchitect.xyz{s.route}</span></span>
+    <img src={s.src} width={s.w} height={s.h} alt={s.alt} loading="lazy" decoding="async" />
+  </a>
+  <figcaption>
+    {caption ?? s.alt} <span class="sa-shot-meta">Screenshot of the live tool, <time datetime={TOOL_SHOTS_TAKEN}>{taken}</time>, on its example inputs.</span>
+    <a href={s.route}>Run the {s.name} with your own numbers</a>
+  </figcaption>
+</figure>
+
+<style>
+  .sa-shot { max-width: 760px; margin: 32px auto; text-align: left; }
+  .sa-shot-frame { display: block; border: 1px solid #262c29; border-radius: 12px; overflow: hidden; background: #000; box-shadow: 0 18px 50px -24px rgba(0,0,0,.9), 0 0 0 1px rgba(52,211,119,.06); transition: border-color .2s, transform .2s; }
+  .sa-shot-frame:hover { border-color: rgba(52,211,119,.45); transform: translateY(-2px); }
+  .sa-shot-bar { display: flex; align-items: center; gap: 6px; padding: 9px 12px; background: #0c0f0d; border-bottom: 1px solid #1f2622; font-size: 12px; color: #93a09a; }
+  .sa-shot-bar i { width: 9px; height: 9px; border-radius: 50%; background: #2f3733; display: inline-block; }
+  .sa-shot-bar span { margin-left: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sa-shot img { display: block; width: 100%; height: auto; }
+  .sa-shot figcaption { margin-top: 12px; font-size: 15px; line-height: 1.6; color: #b6c0ba; }
+  .sa-shot-meta { color: #93a09a; }
+  .sa-shot figcaption a { display: inline-block; margin-top: 6px; color: #34d377; text-decoration: underline; font-weight: 600; }
+  @media (prefers-reduced-motion: reduce) { .sa-shot-frame { transition: none; } .sa-shot-frame:hover { transform: none; } }
+</style>

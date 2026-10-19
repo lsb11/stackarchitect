@@ -1,5 +1,6 @@
 ---
 import KeyFacts from '../components/KeyFacts.astro';
+import { TOOL_SHOTS } from '../data/toolShots';
 import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
 import { READ_DATE } from '../data/priceSources';
@@ -164,6 +165,7 @@ const tocHeadings = [
       .section-sub{font-size:18px;color:#93a09a;max-width:600px;line-height:1.65;margin-bottom:60px;letter-spacing:-.2px;}
       .divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);}
       .tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+      .tool-card-shot{display:block;width:calc(100% + 64px);max-width:none;margin:-36px -32px 22px;height:170px;object-fit:cover;object-position:top left;border-bottom:1px solid rgba(255,255,255,.06);}
       .tool-card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:20px;padding:36px 32px;text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:all .3s ease;position:relative;overflow:hidden;}
       .tool-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent);opacity:0;transition:opacity .3s ease;}
       .tool-card:hover{background:rgba(0,168,84,.05);border-color:var(--green-border);transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.3);}
@@ -318,8 +320,8 @@ const tocHeadings = [
             <div style="flex:1;">
               <div class="tool-card-tag"><span class="tool-tag-dot"></span>Inventory Management<span class="featured-badge">STOCKY CLOSED AUG 2026. EXPORT STILL OPEN</span></div>
               <div class="tool-card-title" itemprop="name">Stocky Swap</div>
-              <p class="tool-card-desc" itemprop="description"><strong>Stocky shut down on August 31, 2026.</strong> Stocky Swap is the free replacement: real-time inventory visibility in Google Sheets, no monthly fees, no code, no paid apps.</p>
-              <div class="tool-card-saving">Replaces: Stocky, Inventory Planner, Skubana, replaces paid tools listed at $49–$119/mo</div>
+              <p class="tool-card-desc" itemprop="description"><strong>Stocky shut down on August 31, 2026.</strong> Stocky Swap is a free order log: every paid order's line items written to a Google Sheet you own, as it happens. No monthly fees, no code.</p>
+              <div class="tool-card-saving">Covers: an order-by-order record of stock going out. Not purchase orders or forecasting.</div>
             </div>
             <div style="flex-shrink:0;">
               <div class="tool-card-cta" style="white-space:nowrap;">Replace Stocky Free &rarr;</div>
@@ -398,15 +400,17 @@ const tocHeadings = [
 
           <!-- EMQ Score Estimator -->
           <a href="/meta-emq-score-estimator/" class="tool-card calc-card">
+            <img class="tool-card-shot" src={TOOL_SHOTS['emq-checker-example'].src} width={TOOL_SHOTS['emq-checker-example'].w} height={TOOL_SHOTS['emq-checker-example'].h} alt={TOOL_SHOTS['emq-checker-example'].alt} loading="lazy" decoding="async" />
             <div class="tool-card-tag calc-tag"><span class="tool-tag-dot" style="background:#6cc3e6;"></span>Diagnostic</div>
             <div class="tool-card-title">Meta EMQ Score Estimator</div>
-            <p class="tool-card-desc">Estimate your Meta Conversions API Event Match Quality score <strong>before you build</strong>. See exactly how much ad spend you're losing to a low EMQ and what fixing it recovers in ROAS.</p>
+            <p class="tool-card-desc">Tick the customer details your events send and see <strong>which match keys are missing</strong> before you build. Meta shows your real score in Events Manager.</p>
             <div class="tool-card-saving calc-saving">Pairs with: CAPI Shield deployment</div>
             <div class="tool-card-cta">Run Diagnostic &rarr;</div>
           </a>
 
           <!-- Meta CAPI Payload Validator -->
           <a href="/meta-capi-payload-validator/" class="tool-card calc-card">
+            <img class="tool-card-shot" src={TOOL_SHOTS['capi-validator-example'].src} width={TOOL_SHOTS['capi-validator-example'].w} height={TOOL_SHOTS['capi-validator-example'].h} alt={TOOL_SHOTS['capi-validator-example'].alt} loading="lazy" decoding="async" />
             <div class="tool-card-tag calc-tag"><span class="tool-tag-dot" style="background:#6cc3e6;"></span>Validator</div>
             <div class="tool-card-title">Meta CAPI Payload Validator</div>
             <p class="tool-card-desc">Paste a Meta Conversions API event and see what Meta will <strong>reject or fail to match</strong>: missing required fields, unhashed customer data and millisecond timestamps.</p>
@@ -416,9 +420,10 @@ const tocHeadings = [
 
           <!-- Attribution Gap -->
           <a href="/shopify-vs-meta-attribution-gap-calculator/" class="tool-card calc-card">
+            <img class="tool-card-shot" src={TOOL_SHOTS['attribution-gap-example'].src} width={TOOL_SHOTS['attribution-gap-example'].w} height={TOOL_SHOTS['attribution-gap-example'].h} alt={TOOL_SHOTS['attribution-gap-example'].alt} loading="lazy" decoding="async" />
             <div class="tool-card-tag calc-tag"><span class="tool-tag-dot" style="background:#6cc3e6;"></span>Diagnostic</div>
             <div class="tool-card-title">Attribution Gap Calculator</div>
-            <p class="tool-card-desc">Shopify shows one number. Meta shows another. GA4 shows a third. This calculator tells you <strong>which platform to trust</strong>, why the numbers differ, and what to fix first.</p>
+            <p class="tool-card-desc">Shopify shows one number. Meta shows another. GA4 shows a third. This calculator shows <strong>the gap between them</strong>, your blended ROAS, and the likely causes to check first.</p>
             <div class="tool-card-saving calc-saving">Pairs with: CAPI Shield deployment</div>
             <div class="tool-card-cta">Calculate Gap &rarr;</div>
           </a>
@@ -434,24 +439,27 @@ const tocHeadings = [
 
           <!-- Stocky Migration Risk -->
           <a href="/stocky-migration-risk-scorer/" class="tool-card calc-card">
+            <img class="tool-card-shot" src={TOOL_SHOTS['stocky-risk-example'].src} width={TOOL_SHOTS['stocky-risk-example'].w} height={TOOL_SHOTS['stocky-risk-example'].h} alt={TOOL_SHOTS['stocky-risk-example'].alt} loading="lazy" decoding="async" />
             <div class="tool-card-tag calc-tag"><span class="tool-tag-dot" style="background:#6cc3e6;"></span>Migration</div>
             <div class="tool-card-title">Stocky Migration Risk Scorer</div>
-            <p class="tool-card-desc">Stocky closed on 31 August 2026. Score your migration risk based on SKU count, supplier complexity, and reorder frequency. Get a <strong>personalised replacement plan</strong>.</p>
+            <p class="tool-card-desc">Stocky closed on 31 August 2026. Score your migration risk based on SKU count, supplier complexity, and reorder frequency. Get <strong>a risk band and the order to move things in</strong>.</p>
             <div class="tool-card-saving calc-saving">Pairs with: Stocky Swap deployment</div>
             <div class="tool-card-cta">Score My Risk &rarr;</div>
           </a>
 
                               <!-- Make vs Zapier -->
           <a href="/make-vs-zapier-cost-calculator/" class="tool-card calc-card">
+            <img class="tool-card-shot" src={TOOL_SHOTS['make-vs-zapier-example'].src} width={TOOL_SHOTS['make-vs-zapier-example'].w} height={TOOL_SHOTS['make-vs-zapier-example'].h} alt={TOOL_SHOTS['make-vs-zapier-example'].alt} loading="lazy" decoding="async" />
             <div class="tool-card-tag calc-tag"><span class="tool-tag-dot" style="background:#6cc3e6;"></span>Cost</div>
             <div class="tool-card-title">Make vs Zapier Calculator</div>
-            <p class="tool-card-desc">Calculate the exact annual cost difference between Make.com and Zapier for your automation volume. See your <strong>monthly saving from switching</strong> platforms.</p>
+            <p class="tool-card-desc">Enter your runs and steps per month and see <strong>the monthly and yearly cost on each platform</strong>, including which features need a paid plan.</p>
             <div class="tool-card-saving calc-saving">See the yearly difference at your volume</div>
             <div class="tool-card-cta">Compare Costs &rarr;</div>
           </a>
 
           <!-- App Stack Kill or Keep -->
           <a href="/shopify-app-stack-kill-or-keep-auditor/" class="tool-card calc-card">
+            <img class="tool-card-shot" src={TOOL_SHOTS['app-stack-auditor-example'].src} width={TOOL_SHOTS['app-stack-auditor-example'].w} height={TOOL_SHOTS['app-stack-auditor-example'].h} alt={TOOL_SHOTS['app-stack-auditor-example'].alt} loading="lazy" decoding="async" />
             <div class="tool-card-tag calc-tag"><span class="tool-tag-dot" style="background:#6cc3e6;"></span>Audit</div>
             <div class="tool-card-title">App Stack Kill or Keep</div>
             <p class="tool-card-desc">Select every app you currently pay for. Get your <strong>total monthly app bill</strong>, which apps can be replaced free, and your personalised kill list with setup links.</p>

@@ -17,7 +17,7 @@ const faqs: Faq[] = [
   { q: "Does replacing apps affect Shopify store speed?",
     a: "Replacing installed apps with server-side webhook automations typically improves store performance. Every Shopify app loads JavaScript on your storefront, increasing page weight. The $0 stack runs server-side (nothing loads in the browser), so your Core Web Vitals scores improve." },
   { q: "How accurate is this calculator?",
-    a: "It is as accurate as the spend you enter: the result is your own monthly figures, annualised. The recovery percentages (50%, 85%, 100%) are scenarios you choose for how much of the stack you replace, not measured results. The vendor prices elsewhere on this page were read on each vendor's pricing page on 25 September 2026." },
+    a: "It is as accurate as the spend you enter: the result is your own monthly figures, annualised. The percentages (50%, 85%, 100%) are shares you choose for how much of the stack you replace, not measured results. The vendor prices elsewhere on this page were read on each vendor's pricing page on 25 September 2026." },
 ];
 import Disclosure from '../components/Disclosure.astro';
 import AuthorCard from '../components/AuthorCard.astro';
@@ -42,7 +42,7 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
         "@id": "https://stackarchitect.xyz/shopify-app-cost-calculator/#webpage",
         "url": "https://stackarchitect.xyz/shopify-app-cost-calculator/",
         "name": "Free Shopify App Cost Calculator 2026: See Exactly How Much You Overpay",
-        "description": "Free interactive tool that calculates exactly how much Shopify stores overpay on apps and identifies which apps can be replaced for $0. Enter monthly spend across marketing, inventory, and tracking categories to see annual waste, recovery potential, and a personalised free deployment plan.",
+        "description": "Free interactive tool that turns your monthly Shopify app spend into an annual figure and shows which categories have a free replacement. Enter monthly spend across marketing, inventory, and tracking categories to see annual waste, recovery potential, and a personalised free deployment plan.",
         "inLanguage": "en-GB",
         "dateModified": pageUpdated('/shopify-app-cost-calculator/'),
         "isPartOf": { "@id": "https://stackarchitect.xyz/#website" },
@@ -116,27 +116,16 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
     <p style="font-size:13px;color:var(--text-4);max-width:540px;margin:0 auto 24px;line-height:1.6;">
       Tempted to just build the missing feature instead of paying for another app? See <a href="/shopify-app-development-cost/" style="color:var(--g);text-decoration:underline;">what a custom Shopify app actually costs</a> before you commission one.
     </p>
-    <div class="hero-stats">
-      <div class="hero-stat"><div class="hero-stat-v">$0</div><div class="hero-stat-l">Cost of the free stack</div></div>
-      <div class="hero-stat"><div class="hero-stat-v">3–7 apps</div><div class="hero-stat-l">Replaceable for $0</div></div>
-      <div class="hero-stat"><div class="hero-stat-v">No code</div><div class="hero-stat-l">To deploy free stack</div></div>
-      <div class="hero-stat"><div class="hero-stat-v">$0</div><div class="hero-stat-l">Monthly cost</div></div>
-    </div>
-    <a href="#sa-calculator" class="btn pulse" onclick="event.preventDefault();document.getElementById('sa-calculator').scrollIntoView({behavior:'smooth'})">
-      Calculate My Waste Now
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
-    </a>
   </div>
 </section>
 
 <!-- CALCULATOR -->
-<section class="section-alt" id="sa-calculator" aria-labelledby="calc-h">
+<section class="section-alt" id="sa-calculator" aria-labelledby="calc-h" style="padding-top:28px;">
   <Disclosure />
   <div class="inner">
     <div class="sec-head">
-      <span class="tag tag-dim" style="margin-bottom:14px;display:inline-flex;">Diagnostic engine</span>
       <h2 id="calc-h">Your Shopify App <span style="color:var(--red)">Waste</span> Calculator</h2>
-      <p>Enter your current monthly spend. Results are instant and show your exact annual loss and recovery plan.</p>
+      <p>Enter what you pay each month. The totals update as you type.</p>
     </div>
 
     <div class="calc-card">
@@ -173,11 +162,11 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
         </div>
 
         <div class="inp-group" style="margin-bottom:20px;">
-          <label>Recovery scenario</label>
-          <select id="i-scenario" class="inp-field select-field" onchange="calcUpdate()" aria-label="Recovery scenario">
-            <option value="0.5">Conservative: Replace core overlaps only (50% recovery)</option>
-            <option value="0.85" selected>Aggressive: Maximum free stack deployment (85% recovery)</option>
-            <option value="1.0">Full reset: 100% free native architecture</option>
+          <label>If you replace</label>
+          <select id="i-scenario" class="inp-field select-field" onchange="calcUpdate()" aria-label="Share of this spend you replace">
+            <option value="0.5">Half of it: the obvious overlaps (50%)</option>
+            <option value="0.85" selected>Most of it: keep one or two paid tools (85%)</option>
+            <option value="1.0">All of it (100%)</option>
           </select>
         </div>
 
@@ -187,7 +176,7 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
             <div class="live-val">$<span id="live-mo">800</span><span class="live-mo">/mo</span></div>
           </div>
           <div>
-            <div class="live-label">Recoverable per year</div>
+            <div class="live-label">Freed per year, at that share</div>
             <div class="live-val" style="color:var(--g)">$<span id="live-yr">8,160</span></div>
           </div>
           <button class="calc-run-btn" onclick="showGate()" aria-label="Show my full results">
@@ -204,7 +193,7 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
           <p>Enter your email to unlock your full breakdown, recovery plan, and free tools to fix it.</p>
           <div class="gate-preview" aria-hidden="true">
             <div class="gp-cell"><div class="gp-val" id="gp-waste">$9,600</div><div class="gp-label">Annual waste</div></div>
-            <div class="gp-cell"><div class="gp-val" id="gp-save">$8,160</div><div class="gp-label">Recoverable</div></div>
+            <div class="gp-cell"><div class="gp-val" id="gp-save">$8,160</div><div class="gp-label">Freed per year</div></div>
           </div>
           <div class="gate-form">
             <input type="email" id="gate-email" class="gate-inp" placeholder="your@email.com" aria-label="Email to unlock results">
@@ -220,7 +209,7 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
           </h2>
           <div class="metrics-grid">
             <div class="metric waste"><div class="metric-v" id="r-m1">$9,600</div><div class="metric-l">Annual waste</div></div>
-            <div class="metric save"><div class="metric-v" id="r-m2">$8,160</div><div class="metric-l">Recoverable/year</div></div>
+            <div class="metric save"><div class="metric-v" id="r-m2">$8,160</div><div class="metric-l">Freed per year</div></div>
             <div class="metric"><div class="metric-v" id="r-m3">$680</div><div class="metric-l">Monthly saving</div></div>
             <div class="metric"><div class="metric-v" id="r-m4" style="color:var(--amber)">High</div><div class="metric-l">Waste tier</div></div>
           </div>
@@ -432,7 +421,7 @@ import CalculatorEmbedWidget from '../components/CalculatorEmbedWidget.astro';
 
     <div class="prose" style="margin-top:24px;">
       <h3>How this calculator works out your number</h3>
-      <p>The tool sums your monthly spend across three highest-cost categories (marketing, inventory, and tracking) then multiplies by twelve for annual exposure. The recovery slider applies a realistic replacement rate: <strong>conservative (50%)</strong> assumes you only swap the obvious overlaps; <strong>aggressive (85%)</strong> assumes you deploy the full free stack but keep one or two genuinely irreplaceable paid tools; <strong>full reset (100%)</strong> assumes every category moves to a free native or Make.com-based alternative. Most stores land in the 85% band, because a small number of tools (advanced SMS, true multi-channel inventory, enterprise loyalty) are worth keeping. The point of the calculator is not to argue every app is waste; it is to separate the spend that buys real differentiated value from the spend that simply duplicates what a webhook and a Google Sheet do for free.</p>
+      <p>The tool sums your monthly spend across three highest-cost categories (marketing, inventory, and tracking) then multiplies by twelve for annual exposure. The share you pick is your own assumption, not a measured rate: <strong>half (50%)</strong> assumes you only swap the obvious overlaps; <strong>most (85%)</strong> assumes you move to the free stack but keep one or two paid tools; <strong>all (100%)</strong> assumes every category moves to a free native or Make.com-based alternative. Some tools (advanced SMS, true multi-channel inventory, enterprise loyalty) can be worth keeping, which is what the 85% option allows for. The point of the calculator is not to argue every app is waste; it is to separate the spend that buys real differentiated value from the spend that simply duplicates what a webhook and a Google Sheet do for free.</p>
 
       <h3>Why app bills grow silently</h3>
       <p>App spend is the most under-audited line in most Shopify P&amp;Ls because each individual app feels cheap. A review app and an attribution tool never trigger a budget review on their own, but ten of them compound into a four-figure monthly bill that scales <em>with revenue</em>, since most apps tier their pricing on order volume, contacts, or ad spend. That is the trap: the more successful your store becomes, the more these tools charge, even though the underlying job (fire an event, log a row, send an email) costs nothing to run server-side. Replacing them with a webhook-based stack breaks that link between revenue and tooling cost permanently, which is why the saving compounds rather than staying flat.</p>
@@ -704,15 +693,15 @@ window.addEventListener('load',function(){
     .breadcrumb-inner a:hover{color:var(--text-3);}
 
     /* ── Hero ── */
-    .hero{padding:72px 0 56px;text-align:center;position:relative;overflow:hidden;}
+    .hero{padding:40px 0 20px;text-align:center;position:relative;overflow:hidden;}
     .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 90% 55% at 50% -10%,rgba(52,211,119,.08),transparent 65%);pointer-events:none;}
     .hero-inner{max-width:820px;margin:0 auto;padding:0 24px;position:relative;}
-    .hero-pill{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);border:1px solid var(--border-2);border-radius:100px;padding:8px 20px;margin-bottom:32px;}
+    .hero-pill{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);border:1px solid var(--border-2);border-radius:100px;padding:6px 16px;margin-bottom:20px;}
     .hero-pill-text{font-family:var(--mono);font-size:11.5px;color:var(--text-4);letter-spacing:.08em;text-transform:uppercase;}
-    .hero h1{font-size:clamp(36px,6vw,68px);font-weight:700;color:var(--text);line-height:.95;letter-spacing:-.04em;margin-bottom:24px;}
+    .hero h1{font-size:clamp(30px,4.6vw,50px);font-weight:700;color:var(--text);line-height:.95;letter-spacing:-.04em;margin-bottom:24px;}
     .hero h1 .g{color:var(--g);}
     .hero h1 .dim{color:var(--text-4);}
-    .hero-sub{font-size:clamp(15px,2vw,18px);color:var(--text-3);max-width:540px;margin:0 auto 32px;line-height:1.7;}
+    .hero-sub{font-size:clamp(16px,2vw,18px);color:var(--text-2);max-width:620px;margin:0 auto 16px;line-height:1.7;}
     .hero-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:40px;}
     .hero-stat{background:var(--red-bg);border:1px solid var(--red-border);border-radius:var(--radius-md);padding:12px 18px;text-align:center;}
     .hero-stat-v{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--red);line-height:1;}
@@ -856,7 +845,7 @@ window.addEventListener('load',function(){
       .calc-inputs{padding:24px 20px;}
       .results-panel{padding:24px 20px;}
       .email-gate{padding:24px 20px;}
-      .hero{padding:52px 0 40px;}
+      .hero{padding:28px 0 16px;}
     }
     @media(max-width:480px){
       .peak-cta-btns{flex-direction:column;}
