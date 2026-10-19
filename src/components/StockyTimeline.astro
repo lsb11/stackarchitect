@@ -1,0 +1,118 @@
+---
+// The Stocky shutdown as a timeline: three dated points from Shopify's own
+// transition page, and the open-ended part drawn as open-ended. HTML, not an
+// image, so it reads on a phone, to a screen reader and to a crawler.
+// Every date here is also a fact in src/data/keyFacts.ts (stocky-*), read on
+// the same page; change both together.
+import { SOURCES, formatReadDate } from '../data/keyFacts';
+const src = SOURCES.shopifyStocky;
+const points = [
+  { date: '2026-02-02', label: '2 Feb 2026', title: 'Delisted', body: 'Stocky removed from the Shopify App Store. Existing stores keep using it.' },
+  { date: '2026-08-31', label: '31 Aug 2026', title: 'Stocky stops', body: 'The app and its APIs stop working. Read-only export access begins.' },
+  { date: '2026-11-29', label: '29 Nov 2026', title: 'Earliest the export can close', body: 'Shopify promises at least 90 days of read-only access, so this is the earliest date it could end.', deadline: true },
+];
+---
+
+<figure class="sa-tl" aria-labelledby="sa-tl-cap">
+  <ol class="sa-tl-track">
+    {points.map((p) => (
+      <li class:list={['sa-tl-point', { 'is-deadline': p.deadline }]}>
+        <span class="sa-tl-dot" aria-hidden="true"></span>
+        <time datetime={p.date} class="sa-tl-date">{p.label}</time>
+        <strong class="sa-tl-title">{p.title}</strong>
+        <span class="sa-tl-body">{p.body}</span>
+      </li>
+    ))}
+    <li class="sa-tl-point is-open">
+      <span class="sa-tl-dot" aria-hidden="true"></span>
+      <span class="sa-tl-date">No date published</span>
+      <strong class="sa-tl-title">Export access ends</strong>
+      <span class="sa-tl-body">Shopify has not said when. Export as if 29 November is the last day.</span>
+    </li>
+  </ol>
+  <figcaption id="sa-tl-cap">
+    The Stocky shutdown, as Shopify dates it. Source: <a href={src.url} target="_blank" rel="noopener">{src.publisher}, {src.title}</a>, read <time datetime={src.read}>{formatReadDate(src.read)}</time>.
+  </figcaption>
+</figure>
+
+<style>
+  .sa-tl {
+    --tl-line: #2b332f;
+    --tl-dot: #34d377;
+    --tl-amber: #f59e0b;
+    max-width: 860px;
+    margin: 28px auto 36px;
+    padding: 22px 22px 16px;
+    border: 1px solid #222825;
+    border-radius: 12px;
+    background: #0c0f0d;
+  }
+  .sa-tl-track {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    position: relative;
+  }
+  /* The line runs through the dots; past the last dated point it turns
+     dashed, because that stretch has no end date. */
+  .sa-tl-track::before {
+    content: '';
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    right: 25%;
+    height: 2px;
+    background: var(--tl-line);
+  }
+  .sa-tl-track::after {
+    content: '';
+    position: absolute;
+    top: 7px;
+    left: 75%;
+    right: 0;
+    border-top: 2px dashed var(--tl-line);
+  }
+  .sa-tl-point {
+    position: relative;
+    padding: 26px 16px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .sa-tl-dot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #0c0f0d;
+    border: 3px solid var(--tl-dot);
+    z-index: 1;
+  }
+  .is-deadline .sa-tl-dot { border-color: var(--tl-amber); background: var(--tl-amber); }
+  .is-open .sa-tl-dot { border-style: dashed; border-color: #7f8b85; }
+  .sa-tl-date { font-size: 13px; font-weight: 600; color: #93a09a; font-variant-numeric: tabular-nums; }
+  .is-deadline .sa-tl-date { color: var(--tl-amber); }
+  .sa-tl-title { font-size: 16px; color: #f2f5f3; line-height: 1.3; }
+  .sa-tl-body { font-size: 14px; color: #b6c0ba; line-height: 1.55; }
+  .sa-tl figcaption {
+    margin-top: 18px;
+    padding-top: 12px;
+    border-top: 1px solid #1a201d;
+    font-size: 13px;
+    color: #93a09a;
+    line-height: 1.6;
+  }
+  .sa-tl figcaption a { color: #34d377; text-decoration: underline; }
+
+  /* Phones: the same four points, top to bottom. */
+  @media (max-width: 700px) {
+    .sa-tl-track { grid-template-columns: 1fr; gap: 18px; }
+    .sa-tl-track::before { top: 8px; bottom: 60px; left: 7px; right: auto; width: 2px; height: auto; }
+    .sa-tl-track::after { top: auto; bottom: 0; height: 60px; left: 7px; right: auto; border-top: 0; border-left: 2px dashed var(--tl-line); }
+    .sa-tl-point { padding: 0 0 0 30px; }
+  }
+</style>
