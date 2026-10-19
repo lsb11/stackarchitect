@@ -35,6 +35,8 @@ function clamp(text: string, max = 118): string {
 
 for (const [path, raw] of Object.entries(rawPages)) {
   if (typeof raw !== 'string') continue;
+  // A dynamic route file has no single title; Base.astro gives its pages the hub's card.
+  if (path.includes('[')) continue;
   const baseTag = raw.match(/<Base\b[^>]*>/i)?.[0] ?? '';
   let title = baseTag.match(/\btitle=["']([^"']+)["']/i)?.[1] ?? 'Stack Architect';
   title = title.replace(/\s*[|—]\s*Stack Architect.*/i, '').trim();

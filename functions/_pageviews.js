@@ -13,6 +13,7 @@ const NAMED = [
   ['Google-InspectionTool', /Google-InspectionTool/i],
   ['GoogleOther', /GoogleOther/i],
   ['Storebot-Google', /Storebot-Google/i],
+  ['Googlebot-Image', /Googlebot-Image/i],
   ['Googlebot', /Googlebot/i],
   ['Bingbot', /bingbot|BingPreview/i],
   ['OAI-SearchBot', /OAI-SearchBot/i],
@@ -54,13 +55,15 @@ export function refOf(referer, selfHost = 'stackarchitect.xyz') {
   }
 }
 
-const KEEP_REDIRECT_PATHS = new Set(['Googlebot', 'Bingbot', 'GPTBot', 'OAI-SearchBot', 'ClaudeBot', 'PerplexityBot', 'Applebot']);
+const KEEP_REDIRECT_PATHS = new Set(['Googlebot', 'Googlebot-Image', 'Bingbot', 'GPTBot', 'OAI-SearchBot', 'ClaudeBot', 'PerplexityBot', 'Applebot']);
 
 /**
  * Which row this request belongs in, or null when it is not worth counting.
  * Pages and their redirects are counted; assets, API calls and /go/ (which has
  * its own counter) are not. A 404 is bucketed, because a probe for
- * /wp-login.php should not add a row per guess. A redirect keeps its path only
+ * /wp-login.php should not add a row per guess, except for the named search
+ * and AI crawlers below: 10-19 Oct 2026, 302 of Googlebot's 518 requests were
+ * 404s and the bucket could not say which URLs they were. A redirect keeps its path only
  * for the named search and AI crawlers: whether Google still crawls a retired
  * URL is worth knowing, and every other client's would be noise.
  */
@@ -79,7 +82,7 @@ export function rowFor({ url, method, status, contentType, userAgent, referer, c
   } else if (status >= 300 && status < 400) {
     path = KEEP_REDIRECT_PATHS.has(agent) ? p.slice(0, 160) : '(redirect)';
   } else if (status === 404) {
-    path = '(404)';
+    path = KEEP_REDIRECT_PATHS.has(agent) ? p.slice(0, 160) : '(404)';
   } else {
     path = '(other)';
   }
