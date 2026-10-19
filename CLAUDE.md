@@ -439,7 +439,13 @@ Every count on `/apps/` is derived from `apps.json`, never typed. The bug that
 rule exists to prevent shipped sitewide: `Nav.astro` read "All 53 apps" on all
 128 pages from 14 Aug to 5 Sep, after `apps.json` went to 54.
 
-**apps.json data problems — logged 19 Sep 2026 for a later pass, not fixed.**
+**apps.json data problems — logged 19 Sep 2026, resolved 19 Oct 2026 (PR #77).**
+Read on the vendors' pages that day: Elevar is a rebrand, sold as "Audiense
+Online (Elevar)" with Core at $225 for up to 2,000 orders, so the $225 stands.
+Analyzify is $145/$275 a month or $109/$206 a month billed yearly; the page's
+"$749/yr" is gone and the quarantine is empty. Triple Whale no longer
+publishes a paid price (Foundation and Automate show "Book a walkthrough"), so
+its record is `held` and its Offers are withdrawn. The original log follows.
 Each needs someone to read the vendor's page. Do not settle them by editing
 the JSON to make a guard pass.
 - **Elevar.** `priceSourceUrl` points at audiense.com. It was reported as a
@@ -1075,6 +1081,27 @@ including the free ones; do not plan work around it.
 - The free TikTok blueprint in `lsb11/shopify-automation-blueprints` sent
   a fixed test event (`test_123`, March 2025, $10) for every order until
   18 Oct; fixed there in PR #1, along with that repo's retracted figures.
+
+### Key facts, checked on the source (19 Oct 2026, PRs #73, #75, #76)
+
+`src/data/keyFacts.ts` holds 31 one-sentence facts, each read that day on the
+vendor's own page (Shopify, Meta, Google, Apple, TikTok, Make, Zapier, Tidio,
+Gorgias). `<KeyFacts />` renders the ones assigned to a route inside `<main>`,
+with source, read date and a citation line; it is on 48 of 51 sitemap pages
+(not `/about/`, `/how-we-test/`, or the agentic guide, which has its own).
+The same facts are open data at `/downloads/key-facts.json` (CC BY 4.0),
+listed in `llms.txt`, and declared once as a schema.org Dataset on the
+homepage. `tests/key-facts.test.js` fails on a non-vendor source, a future
+read date, a sentence that depends on context, or a listed route that does
+not render its facts. **When a vendor changes something, change the text, the
+source and `read` together; never move `read` without re-reading.**
+
+Pages that carry a fact by layout (Markdown posts) do not get a new
+`page-updated.json` date: that test allows a date only when the post's own
+file changed.
+
+Meta's Graph API changelog, read 19 Oct 2026: v26.0 released 29 July 2026;
+v25.0 (the blueprints) is available until 29 July 2028.
 
 ### Highest-leverage open work
 
