@@ -192,9 +192,23 @@ const pageTitle = (title + SUFFIX).length <= 60 ? title + SUFFIX : title;
 </Base>
 
 <style>
+  /* The title block shares the column the meta bar, contents and key facts
+     use. At --measure it was 50px narrower and indented, because 68ch at the
+     header's font size is not 68ch at the prose's. */
   .sa-post-head {
-    max-width: var(--measure);
+    max-width: none;
+    margin: 0;
+  }
+  /* Breadcrumb on posts sits on the same column as the text below it, not at
+     the window's left edge. */
+  :global(.breadcrumb) {
+    max-width: 48rem;
     margin: 0 auto;
+    padding: 0.75rem 1rem 0;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: flex-start;
+    box-sizing: border-box;
   }
 
   .sa-post-title {
