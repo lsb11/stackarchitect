@@ -93,6 +93,84 @@ export const SOURCES = {
     url: 'https://www.apple.com/newsroom/2023/06/apple-announces-powerful-new-privacy-and-security-features/',
     read: '2026-10-19',
   },
+  tiktokDedup: {
+    title: 'About event deduplication',
+    publisher: 'TikTok Ads Help Center',
+    url: 'https://ads.tiktok.com/help/article/event-deduplication',
+    read: '2026-10-19',
+  },
+  metaCustomerParams: {
+    title: 'Customer Information Parameters',
+    publisher: 'Meta for Developers',
+    url: 'https://developers.facebook.com/documentation/ads-commerce/conversions-api/parameters/customer-information-parameters',
+    read: '2026-10-19',
+  },
+  metaServerEvent: {
+    title: 'Server Event Parameters',
+    publisher: 'Meta for Developers',
+    url: 'https://developers.facebook.com/documentation/ads-commerce/conversions-api/parameters/server-event',
+    read: '2026-10-19',
+  },
+  metaDatasetQuality: {
+    title: 'Dataset Quality API',
+    publisher: 'Meta for Developers',
+    url: 'https://developers.facebook.com/documentation/ads-commerce/conversions-api/dataset-quality-api',
+    read: '2026-10-19',
+  },
+  shopifyAgentic: {
+    title: 'Agentic storefronts',
+    publisher: 'Shopify Help Center',
+    url: 'https://help.shopify.com/en/manual/online-sales-channels/agentic-storefronts',
+    read: '2026-10-19',
+  },
+  shopifyAppBilling: {
+    title: 'App charges on your Shopify bills',
+    publisher: 'Shopify Help Center',
+    url: 'https://help.shopify.com/en/manual/your-account/manage-billing/your-invoice/apps',
+    read: '2026-10-19',
+  },
+  shopifyRevShare: {
+    title: 'Revenue share',
+    publisher: 'Shopify',
+    url: 'https://shopify.dev/docs/apps/launch/distribution/revenue-share',
+    read: '2026-10-19',
+  },
+  zapierTasks: {
+    title: 'How is task usage measured in Zapier?',
+    publisher: 'Zapier Help Center',
+    url: 'https://help.zapier.com/hc/en-us/articles/8496196837261-How-is-task-usage-measured-in-Zapier',
+    read: '2026-10-19',
+  },
+  makeCredits: {
+    title: 'Credits',
+    publisher: 'Make Help Center',
+    url: 'https://help.make.com/credits',
+    read: '2026-10-19',
+  },
+  tidioPricing: {
+    title: 'Pricing',
+    publisher: 'Tidio',
+    url: 'https://www.tidio.com/pricing/',
+    read: '2026-10-19',
+  },
+  gorgiasPricing: {
+    title: 'Pricing',
+    publisher: 'Gorgias',
+    url: 'https://www.gorgias.com/pricing',
+    read: '2026-10-19',
+  },
+  shopifyGa4: {
+    title: 'Setting up Google Analytics 4',
+    publisher: 'Shopify Help Center',
+    url: 'https://help.shopify.com/en/manual/reports-and-analytics/google-analytics/google-analytics-setup',
+    read: '2026-10-19',
+  },
+  googleShopifyTag: {
+    title: 'Shopify: Set up your Google tag',
+    publisher: 'Google Analytics Help',
+    url: 'https://support.google.com/analytics/answer/12183125',
+    read: '2026-10-19',
+  },
 } satisfies Record<string, FactSource>;
 
 const STOCKY = [
@@ -232,7 +310,102 @@ export const KEY_FACTS: KeyFact[] = [
     source: 'appleLtp',
     routes: ['/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/', '/blog/shopify-server-side-tracking-complete-setup-guide/', '/blog/shopify-meta-roas-dropped-2026-fix/', '/shopify-ios-attribution-gap-benchmark/'],
   },
+  {
+    id: 'tiktok-dedup',
+    text: 'TikTok deduplicates a Pixel event and an Events API event only when both carry the same event name and the same event_id, and it matches duplicates within 48 hours of the first event.',
+    source: 'tiktokDedup',
+    routes: ['/tiktok-events-api-shopify/', '/blog/shopify-server-side-tracking-complete-setup-guide/', '/shopify-attribution-tools-compared/'],
+  },
+  {
+    id: 'meta-hashing',
+    text: 'Meta’s Conversions API requires email, phone, name, date of birth, gender, city, state, postcode and country to be SHA-256 hashed, with email trimmed and lowercased first, and requires client IP address, user agent, fbc and fbp to be sent unhashed.',
+    source: 'metaCustomerParams',
+    routes: ['/meta-capi-payload-validator/', '/capi-shield/', '/meta-emq-score-estimator/', '/blog/shopify-server-side-tracking-complete-setup-guide/', '/tools/'],
+  },
+  {
+    id: 'meta-event-time',
+    text: 'Meta’s Conversions API expects event_time as a Unix timestamp in seconds, and rejects the whole request if any event in it is more than 7 days old.',
+    source: 'metaServerEvent',
+    routes: ['/meta-capi-payload-validator/', '/capi-shield/', '/blog/shopify-server-side-tracking-complete-setup-guide/'],
+  },
+  {
+    id: 'meta-emq',
+    text: 'Meta’s Event Match Quality is a score out of 10, calculated from which customer information parameters your server sends, how good that information is, and how many events match a Meta account.',
+    source: 'metaDatasetQuality',
+    routes: ['/meta-emq-score-estimator/', '/meta-capi-payload-validator/', '/capi-shield/'],
+  },
+  {
+    id: 'agentic-channels',
+    text: 'Shopify’s agentic storefronts list products in AI channels including ChatGPT, Google AI Mode and Gemini, Microsoft Copilot and Meta, are active by default for eligible stores, and are managed under Sales channels, then Agentic.',
+    source: 'shopifyAgentic',
+    routes: ['/blog/shopify-ai-playbook-2026/', '/best-ai-tools-shopify/', '/'],
+  },
+  {
+    id: 'app-billing',
+    text: 'Shopify bills app subscriptions on their own 30-day cycle, separate from the plan’s, and uninstalling an app stops future cycles but does not cancel a charge already generated.',
+    source: 'shopifyAppBilling',
+    routes: ['/apps/', '/shopify-app-cost-calculator/', '/shopify-app-stack-kill-or-keep-auditor/', '/best-free-shopify-apps-2026/', '/', '/tools/'],
+  },
+  {
+    id: 'app-revshare',
+    text: 'Shopify takes 0% of the first US$1,000,000 of lifetime gross app revenue and 15% of revenue beyond that, and an app built for a single merchant does not have to be registered on the Shopify App Store.',
+    source: 'shopifyRevShare',
+    routes: ['/shopify-app-development-cost/'],
+  },
+  {
+    id: 'zapier-tasks',
+    text: 'Zapier counts a task for each successful action; triggers, Filter and Paths steps and Formatter steps do not use tasks.',
+    source: 'zapierTasks',
+    routes: ['/make-vs-zapier-cost-calculator/', '/make-com-shopify/', '/stack/', '/ultimate-shopify-automation-guide/'],
+  },
+  {
+    id: 'make-credits',
+    text: 'Make charges one credit per module operation by default, and modules that use Make’s own AI provider connection also charge for the tokens they use.',
+    source: 'makeCredits',
+    routes: ['/make-vs-zapier-cost-calculator/', '/make-com-shopify/', '/stack/', '/blog/when-to-upgrade-free-make-google-workspace/', '/pro/'],
+  },
+  {
+    id: 'tidio-lyro',
+    text: 'Tidio’s Free plan includes 50 Lyro AI conversations for the lifetime of the account, not per month; refreshing them monthly needs the Lyro AI Agent plan.',
+    source: 'tidioPricing',
+    routes: ['/blog/tidio-for-shopify-complete-setup-guide/', '/blog/tidio-vs-gorgias-shopify/'],
+  },
+  {
+    id: 'gorgias-ai',
+    text: 'Gorgias offers its AI Agent on every plan and charges for it only when it resolves a conversation; its helpdesk is priced by monthly ticket volume, not per agent.',
+    source: 'gorgiasPricing',
+    routes: ['/gorgias-shopify-guide/', '/blog/tidio-vs-gorgias-shopify/'],
+  },
+  {
+    id: 'ga4-connect',
+    text: 'Shopify connects Google Analytics 4 through the Google & YouTube sales channel, which adds the Google tag to the store.',
+    source: 'shopifyGa4',
+    routes: ['/blog/shopify-google-analytics-4-setup-free-2026/', '/blog/shopify-conversion-rate-optimisation-free-2026/'],
+  },
+  {
+    id: 'ga4-events',
+    text: 'Through the Google & YouTube app, viewing a collection sends a view_item_list event to GA4, viewing the cart sends view_cart, removing an item sends remove_from_cart, and entering shipping details sends add_shipping_info.',
+    source: 'googleShopifyTag',
+    routes: ['/blog/shopify-google-analytics-4-setup-free-2026/', '/blog/shopify-conversion-rate-optimisation-free-2026/'],
+  },
 ];
+
+// Facts that also belong on pages outside their topic cluster.
+const EXTRA: Record<string, string[]> = {
+  'webhook-retries': ['/blog/shopify-bfcm-automation-checklist-2026/', '/shopify-profit-loss-automation/', '/pro/'],
+  'webhook-timeout': ['/blog/shopify-bfcm-automation-checklist-2026/'],
+  'stocky-earliest-close': ['/blog/shopify-bfcm-automation-checklist-2026/', '/'],
+  'abandoned-definition': ['/blog/shopify-bfcm-automation-checklist-2026/', '/blog/shopify-conversion-rate-optimisation-free-2026/'],
+  'apps-script-runtime': ['/shopify-profit-loss-automation/', '/tools/'],
+  'meta-sharing-capi': ['/shopify-attribution-tools-compared/', '/', '/pro/'],
+  'meta-dedup': ['/shopify-attribution-tools-compared/'],
+  'apple-ltp': ['/shopify-attribution-tools-compared/'],
+  'google-enhanced-toggle': ['/'],
+  'flow-plans': ['/stack/'],
+};
+for (const f of KEY_FACTS) {
+  f.routes = [...new Set([...f.routes, ...(EXTRA[f.id] ?? [])])];
+}
 
 export function factsFor(route: string): (KeyFact & { src: FactSource })[] {
   const r = route.endsWith('/') ? route : route + '/';
