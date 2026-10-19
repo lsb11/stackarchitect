@@ -1,0 +1,53 @@
+---
+// Who this site is for, how it checks what it says, and how it earns.
+// Copy lives in src/data/mission.ts.
+import { AUDIENCE, HOW_WE_CHECK, HOW_WE_EARN } from '../data/mission';
+---
+
+<section class="sa-mission" aria-labelledby="sa-mission-h">
+  <h2 id="sa-mission-h" class="sa-mission-h">What Stack Architect does</h2>
+  <div class="sa-mission-grid">
+    <div class="sa-mission-col">
+      <h3>Who it is for</h3>
+      <ul>
+        {AUDIENCE.map((a) => <li><strong>{a.who}</strong> {a.what}</li>)}
+      </ul>
+    </div>
+    <div class="sa-mission-col">
+      <h3>How we check</h3>
+      <p>{HOW_WE_CHECK} <a href="/how-we-test/">Our method</a>.</p>
+    </div>
+    <div class="sa-mission-col">
+      <h3>How we earn</h3>
+      <p>{HOW_WE_EARN} <a href="/about/">Who runs it</a>.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sa-mission {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 24px;
+    box-sizing: border-box;
+    text-align: left;
+  }
+  .sa-mission-h { font-size: 22px; color: #f2f5f3; margin: 0 0 16px; }
+  .sa-mission-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .sa-mission-col {
+    border: 1px solid #222825;
+    border-radius: 12px;
+    background: #0c0f0d;
+    padding: 18px 20px;
+  }
+  .sa-mission-col h3 { font-size: 15px; color: #34d377; margin: 0 0 8px; }
+  .sa-mission-col p, .sa-mission-col li { font-size: 15px; color: #b6c0ba; line-height: 1.6; margin: 0; }
+  .sa-mission-col ul { margin: 0; padding-left: 18px; }
+  .sa-mission-col li + li { margin-top: 8px; }
+  .sa-mission-col strong { color: #f2f5f3; }
+  .sa-mission-col a { color: #34d377; text-decoration: underline; }
+  @media (max-width: 800px) {
+    .sa-mission-grid { grid-template-columns: 1fr; }
+    .sa-mission { padding: 0 16px; }
+  }
+</style>
