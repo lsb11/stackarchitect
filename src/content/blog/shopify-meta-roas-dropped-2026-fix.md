@@ -55,7 +55,7 @@ On January 13, 2026, Shopify changed the default data sharing setting for all Ap
 
 The changelog says Shopify monitors each marketing pixel, and when it sees zero signals from a pixel over days or weeks, it pauses that pixel's data sharing until signals return. A pixel that is working normally keeps sharing; the risk is a pixel Shopify judges inactive, which then stops without any warning to you.
 
-**The 5-minute fix:** Settings → Customer Events → App Pixels tab → Data column → switch from "Optimized" to **"Always on."**
+**The free fix:** Settings → Customer Events → App Pixels tab → Data column → switch from "Optimized" to **"Always on."**
 
 The setting applies to app pixels, including the Facebook & Instagram one; custom pixels do not have it.
 

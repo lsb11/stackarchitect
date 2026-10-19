@@ -2,7 +2,7 @@
 title: "Meta One-Click Conversions API for Shopify — What It Fixes"
 heading: "Meta One-Click Conversions API for Shopify: What It Fixes, and the Two Gaps It Leaves"
 description: "Meta's free one-click CAPI mirrors your browser Pixel, for Meta only. What it fixes, how to switch it on in two minutes, and the two gaps it leaves open."
-answer: "Meta's one-click Conversions API, released on 15 April 2026, switches on server-side tracking from inside Events Manager with Meta hosting the infrastructure. It takes two minutes and costs nothing. It mirrors your browser Pixel for Meta alone, so it cannot recover events the Pixel never fired, nor feed Google or TikTok."
+answer: "Meta's one-click Conversions API, released on 15 April 2026, switches on server-side tracking from inside Events Manager with Meta hosting the infrastructure. It needs no code and costs nothing. It mirrors your browser Pixel for Meta alone, so it cannot recover events the Pixel never fired, nor feed Google or TikTok."
 publishDate: "2026-07-15"
 updatedDate: "2026-09-25"
 verifiedDate: "2026-09-25"
@@ -34,7 +34,7 @@ relatedGuides:
 > **Deep Dive:** This article is part of our comprehensive tracking series. For how the paid attribution tools compare with the free server-side route, see [Shopify attribution tools compared](/shopify-attribution-tools-compared/).
 
 
-**TL;DR:** On 15 April 2026 Meta shipped a free, one-click Conversions API setup inside Events Manager. Turn it on today: it takes two minutes, costs nothing, and Meta's April 2026 figure puts advertisers running CAPI on web events at a 17.8% lower cost per result. But know exactly what you switched on: a server-side *mirror of your browser Pixel*, for *Meta only*. The two failure modes it doesn't fix (events the Pixel never fires, and every non-Meta platform) are the two that a [free Shopify webhook setup](/capi-shield/) exists to solve.
+**TL;DR:** On 15 April 2026 Meta shipped a free, one-click Conversions API setup inside Events Manager. Turn it on today: it needs no code, costs nothing, and Meta's April 2026 figure puts advertisers running CAPI on web events at a 17.8% lower cost per result. But know exactly what you switched on: a server-side *mirror of your browser Pixel*, for *Meta only*. The two failure modes it doesn't fix (events the Pixel never fires, and every non-Meta platform) are the two that a [free Shopify webhook setup](/capi-shield/) exists to solve.
 
 ## What Meta actually released
 
@@ -69,13 +69,13 @@ That second portion is what a **Shopify webhook** fixes. Shopify's `orders/paid`
 |---|---|
 | Pixel-only tracking, Meta ads only | Turn on one-click CAPI today. Done for now. |
 | Shopify native Facebook channel already on Maximum sharing | Keep it: it sends richer first-party identifiers than one-click. One-click is additive if you want it. |
-| Advertising on Meta **plus** Google and/or TikTok | One-click covers Meta only. Add the [free webhook setup](/blog/shopify-server-side-tracking-complete-setup-guide/): one trigger, three platforms, ~18-minute build. |
+| Advertising on Meta **plus** Google and/or TikTok | One-click covers Meta only. For TikTok, add the [free webhook setup](/blog/shopify-server-side-tracking-complete-setup-guide/); for Google, turn on enhanced conversions in Shopify's Google & YouTube app. |
 | High ad-blocker / iOS-heavy audience and thank-you-page drop-offs | Webhook-origin events are the only fix; Pixel-derived CAPI can't mirror an event that never fired. |
 | Custom events, subscriptions, offline conversions | One-click can't; this needs a custom or webhook-based implementation. |
 | Paying $225+/mo for a managed tracking tool (Elevar's Core plan on [getelevar.com/pricing](https://www.getelevar.com/pricing/), read 25 September 2026) | One-click + the free webhook setup reach the same endpoints. The subscription buys dashboards and support, not better API access. |
 
 ## Bottom line
 
-Turn Meta's one-click CAPI on: it's the rare free upgrade with a measured performance delta and zero downside, and it's additive to whatever you already run. Then close the two gaps it leaves. If you only advertise on Meta and your Pixel fires reliably, you may be done. If you spend on Google or TikTok too, or your audience skews iOS/ad-blocked, the [webhook-based setup guide](/blog/shopify-server-side-tracking-complete-setup-guide/) covers all three platforms from one Shopify webhook in about 18 minutes, at $0/month.
+Turn Meta's one-click CAPI on: it's a free upgrade with a performance figure Meta has published. Do not stack it on a second Meta server route, such as Shopify's own Conversions API or a webhook scenario, or Meta can receive each purchase twice. Then close the two gaps it leaves. If you only advertise on Meta and your Pixel fires reliably, you may be done. If you spend on Google or TikTok too, or your audience skews iOS/ad-blocked, the [webhook-based setup guide](/blog/shopify-server-side-tracking-complete-setup-guide/) sends TikTok purchases from one Shopify webhook at $0/month, and enhanced conversions in the Google & YouTube app covers Google.
 
 *Facts verified 15 July 2026 against Meta's 15 April 2026 announcement and independent reporting of the rollout. Meta's 17.8% figure is Meta's own measurement across advertisers using CAPI for web events.*

@@ -52,7 +52,7 @@ const categories = [
         price: "$0/month",
         replaces: "Elevar ($225/mo), Triple Whale (GMV-based), Analyzify ($145–$275/mo)",
         saves: "$145–$650/mo",
-        description: "Sends server-side purchase events to Meta Conversions API and Google Ads Enhanced Conversions via Make.com: bypassing iOS Link Tracking Protection, Safari ITP, and ad blockers. It sends hashed email, phone, name, IP and user-agent: the match keys Meta scores Event Match Quality against. Deploys in 6 minutes. The single highest-ROI free tool for any Shopify store running paid Meta or Google Ads.",
+        description: "Sends server-side purchase events to Meta Conversions API and Google Ads Enhanced Conversions via Make.com: bypassing iOS Link Tracking Protection, Safari ITP, and ad blockers. It sends hashed email, phone, name, IP and user-agent: the match keys Meta scores Event Match Quality against. Deploys without code. The single highest-ROI free tool for any Shopify store running paid Meta or Google Ads.",
         cta: "Deploy CAPI Shield free",
         ctaHref: TOOLS.capiShield,
         detail: "Shopify Order webhook → Make.com → Meta Conversions API, with an optional Google Ads route that needs a click ID Shopify orders do not carry. SHA-256 hashing included.",
@@ -70,16 +70,16 @@ const categories = [
         detail: "Same webhook as CAPI Shield. Adds one extra Make.com branch. Sends full Advanced Matching data.",
       },
       {
-        name: "Google Enhanced Conversions (Free)",
+        name: "Google Ads Enhanced Conversions (Google & YouTube app)",
         badge: "stack-pick",
         badgeLabel: "Stack Pick: Free Forever",
         price: "$0/month",
-        replaces: "Stape ($17/mo billed yearly), Littledata ($159+/mo), Analyzify ($145–$275/mo)",
+        replaces: "For many stores, a paid Google Ads tracking app such as Stape ($17/mo billed yearly), Littledata ($159+/mo) or Analyzify ($145–$275/mo)",
         saves: "$17–$275/mo",
-        description: "Server-side Google Ads conversion uploads via Make.com, sending hashed customer email from Shopify's server. Shopify's order data has no Google click ID, so whether Google matches the upload depends on how your conversion action is set up; set its consent fields to match your own consent setup.",
-        cta: "Set up Google Enhanced Conversions free",
+        description: "A setting in Shopify's free Google & YouTube app (Settings, Google Ads settings, Enhanced conversions) that sends Google hashed customer data with each purchase its tag records, so Google can match more of them to ad clicks. Paid tools add Google click ID capture in the browser, which this does not.",
+        cta: "Turn on enhanced conversions free",
         ctaHref: TOOLS.googleAds,
-        detail: "Uploads through the Google Ads API's click-conversion method, which Google is moving to the Data Manager API; new developer tokens are already refused. SHA-256 hashing in Make.com. Check the API version in your scenario against Google's sunset schedule.",
+        detail: "No Make.com scenario needed. A Make.com upload is a weaker extra route: Shopify orders carry no Google click ID, and Google is moving that upload method to its Data Manager API.",
       },
       {
         name: "Shopify Google & YouTube Channel",
@@ -133,7 +133,7 @@ const categories = [
         price: "Discontinued",
         replaces: "N/A",
         saves: "N/A",
-        description: "Shopify closed Stocky on August 31, 2026, and its APIs stopped that day with no grace period. Your data stays exportable read-only for at least 90 days afterwards: export it. Shopify Admin is the replacement Shopify names for purchase orders, transfers and adjustments. Stocky Swap takes about 4 minutes to deploy and logs paid orders from the next one forward; it cannot import your Stocky history.",
+        description: "Shopify closed Stocky on August 31, 2026, and its APIs stopped that day with no grace period. Your data stays exportable read-only for at least 90 days afterwards: export it. Shopify Admin is the replacement Shopify names for purchase orders, transfers and adjustments. Stocky Swap needs no code to deploy and logs paid orders from the next one forward; it cannot import your Stocky history.",
         cta: "See what Stocky Swap covers →",
         ctaHref: TOOLS.stockySwap,
         detail: "August 31, 2026 hard shutdown. Data still exportable read-only for at least 90 days. No migration tool provided by Shopify.",
@@ -436,7 +436,7 @@ const categories = [
         price: "$0/month: unlimited",
         replaces: "Hotjar, Lucky Orange ($39/mo)",
         saves: "$39/mo vs Lucky Orange Build",
-        description: "Microsoft's free heatmaps and session recording tool: completely free with no limits on sessions, recordings, or heatmaps. Integrates with Shopify in 5 minutes via the Shopify App Store. Shows exactly where customers click, scroll, and drop off. Replaces Hotjar's paid plan entirely.",
+        description: "Microsoft's free heatmaps and session recording tool: completely free with no limits on sessions, recordings, or heatmaps. Integrates with Shopify via the Shopify App Store. Shows exactly where customers click, scroll, and drop off. Replaces Hotjar's paid plan entirely.",
         cta: "Install Microsoft Clarity",
         ctaHref: "https://apps.shopify.com/microsoft-clarity",
         detail: "Free. Unlimited sessions and heatmaps. No Shopify app fee. Microsoft-owned.",
@@ -549,11 +549,11 @@ const faqs = [
   },
   {
     q: "How do I get all these free Shopify tools set up quickly?",
-    a: `The fastest path to the full free stack is the Stack Architect Complete Kit (${kitPrice} one-time). It contains four pre-built Make.com JSON blueprint files (CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto) that deploy in about 10 minutes total instead of being built by hand from the free guides. After deploying those four automations, add Systeme.io for email, Judge.me for reviews, Microsoft Clarity for heatmaps, and Shopify Inbox for live chat: all free, all from the Shopify App Store with no additional configuration.`
+    a: `The fastest path to the full free stack is the Stack Architect Complete Kit (${kitPrice} one-time). It contains four pre-built Make.com JSON blueprint files (CAPI Shield, TikTok CAPI, Stocky Swap, and P&L Auto) that import instead of being built by hand from the free guides. After deploying those four automations, add Systeme.io for email, Judge.me for reviews, Microsoft Clarity for heatmaps, and Shopify Inbox for live chat: all free, all from the Shopify App Store with no additional configuration.`
   },
   {
     q: "What free Shopify apps are best for improving Google Ads performance?",
-    a: "The single most important free tool for improving Google Ads performance on Shopify is the free Google Enhanced Conversions setup via Make.com, which recovers purchase conversions lost to iOS and Safari ITP. Combined with Shopify's native Google & YouTube channel for GA4 and the Google Ads conversion tag, this gives you complete server-side + browser-side conversion tracking at $0. For tracking overall store performance, Google Search Console (free) and Microsoft Clarity (free heatmaps) provide the data needed to improve both paid and organic traffic performance."
+    a: "The single most useful free step for Google Ads on Shopify is turning on enhanced conversions in Shopify's Google & YouTube app, which sends Google hashed customer data with each purchase its tag records so it can match more of them to ad clicks. The same app places the Google tag and connects GA4, at no cost. For tracking overall store performance, Google Search Console (free) and Microsoft Clarity (free heatmaps) provide the data needed to improve both paid and organic traffic performance."
   },
   {
     q: "Can I replace Klaviyo with a free Shopify app?",
@@ -665,7 +665,7 @@ const tocHeadings = [
   },
   {
     "id": "skip-the-build-deploy-in-about-10-minutes",
-    "text": `Skip the build. Deploy in about 10 minutes. ${kitPrice}.`
+    "text": `Skip the build. Deploy without code. ${kitPrice}.`
   }
 ];
 

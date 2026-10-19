@@ -91,13 +91,13 @@ const SETUP_GUIDE_PDF = "https://d1yei2z3i6k35z.cloudfront.net/16370908/699ce153
 // One array renders the visible FAQ and the FAQPage node.
 const faqs: Faq[] = [
   { q: "What is the best free Stocky alternative in 2026?",
-    a: "<p><strong>Stocky Swap</strong> is a free Stocky alternative for Shopify. It logs every Shopify order to a Google Sheet in real-time via a public Make.com scenario, deploys in under 5 minutes, runs on Make.com's free tier, and stores data in a Google Sheet you own. Paid alternatives like Qoblex, SKUSavvy, Sumtracker, and Inventory Planner offer deeper forecasting features but cost between $49 and $599/month, or a quoted price.</p>" },
+    a: "<p><strong>Stocky Swap</strong> is a free Stocky alternative for Shopify. It logs every Shopify order to a Google Sheet in real-time via a public Make.com scenario, deploys without code, runs on Make.com's free tier, and stores data in a Google Sheet you own. Paid alternatives like Qoblex, SKUSavvy, Sumtracker, and Inventory Planner offer deeper forecasting features but cost between $49 and $599/month, or a quoted price.</p>" },
   { q: "What is the cheapest Stocky alternative for Shopify?",
     a: "<p>Stocky Swap at <strong>$0/month</strong> is the cheapest Stocky alternative in 2026. It runs on Make.com's free tier with no Stack Architect fees. Paid options start around $9/month for Make.com Core (if you outgrow free), or $49/month for entry-tier paid Shopify inventory apps like Prediko.</p>" },
   { q: "Is Stocky Swap actually free?",
     a: "<p>Yes. Stocky Swap is a free Make.com scenario. It runs on Make.com's free tier: 1,000 credits/month (formerly called operations) at no cost. Stack Architect earns a small affiliate commission if you create a Make.com account through this page, which is how the guides stay free. There are no Stack Architect fees, no setup charges, no hidden costs.</p>" },
   { q: "Do I need to know how to code to use Stocky Swap?",
-    a: "<p>No coding required. The Make.com scenario is pre-built and shared publicly: you click Clone, connect your Shopify and Google Sheet via OAuth, and switch the scenario on. Setup typically takes under 5 minutes. The <a href=\"" + SETUP_GUIDE_PDF + "\" target=\"_blank\" rel=\"noopener\">PDF setup guide</a> covers every step with screenshots.</p>" },
+    a: "<p>No coding required. The Make.com scenario is pre-built and shared publicly: you click Clone, connect your Shopify and Google Sheet via OAuth, and switch the scenario on. Setup needs no code. The <a href=\"" + SETUP_GUIDE_PDF + "\" target=\"_blank\" rel=\"noopener\">PDF setup guide</a> covers every step with screenshots.</p>" },
   { q: "What does Stocky Swap log to Google Sheets?",
     a: "<p>Each new Shopify order produces a Google Sheet row containing: order ID, order timestamp, customer name, line item SKU, product name, quantity sold, line revenue, and fulfilment status. The webhook fires from Shopify the moment an order is created, not on a polling interval, so the Sheet updates within seconds.</p>" },
   { q: "Will Stocky Swap interfere with my Shopify store or other apps?",
@@ -123,10 +123,10 @@ const PRO_URL = `${SITE_URL}/pro/`;
 const SEO = {
   title: "Free Stocky Replacement 2026 — $0 Make.com Setup",
   description:
-    "Keep a live log of every Shopify order in a Google Sheet you own, now that Stocky has closed. A free Make.com scenario, no code, set up in about four minutes.",
+    "Keep a live log of every Shopify order in a Google Sheet you own, now that Stocky has closed. A free Make.com scenario, no code.",
   canonical: PAGE_URL,
   ogTitle: "Free Stocky Replacement (4-Min Setup) — $0/Month Forever",
-  ogDescription: "Stocky closed Aug 31, 2026. Replace it free with Make.com + Google Sheets. No fees, no code, live in 4 minutes. Independent comparison of every paid alternative.",
+  ogDescription: "Stocky closed Aug 31, 2026. Replace it free with Make.com + Google Sheets. No fees, no code. Independent comparison of every paid alternative.",
   ogImage: `https://stackarchitect.xyz/og/og-stocky-swap.png`
 };
 
@@ -308,7 +308,7 @@ const jsonLd = {
     {
       "@type": "Course",
       "@id": `${PAGE_URL}#course`,
-      name: "Stocky Swap Setup: Free Stocky Replacement in 4 Minutes",
+      name: "Stocky Swap Setup: Free Stocky Replacement",
       description: "Free 5-step course covering the complete deployment of Stocky Swap, the free alternative to the retired Shopify Stocky app.",
       provider: { "@id": `${SITE_URL}/#org` },
       hasCourseInstance: {
@@ -380,7 +380,7 @@ const tocHeadings = [
   },
   {
     "id": "stocky-closes-august-31-replace-it-free-in-4-minutes",
-    "text": "Stocky is gone. Replace it free in 4 minutes."
+    "text": "Stocky is gone. Replace it free."
   },
   {
     "id": "sources-amp-primary-documentation",
@@ -952,7 +952,7 @@ const tocHeadings = [
 
     /* ── Mobile: let long CTA labels wrap ──────────────────────────────────
        .btn is white-space:nowrap. The final CTA label ("Replace Stocky with
-       Make.com free — 4-minute setup, no card →") needs 393px and sat in a
+       Make.com free — no-code setup, no card →") needs 393px and sat in a
        320px column, overflowing the viewport by 73px and making the WHOLE
        DOCUMENT scroll sideways on a 390px screen. That is the page's primary
        affiliate CTA, on the platform where this site's clickthrough actually
@@ -1188,7 +1188,7 @@ const tocHeadings = [
         {shutdownPassed ? (
           <>A free order log<br /><span class="green">in Google Sheets,</span><br /><span class="dim">now that Stocky has closed.</span></>
         ) : (
-          <>The free<br /><span class="green">Stocky alternative.</span><br /><span class="dim">Live in 4 minutes.</span></>
+          <>The free<br /><span class="green">Stocky alternative.</span><br /><span class="dim">Live without building it by hand.</span></>
         )}
       </h1>
 
@@ -1201,7 +1201,7 @@ const tocHeadings = [
       {/* The Make.com account button sits after the 3 setup steps, not here:
           no affiliate button goes above the first H2. */}
       <div class="hero-ctas">
-        <a href="#deploy-stocky-swap-in-3-steps" class="btn pulse btn-g">See the 4-minute setup →</a>
+        <a href="#deploy-stocky-swap-in-3-steps" class="btn pulse btn-g">See the no-code setup →</a>
       </div>
       <p class="hero-ctas-note">
         Cloning the scenario needs a free Make.com account first: <a href={SCENARIO_URL} target="_blank" rel="noopener" data-cta="hero-scenario">preview the tested scenario</a> if you want to see it before signing up.
@@ -1275,7 +1275,7 @@ const tocHeadings = [
 
         <div class="trust-strip">
           <div class="trust-cell"><div class="trust-v">$0</div><div class="trust-l">per month</div></div>
-          <div class="trust-cell"><div class="trust-v">~4 min</div><div class="trust-l">to deploy</div></div>
+          <div class="trust-cell"><div class="trust-v">No code</div><div class="trust-l">to deploy</div></div>
           <div class="trust-cell"><div class="trust-v">Real-time</div><div class="trust-l">webhook sync</div></div>
           <div class="trust-cell"><div class="trust-v">Public</div><div class="trust-l">Make.com scenario</div></div>
         </div>
@@ -1290,7 +1290,7 @@ const tocHeadings = [
     <div class="speakable-answer">
       <div class="label">↳ Quick answer</div>
       <p>
-        <strong>Stocky Swap is a free Stocky alternative for Shopify in 2026.</strong> It uses a public Make.com scenario to log every new Shopify order to a Google Sheet you own, in real time, with no monthly fees and no code. Setup takes under 5 minutes. It runs forward-only on Make.com's free tier, making it the cheapest direct path off Stocky now that it has closed. For deeper inventory features (forecasting, multi-warehouse, purchase orders), see the paid alternatives comparison below: Qoblex, SKUSavvy, Sumtracker, Inventory Planner, and Prediko range from $49 to $599 per month, with SKUSavvy charging per order and Inventory Planner by quote.
+        <strong>Stocky Swap is a free Stocky alternative for Shopify in 2026.</strong> It uses a public Make.com scenario to log every new Shopify order to a Google Sheet you own, in real time, with no monthly fees and no code. Setup needs no code. It runs forward-only on Make.com's free tier, making it the cheapest direct path off Stocky now that it has closed. For deeper inventory features (forecasting, multi-warehouse, purchase orders), see the paid alternatives comparison below: Qoblex, SKUSavvy, Sumtracker, Inventory Planner, and Prediko range from $49 to $599 per month, with SKUSavvy charging per order and Inventory Planner by quote.
       </p>
     </div>
 
@@ -1468,9 +1468,9 @@ const tocHeadings = [
   <section class="section-alt bloom">
     <div class="inner-md">
       <div class="sec-head">
-        <span class="sec-eyebrow">Setup · 4 minutes</span>
+        <span class="sec-eyebrow">Setup</span>
         <h2 id="deploy-stocky-swap-in-3-steps">Deploy Stocky Swap in 3 steps</h2>
-        <p>Total time: under 5 minutes. No code. No app install. No credit card.</p>
+        <p>No code. No app install. No credit card.</p>
       </div>
 
       <div class="step-cards speakable-howto">
@@ -1518,7 +1518,7 @@ const tocHeadings = [
       <Disclosure />
       <div class="section-cta">
         <div class="section-cta-text">
-          <div class="cta-h">Ready in 4 minutes</div>
+          <div class="cta-h">Ready to import</div>
           <p>Free Make.com account → clone the scenario → switch on. That's it.</p>
         </div>
         <a href={`${MAKE_AFFILIATE}?source=stocky-swap-setup`} class="btn btn-g" target="_blank" rel="sponsored nofollow noopener" data-cta="setup-make">Create a free Make.com account</a>
@@ -1651,7 +1651,7 @@ const tocHeadings = [
               <td class="row-tool">Stocky Swap<span class="sub">Make.com + Google Sheets</span></td>
               <td class="neutral">Forward-only order logging: replaces Stocky's order tracking at $0</td>
               <td class="win">$0</td>
-              <td class="win">~4 minutes</td>
+              <td class="win">No code</td>
               <td class="win">Your Google Sheet</td>
             </tr>
             <tr>
@@ -2075,7 +2075,7 @@ const tocHeadings = [
 
         <a href="/stocky-alternative/" class="crosslink-card">
           <div class="crosslink-tag">↳ Comparison</div>
-          <div class="crosslink-name">Stocky alternatives compared: verdict in 2 minutes</div>
+          <div class="crosslink-name">Stocky alternatives compared: verdict</div>
           <div class="crosslink-desc">Free vs paid Stocky alternatives, ranked by use case. Independent comparison.</div>
           <div class="crosslink-arrow">See the comparison →</div>
         </a>
@@ -2128,8 +2128,8 @@ const tocHeadings = [
     <div class="inner-md" style="text-align:center;">
       <div class="sec-head">
         <h2 id="stocky-closes-august-31-replace-it-free-in-4-minutes">{shutdownPassed
-          ? "Stocky is gone. Replace it free in 4 minutes."
-          : "Stocky closes August 31. Replace it free in 4 minutes."}</h2>
+          ? "Stocky is gone. Replace it free."
+          : "Stocky closes August 31. Replace it free."}</h2>
         <p>{shutdownPassed
           ? "Free Make.com account. Public scenario. A Google Sheet you own: logging from the next order onward."
           : "Free Make.com account. Public scenario. Google Sheet you own."}</p>

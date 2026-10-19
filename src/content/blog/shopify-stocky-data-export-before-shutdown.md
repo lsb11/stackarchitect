@@ -21,7 +21,7 @@ faqs:
   - question: "Were my Shopify inventory levels deleted when Stocky shut down?"
     answer: "No. Shopify's native inventory levels (the stock quantities shown in Shopify Admin under Products → Inventory) are separate from Stocky data and were not affected by the shutdown. Only the data stored within the Stocky app itself (purchase orders, stocktakes, transfers, supplier records) is stranded behind the read-only export window."
   - question: "What replaces Stocky now the August 2026 shutdown has happened?"
-    answer: "Stocky Swap is the free replacement: a Make.com webhook that automatically logs every Shopify order to a Google Sheet you own entirely. It deploys in 4 minutes, costs $0/month, and works on every Shopify plan. It logs forward from the moment you switch it on; it does not pull your Stocky archive out, which you export from Stocky yourself. Unlike Stocky, the data lives in a Google Sheet you control permanently: no vendor lock-in and no shutdown risk. The complete free inventory management system is covered in the Ultimate Guide to Shopify Inventory Management."
+    answer: "Stocky Swap is the free replacement: a Make.com webhook that automatically logs every Shopify order to a Google Sheet you own entirely. It deploys without code, costs $0/month, and works on every Shopify plan. It logs forward from the moment you switch it on; it does not pull your Stocky archive out, which you export from Stocky yourself. Unlike Stocky, the data lives in a Google Sheet you control permanently: no vendor lock-in and no shutdown risk. The complete free inventory management system is covered in the Ultimate Guide to Shopify Inventory Management."
   - question: "Was the Shopify Stocky shutdown confirmed, or was it a rumour?"
     answer: "The shutdown is confirmed and official, and it has happened. Shopify removed Stocky from the App Store on February 2, 2026 and ended the service on August 31, 2026; the app no longer functions for inventory management and its APIs stopped that day with no grace period. Shopify's own guidance states that read-only access to export your data continues for at least 90 days after the shutdown date. (Source: Shopify, \"Transitioning from Stocky\", help.shopify.com/en/manual/products/inventory/transitioning-from-stocky, read 10 September 2026.)"
 relatedGuides:
@@ -152,7 +152,7 @@ Shopify itself still records every order and adjusts stock levels, so nothing is
 
 The correct sequence:
 
-1. **Deploy Stocky Swap now**: [4-minute setup](/stocky-swap/), on a [free Make.com account](/go/make/?source=shopify-stocky-data-export-before-shutdown-next-steps). This starts logging every new order immediately.
+1. **Deploy Stocky Swap now**: [no-code setup](/stocky-swap/), on a [free Make.com account](/go/make/?source=shopify-stocky-data-export-before-shutdown-next-steps). This starts logging every new order immediately.
 2. **Export all Stocky data**: using the steps above, before 29 November 2026 at the latest.
 3. **Import historical data**: use your exports to populate the opening stock figures in your new Sheet.
 4. **Uninstall Stocky** only once every export is saved and opened to check it is complete. After uninstalling you cannot reinstall it.

@@ -76,7 +76,7 @@ const stripStats = [
   { value: "$0",    label: "Monthly cost forever" },
   { value: "2,000", label: "Free contacts (8× Klaviyo)" },
   { value: "8×",    label: "More free contacts than Klaviyo" },
-  { value: "30 min",label: "Full migration time" }
+  { value: "No code",label: "Full migration" }
 ];
 
 // ─── Klaviyo pricing tiers ───────────────────────────────────────────────────
@@ -136,9 +136,9 @@ const compRows = [
 // ─── Setup steps ─────────────────────────────────────────────────────────────
 const setupSteps = [
   { pos: 1, title: "Create your free Systeme.io account",          tool: "systeme.io: free plan, no credit card",                       desc: "Sign up at the link below: no credit card required. The free plan activates instantly. You get 2,000 contacts and unlimited email sends. Systeme.io's pricing FAQ (read 15 October 2026) lists the free plan with 1 email campaign and 1 automation rule, so plan which flow you build first." },
-  { pos: 2, title: "Export your Klaviyo contact list",             tool: "Klaviyo → Profiles → Export CSV",                              desc: "In Klaviyo, go to Profiles → All Profiles → Export. Download your list as a CSV. Include email address, first name, last name, and any custom properties. This takes under 2 minutes." },
-  { pos: 3, title: "Import your contacts to Systeme.io",          tool: "Systeme.io → Contacts → Import",                               desc: "In Systeme.io, go to Contacts → Import Contacts. Upload your CSV and map the columns: email, first name, last name. Add a tag like imported-from-klaviyo so you can segment them. Large lists import in under 5 minutes." },
-  { pos: 4, title: "Rebuild your key automation sequences",       tool: "Systeme.io → Automations → New workflow",                      desc: "In Systeme.io's automation builder, recreate your welcome sequence, abandoned cart flow, and post-purchase sequence. Most stores need 2–3 core automations. Takes 15–20 minutes per flow." },
+  { pos: 2, title: "Export your Klaviyo contact list",             tool: "Klaviyo → Profiles → Export CSV",                              desc: "In Klaviyo, go to Profiles → All Profiles → Export. Download your list as a CSV. Include email address, first name, last name, and any custom properties. This needs no code." },
+  { pos: 3, title: "Import your contacts to Systeme.io",          tool: "Systeme.io → Contacts → Import",                               desc: "In Systeme.io, go to Contacts → Import Contacts. Upload your CSV and map the columns: email, first name, last name. Add a tag like imported-from-klaviyo so you can segment them. Large lists import the same way as small ones." },
+  { pos: 4, title: "Rebuild your key automation sequences",       tool: "Systeme.io → Automations → New workflow",                      desc: "In Systeme.io's automation builder, recreate your welcome sequence, abandoned cart flow, and post-purchase sequence. Most stores need 2–3 core automations, and each is built without code." },
   { pos: 5, title: "Connect Shopify and test",                    tool: "Systeme.io → Settings → Integrations → Shopify",               desc: "Connect Systeme.io to Shopify using the native integration under Settings → Integrations, or via a Make.com webhook for more advanced triggers. Place a test order and verify your welcome and post-purchase flows fire correctly." },
   { pos: 6, title: "Cancel Klaviyo",                              tool: "Klaviyo → Account → Plan → Cancel",                            desc: "Once your Systeme.io automations are confirmed working, cancel your Klaviyo subscription. In Klaviyo, go to Account → Plan → Cancel Plan. You will not be charged again. Your data remains accessible for 90 days after cancellation." }
 ];
@@ -146,9 +146,9 @@ const setupSteps = [
 
 // ─── Cross-links ──────────────────────────────────────────────────────────────
 const crosslinks = [
-  { href: "/capi-shield/",                    hoverClass: "",    tag: "Ad tracking",            tagClass: "",         name: "CAPI Shield",       desc: "Close the browser tracking gap iOS opens. Free server-side tracking replacing paid tools like Triple Whale and Elevar: deploy in 6 minutes.", save: "Saves $145–$650/mo",  saveColor: "var(--g)"    },
+  { href: "/capi-shield/",                    hoverClass: "",    tag: "Ad tracking",            tagClass: "",         name: "CAPI Shield",       desc: "Close the browser tracking gap iOS opens. Free server-side tracking replacing paid tools like Triple Whale and Elevar: deploy without code.", save: "Saves $145–$650/mo",  saveColor: "var(--g)"    },
   { href: "/stocky-swap/",                    hoverClass: "sky", tag: "Inventory",   tagClass: "tag-sky",  name: "Stocky Swap",       desc: "Replace the retired Stocky app. Every order auto-logged to Google Sheets in real time. Free forever: no paid inventory apps needed.", save: "Saves $49–$119/mo",  saveColor: "var(--sky)"    },
-  { href: "/tiktok-events-api-shopify/",      hoverClass: "tt",  tag: "TikTok tracking",        tagClass: "",         name: "TikTok Events API", desc: "Recover lost TikTok conversion data free. Server-side tracking via Make.com: replaces WeltPixel at $0, deploys in 6 minutes.", save: "Saves $39–$275/mo",   saveColor: "#ff2e63"       },
+  { href: "/tiktok-events-api-shopify/",      hoverClass: "tt",  tag: "TikTok tracking",        tagClass: "",         name: "TikTok Events API", desc: "Send TikTok purchase events from the server, free. Server-side tracking via Make.com: replaces WeltPixel at $0, deploys without code.", save: "Saves $39–$275/mo",   saveColor: "#ff2e63"       },
   { href: "/shopify-profit-loss-automation/", hoverClass: "",    tag: "P&L reporting",          tagClass: "tag-dim",  name: "Shopify P&L automation", desc: "Every order writes to a live Google Sheets P&L automatically. Revenue, COGS, fees, and net margin tracked in real time: free, no code, 10 minutes.", save: "Saves $35–$299/mo",  saveColor: "var(--g)"    },
   { href: "/autocrat-quota-fix/",             hoverClass: "vio", tag: "Stability",              tagClass: "tag-vio",  name: "Autocrat Quota Fix",desc: "Stop Google Apps Script quota errors breaking your document workflows. Handles 10,000+ rows per day at $0: keeps the entire stack running reliably.", save: "Runs on Make's free plan",   saveColor: "var(--vio)"    },
   { href: "/",                               hoverClass: "",    tag: "Full stack",             tagClass: "tag-dim",  name: "$0 Automation Stack",desc: "All six free tools in one place: tracking, inventory, TikTok, email, P&L, and workflow stability. Deploy the entire backend for $0/month.", save: "$0 a month for the stack", saveColor: "var(--text-4)" }
@@ -159,7 +159,7 @@ const faqs = [
   { q: "Is Klaviyo free in 2026?", a: "No. Klaviyo changed its billing model in February 2025. The free tier is now limited to 250 contacts and 500 emails/month. Paid plans start at $20/month for 500 contacts. Klaviyo now charges for every active profile, including contacts you have not emailed recently." },
   { q: "Is Systeme.io really free as a Klaviyo replacement?", a: "For a small list and one main flow, yes. On 15 October 2026 Systeme.io's pricing FAQ listed the free plan at 2,000 contacts, unlimited email sends, 3 sales funnels, 1 email campaign and 1 automation rule. That covers one sequence, such as a welcome series, plus broadcasts. Running welcome, abandoned cart and post-purchase flows together needs a paid Systeme.io plan, from $17/month." },
   { q: "What is the difference between Klaviyo and Systeme.io for Shopify?", a: "Klaviyo offers deeper native Shopify segmentation. Systeme.io offers a broader platform (email marketing, funnels, CRM, courses, and affiliate management) at $0/month. For stores not using Klaviyo's advanced segmentation, Systeme.io delivers equivalent email results at zero cost." },
-  { q: "How do I migrate my Klaviyo email list to Systeme.io?", a: "Export your Klaviyo contacts as a CSV (Profiles → Export) and import them into Systeme.io (Contacts → Import). Map email, first name, and last name. Your list migrates in under 10 minutes regardless of size." },
+  { q: "How do I migrate my Klaviyo email list to Systeme.io?", a: "Export your Klaviyo contacts as a CSV (Profiles → Export) and import them into Systeme.io (Contacts → Import). Map email, first name, and last name. Your list migrates regardless of size." },
   { q: "What is the Klaviyo free plan limit in 2026?", a: "Klaviyo's free plan in 2026 is limited to 250 active profiles and 500 email sends per month. Systeme.io's free plan allows 2,000 contacts with unlimited email sends: 8× more contacts and no sending cap at zero cost." },
   { q: "Why did my Klaviyo bill go up in 2025–2026?", a: "Klaviyo changed its billing model in February 2025. Previously you paid based on contacts you actively emailed. Now you pay for all active profiles in your account: every subscribed contact whether or not you send to them." },
   { q: "Does Systeme.io have abandoned cart emails for Shopify?", a: "It can send an abandoned cart sequence when Shopify data reaches it through a Make.com scenario. Shopify has no abandoned-checkout webhook, so the scenario must also tag buyers from completed orders and the sequence must stop for them before each email. Shopify's own Shopify Messaging app also sends a free abandoned checkout email." },
@@ -184,7 +184,7 @@ const schemaGraph = {
       "@type": "WebPage",
       "url": CANONICAL,
       "name": "Replace Klaviyo Free in 2026: Best Free Klaviyo Alternative for Shopify",
-      "description": "Replace Klaviyo with Systeme.io free: 2,000 contacts and unlimited email sends at $0/month, with one email campaign and one automation rule on the free plan. Migrate in 30 minutes.",
+      "description": "Replace Klaviyo with Systeme.io free: 2,000 contacts and unlimited email sends at $0/month, with one email campaign and one automation rule on the free plan. Migrate without a developer.",
       "dateModified": DATE_MODIFIED,
       "breadcrumb": {
         "@type": "BreadcrumbList",
@@ -215,7 +215,7 @@ const schemaGraph = {
     {
       "@type": "HowTo",
       "name": "How to replace Klaviyo with Systeme.io free",
-      "description": "Migrate from Klaviyo to Systeme.io in 30 minutes. Free, no code, no credit card. 2,000 contacts with unlimited sends.",
+      "description": "Migrate from Klaviyo to Systeme.io. Free, no code, no credit card. 2,000 contacts with unlimited sends.",
       "totalTime": "PT30M",
       "estimatedCost": { "@type": "MonetaryAmount", "currency": "USD", "value": "0" },
       "step": setupSteps.map(s => ({
@@ -237,7 +237,7 @@ const schemaGraph = {
       "@type": "Article",
       "@id": `${CANONICAL}#article`,
       "headline": "Replace Klaviyo Free in 2026 — Best Free Klaviyo Alternative for Shopify",
-      "description": "The complete guide to replacing Klaviyo with Systeme.io free. Migrate your email marketing, automations, and CRM in 30 minutes. Cut a $20+/month bill to $0.",
+      "description": "The complete guide to replacing Klaviyo with Systeme.io free. Migrate your email marketing, automations, and CRM. Cut a $20+/month bill to $0.",
       "author":    { "@id": "https://stackarchitect.xyz/#luke" },
       "publisher": { "@id": "https://stackarchitect.xyz/#org" },
       "datePublished": "2026-04-05",
@@ -275,7 +275,7 @@ const tocHeadings = [
   },
   {
     "id": "migrate-h",
-    "text": "Replace Klaviyo in 30 minutes: step by step"
+    "text": "Replace Klaviyo: step by step"
   },
   {
     "id": "guide-h",
@@ -404,7 +404,7 @@ const tocHeadings = [
         </div>
 
         <Disclosure />
-        <a href="#how-it-works" class="btn btn-sm pulse" id="calc-affiliate-btn" style="margin-top:20px;display:none;">See the 30-minute migration →</a>
+        <a href="#how-it-works" class="btn btn-sm pulse" id="calc-affiliate-btn" style="margin-top:20px;display:none;">See the migration steps →</a>
       </div>
     </div>
 
@@ -419,7 +419,7 @@ const tocHeadings = [
     </div>
 
     <div class="trust-row">
-      {["Unlimited emails on free plan","2,000 contacts free (8× Klaviyo)","Migrate in under 30 minutes","Replaces ClickFunnels too"].map(t => (
+      {["Unlimited emails on free plan","2,000 contacts free (8× Klaviyo)","Migrate without a developer","Replaces ClickFunnels too"].map(t => (
         <span class="trust-item">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
           {t}
@@ -668,7 +668,7 @@ const tocHeadings = [
   <div class="inner">
     <div class="sec-head">
       <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Migration guide</span>
-      <h2 id="migrate-h">Replace Klaviyo in 30 minutes: step by step</h2>
+      <h2 id="migrate-h">Replace Klaviyo: step by step</h2>
       <p>No developer required. Your email sequences migrate in under an hour. Cancel Klaviyo the same day.</p>
     </div>
 
@@ -690,7 +690,7 @@ const tocHeadings = [
     <Disclosure />
     <div class="section-cta">
       <div class="section-cta-left">
-        <div class="cta-h">Start replacing Klaviyo: takes 30 minutes</div>
+        <div class="cta-h">Start replacing Klaviyo, no code</div>
         <p>Free forever · 2,000 contacts · Unlimited sends · No credit card</p>
       </div>
       <a href={`${SYSTEME_URL}?source=replace-klaviyo-free-migrate`} target="_blank" rel="sponsored nofollow noopener" class="btn btn-sm">Create a free Systeme.io account</a>
@@ -824,7 +824,7 @@ const tocHeadings = [
     </div>
     <p style="font-size:13px;color:var(--text-4);margin-top:16px;">Newsletter brand? Beehiiv is the better starting point: it is covered in the guide above.</p>
     <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:20px;margin-top:28px;">
-      {["Migrate in 30 minutes","No developer required","Cancel Klaviyo same day"].map(t => (
+      {["Migrate without a developer","No developer required","Cancel Klaviyo same day"].map(t => (
         <span style="font-size:13px;color:var(--text-4);display:flex;align-items:center;gap:6px;">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#34d377" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
           {t}
@@ -851,7 +851,7 @@ const tocHeadings = [
     <a href="/stocky-swap/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
       <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Stocky Swap: Replace Shopify Stocky for $0
             Stocky closed 31 Aug 2026. Export still open</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">Saves $49–$119/mo</span></span>
-      <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">Free replacement in 4 minutes</span>
+      <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">Free replacement</span>
     </a>
     <a href="/shopify-profit-loss-automation/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
       <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">P&amp;L Auto: See Your Real Profit After Saving on Klaviyo
@@ -861,7 +861,7 @@ const tocHeadings = [
     <a href="/pro/" style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid rgba(143,166,189,.25);border-radius:12px;text-decoration:none;color:inherit;">
       <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><span style="font-weight:700;font-size:16px;line-height:1.35;">Complete Kit: All 4 Automations Pre-Built ({kitPrice})
             CAPI Shield + TikTok CAPI + Stocky Swap + P&amp;L Auto</span><span style="flex-shrink:0;font-size:12px;font-weight:700;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:3px 10px;white-space:nowrap;">{kitPrice} one-time</span></span>
-      <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">10 minutes to full deployment</span>
+      <span style="font-size:14px;line-height:1.55;color:#8FA6BD;">No code to deploy</span>
     </a>
   </div>
 </section>

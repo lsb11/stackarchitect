@@ -8,39 +8,39 @@ import { faqPage, type Faq } from '../../utils/faq';
 // One array renders the visible FAQ and the FAQPage node.
 const faqs: Faq[] = [
   { q: "What is Shopify server-side tracking and how does it work?",
-    a: "<p>Shopify server-side tracking sends purchase events directly from your server to ad platforms (Meta, Google, TikTok) without going through the customer’s browser. When a Shopify order is paid, a webhook fires to Make.com which routes the event to each platform’s API endpoint: bypassing iOS restrictions, ad blockers, and cookie limitations. It works alongside your existing browser pixel, not instead of it.</p>" },
+    a: "<p>Shopify server-side tracking sends purchase events directly from your server to ad platforms without going through the customer’s browser. When a Shopify order is paid, Shopify sends an order webhook to Make.com, which posts the purchase to Meta’s Conversions API and TikTok’s Events API, so ad blockers and browser privacy limits cannot stop it. For Google Ads, the free route is enhanced conversions in Shopify’s Google & YouTube app. It runs alongside your browser pixel, not instead of it.</p>" },
   { q: "Do I need to remove my browser pixel when setting up server-side tracking?",
-    a: "<p>No: keep your browser pixel running alongside server-side tracking. The pixel captures upper-funnel events (ViewContent, AddToCart, InitiateCheckout) that server webhooks don’t cover since they only fire on confirmed payment. Set a matching event_id in both your pixel and server events so each platform deduplicates and you see one conversion, not two.</p>" },
+    a: "<p>No: keep your browser pixel running alongside server-side tracking. The pixel captures upper-funnel events (ViewContent, AddToCart, InitiateCheckout) that order webhooks don’t cover, since they only fire on payment. Whether the platform merges a browser event and a server event depends on both carrying the same event_id, and Shopify does not document the event_id its own pixels send, so check Test Events after a test order rather than assuming it.</p>" },
   { q: "How much of my lost Shopify conversion data will server-side tracking recover?",
     a: "<p>We publish no recovery percentage, and no honest one exists as an industry figure: what server-side tracking recovers is whatever your browser pixel was losing, which is set by your own mobile/iOS traffic mix and consent rate. Measure it as Additional Conversions Reported in Meta Events Manager, or with the <a href=\"/shopify-vs-meta-attribution-gap-calculator/\">attribution gap calculator</a>, and see <a href=\"/how-we-test/#the-20-40-figure\">why the 20–40% estimate was retracted</a>. Meta reported in April 2026 that advertisers running the Conversions API for web events saw an average 17.8% lower cost per result versus those without it; that is Meta's figure across its advertisers, not a measurement of your store.</p>" },
   { q: "Is server-side tracking GDPR compliant?",
     a: "<p>The data flows through your own Make.com workspace: you control what is sent and can delete the scenario at any time. All personally identifiable information (email, phone) is SHA-256 hashed before transmission as required by each platform’s API specification. Ensure your store privacy policy discloses server-side conversion data sharing with advertising platforms. For GDPR-specific advice consult a legal professional.</p>" },
   { q: "How long before I see results after setting up server-side tracking?",
-    a: "<p>Server events start flowing immediately after your first paid order. More conversions will appear in your ad platform reporting within 24–48 hours. Meaningful CPA and ROAS improvement typically takes 7–14 days as ad platform algorithms recalibrate delivery optimisation using the more complete conversion signal.</p>" },
+    a: "<p>Server events start with the first paid order after you switch the scenario on, and appear in Meta’s and TikTok’s Test Events within minutes. Reported conversions update in each platform’s normal reporting delay. We publish no figure for how soon cost per purchase changes: judge it on several weeks of results, against the same weeks before the change.</p>" },
   { q: "How often does Make.com’s free tier actually fail or rate-limit?",
-    a: "<p>The Make.com free plan limit is 1,000 credits/month, refreshing on the 1st of each month. One Shopify order = 4 credits (webhook trigger + Meta + Google + TikTok), so the free tier handles ~250 orders/month before hitting the cap. Make.com does not “fail” mid-month: it pauses your scenario and emails you. Real failure modes are different: a temporary Meta API outage, an expired access token, or a malformed payload. These are caught in Make.com’s execution log under each scenario, and re-runs are free.</p>" },
+    a: "<p>The Make.com free plan includes 1,000 credits a month. Most modules use one credit each time they run, so this guide’s scenario (webhook, Meta, TikTok) uses about three credits per order; your scenario history shows the real figure. When credits run out, scenarios stop until the next allowance. The failures that matter more are a platform API rejecting a request, an expired token or a malformed payload. Add a Break error handler and turn on storing incomplete executions, so a rejected request is kept for retry instead of disappearing; a re-run uses credits again.</p>" },
   { q: "Will server-side tracking keep working as iOS tightens privacy further?",
-    a: "<p>Yes. Server-side tracking is specifically designed to be immune to iOS browser-level restrictions because the event originates from Shopify’s server, not the customer’s iPhone. Every iOS release since 17 has extended Link Tracking Protection and tightened Safari’s Intelligent Tracking Prevention: both of which only affect browser pixels. CAPI, Google Enhanced Conversions, and TikTok Events API will continue to function exactly as documented. If anything, server-side tracking becomes more valuable with each iOS release.</p>" },
+    a: "<p>Yes. Server-side tracking is specifically designed to be immune to iOS browser-level restrictions because the event originates from Shopify’s server, not the customer’s iPhone. Link Tracking Protection (iOS 17 and later) and Safari’s Intelligent Tracking Prevention act on links and cookies in the browser, and an order webhook does not pass through either. What browser privacy does still affect is matching: if a click ID was stripped, the platform has only the hashed customer data to match on.</p>" },
   { q: "Do I still need server-side tracking if I’m using Shopify’s native Customer Events / Web Pixels?",
     a: "<p>Yes. Shopify’s Web Pixels framework is still browser-based: it loads in a sandboxed iframe in the customer’s browser and is subject to the same ad blocker and ITP restrictions as a regular pixel. A Shopify order webhook, by contrast, fires from Shopify’s backend when an order is paid and does not depend on the browser. Web Pixels remain the way to send browsing events (PageView, AddToCart); a server route is what makes the Purchase independent of the browser.</p>" },
   { q: "What is the difference between Meta CAPI and Shopify’s native data sharing?",
     a: "<p>Shopify’s help centre says its Facebook &amp; Instagram app uses Meta’s Conversions API at the Enhanced and Maximum data sharing levels, and for a Meta-only store that may be all you need. Shopify does not document exactly what triggers each server event. The Make.com webhook method is triggered by Shopify’s order webhook with no browser involved, and the same trigger can feed TikTok. Use one server route for Meta, not both, unless you have confirmed their event IDs match.</p>" },
   { q: "Can I set up Shopify server-side tracking without a developer?",
-    a: "<p>Yes. The Make.com webhook setup requires no code. You configure a Shopify webhook in Settings, build an HTTP module in Make.com’s visual drag-and-drop interface, and paste your API credentials. Most store owners complete the setup in under 20 minutes. No developer, no agency, no Shopify app installation required.</p>" },
+    a: "<p>Yes. The Make.com webhook setup requires no code. You configure a Shopify webhook in Settings, build an HTTP module in Make.com’s visual drag-and-drop interface, and paste your API credentials. No developer, agency or Shopify app is required, but test each step with a real order before relying on it.</p>" },
   { q: "Does server-side tracking work with Shopify’s native Maximum data sharing?",
-    a: "<p>Yes: the Make.com webhook method works independently of and alongside Shopify’s native data sharing. You do not need to disable native CAPI. Running both adds redundancy: if one delivery method has a transient failure, the other ensures the event still reaches the platform. Use matching event_id values in both so platforms deduplicate correctly.</p>" },
+    a: "<p>It works, but do not run both for Meta. Shopify’s help centre says its Facebook &amp; Instagram app already uses the Conversions API at the Enhanced and Maximum data sharing levels, so adding a webhook route for Meta can send the same purchase twice. Choose one Meta server route: Shopify’s, or the Make.com scenario with Shopify’s data sharing set below Enhanced. The Make.com route is still useful for TikTok.</p>" },
   { q: "How much does Shopify server-side tracking cost?",
-    a: "<p>The Make.com webhook method costs $0/month for Shopify stores under approximately 250 orders per month, since each order uses 4 Make.com credits (the webhook trigger plus one each for Meta, Google and TikTok) and the free tier covers 1,000 credits monthly. Above that, the Make.com Core plan at $9/month covers 10,000 credits: enough for roughly 2,500 orders/month at 4 credits each (<a href=\"https://www.make.com/en/pricing\" target=\"_blank\" rel=\"noopener\">make.com/en/pricing</a>, read 25 September 2026). Managed alternatives like Elevar (from $225/month) and Triple Whale (priced by store revenue) achieve the same tracking quality at significantly higher cost. The premium pays for managed onboarding and dashboards, not for superior API access.</p>" },
+    a: "<p>The Make.com webhook method costs nothing within Make.com’s free plan of 1,000 credits a month; this guide’s scenario uses about one credit per module per order, and your scenario history shows the real figure. Above that, the Make.com Core plan at $9/month covers 10,000 credits (<a href=\"https://www.make.com/en/pricing\" target=\"_blank\" rel=\"noopener\">make.com/en/pricing</a>, read 25 September 2026). Managed alternatives like Elevar (from $225/month) and Triple Whale (priced by store revenue) achieve the same tracking quality at significantly higher cost. The premium pays for managed onboarding and dashboards, not for superior API access.</p>" },
   { q: "What Event Match Quality (EMQ) score is good for Meta CAPI on Shopify?",
-    a: "<p>Meta scores Event Match Quality from 1 to 10. The score rises with the number of match keys an event carries. The Make.com webhook method sends hashed email, phone, zip, IP, user agent, <code>fbc</code> and <code>fbp</code>. Scores of 9–10 are excellent but typically require logged-in customer data with full address fields. Anything below 5 indicates missing match keys: investigate email format (lowercase + trim before SHA-256), phone format (E.164 digits-only before SHA-256), and the <code>external_id</code> field (Shopify <code>customer.id</code>, hashed).</p>" },
+    a: "<p>Meta shows Event Match Quality as a score out of 10 for each event in Events Manager, calculated from the match keys the event carries. We publish no target score, because we have not sampled it across stores. A Shopify order webhook can supply hashed email, phone, name, city, zip and country, plus the customer’s IP address, user agent and a hashed <code>external_id</code> (the customer ID). It cannot supply <code>fbc</code> or <code>fbp</code>, which come from the browser. If your score is lower than you expect, check email format (lowercase and trim before SHA-256), phone format (E.164 before SHA-256) and that IP and user agent come from the order, not from Make.com.</p>" },
   { q: "Why is my TikTok event match quality low even with server-side tracking?",
     a: "<p>The single most common cause is sending the event name “Purchase” instead of <code>CompletePayment</code>. TikTok’s Events API requires <code>CompletePayment</code> as the event name for purchase events: sending “Purchase” (which works for Meta) results in low Event Match Score and prevents purchase-campaign optimisation. Other common causes: missing hashed email, missing IP address (you must map <code>order.client_details.browser_ip</code> from the Shopify webhook payload, not the Make.com runtime IP), missing TikTok Click ID (<code>ttclid</code>) for paid traffic, and missing user agent. Send all four high-impact signals (email, phone, IP/UA, external_id): that is the full set TikTok calculates the score from. We publish no figure for what it scores; read yours in TikTok Events Manager.</p>" },
   { q: "Is Shopify server-side tracking free?",
-    a: "<p>Yes: the tracking itself is free to implement. The <a href=\"#setup\">Make.com webhook method</a> in this guide costs <strong>$0/month</strong> for stores under ~250 orders/month, because each order uses 4 Make.com credits and the free tier covers 1,000. Above that, Make.com Core is $9/month for 10,000 credits. The platform APIs (Meta CAPI, Google Enhanced Conversions, TikTok Events API) are all free to use. You only pay if you choose a <em>managed</em> tool: Elevar runs from $225/month and Triple Whale prices by store revenue, but they charge for dashboards and managed onboarding, not for better tracking access. The same events reach the same endpoints either way. See the <a href=\"#comparison\">free vs paid comparison</a> for the full breakdown.</p>" },
+    a: "<p>Yes: the tracking itself is free to implement. The <a href=\"#setup\">Make.com webhook method</a> in this guide costs <strong>$0/month</strong> within Make.com’s free 1,000 credits; about one credit per module per order. Above that, Make.com Core is $9/month for 10,000 credits. Meta’s Conversions API and TikTok’s Events API are free to call, and enhanced conversions in Shopify’s Google &amp; YouTube app costs nothing. You only pay if you choose a <em>managed</em> tool: Elevar runs from $225/month and Triple Whale prices by store revenue, but they charge for dashboards and managed onboarding, not for better tracking access. The same events reach the same endpoints either way. See the <a href=\"#comparison\">free vs paid comparison</a> for the full breakdown.</p>" },
   { q: "Shopify server-side tracking vs Elevar: what’s the difference?",
-    a: "<p>Both send the same server-side events to the same destinations (Meta CAPI, Google, TikTok): the difference is who builds and maintains the pipeline. <strong>Elevar</strong> is a managed service from $225/month: it provisions a server-side GTM container, supplies a pre-built Shopify data layer, monitors delivery with alerts, and handles refunds and order edits automatically. The <strong>free Make.com webhook method</strong> delivers the same events and the same Event Match Quality ceiling, but you build the scenario yourself in ~18 minutes and maintain it. Choose Make.com for zero cost and full control; choose Elevar if managed monitoring, automatic edge-case handling, and a reporting dashboard justify the monthly fee at your ad spend. For most stores under 1,000 orders/month, the Make.com method delivers the tracking quality without the recurring cost.</p>" },
+    a: "<p>Both send server-side purchase events; the difference is who builds and maintains the pipeline, and what it covers. <strong>Elevar</strong> is a managed service from $225/month: it provisions a server-side GTM container, supplies a pre-built Shopify data layer, monitors delivery with alerts, and handles refunds and order edits automatically. The <strong>free Make.com webhook method</strong> sends the purchase to Meta and TikTok from the order webhook, but you build and maintain it yourself, and it cannot capture a Google click ID. Choose Make.com for zero cost and full control; choose Elevar if managed monitoring, automatic edge-case handling, and a reporting dashboard justify the monthly fee at your ad spend. </p>" },
   { q: "Do I need server-side GTM (sGTM) for Shopify server-side tracking?",
-    a: "<p>No. Server-side Google Tag Manager is <em>one</em> way to do server-side tracking, but it requires provisioning and paying for a Google Cloud tagging server and configuring containers: overkill for most Shopify stores. The Make.com webhook method skips GTM entirely: Shopify fires an order webhook directly to Make.com, which POSTs to each platform’s API. You get the same server-to-server delivery with no server to host or maintain. sGTM earns its complexity only for large stores with dedicated analytics engineers needing custom tag logic across many destinations; for everyone else, the webhook method is simpler, free, and equally effective for conversion tracking.</p>" },
+    a: "<p>No. Server-side Google Tag Manager is <em>one</em> way to do server-side tracking, but it requires provisioning and paying for a Google Cloud tagging server and configuring containers: overkill for most Shopify stores. The Make.com webhook method skips GTM entirely: Shopify fires an order webhook directly to Make.com, which POSTs to each platform’s API. You get the same server-to-server delivery with no server to host or maintain. sGTM earns its complexity only for large stores with dedicated analytics engineers needing custom tag logic across many destinations; for everyone else, the webhook method is simpler and free for purchase events.</p>" },
 ];
 import Disclosure from '../../components/Disclosure.astro';
 import AuthorCard from '../../components/AuthorCard.astro';
@@ -58,8 +58,8 @@ const articleSchema = {
   "@graph": [
     {
       "@type": "Article",
-      "headline": "Shopify Server-Side Tracking: Free Setup Guide 2026 — Meta, Google & TikTok",
-      "description": "The complete free guide to Shopify server-side tracking in 2026. Set up Meta CAPI, Google Enhanced Conversions, and TikTok Events API via Make.com: no code, under 20 minutes. Covers the purchase events browser tracking loses.",
+      "headline": "Shopify Server-Side Tracking: Free Setup Guide for Meta, TikTok and Google",
+      "description": "Shopify server-side tracking for Meta, TikTok and Google: when Shopify's own integrations are enough, and how to send purchases from an order webhook via Make.com.",
       "datePublished": "2026-04-06",
       "dateModified": DATE_MODIFIED,
       "inLanguage": "en-GB",
@@ -78,7 +78,7 @@ const articleSchema = {
       "keywords": [
         "shopify server-side tracking",
         "meta conversions api",
-        "google enhanced conversions",
+        "google ads enhanced conversions shopify",
         "tiktok events api",
         "shopify capi",
         "server-side tracking make.com",
@@ -119,9 +119,8 @@ const articleSchema = {
     },
     {
       "@type": "HowTo",
-      "name": "How to Set Up Free Shopify Server-Side Tracking (Meta + Google + TikTok)",
-      "description": "Seven-step process to implement server-side tracking for Meta Conversions API, Google Enhanced Conversions, and TikTok Events API via Make.com at zero cost.",
-      "totalTime": "PT18M",
+      "name": "How to Set Up Free Shopify Server-Side Tracking for Meta and TikTok",
+      "description": "Send Shopify purchases to Meta's Conversions API and TikTok's Events API from an order webhook via Make.com, and turn on Google enhanced conversions in the Google & YouTube app.",
       "estimatedCost": {
         "@type": "MonetaryAmount",
         "currency": "USD",
@@ -150,25 +149,25 @@ const articleSchema = {
           "@type": "HowToStep",
           "position": 4,
           "name": "Add Meta CAPI HTTP module",
-          "text": "Add an HTTP module after the webhook trigger. POST to the Graph API events endpoint for your pixel (use the current Graph API version, e.g. https://graph.facebook.com/v24.0/&#123;PIXEL_ID&#125;/events; check Meta's Graph API changelog for the latest version, as older versions are periodically deprecated) with your access_token. Send event_name Purchase, event_id, event_time, value, currency, and SHA-256 hashed email and phone. The event_id must match your browser pixel for deduplication."
+          "text": "Add an HTTP module after the webhook trigger. POST to the Graph API events endpoint for your pixel (use the current Graph API version, e.g. https://graph.facebook.com/v24.0/&#123;PIXEL_ID&#125;/events; check Meta's Graph API changelog for the latest version, as older versions are periodically deprecated) with your access_token. Send event_name Purchase, event_id, event_time, value, currency, and SHA-256 hashed email and phone. Use the Shopify order ID as event_id, and do not also run Shopify's own Conversions API for Meta."
         },
         {
           "@type": "HowToStep",
           "position": 5,
-          "name": "Add Google Enhanced Conversions HTTP module",
-          "text": "Add a second HTTP module. POST hashed email, hashed phone, conversion value and order ID to Google's Enhanced Conversions endpoint via the Google Ads API or GTM Server-Side container."
+          "name": "Turn on Google enhanced conversions",
+          "text": "In Shopify's Google & YouTube app, open Settings, then Google Ads settings, find Enhanced conversions and select Turn on. This is not a Make.com step: Shopify orders carry no Google click ID for a server upload to use."
         },
         {
           "@type": "HowToStep",
           "position": 6,
           "name": "Add TikTok Events API HTTP module",
-          "text": "Add a third HTTP module. POST to https://business-api.tiktok.com/open_api/v1.3/event/track/ using event_name CompletePayment, not Purchase. Include hashed email, hashed phone, IP address, and user agent for maximum Event Match Quality."
+          "text": "Add a third HTTP module. POST to https://business-api.tiktok.com/open_api/v1.3/event/track/ using event_name CompletePayment, not Purchase. Put hashed email and phone, IP address and user agent under data[].user."
         },
         {
           "@type": "HowToStep",
           "position": 7,
-          "name": "Activate scenario and verify all three platforms",
-          "text": "Switch the scenario on. Place a test order. Verify in Meta Events Manager Test Events (Purchase, server source), Google Ads Conversions Diagnostics, and TikTok Events Manager Test Events (CompletePayment). Events appear within 60 seconds."
+          "name": "Activate the scenario and verify each platform",
+          "text": "Switch the scenario on. Place a test order. Verify in Meta Events Manager Test Events (Purchase, server source), TikTok Events Manager Test Events (CompletePayment), and Google Ads conversion diagnostics."
         }
       ]
     },
@@ -196,25 +195,25 @@ const articleSchema = {
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-eyebrow"><span class="hero-dot"></span><span class="hero-eyebrow-txt">Free Setup &middot; No Code &middot; Under 20 Minutes &middot; Meta + Google + TikTok</span></div>
+    <div class="hero-eyebrow"><span class="hero-dot"></span><span class="hero-eyebrow-txt">Free Setup &middot; No Code &middot; Meta &middot; TikTok &middot; Google</span></div>
     <div class="freshness-banner" style="display:inline-block;padding:6px 14px;border:1px solid #2dd4bf;border-radius:4px;font-size:13px;color:#2dd4bf;font-family:monospace;margin-bottom:16px;letter-spacing:0.5px;">
-      &#10003; UPDATED {UPDATED_LABEL}: VERIFIED FREE TIER &middot; iOS 26
+      &#10003; UPDATED {UPDATED_LABEL}: FREE PLANS AND PLATFORM DOCS RE-CHECKED
     </div>
-    <h1>Shopify Server-Side Tracking Setup<br>Meta, Google &amp; TikTok: <span class="g">step by step</span></h1>
-    <p id="answer">Setting up Shopify server-side tracking means connecting a Shopify orders/paid webhook to a free Make.com scenario: the webhook fires when an order is paid, Make.com hashes the customer data with SHA-256, then posts the event to Meta Conversions API, Google Enhanced Conversions, and TikTok Events API. A full three-platform build takes about 18 minutes, no code required.</p>
+    <h1>Shopify Server-Side Tracking Setup<br>Meta, TikTok &amp; Google: <span class="g">step by step</span></h1>
+    <p id="answer">Shopify server-side tracking sends each paid order to the ad platforms from Shopify's servers, not the shopper's browser. A free Make.com scenario receives Shopify's order webhook, hashes the customer data and posts the purchase to Meta and TikTok. For Google Ads, turn on enhanced conversions in Shopify's Google &amp; YouTube app instead.</p>
 <p style="font-size:14px;color:#93a09a;line-height:1.7;margin:10px 0 18px;">The pieces, in each platform&rsquo;s own words (checked 24 September 2026): Shopify sends the <a href="https://shopify.dev/docs/api/webhooks" target="_blank" rel="noopener">orders/paid webhook</a> whenever an order is paid; Meta requires contact details to be <a href="https://developers.facebook.com/documentation/ads-commerce/conversions-api/parameters/customer-information-parameters" target="_blank" rel="noopener">normalised and SHA256-hashed</a>; Google&rsquo;s <a href="https://support.google.com/google-ads/answer/9888656" target="_blank" rel="noopener">Enhanced Conversions</a> sends SHA256-hashed first-party data alongside the conversion; and TikTok recommends running the <a href="https://ads.tiktok.com/help/article/events-api" target="_blank" rel="noopener">Events API</a> alongside its Pixel.</p>
-    <p class="hero-deck">Your store recorded 68 sales yesterday. The three ad platforms you pay for counted 41, 29 and 18. <strong>The gap is not a reporting quirk you can annotate away: it is the training set each of those systems uses to decide who sees you next.</strong> Bid against numbers that wrong for a quarter and the compounding is brutal.</p>
+    <p class="hero-deck">Shopify records every paid order; your ad platforms only count the purchases their tags or servers tell them about. <strong>The gap is not a reporting quirk you can annotate away: it is the training data each platform uses to decide who sees your ads next.</strong> Server-side events close the part of it the browser causes.</p>
     <p style="border-left:3px solid #34d377;padding:6px 14px;margin:16px 0;font-size:13px;font-family:monospace;">Only need Meta? See the <a href="/capi-shield/">Shopify server-side tracking setup guide</a>.</p>
     <div class="platform-strip">
       <span class="platform-badge pb-meta"><span class="pb-dot"></span>Meta CAPI</span>
-      <span class="platform-badge pb-google"><span class="pb-dot"></span>Google Enhanced Conversions</span>
+      <span class="platform-badge pb-google"><span class="pb-dot"></span>Google: enhanced conversions</span>
       <span class="platform-badge pb-tiktok"><span class="pb-dot"></span>TikTok Events API</span>
     </div>
     <div class="stat-strip">
       <div class="stat-cell"><span class="stat-v g">Server-side</span><span class="stat-l">Where the event fires</span></div>
       <div class="stat-cell"><span class="stat-v sky">17.8%</span><span class="stat-l">Lower CPA w/ CAPI (Meta, '26)</span></div>
       <div class="stat-cell"><span class="stat-v g">$0</span><span class="stat-l">Cost vs $225/mo Elevar</span></div>
-      <div class="stat-cell"><span class="stat-v tt">18 min</span><span class="stat-l">Setup time</span></div>
+      <div class="stat-cell"><span class="stat-v tt">No code</span><span class="stat-l">Make.com + one webhook</span></div>
     </div>
     <div class="hero-ctas">
       <a href="#prerequisites" class="btn btn-g">Jump to the setup steps &rarr;</a>
@@ -226,11 +225,11 @@ const articleSchema = {
   <section class="tldr" id="tldr-section" aria-label="TL;DR summary">
     <div class="tldr-head">TL;DR: 6 Key Points</div>
     <div class="tldr-grid">
-      <div class="tldr-item"><span class="tldr-n">01</span>Server-side tracking sends purchase events from Shopify's backend directly to Meta, Google and TikTok: bypassing browsers, ad blockers and iOS ATT.</div>
+      <div class="tldr-item"><span class="tldr-n">01</span>Server-side tracking sends purchase events from Shopify's backend to Meta and TikTok, so ad blockers and browser privacy limits cannot stop them. For Google Ads, use enhanced conversions in the Google &amp; YouTube app.</div>
       <div class="tldr-item"><span class="tldr-n">02</span>iOS App Tracking Transparency and Safari ITP block browser pixel events. How many is a property of your store, not an industry constant: server-side is the fix either way.</div>
-      <div class="tldr-item"><span class="tldr-n">03</span>The Make.com webhook method costs $0/month. Elevar charges from $225/month for the same result. Triple Whale uses GMV-based pricing that scales with store revenue.</div>
-      <div class="tldr-item"><span class="tldr-n">04</span>Full three-platform build takes ~18 minutes: one Shopify webhook, three Make.com HTTP modules, zero code. No developer needed.</div>
-      <div class="tldr-item"><span class="tldr-n">05</span>Always run browser pixel AND server events simultaneously. Use matching event_id values for deduplication so you count one purchase, not two.</div>
+      <div class="tldr-item"><span class="tldr-n">03</span>The Make.com webhook method costs $0/month within Make.com's free credits. Elevar charges from $225/month for a managed setup. Triple Whale uses GMV-based pricing that scales with store revenue.</div>
+      <div class="tldr-item"><span class="tldr-n">04</span>The build is one Shopify webhook and two Make.com HTTP modules, with no code. If Shopify's Facebook &amp; Instagram app already sends Meta's Conversions API, skip the Meta module.</div>
+      <div class="tldr-item"><span class="tldr-n">05</span>Keep the browser pixel running. A platform merges browser and server purchases only when both carry the same event_id, and Shopify does not document its pixels' IDs, so check Test Events for duplicates.</div>
       <div class="tldr-item"><span class="tldr-n">06</span>TikTok requires <strong>CompletePayment</strong> not &ldquo;Purchase&rdquo;. Include hashed email, phone, IP and user agent: the Advanced Matching fields TikTok calculates Event Match Quality from.</div>
     </div>
   </section>
@@ -246,11 +245,11 @@ const articleSchema = {
       <li><a href="#why-2026">Why it matters in 2026</a></li>
       <li><a href="#privacy-timeline">2020–2026 privacy timeline</a></li>
       <li><a href="#architecture-matrix">Pixel vs CAPI vs hybrid</a></li>
-      <li><a href="#emq-benchmarks">EMQ benchmarks</a></li>
+      <li><a href="#emq-benchmarks">Event Match Quality</a></li>
       <li><a href="#prerequisites">What you need</a></li>
       <li><a href="#setup">Complete 7-step setup</a></li>
       <li><a href="#meta-capi">Meta CAPI deep dive</a></li>
-      <li><a href="#google-enhanced">Google Enhanced Conversions</a></li>
+      <li><a href="#google-enhanced">Google: enhanced conversions</a></li>
       <li><a href="#tiktok-events">TikTok Events API</a></li>
       <li><a href="#comparison">Free vs paid comparison</a></li>
       <li><a href="#troubleshooting">Troubleshooting</a></li>
@@ -262,18 +261,18 @@ const articleSchema = {
   <div class="sec-mark" id="direct-answer">DIRECT ANSWER</div>
   <div class="prose">
     <h2 id="shopify-server-side-tracking-explained-in-60-seconds">Shopify Server-Side Tracking Explained in 60 Seconds</h2>
-    <p><strong>Shopify server-side tracking is a method of sending purchase, checkout, and add-to-cart events from Shopify&rsquo;s backend directly to Meta, Google, and TikTok: bypassing the customer&rsquo;s browser entirely.</strong> It is the only reliable way to track conversions in 2026 because iOS App Tracking Transparency, Safari&rsquo;s Intelligent Tracking Prevention, ad blockers, and consent banner rejections all block browser pixel events. We publish no figure for how many: it is set by your own mobile/iOS traffic mix and consent rate, so no industry range describes your store. <a href="/shopify-vs-meta-attribution-gap-calculator/">Measure yours</a>.</p>
-    <p>The mechanism is straightforward. When a Shopify order is paid, Shopify fires an <code>orders/paid</code> webhook. That webhook is intercepted by an automation tool (Make.com is the free standard), which receives the order payload (email, phone, total, line items, customer IP, user agent), hashes the personal data with SHA-256, and posts a signed event to three endpoints: Meta&rsquo;s Conversions API, Google&rsquo;s Enhanced Conversions endpoint, and TikTok&rsquo;s Events API. The browser pixel still fires alongside this for deduplication; both events share the same <code>event_id</code> so each platform counts one conversion, not two.</p>
-    <p>The result is a richer payload behind what Meta calls the Event Match Quality (EMQ) score: a server-side event carries match keys the browser pixel never had, and EMQ is calculated from the keys present. We have not sampled EMQ before and after across stores, so we publish no figure for either side: read yours in Events Manager.</p>
+    <p><strong>Shopify server-side tracking is a method of sending purchase events from Shopify&rsquo;s backend to the ad platforms, instead of relying on a tag in the customer&rsquo;s browser.</strong> Browser tags can be stopped by ad blockers, declined consent and browser privacy features, and a server-side event cannot. We publish no figure for how many purchases a browser tag misses: it depends on your own traffic and consent rate, so no industry range describes your store. <a href="/shopify-vs-meta-attribution-gap-calculator/">Measure yours</a>.</p>
+    <p>The mechanism is straightforward. When a Shopify order is paid, Shopify sends an <code>orders/paid</code> webhook to a Make.com scenario. The order data includes the customer&rsquo;s email, phone, name and address, the order total and currency, and the IP address and user agent of the browser that placed the order. Make.com hashes the personal data with SHA-256 and posts a purchase event to Meta&rsquo;s Conversions API and TikTok&rsquo;s Events API. Google is different: Shopify&rsquo;s order data has no Google click ID, so for most stores the free route is enhanced conversions in Shopify&rsquo;s Google &amp; YouTube app.</p>
+    <p>A server-side event carries match keys the browser tag may not have, and each platform&rsquo;s match score is calculated from the keys present. We have not sampled scores before and after across stores, so we publish no figure for either side: read yours in each platform&rsquo;s events manager.</p>
 
     <h3 id="quick-answer-table">Quick answer table</h3>
     <ul>
       <li><strong>What it is:</strong> Server-to-server transmission of conversion events, fired by Shopify webhooks instead of browser JavaScript.</li>
-      <li><strong>Why it&rsquo;s needed in 2026:</strong> iOS ATT, Link Tracking Protection (introduced in iOS 17 and still enforced in iOS 26), Safari ITP 2.3+, and consent rejection block roughly one in three browser pixel events.</li>
+      <li><strong>Why it&rsquo;s needed in 2026:</strong> iOS App Tracking Transparency, Link Tracking Protection (iOS 17 and later, in Mail, Messages and Private Browsing), Safari&rsquo;s cookie limits, ad blockers and declined consent all stop some browser tag events. How many is a property of your store.</li>
       <li><strong>What it costs:</strong> $0/month using the Make.com webhook method. From $145/month using managed services (Analyzify, Triple Whale, Elevar).</li>
-      <li><strong>How long it takes:</strong> 18 minutes for a working Make.com setup. 2&ndash;3 hours if you want full GTM Server-Side Container deployment on Google Cloud Run.</li>
-      <li><strong>What you need:</strong> Shopify Admin access, Meta Business Manager access token, Google Ads conversion ID, TikTok Pixel ID, a free Make.com account.</li>
-      <li><strong>What you should track:</strong> <code>Purchase</code> (Meta), <code>conversion</code> (Google), <code>CompletePayment</code> (TikTok). Note: TikTok does not use &ldquo;Purchase&rdquo;. Sending it is the most common setup error.</li>
+      <li><strong>What it takes:</strong> one Shopify webhook and a two-module Make.com scenario, or a server-side Google Tag Manager container on Google Cloud if you need custom tag logic.</li>
+      <li><strong>What you need:</strong> Shopify Admin access, a Meta Conversions API access token, a TikTok Events API access token, a free Make.com account, and Shopify&rsquo;s Google &amp; YouTube app for Google Ads.</li>
+      <li><strong>What you should send:</strong> <code>Purchase</code> (Meta) and <code>CompletePayment</code> (TikTok). Note: TikTok does not use &ldquo;Purchase&rdquo;. Sending it is the most common setup error.</li>
       <li><strong>What changes:</strong> events that browser tracking loses are delivered server-side instead, and each event carries more match keys. We have not measured the effect on reported conversions, EMQ or cost-per-purchase for any store, so this guide does not quote figures for them: you can read all three in your own Events Manager before and after.</li>
     </ul>
 
@@ -283,15 +282,15 @@ const articleSchema = {
   <div class="sec-mark" id="what-is">DEFINITION</div>
   <div class="prose">
     <h2 id="what-is-server-side-tagging-shopify-server-side-tracking">What is Server Side Tagging (Shopify Server-Side Tracking)?</h2>
-    <p>Server-side tracking (also called Conversions API, server-to-server tracking, or S2S tracking) sends conversion events directly from your web server to advertising platforms: completely bypassing the customer&rsquo;s browser. Instead of relying on a JavaScript pixel in the browser to fire when a purchase completes, a webhook fires from Shopify&rsquo;s backend the moment payment is confirmed, routing event data directly to Meta&rsquo;s Conversions API, Google&rsquo;s Enhanced Conversions endpoint, and TikTok&rsquo;s Events API.</p>
-    <p>The key distinction is where the event originates. A browser pixel depends on the customer&rsquo;s device: their browser settings, installed extensions, network conditions, and whether they accepted your cookie banner. A server event originates from Shopify&rsquo;s infrastructure: it fires regardless of what the customer&rsquo;s browser does, making it immune to ad blockers, iOS privacy restrictions, and Safari&rsquo;s Intelligent Tracking Prevention.</p>
+    <p>Server-side tracking (also called Conversions API, server-to-server tracking, or S2S tracking) sends conversion events directly from your web server to advertising platforms: completely bypassing the customer&rsquo;s browser. Instead of relying on a JavaScript pixel in the browser to fire when a purchase completes, a webhook fires from Shopify&rsquo;s backend when payment is confirmed, and an automation posts the purchase to the platform&rsquo;s server API, such as Meta&rsquo;s Conversions API or TikTok&rsquo;s Events API.</p>
+    <p>The key distinction is where the event originates. A browser pixel depends on the customer&rsquo;s device: their browser settings, installed extensions, network conditions, and whether they accepted your cookie banner. A server event originates from Shopify&rsquo;s infrastructure, so ad blockers, iOS privacy restrictions and Safari&rsquo;s Intelligent Tracking Prevention cannot stop it from being sent. Whether the platform can match it to an ad click is a separate question, answered by the match keys it carries.</p>
     <h3 id="server-side-vs-browser-pixel-the-architecture">Server-side vs browser pixel: the architecture</h3>
   </div>
   <figure style="max-width:960px;margin:28px auto;border:1px solid #2f2f2f;border-radius:18px;overflow:hidden;background:#0b0e0c;">
     <img src="/diagrams/shopify-server-side-tracking-flow-2026.svg"
-         alt="Shopify server-side tracking architecture diagram 2026: one Shopify orders/paid webhook feeds a single Make.com scenario that hashes customer data and sends server-to-server events to Meta Conversions API, Google Enhanced Conversions and TikTok Events API, bypassing iOS Link Tracking Protection and ad blockers"
+         alt="Shopify server-side tracking architecture diagram 2026: one Shopify orders/paid webhook feeds a single Make.com scenario that hashes customer data and sends server-to-server events to Meta Conversions API and TikTok Events API, with Google Ads handled by enhanced conversions in Shopify's Google &amp; YouTube app"
          width="1200" height="630" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
-    <figcaption style="padding:12px 18px;font-size:13px;color:#9a9a9a;border-top:1px solid #232323;">The complete $0 architecture: one webhook, one Make.com scenario, three ad platforms fed server-to-server. Nothing in this path can be blocked client-side.</figcaption>
+    <figcaption style="padding:12px 18px;font-size:13px;color:#9a9a9a;border-top:1px solid #232323;">The $0 architecture: one webhook and one Make.com scenario feed Meta and TikTok server-to-server. Nothing in that path runs in the browser.</figcaption>
   </figure>
   <div class="flow-compare">
     <div class="flow-card broken">
@@ -310,8 +309,8 @@ const articleSchema = {
         <div class="flow-step ok"><span class="flow-step-n">1</span>Customer completes purchase</div>
         <div class="flow-step ok"><span class="flow-step-n">2</span>Shopify backend fires webhook instantly</div>
         <div class="flow-step ok"><span class="flow-step-n">3</span>Make.com receives full order payload</div>
-        <div class="flow-step ok"><span class="flow-step-n">4</span>HTTP module POSTs to Meta/Google/TikTok</div>
-        <div class="flow-step ok"><span class="flow-step-n">5</span>Conversion recorded every time</div>
+        <div class="flow-step ok"><span class="flow-step-n">4</span>HTTP modules POST to Meta and TikTok</div>
+        <div class="flow-step ok"><span class="flow-step-n">5</span>Purchase reaches the platform</div>
       </div>
     </div>
   </div>
@@ -330,7 +329,7 @@ const articleSchema = {
   </div>
   <div class="callout warn">
     <span class="callout-label">iOS 17/18 specific impact</span>
-    <p>Safari&rsquo;s Link Tracking Protection in iOS 17+ strips <strong>fbclid</strong> and <strong>gclid</strong> parameters from URLs, breaking click-attribution for users who tap your ads in Safari. Server-side CAPI with hashed email matching is the only way to attribute these conversions. If a large share of your traffic is on iOS, this alone justifies implementing CAPI.</p>
+    <p>Link Tracking Protection in iOS 17 and later removes known click IDs such as <strong>fbclid</strong> and <strong>gclid</strong> from links opened in Mail, Messages and Safari Private Browsing. When the click ID is gone, a platform can only attribute the purchase by matching hashed customer data, which a server-side event supplies. Independent tests found ordinary Safari browsing did not strip them, so the effect depends on where your shoppers click.</p>
   </div>
   <div class="prose">
     <p>Server-side tracking does not recover every lost event: it recovers the events that were lost due to browser restrictions, not events from users who genuinely did not convert. What it recovers is real purchases that happened but were invisible to your pixel. <strong>We publish no recovery percentage</strong>; the <a href="/shopify-ios-attribution-gap-benchmark/">Shopify iOS attribution gap benchmark</a> sources each input separately and explains why a single industry figure describes no particular store.</p>
@@ -340,32 +339,20 @@ const articleSchema = {
   <div class="sec-mark" id="privacy-timeline">2020&ndash;2026 TIMELINE</div>
   <div class="prose">
     <h2 id="how-ios-chrome-and-safari-broke-browser-pixels-a-dated-timeline">How iOS, Chrome and Safari Broke Browser Pixels: A Dated Timeline</h2>
-    <p>Server-side tracking did not become essential overnight. It became essential because of seven specific platform changes between 2020 and 2026, each of which removed a slice of the data browser pixels used to capture. Understanding the timeline matters because it explains why the <em>same</em> Shopify store reports fewer of its Meta conversions in 2026 than it did in 2019, with no change to its setup. Nothing is broken: the rules changed underneath the pixel.</p>
-
+    <p>Server-side tracking became the default recommendation through a series of browser and platform changes, each of which removed some of what browser tags used to see. The dates matter because they explain why the same Shopify store can report fewer of its Meta conversions today than it did in 2019 with no change to its setup.</p>
     <h3 id="april-2021-ios-145-and-app-tracking-transparency">April 2021: iOS 14.5 and App Tracking Transparency</h3>
-    <p>Apple shipped App Tracking Transparency in iOS 14.5, requiring every app to display a permission prompt before accessing the Identifier for Advertisers (IDFA). Most users declined the prompt. For Shopify stores, the immediate effect was that Meta lost much of its ability to attribute in-app Instagram and Facebook conversions on iOS devices. We state no figure for how much: we have not found a primary source that measures it. Meta&rsquo;s Aggregated Event Measurement protocol launched in response, initially capping each domain to eight prioritised events with delayed reporting; Meta announced in May 2023 that event prioritisation would no longer be needed, so guides that still tell you to rank eight events are out of date. Meta CAPI was Meta&rsquo;s recommended remediation from this date forward.</p>
-
-    <h3 id="september-2021-safari-itp-23-enforcement-on-shopify-checkouts">September 2021: Safari ITP 2.3 enforcement on Shopify checkouts</h3>
-    <p>Safari&rsquo;s Intelligent Tracking Prevention had existed since 2017, but version 2.3&rsquo;s seven-day cap on first-party cookies set via document.cookie reached full enforcement on Shopify domains in late 2021. Stores using legacy <code>_fbp</code> and <code>_fbc</code> cookies set client-side saw return-visitor attribution windows collapse from 30 days to seven. The fix (setting these cookies server-side via HTTP <code>Set-Cookie</code> headers with a maximum 30-day lifetime) required either Shopify Plus access to checkout extensibility or a server-side tagging container.</p>
-
-    <h3 id="october-2022-ios-16-link-tracking-parameter-stripping">October 2022: iOS 16 link tracking parameter stripping</h3>
-    <p>iOS 16&rsquo;s Mail, Messages and Safari Private Mode began stripping known click-tracking parameters from URLs, including <code>fbclid</code>, <code>gclid</code> and <code>ttclid</code>. Stores relying on URL parameters to attribute paid traffic lost the click identifier the moment a user shared a product link via iMessage. Server-side tracking partially mitigates this by capturing the <code>fbc</code>/<code>fbp</code> values at order creation rather than at click time, but the fundamental loss of click attribution on shared links remains a 2026-era reality.</p>
-
+    <p>Apple shipped App Tracking Transparency in iOS 14.5, requiring apps to ask permission before tracking users across other companies&rsquo; apps and websites. For Shopify stores advertising on Meta, the effect was that purchases from people who declined could no longer be tied to their in-app ad clicks in the same way. We state no figure for how much: we have not found a primary source that measures it. Meta&rsquo;s Aggregated Event Measurement launched in response, initially capping each domain to eight prioritised events; Meta announced in May 2023 that event prioritisation was no longer needed, so guides that still tell you to rank eight events are out of date.</p>
+    <h3 id="september-2021-safari-itp-23-enforcement-on-shopify-checkouts">Safari Intelligent Tracking Prevention</h3>
+    <p>Safari&rsquo;s <a href="https://webkit.org/tracking-prevention/" target="_blank" rel="noopener">Intelligent Tracking Prevention</a> blocks third-party cookies and caps the life of first-party cookies set by script, which is how browser tags store a click ID such as <code>_fbc</code>. A shopper who clicks an ad and comes back to buy after the cookie has expired arrives with no click ID, so a browser tag has nothing to tie the purchase to.</p>
     <h3 id="september-2023-ios-17-link-tracking-protection">September 2023: iOS 17 Link Tracking Protection</h3>
-    <p>iOS 17 extended parameter stripping into Mail and Messages by default for all users, not just Private Mode. Combined with iOS 17&rsquo;s expanded ATT prompts, this removed more of the click attribution Shopify Meta campaigns had depended on. We state no figure for the size of that loss: we have not found a primary source that measures it.</p>
-
-    <h3 id="2024-google-consent-mode-v2-mandatory-in-eea">2024: Google Consent Mode v2 mandatory in EEA</h3>
-    <p>From March 2024, Google Ads and GA4 in the European Economic Area required Consent Mode v2 with explicit <code>ad_storage</code> and <code>ad_user_data</code> signals. Stores without correctly configured Consent Mode v2 saw EEA conversion reporting drop to zero in Google Ads. Server-side tracking via Google Enhanced Conversions partially preserves attribution because hashed first-party data (email, phone) is sent server-side and matched to logged-in Google accounts, sidestepping the cookie-consent dependency.</p>
-
-    <h3 id="2025-chrome-third-party-cookie-deprecation-pivot">2025: Chrome third-party cookie deprecation pivot</h3>
-    <p>Google walked back its 2020 commitment to remove third-party cookies in Chrome. Safari and Firefox still block them by default, which breaks cross-domain pixel matching for retargeting audiences on those browsers. Server-side first-party data transmission is the only durable counter.</p>
-
-    <h3 id="2026-ios-18-advanced-fingerprinting-protection-and-apple-intelligence">2026: iOS 18 advanced fingerprinting protection and Apple Intelligence</h3>
-    <p>iOS 18 introduced advanced fingerprinting protections in Safari Private Mode, blocking screen-resolution, canvas, audio-context and font-list reads commonly used by browser pixels for probabilistic matching. Apple Intelligence summaries also began surfacing third-party content without driving the click that would normally fire a pixel. Each of these widens the cumulative attribution gap on browser-only pixel setups, and it widens furthest on stores with majority-iOS audiences. The size of the gap is a store property; we publish no range for it.</p>
-
+    <p>iOS 17 introduced Link Tracking Protection, which removes known tracking parameters, including <code>fbclid</code> and <code>gclid</code>, from links opened in Mail, Messages and Safari Private Browsing. Safari 17 also added Advanced Fingerprinting Protection in Private Browsing. Independent tests found ordinary Safari browsing did not strip click IDs, so the effect depends on where your shoppers click your ads. We state no figure for the size of the loss: we have not found a primary source that measures it.</p>
+    <h3 id="2024-google-consent-mode-v2-mandatory-in-eea">March 2024: Google Consent Mode v2 in the EEA</h3>
+    <p>From March 2024, Google required advertisers measuring users in the European Economic Area to send consent signals through Consent Mode v2, including <code>ad_storage</code> and <code>ad_user_data</code>. Without them, Google limits measurement and audience features for those users. Enhanced conversions are covered by the same consent rules, so they are not a way around consent: set your banner up first.</p>
+    <h3 id="2025-chrome-third-party-cookie-deprecation-pivot">2024 to 2025: Chrome keeps third-party cookies</h3>
+    <p>Google dropped its plan to remove third-party cookies from Chrome. Safari and Firefox still block them by default, so cross-site matching that relies on third-party cookies still fails for shoppers on those browsers.</p>
     <div class="callout warn">
       <span class="callout-label">What the timeline means in practice</span>
-      <p>If your Shopify store launched before 2021 and still relies on Shopify&rsquo;s default Meta pixel app or a basic GTM client-side container, your reported ROAS is understated versus reality by however much of your purchase signal the browser is losing: a figure only your own store can give you. The 18-minute Make.com setup closes the browser-side part of that gap at $0/month.</p>
+      <p>If your store still relies only on browser tags, your reported conversions are lower than your real sales by however much your browser tags miss: a figure only your own store can give you. A server-side route closes the part of that gap the browser causes, at no monthly cost on Make.com&rsquo;s free plan.</p>
     </div>
   </div>
 
@@ -376,7 +363,7 @@ const articleSchema = {
     <p>There are exactly three viable conversion-tracking architectures for a Shopify store in 2026. Most guides recommend hybrid by default without explaining when the simpler options are acceptable. Here is the honest decision framework, with the named failure modes for each approach so you can pick on facts, not vibes.</p>
 
     <h3 id="option-1-browser-pixel-only-shopify-default">Option 1: Browser pixel only (Shopify default)</h3>
-    <p>The native Meta Pixel app, Google Tag in <code>theme.liquid</code>, and TikTok Pixel app fire JavaScript events from the customer&rsquo;s browser. This is what every Shopify store starts with and what many stores never move beyond.</p>
+    <p>Browser tags, such as the Meta, Google and TikTok pixels added by their Shopify apps, fire JavaScript events from the customer&rsquo;s browser. This is what every Shopify store starts with and what many stores never move beyond.</p>
     <p><strong>Where it works:</strong> stores under $5,000/month ad spend, audiences that skew Android, and merchants who do not run lookalike or retargeting campaigns. If your decisions are not algorithmically driven, signal degradation matters less.</p>
     <p><strong>Named failure modes:</strong></p>
     <ul>
@@ -395,42 +382,42 @@ const articleSchema = {
     <p><strong>Named failure modes:</strong></p>
     <ul>
       <li><em>No view-content data</em>: product views, search events and add-to-cart events are extremely awkward to fire server-side because they do not generate a Shopify webhook. Meta&rsquo;s lookalike models depend on these mid-funnel signals.</li>
-      <li><em>No browser cookies for matching</em>: without the pixel setting <code>_fbc</code> and <code>_fbp</code>, your CAPI events arrive with degraded match keys. Meta EMQ scores cap around 5&ndash;6 even with hashed PII.</li>
+      <li><em>No browser cookies for matching</em>: without the pixel setting <code>_fbc</code> and <code>_fbp</code>, your server events arrive with fewer match keys, however much hashed customer data they carry.</li>
       <li><em>No Advanced Matching auto-collection</em>: the browser pixel auto-hashes form-field email and phone. Server-only setups must manually capture and pass these.</li>
-      <li><em>Lookalike audience starvation</em>: without browser-pixel page-view density, custom audiences for retargeting drop below the 1,000-user minimum required to run.</li>
+      <li><em>Smaller retargeting audiences</em>: without browser page-view events, website custom audiences built from visits shrink, and some may become too small to use.</li>
     </ul>
 
-    <h3 id="option-3-hybrid-browser-pixel-server-side-capi-with-deduplication">Option 3: Hybrid: browser pixel + server-side CAPI with deduplication</h3>
-    <p>Both fire. Both share an <code>event_id</code>. Meta, Google and TikTok deduplicate on the platform side and count one conversion. This is the architecture every documented case study at scale uses: Shopify itself uses it for native apps, so does Klaviyo for its predictive analytics integrations, and every reputable agency from Common Thread Collective to Triple Whale defaults to hybrid.</p>
-    <p><strong>Where it works:</strong> any Shopify store running $1,000/month or more in paid social, paid search or TikTok Ads. The marginal cost of adding server-side to an existing pixel setup is 18 minutes and $0 if you use the Make.com webhook method.</p>
+    <h3 id="option-3-hybrid-browser-pixel-server-side-capi-with-deduplication">Option 3: Hybrid: browser pixel + server-side events</h3>
+    <p>The browser pixel keeps firing, and a server route also sends each purchase. This is what Meta and TikTok recommend, and what Shopify&rsquo;s own Facebook &amp; Instagram app does at its Enhanced and Maximum data sharing levels.</p>
+    <p><strong>Where it works:</strong> any store whose ad spend depends on the platforms optimising towards purchases. The marginal cost of adding a server route on Make.com&rsquo;s free plan is nothing but the time to build and test it.</p>
     <p><strong>Named failure modes:</strong></p>
     <ul>
-      <li><em>Missing event_id</em>: if both events fire without a shared identifier, conversions double-count. Meta will report 1.6&ndash;1.9x actual purchases.</li>
-      <li><em>Mismatched event names</em>: firing &ldquo;Purchase&rdquo; in the browser and &ldquo;CompletePayment&rdquo; server-side on TikTok prevents deduplication. Same event, two different platforms&rsquo; APIs use different names.</li>
-      <li><em>Webhook silence on free Shopify plans</em>: Shopify Basic limits webhook reliability under sustained load; the fix is the Make.com retry policy, which catches missed deliveries and retries with exponential backoff for 24 hours.</li>
+      <li><em>Two server routes for one platform</em>: running Shopify&rsquo;s own Conversions API for Meta and a webhook route as well can send the same purchase twice. Pick one.</li>
+      <li><em>Unmatched event IDs</em>: a platform merges a browser and a server purchase only when both carry the same <code>event_id</code>. This guide uses the Shopify order ID; Shopify does not document the ID its pixels send, so check for duplicates in Test Events after a test order.</li>
+      <li><em>Mismatched event names</em>: firing &ldquo;Purchase&rdquo; in the browser and &ldquo;CompletePayment&rdquo; server-side on TikTok means the two are never treated as the same event. TikTok&rsquo;s purchase event is CompletePayment in both.</li>
+      <li><em>Silent failures</em>: if the scenario&rsquo;s HTTP modules ignore errors, a rejected request finishes as a green run. Set a Break error handler and store incomplete executions. Shopify retries a failed webhook 8 times over 4 hours and can remove the subscription after repeated failures.</li>
     </ul>
-
     <h3 id="the-matrix">The matrix</h3>
     <ul>
       <li><strong>Browser only:</strong> simplest to run, weakest signal, fewest match keys per event, monthly cost $0. Everything ITP, ATT, ad blockers and consent rejection remove is lost outright.</li>
       <li><strong>CAPI only:</strong> more work to build, stronger signal on the events it sends, but mid-funnel events are missing and no <code>fbc</code>/<code>fbp</code> cookies are available to match on. Monthly cost $0.</li>
-      <li><strong>Hybrid (recommended):</strong> the browser pixel supplies <code>fbc</code> and <code>fbp</code>, the server supplies hashed email, phone, IP and user agent, deduplicated on a shared <code>event_id</code>. The largest match-key set of the three; monthly cost $0 on the Make.com route, or a managed tool&rsquo;s fee.</li>
+      <li><strong>Hybrid (recommended):</strong> the browser pixel supplies <code>fbc</code> and <code>fbp</code>, the server supplies hashed email, phone, IP and user agent, merged when both carry the same <code>event_id</code>. The largest match-key set of the three; monthly cost $0 on the Make.com route, or a managed tool&rsquo;s fee.</li>
     </ul>
 
-    <p>The cheapest path to hybrid in 2026 is the Make.com webhook method documented in the setup section of this guide. Make.com&rsquo;s free tier covers up to 1,000 credits/month, which is sufficient for any Shopify store under approximately 250 orders per month. Above that volume, the Core plan at $9/month covers 10,000 credits: the free Make.com account covers it.</p>
+    <p>The cheapest path to hybrid for TikTok, and for Meta if you do not use Shopify&rsquo;s own data sharing, is the Make.com webhook method in the setup section. Make.com&rsquo;s free plan includes 1,000 credits a month, and this scenario uses about one credit per module per order; above that, the Core plan is $9/month for 10,000 credits.</p>
   </div>
 
     <!-- SECTION 2.9: EMQ BENCHMARKS & DIAGNOSTICS -->
   <div class="sec-mark" id="emq-benchmarks">EMQ BENCHMARKS</div>
   <div class="prose">
-    <h2 id="event-match-quality-benchmarks-what-good-looks-like-in-2026">Event Match Quality Benchmarks: What &ldquo;Good&rdquo; Looks Like in 2026</h2>
-    <p>Event Match Quality is Meta&rsquo;s 1&ndash;10 score for how confidently it can match an inbound CAPI event to a real Facebook or Instagram user. It is the most actionable diagnostic in server-side tracking because it is reported per event source and moves when you change the payload. This section gives you the match keys the score is calculated from and the failure modes that cap it regardless of effort. It gives you no target number: we have not sampled EMQ across stores and do not publish one.</p>
+    <h2 id="event-match-quality-benchmarks-what-good-looks-like-in-2026">Event Match Quality: What Drives the Score</h2>
+    <p>Event Match Quality is Meta&rsquo;s score out of 10 for how confidently it can match an inbound CAPI event to a real Facebook or Instagram user. It is the most actionable diagnostic in server-side tracking because it is reported per event source and moves when you change the payload. This section gives you the match keys the score is calculated from and the failure modes that cap it regardless of effort. It gives you no target number: we have not sampled EMQ across stores and do not publish one.</p>
 
     <h3 id="the-meta-emq-scale-decoded">The Meta EMQ scale, decoded</h3>
     <p>Meta publishes EMQ in Events Manager under each event source, and calculates it from the match keys present in your CAPI payloads. Meta shows you the score; what you control is the payload behind it. Ordered from the richest payload to the poorest:</p>
     <ul>
       <li><strong>Richest:</strong> hashed email + phone + first name + last name + city + state + zip + IP + user agent + <code>fbc</code> + <code>fbp</code> + external_id. Available only with logged-in customers or post-purchase events from Shopify.</li>
-      <li><strong>The Make.com webhook method:</strong> hashed email + phone + zip + IP + user agent + <code>fbc</code> + <code>fbp</code>. We do not state what that scores: we have not sampled it.</li>
+      <li><strong>The Make.com webhook method:</strong> hashed email, phone, name, city, zip and country, plus IP, user agent and a hashed <code>external_id</code>, all from the order. Not <code>fbc</code> or <code>fbp</code>, which only the browser has. We do not state what that scores: we have not sampled it.</li>
       <li><strong>Under-fed CAPI:</strong> hashed email + IP + user agent only. The default for stores running CAPI without browser-pixel cookie capture.</li>
       <li><strong>Poor:</strong> IP + user agent only. This is what bot traffic and malformed payloads look like; Meta will downweight your data in lookalike construction.</li>
       <li><strong>Broken:</strong> missing or malformed payloads. Investigate immediately; events are likely not being attributed.</li>
@@ -442,36 +429,23 @@ const articleSchema = {
       <li><strong>Email (em):</strong> the single highest-leverage match key. Always SHA-256 hash, lowercase, trim whitespace.</li>
       <li><strong>Phone (ph):</strong> Must be E.164 format (e.g. <code>447700900123</code>, no <code>+</code>, no spaces) before hashing.</li>
       <li><strong>External ID (external_id):</strong> Use Shopify&rsquo;s <code>customer.id</code>. Hash it.</li>
-      <li><strong>Click ID (fbc):</strong> Capture from the URL parameter <code>fbclid</code> or from the browser pixel cookie at order creation.</li>
-      <li><strong>Browser ID (fbp):</strong> Read from the <code>_fbp</code> cookie set by the Meta browser pixel.</li>
+      <li><strong>Click ID (fbc):</strong> Set by the browser pixel from the <code>fbclid</code> link parameter. A Shopify order webhook does not contain it.</li>
+      <li><strong>Browser ID (fbp):</strong> The <code>_fbp</code> cookie set by the Meta browser pixel. Also not in the order webhook.</li>
       <li><strong>First name + last name + city + state + zip:</strong> Hash each individually.</li>
       <li><strong>IP address (client_ip_address):</strong> Must be the customer&rsquo;s IP, not Shopify&rsquo;s or Make.com&rsquo;s server IP (the most common Make.com setup error).</li>
-      <li><strong>User agent (client_user_agent):</strong> Captured from the order&rsquo;s <code>browser_user_agent</code> field in the Shopify order payload.</li>
+      <li><strong>User agent (client_user_agent):</strong> The order&rsquo;s <code>client_details.user_agent</code> field.</li>
     </ul>
     <p>Check a payload before you send it with the <a href="/meta-capi-payload-validator/">Meta Conversions API payload validator</a>. It flags an unhashed email or phone, a hashed IP address or user agent, and an <code>event_time</code> in milliseconds.</p>
 
-    <h3 id="google-enhanced-conversions-match-rate-benchmarks">Reading your Google Enhanced Conversions match rate</h3>
-    <p>Google does not publish an equivalent to EMQ. Instead, Enhanced Conversions reports a match rate as a percentage in the Google Ads conversion-action diagnostic panel. We publish no benchmark for it; read yours against its own trend, and against which keys you send:</p>
-    <ul>
-      <li><strong>Hashed email + phone + name + address:</strong> the fullest set you can send from a Shopify order.</li>
-      <li><strong>Hashed email + phone only:</strong> a common setup, with fewer keys to match on.</li>
-      <li><strong>Many guest checkouts with throwaway emails:</strong> expect a lower rate, because the email key is weaker.</li>
-      <li><strong>A sudden drop:</strong> investigate immediately. It often means SHA-256 hashing is being applied incorrectly (e.g. hashing already-hashed values) or that the <code>user_data</code> object is missing required fields.</li>
-    </ul>
+    <h3 id="google-enhanced-conversions-match-rate-benchmarks">Reading Google enhanced conversions</h3>
+    <p>Google does not publish an equivalent of Meta&rsquo;s match score. With enhanced conversions turned on in Shopify&rsquo;s Google &amp; YouTube app, Google Ads shows its status in the purchase conversion action&rsquo;s diagnostics. We publish no benchmark for it; read it against its own trend after a few weeks of orders. Guest checkouts with throwaway email addresses give Google less to match on, whatever route you use.</p>
 
     <h3 id="tiktok-events-api-match-scoring">TikTok Events API match scoring</h3>
-    <p>TikTok measures event quality differently. The diagnostic appears as &ldquo;Event Match Score&rdquo; in TikTok Events Manager, scored 0&ndash;100. The benchmarks:</p>
-    <ul>
-      <li><strong>80&ndash;100:</strong> excellent. Hashed email + phone + IP + user agent + TikTok Click ID (<code>ttclid</code>) all present.</li>
-      <li><strong>60&ndash;80:</strong> good. Most match keys present, possibly missing <code>ttclid</code> (organic/direct traffic legitimately won&rsquo;t have it).</li>
-      <li><strong>40&ndash;60:</strong> acceptable for direct/organic traffic only. Investigate for paid-traffic events.</li>
-      <li><strong>Below 40:</strong> something is wrong. Check that the event name is <code>CompletePayment</code>, not <code>Purchase</code>: this is the single most common TikTok integration error.</li>
-    </ul>
-
+    <p>TikTok shows its own match quality score for each event in TikTok Events Manager. We publish no target for it. What raises it is the same set of keys: hashed email and phone, IP address and user agent from the order, and the TikTok click ID (<code>ttclid</code>) where you capture it. The most common TikTok mistake is not a missing key but the wrong event name: purchases must be sent as <code>CompletePayment</code>, not <code>Purchase</code>.</p>
     <h3 id="common-emq-killer-mistakes-and-their-fixes">Common EMQ-killer mistakes (and their fixes)</h3>
     <ul>
       <li><strong>Hashing the wrong format:</strong> emails must be lowercased and trimmed before hashing. Phones must be E.164 digits-only. <code>"User@Example.com "</code> hashed raw will not match Meta&rsquo;s expected hash of <code>"user@example.com"</code>.</li>
-      <li><strong>Sending Shopify&rsquo;s server IP:</strong> if you use Shopify&rsquo;s native Meta CAPI integration, it sends the customer&rsquo;s IP correctly. If you use Make.com, you must explicitly map <code>order.client_details.browser_ip</code>, not the IP of the Make.com runtime.</li>
+      <li><strong>Sending the wrong IP:</strong> in Make.com, map the order&rsquo;s <code>client_details.browser_ip</code>, not the IP of the Make.com runtime.</li>
       <li><strong>Double-hashing:</strong> Shopify&rsquo;s order payload contains plaintext email and phone. Hash these once, server-side, before posting to Meta. Re-hashing already-hashed values produces a useless string.</li>
       <li><strong>Missing external_id:</strong> the simplest match key most Shopify stores leave on the table. Pass <code>order.customer.id</code> as <code>external_id</code> after hashing.</li>
       <li><strong>Stale fbp/fbc:</strong> <code>_fbp</code> cookies expire after 90 days. If your store has a long sales cycle and the cookie has expired by purchase time, fall back to the email + phone + external_id combination.</li>
@@ -479,7 +453,7 @@ const articleSchema = {
 
     <div class="callout">
       <span class="callout-label">Diagnostic checklist</span>
-      <p>Open Meta Events Manager → Data Sources → your pixel → Settings tab. Check &ldquo;Event Match Quality&rdquo;. If you see anything below 7.0 after running CAPI for 7 days, work down the match-key impact list above starting with email format, then phone E.164, then external_id, then IP source. Each fix typically lifts EMQ within 48 hours.</p>
+      <p>Open Meta Events Manager, choose your dataset, and read Event Match Quality for the Purchase event. If it is lower than you expect, work down the match-key list above: email format, then phone E.164, then external_id, then the IP source. Re-read it after a week of orders, because the score is calculated from recent events.</p>
     </div>
   </div>
 
@@ -487,28 +461,27 @@ const articleSchema = {
   <div class="sec-mark" id="prerequisites">PREREQUISITES</div>
   <div class="prose">
     <h2 id="what-you-need-before-starting">What You Need Before Starting</h2>
-    <p>You need four things before you begin. All are free. None require a developer.</p>
+    <p>You need these before you begin. All are free. None require a developer.</p>
     <Disclosure />
     <ul>
-      <li><strong>A Make.com account</strong>: free plan covers 1,000 credits/month, about 250 orders a month at the four credits per order this guide's scenario uses. <a href="/go/make/?source=shopify-server-side-tracking-complete-setup-guide-n1" target="_blank" rel="sponsored nofollow noopener">Create a free Make.com account</a>.</li>
+      <li><strong>A Make.com account</strong>: the free plan includes 1,000 credits a month, and this scenario uses about one credit per module per order. <a href="/go/make/?source=shopify-server-side-tracking-complete-setup-guide-n1" target="_blank" rel="sponsored nofollow noopener">Create a free Make.com account</a>.</li>
       <li><strong>Meta Pixel ID and Conversions API Access Token</strong>: found in Meta Events Manager &rarr; your pixel &rarr; Settings &rarr; Conversions API &rarr; Generate access token.</li>
-      <li><strong>Google Ads Conversion ID and label</strong>: found in Google Ads &rarr; Tools &rarr; Measurement &rarr; Conversions &rarr; your purchase conversion &rarr; Tag setup.</li>
+      <li><strong>For Google Ads, Shopify&rsquo;s Google &amp; YouTube app</strong>, connected to your Google Ads account. Enhanced conversions is a setting in it, not a Make.com step.</li>
       <li><strong>TikTok Pixel ID and Events API Access Token</strong>: found in TikTok Events Manager &rarr; your pixel &rarr; Settings &rarr; Events API &rarr; Generate access token.</li>
     </ul>
-    <p>Keep all four credentials in a secure note: you will paste them into Make.com HTTP modules during setup. Never share your access tokens publicly or commit them to GitHub.</p>
+    <p>Keep both access tokens in a secure note: you will paste them into Make.com HTTP modules during setup. Never share your access tokens publicly or commit them to GitHub.</p>
   </div>
 
   <!-- SECTION 4: SETUP -->
   <div class="sec-mark" id="setup">7-STEP SETUP</div>
-  <div class="prose"><h2 id="complete-setup-the-makecom-webhook-method">Complete Setup: The Make.com Webhook Method</h2><p>This method fires directly from Shopify&rsquo;s backend on payment confirmation: no browser dependency, no thank-you page required, no Shopify app to install. Total time: 18 minutes.</p></div>
-  <p style="border-left:3px solid #2dd4bf;padding:6px 14px;margin:16px 0;font-size:13px;font-family:monospace;"><strong>GOOGLE ADS:</strong> <a href="/shopify-google-ads-conversion-tracking/">Google Enhanced Conversions via Make.com webhook for Shopify: no GTM container, no server hosting, no monthly cost.</a></p>
+  <div class="prose"><h2 id="complete-setup-the-makecom-webhook-method">Complete Setup: The Make.com Webhook Method</h2><p>This method fires from Shopify&rsquo;s backend on payment confirmation: no browser dependency, no thank-you page required, no Shopify app to install. Before step 4, check Shopify&rsquo;s Facebook &amp; Instagram app: if its data sharing is set to Enhanced or Maximum, Shopify already sends Meta&rsquo;s Conversions API, so skip step 4 rather than send Meta every purchase twice.</p></div>
+  <p style="border-left:3px solid #2dd4bf;padding:6px 14px;margin:16px 0;font-size:13px;font-family:monospace;"><strong>GOOGLE ADS:</strong> <a href="/shopify-google-ads-conversion-tracking/">For Google Ads, the free fix is enhanced conversions in Shopify&rsquo;s Google &amp; YouTube app; why a Make.com upload is a weaker route.</a></p>
   <div class="step-cards">
     <div class="step-card">
       <div class="step-num-col"><div class="step-n">1</div></div>
       <div class="step-body">
         <div class="step-title">Create your free Make.com account</div>
-        <div class="step-desc">Sign up at Make.com: no credit card required. The free plan gives you 1,000 credits/month. <strong>One Shopify order = 4 credits</strong> (the webhook trigger plus one HTTP module per platform), so the free plan covers ~250 orders/month. Create a new scenario and name it &ldquo;Shopify Server-Side Tracking&rdquo;.</div>
-        <span class="step-time">&#9201; 2 minutes</span>
+        <div class="step-desc">Sign up at Make.com: no credit card required. The free plan gives you 1,000 credits/month. Most modules use one credit each time they run, so this scenario uses about one credit per module per order; the scenario history shows the real figure. Create a new scenario and name it &ldquo;Shopify Server-Side Tracking&rdquo;.</div>
       </div>
     </div>
     <div class="step-card">
@@ -516,7 +489,6 @@ const articleSchema = {
       <div class="step-body">
         <div class="step-title">Add a Webhooks trigger module</div>
         <div class="step-desc">In your new scenario, click the empty module circle. Search for <strong>Webhooks</strong> &rarr; <strong>Custom webhook</strong>. Click Add, name it &ldquo;Shopify order webhook&rdquo;, save. Make.com generates a unique webhook URL: <strong>copy it now</strong>. This URL is your secure endpoint that Shopify will POST order data to.</div>
-        <span class="step-time">&#9201; 2 minutes</span>
       </div>
     </div>
     <div class="step-card">
@@ -527,7 +499,6 @@ const articleSchema = {
           <span class="step-path">Event: <strong>Order payment</strong> &bull; Format: JSON &bull; URL: paste your Make.com webhook URL</span>
           Save. Shopify will POST the full order payload to Make.com every time a payment is confirmed, not on order creation, not on fulfilment, on confirmed payment only.
         </div>
-        <span class="step-time">&#9201; 2 minutes</span>
       </div>
     </div>
     <div class="step-card meta">
@@ -537,17 +508,15 @@ const articleSchema = {
         <div class="step-desc">Add an <strong>HTTP &rarr; Make a request</strong> module. Configure:<br>
           <span class="step-path">URL: https://graph.facebook.com/v24.0/YOUR_PIXEL_ID/events?access_token=YOUR_TOKEN<br>Method: POST &bull; Body type: Raw &bull; Content type: JSON</span>
           <em style="display:block;margin-top:6px;font-size:12px;color:#93a09a;">Use the current Graph API version: Meta deprecates older versions roughly every two years. Check the <a href="https://developers.facebook.com/docs/graph-api/changelog/" target="_blank" rel="noopener" style="color:#93a09a;text-decoration:underline;">Graph API changelog</a> for the latest <code>vXX.0</code> and swap it into the URL.</em>
-          In the body, map: <span class="code-ref">event_name</span> = Purchase, <span class="code-ref">event_id</span> = order ID, <span class="code-ref">event_time</span> = Unix timestamp, <span class="code-ref">value</span> = order total, <span class="code-ref">currency</span> = currency code. In user_data: SHA-256 hash email and phone before sending.
+          In the body, map: <span class="code-ref">event_name</span> = Purchase, <span class="code-ref">event_id</span> = order ID, <span class="code-ref">event_time</span> = <span class="code-ref">formatDate(1.created_at; "X")</span>, <span class="code-ref">action_source</span> = website, <span class="code-ref">value</span> = order total, <span class="code-ref">currency</span> = currency code. In user_data: <span class="code-ref">sha256(lower(trim(email)))</span> and the hashed phone, plus the order&rsquo;s IP and user agent unhashed. Set the module to return an error on a failed request, and add a Break error handler.
         </div>
-        <span class="step-time">&#9201; 5 minutes</span>
       </div>
     </div>
     <div class="step-card google">
       <div class="step-num-col"><div class="step-n">5</div></div>
       <div class="step-body">
-        <div class="step-title"><span class="step-platform-tag spt-google">GOOGLE</span> Add Google Enhanced Conversions module</div>
-        <div class="step-desc">Add a second <strong>HTTP &rarr; Make a request</strong> module branching from the same webhook trigger. Google Enhanced Conversions matches server data to logged-in Google accounts using hashed user data. Send SHA-256 hashed <span class="code-ref">email</span>, <span class="code-ref">phone</span>, <span class="code-ref">first_name</span>, <span class="code-ref">last_name</span> alongside the conversion value and order ID. This improves match rate significantly above email-only matching.</div>
-        <span class="step-time">&#9201; 4 minutes</span>
+        <div class="step-title"><span class="step-platform-tag spt-google">GOOGLE</span> Turn on enhanced conversions in the Google &amp; YouTube app</div>
+        <div class="step-desc">Google Ads is not a Make.com step. Shopify&rsquo;s order data has no Google click ID for a server upload to use, and Google is moving its click conversion upload to the Data Manager API. Instead, in Shopify&rsquo;s <strong>Google &amp; YouTube app</strong>, open <strong>Settings &rarr; Google Ads settings</strong>, find <strong>Enhanced conversions</strong>, select <strong>Turn on</strong> and accept Google&rsquo;s customer data terms. <a href="/shopify-google-ads-conversion-tracking/">The full Google Ads guide</a> covers the limits.</div>
       </div>
     </div>
     <div class="step-card tiktok">
@@ -555,26 +524,24 @@ const articleSchema = {
       <div class="step-body">
         <div class="step-title"><span class="step-platform-tag spt-tiktok">TIKTOK</span> Add TikTok Events API module</div>
         <div class="step-desc">Add a third HTTP module. POST to <span class="code-ref">https://business-api.tiktok.com/open_api/v1.3/event/track/</span>.<br>
-          <strong>Critical:</strong> use <span class="code-ref">event_name</span> = <strong>CompletePayment</strong>, not &ldquo;Purchase&rdquo;. TikTok&rsquo;s algorithm only recognises CompletePayment as a purchase event. Include hashed email, hashed phone, customer IP address, and user agent from the Shopify order payload. These four signals together drive Event Match Quality above 8/10.
+          <strong>Critical:</strong> use <span class="code-ref">event_name</span> = <strong>CompletePayment</strong>, not &ldquo;Purchase&rdquo;. TikTok&rsquo;s algorithm only recognises CompletePayment as a purchase event. Put hashed email and phone, and the order&rsquo;s IP address and user agent, under <span class="code-ref">data[].user</span>, with <span class="code-ref">event_source</span> = web and your pixel ID as <span class="code-ref">event_source_id</span>. The <a href="/tiktok-events-api-shopify/">TikTok guide</a> has the full body.
         </div>
-        <span class="step-time">&#9201; 4 minutes</span>
       </div>
     </div>
     <div class="step-card">
       <div class="step-num-col"><div class="step-n">7</div></div>
       <div class="step-body">
-        <div class="step-title">Activate and verify all three platforms</div>
-        <div class="step-desc">Switch the Make.com scenario <strong>On</strong>. Place a test order on your store. Check within 60 seconds:<br>
-          <span class="step-path">Meta: Events Manager &rarr; Test Events &rarr; look for Purchase, source: server<br>Google: Ads &rarr; Conversions &rarr; Diagnostics &rarr; Enhanced conversions status<br>TikTok: Events Manager &rarr; Test Events &rarr; look for CompletePayment</span>
-          All three should show green. If any shows yellow, see the Troubleshooting section below.
+        <div class="step-title">Activate and verify each platform</div>
+        <div class="step-desc">Switch the Make.com scenario <strong>On</strong>. Place a test order on your store, then check:<br>
+          <span class="step-path">Meta: Events Manager &rarr; Test Events &rarr; look for Purchase, source: server<br>Google: Ads &rarr; Goals &rarr; Conversions &rarr; your purchase action &rarr; Diagnostics<br>TikTok: Events Manager &rarr; Test Events &rarr; look for CompletePayment</span>
+          Check that each purchase shows once, with the order&rsquo;s real value. If not, see the Troubleshooting section below.
         </div>
-        <span class="step-time">&#9201; 3 minutes</span>
       </div>
     </div>
   </div>
 
   <div class="article-cta">
-    <div><div class="cta-h">Ready to start? Create your free Make.com account</div><p>No credit card. Free plan covers 250 orders/month. Full three-platform build takes ~18 minutes.</p></div>
+    <div><div class="cta-h">Ready to start? Create your free Make.com account</div><p>No credit card. The free plan includes 1,000 credits a month, and this scenario uses about one credit per module per order.</p></div>
     <a href="/go/make/?source=shopify-server-side-tracking-complete-setup-guide-n2" class="btn btn-g" target="_blank" rel="sponsored nofollow noopener">Create a free Make.com account</a>
   </div>
 
@@ -582,89 +549,90 @@ const articleSchema = {
   <div class="sec-mark" id="meta-capi">META CAPI</div>
   <div class="prose">
     <h2 id="meta-conversions-api-complete-configuration">Meta Conversions API: Complete Configuration</h2>
-    <p>Meta&rsquo;s Conversions API (CAPI) is the server-side counterpart to the Meta Pixel. It was introduced after Apple&rsquo;s iOS 14.5 ATT update and has since become Meta&rsquo;s primary recommended tracking method for e-commerce. When your browser pixel fires and your CAPI event fires for the same purchase, Meta deduplicates them using the <span class="code-ref">event_id</span> field: so you see one conversion, not two. The full <a href="https://developers.facebook.com/docs/marketing-api/conversions-api" target="_blank" rel="noopener">Meta Conversions API documentation</a> covers all available parameters and the required fields for e-commerce events.
+    <p>Meta&rsquo;s Conversions API (CAPI) is the server-side counterpart to the Meta Pixel. It was introduced after Apple&rsquo;s iOS 14.5 ATT update and has since become Meta&rsquo;s primary recommended tracking method for e-commerce. When your browser pixel and a CAPI event report the same purchase with the same <span class="code-ref">event_id</span>, Meta counts one conversion. The full <a href="https://developers.facebook.com/docs/marketing-api/conversions-api" target="_blank" rel="noopener">Meta Conversions API documentation</a> covers all available parameters and the required fields for e-commerce events.
     <h3 id="the-exact-meta-capi-payload">The exact Meta CAPI payload</h3>
     <p>Every field below improves your Event Match Quality score. The more fields you send, the better Meta can match the event to a real user in its database and attribute the conversion correctly.</p>
   </div>
   <div class="callout sky">
     <span class="callout-label">Full Meta CAPI payload structure</span>
     <p><strong>Endpoint:</strong> POST https://graph.facebook.com/v24.0/&#123;PIXEL_ID&#125;/events?access_token=&#123;TOKEN&#125; <em style="color:#93a09a;">(use the current Graph API version: see Meta&rsquo;s <a href="https://developers.facebook.com/docs/graph-api/changelog/" target="_blank" rel="noopener" style="color:#93a09a;text-decoration:underline;">changelog</a>)</em><br><br>
-    Required: <span class="code-ref">event_name</span> Purchase &bull; <span class="code-ref">event_time</span> Unix timestamp &bull; <span class="code-ref">action_source</span> website &bull; <span class="code-ref">event_id</span> Shopify order ID (must match browser pixel)<br><br>
+    Required: <span class="code-ref">event_name</span> Purchase &bull; <span class="code-ref">event_time</span> Unix timestamp &bull; <span class="code-ref">action_source</span> website &bull; <span class="code-ref">event_id</span> Shopify order ID<br><br>
     User data (all SHA-256 hashed): <span class="code-ref">em</span> email &bull; <span class="code-ref">ph</span> phone &bull; <span class="code-ref">fn</span> first name &bull; <span class="code-ref">ln</span> last name &bull; <span class="code-ref">ct</span> city &bull; <span class="code-ref">zp</span> zip code &bull; <span class="code-ref">country</span> 2-letter code &bull; <span class="code-ref">client_ip_address</span> raw IP &bull; <span class="code-ref">client_user_agent</span> raw UA<br><br>
     Custom data: <span class="code-ref">currency</span> &bull; <span class="code-ref">value</span> &bull; <span class="code-ref">order_id</span> &bull; <span class="code-ref">content_ids</span> array of SKUs &bull; <span class="code-ref">num_items</span> quantity</p>
   </div>
   <div class="prose">
     <h3 id="deduplication-the-most-important-step">Deduplication: the most important step</h3>
-    <p>Without deduplication, every purchase generates two &ldquo;Purchase&rdquo; events in Meta Events Manager: one from your browser pixel and one from CAPI. This inflates your reported ROAS and causes Meta&rsquo;s algorithm to optimise on false data. The fix is simple: set the same <span class="code-ref">event_id</span> value in both events. In your browser pixel, pass <span class="code-ref">eventID: '&#123;&#123;order.id&#125;&#125;'</span> in the Purchase event parameters. In Make.com, pass the same order ID as <span class="code-ref">event_id</span>. Meta matches them and counts one conversion.</p>
+    <p>Two things can count one purchase twice. The first is two server routes: Shopify&rsquo;s Facebook &amp; Instagram app sends the Conversions API at its Enhanced and Maximum data sharing levels, so adding this scenario&rsquo;s Meta module as well can send each purchase twice. Use one. The second is a browser and a server event with different IDs. Meta merges them only when both carry the same <span class="code-ref">event_id</span>. This scenario uses the Shopify order ID, and Shopify does not document the ID its pixel sends, so do not assume they match: after a test order, open the Purchase event in Test Events and check whether Meta shows it as deduplicated.</p>
     <h3 id="testing-meta-capi">Testing Meta CAPI</h3>
-    <p>In Meta Events Manager, navigate to <strong>Test Events</strong>. You will see a Test Event Code. Add this as a <span class="code-ref">test_event_code</span> parameter in your Make.com HTTP module during testing. Place a real test order. Within 60 seconds you should see a Purchase event appear with source labelled &ldquo;Server&rdquo;. Once confirmed, remove the test_event_code from your production scenario.</p>
+    <p>In Meta Events Manager, navigate to <strong>Test Events</strong>. You will see a Test Event Code. Add this as a <span class="code-ref">test_event_code</span> parameter in your Make.com HTTP module during testing. Place a real test order. You should see a Purchase event appear with its source labelled &ldquo;Server&rdquo;. Once confirmed, remove the test_event_code from your production scenario.</p>
   </div>
 
   <!-- SECTION 6: GOOGLE -->
   <div class="sec-mark" id="google-enhanced">GOOGLE ENHANCED CONVERSIONS</div>
   <div class="prose">
     <h2 id="google-enhanced-conversions-setup-verification">Google Enhanced Conversions: Setup &amp; Verification</h2>
-    <p>Google Enhanced Conversions improves conversion measurement accuracy by sending hashed first-party customer data alongside your conversion tags. When a customer who is logged into a Google account makes a purchase on your store, Google can match the hashed data to their Google profile and attribute the conversion even if no cookie was set, including cross-device conversions where the customer first clicked your ad on desktop but purchased on mobile.</p>
-    <p>There are two implementation approaches: via Google Tag Manager Server-Side container, or via the Google Ads Enhanced Conversions for Web feature. For Make.com users, the simplest approach is to configure Enhanced Conversions for Web in Google Ads and send the hashed data in your existing conversion tag, then complement this with an order-level upload via the Make.com HTTP module.</p>
+    <p>Google enhanced conversions sends hashed customer data, such as email address and phone number, with the conversions your Google tag records, so Google can match more of them to signed-in Google accounts when the click ID has been lost (<a href="https://support.google.com/google-ads/answer/9888656" target="_blank" rel="noopener">Google Ads Help</a>). It improves matching for purchases the tag records; it cannot report a purchase whose tag never ran.</p>
+    <p>For most Shopify stores the free way to turn it on is in Shopify&rsquo;s Google &amp; YouTube app: <strong>Settings &rarr; Google Ads settings &rarr; Enhanced conversions &rarr; Turn on</strong>, then accept Google&rsquo;s customer data terms (<a href="https://support.google.com/google-ads/answer/13494537" target="_blank" rel="noopener">Google Ads Help</a>). It needs no Make.com scenario. A Make.com upload is weaker for two reasons: Shopify&rsquo;s order data has no Google click ID, so the upload carries only hashed customer data to match on, and Google is moving its click conversion upload from the Google Ads API to its Data Manager API. The <a href="/shopify-google-ads-conversion-tracking/">Google Ads conversion tracking guide</a> covers both routes.</p>
     <h3 id="data-fields-that-improve-google-match-rate">Data fields that improve Google match rate</h3>
+    <p>The Google &amp; YouTube app takes these from the checkout for you. They matter if you build your own route:</p>
   </div>
   <div class="emq-grid">
-    <div class="emq-item high"><span class="emq-label">High impact</span><div class="emq-name">Email (SHA-256)</div><div class="emq-note">Primary match signal. Must be lowercase, trimmed, then hashed.</div></div>
-    <div class="emq-item high"><span class="emq-label">High impact</span><div class="emq-name">Phone (SHA-256)</div><div class="emq-note">E.164 format (+447911123456) then hashed. Significantly improves mobile attribution.</div></div>
-    <div class="emq-item mid"><span class="emq-label">Medium impact</span><div class="emq-name">First + Last Name</div><div class="emq-note">Lowercase, trimmed, SHA-256 hashed. Improves match for users without email history.</div></div>
-    <div class="emq-item mid"><span class="emq-label">Medium impact</span><div class="emq-name">Postal address</div><div class="emq-note">Street, city, postal code, country. Useful for cross-device attribution.</div></div>
+    <div class="emq-item high"><span class="emq-label">High impact</span><div class="emq-name">Email (SHA-256)</div><div class="emq-note">Primary match key. Lowercase and trim, then hash.</div></div>
+    <div class="emq-item high"><span class="emq-label">High impact</span><div class="emq-name">Phone (SHA-256)</div><div class="emq-note">E.164 format (+447911123456), then hash.</div></div>
+    <div class="emq-item mid"><span class="emq-label">Medium impact</span><div class="emq-name">First + Last Name</div><div class="emq-note">Lowercase and trim, then hash. Sent with a postal address.</div></div>
+    <div class="emq-item mid"><span class="emq-label">Medium impact</span><div class="emq-name">Postal address</div><div class="emq-note">Street, city, postal code and country.</div></div>
   </div>
   <div class="callout">
     <span class="callout-label">SHA-256 hashing in Make.com</span>
-    <p>In Make.com, use the built-in <span class="code-ref">sha256(lowercase(trim(email)))</span> function to hash customer data. Apply this to every user data field before sending. Never send raw PII to any advertising platform: all platforms require SHA-256 hashing as a condition of their API terms.</p>
+    <p>In Make.com, hash with <span class="code-ref">sha256(lower(trim(email)))</span>. Apply the same normalise-then-hash pattern to every personal field before sending. Meta and TikTok require hashed contact details; IP address and user agent are sent unhashed.</p>
   </div>
   <div class="prose">
     <h3 id="verifying-google-enhanced-conversions">Verifying Google Enhanced Conversions</h3>
-    <p>In Google Ads, navigate to <strong>Tools &rarr; Measurement &rarr; Conversions</strong>. Click your purchase conversion action, then <strong>Diagnostics</strong>. The Enhanced conversions tab shows your match rate percentage. If your rate is low, check that you are hashing email correctly (lowercase and trimmed before hashing) and that phone numbers are in E.164 format.</p>
-    <p class="callout-inline">Prefer a ready-made version? <a href="/capi-shield/"><strong>CAPI Shield</strong></a> is the pre-built Make.com scenario for Meta CAPI: import it and go, no manual webhook build required.</p>
+    <p>In Google Ads, open <strong>Goals &rarr; Conversions</strong>, select your purchase conversion action and open its diagnostics, which report the enhanced conversions status. Then compare Google Ads conversions with Shopify orders over the same two weeks. Some gap always remains, because not every buyer can be matched and not every order came from an ad.</p>
+    <p class="callout-inline">Prefer a ready-made version for Meta? <a href="/capi-shield/"><strong>CAPI Shield</strong></a> is the pre-built Make.com scenario for Meta CAPI.</p>
   </div>
 
   <!-- SECTION 7: TIKTOK -->
   <div class="sec-mark" id="tiktok-events">TIKTOK EVENTS API</div>
   <div class="prose">
     <h2 id="tiktok-events-api-maximising-event-match-quality">TikTok Events API: Maximising Event Match Quality</h2>
-    <p>TikTok&rsquo;s Events API uses an Event Match Quality (EMQ) score to measure how well your server events can be matched to TikTok users. Scores range from 0&ndash;10. A score above 7 is considered good; above 9 is excellent. The EMQ score directly affects TikTok&rsquo;s ability to attribute conversions and optimise delivery: a higher score means more conversions attributed and better ROAS.</p>
+    <p>TikTok shows a match quality score for the events you send in TikTok Events Manager, calculated from the customer data each event carries. We publish no target for it. The more of the right keys an event carries, the more TikTok can match it to a TikTok user and use it to optimise delivery.</p>
     <p>The single most important difference between TikTok and Meta/Google: TikTok requires the event name <strong>CompletePayment</strong>, not &ldquo;Purchase&rdquo;. If you send &ldquo;Purchase&rdquo; to TikTok&rsquo;s Events API, it will appear in your Events Manager but will not be used for purchase campaign optimisation. This is the most common TikTok setup mistake.</p>
     <h3 id="tiktok-emq-signal-hierarchy">TikTok EMQ signal hierarchy</h3>
   </div>
   <div class="emq-grid">
     <div class="emq-item high"><span class="emq-label">Critical</span><div class="emq-name">Email (SHA-256)</div><div class="emq-note">Strongest matching signal. Send as lowercase SHA-256 hash.</div></div>
-    <div class="emq-item high"><span class="emq-label">Critical</span><div class="emq-name">Phone (SHA-256)</div><div class="emq-note">E.164 format, then SHA-256. Essential for mobile-first TikTok audience.</div></div>
+    <div class="emq-item high"><span class="emq-label">Critical</span><div class="emq-name">Phone (SHA-256)</div><div class="emq-note">E.164 format, then SHA-256.</div></div>
     <div class="emq-item high"><span class="emq-label">High</span><div class="emq-name">External ID</div><div class="emq-note">Your internal customer ID from Shopify. Hashed SHA-256.</div></div>
-    <div class="emq-item mid"><span class="emq-label">Medium</span><div class="emq-name">IP + User Agent</div><div class="emq-note">Raw IP address and full user agent string. Send unhashed from Shopify order payload.</div></div>
+    <div class="emq-item mid"><span class="emq-label">Medium</span><div class="emq-name">IP + User Agent</div><div class="emq-note">From the order&rsquo;s client_details, sent unhashed.</div></div>
   </div>
   <div class="callout tiktok">
     <span class="callout-label">TikTok API endpoint</span>
-    <p><strong>POST</strong> https://business-api.tiktok.com/open_api/v1.3/event/track/<br>Headers: <span class="code-ref">Access-Token: YOUR_TOKEN</span> &bull; <span class="code-ref">Content-Type: application/json</span><br>Required body fields: <span class="code-ref">pixel_code</span> &bull; <span class="code-ref">event</span> CompletePayment &bull; <span class="code-ref">timestamp</span> ISO 8601 &bull; <span class="code-ref">event_id</span> order ID &bull; context.user with hashed signals &bull; context.ip &bull; context.user_agent &bull; properties.currency &bull; properties.value</p>
+    <p><strong>POST</strong> https://business-api.tiktok.com/open_api/v1.3/event/track/<br>Headers: <span class="code-ref">Access-Token: YOUR_TOKEN</span> &bull; <span class="code-ref">Content-Type: application/json</span><br>Body: <span class="code-ref">event_source</span> web &bull; <span class="code-ref">event_source_id</span> your pixel ID &bull; and in <span class="code-ref">data[]</span>: <span class="code-ref">event</span> CompletePayment &bull; <span class="code-ref">event_time</span> Unix seconds &bull; <span class="code-ref">event_id</span> order ID &bull; <span class="code-ref">user</span> with hashed email and phone, ip and user_agent &bull; <span class="code-ref">properties</span> value and currency</p>
   </div>
   <div class="prose">
-    <p>Send all four high-impact signals (email, phone, external_id, IP/UA); that is the full set TikTok calculates the score from, and we publish no figure for what it scores. A higher match score directly improves TikTok&rsquo;s ability to attribute conversions and optimise delivery: the same server-side principle Meta quantified in April 2026, when it reported advertisers using the Conversions API for web events saw an average 17.8% lower cost per result than those without it. Check your EMQ score in TikTok Events Manager &rarr; your pixel &rarr; Overview &rarr; Event Match Quality.</p>
-    <p class="callout-inline">The pre-built TikTok version is <a href="/tiktok-events-api-shopify/"><strong>TikTok Events API for Shopify</strong></a>: the same CompletePayment setup, ready to import in minutes.</p>
+    <p>Send all four high-impact signals (email, phone, external_id, IP/UA); that is the full set TikTok calculates the score from, and we publish no figure for what it scores. For context on server-side events in general, Meta reported in April 2026 that advertisers using its Conversions API for web events saw an average 17.8% lower cost per result than those without it; that is Meta&rsquo;s figure for Meta, not a measurement of TikTok or of your store. Check your EMQ score in TikTok Events Manager &rarr; your pixel &rarr; Overview &rarr; Event Match Quality.</p>
+    <p class="callout-inline">The pre-built TikTok version is <a href="/tiktok-events-api-shopify/"><strong>TikTok Events API for Shopify</strong></a>: the same CompletePayment setup with the full request body.</p>
   </div>
 
   <!-- SECTION 8: COMPARISON -->
   <div class="sec-mark" id="comparison">FREE VS PAID COMPARISON</div>
-  <div class="prose"><h2 id="makecom-free-vs-elevar-vs-triple-whale-vs-analyzify">Make.com Free vs Elevar vs Triple Whale vs Analyzify</h2><p>Server-side tracking is a solved problem. The question is whether you need to pay $145&ndash;$1,250/month for a managed solution or whether the free Make.com method gives you equivalent tracking quality. Here is the honest comparison.</p></div>
+  <div class="prose"><h2 id="makecom-free-vs-elevar-vs-triple-whale-vs-analyzify">Make.com Free vs Elevar vs Triple Whale vs Analyzify</h2><p>The question is whether you need to pay for a managed solution, or whether the free Make.com method covers what you need. They are not equivalent: managed tools handle refunds, order edits and monitoring that a two-module scenario does not. Here is the comparison.</p></div>
   <div class="comp-table-wrap">
     <table class="comp-table">
       <thead><tr><th>Solution</th><th>Cost/month</th><th>Platforms</th><th>Setup</th><th>Reliability</th><th>Support</th></tr></thead>
       <tbody>
-        <tr><td class="col-label">Make.com (this guide)</td><td class="col-good">$0</td><td>Meta + Google + TikTok</td><td>18 min, no code</td><td class="col-good">&#x2713; Excellent</td><td>Community + this guide</td></tr>
+        <tr><td class="col-label">Make.com (this guide)</td><td class="col-good">$0</td><td>Meta + TikTok (Google via the Google &amp; YouTube app)</td><td>DIY, no code</td><td>Depends on your error handling</td><td>Community + this guide</td></tr>
         <tr><td class="col-label">Elevar</td><td class="col-bad">from $225/mo</td><td>Meta + Google + TikTok + more</td><td>Managed onboarding</td><td class="col-good">&#x2713; Excellent</td><td>Dedicated account manager</td></tr>
         <tr><td class="col-label">Triple Whale</td><td class="col-bad">Priced by store revenue (not published)</td><td>Meta + Google + TikTok</td><td>Shopify app install</td><td class="col-good">&#x2713; Good</td><td>Email + chat</td></tr>
         <tr><td class="col-label">Analyzify</td><td class="col-bad">$145&ndash;$275/mo</td><td>Google Analytics 4 focused</td><td>Managed setup</td><td class="col-good">&#x2713; Good</td><td>Dedicated support</td></tr>
-        <tr><td class="col-label">Shopify native CAPI</td><td class="col-good">$0</td><td>Meta only</td><td>Settings toggle</td><td class="col-bad">&#x2717; Partial (browser-dependent)</td><td>Shopify Help Centre</td></tr>
+        <tr><td class="col-label">Shopify native CAPI</td><td class="col-good">$0</td><td>Meta only</td><td>Data sharing setting</td><td>Shopify does not document what triggers each event</td><td>Shopify Help Centre</td></tr>
       </tbody>
     </table>
   </div>
   <div class="prose">
-    <p>The tracking quality difference between Make.com and paid solutions like Elevar is minimal for stores sending the same data fields. Elevar&rsquo;s premium justifies itself primarily through managed GTM setup, data layer configuration, and attribution reporting dashboards, not through superior API access. Both hit the same Meta CAPI and TikTok Events API endpoints with the same payload structure. The key advantage of paid solutions is that they handle edge cases automatically (order edits, refunds, subscription renewals). If your store processes over 1,000 orders/month, Make.com&rsquo;s Core plan at $9/month is still dramatically cheaper than any managed alternative.</p>
-    <p><strong>Our recommendation:</strong> Start with Make.com free. If you grow to 300+ daily orders or need refund/edit tracking and multi-currency handling, evaluate Elevar at that point. Until then, the Make.com method gives you server-side tracking at no cost.</p>
+    <p>Paid solutions and the Make.com method call the same Meta and TikTok APIs. What the paid ones add is managed setup, a data layer, monitoring and dashboards, and handling for edge cases such as order edits, refunds and subscription renewals. They can also capture the Google click ID in the browser, which a webhook cannot. Make.com&rsquo;s Core plan at $9/month remains far cheaper if your volume outgrows the free credits.</p>
+    <p><strong>Our recommendation:</strong> start with what Shopify already provides (Facebook &amp; Instagram data sharing for Meta, enhanced conversions for Google), add the Make.com scenario for TikTok, and evaluate a managed tool when you need refund and edit handling or monitoring you do not want to build.</p>
   </div>
 
   <!-- SECTION 8.5: META ONE-CLICK NATIVE CAPI -->
@@ -674,11 +642,11 @@ const articleSchema = {
     <p>In April 2026 Meta launched a Meta-enabled Conversions API: a free, one-click setup inside Events Manager that turns on server-side tracking for Meta with no developer, no code, and no ongoing maintenance. If your only goal is Meta CAPI, this is now the fastest route, and you should use it: it is genuinely easier than building a webhook, and it is free. We would be doing you a disservice not to say so.</p>
     <p>So when does the Make.com method in this guide still make sense? Three honest cases:</p>
     <ul>
-      <li><strong>You run more than just Meta.</strong> Meta&rsquo;s one-click setup covers Meta only. The Make.com webhook fires one Shopify order to Meta, Google Enhanced Conversions <em>and</em> TikTok Events API in a single scenario, with a shared <code>event_id</code> across all three. One source of truth, three platforms, no per-platform native setup to maintain separately.</li>
+      <li><strong>You run TikTok as well.</strong> Meta&rsquo;s one-click setup covers Meta only. The same Make.com webhook can send each order to TikTok&rsquo;s Events API, with the order ID as <code>event_id</code>.</li>
       <li><strong>You want control over the payload.</strong> The native setup is a black box: you get what Meta sends. With Make.com you decide exactly which match keys go out, how IP and user-agent are mapped, and how refunds or order edits are handled. That control decides which match keys Meta receives, and so what your Event Match Quality can be.</li>
       <li><strong>You don&rsquo;t want to depend on each platform&rsquo;s native tool.</strong> Native integrations change on the platform&rsquo;s schedule, not yours. A single Make.com scenario you own keeps your tracking portable if you switch platforms or one native tool degrades.</li>
     </ul>
-    <p>The honest summary: if you advertise on Meta alone and want the simplest possible setup, use Meta&rsquo;s one-click native CAPI: it&rsquo;s free and excellent for that one job (<a href="/blog/meta-one-click-conversions-api-shopify/">what Meta&rsquo;s one-click Conversions API fixes, and the gaps it leaves</a>). If you run Meta + Google + TikTok, or you want control over match quality and a portable setup you own, the Make.com method below is still the most capable free option. Many stores run both: native one-click for Meta as a baseline, and the Make.com scenario for Google and TikTok.</p>
+    <p>The honest summary: if you advertise on Meta alone and want the simplest possible setup, use Meta&rsquo;s one-click native CAPI: it&rsquo;s free and excellent for that one job (<a href="/blog/meta-one-click-conversions-api-shopify/">what Meta&rsquo;s one-click Conversions API fixes, and the gaps it leaves</a>). If you also run TikTok, or you want control over the payload and a setup you own, the Make.com method is the free option for that part. A common split is Meta&rsquo;s or Shopify&rsquo;s own route for Meta, the Make.com scenario for TikTok, and enhanced conversions in the Google &amp; YouTube app for Google.</p>
   </div>
 
   <!-- SECTION 9: TROUBLESHOOTING -->
@@ -686,20 +654,20 @@ const articleSchema = {
   <div class="prose">
     <h2 id="troubleshooting-common-server-side-tracking-issues">Troubleshooting Common Server-Side Tracking Issues</h2>
     <h3 id="events-not-appearing-in-meta-events-manager">Events not appearing in Meta Events Manager</h3>
-    <p>Check in this order: (1) Is your Make.com scenario switched <strong>On</strong>? Scenarios default to Off. (2) Did you place a test order on a published product, not a draft? Shopify&rsquo;s Order payment webhook only fires for real checkout orders, not test orders placed via the Shopify admin. (3) Is your access token correct and unexpired? Meta access tokens generated via Events Manager do not expire, but tokens generated via the Graph API Explorer expire after one hour. (4) Is your Pixel ID correct? The Pixel ID in your Make.com URL must match the pixel you are viewing in Events Manager.</p>
+    <p>Check in this order: (1) Is your Make.com scenario switched <strong>On</strong>? Scenarios default to Off. (2) Did the test order go through checkout and get paid? Use Shopify&rsquo;s test payment gateway if you do not want to take real money; the webhook fires when an order is paid. (3) Is your access token correct and unexpired? Meta access tokens generated via Events Manager do not expire, but tokens generated via the Graph API Explorer expire after one hour. (4) Is your Pixel ID correct? The Pixel ID in your Make.com URL must match the pixel you are viewing in Events Manager.</p>
     <h3 id="double-counting-conversions-seeing-2x-purchases">Double-counting conversions (seeing 2x purchases)</h3>
-    <p>This means deduplication is not working. Both your browser pixel and CAPI are firing but with different event_id values. Fix: ensure your browser pixel Purchase event passes <span class="code-ref">eventID</span> set to the Shopify order ID. In Make.com, ensure <span class="code-ref">event_id</span> is mapped to the same order ID field from the webhook payload. Both values must be identical strings.</p>
-    <h3 id="tiktok-events-show-but-emq-score-is-low-5">TikTok events show but EMQ score is low (&lt;5)</h3>
-    <p>Low EMQ almost always means missing user data fields. Check: (1) Is email being sent and SHA-256 hashed? It must be lowercase before hashing. (2) Is phone in E.164 format (+447911123456) before hashing? (3) Are IP address and user agent mapped from the Shopify order payload? In Make.com, map <span class="code-ref">browser_ip</span> from the order webhook for IP and <span class="code-ref">client_details.user_agent</span> for user agent.</p>
-    <h3 id="google-enhanced-conversions-match-rate-below-20">Google Enhanced Conversions match rate is low</h3>
-    <p>The most common cause is incorrect email hashing. Google requires: lowercase the email &rarr; trim whitespace &rarr; SHA-256 hash &rarr; send. If any step is skipped, the hash will not match Google&rsquo;s database. In Make.com use: <span class="code-ref">sha256(lowercase(trim(email)))</span>. Also verify you are sending phone in E.164 format before hashing.</p>
+    <p>Check two things. First, that only one server route sends Meta purchases: if Shopify&rsquo;s Facebook &amp; Instagram app is at Enhanced or Maximum data sharing, turn off the scenario&rsquo;s Meta module. Second, the event IDs: the scenario sends the Shopify order ID as <span class="code-ref">event_id</span>, and Meta and TikTok merge a browser and server purchase only when the IDs match. Shopify does not document its pixels&rsquo; IDs, so if Test Events shows two purchases per order, keep one route and remove the other.</p>
+    <h3 id="tiktok-events-show-but-emq-score-is-low-5">TikTok events show but the match score is low</h3>
+    <p>A low score usually means missing customer data. Check: (1) Is email being sent and SHA-256 hashed? It must be lowercase before hashing. (2) Is phone in E.164 format (+447911123456) before hashing? (3) Are IP address and user agent mapped from the Shopify order payload? In Make.com, map <span class="code-ref">browser_ip</span> from the order webhook for IP and <span class="code-ref">client_details.user_agent</span> for user agent.</p>
+    <h3 id="google-enhanced-conversions-match-rate-below-20">Google enhanced conversions shows no data</h3>
+    <p>In the Google &amp; YouTube app, check that enhanced conversions is turned on and the customer data terms accepted, and that the app is connected to the Google Ads account you are looking at. Then check for a second Google Ads purchase tag in your theme, a custom pixel or Google Tag Manager, which can split or double conversions. Diagnostics can take a few days to show data after you turn the setting on.</p>
     <h3 id="makecom-scenario-fails-with-http-400-error">Make.com scenario fails with HTTP 400 error</h3>
-    <p>A 400 error from any platform API means your payload is malformed. The most common causes: (1) Missing required fields: check the platform&rsquo;s API docs for required vs optional fields. (2) Incorrect data types: value must be a number, not a string. (3) Invalid timestamp: event_time must be a Unix timestamp (seconds since epoch), not a date string. In Make.com, use the <span class="code-ref">toUnix(now)</span> function to generate the correct timestamp format.</p>
+    <p>A 400 error from any platform API means your payload is malformed. The most common causes: (1) Missing required fields: check the platform&rsquo;s API docs for required vs optional fields. (2) Incorrect data types: value must be a number, not a string. (3) Invalid timestamp: event_time must be a Unix timestamp (seconds since epoch), not a date string. In Make.com, use <span class="code-ref">formatDate(1.created_at; "X")</span> to send the order time in Unix seconds.</p>
   </div>
 
   <!-- CTA -->
   <div class="article-cta">
-    <div><div class="cta-h">Want the Make.com scenario pre-built?</div><p>CAPI Shield is our free pre-configured Meta server-side tracking setup for Shopify stores. You still paste in your own Meta dataset ID and access token and add the Shopify webhook, and if you keep its Google branch, its two consent fields must be set to match your store&rsquo;s own consent setup. Want Meta and TikTok together, with inventory and P&amp;L, as one importable bundle? The <a href="/pro/">Complete Kit</a> has all four scenarios ready in 10 minutes.</p></div>
+    <div><div class="cta-h">Want the Make.com scenario pre-built?</div><p>CAPI Shield is our free pre-configured Meta server-side tracking setup for Shopify stores. You still paste in your own Meta dataset ID and access token and add the Shopify webhook, and if you keep its Google branch, its two consent fields must be set to match your store&rsquo;s own consent setup. Want Meta and TikTok together, with inventory and P&amp;L, as one importable bundle? The <a href="/pro/">Complete Kit</a> has all four scenarios ready to import.</p></div>
     <a href="https://stackarchitect.xyz/capi-shield/" class="btn btn-g">Get CAPI Shield Free &rarr;</a>
   </div>
 
