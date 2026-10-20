@@ -5,6 +5,7 @@ import { pageUpdated } from '../../data/pageUpdated';
 import Base from '../../layouts/Base.astro';
 import { READ_DATE } from '../../data/priceSources';
 import PriceSources from '../../components/PriceSources.astro';
+import TrackingFlow from '../../components/TrackingFlow.astro';
 import { faqPage, type Faq } from '../../utils/faq';
 
 // One array renders the visible FAQ and the FAQPage node.
@@ -200,18 +201,10 @@ const articleSchema = {
     <p class="freshness-line" style="font-size:13px;color:#93a09a;margin:0 0 14px;">Updated {UPDATED_LABEL.charAt(0) + UPDATED_LABEL.slice(1).toLowerCase()}: free plans and platform docs re-checked</p>
     <h1>Shopify Server-Side Tracking for Meta, TikTok and Google, <span class="g">step by step</span></h1>
     <p id="answer">Shopify server-side tracking sends each paid order to the ad platforms from Shopify's servers, not the shopper's browser. A free Make.com scenario receives Shopify's order webhook, hashes the customer data and posts the purchase to Meta and TikTok. For Google Ads, turn on enhanced conversions in Shopify's Google &amp; YouTube app instead.</p>
-    <!-- Retention, 20 Oct 2026: readers left after about three seconds. The
-         one picture that explains the whole guide sat four screens down; it
-         now sits under the answer it illustrates. -->
-  <figure style="max-width:960px;margin:22px auto 20px;text-align:left;border:1px solid #2f2f2f;border-radius:18px;overflow:hidden;background:#0b0e0c;">
-    <picture>
-      <source media="(max-width: 700px)" srcset="/diagrams/shopify-server-side-tracking-flow-2026-portrait.svg" width="600" height="1088" />
-      <img src="/diagrams/shopify-server-side-tracking-flow-2026.svg"
-         alt="Shopify server-side tracking architecture diagram 2026: one Shopify orders/paid webhook feeds a single Make.com scenario that hashes customer data and sends server-to-server events to Meta Conversions API and TikTok Events API, with Google Ads handled by enhanced conversions in Shopify's Google &amp; YouTube app"
-         width="1200" height="630" loading="eager" decoding="async" fetchpriority="high" style="display:block;width:100%;height:auto;" />
-    </picture>
-    <figcaption style="padding:12px 18px;font-size:13px;color:#9a9a9a;border-top:1px solid #232323;">The $0 architecture: one webhook and one Make.com scenario feed Meta and TikTok server-to-server. Nothing in that path runs in the browser.</figcaption>
-  </figure>
+    <!-- Retention, 20 Oct 2026: the one picture that explains this guide sat
+         four screens down. It now sits under the answer, as HTML so it reads
+         at full size on a phone (the SVG drew its labels at 4 to 11px). -->
+    <TrackingFlow />
     <p class="hero-deck">Shopify records every paid order; your ad platforms only count the purchases their tags or servers tell them about. <strong>The gap is not a reporting quirk you can annotate away: it is the training data each platform uses to decide who sees your ads next.</strong> Server-side events close the part of it the browser causes.</p>
     <div class="platform-strip">
       <span class="platform-badge pb-meta"><span class="pb-dot"></span>Meta CAPI</span>
@@ -1257,4 +1250,22 @@ const articleSchema = {
       .footer-conversion-strip { flex-direction: column; align-items: flex-start; }
       .footer-conversion-cta { align-self: stretch; text-align: center; }
     }
-  </style>
+      /* Phone hero, 20 Oct 2026: no card inside the page card, left-aligned
+       reading, and a headline whose lines no longer touch (line-height was
+       .94, so "Tracking" and "for" collided at 26px). */
+    @media (max-width: 640px) {
+      .sa-article .hero { padding: 26px 16px 28px; border: 0; border-radius: 0; background: transparent; text-align: left; margin-bottom: 28px; }
+      .sa-article .hero::before { inset: 0 -16px; }
+      .sa-article .hero h1 { font-size: 33px; line-height: 1.08; letter-spacing: -.03em; margin: 0 0 18px; }
+      .sa-article .hero .freshness-line { text-align: left; }
+      .sa-article #answer { font-size: 17px; line-height: 1.7; color: var(--text-2); margin: 0 0 8px; }
+      .sa-article .hero-deck { text-align: left; font-size: 16px; line-height: 1.7; margin: 0 0 22px; }
+      .sa-article .platform-strip { justify-content: flex-start; }
+      .sa-article .stat-strip { grid-template-columns: repeat(2, 1fr); }
+      .sa-article .stat-cell { padding: 16px 12px; }
+      .sa-article .stat-l { letter-spacing: .04em; line-height: 1.35; }
+      .sa-article .hero-ctas { flex-direction: column; align-items: stretch; }
+      .sa-article .hero-ctas .btn { justify-content: center; }
+    }
+
+</style>

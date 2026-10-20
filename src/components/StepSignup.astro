@@ -1,0 +1,36 @@
+---
+// The page's one affiliate button, placed in the setup step that tells the
+// reader to create the account (20 Oct 2026).
+//
+// On six setup pages step 1 said "Sign up for Make.com free" with no link,
+// and the only button sat after the last step, 2 to 9 phone screens later. A
+// reader following the steps had to leave the page to find the sign-up. The
+// button moves to the step; the `source` tag stays the one the old placement
+// used, so click history carries on.
+//
+// The page passes its <Disclosure /> as the child, so the disclosure renders
+// directly above the button and claims-guard sees the component in the page
+// source, as it requires.
+import { CLOAKS } from '../../functions/go/_cloaks.js';
+
+interface Props {
+  cloak?: keyof typeof CLOAKS;
+  source: string;
+  label?: string;
+}
+const { cloak = 'make', source, label } = Astro.props;
+const c = CLOAKS[cloak];
+if (!c) throw new Error(`StepSignup: unknown cloak ${String(cloak)}`);
+const text = label ?? `Create a free ${c.vendor} account`;
+---
+<div class="ss">
+  <slot />
+  <a class="cta-primary ss-btn" href={`/go/${cloak}/?source=${source}`} target="_blank" rel="sponsored nofollow noopener">{text} <span aria-hidden="true">→</span></a>
+</div>
+
+<style>
+  .ss { margin: 14px 0 4px; }
+  .ss :global(p) { margin: 0 0 10px !important; }
+  .ss-btn { display: inline-flex !important; align-items: center; gap: 8px; min-height: 44px; padding: 11px 20px !important; border-radius: 9px !important; font-weight: 700; font-size: 15px; text-decoration: none !important; }
+  @media (max-width: 640px) { .ss-btn { display: flex !important; justify-content: center; width: 100%; } }
+</style>

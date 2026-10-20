@@ -987,3 +987,35 @@ main :is(p, li, td, dd) a { overflow-wrap: anywhere; }
 :root { --mono: var(--font-mono) !important; }
 [style*="JetBrains Mono"] { font-family: var(--font-mono) !important; }
 pre, code, kbd, samp, pre *, code * { font-family: var(--font-code) !important; }
+
+
+/* ── PHONE READING (20 Oct 2026) ───────────────────────────────
+   Twelve pages centred their opening paragraphs on a phone, which is the
+   hardest layout to read: every line starts somewhere new. On a phone, text
+   blocks read from the left. Headings follow so a heading never sits
+   centred over left-aligned text. Single-line pills, badges, stat tiles and
+   buttons are not text blocks (they are spans, divs or flex items) and keep
+   their own alignment. */
+@media (max-width: 640px) {
+  main :is(p, h1, h2, h3, li, figcaption, blockquote, dd) {
+    text-align: left !important;
+  }
+  main :is(h1, h2, h3) { margin-left: 0 !important; margin-right: 0 !important; text-wrap: balance; }
+  main p { margin-left: 0 !important; margin-right: 0 !important; }
+}
+
+/* Hero pills on a phone (20 Oct 2026). The `.hero-proof` and
+   `.expert-byline` pills are centred inline-flex boxes with a 100px radius;
+   at 390px their text wraps to two or three lines and the dot sits alone on
+   the first, which reads as a rendering fault. On a phone they become a
+   plain left-aligned line with the dot beside the text. */
+@media (max-width: 640px) {
+  .hero-proof, .expert-byline {
+    display: flex !important; flex-wrap: nowrap !important; align-items: flex-start !important;
+    justify-content: flex-start !important; gap: 8px !important; text-align: left !important;
+    background: transparent !important; border: 0 !important; border-radius: 0 !important;
+    padding: 0 !important; margin: 0 0 14px !important; max-width: none !important;
+  }
+  .hero-proof .dot { flex: none; margin-top: 6px; }
+  .hero-proof-txt, .expert-byline span { font-size: 13px !important; letter-spacing: .01em !important; line-height: 1.5 !important; text-align: left !important; }
+}

@@ -1206,6 +1206,35 @@ tool at all, and on 16 more the first one sat 4 to 28 phone screens down.
 - `<JumpTo />` is a server-rendered "On this page" strip; chips wrap, so it
   cannot widen a phone layout.
 
+**Second pass, same day: phone layout, affiliate placement, screenshots.**
+- **The tracking guide's diagram is HTML** (`<TrackingFlow />`): every label
+  is text at reading size, across on desktop, down on a phone. The SVG stays
+  as the schema image only. Its phone hero is no longer a card inside a card.
+- **Phone reading rule** (end of `global.css`): under 640px, text blocks and
+  headings in `<main>` read from the left. Twelve pages had centred their
+  opening paragraphs. `.hero-proof` / `.expert-byline` pills become a plain
+  line on a phone (the dot had sat alone above wrapped text).
+- **Setup pages put the one affiliate button in the step that needs it.**
+  `<StepSignup source=…><Disclosure text=… /></StepSignup>` sits inside
+  step 1 on CAPI Shield, TikTok, P&L, Sheets, Autocrat and the ultimate guide.
+  Step 1 had said "Sign up for Make.com free" with no link while the button
+  sat 2 to 9 phone screens later. Source tags are unchanged. The Disclosure is
+  passed in as a child because `claims-guard` requires `<Disclosure` in the
+  page source. Posts whose readers already have a Make.com account (the
+  reliability guide, the BFCM checklist) deliberately carry no link.
+- **The ultimate guide's CAPI steps said** "confirming deduplication is
+  working" and "most stores see EMQ rise from Fair to Good within 2 weeks".
+  Both broke rules above; both are rewritten.
+- **Screenshots:** `agentic-checker-example`, `attribution-quote-example`
+  added to the capture script, and `app-cost-example` (captured, never
+  registered) is now in `toolShots.ts`. `<ToolGallery ids=[…] />` shows tools
+  as screenshot cards (a swipe row on phones) on the homepage and the guides
+  hub; the homepage's old text cards claimed the EMQ tool "quantifies ad spend
+  lost". Nine pages that linked a tool without showing it now show the one
+  most relevant to them. `usedBy` in `og-images.json` is regenerated from
+  `dist/`.
+- The guides hub's nine multicoloured buttons are a uniform topic grid.
+
 ### Highest-leverage open work
 
 1. Get the iOS Attribution Gap Benchmark to N ≥ 10 real submissions so it

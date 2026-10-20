@@ -4,7 +4,8 @@ import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
 import { READ_DATE } from '../data/priceSources';
 import PriceSources from '../components/PriceSources.astro';
-import Disclosure from "../components/Disclosure.astro";
+import Disclosure from '../components/Disclosure.astro';
+import StepSignup from '../components/StepSignup.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 import BlueprintAnatomy from '../components/BlueprintAnatomy.astro';
 /**
@@ -547,6 +548,7 @@ const tocHeadings = [
             ) : (
               <span class="step-tool">{s.tool}</span>
             )}
+            {s.pos === 1 && <StepSignup source="tiktok-events-api-shopify-setup"><Disclosure text="Affiliate link: I earn a commission if you sign up to Make.com through it, at no cost to you. The free plan is all this setup needs." /></StepSignup>}
           </div>
         </div>
       ))}
@@ -563,9 +565,7 @@ const tocHeadings = [
     </div>
 
 
-    <div style="margin-top:32px;"><Disclosure /></div>
-    <div style="text-align:center;display:flex;flex-wrap:wrap;gap:14px;justify-content:center;">
-      <a href={`${MAKE_URL}?source=tiktok-events-api-shopify-setup`} target="_blank" rel="sponsored nofollow noopener" class="btn">Create a free Make.com account</a>
+    <div style="margin-top:32px;text-align:center;display:flex;flex-wrap:wrap;gap:14px;justify-content:center;">
       <a href="/capi-shield/" class="btn-outline" aria-label="Deploy CAPI Shield for Meta too">Add Meta CAPI too</a>
       <a href={SCENARIO_URL} target="_blank" rel="noopener" class="btn pulse" aria-label="Import TikTok Events API scenario into Make.com">Import scenario free →</a>
     </div>

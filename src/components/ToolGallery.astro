@@ -1,0 +1,84 @@
+---
+// The free tools as cards with their real screenshots (20 Oct 2026), for the
+// hub pages that listed tools as text or buttons only. Each image is the
+// generated screenshot in src/data/toolShots.ts, so the cards cannot show a
+// tool that is not on the site, or a result it does not produce.
+import { TOOL_SHOTS } from '../data/toolShots';
+
+interface Props {
+  ids: string[];
+  heading?: string;
+  intro?: string;
+  headingId?: string;
+}
+const { ids, heading, intro, headingId = 'tool-gallery-h' } = Astro.props;
+
+// What each tool answers, in the reader's words.
+const ASKS: Record<string, string> = {
+  'attribution-gap-example': 'How far apart are Shopify and Meta on my revenue?',
+  'capi-validator-example': 'Will Meta accept this Conversions API event?',
+  'emq-checker-example': 'Which match keys am I sending Meta?',
+  'make-vs-zapier-example': 'What does my automation volume cost on each?',
+  'app-stack-auditor-example': 'Which of my apps can I cut?',
+  'stocky-risk-example': 'How hard is it to leave Stocky?',
+  'app-cost-example': 'What do my apps cost me in a year?',
+  'agentic-checker-example': 'Which AI checkout channels can my store use?',
+  'attribution-quote-example': 'What would Elevar, Northbeam or Analyzify cost me?',
+};
+const shots = ids.map((id) => {
+  const s = TOOL_SHOTS[id];
+  if (!s) throw new Error(`ToolGallery: unknown shot ${id}`);
+  return s;
+});
+---
+<section class="tg" aria-labelledby={heading ? headingId : undefined}>
+  {heading && <h2 id={headingId} class="tg-h">{heading}</h2>}
+  {intro && <p class="tg-intro">{intro}</p>}
+  <p class="tg-swipe" aria-hidden="true">Swipe for all {ids.length} →</p>
+  <ul class="tg-grid" aria-label={heading ? `${heading}: swipe for more` : 'Free tools'}>
+    {shots.map((s) => (
+      <li>
+        <a class="tg-card" href={s.route}>
+          <span class="tg-img"><img src={s.src} width={s.w} height={s.h} alt={s.alt} loading="lazy" decoding="async" /></span>
+          <span class="tg-body">
+            <span class="tg-ask">{ASKS[s.id] ?? s.name}</span>
+            <span class="tg-name">{s.name.charAt(0).toUpperCase() + s.name.slice(1)} <span aria-hidden="true">→</span></span>
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .tg { max-width: 1080px; margin: 40px auto; padding: 0 16px; text-align: left; }
+  .tg-h { font-size: clamp(22px, 3vw, 30px); line-height: 1.2; color: #fff; margin: 0 0 8px; text-align: left; }
+  .tg-intro { font-size: 16px; line-height: 1.6; color: #b6c0ba; margin: 0 0 20px; max-width: 64ch; }
+  .tg-swipe { display: none; }
+  .tg-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  .tg-grid li { margin: 0; padding: 0; }
+  .tg-grid li::before { content: none !important; }
+  .tg-card { display: flex; flex-direction: column; height: 100%; border: 1px solid #222825; border-radius: 14px; overflow: hidden; background: #0a0d0b; text-decoration: none !important; transition: border-color .2s, transform .2s; }
+  .tg-card:hover, .tg-card:focus-visible { border-color: rgba(52, 211, 119, .55); transform: translateY(-2px); }
+  .tg-img { position: relative; display: block; height: 168px; overflow: hidden; background: #000; border-bottom: 1px solid #1a201c; }
+  .tg-img img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+  .tg-img::after { content: ''; position: absolute; inset: auto 0 0 0; height: 48px; background: linear-gradient(180deg, rgba(10,13,11,0), #0a0d0b); }
+  .tg-body { display: flex; flex-direction: column; gap: 6px; padding: 14px 16px 16px; flex: 1; }
+  .tg-ask { font-size: 16px; line-height: 1.4; font-weight: 600; color: #fff; }
+  .tg-name { margin-top: auto; font-size: 14px; color: #34d377; font-weight: 600; }
+  @media (max-width: 900px) { .tg-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  /* Phone: one swipeable row of full-size cards. A screenshot shrunk to a
+     side thumbnail was unreadable, and nine stacked cards ran to five screens.
+     The row scrolls inside itself, so the page never scrolls sideways. */
+  @media (max-width: 560px) {
+    .tg { padding: 0; }
+    .tg-h, .tg-intro { padding: 0 16px; }
+    .tg-swipe { display: block; margin: -8px 0 10px; padding: 0 16px; font-size: 13px; color: #93a09a; }
+    .tg-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; padding: 2px 16px 14px; scroll-padding: 0 16px; overscroll-behavior-x: contain; scrollbar-width: thin; }
+    .tg-grid li { flex: 0 0 82%; scroll-snap-align: start; }
+    .tg-img { height: 150px; }
+    .tg-ask { font-size: 16px; }
+    .tg-grid::after { content: ''; flex: 0 0 4px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .tg-card { transition: none; } .tg-card:hover { transform: none; } }
+</style>
