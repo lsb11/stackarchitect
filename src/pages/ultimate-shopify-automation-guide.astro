@@ -2,6 +2,7 @@
 import KeyFacts from '../components/KeyFacts.astro';
 import { pageUpdated, formatUpdatedMonth } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
+import ToolShot from '../components/ToolShot.astro';
 import { READ_DATE } from '../data/priceSources';
 import PriceSources from '../components/PriceSources.astro';
 import { faqPage, type Faq } from '../utils/faq';
@@ -27,6 +28,7 @@ const faqs: Faq[] = [
               { q:"Do I need Google Workspace?", a:"Not initially. Free Gmail works for most stores. Google Workspace raises the Apps Script quotas, such as daily trigger runtime from 90 minutes to 6 hours, which matters only if you run Apps Script at high volume. It does not remove limits." },
             ];
 import Disclosure from '../components/Disclosure.astro';
+import StepSignup from '../components/StepSignup.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 
 const SITE           = 'https://stackarchitect.xyz';
@@ -290,6 +292,7 @@ const tocHeadings = [
             <div class="callout-label">What the platforms report</div>
             <p>Meta published in April 2026 that advertisers sending web events through the Conversions API saw an average <strong>17.8% lower cost per result</strong> than those without it. That figure is Meta's own, measured across its advertiser base, not a single store's result, and not ours. What it does not tell you is how much of the gap <em>your</em> store is carrying, which depends on your iOS share and your traffic mix. <a href="/shopify-vs-meta-attribution-gap-calculator/">Measure your own gap</a> before assuming a number.</p>
           </div>
+          <ToolShot id="attribution-gap-example" />
 
           <span id="section-capi" style="display:block;height:80px;margin-top:-80px;visibility:hidden;"></span>
           <h3>How to Deploy CAPI Shield: Step by Step</h3>
@@ -301,8 +304,8 @@ const tocHeadings = [
               { n:1, title:"Activate your Make.com account", desc:"Sign up for the Make.com free tier: 1,000 credits/month (formerly called operations), no credit card required. This is your central automation hub. How many orders the free tier covers depends on the credits each order uses; check one run in your scenario history.", tool:"make.com free tier", link:"#section-make" },
               { n:2, title:"Create a Shopify webhook", desc:'In Shopify Admin, go to Settings → Notifications → Webhooks. Create a new webhook for the "Order payment" event and point it to the Make.com webhook URL you generate in step 3.', tool:"Shopify Admin → Settings → Notifications" },
               { n:3, title:"Build the Make.com scenario", desc:"Create a new scenario with a Webhooks trigger. Connect this to the Meta Conversions API module and map the Shopify order fields to the Meta Purchase event parameters: event_id, value, currency, and user_data.", tool:"Make.com → New Scenario → Webhooks" },
-              { n:4, title:"Test with Meta Events Manager", desc:"Place a test order on your store. Open Meta Events Manager → Test Events and verify the server-side Purchase event appears. You should see both a browser event and a server event: confirming deduplication is working.", tool:"Meta Business Suite → Events Manager" },
-              { n:5, title:"Monitor Event Match Quality for 30 days", desc:"Track your Event Match Quality score in Meta Events Manager. Most stores see it increase from Fair to Good within 2 weeks as the API receives complete customer data.", tool:"Meta Events Manager → Event Match Quality" },
+              { n:4, title:"Test with Meta Events Manager", desc:"Place a test order on your store. Open Meta Events Manager → Test Events and verify the server-side Purchase event appears. You should see both a browser event and a server event. Shopify does not document its pixel's event ID, so check that one order is not counted twice before trusting the numbers.", tool:"Meta Business Suite → Events Manager" },
+              { n:5, title:"Read your Event Match Quality", desc:"Open Meta Events Manager and read the Event Match Quality for the server Purchase event. The score is calculated from the match keys each event carries; we publish no figure for what it reaches, so compare your own reading before and after.", tool:"Meta Events Manager → Event Match Quality" },
             ].map((s) => (
               <div class="step-card" itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
                 <div class="step-num" itemprop="position">{s.n}</div>
@@ -310,6 +313,7 @@ const tocHeadings = [
                   <div class="step-title" itemprop="name">{s.title}</div>
                   <div class="step-desc" itemprop="text">{s.desc}</div>
                   {s.link ? <a href={s.link} class="step-tool">{s.tool}</a> : <span class="step-tool">{s.tool}</span>}
+                  {s.n === 1 && <StepSignup source="ultimate-shopify-automation-guide-n1"><Disclosure text="Affiliate link: I earn a commission if you sign up to Make.com through it, at no cost to you. The free plan is all this setup needs." /></StepSignup>}
                 </div>
               </div>
             ))}
@@ -390,7 +394,6 @@ const tocHeadings = [
 
         <!-- ══ SECTION 03 ══ -->
         <section class="guide-section" id="section-automation" aria-labelledby="automation-h">
-          <Disclosure />
           <span class="tag section-tag">03: Workflow Automation</span>
           <h2 id="automation-h">Shopify Workflow Automation: Make.com vs Zapier, and Why the Free Tier Is Enough</h2>
           <p>Every Shopify automation workflow needs a central hub: a tool that receives events from Shopify and routes them to the right destinations. Two tools dominate this space: Zapier, which most store owners have heard of, and Make.com, which most store owners have not fully explored. In 2026, Make.com is the clear choice for free Shopify automation.</p>
@@ -429,9 +432,9 @@ const tocHeadings = [
           <div class="section-cta">
             <div class="section-cta-left">
               <div class="cta-h">Activate Make.com: your free automation hub</div>
-              <p>Free up to 1,000 credits/month · Instant Shopify webhooks · Most stores never pay a penny</p>
+              <p>Free up to 1,000 credits/month · Instant Shopify webhooks · the sign-up link is in step 1 above</p>
             </div>
-            <a href="/go/make/?source=ultimate-shopify-automation-guide-n1" target="_blank" rel="sponsored nofollow noopener" class="btn btn-sm pulse" >Create a free Make.com account</a>
+            <a href="#section-capi" class="btn btn-sm">Start with step 1 of the setup</a>
           </div>
         </section>
 

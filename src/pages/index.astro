@@ -9,6 +9,7 @@ import { READ_DATE } from '../data/priceSources';
 import PriceSources from '../components/PriceSources.astro';
 import Disclosure from '../components/Disclosure.astro';
 import SiteIndex from '../components/SiteIndex.astro';
+import ToolGallery from '../components/ToolGallery.astro';
 import { SITE_INDEX_HREFS } from '../data/siteIndex';
 import { isPostShutdown } from '../utils/stockyDeadline';
 import { KIT_PRICE, formatPrice } from '../data/products';
@@ -732,6 +733,9 @@ const kitSchema = {
   .cta-strip-inner{flex-direction:column;text-align:center;}
   .cta-strip-actions{justify-content:center;width:100%;}
 }
+
+  .tg-more { max-width: 1080px; margin: -16px auto 0; padding: 0 16px; font-size: 15px; color: #93a09a; }
+  .tg-more a { color: #34d377; text-decoration: underline; }
 </style>
 
 <!-- =============================================================== -->
@@ -837,77 +841,18 @@ const kitSchema = {
     </div>
   </div>
 </section>
+<!-- 20 Oct 2026: was six text cards with icons, two of which promised what
+     the tools do not do ("Quantifies ad spend lost to low EMQ", "your exact
+     loss"). Now the tools themselves, as screenshots of each on its example
+     inputs. -->
 <section class="calc-showcase" id="sa-calculators" aria-labelledby="calc-h">
-  <div class="inner-lg">
-    <div class="sec-head">
-      <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">9 free calculators · Zero signup · Instant results</span>
-      <h2 id="calc-h">Run the Numbers <span style="color:var(--g)">Before</span> You Deploy</h2>
-      <p>Free diagnostic calculators that quantify your exact loss, score migration risk, and identify priorities, so you deploy in the right order. No email required, no data stored, results in under 30 seconds.</p>
-    </div>
-
-    <div class="calc-grid">
-      <a href="/shopify-app-cost-calculator/" class="calc-card">
-        <div class="calc-icon">$</div>
-        <div class="calc-label">Cost Calculator</div>
-        <div class="calc-name">App Cost Calculator</div>
-        <p class="calc-desc-c">Enter your monthly spend across tracking, email, inventory, and analytics apps. Get your exact annual waste figure and recoverable spend.</p>
-        <div class="calc-pair">→ Pairs with the full $0 stack</div>
-        <span class="calc-cta">Calculate my waste →</span>
-      </a>
-
-      <a href="/meta-emq-score-estimator/" class="calc-card">
-        <div class="calc-icon">EMQ</div>
-        <div class="calc-label">Diagnostic</div>
-        <div class="calc-name">Meta EMQ Score Estimator</div>
-        <p class="calc-desc-c">Estimate your Meta Conversions API Event Match Quality score before deploying server-side tracking. Quantifies ad spend lost to low EMQ.</p>
-        <div class="calc-pair">→ Pairs with CAPI Shield</div>
-        <span class="calc-cta">Score my EMQ →</span>
-      </a>
-
-      <a href="/shopify-vs-meta-attribution-gap-calculator/" class="calc-card">
-        <div class="calc-icon">Δ</div>
-        <div class="calc-label">Diagnostic</div>
-        <div class="calc-name">Attribution Gap Calculator</div>
-        <p class="calc-desc-c">Shopify shows one revenue number. Meta shows another. GA4 shows a third. This calculator shows the gap between Shopify and Meta, your blended ROAS, and what to check first.</p>
-        <div class="calc-pair">→ Pairs with CAPI Shield</div>
-        <span class="calc-cta">Calculate my gap →</span>
-      </a>
-
-      <a href="/replace-klaviyo-free/#klaviyo-savings-calculator" class="calc-card">
-        <div class="calc-icon">✉</div>
-        <div class="calc-label">Savings</div>
-        <div class="calc-name">Klaviyo Savings Calculator</div>
-        <p class="calc-desc-c">Pick your Klaviyo contact count and see what that tier costs against Systeme.io's free plan.</p>
-        <div class="calc-pair">→ Pairs with Replace Klaviyo</div>
-        <span class="calc-cta">See my savings →</span>
-      </a>
-
-      <a href="/stocky-migration-risk-scorer/" class="calc-card">
-        <div class="calc-icon" style="background:rgba(245,182,77,.08);border-color:rgba(245,182,77,.2);color:var(--amber);">!</div>
-        <div class="calc-label" style="color:var(--amber);">Export window open</div>
-        <div class="calc-name">Stocky Migration Risk Scorer</div>
-        <p class="calc-desc-c">Score your Stocky replacement risk based on SKU count, supplier complexity, and reorder frequency. Get a personalised replacement plan while export is still open.</p>
-        <div class="calc-pair">→ Pairs with Stocky Swap</div>
-        <span class="calc-cta">Score my risk →</span>
-      </a>
-
-
-
-      <a href="/make-vs-zapier-cost-calculator/" class="calc-card">
-        <div class="calc-icon">⚙</div>
-        <div class="calc-label">Cost</div>
-        <div class="calc-name">Make vs Zapier Calculator</div>
-        <p class="calc-desc-c">Calculate the exact annual cost difference between Make.com and Zapier for your automation volume. See the yearly difference at your volume.</p>
-        <div class="calc-pair">→ Pairs with every free tool</div>
-        <span class="calc-cta">Compare costs →</span>
-      </a>
-
-    </div>
-
-    <div class="calc-footer-cta">
-      <a href="/tools/">See all free tools and calculators →</a>
-    </div>
-  </div>
+  <ToolGallery
+    headingId="calc-h"
+    heading="Run the numbers before you deploy"
+    intro="Each free tool answers one question with your own numbers, before you change anything. No signup."
+    ids={['attribution-gap-example', 'app-cost-example', 'emq-checker-example', 'capi-validator-example', 'agentic-checker-example', 'attribution-quote-example', 'make-vs-zapier-example', 'app-stack-auditor-example', 'stocky-risk-example']}
+  />
+  <p class="tg-more"><a href="/replace-klaviyo-free/#klaviyo-savings-calculator">Klaviyo savings calculator</a> · <a href="/tools/">See all free tools and calculators →</a></p>
 </section>
 
 <!-- =============================================================== -->

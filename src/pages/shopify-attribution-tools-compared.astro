@@ -7,6 +7,9 @@ import AuthorCard from '../components/AuthorCard.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import appsData from '../data/apps.json';
 import Disclosure from '../components/Disclosure.astro';
+import PriceSources from '../components/PriceSources.astro';
+import JumpTo from '../components/JumpTo.astro';
+import { READ_DATE, SOURCES } from '../data/priceSources';
 
 const SITE = "https://stackarchitect.xyz";
 const canonical = `${SITE}/shopify-attribution-tools-compared/`;
@@ -57,15 +60,51 @@ function offerFor(app: AppProfile) {
   return agg;
 }
 
-const latestVerified =
-  records.map((a) => a.priceVerifiedDate).filter(Boolean).sort().pop() ?? undefined;
+// Every vendor price on this page is one of the ledger's (priceSources.ts),
+// read on READ_DATE, the same convention as /capi-shield/ and /stack/. Until
+// 20 Oct 2026 this page passed apps.json's older 8 Aug date and labelled the
+// ledger's own figures "third-party reported, pending verification".
+const latestVerified = READ_DATE;
+const readLabel = new Date(READ_DATE + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+
+// The quote tool at the top. Elevar is the only one of the four whose price
+// follows inputs a merchant knows (orders and destinations), so it is the only
+// one computed; the other three are stated as their pages state them. Figures
+// are the ledger's, as read on the vendors' pages.
+const ELEVAR_PLANS = [
+  { plan: 'Core', price: 225, maxOrders: 2000, maxDest: 2 },
+  { plan: 'Advanced', price: 650, maxOrders: 10000, maxDest: 4 },
+  { plan: 'Premium', price: 1250, maxOrders: 30000, maxDest: 10 },
+];
+const ELEVAR_ELITE_FROM = 3000;
+const NORTHBEAM_STARTER = 1500;
+const ANALYZIFY = { monthly: 145, yearlyPerMonth: 109, plusMonthly: 275, plusYearlyPerMonth: 206 };
+const usd = (n: number) => '$' + n.toLocaleString('en-US');
+// The constants above must be the ledger's figures, or the build stops.
+const LEDGER_CHECK: [keyof typeof SOURCES, number[]][] = [
+  ['elevar', [...ELEVAR_PLANS.map((x) => x.price), ELEVAR_ELITE_FROM]],
+  ['northbeam', [NORTHBEAM_STARTER]],
+  ['analyzify', Object.values(ANALYZIFY)],
+];
+for (const [id, nums] of LEDGER_CHECK) {
+  for (const n of nums) if (!SOURCES[id].read.includes(usd(n))) throw new Error(`attribution page: ${id} ${n} is not in priceSources.ts`);
+}
+const elevarFor = (orders: number, dest: number) => {
+  const p = ELEVAR_PLANS.find((x) => orders <= x.maxOrders && dest <= x.maxDest);
+  return p ? { plan: p.plan, price: p.price, from: false } : { plan: 'Elite', price: ELEVAR_ELITE_FROM, from: true };
+};
+const DEFAULT_ORDERS = 5000;
+const DEFAULT_DEST = 4;
+const elevarDefault = elevarFor(DEFAULT_ORDERS, DEFAULT_DEST);
+const BAR_MAX = Math.max(ELEVAR_ELITE_FROM, NORTHBEAM_STARTER);
+const pct = (n: number) => Math.max(3, Math.round((n / BAR_MAX) * 100));
 
 // ── the spine: four vendors, four pricing axes ──────────────────────────────
 const axes = [
   {
     brand: "Elevar",
     axis: "Monthly order volume × number of destinations",
-    entry: "~$225/mo reported",
+    entry: "$225/mo (Core)",
     lever: "Crossing an order tier, or adding one more ad platform",
   },
   {
@@ -77,7 +116,7 @@ const axes = [
   {
     brand: "Northbeam",
     axis: "Traffic and data volume: pageviews, not revenue",
-    entry: "~$1,500+/mo reported",
+    entry: "From $1,500/mo (Starter)",
     lever: "Sessions and events ingested, regardless of what they earn",
   },
   {
@@ -129,7 +168,7 @@ const faqs = [
   },
   {
     q: "Are the prices on this page verified?",
-    a: "Partly. Three figures (the entry prices tracked for Elevar, Northbeam and Analyzify) were read from each vendor's own pricing page and carry a verification date and source link. Every other figure on this page is third-party reported, pending verification against the vendor's own page, and is labelled as such wherever it appears."
+    a: `Yes, the prices are. Every price for Elevar, Northbeam and Analyzify was read on the vendor's own pricing page on ${readLabel}, and the sources are listed at the foot of the page. Triple Whale publishes no paid price, so none is given. A few non-price figures, such as install counts and the GMV a vendor typically sells to, are third-party reported and are labelled as reported where they appear.`
   },
 ];
 
@@ -206,32 +245,60 @@ const schema = {
 
   <TableOfContents headings={tocHeadings} />
 
-  <p class="text-gray-300 leading-relaxed mb-8" style="margin-top:1.5rem;font-size:1.0625rem;">
-    Almost every comparison of these four tools is a feature grid. Feature grids are close to useless here, because all
-    four will happily tell you they do server-side tracking, multi-touch attribution and Meta Conversions API delivery.
-    What actually separates them (and what determines whether you pay a few hundred dollars a year or twenty thousand)
-    is the unit each one meters.
-  </p>
+  <!-- Retention, 20 Oct 2026: readers left this page after about three
+       seconds. Its first screen was a paragraph, then a warning that most
+       prices were unverified, which was no longer true. The question a reader
+       brings ("what would I pay?") is now answered by the first thing below
+       the answer, from the vendors' own price lists. -->
+  <section class="aq" id="quote" aria-labelledby="aq-h" data-elevar={JSON.stringify(ELEVAR_PLANS)} data-elite={ELEVAR_ELITE_FROM} data-max={BAR_MAX}>
+    <h2 id="aq-h" class="aq-h">What would your store pay?</h2>
+    <div class="aq-in">
+      <label class="aq-f"><span>Orders a month</span>
+        <input type="number" name="orders" min="0" max="1000000" step="100" value={DEFAULT_ORDERS} inputmode="numeric" />
+      </label>
+      <label class="aq-f"><span>Ad and analytics destinations</span>
+        <input type="number" name="dest" min="1" max="50" step="1" value={DEFAULT_DEST} inputmode="numeric" />
+      </label>
+    </div>
+    <ul class="aq-bars">
+      <li>
+        <div class="aq-row"><span class="aq-n">Elevar <span class="aq-m">meters orders and destinations</span></span><span class="aq-v" data-elevar-v>{elevarDefault.from ? 'From ' : ''}{usd(elevarDefault.price)}/mo</span></div>
+        <div class="aq-track"><span class="aq-bar aq-live" data-elevar-bar style={`width:${pct(elevarDefault.price)}%`}></span></div>
+        <p class="aq-why" data-elevar-why>{elevarDefault.plan} plan: the first that covers {DEFAULT_ORDERS.toLocaleString('en-US')} orders and {DEFAULT_DEST} destinations.</p>
+      </li>
+      <li>
+        <div class="aq-row"><span class="aq-n">Analyzify <span class="aq-m">flat plan fee</span></span><span class="aq-v">{usd(ANALYZIFY.monthly)}/mo</span></div>
+        <div class="aq-track"><span class="aq-bar" style={`width:${pct(ANALYZIFY.monthly)}%`}></span></div>
+        <p class="aq-why">Standard; {usd(ANALYZIFY.yearlyPerMonth)}/mo billed yearly. Plus is {usd(ANALYZIFY.plusMonthly)}/mo ({usd(ANALYZIFY.plusYearlyPerMonth)} yearly). Your volume does not change it.</p>
+      </li>
+      <li>
+        <div class="aq-row"><span class="aq-n">Northbeam <span class="aq-m">meters traffic</span></span><span class="aq-v">From {usd(NORTHBEAM_STARTER)}/mo</span></div>
+        <div class="aq-track"><span class="aq-bar aq-q" style={`width:${pct(NORTHBEAM_STARTER)}%`}></span></div>
+        <p class="aq-why">Starter, the lowest figure its page names, beside &ldquo;contact us for a quote&rdquo;. Set by pageviews, which neither input above measures.</p>
+      </li>
+      <li>
+        <div class="aq-row"><span class="aq-n">Triple Whale <span class="aq-m">meters GMV</span></span><span class="aq-v">Quote only</span></div>
+        <div class="aq-track aq-none"><span class="aq-bar aq-q" style="width:0%"></span></div>
+        <p class="aq-why">A free plan; paid tiers are priced on annual GMV after a walkthrough, so there is no figure to draw.</p>
+      </li>
+    </ul>
+    <p class="aq-foot">Prices read on each vendor&rsquo;s own pricing page on {readLabel}, in USD (sources at the foot of the page). Only Elevar&rsquo;s bill follows the two numbers you know; that is the point of this page.</p>
+  </section>
 
-  <div style="background:#1a1410;border:1px solid #5a3a1a;border-radius:12px;padding:1.25rem 1.5rem;margin:1.5rem 0;">
-    <p class="text-gray-300" style="margin:0;">
-      <strong class="text-white">Read the price labels before the prices.</strong> Most figures on this page are
-      <strong>third-party reported and pending verification</strong>: they come from comparison sources, not from the
-      vendors' own pricing pages, which is exactly the sourcing standard
-      <a href="/how-we-test/" style="color:var(--g);text-decoration:underline">our testing policy</a> says this site
-      does not accept as final. Three entry prices have been read from the vendor's own page and carry a date and a
-      source link; those are labelled <em>verified</em>. Everything else is labelled <em>reported</em>. Three figures
-      are actively in conflict between sources, and those conflicts are set out in full rather than resolved by
-      picking a favourite.
-    </p>
-  </div>
+  <JumpTo items={[
+    { href: '#axes-h', label: 'Pricing axes' },
+    { href: '#example-h', label: 'Worked example' },
+    { href: '#table-h', label: 'Side by side' },
+    { href: '#capi-h', label: 'Free route' },
+    { href: '#faq-h', label: 'FAQ' },
+  ]} />
 
   <!-- ── the spine ──────────────────────────────────────────────── -->
   <h2 id="axes-h" class="text-2xl font-bold text-white mb-4" style="margin-top:3rem;">Four Tools, Four Different Pricing Axes</h2>
   <p class="text-gray-300 leading-relaxed mb-4">
     This is the single most important thing to understand before you request a quote from any of them. The four tools
     do not merely charge different amounts. They charge for different <em>things</em>. One meters orders, one meters
-    revenue, one meters traffic, and one meters nothing month to month and simply invoices once a year.
+    revenue, one meters traffic, and one charges a flat plan fee that your volume never moves.
   </p>
 
   <div style="overflow-x:auto;margin:1.5rem 0;">
@@ -257,7 +324,8 @@ const schema = {
     </table>
   </div>
   <p class="text-gray-400" style="font-size:.85rem;margin-top:-0.5rem;">
-    Entry points above are third-party reported and pending verification against each vendor's own pricing page.
+    Entry points read on each vendor's own pricing page (sources at the foot of the page). Northbeam's is the lowest
+    figure its page names, beside a quote form; Triple Whale publishes no paid price.
   </p>
 
   <p class="text-gray-300 leading-relaxed mb-4" style="margin-top:1.5rem;">
@@ -295,7 +363,7 @@ const schema = {
       <tbody>
         <tr style="border-bottom:1px solid var(--border);">
           <td style="padding:10px 12px;color:#fff;font-weight:600;">Elevar</td>
-          <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">~$650/mo</td>
+          <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">$650/mo</td>
           <td style="padding:10px 12px;color:var(--text-3);">5,000 orders lands in the 10,000-order tier, with 4 destinations included</td>
         </tr>
         <tr style="border-bottom:1px solid var(--border);">
@@ -305,8 +373,8 @@ const schema = {
         </tr>
         <tr style="border-bottom:1px solid var(--border);">
           <td style="padding:10px 12px;color:#fff;font-weight:600;">Northbeam</td>
-          <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">~$1,500+/mo</td>
-          <td style="padding:10px 12px;color:var(--text-3);">And that is the bottom of the range, not a mid-point</td>
+          <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">From $1,500/mo</td>
+          <td style="padding:10px 12px;color:var(--text-3);">The Starter figure, the lowest its page names; the quote is set by traffic</td>
         </tr>
         <tr style="border-bottom:1px solid var(--border);">
           <td style="padding:10px 12px;color:#fff;font-weight:600;">Analyzify</td>
@@ -323,39 +391,35 @@ const schema = {
   </p>
 
   <p class="text-gray-300 leading-relaxed mb-4" style="margin-top:1.5rem;">
-    The spread across that table is roughly twenty-four to one, top to bottom, for one store on one day. That is not a
+    The spread across the published figures in that table is almost fourteen to one, $109 against $1,500, for one
+    store on one day. That is not a
     quality gradient. It is four companies metering four different quantities and one store that happens to sit
     differently on each meter. Before you compare features, work out which meter you are expensive on: it will tell
     you more about your eventual bill than any capability list will.
   </p>
 
   <!-- ── conflicts ──────────────────────────────────────────────── -->
-  <h2 id="conflicts-h" class="text-2xl font-bold text-white mb-4" style="margin-top:3rem;">Three Open Price Conflicts</h2>
+  <h2 id="conflicts-h" class="text-2xl font-bold text-white mb-4" style="margin-top:3rem;">Three Price Conflicts, and How Each Was Settled</h2>
   <p class="text-gray-300 leading-relaxed mb-4">
-    Three of the figures used on this page are contradicted by another source. Rather than pick the number that reads
-    best and present it as fact, all three are set out here so you know precisely where the ground is soft. Each is
-    pending resolution against the vendor's own pricing page.
+    Earlier versions of this page carried three figures that other sources contradicted, and said so rather than pick
+    the number that read best. Each has since been settled the only way that counts: by reading the vendor's own
+    pricing page. The record stays here because other comparisons still repeat the losing figures.
   </p>
   <ol class="space-y-3 my-6" style="padding-left:1.25rem;">
     <li class="text-gray-300">
-      <strong class="text-white">Elevar's plan structure: two incompatible descriptions.</strong> One source reports a
-      ladder of named tiers priced on orders and destinations. A separate source, published three months earlier,
-      reports an entirely different structure: $200 at 1,000 orders, $450 at 10,000 and $950 at 50,000, with per-order
-      overages of $0.15, $0.04 and $0.03 respectively. These are not two readings of the same price list; they are two
-      different price lists. Only one can be current.
+      <strong class="text-white">Elevar's plan structure.</strong> One source described a ladder priced on orders and
+      destinations; an older one described $200 at 1,000 orders, $450 at 10,000 and $950 at 50,000, with per-order
+      overages. The vendor's page shows the first: Core, Advanced, Premium and Elite, each with an order allowance and a
+      destination count. The overage ladder is out of date.
     </li>
     <li class="text-gray-300">
-      <strong class="text-white">Northbeam's floor: $1,500 or $1,000.</strong> The tracked record on this site puts the
-      floor at the higher of the two, verified against the vendor's own pricing page. A third-party source puts it a
-      third lower. That gap is large enough to change whether the tool is even in consideration for a store at the
-      margin.
+      <strong class="text-white">Northbeam's floor: $1,500 or $1,000.</strong> Its pricing page names $1,500 for
+      Starter, beside a quote form. The lower figure is not on it.
     </li>
     <li class="text-gray-300">
-      <strong class="text-white">Analyzify's billing basis: annual or monthly.</strong> This is the messiest of the
-      three. A reported annual fee and the monthly figure carried in this site's own app records do not reconcile as
-      the same plan. Both may well be true: vendors routinely sell a monthly plan and a discounted annual plan side by
-      side, but until it is confirmed, any comparison that mixes the two is comparing different products. Wherever
-      this page quotes a figure for that vendor, it states the billing basis explicitly.
+      <strong class="text-white">Analyzify's billing basis.</strong> A reported annual fee did not match the monthly
+      figure. The page sells both: Standard at $145 a month or $1,305 a year, Plus at $275 a month or $2,475 a year.
+      The old annual figure matched neither and is gone.
     </li>
   </ol>
 
@@ -383,7 +447,7 @@ const schema = {
       <thead>
         <tr style="border-bottom:1px solid var(--border);">
           <th style="text-align:left;padding:10px 12px;color:var(--text-3);font-weight:600;">Plan</th>
-          <th style="text-align:left;padding:10px 12px;color:var(--text-3);font-weight:600;">Reported price</th>
+          <th style="text-align:left;padding:10px 12px;color:var(--text-3);font-weight:600;">Price</th>
           <th style="text-align:left;padding:10px 12px;color:var(--text-3);font-weight:600;">Order allowance</th>
           <th style="text-align:left;padding:10px 12px;color:var(--text-3);font-weight:600;">Destinations</th>
         </tr>
@@ -401,10 +465,9 @@ const schema = {
     </table>
   </div>
   <p class="text-gray-400" style="font-size:.85rem;margin-top:-0.5rem;">
-    Ladder as third-party reported, pending verification, and directly contradicted by a second source, as set out in
-    the conflicts section above. The entry price tracked in this site's
-    <a href="/apps/#app-elevar" style="color:var(--g);text-decoration:underline">app record</a> was verified against the
-    vendor's own pricing page and carries a source link.
+    Ladder as published on the vendor's own pricing page, which now sits on audiense.com and is titled for both
+    names. The entry price is also in this site's
+    <a href="/apps/#app-elevar" style="color:var(--g);text-decoration:underline">app record</a> with its source link.
   </p>
 
   <h3 class="text-xl font-bold text-white mb-3" style="margin-top:2rem;">What only this tool does</h3>
@@ -425,7 +488,7 @@ const schema = {
   </p>
   <p class="text-gray-300 leading-relaxed mb-4">
     On positioning: it is a Shopify preferred partner for checkout extensibility, is reported to power tracking for
-    over 6,500 direct-to-consumer brands, and holds a 4.6 rating from 138 App Store reviews. That is a real install
+    over 6,500 direct-to-consumer brands, and was reported to hold a 4.6 rating from 138 App Store reviews. That is a real install
     base, not a startup.
   </p>
 
@@ -498,9 +561,9 @@ const schema = {
     <strong class="text-white">How the pricing works.</strong> This is the one that is priced on traffic and data
     volume rather than on revenue, which catches people out in the opposite direction from everything else here. Two
     stores earning identical revenue can be quoted very differently if one of them generates three times the pageviews.
-    Contracts are annual. The reported starter floor sits around $1,500 a month, scaling to roughly $2,500 for the
-    starter band, and the vendor generally does not sell below approximately $500,000 in monthly GMV. As flagged
-    earlier, one source disputes that floor and puts it a third lower.
+    Contracts are annual. Northbeam's own pricing page names two figures: Starter at $1,500, beside "contact us for a
+    quote", and Professional at $3,500 a month; Growth and Enterprise are custom. Third parties report that it rarely
+    sells to stores below about $500,000 in monthly GMV; that is reported, not on its page.
   </p>
 
   <h3 class="text-xl font-bold text-white mb-3" style="margin-top:2rem;">What only this tool does</h3>
@@ -599,9 +662,9 @@ const schema = {
         </tr>
         <tr style="border-bottom:1px solid var(--border);">
           <td style="padding:10px 12px;color:var(--text-3);font-weight:600;">Entry price</td>
-          <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">~$225/mo</td>
+          <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">$225/mo</td>
           <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">Free; paid quoted</td>
-          <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">~$1,500+/mo</td>
+          <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">From $1,500/mo</td>
           <td style="padding:10px 12px;color:#fff;font-family:var(--mono);">$145/mo</td>
         </tr>
         <tr style="border-bottom:1px solid var(--border);">
@@ -643,9 +706,9 @@ const schema = {
     </table>
   </div>
   <p class="text-gray-400" style="font-size:.85rem;margin-top:-0.5rem;">
-    Entry row: third-party reported, pending verification. Three of these vendors have a verified entry price recorded
-    in the <a href="/apps/" style="color:var(--g);text-decoration:underline">app pricing index</a>, each with its own
-    source link and date.
+    Entry row: read on each vendor's own pricing page. The "practical floor" row is judgement and third-party
+    reporting, not a vendor figure. Each entry price is also in the
+    <a href="/apps/" style="color:var(--g);text-decoration:underline">app pricing index</a> with its source link.
   </p>
 
   <!-- ── CAPI SHIELD ────────────────────────────────────────────── -->
@@ -710,18 +773,77 @@ const schema = {
     </details>
   ))}
 
-  <p class="text-gray-300" style="margin-top:2.5rem;font-size:.9rem;border-top:1px solid var(--border);padding-top:1rem;">
-    <strong class="text-white">Verification status:</strong> figures on this page marked <em>reported</em> come from
-    third-party comparison sources and have not yet been confirmed against the vendors' own pricing pages. They are
-    published as reported claims, not as fact. Three entry prices (recorded in the
-    <a href="/apps/" style="color:var(--g);text-decoration:underline">app pricing index</a> with a verification date
-    and a source link) were read from the vendor's own page and are the only figures on this page carried into
-    structured data. Three price conflicts remain open and are set out above rather than resolved silently. Our
-    sourcing standard is described in <a href="/how-we-test/" style="color:var(--g);text-decoration:underline">how we
-    test</a>. Vendors change prices without notice: re-check before making a purchasing decision.
+  <PriceSources ids={['elevar', 'northbeam', 'analyzify']} />
+  <p class="text-gray-300" style="margin-top:1rem;font-size:.9rem;">
+    <strong class="text-white">How these figures were checked:</strong> prices come from each vendor's own pricing
+    page, read on the date above, and only those prices are carried into structured data. Triple Whale's page shows no
+    paid price, so this page gives none. Figures that are not prices (install counts, typical customer size) come from
+    third parties and are marked <em>reported</em> where they appear. Our sourcing standard is in
+    <a href="/how-we-test/" style="color:var(--g);text-decoration:underline">how we test</a>.
   </p>
 
   <KeyFacts />
   <AuthorCard />
 </main>
+
+<script>
+  // The quote tool. Elevar's plan is the first whose order allowance and
+  // destination count both cover the inputs; past Premium it is Elite, which
+  // the vendor prices "from". No network request; the plan list is the one the
+  // page rendered from priceSources.ts.
+  const root = document.getElementById('quote');
+  if (root) {
+    const plans: { plan: string; price: number; maxOrders: number; maxDest: number }[] = JSON.parse(root.dataset.elevar || '[]');
+    const elite = Number(root.dataset.elite);
+    const max = Number(root.dataset.max);
+    const orders = root.querySelector<HTMLInputElement>('input[name="orders"]')!;
+    const dest = root.querySelector<HTMLInputElement>('input[name="dest"]')!;
+    const v = root.querySelector('[data-elevar-v]')!;
+    const bar = root.querySelector<HTMLElement>('[data-elevar-bar]')!;
+    const why = root.querySelector('[data-elevar-why]')!;
+    const usd = (n: number) => '$' + n.toLocaleString('en-US');
+    const update = () => {
+      const o = Math.max(0, Math.floor(Number(orders.value) || 0));
+      const d = Math.max(1, Math.floor(Number(dest.value) || 1));
+      const p = plans.find((x) => o <= x.maxOrders && d <= x.maxDest);
+      const price = p ? p.price : elite;
+      v.textContent = `${p ? '' : 'From '}${usd(price)}/mo`;
+      bar.style.width = `${Math.max(3, Math.round((price / max) * 100))}%`;
+      why.textContent = p
+        ? `${p.plan} plan: the first that covers ${o.toLocaleString('en-US')} orders and ${d} destination${d === 1 ? '' : 's'}.`
+        : `Elite: past Premium's ${plans[plans.length - 1].maxOrders.toLocaleString('en-US')} orders or ${plans[plans.length - 1].maxDest} destinations, Elevar prices from ${usd(elite)} on a quote.`;
+    };
+    orders.addEventListener('input', update);
+    dest.addEventListener('input', update);
+  }
+</script>
+
+<style>
+  .aq { margin: 26px 0 8px; padding: 20px 22px; border: 1px solid rgba(52, 211, 119, .35); border-radius: 14px; background: linear-gradient(180deg, #0d1510 0%, #0a0d0b 100%); }
+  .aq-h { margin: 0 0 14px; font-size: 19px; line-height: 1.3; color: #fff; font-weight: 700; }
+  .aq-in { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-bottom: 16px; align-items: end; }
+  .aq-f { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #b6c0ba; }
+  .aq-f input { font: inherit; font-size: 16px; color: #fff; background: #050706; border: 1px solid #2f3733; border-radius: 8px; padding: 9px 10px; width: 100%; }
+  .aq-f input:focus-visible { outline: 2px solid #34d377; outline-offset: 2px; }
+  .aq-bars { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  .aq-bars li { margin: 0; }
+  .aq-bars li::before { content: none !important; }
+  .aq-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .aq-n { font-size: 15px; font-weight: 700; color: #fff; }
+  .aq-m { font-weight: 400; font-size: 13px; color: #93a09a; margin-left: 4px; }
+  .aq-v { font-family: var(--mono, ui-monospace, monospace); font-size: 15px; color: #fff; white-space: nowrap; }
+  .aq-track { height: 10px; margin-top: 6px; border-radius: 999px; background: #151a17; overflow: hidden; }
+  .aq-none { background: repeating-linear-gradient(90deg, #151a17 0 8px, #0b0e0c 8px 14px); }
+  .aq-bar { display: block; height: 100%; border-radius: 999px; background: #2f7a54; transition: width .25s ease; }
+  .aq-live { background: #34d377; }
+  .aq-q { background: #4b5a52; }
+  .aq-why { margin: 6px 0 0; font-size: 14px; line-height: 1.5; color: #93a09a; }
+  .aq-foot { margin: 14px 0 0; font-size: 13px; line-height: 1.6; color: #93a09a; }
+  @media (max-width: 640px) {
+    .aq { padding: 16px 14px; }
+    .aq-row { flex-wrap: wrap; }
+    .aq-m { display: block; margin-left: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { .aq-bar { transition: none; } }
+</style>
 </Base>

@@ -1,0 +1,126 @@
+---
+// "Which channels can my store use?" for the agentic guide.
+//
+// The answer a crawler and a no-JS reader see is rendered here, at build
+// time, for the case most of this site's readers are in (a UK store selling
+// to the US). The browser re-runs the same function when the inputs change.
+// Rules come from src/data/agentic-storefronts-channels.json through
+// src/utils/agenticEligibility.ts; tests/agentic-eligibility.test.js pins
+// them to the FAQ's own sentence. No network request is made.
+import CHANNELS from '../data/agentic-storefronts-channels.json';
+import { parseRules, checkEligibility, MARKETS } from '../utils/agenticEligibility';
+
+interface Props { verified: string }
+const { verified } = Astro.props;
+
+const rules = parseRules(CHANNELS.channels);
+const STORES = ['United States', 'Canada', 'Mexico', 'United Kingdom', 'Australia', 'Another country'];
+const DEFAULT_STORE = 'United Kingdom';
+const DEFAULT_SELLS = ['United States'];
+const verdicts = checkEligibility(rules, DEFAULT_STORE, DEFAULT_SELLS);
+const count = verdicts.filter((v) => v.eligible).length;
+---
+<section class="ag-check" id="checker" aria-labelledby="ag-check-h" data-rules={JSON.stringify(rules)}>
+  <h2 id="ag-check-h" class="ag-h">Which channels can your store use?</h2>
+  <div class="ag-inputs">
+    <label class="ag-field">
+      <span class="ag-lbl">Your store is based in</span>
+      <select name="store" class="ag-select">
+        {STORES.map((s) => <option value={s} selected={s === DEFAULT_STORE}>{s}</option>)}
+      </select>
+    </label>
+    <fieldset class="ag-field ag-sells">
+      <legend class="ag-lbl">You sell to customers in</legend>
+      <div class="ag-chips">
+        {MARKETS.map((m) => (
+          <label class="ag-chip"><input type="checkbox" name="sells" value={m} checked={DEFAULT_SELLS.includes(m)} /> <span>{m}</span></label>
+        ))}
+      </div>
+    </fieldset>
+  </div>
+
+  <p class="ag-sum" aria-live="polite"><strong data-count>{count} of {verdicts.length}</strong> <span data-sum-tail>channels are open to a store based in the United Kingdom.</span></p>
+  <ul class="ag-list" data-list>
+    {verdicts.map((v) => (
+      <li class={v.eligible ? 'ag-row ok' : 'ag-row no'} data-id={v.id}>
+        <span class="ag-mark" aria-hidden="true">{v.eligible ? '✓' : '✕'}</span>
+        <span class="ag-body">
+          <span class="ag-name">{v.name}</span>
+          <span class="ag-state">{v.eligible ? 'Eligible' : 'Not eligible'}<span class="ag-dot" aria-hidden="true"> · </span>{v.checkout}</span>
+          <span class="ag-reason">{v.reason}</span>
+        </span>
+        <a class="ag-src" href={v.source} target="_blank" rel="noopener" aria-label={`Shopify's page for ${v.name}`}>Shopify&nbsp;&#8599;</a>
+      </li>
+    ))}
+  </ul>
+  <p class="ag-foot">Rules from Shopify&rsquo;s help pages, read {verified}. Google is still rolling out, so a store that qualifies may not see it yet. Perplexity is not a Shopify channel; <a href="#matrix">see the full matrix</a>.</p>
+</section>
+
+<script>
+  import { checkEligibility, type ChannelRule } from '../utils/agenticEligibility';
+  const root = document.getElementById('checker');
+  if (root) {
+    const rules: ChannelRule[] = JSON.parse(root.dataset.rules || '[]');
+    const store = root.querySelector<HTMLSelectElement>('select[name="store"]')!;
+    const boxes = [...root.querySelectorAll<HTMLInputElement>('input[name="sells"]')];
+    const list = root.querySelector('[data-list]')!;
+    const countEl = root.querySelector('[data-count]')!;
+    const tail = root.querySelector('[data-sum-tail]')!;
+    const update = () => {
+      const sells = boxes.filter((b) => b.checked).map((b) => b.value);
+      const vs = checkEligibility(rules, store.value, sells);
+      for (const v of vs) {
+        const li = list.querySelector<HTMLElement>(`[data-id="${v.id}"]`);
+        if (!li) continue;
+        li.className = v.eligible ? 'ag-row ok' : 'ag-row no';
+        li.querySelector('.ag-mark')!.textContent = v.eligible ? '✓' : '✕';
+        const state = li.querySelector('.ag-state')!;
+        state.firstChild!.textContent = v.eligible ? 'Eligible' : 'Not eligible';
+        state.lastChild!.textContent = v.checkout;
+        li.querySelector('.ag-reason')!.textContent = v.reason;
+      }
+      countEl.textContent = `${vs.filter((v) => v.eligible).length} of ${vs.length}`;
+      const where = store.value === 'Another country' ? 'in another country' : `in ${store.value === 'United States' || store.value === 'United Kingdom' ? 'the ' : ''}${store.value}`;
+      tail.textContent = `channels are open to a store based ${where}.`;
+    };
+    store.addEventListener('change', update);
+    boxes.forEach((b) => b.addEventListener('change', update));
+  }
+</script>
+
+<style>
+  .ag-check { margin: 22px 0 28px; padding: 20px 22px; border: 1px solid rgba(52, 211, 119, .35); border-radius: 14px; background: linear-gradient(180deg, #0d1510 0%, #0a0d0b 100%); }
+  .ag-h { margin: 0 0 14px; font-size: 19px; line-height: 1.3; color: #fff; }
+  .ag-inputs { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 14px 20px; align-items: end; }
+  .ag-field { display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; border: 0; min-width: 0; }
+  .ag-lbl { font-size: 13px; color: #b6c0ba; padding: 0; }
+  .ag-select { width: 100%; font: inherit; font-size: 15px; color: #fff; background: #050706; border: 1px solid #2f3733; border-radius: 8px; padding: 9px 10px; }
+  .ag-sells .ag-lbl { float: left; width: 100%; margin: 0; }
+  .ag-chips { clear: both; display: flex; flex-wrap: wrap; gap: 8px; }
+  .ag-chip { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; color: #fff; border: 1px solid #2f3733; border-radius: 999px; padding: 7px 12px; cursor: pointer; background: #050706; }
+  .ag-chip:has(input:checked) { border-color: #34d377; background: rgba(52, 211, 119, .1); }
+  .ag-chip input { accent-color: #34d377; width: 16px; height: 16px; margin: 0; }
+  .ag-select:focus-visible, .ag-chip:focus-within { outline: 2px solid #34d377; outline-offset: 2px; }
+  .ag-sum { margin: 16px 0 8px; font-size: 15px; color: #b6c0ba; }
+  .ag-sum strong { color: #34d377; }
+  .ag-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .ag-row { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 10px; align-items: start; padding: 11px 12px; border-radius: 10px; border: 1px solid #1f2622; background: #070908; }
+  .ag-row.ok { border-color: rgba(52, 211, 119, .3); }
+  .ag-mark { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; font-size: 13px; font-weight: 700; }
+  .ag-row.ok .ag-mark { background: rgba(52, 211, 119, .16); color: #34d377; }
+  .ag-row.no .ag-mark { background: rgba(248, 113, 113, .14); color: #fca5a5; }
+  .ag-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .ag-name { font-size: 15px; font-weight: 700; color: #fff; }
+  .ag-state { font-size: 13px; color: #b6c0ba; }
+  .ag-row.no .ag-name { color: #b6c0ba; }
+  .ag-reason { font-size: 14px; line-height: 1.5; color: #93a09a; }
+  .ag-src { font-size: 13px; color: #34d377; white-space: nowrap; padding-top: 2px; }
+  .ag-foot { margin: 12px 0 0; font-size: 13px; line-height: 1.6; color: #93a09a; }
+  .ag-foot a { color: #34d377; text-decoration: underline; }
+  @media (max-width: 640px) {
+    .ag-check { padding: 16px 14px; }
+    .ag-inputs { grid-template-columns: minmax(0, 1fr); }
+    .ag-row { grid-template-columns: 24px minmax(0, 1fr); }
+    .ag-src { grid-column: 2; padding-top: 0; }
+  }
+</style>

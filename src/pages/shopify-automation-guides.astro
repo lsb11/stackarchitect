@@ -218,6 +218,7 @@ const schemaSoftwareApp = {
   "url": `${SITE_URL}/capi-shield/`
 };
 import TableOfContents from '../components/TableOfContents.astro';
+import ToolGallery from '../components/ToolGallery.astro';
 
 const tocHeadings = [
   {
@@ -321,22 +322,31 @@ const tocHeadings = [
     <div class="gp-stats" role="list" aria-label="Key statistics">
       <div class="gp-stat" role="listitem"><span class="gs-val">{GUIDE_COUNT}</span><span class="gs-label">Live guides</span></div>
       <div class="gp-stat" role="listitem"><span class="gs-val">$0</span><span class="gs-label">Monthly cost</span></div>
-      <div class="gp-stat" role="listitem"><span class="gs-val">$0</span><span class="gs-label">Monthly cost</span></div>
       <div class="gp-stat" role="listitem"><span class="gs-val">$0</span><span class="gs-label">Cost to implement</span></div>
       <div class="gp-stat" role="listitem"><span class="gs-val">10</span><span class="gs-label">Topic clusters</span></div>
     </div>
-    <div class="gp-hero-cta">
-      <a href="#roas-fix" class="btn-red btn-lg">Fix Meta ROAS →</a>
-      <a href="/shopify-google-ads-conversion-tracking/" class="btn-outline btn-lg">Fix Google Ads →</a>
-      <a href="#ai" class="btn-g btn-lg">AI Tools Guide →</a>
-      <a href="#support" class="btn-support btn-lg">Free Customer Support →</a>
-      <a href="#make" class="btn-make btn-lg">Make.com Guide →</a>
-      <a href="#tracking" class="btn-outline btn-lg">Fix Tracking →</a>
-      <a href="#inventory" class="btn-outline btn-lg">Replace Stocky →</a>
-      <a href="#email" class="btn-outline btn-lg">Replace Klaviyo →</a>
-      <a href="#cro" class="btn-outline btn-lg">CRO Free →</a>
-    </div>
+    <!-- Was nine full-width buttons in five colours (20 Oct 2026). One
+         style, a two-column grid: the topics are peers, so none is louder. -->
+    <nav class="gp-topics" aria-label="Guide topics">
+      <a href="#roas-fix">Fix Meta ROAS <span aria-hidden="true">→</span></a>
+      <a href="/shopify-google-ads-conversion-tracking/">Fix Google Ads <span aria-hidden="true">→</span></a>
+      <a href="#tracking">Server-side tracking <span aria-hidden="true">→</span></a>
+      <a href="#make">Make.com setup <span aria-hidden="true">→</span></a>
+      <a href="#inventory">Replace Stocky <span aria-hidden="true">→</span></a>
+      <a href="#email">Replace Klaviyo <span aria-hidden="true">→</span></a>
+      <a href="#support">Customer support <span aria-hidden="true">→</span></a>
+      <a href="#ai">AI tools <span aria-hidden="true">→</span></a>
+      <a href="#cro">Conversion rate <span aria-hidden="true">→</span></a>
+      <a href="/tools/">All free tools <span aria-hidden="true">→</span></a>
+    </nav>
   </section>
+
+  <ToolGallery
+    headingId="hub-tools-h"
+    heading="Measure first: the free tools these guides use"
+    intro="Every guide below sends you to one of these at the point you need a number. Each screenshot is the tool on its own example inputs."
+    ids={['attribution-gap-example', 'capi-validator-example', 'emq-checker-example', 'agentic-checker-example', 'stocky-risk-example', 'app-stack-auditor-example']}
+  />
 
   <!-- ── DIRECT ANSWER BLOCK — AI citation extraction ── -->
   <div style="background:rgba(52,211,119,.04);border-top:1px solid rgba(52,211,119,.15);border-bottom:1px solid rgba(52,211,119,.15);padding:16px 24px;" role="note" aria-label="Quick answer">
@@ -1191,6 +1201,12 @@ document.getElementById('guides-submit')?.addEventListener('click', function () 
     }
     .btn-outline:hover { border-color: var(--g); color: var(--g); }
     .btn-outline.btn-lg { font-size: 14px; padding: 12px 22px; min-height: 46px; }
+    .gp-topics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; max-width: 760px; margin: 26px auto 0; }
+    .gp-topics a { text-align: left; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 13px 16px; min-height: 48px; border-radius: 10px; border: 1px solid #262c29; background: #0a0d0b; color: #e6ece8; font-size: 15px; font-weight: 600; text-decoration: none; transition: border-color .15s, color .15s, background .15s; }
+    .gp-topics a span { color: #34d377; }
+    .gp-topics a:hover, .gp-topics a:focus-visible { border-color: #34d377; background: rgba(52,211,119,.06); color: #fff; }
+    @media (max-width: 760px) { .gp-topics { grid-template-columns: repeat(2, minmax(0, 1fr)); } .gp-topics a { font-size: 14px; padding: 12px 13px; } }
+    @media (prefers-reduced-motion: reduce) { .gp-topics a { transition: none; } }
     .btn-red {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
       font-family: var(--sans); font-size: 13px; font-weight: 700; text-decoration: none;

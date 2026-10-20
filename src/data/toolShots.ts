@@ -5,7 +5,7 @@
 // also records each image's text in scripts/og/og-images.json. Re-run that
 // script after changing a tool; never edit the images by hand. `taken` is the
 // date of that run.
-export const TOOL_SHOTS_TAKEN = '2026-10-19';
+export const TOOL_SHOTS_TAKEN = '2026-10-20';
 
 export interface ToolShot { id: string; src: string; w: number; h: number; route: string; name: string; alt: string }
 
@@ -16,4 +16,7 @@ export const TOOL_SHOTS: Record<string, ToolShot> = {
   'emq-checker-example': {"id": "emq-checker-example", "src": "/screens/emq-checker-example.webp", "w": 1600, "h": 2058, "route": "/meta-emq-score-estimator/", "name": "Meta EMQ match-key checker", "alt": "The EMQ match-key checker with only IP address, user agent and the Meta Pixel ticked, scoring the signals sent as low and listing which keys to add first."},
   'app-stack-auditor-example': {"id": "app-stack-auditor-example", "src": "/screens/app-stack-auditor-example.webp", "w": 1600, "h": 2765, "route": "/shopify-app-stack-kill-or-keep-auditor/", "name": "App stack kill-or-keep auditor", "alt": "The app stack auditor on its worked example: the apps ticked, their monthly total, and a kill list naming the free replacement for each category."},
   'stocky-risk-example': {"id": "stocky-risk-example", "src": "/screens/stocky-risk-example.webp", "w": 1600, "h": 1913, "route": "/stocky-migration-risk-scorer/", "name": "Stocky migration risk scorer", "alt": "The Stocky migration risk scorer on a mid-sized example store: a score of 42 out of 100, export now as the recommended move, and the reasoning behind it."},
+  'app-cost-example': {"id": "app-cost-example", "src": "/screens/app-cost-example.webp", "w": 1600, "h": 850, "route": "/shopify-app-cost-calculator/", "name": "Shopify app cost calculator", "alt": "The app cost calculator on its typical-store preset: 450 a month on marketing apps, 200 on inventory and 150 on tracking across 12 apps, an $800 monthly spend, and $8,160 a year freed if 85% of it is replaced."},
+  'agentic-checker-example': {"id": "agentic-checker-example", "src": "/screens/agentic-checker-example.webp", "w": 1600, "h": 1236, "route": "/blog/shopify-agentic-storefronts-setup-guide-2026/#checker", "name": "Agentic Storefronts eligibility checker", "alt": "The Agentic Storefronts eligibility checker for a UK-based store selling to the United States: ChatGPT, Microsoft Copilot and Meta eligible, Google AI Mode and Gemini not eligible because the store must be based in the United States."},
+  'attribution-quote-example': {"id": "attribution-quote-example", "src": "/screens/attribution-quote-example.webp", "w": 1600, "h": 1052, "route": "/shopify-attribution-tools-compared/#quote", "name": "attribution tool cost comparison", "alt": "The attribution tool cost comparison at 5,000 orders a month and 4 destinations: Elevar $650 a month on its Advanced plan, Analyzify $145 a month, Northbeam from $1,500 a month, and Triple Whale quote only."},
 };

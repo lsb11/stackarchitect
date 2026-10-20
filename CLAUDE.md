@@ -1174,6 +1174,67 @@ Corrections made in the same pass, do not reintroduce:
   with no "if it doesn't save you 2 hours" condition.
 - Stocky Swap is an order log, everywhere, including `products.ts`.
 
+### Retention and first-screen visuals (20 Oct 2026)
+
+GA4 showed readers leaving the agentic guide after ~1s and the attribution
+comparison and server-side tracking guide after ~3s. Measured with a
+Playwright pass over all 51 sitemap pages: 9 had no image, diagram, table or
+tool at all, and on 16 more the first one sat 4 to 28 phone screens down.
+- **Agentic guide:** `<AgenticChecker />` answers "which channels can my
+  store use?" under the answer. Rules are parsed from the channel JSON by
+  `src/utils/agenticEligibility.ts`, which throws on wording it cannot read;
+  `tests/agentic-eligibility.test.js` pins it to the FAQ's UK sentence.
+- **Attribution comparison:** a "What would your store pay?" tool on the first
+  screen, from the price ledger only (the frontmatter throws if a constant is
+  not in `priceSources.ts`). The page had been labelling the ledger's own
+  vendor-read figures "third-party reported, pending verification" and listing
+  three "open conflicts" the ledger had settled; it now uses `READ_DATE` and
+  `<PriceSources>` like every other price page. "24 to one" was arithmetic
+  from retired figures; the published spread is $109 to $1,500. Do not put the
+  old labels back. Vendor pages re-read 20 Oct by a fetcher matched the ledger;
+  the same read showed an Elevar **Base $0 plan (100 orders)** that is not in
+  the ledger: a human should read it before it is published.
+- **Server-side tracking guide:** the architecture diagram is in the hero. On
+  phones a portrait version
+  (`public/diagrams/shopify-server-side-tracking-flow-2026-portrait.svg`, same
+  words, no label under 19 units) is served by `<picture>`, because the
+  1200×630 one rendered its labels at ~4px.
+- **Blog layout:** contents are rendered at build time from the post's H2s
+  (they were injected by script after load). Posts whose H2s are "Step N:" or
+  "Stage N:" get them drawn as a numbered path. The `POST_SHOT` screenshot
+  moved from after the article to the first screen as `<ToolShot compact />`.
+- `<JumpTo />` is a server-rendered "On this page" strip; chips wrap, so it
+  cannot widen a phone layout.
+
+**Second pass, same day: phone layout, affiliate placement, screenshots.**
+- **The tracking guide's diagram is HTML** (`<TrackingFlow />`): every label
+  is text at reading size, across on desktop, down on a phone. The SVG stays
+  as the schema image only. Its phone hero is no longer a card inside a card.
+- **Phone reading rule** (end of `global.css`): under 640px, text blocks and
+  headings in `<main>` read from the left. Twelve pages had centred their
+  opening paragraphs. `.hero-proof` / `.expert-byline` pills become a plain
+  line on a phone (the dot had sat alone above wrapped text).
+- **Setup pages put the one affiliate button in the step that needs it.**
+  `<StepSignup source=…><Disclosure text=… /></StepSignup>` sits inside
+  step 1 on CAPI Shield, TikTok, P&L, Sheets, Autocrat and the ultimate guide.
+  Step 1 had said "Sign up for Make.com free" with no link while the button
+  sat 2 to 9 phone screens later. Source tags are unchanged. The Disclosure is
+  passed in as a child because `claims-guard` requires `<Disclosure` in the
+  page source. Posts whose readers already have a Make.com account (the
+  reliability guide, the BFCM checklist) deliberately carry no link.
+- **The ultimate guide's CAPI steps said** "confirming deduplication is
+  working" and "most stores see EMQ rise from Fair to Good within 2 weeks".
+  Both broke rules above; both are rewritten.
+- **Screenshots:** `agentic-checker-example`, `attribution-quote-example`
+  added to the capture script, and `app-cost-example` (captured, never
+  registered) is now in `toolShots.ts`. `<ToolGallery ids=[…] />` shows tools
+  as screenshot cards (a swipe row on phones) on the homepage and the guides
+  hub; the homepage's old text cards claimed the EMQ tool "quantifies ad spend
+  lost". Nine pages that linked a tool without showing it now show the one
+  most relevant to them. `usedBy` in `og-images.json` is regenerated from
+  `dist/`.
+- The guides hub's nine multicoloured buttons are a uniform topic grid.
+
 ### Highest-leverage open work
 
 1. Get the iOS Attribution Gap Benchmark to N ≥ 10 real submissions so it

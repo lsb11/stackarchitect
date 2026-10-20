@@ -18,6 +18,8 @@ export const SHOTS = [
   { file: 'app-stack-auditor-example', route: '/shopify-app-stack-kill-or-keep-auditor/', steps: ['.calc-btn'], el: '.calc-card', until: '#app-result' },
   { file: 'stocky-risk-example', route: '/stocky-migration-risk-scorer/', steps: ['.calc-btn'], el: '.calc-card', until: '#sr-result' },
   { file: 'app-cost-example', route: '/shopify-app-cost-calculator/', steps: [], el: '#sa-calculator .calc-card' },
+  { file: 'agentic-checker-example', route: '/blog/shopify-agentic-storefronts-setup-guide-2026/', steps: [], el: '#checker', pad: 0 },
+  { file: 'attribution-quote-example', route: '/shopify-attribution-tools-compared/', steps: [], el: '#quote', pad: 0 },
 ];
 
 const browser = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
@@ -49,7 +51,7 @@ for (const s of SHOTS) {
       return out.join('\n');
     }, [s.el, s.until]);
     text = text.split('\n').map((l) => l.trim()).filter(Boolean);
-  } else if (s.pad) {
+  } else if (s.pad !== undefined) {
     // An element with no padding of its own gets a margin of the page around it.
     await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
     await page.waitForTimeout(150);

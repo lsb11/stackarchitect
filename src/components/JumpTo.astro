@@ -1,0 +1,30 @@
+---
+// "On this page": the sections a searcher may have come for, as plain links,
+// on the first screen. Rendered at build time so crawlers read the anchors
+// (they are what Google shows as "Jump to" links) and nothing shifts when a
+// script runs. Chips wrap, so it can never widen a phone layout.
+interface Props {
+  items: { href: string; label: string }[];
+  label?: string;
+}
+const { items, label = 'On this page' } = Astro.props;
+---
+{items.length > 0 && (
+  <nav class="sa-jump" aria-label={label}>
+    <span class="sa-jump-l">{label}</span>
+    <ul>
+      {items.map((i) => <li><a href={i.href}>{i.label}</a></li>)}
+    </ul>
+  </nav>
+)}
+
+<style>
+  .sa-jump { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 18px 0 22px; text-align: left; }
+  .sa-jump-l { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #93a09a; margin-right: 2px; }
+  .sa-jump ul { display: contents; list-style: none; margin: 0; padding: 0; }
+  .sa-jump li { margin: 0; padding: 0; }
+  .sa-jump li::before { content: none !important; }
+  .sa-jump a { display: inline-block; font-size: 14px; line-height: 1.3; color: #e6ece8 !important; text-decoration: none !important; border: 1px solid #2f3733; border-radius: 999px; padding: 6px 12px; background: #0a0d0b; transition: border-color .15s, color .15s; }
+  .sa-jump a:hover, .sa-jump a:focus-visible { border-color: #34d377; color: #34d377 !important; }
+  @media (prefers-reduced-motion: reduce) { .sa-jump a { transition: none; } }
+</style>

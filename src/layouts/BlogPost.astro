@@ -8,6 +8,8 @@ const POST_SHOT: Record<string, string> = {
   'meta-one-click-conversions-api-shopify': 'capi-validator-example',
   'shopify-stocky-data-export-before-shutdown': 'stocky-risk-example',
   'when-to-upgrade-free-make-google-workspace': 'make-vs-zapier-example',
+  'shopify-ai-playbook-2026': 'agentic-checker-example',
+  'the-ultimate-guide-to-shopify-inventory-management': 'stocky-risk-example',
 };
 import KeyFacts from '../components/KeyFacts.astro';
 import Base from './Base.astro';
@@ -21,9 +23,26 @@ import type { CollectionEntry } from 'astro:content';
 
 interface Props {
   entry: CollectionEntry<'blog'>;
+  headings?: { depth: number; slug: string; text: string }[];
 }
 
-const { entry } = Astro.props;
+const { entry, headings = [] } = Astro.props;
+// Contents, rendered at build time from the post's own H2s (20 Oct 2026).
+// It used to be built by a script after load: crawlers that do not run it
+// saw no section links, and the list arrived after the first paint, pushing
+// the article down. Same three-heading threshold as before.
+const toc = headings.filter((h) => h.depth === 2);
+// A post whose sections are a numbered procedure ("Step 2: ...", "Stage 4:
+// ...") gets them drawn as a path, the one visual its own structure supplies.
+// The label is the heading's own words after the number; nothing is added.
+const STEP_RE = /^(Step|Stage)\s+(\d+)[:.]\s*(.+)$/;
+const steps = toc.map((h) => ({ h, m: STEP_RE.exec(h.text) })).filter((x) => x.m);
+const stepWord = steps[0]?.m?.[1] ?? 'Step';
+const isPath = steps.length >= 3;
+// Past five steps a row of columns gets too narrow to read; stack them.
+const pathClass = steps.length > 5 ? 'sa-path sa-path-v' : 'sa-path';
+const shortLabel = (t: string) => t.replace(/\s*\([^)]*\)\s*$/, '') || t;
+const others = isPath ? toc.filter((h) => !STEP_RE.test(h.text)) : toc;
 const {
   title,
   heading,
@@ -176,8 +195,32 @@ const pageTitle = (title + SUFFIX).length <= 60 ? title + SUFFIX : title;
 
     {entry.id === 'shopify-stocky-data-export-before-shutdown' && <StockyTimeline />}
 
-    <!-- Table of contents — injected by inline script if ≥3 H2s -->
-    <div id="toc-container"></div>
+    {POST_SHOT[entry.id] && <ToolShot id={POST_SHOT[entry.id]} compact />}
+
+    {isPath && (
+      <nav class={pathClass} aria-label={`${stepWord}s in this guide`}>
+        <div class="sa-path-l">{steps.length} {stepWord.toLowerCase()}s in this guide</div>
+        <ol>
+          {steps.map(({ h, m }) => (
+            <li><a href={`#${h.slug}`}><span class="sa-path-n" aria-hidden="true">{m![2]}</span><span class="sa-path-t"><span class="sa-sr">{stepWord} {m![2]}: </span>{shortLabel(m![3])}</span></a></li>
+          ))}
+        </ol>
+        {others.length > 0 && (
+          <p class="sa-path-more">Also here: {others.map((h, i) => <><a href={`#${h.slug}`}>{h.text}</a>{i < others.length - 1 ? ' · ' : ''}</>)}</p>
+        )}
+      </nav>
+    )}
+
+    {!isPath && toc.length >= 3 && (
+      <nav class="sa-toc border border-[#222825] bg-[#0c0f0d] p-4 mb-8 font-mono" aria-label="Table of contents">
+        <div class="text-xs text-[#93a09a] uppercase tracking-widest mb-3">In this guide</div>
+        <ul class="space-y-1">
+          {toc.map((h) => (
+            <li><a href={`#${h.slug}`} class="sa-toc-a text-sm text-[#b6c0ba] hover:text-[#34d377] transition-colors flex items-baseline gap-2 py-0.5"><span class="text-[#4b5a52]" aria-hidden="true">→</span> {h.text}</a></li>
+          ))}
+        </ul>
+      </nav>
+    )}
 
     {hasAffiliateLink && <Disclosure />}
 
@@ -185,8 +228,6 @@ const pageTitle = (title + SUFFIX).length <= 60 ? title + SUFFIX : title;
     <article id="post-body" class="sa-prose">
       <slot />
     </article>
-
-    {POST_SHOT[entry.id] && <ToolShot id={POST_SHOT[entry.id]} />}
 
     {cloak && (
       <div class="sa-post-aff">
@@ -243,6 +284,33 @@ const pageTitle = (title + SUFFIX).length <= 60 ? title + SUFFIX : title;
     margin: 32px auto 8px;
   }
 
+  /* Step path: numbered nodes on a line, vertical on a phone. */
+  .sa-path { margin: 0 0 30px; padding: 18px 18px 14px; border: 1px solid #222825; border-radius: 12px; background: #0c0f0d; }
+  .sa-path-l { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #93a09a; margin-bottom: 14px; }
+  .sa-path ol { list-style: none; margin: 0; padding: 0; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 8px; position: relative; }
+  .sa-path ol::before { content: ''; position: absolute; left: 18px; right: 18px; top: 17px; height: 2px; background: linear-gradient(90deg, #34d377, #1f5c3c); }
+  .sa-path li { margin: 0; padding: 0; position: relative; }
+  .sa-path li::before { content: none !important; }
+  .sa-path a { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; text-decoration: none !important; color: #e6ece8 !important; }
+  .sa-path-n { flex: none; display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: #0c0f0d; border: 2px solid #34d377; color: #34d377; font-weight: 700; font-size: 15px; position: relative; transition: background .15s, color .15s; }
+  .sa-path a:hover .sa-path-n, .sa-path a:focus-visible .sa-path-n { background: #34d377; color: #04130a; }
+  .sa-path-t { font-size: 14px; line-height: 1.35; color: #e6ece8; }
+  .sa-path a:hover .sa-path-t { color: #34d377; }
+  .sa-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .sa-path-more { margin: 14px 0 0; font-size: 13px; line-height: 1.7; color: #93a09a; }
+  .sa-path-more a { color: #b6c0ba !important; text-decoration: underline !important; }
+  .sa-path-v ol { grid-auto-flow: row; gap: 10px; }
+  .sa-path-v ol::before { left: 17px; right: auto; top: 18px; bottom: 18px; width: 2px; height: auto; background: linear-gradient(180deg, #34d377, #1f5c3c); }
+  .sa-path-v a { flex-direction: row; align-items: center; gap: 12px; }
+  .sa-path-v .sa-path-t { font-size: 15px; }
+  @media (max-width: 760px) {
+    .sa-path ol { grid-auto-flow: row; gap: 10px; }
+    .sa-path ol::before { left: 17px; right: auto; top: 18px; bottom: 18px; width: 2px; height: auto; background: linear-gradient(180deg, #34d377, #1f5c3c); }
+    .sa-path a { flex-direction: row; align-items: center; gap: 12px; }
+    .sa-path-t { font-size: 15px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .sa-path-n { transition: none; } }
+
   .sa-answer {
     margin: 0 0 28px;
     padding: 18px 20px;
@@ -267,50 +335,5 @@ const pageTitle = (title + SUFFIX).length <= 60 ? title + SUFFIX : title;
       const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
       bar.style.width = `${Math.min(pct, 100)}%`;
     }, { passive: true });
-  }
-</script>
-
-<!-- Table of contents script -->
-<script>
-  const body = document.getElementById('post-body');
-  const tocContainer = document.getElementById('toc-container');
-  if (body && tocContainer) {
-    const h2s = Array.from(body.querySelectorAll('h2'));
-    if (h2s.length >= 3) {
-      // Ensure each H2 has an id
-      h2s.forEach((h, i) => {
-        if (!h.id) {
-          h.id = `section-${i}-${h.textContent?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') ?? i}`;
-        }
-      });
-
-      const toc = document.createElement('nav');
-      toc.setAttribute('aria-label', 'Table of contents');
-      // sa-toc carries the layout (two columns on wide viewports). A ten-item
-      // single-column list pushed the first line of the article below 1,000px,
-      // so a reader arriving from search met a navigation block instead of a
-      // sentence. Halving its height puts prose above the fold.
-      toc.className = 'sa-toc border border-[#222825] bg-[#0c0f0d] p-4 mb-8 font-mono';
-
-      const label = document.createElement('div');
-      label.className = 'text-xs text-[#93a09a] uppercase tracking-widest mb-3';
-      label.textContent = 'CONTENTS //';
-      toc.appendChild(label);
-
-      const ul = document.createElement('ul');
-      ul.className = 'space-y-1';
-      h2s.forEach((h) => {
-        const li = document.createElement('li');
-        const a = document.createElement('a');
-        a.href = `#${h.id}`;
-        a.textContent = h.textContent ?? '';
-        a.className = 'text-xs text-gray-400 hover:text-[#34d377] transition-colors flex items-center gap-2 py-0.5';
-        a.innerHTML = `<span class="text-[#262c29]">→</span> ${a.textContent}`;
-        li.appendChild(a);
-        ul.appendChild(li);
-      });
-      toc.appendChild(ul);
-      tocContainer.appendChild(toc);
-    }
   }
 </script>
