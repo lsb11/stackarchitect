@@ -1174,6 +1174,38 @@ Corrections made in the same pass, do not reintroduce:
   with no "if it doesn't save you 2 hours" condition.
 - Stocky Swap is an order log, everywhere, including `products.ts`.
 
+### Retention and first-screen visuals (20 Oct 2026)
+
+GA4 showed readers leaving the agentic guide after ~1s and the attribution
+comparison and server-side tracking guide after ~3s. Measured with a
+Playwright pass over all 51 sitemap pages: 9 had no image, diagram, table or
+tool at all, and on 16 more the first one sat 4 to 28 phone screens down.
+- **Agentic guide:** `<AgenticChecker />` answers "which channels can my
+  store use?" under the answer. Rules are parsed from the channel JSON by
+  `src/utils/agenticEligibility.ts`, which throws on wording it cannot read;
+  `tests/agentic-eligibility.test.js` pins it to the FAQ's UK sentence.
+- **Attribution comparison:** a "What would your store pay?" tool on the first
+  screen, from the price ledger only (the frontmatter throws if a constant is
+  not in `priceSources.ts`). The page had been labelling the ledger's own
+  vendor-read figures "third-party reported, pending verification" and listing
+  three "open conflicts" the ledger had settled; it now uses `READ_DATE` and
+  `<PriceSources>` like every other price page. "24 to one" was arithmetic
+  from retired figures; the published spread is $109 to $1,500. Do not put the
+  old labels back. Vendor pages re-read 20 Oct by a fetcher matched the ledger;
+  the same read showed an Elevar **Base $0 plan (100 orders)** that is not in
+  the ledger: a human should read it before it is published.
+- **Server-side tracking guide:** the architecture diagram is in the hero. On
+  phones a portrait version
+  (`public/diagrams/shopify-server-side-tracking-flow-2026-portrait.svg`, same
+  words, no label under 19 units) is served by `<picture>`, because the
+  1200×630 one rendered its labels at ~4px.
+- **Blog layout:** contents are rendered at build time from the post's H2s
+  (they were injected by script after load). Posts whose H2s are "Step N:" or
+  "Stage N:" get them drawn as a numbered path. The `POST_SHOT` screenshot
+  moved from after the article to the first screen as `<ToolShot compact />`.
+- `<JumpTo />` is a server-rendered "On this page" strip; chips wrap, so it
+  cannot widen a phone layout.
+
 ### Highest-leverage open work
 
 1. Get the iOS Attribution Gap Benchmark to N ≥ 10 real submissions so it

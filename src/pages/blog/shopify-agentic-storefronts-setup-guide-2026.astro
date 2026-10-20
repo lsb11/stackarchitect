@@ -3,6 +3,8 @@ import { pageUpdated } from '../../data/pageUpdated';
 import Base from '../../layouts/Base.astro';
 import Disclosure from '../../components/Disclosure.astro';
 import AuthorCard from '../../components/AuthorCard.astro';
+import AgenticChecker from '../../components/AgenticChecker.astro';
+import JumpTo from '../../components/JumpTo.astro';
 import CHANNELS from '../../data/agentic-storefronts-channels.json';
 
 /* ---------------------------------------------------------------------------
@@ -235,6 +237,21 @@ const graphSchema = {
 <div class="sa-agentic">
 
   <p id="answer" class="sa-answer">Shopify Agentic Storefronts connect your catalog to ChatGPT, Google AI Mode, Microsoft Copilot and Meta from one admin setting. Since 24 March 2026 the channels split: Google, Copilot and Meta complete checkout inside the AI surface, while ChatGPT redirects shoppers to your own Shopify checkout, which is why most limits apply to only some channels.</p>
+
+  <!-- Retention, 20 Oct 2026: GA4 showed readers leaving this page after about
+       one second. The first screen was the answer, a long warning and a list;
+       the question a merchant arrives with ("can MY store use this?") was
+       answered four screens down, in a table. The checker answers it here. -->
+  <AgenticChecker verified={VERIFIED} />
+
+  <JumpTo items={[
+    { href: '#matrix', label: 'Full matrix' },
+    { href: '#limits', label: 'What breaks' },
+    { href: '#attribution', label: 'Tracking gap' },
+    { href: '#setup', label: 'Setup steps' },
+    { href: '#knowledge-base', label: 'Knowledge Base' },
+    { href: '#faq', label: 'FAQ' },
+  ]} />
 
   <div class="callout amber" id="stale-warning">
     <span class="callout-label">&#9888; If you have read other guides on this, check their date</span>

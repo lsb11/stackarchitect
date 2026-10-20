@@ -200,9 +200,19 @@ const articleSchema = {
     <p class="freshness-line" style="font-size:13px;color:#93a09a;margin:0 0 14px;">Updated {UPDATED_LABEL.charAt(0) + UPDATED_LABEL.slice(1).toLowerCase()}: free plans and platform docs re-checked</p>
     <h1>Shopify Server-Side Tracking for Meta, TikTok and Google, <span class="g">step by step</span></h1>
     <p id="answer">Shopify server-side tracking sends each paid order to the ad platforms from Shopify's servers, not the shopper's browser. A free Make.com scenario receives Shopify's order webhook, hashes the customer data and posts the purchase to Meta and TikTok. For Google Ads, turn on enhanced conversions in Shopify's Google &amp; YouTube app instead.</p>
-<p style="font-size:14px;color:#93a09a;line-height:1.7;margin:10px 0 18px;">The pieces, in each platform&rsquo;s own words (checked 24 September 2026): Shopify sends the <a href="https://shopify.dev/docs/api/webhooks" target="_blank" rel="noopener">orders/paid webhook</a> whenever an order is paid; Meta requires contact details to be <a href="https://developers.facebook.com/documentation/ads-commerce/conversions-api/parameters/customer-information-parameters" target="_blank" rel="noopener">normalised and SHA256-hashed</a>; Google&rsquo;s <a href="https://support.google.com/google-ads/answer/9888656" target="_blank" rel="noopener">Enhanced Conversions</a> sends SHA256-hashed first-party data alongside the conversion; and TikTok recommends running the <a href="https://ads.tiktok.com/help/article/events-api" target="_blank" rel="noopener">Events API</a> alongside its Pixel.</p>
+    <!-- Retention, 20 Oct 2026: readers left after about three seconds. The
+         one picture that explains the whole guide sat four screens down; it
+         now sits under the answer it illustrates. -->
+  <figure style="max-width:960px;margin:22px auto 20px;text-align:left;border:1px solid #2f2f2f;border-radius:18px;overflow:hidden;background:#0b0e0c;">
+    <picture>
+      <source media="(max-width: 700px)" srcset="/diagrams/shopify-server-side-tracking-flow-2026-portrait.svg" width="600" height="1088" />
+      <img src="/diagrams/shopify-server-side-tracking-flow-2026.svg"
+         alt="Shopify server-side tracking architecture diagram 2026: one Shopify orders/paid webhook feeds a single Make.com scenario that hashes customer data and sends server-to-server events to Meta Conversions API and TikTok Events API, with Google Ads handled by enhanced conversions in Shopify's Google &amp; YouTube app"
+         width="1200" height="630" loading="eager" decoding="async" fetchpriority="high" style="display:block;width:100%;height:auto;" />
+    </picture>
+    <figcaption style="padding:12px 18px;font-size:13px;color:#9a9a9a;border-top:1px solid #232323;">The $0 architecture: one webhook and one Make.com scenario feed Meta and TikTok server-to-server. Nothing in that path runs in the browser.</figcaption>
+  </figure>
     <p class="hero-deck">Shopify records every paid order; your ad platforms only count the purchases their tags or servers tell them about. <strong>The gap is not a reporting quirk you can annotate away: it is the training data each platform uses to decide who sees your ads next.</strong> Server-side events close the part of it the browser causes.</p>
-    <p style="border-left:3px solid #34d377;padding:6px 14px;margin:16px 0;font-size:13px;font-family:monospace;">Only need Meta? See the <a href="/capi-shield/">Shopify server-side tracking setup guide</a>.</p>
     <div class="platform-strip">
       <span class="platform-badge pb-meta"><span class="pb-dot"></span>Meta CAPI</span>
       <span class="platform-badge pb-google"><span class="pb-dot"></span>Google: enhanced conversions</span>
@@ -215,8 +225,8 @@ const articleSchema = {
       <div class="stat-cell"><span class="stat-v tt">No code</span><span class="stat-l">Make.com + one webhook</span></div>
     </div>
     <div class="hero-ctas">
-      <a href="#prerequisites" class="btn btn-g">Jump to the setup steps &rarr;</a>
-      <a href="#setup" class="btn btn-o">Jump to Setup</a>
+      <a href="#prerequisites" class="btn btn-g">Start the setup &rarr;</a>
+      <a href="/capi-shield/" class="btn btn-o">Only need Meta? CAPI Shield</a>
     </div>
   </section>
 
@@ -283,14 +293,9 @@ const articleSchema = {
     <h2 id="what-is-server-side-tagging-shopify-server-side-tracking">What is Server Side Tagging (Shopify Server-Side Tracking)?</h2>
     <p>Server-side tracking (also called Conversions API, server-to-server tracking, or S2S tracking) sends conversion events directly from your web server to advertising platforms: completely bypassing the customer&rsquo;s browser. Instead of relying on a JavaScript pixel in the browser to fire when a purchase completes, a webhook fires from Shopify&rsquo;s backend when payment is confirmed, and an automation posts the purchase to the platform&rsquo;s server API, such as Meta&rsquo;s Conversions API or TikTok&rsquo;s Events API.</p>
     <p>The key distinction is where the event originates. A browser pixel depends on the customer&rsquo;s device: their browser settings, installed extensions, network conditions, and whether they accepted your cookie banner. A server event originates from Shopify&rsquo;s infrastructure, so ad blockers, iOS privacy restrictions and Safari&rsquo;s Intelligent Tracking Prevention cannot stop it from being sent. Whether the platform can match it to an ad click is a separate question, answered by the match keys it carries.</p>
+    <p style="font-size:14px;color:#93a09a;line-height:1.7;margin:10px 0 18px;">The pieces, in each platform&rsquo;s own words (checked 24 September 2026): Shopify sends the <a href="https://shopify.dev/docs/api/webhooks" target="_blank" rel="noopener">orders/paid webhook</a> whenever an order is paid; Meta requires contact details to be <a href="https://developers.facebook.com/documentation/ads-commerce/conversions-api/parameters/customer-information-parameters" target="_blank" rel="noopener">normalised and SHA256-hashed</a>; Google&rsquo;s <a href="https://support.google.com/google-ads/answer/9888656" target="_blank" rel="noopener">Enhanced Conversions</a> sends SHA256-hashed first-party data alongside the conversion; and TikTok recommends running the <a href="https://ads.tiktok.com/help/article/events-api" target="_blank" rel="noopener">Events API</a> alongside its Pixel.</p>
     <h3 id="server-side-vs-browser-pixel-the-architecture">Server-side vs browser pixel: the architecture</h3>
   </div>
-  <figure style="max-width:960px;margin:28px auto;border:1px solid #2f2f2f;border-radius:18px;overflow:hidden;background:#0b0e0c;">
-    <img src="/diagrams/shopify-server-side-tracking-flow-2026.svg"
-         alt="Shopify server-side tracking architecture diagram 2026: one Shopify orders/paid webhook feeds a single Make.com scenario that hashes customer data and sends server-to-server events to Meta Conversions API and TikTok Events API, with Google Ads handled by enhanced conversions in Shopify's Google &amp; YouTube app"
-         width="1200" height="630" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;" />
-    <figcaption style="padding:12px 18px;font-size:13px;color:#9a9a9a;border-top:1px solid #232323;">The $0 architecture: one webhook and one Make.com scenario feed Meta and TikTok server-to-server. Nothing in that path runs in the browser.</figcaption>
-  </figure>
   <div class="flow-compare">
     <div class="flow-card broken">
       <div class="flow-title">&#x2715; Browser pixel only</div>
