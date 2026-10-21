@@ -1284,6 +1284,19 @@ labels; the TikTok chooser button and `/tools/` step numbers were below AA.
   price now carries its own read date and source, as
   `llm-price-provenance` requires per clause.
 
+**Videos.** Every page with a video used `poster-16x9.jpg`, the billing mock
+listed above as wrong (rows $847.32, total $702.47; Elevar $199). Each video
+now has a poster cut from its own footage at 2 s
+(`public/videos/poster-<video>.webp`, manifest entries say so), the
+`<ToolHero>` videos use `preload="none"`, and the two old posters are
+deleted. **The homepage video is removed**, with its transcript and
+VideoObject: its frames show a retired kit price, that billing mock and an
+unsourced "wasted per month" figure, on the one indexed page. The files are
+kept; restore from git after re-recording. **Still open for the owner:** the
+CAPI Shield video's 8 s frame shows Google among its destinations, which the
+site has withdrawn; the TikTok and Google Ads videos show mock dashboards
+with invented figures.
+
 **Guard change.** `content-quality-guard`'s updated-date rule now skips
 `Dataset` nodes: a dataset (key-facts.json) has its own modification date.
 

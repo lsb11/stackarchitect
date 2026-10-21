@@ -27,6 +27,10 @@ interface Props {
   accent?: 'green' | 'tiktok';
   video?: { src: string; title: string; caption: string };
 }
+// Each video's poster is a frame of that video (public/videos/poster-<name>.webp,
+// written 21 Oct 2026). They all used the homepage's billing mock, whose figures
+// were wrong. preload="none": nothing downloads until play is pressed.
+const posterFor = (src: string) => src.replace(/^\/videos\/(.+)\.mp4$/, '/videos/poster-$1.webp');
 const { label, eyebrow, updated, readTime, answer, primary, secondary, note, glanceTitle = 'At a glance', glance, glanceFoot, accent = 'green', video } = Astro.props;
 ---
 
@@ -55,7 +59,7 @@ const { label, eyebrow, updated, readTime, answer, primary, secondary, note, gla
       </div>
       {video && (
         <figure class="sa-th-video">
-          <video controls preload="metadata" poster="/videos/poster-16x9.jpg" playsinline title={video.title}>
+          <video controls preload="none" poster={posterFor(video.src)} playsinline title={video.title}>
             <source src={video.src} type="video/mp4" />
             Your browser does not support video playback. <a href={video.src}>Download the video</a>.
           </video>
