@@ -12,11 +12,14 @@
 interface Props {
   /** Optional context string appended to platform_note, e.g. "gap-calculator" */
   source?: string;
+  /** Shown from page load, for guides where the reader has Events Manager open
+      rather than a calculator result (21 Oct 2026). */
+  open?: boolean;
 }
-const { source = 'onsite' } = Astro.props;
+const { source = 'onsite', open = false } = Astro.props;
 ---
 
-<div id="gap-contribute" data-source={source} style="display:none;margin-top:24px;border:1px solid #14532d;background:linear-gradient(180deg,#04170c,#0c0f0d);padding:24px;">
+<div id="gap-contribute" data-source={source} data-open={open ? "1" : undefined} style={`display:${open ? "block" : "none"};margin-top:24px;border:1px solid #14532d;background:linear-gradient(180deg,#04170c,#0c0f0d);padding:24px;`}>
   <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px;">
     <h3 style="font-size:15px;font-weight:800;color:#fff;margin:0;">Add your numbers to the live benchmark</h3>
     <span style="font-family:ui-monospace,monospace;font-size:11px;color:#34d377;letter-spacing:.08em;text-transform:uppercase;"><span id="gc-count">–</span> of <span id="gc-goal">10</span> stores</span>
@@ -25,7 +28,7 @@ const { source = 'onsite' } = Astro.props;
     <div id="gc-fill" style="height:100%;width:0%;background:#34d377;border-radius:99px;transition:width .6s ease;"></div>
   </div>
   <p style="font-size:13px;color:#93a09a;line-height:1.6;margin:0 0 16px;">
-    You already have the real figures open: contribute them anonymously and help publish the first
+    {open ? 'Your ad platform\'s reported purchases and Shopify\'s order count for the same dates are the two numbers this needs: contribute them anonymously and help publish the first' : 'You already have the real figures open: contribute them anonymously and help publish the first'}
     genuine first-party iOS attribution gap figure for Shopify stores. Two numbers, no store name,
     no email. Submissions are reviewed before inclusion.
     <a href="/shopify-ios-attribution-gap-benchmark/" style="color:#34d377;">See the benchmark &amp; methodology →</a>
@@ -128,6 +131,7 @@ const { source = 'onsite' } = Astro.props;
       root.style.display = 'block';
       loadStats();
     };
+    if (root.dataset.open) loadStats();
 
     const btn = document.getElementById('gc-submit');
     if (btn) btn.addEventListener('click', async () => {
