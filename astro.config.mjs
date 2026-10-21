@@ -258,6 +258,10 @@ export default defineConfig({
     defaultLocale: 'en',
     locales: ['en'],
   },
+  // Inline every stylesheet into its page (21 Oct 2026). Three render-blocking
+  // CSS requests were the whole of a 2.6 to 3.2 s mobile LCP render delay;
+  // inlined, the first paint needs only the HTML.
+  build: { inlineStylesheets: 'always' },
   vite: {
     plugins: [tailwindcss()],
     build: {

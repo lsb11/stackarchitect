@@ -13,7 +13,7 @@ const taken = new Date(TOOL_SHOTS_TAKEN + 'T00:00:00Z').toLocaleDateString('en-G
 <figure class={compact ? 'sa-shot sa-shot-compact' : 'sa-shot'}>
   <a href={s.route} class="sa-shot-frame" aria-label={`Open the ${s.name}`}>
     <span class="sa-shot-bar" aria-hidden="true"><i></i><i></i><i></i><span>stackarchitect.xyz{s.route}</span></span>
-    <img src={s.src} width={s.w} height={s.h} alt={s.alt} loading={compact ? 'eager' : 'lazy'} decoding="async" />
+    <img src={s.src} width={s.w} height={s.h} alt={s.alt} loading={compact ? 'eager' : 'lazy'} fetchpriority={compact ? 'low' : undefined} decoding="async" />
   </a>
   <figcaption>
     {caption ?? s.alt} <span class="sa-shot-meta">Screenshot of the live tool, <time datetime={TOOL_SHOTS_TAKEN}>{taken}</time>, on its example inputs.</span>

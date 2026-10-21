@@ -134,13 +134,13 @@ Share this folder with the named people who manage procurement. Do not set it to
 
 ### Import Historical Purchase Orders Into Your New System
 
-Your new inventory system (whether Stocky Swap's Google Sheets approach or a paid alternative) should have a record of opening stock positions. The most practical approach:
+If you are moving to a paid inventory tool, it will want opening stock positions. The most practical approach:
 
 1. Open your Purchase Orders CSV export
-2. For each product, find the most recent received quantity and reconcile against current Shopify inventory levels
-3. Use this to set your opening stock figures in Sheet 2 of the Stocky Swap inventory ledger (Column C: Opening stock)
+2. For each product, find the most recent received quantity and reconcile it against current Shopify inventory levels
+3. Enter those figures as opening stock in the new tool
 
-This gives your new system a starting point based on real historical data rather than estimates.
+This gives it a starting point based on real historical data rather than estimates. Stocky Swap needs none of this: it is an order log, and stock on hand stays in Shopify Admin, so for it the export is an archive of what came before.
 
 ### Connect Your Supplier Data to Your New Workflow
 

@@ -2,6 +2,8 @@
 import { MISSION, MISSION_ONE_LINE } from '../data/mission';
 import { KEY_FACTS, SOURCES as FACT_SOURCES, factsFor } from '../data/keyFacts';
 import '../styles/global.css';
+import interLatin400 from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+import soraLatin700 from '@fontsource-variable/sora/files/sora-latin-wght-normal.woff2?url';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import { ClientRouter } from 'astro:transitions';
@@ -469,9 +471,13 @@ const hasBreadcrumb = breadcrumb && breadcrumb.length > 0;
         : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1'}
     />
 
-    <!-- Preconnect to affiliate domains -->
-    <link rel="preconnect" href="https://www.make.com" />
-    <link rel="preconnect" href="https://systeme.io" />
+    <!-- Fonts the first screen paints with, fetched alongside the HTML rather
+         than discovered after the stylesheet (21 Oct 2026). The preconnects to
+         make.com and systeme.io that sat here are gone: every partner link
+         goes through /go/ on this domain, so those early connections were
+         never used and competed with the page's own requests. -->
+    <link rel="preload" as="font" type="font/woff2" href={interLatin400} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={soraLatin700} crossorigin />
 
     <!-- Mobile browser chrome colour -->
     <meta name="theme-color" content="#0c0f0d" />

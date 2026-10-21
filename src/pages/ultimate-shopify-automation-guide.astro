@@ -10,7 +10,7 @@ import { faqPage, type Faq } from '../utils/faq';
 // One array renders the visible FAQ and the FAQPage node.
 const faqs: Faq[] = [
               { q:"What is the best Shopify automation guide in 2026?", a:"This guide covers the complete $0 Automation Stack: the fastest way to automate your Shopify store in 2026 across tracking, inventory, workflow, email, and AI discoverability. For individual deep-dives on each topic, the Shopify automation guides library covers 40+ step-by-step guides across every operational area." },
-              { q:"How do I automate my Shopify store in 2026?", a:"Use the $0 Automation Stack: Make.com free tier as the central webhook hub, CAPI Shield for server-side ad tracking, Stocky Swap for inventory management, Systeme.io for email automation, and Google Apps Script Quota Fix for document workflow stability. The complete setup needs no code and starts at $0/month on the tools' free plans; how many orders a free plan covers depends on the credits each order uses in your own scenario history." },
+              { q:"How do I automate my Shopify store in 2026?", a:"Use the $0 Automation Stack: Make.com free tier as the central webhook hub, CAPI Shield for server-side ad tracking, Stocky Swap as a free order log after Stocky, Systeme.io for email automation, and Google Apps Script Quota Fix for document workflow stability. The complete setup needs no code and starts at $0/month on the tools' free plans; how many orders a free plan covers depends on the credits each order uses in your own scenario history." },
               { q:"Why did my Shopify ROAS drop in January 2026?", a:'Two things can combine: Link Tracking Protection, in iOS 17 and later, strips fbclid from links opened in Private Browsing, Mail and Messages, and since January 13 2026 Shopify can pause data sharing for a marketing pixel when it sees no signals from it over days or weeks. Together they open a conversion data gap whose size tracks how much of your traffic arrives through the affected routes. Server-side tracking via CAPI Shield fixes both issues simultaneously.' },
               { q:"What happened to Shopify's pixel on January 13 2026?", a:'On 13 January 2026 Shopify changed the default data sharing setting for App Pixels from Always on to Optimized. Under Optimized, Shopify pauses a pixel\'s data sharing when it sees zero signals from it over days or weeks, until signals return, and does not notify you. Set the pixel to Always on under Settings, then Customer events. Server-side tracking via CAPI Shield does not depend on the App Pixel at all.' },
               { q:"When did Shopify Stocky close?", a:"Shopify closed Stocky on 31 August 2026: the app can no longer be used and its APIs stopped that day. Read-only export stays open for at least 90 days after that, and Shopify has published no end date. Export your data now through Stocky's built-in reports (Shopify says suppliers cannot be exported, so copy those by hand), then deploy Stocky Swap as your replacement. The migration needs no code and your data lives in a Google Sheet you own permanently." },
@@ -386,7 +386,7 @@ const tocHeadings = [
               <div class="cta-h">Deploy Stocky Swap</div>
               <p>Free replacement for Stocky · Data stays in your Google Sheet forever</p>
             </div>
-            <a href={`${SITE}/stocky-swap/`} class="btn btn-sm" aria-label="Deploy Stocky Swap free inventory management">Deploy Stocky Swap Free →</a>
+            <a href={`${SITE}/stocky-swap/`} class="btn btn-sm" aria-label="Deploy Stocky Swap, the free order log">Deploy Stocky Swap Free →</a>
           </div>
         </section>
 
@@ -590,7 +590,7 @@ const tocHeadings = [
               <tbody>
                 {[
                   ["Server-side tracking","$145–$650/mo (Analyzify to Elevar)","CAPI Shield (Make.com free)","Full CAPI + Enhanced Conversions"],
-                  ["Inventory management","$49–$119/mo (Prediko)","Stocky Swap (Google Sheets)","Real-time ledger, data you own"],
+                  ["Order log","$49–$119/mo (Prediko, a full inventory tool)","Stocky Swap (Google Sheets)","Real-time order log, data you own; no forecasting or purchase orders"],
                   ["Email marketing","$20+/mo (Klaviyo)","Systeme.io free plan","2,000 contacts, unlimited sends"],
                   ["Sales funnels","$97–$297/mo (ClickFunnels)","Systeme.io free plan","3 funnels, unlimited pages each"],
                   ["Order/workflow automation","$19.99–$69/mo (Zapier)","Make.com free tier","1,000 credits/month, instant webhooks"],
@@ -657,7 +657,7 @@ const tocHeadings = [
             {[
               { n:1, title:"Activate Make.com", desc:"Sign up for Make.com free at make.com/en/register. Verify your email. You are now in the Make.com dashboard: your central automation hub is active.", tool:"make.com free tier", link:"#section-make", ext:false },
               { n:2, title:"Deploy CAPI Shield, or check Shopify's own Meta route", desc:"If Shopify's Facebook & Instagram app is set to Enhanced or Maximum data sharing, it already sends Meta's Conversions API: skip this step. Otherwise import the CAPI Shield blueprint, connect the Shopify order webhook, and check one test order in Meta's Test Events.", tool:"CAPI Shield Setup Guide ↗", link:`${SITE}/capi-shield/`, ext:false },
-              { n:3, title:"Deploy Stocky Swap", desc:"Create your Google Sheet inventory ledger using the template. If you currently use Stocky, export your data first. Add a second Make.com scenario using the Stocky Swap blueprint.", tool:"Stocky Swap Setup Guide ↗", link:`${SITE}/stocky-swap/`, ext:false },
+              { n:3, title:"Deploy Stocky Swap", desc:"Create your Google Sheet order log using the template. If you currently use Stocky, export your data first. Add a second Make.com scenario using the Stocky Swap blueprint.", tool:"Stocky Swap Setup Guide ↗", link:`${SITE}/stocky-swap/`, ext:false },
               { n:4, title:"Add the Quota Fix", desc:"If you use Google Apps Script automation, apply the chunked processing pattern and retry-with-backoff template from the Quota Fix library, so long jobs finish across several runs instead of stopping at the six-minute limit.", tool:"Autocrat Quota Fix Guide ↗", link:`${SITE}/autocrat-quota-fix/`, ext:false },
               { n:5, title:"Activate Systeme.io", desc:"Sign up for Systeme.io free. Create your first email capture form and embed it on your Shopify homepage. Build a 3-email welcome sequence, which uses the free plan's one email campaign. If you are currently on Klaviyo, check your profile count against the February 2025 billing change.", tool:"systeme.io free plan", link:"#section-klaviyo", ext:false },
               { n:6, title:"Enable AI discoverability", desc:"Add FAQPage schema to your key product pages, check your Google Merchant Center product feed is complete and accurate, and see which Agentic Storefronts channels your store's location qualifies for.", tool:"AI Playbook 2026 →", link:`${SITE}/blog/shopify-ai-playbook-2026/`, ext:false },
@@ -676,7 +676,7 @@ const tocHeadings = [
 
           <div class="callout">
             <div class="callout-label">What to do after deployment</div>
-            <p>Monitor your Make.com operation count for the first two weeks. Check Meta Events Manager for Event Match Quality improvements: stores that lost ground after January 13 2026 should see recovery within the first billing cycle. Watch your Google Sheet inventory ledger update in real time as orders come in. Most stores see measurable ROAS improvement within 14–21 days of CAPI Shield deployment.</p>
+            <p>Watch your Make.com credit usage for the first two weeks. In Meta Events Manager, check that server Purchase events arrive and read their Event Match Quality. We publish no figure for what that score reaches or how ROAS changes, so compare your own numbers for the weeks before and after. Your Google Sheet order log fills as orders are paid.</p>
           </div>
 
           <div class="section-cta" style="background:rgba(52,211,119,.08);border-color:rgba(52,211,119,.3);">

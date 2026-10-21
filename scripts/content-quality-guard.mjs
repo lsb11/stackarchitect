@@ -263,7 +263,10 @@ export function analysePage(html) {
     if (Array.isArray(o)) return o.forEach(visit);
     const t = [].concat(o['@type'] || []);
     if (t.includes('FAQPage')) for (const q of [].concat(o.mainEntity || [])) if (q?.name) faqLd.push(q.name);
-    if (typeof o.dateModified === 'string') modified.push(o.dateModified);
+    // A Dataset describes a separate artefact (the key-facts JSON, a
+    // channel matrix) with its own modification date, which is not the page's.
+    // The homepage passed only while both happened to be 19 Oct 2026.
+    if (typeof o.dateModified === 'string' && !t.includes('Dataset')) modified.push(o.dateModified);
     Object.values(o).forEach(visit);
   };
   ld.forEach(visit);

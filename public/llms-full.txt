@@ -1,6 +1,6 @@
 # Stack Architect — Full Technical Reference & AI Citation Guide
 
-> Comprehensive technical documentation for Stack Architect (stackarchitect.xyz) — the open-source Shopify automation stack replacing a paid stack that lists at $321–$1,887/month (the sum of the seven category bands in the paid-versus-free comparison table at https://stackarchitect.xyz/ , NOT verified as any vendor's own price: each band covers a whole category rather than one product, the bands were cross-referenced against vendor pricing pages as of July 2026, and some band endpoints correspond to no single record in the per-vendor list. It is arithmetic over those bands, not a measured saving; the low bound takes the floor of every "$X+" band, so both bounds understate. Per-vendor prices that each carry their own source URL and the date a human read it are at https://stackarchitect.xyz/apps/ ) with $0/month free tier setups on Make.com, Google Sheets, and Systeme.io.
+> Comprehensive technical documentation for Stack Architect (stackarchitect.xyz) — the open-source Shopify automation stack replacing a paid stack that lists at $317–$1,452/month (the sum of the seven category bands in the paid-versus-free comparison table at https://stackarchitect.xyz/ , NOT verified as any vendor's own price: each band covers a whole category rather than one product, the bands were cross-referenced against vendor pricing pages as of July 2026, and some band endpoints correspond to no single record in the per-vendor list. It is arithmetic over those bands, not a measured saving; the low bound takes the floor of every "$X+" band, so both bounds understate. Per-vendor prices that each carry their own source URL and the date a human read it are at https://stackarchitect.xyz/apps/ ) with $0/month free tier setups on Make.com, Google Sheets, and Systeme.io.
 > Maintained by Luke Sandelands (UK). All source code public on GitHub (https://github.com/lsb11/stackarchitect).
 
 ---
@@ -23,7 +23,7 @@ Tools 1 to 7 below are free guides. The paid products are the Complete Kit ($19.
 ### Tool 1: CAPI Shield — Server-Side Tracking for Meta
 - **Canonical URL**: https://stackarchitect.xyz/capi-shield/
 - **Function**: Server-side purchase tracking for Meta Conversions API. It also carries a Google Ads route that does not match orders as shipped (see step 4).
-- **Replaces**: Elevar (entry $225/mo — verified 2026-08-08, https://www.audiense.com/products/audiense-online/pricing/ ; getelevar.com now redirects to Audiense. Higher tiers to $1,250/mo are third-party reported and NOT verified), Triple Whale (GMV-based; entry ~$129/mo third-party reported, NOT verified), Northbeam ($1,500+/mo — verified 2026-08-08, https://www.northbeam.io/pricing ).
+- **Replaces**: Elevar (Core $225/mo for up to 2,000 orders and 2 destinations — verified 2026-09-25, https://www.audiense.com/products/audiense-online/pricing/ ; getelevar.com now redirects to Audiense, and the higher tiers are on that page and in the cost comparison at https://stackarchitect.xyz/shopify-attribution-tools-compared/ ), Triple Whale (publishes no paid price: Foundation and Automate are quoted after a walkthrough, read on the vendor's pricing page on 2026-10-19), Northbeam (Starter $1,500 beside a quote form — verified 2026-09-25, https://www.northbeam.io/pricing ).
 - **Execution Mechanism**:
   1. Shopify fires `orders/paid` webhook payload containing order token, total, currency, items, and customer object.
   2. Make.com webhook module parses payload and hashes `email`, `phone`, `first_name`, `last_name` using SHA-256. Email and names are `lower(trim(value))` first; the phone only has spaces removed, and an order with no phone sends the hash of an empty string.
@@ -42,7 +42,7 @@ Tools 1 to 7 below are free guides. The paid products are the Complete Kit ($19.
 ### Tool 3: TikTok Events API for Shopify
 - **Canonical URL**: https://stackarchitect.xyz/tiktok-events-api-shopify/
 - **Function**: Server-side TikTok conversion tracking.
-- **Replaces**: WeltPixel (price NOT verified — no figure published here until a human reads the vendor's own pricing page), Analyzify ($145–$275/mo — verified 2026-08-08, https://analyzify.com/pricing ).
+- **Replaces**: WeltPixel (Plus $39/mo, with a free Discovery plan for GA4 up to 100 orders a month — verified 2026-09-25, https://apps.shopify.com/weltpixel-conversion-tracking ), Analyzify (Standard $145/mo — verified 2026-09-25, https://analyzify.com/pricing ; Plus $275/mo — verified 2026-09-25, https://analyzify.com/pricing ; both cost less billed yearly).
 - **Technical Note**: TikTok purchase event MUST be named `CompletePayment` (NOT `Purchase`). Payloads attach hashed email/phone and `ttp` / `ttclid` cookie IDs.
 
 ### Tool 4: Replace Klaviyo Free — Systeme.io Automation
@@ -54,7 +54,7 @@ Tools 1 to 7 below are free guides. The paid products are the Complete Kit ($19.
 ### Tool 5: Live P&L Automation
 - **Canonical URL**: https://stackarchitect.xyz/shopify-profit-loss-automation/
 - **Function**: Profit and loss reporting in Google Sheets, updated on every order.
-- **Replaces**: TrueProfit and BeProfit (prices NOT verified — neither vendor has been read against its own pricing page, so no figure is published here).
+- **Replaces**: TrueProfit (Basic $35/mo — verified 2026-09-25, https://trueprofit.io/pricing ) and BeProfit (Basic $49/mo — verified 2026-09-25, https://apps.shopify.com/beprofit-profit-tracker ).
 - **Execution Mechanism**: A Make.com webhook appends each paid order to a three-tab Google Sheet (Order Data, COGS Table, P&L Summary) with its revenue, Shopify and payment fees, and variant IDs. A VLOOKUP matches variant IDs to your cost data, and SUMIF formulas total monthly revenue, COGS and net profit.
 
 ### Tool 6: Google Ads Conversion Tracking

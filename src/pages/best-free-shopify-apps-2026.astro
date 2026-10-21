@@ -54,7 +54,7 @@ const categories = [
         price: "$0/month",
         replaces: "Elevar ($225/mo), Triple Whale (GMV-based), Analyzify ($145–$275/mo)",
         saves: "$145–$650/mo",
-        description: "Sends server-side purchase events to Meta Conversions API and Google Ads Enhanced Conversions via Make.com: bypassing iOS Link Tracking Protection, Safari ITP, and ad blockers. It sends hashed email, phone, name, IP and user-agent: the match keys Meta scores Event Match Quality against. Deploys without code. The single highest-ROI free tool for any Shopify store running paid Meta or Google Ads.",
+        description: "Sends each paid Shopify order to Meta's Conversions API from a Make.com scenario, so iOS Link Tracking Protection, Safari ITP and ad blockers cannot stop the event. It sends hashed email, phone and name, plus IP and user agent: the match keys Meta scores Event Match Quality against. Deploys without code. For Google Ads, use the free Enhanced conversions setting in Shopify's Google & YouTube app instead.",
         cta: "Deploy CAPI Shield free",
         ctaHref: TOOLS.capiShield,
         detail: "Shopify Order webhook → Make.com → Meta Conversions API, with an optional Google Ads route that needs a click ID Shopify orders do not carry. SHA-256 hashing included.",
@@ -749,6 +749,31 @@ const tocHeadings = [
     <Disclosure />
   </div>
 </section>
+
+<!-- Category grid (21 Oct 2026): the page's first visual sat 28 phone
+     screens down, under a list of ten categories nobody could see at once.
+     Counts come from `categories`, never typed. -->
+<nav class="catgrid" aria-label="Free app categories on this page">
+  <ul>
+    {categories.map((c) => (
+      <li><a href={`#${c.id}`}><span class="cg-emoji" aria-hidden="true">{c.emoji}</span><span class="cg-name">{c.label}</span><span class="cg-n">{c.tools.length} free {c.tools.length === 1 ? 'tool' : 'tools'}</span></a></li>
+    ))}
+  </ul>
+</nav>
+<style>
+  .catgrid { max-width: 1200px; margin: 8px auto 0; padding: 0 24px; }
+  .catgrid ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+  .catgrid li { margin: 0; padding: 0; }
+  .catgrid li::before { content: none !important; }
+  .catgrid a { display: flex; flex-direction: column; gap: 4px; height: 100%; padding: 14px 14px 12px; border: 1px solid #222825; border-radius: 12px; background: #0a0d0b; text-decoration: none !important; color: #e6ece8; transition: border-color .15s, background .15s; }
+  .catgrid a:hover, .catgrid a:focus-visible { border-color: #34d377; background: rgba(52, 211, 119, .05); }
+  .cg-emoji { font-size: 22px; line-height: 1; }
+  .cg-name { font-size: 14px; font-weight: 700; line-height: 1.3; color: #fff; }
+  .cg-n { margin-top: auto; font-size: 13px; color: #34d377; }
+  @media (max-width: 900px) { .catgrid ul { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .catgrid { padding: 0 16px; } .catgrid ul { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; } .catgrid a { padding: 12px; } }
+  @media (prefers-reduced-motion: reduce) { .catgrid a { transition: none; } }
+</style>
 
 <!-- SAVINGS CALCULATOR -->
 <div style="max-width:1200px;margin:0 auto;padding:40px 24px 0">

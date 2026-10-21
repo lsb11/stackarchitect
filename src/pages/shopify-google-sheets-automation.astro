@@ -2,6 +2,7 @@
 import KeyFacts from '../components/KeyFacts.astro';
 import { pageUpdated, formatUpdatedMonth } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
+import FlowDiagram from '../components/FlowDiagram.astro';
 import { faqPage, type Faq } from '../utils/faq';
 
 import Disclosure from '../components/Disclosure.astro';
@@ -112,6 +113,7 @@ const schema = JSON.stringify({
     },
     {
       "@type": ["Article", "TechArticle"],
+      "image": "https://stackarchitect.xyz/og/shopify-google-sheets-automation.png?v=2",
       "@id": `${PAGE}#article`,
       "headline": "Shopify to Google Sheets Automation Free (2026) — Orders, Inventory & Sync Strategy",
       "description": "How to export Shopify orders and sync inventory to Google Sheets for free using Make.com and Google Apps Script, including when to use real-time webhooks vs scheduled sync, the actual Make.com scenario structure, where Apps Script quotas and Google Sheets API limits break, and when to outgrow Sheets entirely.",
@@ -402,6 +404,22 @@ pre code{background:none;padding:0;color:inherit;}
 
 </div>
 </section>
+
+<div style="max-width:960px;margin:0 auto;padding:0 20px;">
+  <FlowDiagram
+    id="sheets-flow"
+    eyebrow="The webhook route · real time"
+    links={['Order payload', 'Iterator on line_items']}
+    source={{ name: 'Shopify', desc: 'An order is paid and Shopify sends the <code>orders/paid</code> webhook.', tag: 'Settings → Notifications → Webhooks' }}
+    hub={{ name: 'Make.com scenario', desc: 'An Iterator walks the order&rsquo;s <code>line_items</code>, so each product is handled on its own.', tag: 'Free tier: 1,000 credits a month' }}
+    dests={[
+      { name: 'Google Sheet: Orders', desc: 'One row per SKU, not one row per order: a three-item order writes three rows.', tone: 'sheet' },
+      { name: 'Google Sheet: Inventory', desc: 'A second webhook carries stock changes to their own tab.', tone: 'sheet' },
+    ]}
+    note={{ tone: 'ok', title: 'The other route: Apps Script on a schedule', body: 'Also free, with no Make.com account, but it runs on a timer rather than per order, and caps each execution at six minutes and daily triggers at 90 minutes.' }}
+    caption="Two free ways to get Shopify orders into Google Sheets; the webhook route writes each order the moment it is paid."
+  />
+</div>
 
 <div style="background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:0 24px;" role="region" aria-label="Key metrics">
   <div class="stat-strip" style="max-width:860px;margin:0 auto;border-radius:0;border:none;" role="list">

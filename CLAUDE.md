@@ -1235,6 +1235,65 @@ tool at all, and on 16 more the first one sat 4 to 28 phone screens down.
   `dist/`.
 - The guides hub's nine multicoloured buttons are a uniform topic grid.
 
+### Speed, accuracy sweep and citation fixes (21 Oct 2026)
+
+**Speed.** Lighthouse mobile against a brotli-compressed local build
+(`.tmp/zserve.mjs`-style server; an uncompressed one inflates LCP by about
+1.5 s). Before: LCP 2.6 to 3.2 s on six templates, all over the 2.5 s "good"
+line, performance 85 to 91, caused entirely by render delay. Fixed by:
+- `build.inlineStylesheets: 'always'` in `astro.config.mjs`: three
+  render-blocking CSS requests per page are gone.
+- Fonts: Inter and Sora are each one Latin variable file, declared in
+  `global.css` under the existing family names (no rule changes), and both
+  preloaded in `Base.astro`. They were six static files across seven
+  alphabets (about 60 `@font-face` rules). `Nav.astro` imported Sora and
+  JetBrains Mono a second time; removed. `@fontsource/inter` and
+  `@fontsource/sora` are uninstalled.
+- The make.com and systeme.io preconnects are gone (every partner link goes
+  through `/go/`), as is the homepage's high-priority preload of a video
+  poster that sits below the phone's first screen.
+- `<ToolShot compact>` images load at low priority.
+The full sitemap figures after the change are in the PR description.
+
+**Accessibility.** `<Disclosure />` was opacity .75 at 12.5px, below AA on
+all 42 pages that carry it; now solid `#93a09a` at 13px. Inline links in
+running text are underlined (`global.css`; block-styled links are exempt).
+`/pro/` comparison grids gained `role="cell"`; two unlabelled selects gained
+labels; the TikTok chooser button and `/tools/` step numbers were below AA.
+
+**Accuracy sweep. Do not reintroduce:**
+- CAPI Shield does not deliver to Google Ads. `/best-free-shopify-apps-2026/`
+  still said it did; the homepage sent Google Ads readers to the Make.com
+  upload instead of the Google & YouTube app's Enhanced conversions setting.
+- "Most stores see measurable ROAS improvement within 14–21 days" (in
+  `/capi-shield/`'s FAQPage), "should see recovery within the first billing
+  cycle", "typically see worse productivity … for 60+ days", "Most stores get
+  through it in a day". **`tests/outcome-claims.test.js`** now fails on that
+  family of unsourced outcome promises unless the sentence names a source or
+  says the site publishes no figure.
+- Stocky Swap is an order log. Thirteen places called it inventory
+  management or an inventory ledger, including the homepage ItemList and the
+  ultimate guide's FAQ; the Stocky export post told readers to enter opening
+  stock in a template column nobody has verified. **`tests/stocky-swap-wording.test.js`**
+  holds the wording.
+- "After auditing hundreds of Shopify stacks" on the auditor page was
+  invented experience. Gone.
+- `public/llms-full.txt` still labelled the ledger's 25 Sep vendor reads
+  "NOT verified", quoted a withdrawn Triple Whale "~$129/mo", and gave the
+  homepage stack band as $321–$1,887 against the page's $317–$1,452. Each
+  price now carries its own read date and source, as
+  `llm-price-provenance` requires per clause.
+
+**Guard change.** `content-quality-guard`'s updated-date rule now skips
+`Dataset` nodes: a dataset (key-facts.json) has its own modification date.
+
+**Visuals.** `<FlowDiagram>` (generalised from `TrackingFlow`) on the Sheets
+guide, Make.com guide and `/how-we-test/`, each restating its page's own
+claims. A category grid near the top of `/best-free-shopify-apps-2026/`
+(counts from `categories`). Countdown posts ("Six weeks out …") get the
+numbered path in `BlogPost.astro`. Five hand-built Article nodes gained
+`image`.
+
 ### Highest-leverage open work
 
 1. Get the iOS Attribution Gap Benchmark to N ≥ 10 real submissions so it

@@ -1,12 +1,27 @@
-@import "@fontsource/sora/600.css";
-@import "@fontsource/sora/700.css";
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/500.css";
-@import "@fontsource/inter/600.css";
-@import "@fontsource/inter/700.css";
-@import "@fontsource/jetbrains-mono/500.css";
-@import "@fontsource/jetbrains-mono/700.css";
-@import "@fontsource/jetbrains-mono/800.css";
+/* Fonts (21 Oct 2026): one variable file each for Inter and Sora, Latin
+   only, declared under the family names the site already uses so no rule
+   changes. They were six static files (Inter 400/500/600/700, Sora 600/700,
+   127 KB) declared across seven alphabets (about 60 @font-face rules in the
+   stylesheet every page blocks on); now two files, 82 KB. The two are
+   preloaded in Base.astro. JetBrains Mono is code only (--font-code). */
+@import "@fontsource/jetbrains-mono/latin-500.css";
+@import "@fontsource/jetbrains-mono/latin-700.css";
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: "Sora";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 800;
+  src: url("../../node_modules/@fontsource-variable/sora/files/sora-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
 
 @import "tailwindcss";
 
@@ -975,6 +990,10 @@ main#main-content { min-width: 0; }
   line-height: 1.7 !important;
 }
 main :is(p, li, td, dd) a { overflow-wrap: anywhere; }
+/* Links inside running text are underlined (21 Oct 2026): colour alone did
+   not set them apart from the sentence (Lighthouse link-in-text-block).
+   Buttons and cards carry classes and keep their own styling. */
+main :is(p, li, dd, td, div) > a:not([class]):not([style*="display"]) { text-decoration-line: underline !important; text-decoration-thickness: 1px; text-underline-offset: 2px; }
 @media (max-width: 700px) {
   .verified-date-bar { display: none !important; }
 }
