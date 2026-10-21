@@ -1,0 +1,114 @@
+---
+// A three-stage flow (source → hub → destinations) drawn in HTML, not as an
+// image (generalised 21 Oct 2026 from TrackingFlow). Every label is real text
+// at reading size, which crawlers and screen readers read as text; the layout
+// runs across on a wide screen and down on a phone. Strings come from page
+// source, never from readers, so `desc` may carry <code>.
+//
+// Rule: a diagram restates what its page already says. It never adds a figure
+// or a capability the page does not state and source.
+interface Node { name: string; desc: string; tag?: string }
+interface Dest { name: string; desc: string; tone?: 'meta' | 'tt' | 'gg' | 'sheet' | 'amber' | 'plain' }
+interface Props {
+  id: string;
+  eyebrow: string;
+  source: Node;
+  hub: Node;
+  dests: Dest[];
+  links?: [string, string];
+  note?: { title: string; body: string; tone?: 'warn' | 'ok' };
+  caption: string;
+}
+const { id, eyebrow, source, hub, dests, links = ['JSON payload', 'Server to server'], note, caption } = Astro.props;
+---
+<figure class="tf" aria-labelledby={`${id}-cap`}>
+  <div class="tf-head"><span class="tf-eyebrow">{eyebrow}</span></div>
+  <ol class="tf-flow">
+    <li class="tf-node tf-src">
+      <span class="tf-step">1</span>
+      <div>
+        <p class="tf-name">{source.name}</p>
+        <p class="tf-desc" set:html={source.desc} />
+        {source.tag && <p class="tf-tag">{source.tag}</p>}
+      </div>
+    </li>
+    <li class="tf-link" aria-hidden="true"><span>{links[0]}</span></li>
+    <li class="tf-node tf-hub">
+      <span class="tf-step">2</span>
+      <div>
+        <p class="tf-name">{hub.name}</p>
+        <p class="tf-desc" set:html={hub.desc} />
+        {hub.tag && <p class="tf-tag">{hub.tag}</p>}
+      </div>
+    </li>
+    <li class="tf-link" aria-hidden="true"><span>{links[1]}</span></li>
+    <li class="tf-dests">
+      <span class="tf-step">3</span>
+      <ul>
+        {dests.map((d) => (
+          <li class={`tf-dest tf-${d.tone ?? 'plain'}`}>
+            <p class="tf-name">{d.name}</p>
+            <p class="tf-desc" set:html={d.desc} />
+          </li>
+        ))}
+      </ul>
+    </li>
+  </ol>
+  {note && (
+    <div class={note.tone === 'ok' ? 'tf-old tf-ok' : 'tf-old'}>
+      <p class="tf-old-h"><span aria-hidden="true">{note.tone === 'ok' ? '✓' : '✕'}</span> {note.title}</p>
+      <p>{note.body}</p>
+    </div>
+  )}
+  <figcaption id={`${id}-cap`}>{caption}</figcaption>
+</figure>
+
+<style>
+  .tf { --tf-g: #34d377; --tf-line: #24302a; margin: 26px 0 24px; padding: 22px; border-radius: 16px; background: radial-gradient(120% 80% at 0% 0%, rgba(52,211,119,.08), transparent 60%), #070a08; border: 1px solid var(--tf-line); text-align: left; }
+  .tf p { margin: 0; }
+  .tf-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--tf-g); }
+  .tf-flow { list-style: none; margin: 16px 0 0; padding: 0; display: grid; grid-template-columns: minmax(0,1fr) 92px minmax(0,1fr) 92px minmax(0,1.15fr); align-items: center; }
+  .tf-flow > li { margin: 0; padding: 0; }
+  .tf-flow > li::before, .tf-dests li::before { content: none !important; }
+  .tf-node, .tf-dests { display: flex; gap: 12px; align-items: flex-start; padding: 16px; border-radius: 12px; background: #0c110e; border: 1px solid var(--tf-line); }
+  .tf-hub { border-color: rgba(52,211,119,.55); background: linear-gradient(180deg, rgba(52,211,119,.1), rgba(52,211,119,.03)); box-shadow: 0 10px 30px -18px rgba(52,211,119,.6); }
+  .tf-step { flex: none; display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; font-size: 13px; font-weight: 800; color: #04130a; background: var(--tf-g); }
+  .tf-name { font-size: 16px; font-weight: 700; color: #fff; line-height: 1.3; }
+  .tf-desc { margin-top: 4px !important; font-size: 14px; line-height: 1.5; color: #b6c0ba; }
+  .tf-desc code { font-size: 13px; color: #e6ece8; background: #151c18; padding: 1px 5px; border-radius: 4px; }
+  .tf-tag { margin-top: 8px !important; font-size: 13px; font-weight: 600; color: var(--tf-g); }
+  .tf-link { position: relative; height: 2px; background: linear-gradient(90deg, #1f5c3c, var(--tf-g)); }
+  .tf-link::after { content: ''; position: absolute; right: -2px; top: -5px; border: 6px solid transparent; border-left: 8px solid var(--tf-g); border-right: 0; }
+  .tf-link { margin: 0 6px; }
+  .tf-link span { position: absolute; left: 50%; bottom: 9px; transform: translateX(-50%); width: 80px; text-align: center; line-height: 1.3; font-size: 12px; color: #93a09a; }
+  .tf-dests { flex-direction: column; gap: 10px; background: transparent; border: 0; padding: 0; }
+  .tf-dests ul { width: 100%; }
+  .tf-dests ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; flex: 1; min-width: 0; }
+  .tf-dest { margin: 0; padding: 11px 13px; border-radius: 10px; background: #0c110e; border: 1px solid var(--tf-line); border-left: 3px solid var(--tf-g); }
+  .tf-meta { border-left-color: #8ccfe8; }
+  .tf-tt { border-left-color: #00f2ea; }
+  .tf-gg, .tf-plain { border-left-color: #93a09a; }
+  .tf-gg { border-style: dashed; border-left-style: solid; }
+  .tf-sheet { border-left-color: #34d377; }
+  .tf-amber { border-left-color: #f5b64d; }
+  .tf-dest .tf-name { font-size: 15px; }
+  .tf-dest .tf-desc { font-size: 13px; margin-top: 2px !important; }
+  .tf-old.tf-ok { background: rgba(52,211,119,.05); border-color: rgba(52,211,119,.25); }
+  .tf-old.tf-ok .tf-old-h { color: #34d377; }
+  .tf-old { margin-top: 18px; padding: 12px 14px; border-radius: 10px; background: rgba(240,138,138,.06); border: 1px solid rgba(240,138,138,.25); }
+  .tf-old-h { font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #f4a4a4; margin-bottom: 4px !important; }
+  .tf-old p:not(.tf-old-h) { font-size: 14px; line-height: 1.55; color: #b6c0ba; }
+  .tf figcaption { margin-top: 14px; font-size: 14px; line-height: 1.55; color: #93a09a; }
+
+  @media (max-width: 860px) {
+    .tf { padding: 18px 16px; margin: 22px -4px 22px; }
+    .tf-flow { grid-template-columns: minmax(0,1fr); }
+    .tf-link { width: 2px; height: 40px; margin-left: 28px; background: linear-gradient(180deg, #1f5c3c, var(--tf-g)); }
+    .tf-link::after { right: auto; left: -5px; top: auto; bottom: -2px; border: 6px solid transparent; border-top: 8px solid var(--tf-g); border-bottom: 0; }
+    .tf-link span { left: 16px; bottom: auto; top: 50%; transform: translateY(-50%); }
+    .tf-node { padding: 14px; }
+    .tf-dests { padding: 0; flex-direction: row; }
+    .tf-link { margin: 0 0 0 28px; }
+    .tf-link span { width: auto; text-align: left; white-space: nowrap; }
+  }
+</style>

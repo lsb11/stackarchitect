@@ -4,6 +4,7 @@ import ToolShot from '../components/ToolShot.astro';
 import { faqPage, type Faq } from '../utils/faq';
 import { pageUpdated } from '../data/pageUpdated';
 import Base from '../layouts/Base.astro';
+import FlowDiagram from '../components/FlowDiagram.astro';
 import { READ_DATE } from '../data/priceSources';
 import PriceSources from '../components/PriceSources.astro';
 import Disclosure from '../components/Disclosure.astro';
@@ -189,6 +190,22 @@ const tocHeadings = [
       </div>
     </div>
   </section>
+
+  <div style="max-width:960px;margin:0 auto;padding:0 20px;">
+    <FlowDiagram
+      id="make-flow"
+      eyebrow="One webhook, every destination"
+      links={['Order payload', 'Routed at once']}
+      source={{ name: 'Shopify', desc: 'The built-in Order payment webhook fires when an order is paid.', tag: 'No app install · every Shopify plan' }}
+      hub={{ name: 'Make.com scenario', desc: 'Receives the order and routes it to each destination in the same run.', tag: 'Free tier: 1,000 credits a month' }}
+      dests={[
+        { name: 'Meta Conversions API', desc: 'Server-side <code>Purchase</code> events: <a href="/capi-shield/">CAPI Shield</a>', tone: 'meta' },
+        { name: 'TikTok Events API', desc: '<code>CompletePayment</code> events: <a href="/tiktok-events-api-shopify/">TikTok setup</a>', tone: 'tt' },
+        { name: 'Google Sheets', desc: 'An order log and a P&amp;L: <a href="/stocky-swap/">Stocky Swap</a>, <a href="/shopify-profit-loss-automation/">P&amp;L</a>', tone: 'sheet' },
+      ]}
+      caption="One order trigger can feed Meta's Conversions API, TikTok's Events API and Google Sheets at once. How many orders the free tier covers depends on the credits each order uses."
+    />
+  </div>
 
   <!-- QUICK ANSWER — GEO optimised -->
   <section class="alt-bg">

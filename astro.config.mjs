@@ -210,6 +210,20 @@ if (lastmodCache.size > 0) {
  *
  * No new dependency: a plain recursive walk, no unist-util-visit.
  */
+// GFM task lists render a disabled checkbox with no accessible name
+// (Lighthouse "label"); give each one its list item's text (21 Oct 2026).
+function rehypeLabelTaskCheckboxes() {
+  const text = (n) => (n.type === 'text' ? n.value : (n.children || []).map(text).join(''));
+  const walk = (node) => {
+    if (node.type === 'element' && node.tagName === 'li') {
+      const box = (node.children || []).find((c) => c.type === 'element' && c.tagName === 'input' && c.properties?.type === 'checkbox');
+      if (box && !box.properties['ariaLabel']) box.properties['ariaLabel'] = text(node).replace(/\s+/g, ' ').trim().slice(0, 120) || 'Checklist item';
+    }
+    (node.children || []).forEach(walk);
+  };
+  return (tree) => walk(tree);
+}
+
 function rehypeSponsorAffiliateLinks() {
   return (tree) => {
     const walk = (node) => {
@@ -228,7 +242,7 @@ function rehypeSponsorAffiliateLinks() {
 
 export default defineConfig({
   markdown: {
-    rehypePlugins: [rehypeSponsorAffiliateLinks],
+    rehypePlugins: [rehypeSponsorAffiliateLinks, rehypeLabelTaskCheckboxes],
     // Astro's default Shiki theme is `github-dark`, whose comment token is
     // #6a737d — 3.05:1 against the code-block background, a WCAG AA fail.
     // Comments in these posts are not decoration: they are the lines that say
@@ -258,6 +272,10 @@ export default defineConfig({
     defaultLocale: 'en',
     locales: ['en'],
   },
+  // Inline every stylesheet into its page (21 Oct 2026). Three render-blocking
+  // CSS requests were the whole of a 2.6 to 3.2 s mobile LCP render delay;
+  // inlined, the first paint needs only the HTML.
+  build: { inlineStylesheets: 'always' },
   vite: {
     plugins: [tailwindcss()],
     build: {

@@ -36,13 +36,32 @@ const toc = headings.filter((h) => h.depth === 2);
 // ...") gets them drawn as a path, the one visual its own structure supplies.
 // The label is the heading's own words after the number; nothing is added.
 const STEP_RE = /^(Step|Stage)\s+(\d+)[:.]\s*(.+)$/;
-const steps = toc.map((h) => ({ h, m: STEP_RE.exec(h.text) })).filter((x) => x.m);
-const stepWord = steps[0]?.m?.[1] ?? 'Step';
+// A countdown ("Six weeks out (from 16 October)") is a path too, numbered by
+// weeks remaining (21 Oct 2026: the BFCM checklist had no visual at all).
+const WEEK_RE = /^(One|Two|Three|Four|Five|Six|Seven|Eight) weeks? out\b\s*(?:\((.+)\))?/i;
+const WORDS: Record<string, string> = { one: '1', two: '2', three: '3', four: '4', five: '5', six: '6', seven: '7', eight: '8' };
+const shortLabel = (t: string) => t.replace(/\s*\([^)]*\)\s*$/, '') || t;
+type PathStep = { h: { slug: string; text: string }; n: string; label: string; sr: string };
+const stepItems: PathStep[] = toc.flatMap((h) => {
+  const m = STEP_RE.exec(h.text);
+  if (m) return [{ h, n: m[2], label: shortLabel(m[3]), sr: `${m[1]} ${m[2]}: ` }];
+  return [];
+});
+const weekItems: PathStep[] = toc.flatMap((h) => {
+  const w = WEEK_RE.exec(h.text);
+  if (!w) return [];
+  const n = WORDS[w[1].toLowerCase()];
+  return [{ h, n, label: w[2] ? `${shortLabel(h.text)}, ${w[2]}` : h.text, sr: '' }];
+});
+const isWeeks = weekItems.length >= 4 && stepItems.length < 3;
+const steps = isWeeks ? weekItems : stepItems;
+const stepWord = isWeeks ? 'week' : (STEP_RE.exec(stepItems[0]?.h.text ?? '')?.[1] ?? 'Step');
 const isPath = steps.length >= 3;
 // Past five steps a row of columns gets too narrow to read; stack them.
 const pathClass = steps.length > 5 ? 'sa-path sa-path-v' : 'sa-path';
-const shortLabel = (t: string) => t.replace(/\s*\([^)]*\)\s*$/, '') || t;
-const others = isPath ? toc.filter((h) => !STEP_RE.test(h.text)) : toc;
+const pathTitle = isWeeks ? `${steps.length}-week countdown in this guide` : `${steps.length} ${stepWord.toLowerCase()}s in this guide`;
+const inPath = new Set(steps.map((x) => x.h.slug));
+const others = isPath ? toc.filter((h) => !inPath.has(h.slug)) : toc;
 const {
   title,
   heading,
@@ -198,11 +217,11 @@ const pageTitle = (title + SUFFIX).length <= 60 ? title + SUFFIX : title;
     {POST_SHOT[entry.id] && <ToolShot id={POST_SHOT[entry.id]} compact />}
 
     {isPath && (
-      <nav class={pathClass} aria-label={`${stepWord}s in this guide`}>
-        <div class="sa-path-l">{steps.length} {stepWord.toLowerCase()}s in this guide</div>
+      <nav class={pathClass} aria-label={pathTitle}>
+        <div class="sa-path-l">{pathTitle}</div>
         <ol>
-          {steps.map(({ h, m }) => (
-            <li><a href={`#${h.slug}`}><span class="sa-path-n" aria-hidden="true">{m![2]}</span><span class="sa-path-t"><span class="sa-sr">{stepWord} {m![2]}: </span>{shortLabel(m![3])}</span></a></li>
+          {steps.map(({ h, n, label, sr }) => (
+            <li><a href={`#${h.slug}`}><span class="sa-path-n" aria-hidden="true">{n}</span><span class="sa-path-t">{sr && <span class="sa-sr">{sr}</span>}{label}</span></a></li>
           ))}
         </ol>
         {others.length > 0 && (

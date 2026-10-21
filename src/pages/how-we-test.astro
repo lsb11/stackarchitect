@@ -3,6 +3,7 @@ import { pageUpdated, formatUpdated } from '../data/pageUpdated';
 // /how-we-test/ — methodology & trust page. Site-level E-E-A-T asset:
 // sourcing standards, badge policy, funding disclosure, corrections policy.
 import Base from "../layouts/Base.astro";
+import FlowDiagram from '../components/FlowDiagram.astro';
 import { READ_DATE } from '../data/priceSources';
 import AuthorCard from "../components/AuthorCard.astro";
 import TableOfContents from '../components/TableOfContents.astro';
@@ -87,6 +88,20 @@ const schemas = [
       <p style="font-size:1.05rem;color:#c9cec9;margin-bottom:1.75rem;line-height:1.75;">
         Stack Architect exists because most Shopify automation advice is either vendor marketing or untested rehash. So every factual claim on this site follows one rule: <strong>if we can't source it or reproduce it, we don't publish it.</strong> This page documents exactly what that means.
       </p>
+
+      <FlowDiagram
+        id="method-flow"
+        eyebrow="How a figure reaches this site"
+        links={['Read and dated', 'Checked on every build']}
+        source={{ name: 'The vendor&rsquo;s own page', desc: 'A person reads the price, limit or behaviour on the vendor&rsquo;s pricing page or documentation.' }}
+        hub={{ name: 'Dated record, then build checks', desc: 'The figure is recorded with the date it was read. The build fails if a page states a retired figure, an undated third-party price, or a number its structured data does not show.' }}
+        dests={[
+          { name: 'On the page', desc: 'The figure, a link to its source and the date it was read.', tone: 'sheet' },
+          { name: 'As open data', desc: '<a href="/downloads/key-facts.json">key-facts.json</a>, CC BY 4.0.', tone: 'plain' },
+          { name: 'When it changes', desc: 'Re-checked quarterly; a figure that proves wrong is corrected and the retraction recorded on this page.', tone: 'amber' },
+        ]}
+        caption="Every price and limit on Stack Architect follows this path. A figure that cannot be sourced or reproduced is not published."
+      />
 
       <h2 id="where-our-numbers-come-from" style="font-size:1.6rem;color:#fff;font-weight:700;margin-top:2.5rem;margin-bottom:1rem;">Where Our Numbers Come From</h2>
       <p style="color:#c9cec9;margin-bottom:1rem;">In order of preference:</p>
