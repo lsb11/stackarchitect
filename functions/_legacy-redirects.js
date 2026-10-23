@@ -1043,6 +1043,16 @@ export const LEGACY_RULES = [
     "status": 301
   },
   {
+    "from": "/blog/how-to-reduce-shopify-apps-",
+    "to": "/shopify-app-stack-kill-or-keep-auditor/",
+    "status": 301
+  },
+  {
+    "from": "/blog/how-to-reduce-shopify-apps-/",
+    "to": "/shopify-app-stack-kill-or-keep-auditor/",
+    "status": 301
+  },
+  {
     "from": "/blog/free-shopify-apps-replace-paid-2026",
     "to": "/best-free-shopify-apps-2026/",
     "status": 301
