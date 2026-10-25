@@ -1337,7 +1337,27 @@ numbered path in `BlogPost.astro`. Five hand-built Article nodes gained
   agentic post (CAPI Shield "for Meta and Google"), Tidio and Stocky shutdown
   posts ($29 kit), When to upgrade ($24 kit). Generated replacements:
   `node .tmp/medium-packs.mjs` pattern, i.e. `buildPack` + `packToHtml` for
-  each post's resolved page. They need the owner signed in to Medium.
+  each post's resolved page. **Done the same day** in the owner's Chrome:
+  those six plus the older "CAPI Shield: Recover Lost Shopify Conversions"
+  copy ("up to 30–40%") were replaced, canonicals set to live pages
+  (`/shopify-google-ads-conversion-tracking/`, `/capi-shield/`,
+  `/stocky-alternative/`); the inventory post's `/go/make` link now points
+  at `/make-com-shopify/`; the retired `scalable-google-sheets-…` link was
+  fixed in both copies of the "$700/month of SaaS" essay (dev.to and Medium).
+  Method that works in Medium's editor: dispatch a synthetic `paste`
+  ClipboardEvent with `text/html` on the contenteditable (it inserts at the
+  top), select from after the pack's last sentence to the end, press a real
+  Delete key, then Save and publish.
+- **Medium has 20 older posts beyond the feed's 10.** Most are originals
+  (self-canonical). Two still carry claims for the owner to decide on:
+  "Your Shopify Store Is Probably Losing a Third of Its Conversions" (the
+  title is a loss figure) and "We Cancelled Klaviyo and Saved $3,840 a
+  Year" (a first-hand saving nothing here verifies).
+- **`/capi-shield/` FAQ fixed (PR #99):** "most stores see an immediate
+  increase in reported conversions" passed `outcome-claims` because
+  "reported" counted as a source; "Meta deduplicates them automatically"
+  broke the dedup rule. Both rewritten; the test now needs "reported
+  by/in/that".
 - **Lists:** Tailwind preflight removes bullets; prose lists on 30+ pages
   were indented with no marker. `global.css` (LIST MARKERS) restores them at
   zero specificity. A component that wants a bare list styles its own `ul`,
