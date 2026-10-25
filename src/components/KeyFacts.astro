@@ -15,19 +15,25 @@ const canonical = new URL(route, 'https://stackarchitect.xyz').href;
 
 {facts.length > 0 && latest && (
   <section class="sa-keyfacts" aria-labelledby="sa-keyfacts-h">
-    <h2 id="sa-keyfacts-h">Key facts, checked on the source</h2>
-    <ul>
+    <header class="kf-head">
+      <h2 id="sa-keyfacts-h">Key facts, checked on the source</h2>
+      <span class="kf-badge">{`${facts.length} ${facts.length === 1 ? 'fact' : 'facts'} · read ${formatReadDate(latest)}`}</span>
+    </header>
+    <ul class="kf-list">
       {facts.map((f) => (
         <li id={`fact-${f.id}`}>
-          {f.text}{' '}
-          <span class="kf-src">
-            Source: <a href={f.src.url} target="_blank" rel="noopener">{f.src.publisher}, {f.src.title}</a>, read <time datetime={f.src.read}>{formatReadDate(f.src.read)}</time>.
-          </span>
+          <span class="kf-mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+          <div class="kf-body">
+            <p class="kf-text">{f.text}</p>
+            <p class="kf-src">
+              Source: <a href={f.src.url} target="_blank" rel="noopener">{f.src.publisher}, {f.src.title}</a>, read <time datetime={f.src.read}>{formatReadDate(f.src.read)}</time>.
+            </p>
+          </div>
         </li>
       ))}
     </ul>
     <p class="kf-cite">
-      <strong>How to cite this page:</strong> Sandelands, L. ({latest.slice(0, 4)}). {title ? <em>{title}</em> : 'Stack Architect'}. Stack Architect. {canonical}
+      <strong>How to cite this page:</strong> Sandelands, L. ({latest.slice(0, 4)}). {title && <><em>{title}</em>. </>}Stack Architect. {canonical}
       {' '}These facts are published as open data under CC BY 4.0: <a href="/downloads/key-facts.json">key-facts.json</a>. Found one out of date? <a href="/how-we-test/">How we check and correct</a>.
     </p>
   </section>
@@ -36,17 +42,25 @@ const canonical = new URL(route, 'https://stackarchitect.xyz').href;
 <style>
   .sa-keyfacts {
     max-width: 860px;
-    margin: 32px auto;
-    padding: 18px 22px;
+    margin: 36px auto;
+    padding: 22px 24px 20px;
     border: 1px solid #222825;
-    border-left: 3px solid #34d377;
-    border-radius: 10px;
-    background: #0c0f0d;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #0f1a14 0%, #0c0f0d 90px);
+    position: relative; overflow: hidden; text-align: left;
   }
-  .sa-keyfacts h2 { font-size: 17px; color: #f2f5f3; margin: 0 0 10px; }
-  .sa-keyfacts ul { margin: 0 0 12px; padding-left: 20px; }
-  .sa-keyfacts li { color: #b6c0ba; font-size: 15px; line-height: 1.65; margin: 0 0 10px; }
-  .sa-keyfacts .kf-src, .sa-keyfacts .kf-cite { font-size: 13px; color: #93a09a; line-height: 1.65; }
-  .sa-keyfacts .kf-cite { margin: 0; }
-  .sa-keyfacts a { color: #34d377; text-decoration: underline; }
+  .sa-keyfacts::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; background: #34d377; }
+  .kf-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; margin: 0 0 14px; }
+  .sa-keyfacts h2 { font-size: 18px; color: #f2f5f3; margin: 0; }
+  .kf-badge { font-size: 12.5px; font-weight: 600; color: #34d377; border: 1px solid #1f4a33; background: #0f2219; border-radius: 999px; padding: 3px 10px; }
+  .kf-list { list-style: none; margin: 0 0 16px; padding: 0; }
+  .kf-list li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 12px; padding: 12px 0; border-top: 1px solid #1a1f1c; }
+  .kf-list li:first-child { border-top: 0; padding-top: 2px; }
+  .kf-mark { display: grid; place-items: center; width: 22px; height: 22px; margin-top: 2px; border-radius: 50%; color: #34d377; background: #0f2219; border: 1px solid #1f4a33; }
+  .kf-body p { margin: 0; }
+  .kf-text { color: #c9d1cc; font-size: 15px; line-height: 1.65; }
+  .sa-keyfacts .kf-src { margin-top: 4px; font-size: 13px; color: #93a09a; line-height: 1.6; }
+  .sa-keyfacts .kf-cite { margin: 0; padding: 12px 14px; border-radius: 10px; background: #0a0d0b; border: 1px dashed #2a312d; font-size: 13px; color: #93a09a; line-height: 1.65; }
+  .sa-keyfacts a { color: #34d377; text-decoration: underline; text-underline-offset: 2px; overflow-wrap: anywhere; }
+  @media (max-width: 640px) { .sa-keyfacts { padding: 18px 16px; margin: 28px 0; } .kf-list li { grid-template-columns: 20px minmax(0,1fr); gap: 10px; } }
 </style>

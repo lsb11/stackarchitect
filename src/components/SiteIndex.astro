@@ -10,26 +10,79 @@ interface Props {
 }
 const { self = '', headingLevel = 'h3' } = Astro.props;
 const H = headingLevel;
+// One colour per job, so the eye can find a group before reading it. All are
+// 400-weight hues chosen for AA contrast on the site's dark ground.
+const TONES: Record<string, string> = {
+  'Ad tracking and attribution': '#38bdf8',
+  'AI and agentic commerce': '#a78bfa',
+  'Inventory, Stocky and P&L': '#fbbf24',
+  'Email, support and conversion': '#f472b6',
+  'Automation, Make.com and Apps Script': '#34d377',
+  'Free tools and calculators': '#2dd4bf',
+  'Apps, stacks and costs': '#fb923c',
+  'About this site': '#b6c0ba',
+};
 const groups = SITE_INDEX
   .map((g) => ({ ...g, pages: g.pages.filter((p) => p.href !== self) }))
   .filter((g) => g.pages.length);
+
+// Three balanced columns. Groups run from 2 to 10 links, so a row grid leaves
+// holes and CSS columns cannot balance cards that must not split. Each group
+// goes to the lightest column, largest first (weight = links + 2 for the
+// header), then each column keeps the groups' original order.
+const COLS = 3;
+const cols: { w: number; items: { g: (typeof groups)[number]; i: number }[] }[] =
+  Array.from({ length: COLS }, () => ({ w: 0, items: [] }));
+groups
+  .map((g, i) => ({ g, i, w: g.pages.length + 2 }))
+  .sort((a, b) => b.w - a.w || a.i - b.i)
+  .forEach((it) => { const c = cols.reduce((m, x) => (x.w < m.w ? x : m)); c.w += it.w; c.items.push(it); });
+cols.forEach((c) => c.items.sort((a, b) => a.i - b.i));
 ---
 <div class="si-grid">
-  {groups.map((g) => (
-    <div class="si-group">
-      <H class="si-name">{g.name}</H>
-      <ul>
-        {g.pages.map((p) => <li><a href={p.href}>{p.label}</a></li>)}
-      </ul>
+  {cols.map((c) => (
+    <div class="si-col">
+      {c.items.map(({ g }) => (
+        <section class="si-group" style={`--tone:${TONES[g.name] ?? '#34d377'}`}>
+          <header class="si-head">
+            <span class="si-dot" aria-hidden="true"></span>
+            <H class="si-name">{g.name}</H>
+            <span class="si-count">{g.pages.length}</span>
+          </header>
+          <ul>
+            {g.pages.map((p) => <li><a class="si-link" href={p.href}>{p.label}</a></li>)}
+          </ul>
+        </section>
+      ))}
     </div>
   ))}
 </div>
 
 <style>
-  .si-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 28px 32px; }
-  .si-name { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #93a09a; margin: 0 0 10px; }
+  .si-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; align-items: start; text-align: left; }
+  .si-col { display: grid; gap: 18px; }
+  .si-group {
+    box-sizing: border-box; margin: 0; padding: 18px 18px 14px;
+    border: 1px solid #222825; border-radius: 14px;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--tone) 8%, #0c0f0d) 0%, #0c0f0d 70px);
+    position: relative; overflow: hidden;
+  }
+  .si-group::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; background: var(--tone); }
+  .si-head { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; }
+  .si-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; background: var(--tone); box-shadow: 0 0 0 4px color-mix(in srgb, var(--tone) 18%, transparent); }
+  .si-name { flex: 1; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--tone); margin: 0; line-height: 1.35; }
+  .si-count { flex: none; font-size: 0.75rem; font-weight: 600; color: #93a09a; border: 1px solid #2f3733; border-radius: 999px; padding: 1px 8px; }
   .si-group ul { list-style: none; margin: 0; padding: 0; }
-  .si-group li { margin: 0 0 8px; line-height: 1.45; }
-  .si-group a { color: #b6c0ba; text-decoration: none; font-size: 0.94rem; border-bottom: 1px solid #2f3733; }
-  .si-group a:hover, .si-group a:focus-visible { color: #34d377; border-bottom-color: #34d377; }
+  .si-group li { border-top: 1px solid #1a1f1c; }
+  .si-group li:first-child { border-top: 0; }
+  .si-group a {
+    display: flex; align-items: flex-start; gap: 8px; padding: 8px 2px;
+    color: #c9d1cc; text-decoration: none; font-size: 0.94rem; line-height: 1.45;
+  }
+  .si-group a::after { content: "\2192"; margin-left: auto; padding-left: 8px; color: #4b5651; transition: transform .15s, color .15s; }
+  .si-group a:hover, .si-group a:focus-visible { color: #f2f5f3; }
+  .si-group a:hover::after, .si-group a:focus-visible::after { color: var(--tone); transform: translateX(3px); }
+  .si-group a:focus-visible { outline: 2px solid var(--tone); outline-offset: 2px; border-radius: 4px; }
+  @media (max-width: 900px) { .si-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 640px) { .si-group { padding: 16px 14px 10px; } }
 </style>
