@@ -1316,3 +1316,29 @@ numbered path in `BlogPost.astro`. Five hand-built Article nodes gained
    and Google has no reason to prefer it.
 2. Backlinks / domain authority. On current evidence this is the dominant
    remaining variable and the only one that addresses the actual cause.
+
+### 25 Oct 2026: indexing requests, design pass, off-site copies
+
+- **Google:** indexing requested for 11 pages (quotas post, Autocrat fix,
+  agentic guide, server-side guide, TikTok, Meta ROAS, ultimate guide, CAPI
+  Shield, best AI tools, guides hub, AI playbook); the 12th hit the daily
+  quota. Both sitemaps read 25 Oct, Success, 51. URL Inspection's
+  "Temporary processing error" under Sitemaps on some pages is a per-URL
+  display state, not a sitemap fault.
+- **Bing:** all 51 sitemap URLs submitted through URL Submission (quota
+  100/day). Bing's IndexNow page showed no Cloudflare submissions since
+  19 Oct, so Crawler Hints is still off.
+- **Off-site copies, measured:** every dev.to and Medium copy already links
+  to its matching guide, not only the homepage. GSC's Links report showing
+  homepage-only links reflects what Google has processed (and dev.to links
+  are nofollow), not the bodies. Do not "fix" the bodies for that reason.
+- **Medium still carries retired claims** (Medium has no edit API): Google
+  Ads post (20–40% ×3, $29 kit), CAPI Shield post (Meta and Google, $29),
+  agentic post (CAPI Shield "for Meta and Google"), Tidio and Stocky shutdown
+  posts ($29 kit), When to upgrade ($24 kit). Generated replacements:
+  `node .tmp/medium-packs.mjs` pattern, i.e. `buildPack` + `packToHtml` for
+  each post's resolved page. They need the owner signed in to Medium.
+- **Lists:** Tailwind preflight removes bullets; prose lists on 30+ pages
+  were indented with no marker. `global.css` (LIST MARKERS) restores them at
+  zero specificity. A component that wants a bare list styles its own `ul`,
+  or a list whose items begin with "→" carries `sa-arrows`.
