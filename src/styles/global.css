@@ -1038,3 +1038,12 @@ pre, code, kbd, samp, pre *, code * { font-family: var(--font-code) !important; 
   .hero-proof .dot { flex: none; margin-top: 6px; }
   .hero-proof-txt, .expert-byline span { font-size: 13px !important; letter-spacing: .01em !important; line-height: 1.5 !important; text-align: left !important; }
 }
+
+/* LIST MARKERS (25 Oct 2026). Tailwind's preflight sets list-style:none on
+   every ul/ol, so prose lists across 30+ pages kept their indent and lost
+   their bullet, reading as stray indented text. Restored here at zero
+   specificity (:where), so any component that styles its own list still wins.
+   A list given a marker must also keep a left indent. */
+:where(main) :where(ul:not([class]), ul.space-y-2:not(.sa-arrows), ul.space-y-3, ul.cv-bullets, ul.sa-anat-notes) { list-style: disc outside; padding-left: 1.3em; }
+:where(main) :where(ol:not([class]), ol.space-y-2, ol.space-y-3) { list-style: decimal outside; padding-left: 1.5em; }
+:where(main) :where(ul:not([class]), ul.space-y-2:not(.sa-arrows), ul.space-y-3, ul.cv-bullets, ul.sa-anat-notes, ol:not([class]), ol.space-y-2, ol.space-y-3) > li::marker { color: #34d377; }
