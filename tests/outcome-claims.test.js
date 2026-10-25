@@ -32,7 +32,9 @@ const FORBID = [
   /\btypically see (worse|better|higher|lower)\b/i,
 ];
 // A sentence that names its source, or says the site publishes no figure.
-const UNLESS = [/\breported\b|\baccording to\b|\bpublished\b|\bsurvey\b|\bstudy\b/i, /\bwe publish no\b|\bwe do not publish\b|\bwe have not measured\b/i];
+// "reported" alone is not a source: "an increase in reported conversions"
+// slipped through on that word until 25 Oct 2026.
+const UNLESS = [/\breported (by|in|that)\b|\bas reported\b|\baccording to\b|\bpublished\b|\bsurvey\b|\bstudy\b/i, /\bwe publish no\b|\bwe do not publish\b|\bwe have not measured\b/i];
 
 function walk(dir, out = []) {
   if (!fs.existsSync(dir)) return out;
@@ -64,7 +66,8 @@ test('the patterns catch the sentences that were live on 21 Oct 2026', () => {
     'Most stores see measurable ROAS improvement within 14–21 days as the algorithm relearns with full data.',
     'stores that lost ground after January 13 2026 should see recovery within the first billing cycle.',
     'Stores that skip this week typically see worse productivity in Gorgias than in their old tool for 60+ days.',
+    'After CAPI Shield deployment most stores see an immediate increase in reported conversions in Meta Events Manager within 24–48 hours.',
   ];
-  for (const s of live) assert.ok(FORBID.some((re) => re.test(s)), s);
+  for (const s of live) assert.ok(FORBID.some((re) => re.test(s)) && !UNLESS.some((re) => re.test(s)), s);
   assert.ok(UNLESS.some((re) => re.test('Meta reported in April 2026 that advertisers saw lower cost per result.')));
 });
