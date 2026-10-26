@@ -1362,3 +1362,36 @@ numbered path in `BlogPost.astro`. Five hand-built Article nodes gained
   were indented with no marker. `global.css` (LIST MARKERS) restores them at
   zero specificity. A component that wants a bare list styles its own `ul`,
   or a list whose items begin with "→" carries `sa-arrows`.
+
+### 26 Oct 2026: full Google, Bing and Cloudflare audit; no technical blocker
+
+Read directly in the owner's browsers, not inferred:
+- **GSC:** 1 indexed, 141 not (123 "Crawled - currently not indexed",
+  validation failed again). Drill-down: every live page crawled between July
+  and 24 Oct, fetch successful. Indexing requested for 9 more pages (20 in
+  two days). Both sitemaps Success, 51.
+- **Bing:** `/capi-shield/` is "Discovered but not crawled" since 2 Aug, and
+  its **Live URL test says "URL can be indexed by Bing", no SEO issues**.
+  Crawl Control is Custom at maximum every hour; Block URLs empty;
+  Recommendations empty; sitemaps Success 51. Bing Site Explorer lists only
+  pre-August slashless URLs: Bingbot has not crawled the current URL set.
+- **Cloudflare (owner's Chrome "Browser 1"):** Bot Fight Mode off, AI
+  Labyrinth off, AI bot policies all Allow, Bot Preference Sync off,
+  Crawler Hints off. One custom rule (Skip for `/sitemap.xml`). Security
+  events over 7 days: every Googlebot/Bingbot-named block came from Google
+  Cloud ASNs (35.242.x, 35.246.x), i.e. spoofers; the one real Googlebot
+  (66.249.x, AS15169) was Skipped. Redirect rules 1-6 active, 7 (enforce
+  trailing slash) off; rules 4/5 are correctly parenthesised. No transform,
+  origin, cache, URL-rewrite or configuration rules. `/cdn-cgi/challenge-
+  platform/scripts/jsd/main` is injected into every page (JS detections);
+  harmless, and the source of the per-request bytes noted under Edge
+  freshness.
+- **Live headers:** 200, no `X-Robots-Tag`, robots meta index/follow,
+  self-canonical, `cf-cache-status: DYNAMIC`, robots.txt served unmodified.
+
+Conclusion: nothing on the site, Cloudflare or either webmaster tool
+prevents indexing. Both engines can fetch every page and choose not to
+index (Google) or not to crawl (Bing). Do not look for another technical
+cause without new evidence. Medium "Losing a Third of Its Conversions"
+(the last post with a loss figure in its title) was replaced with the
+server-side guide copy and canonicalised to it the same day.
