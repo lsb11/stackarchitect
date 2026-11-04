@@ -56,8 +56,10 @@ own timezone, with the reason attached. When a count looks wrong, filter the
 movement history to that variant and read every change from the opening
 balance onward.
 
-Moving off Stocky? Import your Stocky CSV export and those movements join the
-same ledger, so the history you built up is not lost.
+Moving off Stocky? Paste SKU and quantity rows from your Stocky export and
+StockLog sets each variant to that count, recorded in the ledger as a Stocky
+import. Your past Stocky movements are not imported: the ledger starts at
+install and builds from there.
 
 StockLog asks only for read access to your orders and products. It never
 changes your Shopify stock levels: Shopify stays the source of truth, and
@@ -76,9 +78,10 @@ Three, each a title and a line. Titles first, because they are what gets read.
 > A restocked refund adds the units back. A refund marked no-restock does not,
 > and units a cancellation already returned are never credited twice.
 
-**3. Your Stocky history, imported**
-> Bring your Stocky CSV export in and those movements sit in the same ledger
-> as the new ones, each with its reason and date.
+**3. Your Stocky counts in one paste**
+> Paste SKU and quantity rows from your Stocky export and every matching
+> variant is set to that count, recorded with its reason. Past Stocky
+> movements are not imported; the ledger starts at install.
 
 ## What it does not do
 
