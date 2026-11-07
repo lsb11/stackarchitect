@@ -81,7 +81,7 @@ All three can now take some Shopify actions without switching to the Shopify adm
 - the same questions recur (delivery times, returns, sizing, order status), so a knowledge base can answer many of them;
 - one or two people answer messages part-time.
 
-Start on the free plan to test whether chat and Lyro reduce your inbox. The [Tidio setup guide](/blog/tidio-for-shopify-complete-setup-guide/) covers writing the knowledge base Lyro answers from.
+Start on the [Tidio free plan](/go/tidio/?source=tidio-vs-gorgias-shopify-fit) to test whether chat and Lyro reduce your inbox. The [Tidio setup guide](/blog/tidio-for-shopify-complete-setup-guide/) covers writing the knowledge base Lyro answers from.
 
 **Gorgias fits when:**
 
@@ -89,7 +89,7 @@ Start on the free plan to test whether chat and Lyro reduce your inbox. The [Tid
 - one or more people spend a large part of their day on support;
 - answers often involve an order action: a refund, an address change, a replacement.
 
-Price it on your ticket count, including your busiest month, not your average. The [Gorgias review](/gorgias-shopify-guide/) covers choosing a tier.
+Price it on your ticket count, including your busiest month, not your average, then [start a Gorgias trial](/go/gorgias/?source=tidio-vs-gorgias-shopify-fit) on real messages. The [Gorgias review](/gorgias-shopify-guide/) covers choosing a tier.
 
 **Zendesk fits when:**
 
@@ -109,4 +109,4 @@ Because it is priced per agent, its cost is easiest to predict for a stable team
 
 Then trial the strongest candidate on real messages for two weeks. Every option here offers either a free plan or a free trial.
 
-Both the Tidio and Gorgias links on this site are affiliate links, so Stack Architect may earn a commission whichever you choose. The workload test above decides the recommendation, not which one pays. [Try Tidio free](/go/tidio/?source=tidio-vs-gorgias-shopify-n1) or [start a Gorgias trial](/go/gorgias/?source=tidio-vs-gorgias-shopify-verdict).
+Both the Tidio and Gorgias links on this site are affiliate links, so Stack Architect may earn a commission whichever you choose. The workload test above decides the recommendation, not which one pays.
