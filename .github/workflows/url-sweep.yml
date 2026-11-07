@@ -20,7 +20,7 @@ jobs:
             [ -z "$p" ] && continue
             base="${p%/}"
             for u in "https://stackarchitect.xyz$p" "https://www.stackarchitect.xyz$base" "https://stackarchitect.xyz$base"; do
-              out=$(curl -s -o /dev/null -L --max-redirs 5 --max-time 20 -w '%{http_code} %{num_redirects} %{url_effective}' "$u")
+              out=$(curl -s -o /dev/null -L --max-redirs 5 --max-time 20 -w '%{http_code} %{num_redirects} %{url_effective}' "$u" || true)
               code=${out%% *}
               if [ "$code" != "200" ]; then echo "BAD $out <- $u"; bad=$((bad+1)); fi
             done
