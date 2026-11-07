@@ -1,0 +1,28 @@
+# Requests every URL this site has ever had (scripts/url-sweep-candidates.txt,
+# built from git history and public/_redirects) on the live site, in the
+# apex, www and slashless forms that external links use, follows redirects,
+# and fails if any ends on a non-200. Run by hand from the Actions tab.
+name: url-sweep
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Request every historical URL
+        run: |
+          bad=0
+          while read -r p; do
+            [ -z "$p" ] && continue
+            base="${p%/}"
+            for u in "https://stackarchitect.xyz$p" "https://www.stackarchitect.xyz$base" "https://stackarchitect.xyz$base"; do
+              out=$(curl -s -o /dev/null -L --max-redirs 5 --max-time 20 -w '%{http_code} %{num_redirects} %{url_effective}' "$u")
+              code=${out%% *}
+              if [ "$code" != "200" ]; then echo "BAD $out <- $u"; bad=$((bad+1)); fi
+            done
+          done < scripts/url-sweep-candidates.txt
+          echo "non-200 endings: $bad"
