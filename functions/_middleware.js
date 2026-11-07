@@ -118,6 +118,13 @@ async function route(context) {
     }
   }
 
+  // /404 and /404/ looped: this adds the slash, then Pages strips it (it serves
+  // dist/404.html at /404). Serve the not-found page with a 404 status instead.
+  if (p === '/404' || p === '/404/') {
+    const page = await context.env.ASSETS.fetch(new URL('/404.html', url));
+    return new Response(page.body, { status: 404, headers: page.headers });
+  }
+
   if (!isApi && !isGo && !isFile && !p.endsWith('/')) {
     url.pathname = p + '/';
     changed = true;
