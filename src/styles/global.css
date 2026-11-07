@@ -873,7 +873,10 @@ main#main-content { min-width: 0; }
    visible attribution lives in the same region the Article schema describes.
    It used to be nested in the 860px footer block and inherited that block's
    width; this is that width, declared once rather than inlined 26 times. */
-.sa-byline-wrap { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+/* Doubled class: four pages ship a scoped `* { margin:0; padding:0 }` reset,
+   which Astro compiles to [data-astro-cid-x] (0,1,0) and which, coming later,
+   beat a single class and pinned this block to the left edge. */
+.sa-byline-wrap.sa-byline-wrap { max-width: 860px; margin: 0 auto; padding: 0 24px; }
 
 /* Calculators that work on numbers the visitor types cannot know what currency
    those numbers are in. Where the tool only adds or compares the visitor's own
@@ -1047,3 +1050,34 @@ pre, code, kbd, samp, pre *, code * { font-family: var(--font-code) !important; 
 :where(main) :where(ul:not([class]), ul.space-y-2:not(.sa-arrows), ul.space-y-3, ul.cv-bullets, ul.sa-anat-notes) { list-style: disc outside; padding-left: 1.3em; }
 :where(main) :where(ol:not([class]), ol.space-y-2, ol.space-y-3) { list-style: decimal outside; padding-left: 1.5em; }
 :where(main) :where(ul:not([class]), ul.space-y-2:not(.sa-arrows), ul.space-y-3, ul.cv-bullets, ul.sa-anat-notes, ol:not([class]), ol.space-y-2, ol.space-y-3) > li::marker { color: #34d377; }
+
+/* SHARED PAGE TOKENS AND BUTTONS (7 Nov 2026)
+   Most money pages declare these tokens and .btn/.btn-outline in their own
+   <style>. Five pages used them without declaring them (/apps/, the Gorgias
+   review, the attribution comparison, /stocky-alternative/ and the ultimate
+   guide), so their buttons rendered as plain text and their boxes had no
+   background or border. Declared here once, inside a layer: any layered rule
+   loses to unlayered page CSS, so a page that defines its own still wins. */
+@layer sa-defaults {
+  :root {
+    --g: #34d377; --g-dim: #15803d; --g-bg: rgba(52,211,119,.08); --g-border: rgba(52,211,119,.2);
+    --bg: #0c0f0d; --bg-2: #0f1311; --bg-3: #121614; --bg-4: #171c19;
+    --border: #222825; --border-2: #2f3733;
+    --text: #f2f5f3; --text-2: #b6c0ba; --text-3: #93a09a; --text-4: #7f8b85; --text-inv: #0c0f0d;
+    --red: #f08a8a; --red-bg: rgba(240,138,138,.07); --red-border: rgba(240,138,138,.18);
+    --rose: #f08a8a; --rose-bg: rgba(240,138,138,.07); --rose-border: rgba(240,138,138,.18);
+    --sky: #8ccfe8; --sky-bg: rgba(140,207,232,.07); --sky-border: rgba(140,207,232,.18);
+    --amber: #f5b64d; --amber-bg: rgba(245,182,77,.06); --amber-border: rgba(245,182,77,.2);
+    --vio: #c3b8ef; --vio-bg: rgba(195,184,239,.07); --vio-border: rgba(195,184,239,.2);
+    --mono: "JetBrains Mono", ui-monospace, monospace; --sans: "Inter", -apple-system, sans-serif;
+    --font: "Inter", -apple-system, sans-serif;
+    --radius: 6px; --shadow-g: 0 8px 28px rgba(52,211,119,.3);
+    --fs-micro: 11px; --fs-sm: 13px; --fs-md: 15px; --fs-body: 17px; --fs-lg: 22px; --fs-xl: 34px;
+  }
+  body { background: var(--bg); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-family: var(--sans); font-size: var(--fs-md); font-weight: 700; text-decoration: none; letter-spacing: -.01em; padding: 16px 32px; border-radius: var(--radius); border: none; cursor: pointer; background: var(--g); color: var(--text-inv); transition: background .2s, transform .15s, box-shadow .2s; min-height: 52px; }
+  .btn:hover { background: #45e28a; transform: translateY(-2px); box-shadow: var(--shadow-g); }
+  .btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--sans); font-size: var(--fs-md); font-weight: 600; text-decoration: none; padding: 15px 28px; border-radius: var(--radius); border: 1.5px solid var(--border-2); background: transparent; color: var(--text-2); transition: border-color .2s, color .2s, background .2s; min-height: 52px; }
+  .btn-outline:hover { border-color: var(--g); color: var(--g); background: var(--g-bg); }
+  @media (max-width: 600px) { .btn, .btn-outline { width: 100%; } }
+}

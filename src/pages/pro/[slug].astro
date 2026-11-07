@@ -167,15 +167,16 @@ const quote = PRESS[0];
 
       {stockyLine && <div class="urgency" style="margin-bottom:22px;">{stockyLine}</div>}
 
-      <div class="price-row"><div class="price-main">{single}</div></div>
-      <div class="price-note">this blueprint on its own · one-time · no subscription</div>
-
+      {/* Price sits in the button and the line under it, not in a 60px block of
+          its own above it: that block pushed the buy button below a laptop's
+          first screen (777px on a 1280x800 viewport, 7 Nov 2026). */}
       <div class="hero-ctas">
         {heroHref
           ? <a href={heroHref} class="btn pulse" data-cta={`single_${slug}_hero`}>Get {name} — {single} <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a>
           : <button class="btn" type="button" disabled aria-disabled="true">Coming this week</button>
         }
       </div>
+      <div class="price-note">{single} for this blueprint on its own · one-time · no subscription</div>
 
       <p class="guarantee-line">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -481,7 +482,7 @@ const quote = PRESS[0];
 
   /* HERO */
   .hero {
-    padding: 64px 24px 56px; text-align: center; border-bottom: 1px solid var(--border);
+    padding: 44px 24px 48px; text-align: center; border-bottom: 1px solid var(--border);
     background:
       repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.015) 40px),
       repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,.015) 40px),
@@ -506,7 +507,7 @@ const quote = PRESS[0];
   }
   .price-row { display: flex; align-items: baseline; justify-content: center; gap: 16px; margin-bottom: 8px; }
   .price-main { font-family: var(--mono); font-size: 60px; font-weight: 800; color: var(--text); letter-spacing: -.04em; line-height: 1; }
-  .price-note { font-family: var(--mono); font-size: 13px; color: var(--text-4); margin-bottom: 22px; }
+  .price-note { font-family: var(--mono); font-size: 13px; color: var(--text-3); margin: 0 0 14px; }
 
   /* The secondary CTA is deliberately quiet: it is an honesty signal, not a
      competing offer, and it must never out-shout the button above it. */
