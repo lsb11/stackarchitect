@@ -353,8 +353,8 @@ const kitSchema = {
 <div class="inner-sm">
   <div class="sec-head">
     <span class="tag" style="margin-bottom:16px;display:inline-flex;"><span class="dot"></span>Free diagnostic · 30 seconds · No signup</span>
-    <h2 id="scanner-h">Find Your <span style="color:var(--g)">Exact Profit Leak</span> First</h2>
-    <p>Select every situation that applies. We calculate your exact monthly loss and build a personalised deployment plan: free, no signup, no credit card.</p>
+    <h2 id="scanner-h">Find the <span style="color:var(--g)">Paid Apps</span> You Can Replace</h2>
+    <p>Select every situation that applies. Each shows the top list price of the paid app that does that job, read on the vendor's own page, and you get a deployment plan for the free route: no signup, no credit card.</p>
   </div>
   <div class="scan-card">
     <div id="sc-scan">
@@ -373,7 +373,7 @@ const kitSchema = {
                 {p.badge && <span class="pain-badge">{p.badge}</span>}
               </div>
             </div>
-            <div class="pain-cost">~${p.cost}/mo</div>
+            <div class="pain-cost">up to ${p.cost}/mo</div>
           </button>
         ))}
       </div>
@@ -398,7 +398,7 @@ const kitSchema = {
     <div class="plan-step" id="sc-plan">
       <div class="plan-hd">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;"><span class="dot"></span><span style="font-family:var(--mono);font-size:var(--fs-micro);font-weight:700;color:var(--g);letter-spacing:.15em;text-transform:uppercase;">Your personalised deployment plan</span></div>
-        <h3 id="sc-plan-h">You're losing ~$0/mo</h3>
+        <h3 id="sc-plan-h">Paid apps for this: up to $0/mo</h3>
         <p>Deploy in this order: each needs no code and costs nothing.</p>
       </div>
       <div class="plan-step0">
@@ -1121,7 +1121,7 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
     <p>The $0 Automation Stack is a collection of free tools that collectively replace paid Shopify apps listed at {MO_RANGE} across the seven categories in the table above, on the vendors' own prices read on 25 September 2026. Each tool uses a combination of Make.com's free automation tier, Google Sheets, and Systeme.io's free plan to perform the same job as the paid alternative (server-side event delivery, stock logging, email automation) without a monthly subscription, developer cost, or code. It is not feature-for-feature parity: the paid tools carry support, dashboards, and volume headroom the free tiers do not, and Make.com's free plan caps at 1,000 credits and 2 active scenarios. Store owners who want the pre-built version can purchase the <a href="/pro/">Complete Kit for {kitPrice}</a>: four ready-to-import Make.com JSON blueprints that deploy without code.</p>
 
     <h3>Why Replace Shopify Paid Apps With Free Automation?</h3>
-    <p>The core problem most Shopify stores face is that the app ecosystem is structured around recurring revenue. Tracking apps charge $145–$650/month for server-side conversion data. Inventory apps such as Prediko charge $49+/month for forecasting and purchase orders. Email platforms like Klaviyo charge $20+/mo for email automations that most stores never use at full capability. <strong>The $0 stack covers the same jobs (server-side tracking, live inventory, email automation, TikTok Events API, and real-time P&amp;L) using free tiers of tools built for automation at scale.</strong> Where it is worse than the paid app, we say so on the tool's own page. See the <a href="/stack/">full recommended stack: 7 free tools vetted and ranked</a>, or use the <a href="/shopify-app-cost-calculator/">App Cost Calculator</a> to see your exact recoverable spend.</p>
+    <p>The core problem most Shopify stores face is that the app ecosystem is structured around recurring revenue. Tracking apps charge $145–$650/month for server-side conversion data. Inventory apps such as Prediko charge $49+/month for forecasting and purchase orders. Email platforms like Klaviyo charge $20+/mo for email automations that most stores never use at full capability. <strong>The $0 stack covers the same jobs (server-side tracking, live inventory, email automation, TikTok Events API, and real-time P&amp;L) using free tiers of tools built for automation at scale.</strong> Where it is worse than the paid app, we say so on the tool's own page. See the <a href="/stack/">full recommended stack: 7 free tools vetted and ranked</a>, or use the <a href="/shopify-app-cost-calculator/">App Cost Calculator</a> to total what your own app bill could drop by.</p>
 
     <h3>Free Shopify Tracking: How CAPI Shield Replaces Elevar and Triple Whale</h3>
     <p><a href="/capi-shield/">CAPI Shield</a> uses Make.com to route Shopify order webhooks directly to Meta's Conversions API server-to-server. Its Google branch cannot match Shopify orders as shipped. iOS restrictions, ad blockers, and cookie expiry cannot intercept server-side signals. Browser-only tracking loses purchase events to iOS ATT, Safari ITP, ad blockers and consent rejection, and server-side delivery is not subject to that loss. <a href="/how-we-test/#the-20-40-figure">We publish no figure for how much is lost</a>: the share is set by a store's own traffic mix and consent rate. How much any one store gains is measurable in your own Meta Events Manager as Additional Conversions Reported. <a href="/shopify-attribution-tools-compared/">Elevar charges $225/mo</a> and delivers events by the same server-to-server mechanism. <strong>We have not run CAPI Shield and Elevar side by side on the same store, so we make no claim about how their Event Match Quality compares.</strong> What we can say is what CAPI Shield sends: hashed email, phone, name, IP and user-agent, which is the parameter set Meta scores EMQ against. <a href="/shopify-attribution-tools-compared/">Triple Whale uses GMV-based pricing that scales with your store's revenue</a> for attribution data that server-side tracking provides natively. Estimate your current EMQ with the <a href="/meta-emq-score-estimator/">Meta EMQ Score Estimator</a>.</p>
@@ -1331,13 +1331,13 @@ details.faq-item-c[open] summary .faq-ico::before{transform:rotate(225deg);top:6
     if (!sel.length) return;
     var tot = 0, items = [];
     P.forEach(function(p) { if (sel.indexOf(p.id) !== -1) { tot += p.cost; items.push(p); } });
-    var ph = document.getElementById('sc-plan-h'); if(ph) ph.textContent = 'You are losing ~$' + tot + '/mo';
+    var ph = document.getElementById('sc-plan-h'); if(ph) ph.textContent = 'Paid apps for these jobs list at up to $' + tot + '/mo';
     var pi = document.getElementById('sc-plan-items');
     if(pi) {
       // The href is set as a DOM property, not concatenated into the markup:
       // a crawler reading this script took the string literal as a link.
       pi.innerHTML = items.map(function(p, i) {
-        return '<div class="plan-item"><div class="plan-num">' + (i + 1) + '</div><div><div class="plan-sol">' + p.sol + '</div><div class="plan-fix">Fixes: ' + p.label + '</div><div class="plan-rec">Recovers ~$' + p.cost + '/mo → <a class="plan-deploy" style="color:var(--g)">Deploy now →</a></div></div></div>';
+        return '<div class="plan-item"><div class="plan-num">' + (i + 1) + '</div><div><div class="plan-sol">' + p.sol + '</div><div class="plan-fix">Fixes: ' + p.label + '</div><div class="plan-rec">Replaces apps listed at up to $' + p.cost + '/mo → <a class="plan-deploy" style="color:var(--g)">Deploy now →</a></div></div></div>';
       }).join('');
       pi.querySelectorAll('a.plan-deploy').forEach(function(a, i) { a.href = items[i].url; });
     }
