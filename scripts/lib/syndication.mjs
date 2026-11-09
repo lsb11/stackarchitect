@@ -42,14 +42,14 @@ export const SITE = 'https://stackarchitect.xyz';
 // click later, through a link this site discloses.
 export const GO_TO_PAGE = {
   make: '/make-com-shopify/',
-  tidio: '/blog/tidio-for-shopify-complete-setup-guide/',
-  'tidio-ai': '/blog/tidio-for-shopify-complete-setup-guide/',
-  'tidio-pricing': '/blog/tidio-for-shopify-complete-setup-guide/',
+  tidio: '/blog/tidio-vs-gorgias-shopify/',
+  'tidio-ai': '/blog/tidio-vs-gorgias-shopify/',
+  'tidio-pricing': '/blog/tidio-vs-gorgias-shopify/',
   gorgias: '/gorgias-shopify-guide/',
   systeme: '/replace-klaviyo-free/',
   getresponse: '/replace-klaviyo-free/',
   beehiiv: '/best-free-shopify-apps-2026/',
-  workspace: '/blog/when-to-upgrade-free-make-google-workspace/',
+  workspace: '/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/',
 };
 
 // Withdrawn claims that are not numbers, so no claims.json `forbid` rule can

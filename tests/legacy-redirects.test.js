@@ -79,7 +79,7 @@ test('generated legacy map is in sync with public/_redirects', () => {
   });
 });
 
-test('the 51 live pages resolve in at most one 301, to their canonical URL', async (t) => {
+test('the 36 sitemap pages resolve in at most one 301, to their canonical URL', async (t) => {
   assert.ok(sitemapPaths.length > 0, 'run `npm run build` first — dist/sitemap-0.xml is missing');
   // 62 -> 63 on 23 Sep 2026: /stocklog/, the second recorded freeze exception
   // (see CLAUDE.md, Hard rules). Moving this number is the record of a new URL.
@@ -97,7 +97,11 @@ test('the 51 live pages resolve in at most one 301, to their canonical URL', asy
   // 50 -> 51 on 28 Sep 2026: freeze exception #5, "New tool page: Meta CAPI
   // payload validator, 28 Sep 2026" (/meta-capi-payload-validator/). No
   // existing URL changed.
-  assert.equal(sitemapPaths.length, 51, 'sitemap URL count changed: the URL set is frozen');
+  //
+  // 51 -> 36 on 9 Nov 2026: fifteen general guides held out of the index
+  // (noindex-routes.json `held`) so Google judges the site on its original
+  // work. They still return 200; no URL changed.
+  assert.equal(sitemapPaths.length, 36, 'sitemap URL count changed');
 
   let checked = 0;
   for (const path of sitemapPaths) {

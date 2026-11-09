@@ -1,4 +1,5 @@
 ---
+import { isNoindexRoute } from '../data/noindexRoutes';
 import { MISSION, MISSION_ONE_LINE } from '../data/mission';
 import { KEY_FACTS, SOURCES as FACT_SOURCES, factsFor } from '../data/keyFacts';
 import '../styles/global.css';
@@ -39,7 +40,7 @@ const {
   ogDescription,
   ogImage,
   schema,
-  noindex = false,
+  noindex: _noindexProp = false,
   pageType = 'website',
   updatedDate,
   publishDate,
@@ -178,6 +179,8 @@ const webSiteSchema = {
 // URL path on any indexable page that doesn't already declare one —
 // checked recursively so @graph-embedded breadcrumbs aren't duplicated.
 const canonicalPath = new URL(canonical).pathname;
+// A page is noindex when it says so or when src/data/noindex-routes.json lists it.
+const noindex = _noindexProp || isNoindexRoute(canonicalPath);
 
 // ── Schema collision guards ──────────────────────────────────────────
 // Both guards used to inspect only the `schema` prop. Almost every page

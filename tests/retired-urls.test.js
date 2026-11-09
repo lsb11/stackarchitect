@@ -19,7 +19,7 @@ const PRIMARY = 'https://stackarchitect.xyz';
 
 // Merged into their cluster primary. Sources are the slashed canonical forms.
 export const RETIRED = {
-  '/tidio-shopify-guide/': '/blog/tidio-for-shopify-complete-setup-guide/',
+  '/tidio-shopify-guide/': '/blog/tidio-vs-gorgias-shopify/',
   '/blog/how-to-fix-shopify-google-ads-conversion-tracking-2026/': '/shopify-google-ads-conversion-tracking/',
   '/blog/how-to-fix-service-invoked-too-many-times-in-google-apps-script/':
     '/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/',

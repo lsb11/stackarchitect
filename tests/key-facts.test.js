@@ -45,7 +45,8 @@ test('every route with facts renders them', { skip: built ? false : 'run npm run
   const sitemap = readFileSync('dist/sitemap-0.xml', 'utf8');
   const routeBlocks = [...src.matchAll(/'(\/[a-z0-9\-\/]*\/)'/g)].map((m) => m[1]);
   for (const r of new Set(routeBlocks)) {
-    assert.ok(sitemap.includes(`https://stackarchitect.xyz${r}</loc>`), `${r} is not a sitemap page`);
+    const held = JSON.parse(readFileSync('src/data/noindex-routes.json', 'utf8')).held;
+    assert.ok(sitemap.includes(`https://stackarchitect.xyz${r}</loc>`) || held.includes(r), `${r} is not a sitemap page`);
     const html = readFileSync(`dist${r}index.html`, 'utf8');
     assert.ok(html.includes('id="sa-keyfacts-h"'), `${r} lists facts but does not render <KeyFacts />`);
     const main = html.match(/<main[\s\S]*<\/main>/);

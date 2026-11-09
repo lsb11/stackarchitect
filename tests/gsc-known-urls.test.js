@@ -18,7 +18,9 @@ const SITEMAP = fs.existsSync('dist/sitemap-0.xml')
   ? new Set([...fs.readFileSync('dist/sitemap-0.xml', 'utf8').matchAll(/<loc>https:\/\/stackarchitect\.xyz([^<]*)<\/loc>/g)].map((m) => m[1]))
   : null;
 // Deliberately indexable pages outside the sitemap (see CLAUDE.md).
-const ALSO_LIVE = new Set(['/sitemap-page/']);
+// Held guides (noindex-routes.json `held`) are live pages kept out of the
+// index on purpose; a known URL landing on one has not broken.
+const ALSO_LIVE = new Set(['/sitemap-page/', ...JSON.parse(fs.readFileSync('src/data/noindex-routes.json', 'utf8')).held]);
 
 function land(path) {
   const hit = resolveLegacy(path);

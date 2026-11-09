@@ -14,8 +14,8 @@ Measured against the build on 2026-09-28:
 |---|---|
 | HTML pages built | 122 |
 | `noindex` pages | 69 (54 × `/apps/*`, 4 × `/pro/*/`, 4 × `/pro/*/success/`, 3 × `/embed/*`, the Klaviyo migration calculator, privacy/terms/refund) |
-| **Indexable pages** | **53** |
-| **URLs in sitemap-0.xml** | **51** |
+| **Indexable pages** | **38** (53 until 9 Nov 2026) |
+| **URLs in sitemap-0.xml** | **36** (51 until 9 Nov 2026) |
 
 The two indexable pages absent from the sitemap are `/404.html` and
 `/sitemap-page/`, both deliberate. Reproduce the whole table with
@@ -1306,6 +1306,30 @@ claims. A category grid near the top of `/best-free-shopify-apps-2026/`
 (counts from `categories`). Countdown posts ("Six weeks out …") get the
 numbered path in `BlogPost.astro`. Five hand-built Article nodes gained
 `image`.
+
+
+### 9 Nov 2026: fifteen general guides held out of the index (owner's decision)
+
+GSC on 6 Nov: 1 indexed, 125 not (107 "Crawled - currently not indexed").
+The 12-month Performance export showed 96% of all impressions (20,316 of
+21,000) on the pre-April www slashless URLs, but those peaked at 9 clicks in
+March and 6 in April, desktop CTR 0.03%: machine retrieval. A rollback to www
+was researched and **rejected**: the old URLs had 404ed for three months
+before the 23 Jul redirects, so there was no move to reverse, and the upside
+was about 10 visitors a month. Do not reopen it without new evidence.
+
+What was done instead, on Mueller's July 2026 statement that sites Google
+doubts get fewer pages indexed, and Google's Oct 2026 helpful-content wording
+("citing sources does not make a summary original"): fifteen general guides
+that restate vendor documentation are `noindex, follow` and out of the
+sitemap, listed under `held` in `src/data/noindex-routes.json`. They return
+200, stay linked, and Base.astro applies the list, so no page carries a prop.
+Old URLs that redirected to them now redirect to the nearest indexable page
+(29 rules in `public/_redirects`). The guard's noindex-link rule exempts
+`held`. To return a guide to the index, remove it from both arrays; give it
+first-hand material first (`docs/EVIDENCE-CHECKLIST.md`).
+
+Judge this by the indexed-to-known ratio over 6-8 weeks, not single counts.
 
 ### Highest-leverage open work
 
