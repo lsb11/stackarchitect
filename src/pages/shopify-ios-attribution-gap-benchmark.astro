@@ -599,14 +599,17 @@ const tocHeadings = [
         els.result.style.display = 'block';
         els.resultGap.textContent = gapPct + '%';
         
-        if (gapPct >= 15) {
-          els.resultMsg.innerHTML = `You are losing approximately <strong>${gapPct}%</strong> of your purchase conversions. This is severely artificially deflating your ROAS and causing ad platforms to misallocate your budget.`;
-        } else if (gapPct > 0) {
-          els.resultMsg.innerHTML = `You are losing approximately <strong>${gapPct}%</strong> of your purchase conversions. While lower than average, this still degrades ROAS accuracy over time.`;
+        // Report the submitter's own gap, and nothing it does not show. The gap
+        // between Shopify orders and Meta-reported purchases mixes blocked
+        // browser events with attribution-window and click-versus-view rules,
+        // and this benchmark publishes no average until it has N >= 10, so the
+        // message makes no "lost conversions" or "below average" claim.
+        if (gapPct > 0) {
+          els.resultMsg.innerHTML = `Meta reported <strong>${gapPct}%</strong> fewer purchases than Shopify recorded for the same period. Part of a gap like this comes from attribution windows and how Meta counts views and clicks; the part caused by a blocked browser pixel is what a server-side Purchase event can close. Check Events Manager after setting one up to see how much of yours moves.`;
         } else {
-          els.resultMsg.innerHTML = `Perfect matching. You are losing <strong>0%</strong> of your conversions. Your tracking is fully intact.`;
+          els.resultMsg.innerHTML = `Meta reported as many purchases as Shopify recorded for this period, so there is no gap to explain in these figures.`;
         }
-        
+
         // Share text carries the submitter's own figure and nothing else — no
         // store name, no URL, no order counts that could identify a business.
         // The gap percentage alone is the interesting number and the safe one.
