@@ -53,6 +53,7 @@ import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { parse } from 'parse5';
 import { dashesInScript, scriptBlocks, dashesInJson } from './lib/script-string-dashes.mjs';
+const HELD = new Set(JSON.parse(readFileSync(new URL('../src/data/noindex-routes.json', import.meta.url), 'utf8')).held || []);
 
 export const CAPS = {
   // Affiliate CTA buttons or blocks (a /go/ or rel=sponsored link styled as a
@@ -409,7 +410,11 @@ export function check({ pages, sitemapPaths, redirects, builtPaths }) {
       if (!target.endsWith('/')) { fail('internal-link', path, `${href} has no trailing slash`); continue; }
       if (isSource(redirects, target)) { fail('internal-link', path, `${href} is a redirect source`); continue; }
       if (builtPaths && !builtPaths.has(target)) { fail('internal-link', path, `${href} is not a built page`); continue; }
-      const exempt = LEGAL.has(target) || (path === '/pro/' && target.startsWith('/pro/'));
+      // Routes in src/data/noindex-routes.json are held out of the index on
+      // purpose (9 Nov 2026: general guides held back so Google judges the
+      // site on its original work). They stay live for readers, so linking
+      // them is intended; noindex, follow lets the links be followed.
+      const exempt = LEGAL.has(target) || (path === '/pro/' && target.startsWith('/pro/')) || HELD.has(target);
       if (pages[target]?.noindex && !exempt) fail('internal-link', path, `${href} points at a noindex page`);
     }
     if ((p.emDashes || []).length) fail('em-dash', path, `${p.emDashes.length} em dash(es), e.g. "${p.emDashes[0]}"`);

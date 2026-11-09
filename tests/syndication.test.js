@@ -83,12 +83,12 @@ test('a retired canonical, a retracted title and a cloak are all fixed in one pl
 
 test('--minimal keeps a clean body and only repairs links', { skip: needsBuild }, () => {
   const post = {
-    title: 'Tidio for Shopify', canonical: `${SITE}/blog/tidio-for-shopify-complete-setup-guide/`,
+    title: 'Tidio vs Gorgias', canonical: `${SITE}/blog/tidio-vs-gorgias-shopify/`,
     body: 'Install it [here](https://stackarchitect.xyz/go/tidio).',
   };
   const plan = planPost(post, state, { minimal: true });
   assert.deepEqual(plan.actions.map((a) => a.type), ['links']);
-  assert.match(applyPlan(post, plan, state).body, /blog\/tidio-for-shopify-complete-setup-guide\//);
+  assert.match(applyPlan(post, plan, state).body, /blog\/tidio-vs-gorgias-shopify\//);
 });
 
 test('an original article with a clean body is left alone', () => {

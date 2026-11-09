@@ -14,12 +14,12 @@
 export const LEGACY_RULES = [
   {
     "from": "/tidio-shopify-guide",
-    "to": "/blog/tidio-for-shopify-complete-setup-guide/",
+    "to": "/blog/tidio-vs-gorgias-shopify/",
     "status": 301
   },
   {
     "from": "/tidio-shopify-guide/",
-    "to": "/blog/tidio-for-shopify-complete-setup-guide/",
+    "to": "/blog/tidio-vs-gorgias-shopify/",
     "status": 301
   },
   {
@@ -104,22 +104,22 @@ export const LEGACY_RULES = [
   },
   {
     "from": "/stocky-export-guide",
-    "to": "/blog/shopify-stocky-data-export-before-shutdown/",
+    "to": "/stocky-alternative/",
     "status": 301
   },
   {
     "from": "/stocky-export-guide/",
-    "to": "/blog/shopify-stocky-data-export-before-shutdown/",
+    "to": "/stocky-alternative/",
     "status": 301
   },
   {
     "from": "/blog/how-to-bypass-ios-privacy-restrictions-in-shopify-ads/",
-    "to": "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/",
+    "to": "/blog/shopify-meta-roas-dropped-2026-fix/",
     "status": 301
   },
   {
     "from": "/blog/how-to-fix-shopify-conversion-tracking-after-ios-14/",
-    "to": "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/",
+    "to": "/blog/shopify-meta-roas-dropped-2026-fix/",
     "status": 301
   },
   {
@@ -129,17 +129,17 @@ export const LEGACY_RULES = [
   },
   {
     "from": "/blog/how-to-track-shopify-inventory-in-google-sheets/",
-    "to": "/blog/the-ultimate-guide-to-shopify-inventory-management/",
+    "to": "/shopify-google-sheets-automation/",
     "status": 301
   },
   {
     "from": "/blog/automate-shopify-inventory-operations-without-apps/",
-    "to": "/blog/the-ultimate-guide-to-shopify-inventory-management/",
+    "to": "/stocky-alternative/",
     "status": 301
   },
   {
     "from": "/blog/shopify-inventory-management-without-apps-automate-your-workflow-for-0/",
-    "to": "/blog/the-ultimate-guide-to-shopify-inventory-management/",
+    "to": "/stocky-alternative/",
     "status": 301
   },
   {
@@ -294,17 +294,17 @@ export const LEGACY_RULES = [
   },
   {
     "from": "/best-free-ai-tools-shopify-2026",
-    "to": "/best-ai-tools-shopify/",
+    "to": "/best-free-shopify-apps-2026/",
     "status": 301
   },
   {
     "from": "/best-free-ai-tools-shopify-2026/",
-    "to": "/best-ai-tools-shopify/",
+    "to": "/best-free-shopify-apps-2026/",
     "status": 301
   },
   {
     "from": "/blog/automate-shopify-inventory-operations-without-apps",
-    "to": "/blog/the-ultimate-guide-to-shopify-inventory-management/",
+    "to": "/stocky-alternative/",
     "status": 301
   },
   {
@@ -344,12 +344,12 @@ export const LEGACY_RULES = [
   },
   {
     "from": "/blog/how-to-bypass-ios-privacy-restrictions-in-shopify-ads",
-    "to": "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/",
+    "to": "/blog/shopify-meta-roas-dropped-2026-fix/",
     "status": 301
   },
   {
     "from": "/blog/how-to-fix-shopify-conversion-tracking-after-ios-14",
-    "to": "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/",
+    "to": "/blog/shopify-meta-roas-dropped-2026-fix/",
     "status": 301
   },
   {
@@ -374,7 +374,7 @@ export const LEGACY_RULES = [
   },
   {
     "from": "/blog/how-to-track-shopify-inventory-in-google-sheets",
-    "to": "/blog/the-ultimate-guide-to-shopify-inventory-management/",
+    "to": "/shopify-google-sheets-automation/",
     "status": 301
   },
   {
@@ -394,7 +394,7 @@ export const LEGACY_RULES = [
   },
   {
     "from": "/blog/shopify-inventory-management-without-apps-automate-your-workflow-for-0",
-    "to": "/blog/the-ultimate-guide-to-shopify-inventory-management/",
+    "to": "/stocky-alternative/",
     "status": 301
   },
   {
@@ -454,22 +454,22 @@ export const LEGACY_RULES = [
   },
   {
     "from": "/fix-shopify-conversion-tracking",
-    "to": "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/",
+    "to": "/blog/shopify-meta-roas-dropped-2026-fix/",
     "status": 301
   },
   {
     "from": "/fix-shopify-conversion-tracking-2026",
-    "to": "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/",
+    "to": "/blog/shopify-meta-roas-dropped-2026-fix/",
     "status": 301
   },
   {
     "from": "/fix-shopify-conversion-tracking-2026/",
-    "to": "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/",
+    "to": "/blog/shopify-meta-roas-dropped-2026-fix/",
     "status": 301
   },
   {
     "from": "/fix-shopify-conversion-tracking/",
-    "to": "/blog/how-to-fix-shopify-conversion-tracking-after-ios-updates/",
+    "to": "/blog/shopify-meta-roas-dropped-2026-fix/",
     "status": 301
   },
   {
@@ -484,12 +484,12 @@ export const LEGACY_RULES = [
   },
   {
     "from": "/free-shopify-automation-stack",
-    "to": "/shopify-automation-guides/",
+    "to": "/",
     "status": 301
   },
   {
     "from": "/free-shopify-automation-stack/",
-    "to": "/shopify-automation-guides/",
+    "to": "/",
     "status": 301
   },
   {
@@ -644,12 +644,12 @@ export const LEGACY_RULES = [
   },
   {
     "from": "/shopify-optimization-guides",
-    "to": "/shopify-automation-guides/",
+    "to": "/ultimate-shopify-automation-guide/",
     "status": 301
   },
   {
     "from": "/shopify-optimization-guides/",
-    "to": "/shopify-automation-guides/",
+    "to": "/ultimate-shopify-automation-guide/",
     "status": 301
   },
   {
@@ -674,12 +674,12 @@ export const LEGACY_RULES = [
   },
   {
     "from": "/shopify-stocky-export",
-    "to": "/blog/shopify-stocky-data-export-before-shutdown/",
+    "to": "/stocky-alternative/",
     "status": 301
   },
   {
     "from": "/shopify-stocky-export/",
-    "to": "/blog/shopify-stocky-data-export-before-shutdown/",
+    "to": "/stocky-alternative/",
     "status": 301
   },
   {
@@ -1254,17 +1254,17 @@ export const LEGACY_RULES = [
   },
   {
     "from": "/faq/*",
-    "to": "/shopify-automation-guides/",
+    "to": "/",
     "status": 301
   },
   {
     "from": "/faq",
-    "to": "/shopify-automation-guides/",
+    "to": "/",
     "status": 301
   },
   {
     "from": "/faq/",
-    "to": "/shopify-automation-guides/",
+    "to": "/",
     "status": 301
   },
   {
