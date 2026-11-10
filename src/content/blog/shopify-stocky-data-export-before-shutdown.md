@@ -185,6 +185,6 @@ That single action preserves your most valuable Stocky data. Everything else (de
 
 **If Stocky no longer opens,** rather more is reconstructible than most people assume: current stock levels, order history, products and customers all live in Shopify and were never at risk. The [Stocky recovery path](/stocky-alternative/) covers what survives, what is genuinely gone, and the order to rebuild it in.
 
-[Deploy Stocky Swap in 4 minutes →](/stocky-swap/)
+[See the free Stocky Swap setup →](/stocky-swap/)
 
 

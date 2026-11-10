@@ -21,8 +21,8 @@
  * Why UNVERIFIED exists rather than FAIL: on 25 Sep 2026 make.com answered
  * every scripted request with a 403 challenge (cf-mitigated: challenge) while
  * a real browser reached the sign-up page with pc=techie123 intact, and
- * referworkspace.app.goo.gl returns a 200 page that forwards in JavaScript to
- * workspace.google.com/landing/partners/referral/…&utm_content=NSRLIO3. A
+ * the Workspace referral link (then referworkspace.app.goo.gl) forwarded in
+ * JavaScript. A
  * monitor that always fails on those two teaches you to ignore it. Check them
  * by hand in a browser when the script reports them.
  *
@@ -60,7 +60,10 @@ export const TRACKING = {
   tidio:           PARTNERSTACK,
   'tidio-ai':      PARTNERSTACK,
   'tidio-pricing': PARTNERSTACK,
-  workspace:       { jsHop: 'lands on workspace.google.com/landing/partners/referral with utm_content=NSRLIO3' },
+  // Since 10 Nov 2026 an Impact advocate link (Google Workspace Referral
+  // Program). Its domain disallows robots and the referral is held in Impact's
+  // redirect, so a script cannot confirm the landing page: check it by hand.
+  workspace:       { jsHop: 'goes through sharegoogleworkspace.advocate.impact.com to a workspace.google.com sign-up page' },
 };
 
 /** Pure verdict from what the fetch saw; exported for the tests. */

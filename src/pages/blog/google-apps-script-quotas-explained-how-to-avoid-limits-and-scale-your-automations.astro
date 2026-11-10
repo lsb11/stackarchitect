@@ -245,6 +245,13 @@ const datasetSchema = {
 
   <Disclosure />
 
+  {/* The decision point for a Workspace upgrade is the table above, so the
+      link sits here; the figures are the table's own (Google, 24 Sep 2026). */}
+  <p class="workspace-note">
+    <strong>Running out of daily budget?</strong> Trigger runtime, email recipients and URL Fetch calls are higher on a Google Workspace account (6 hours, 1,500 and 100,000 a day). The 6-minute limit on one execution is the same on both, so Workspace fixes a script that runs out of daily quota, not one that times out mid-run.
+    <a href="/go/workspace/?source=quotas-table" target="_blank" rel="sponsored nofollow noopener">See Google Workspace plans</a>
+  </p>
+
   <div class="callout" style="margin-bottom:28px;">
     <span class="label">If your automation just stopped mid-run</span>
     <p>You have hit a quota limit. Here is exactly which one and how to fix it: free, no upgrade required, works at any order volume.</p>
@@ -561,7 +568,7 @@ function processOrders() {
   </table>
   </div>
 
-  <p>If your quota errors are tied to <strong>Shopify order volume</strong> (particularly inventory sync or order logging workflows) the <a href="https://stackarchitect.xyz/stocky-swap/">Stocky Swap free replacement</a> routes every order through Make.com directly to Google Sheets, bypassing Apps Script execution entirely. No quota ceiling, no 6-minute limit, no document create cap. <a href="https://stackarchitect.xyz/stocky-swap/">Deploy free in 4 minutes &rarr;</a></p>
+  <p>If your quota errors are tied to <strong>Shopify order volume</strong> (particularly inventory sync or order logging workflows) the <a href="https://stackarchitect.xyz/stocky-swap/">Stocky Swap free replacement</a> routes every order through Make.com directly to Google Sheets, outside Apps Script entirely, so its quotas and the 6-minute limit no longer apply; Make.com counts credits instead, and its free plan includes 1,000 a month. <a href="https://stackarchitect.xyz/stocky-swap/">See the free Stocky Swap setup &rarr;</a></p>
 
   <h2 id="will-i-hit">Will Your Script Hit a Quota? Work Out Which Ceiling Binds First</h2>
   <p>
@@ -1284,4 +1291,6 @@ a{text-decoration:none;}
 @media(max-width:850px){
   .dropdown.active .dropdown-menu{display:flex;}
 }
+  .workspace-note { font-size: 15px; line-height: 1.7; color: var(--text-2, #b6c0ba); border-left: 3px solid var(--accent, #34d377); padding: 10px 14px; margin: 0 0 24px; background: rgba(52,211,119,.06); border-radius: 0 6px 6px 0; }
+  .workspace-note a { font-weight: 700; white-space: nowrap; color: var(--accent, #34d377); }
 </style>
