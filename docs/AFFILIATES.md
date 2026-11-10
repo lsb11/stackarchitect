@@ -22,7 +22,7 @@ Tests for the resolver are in `functions/go/cloak.test.js`.
 | `make` | Make.com | direct (`pc=`) |
 | `systeme` | Systeme.io | direct (`sa=`) |
 | `tidio`, `tidio-ai`, `tidio-pricing` | Tidio | PartnerStack |
-| `workspace` | Google Workspace | Google referral programme |
+| `workspace` | Google Workspace | Google Workspace Referral Program (Impact), since 10 Nov 2026 |
 
 Gorgias and Tidio both pay, and `apps.json` recommends replacing Gorgias with
 Tidio. The owner restored `/go/gorgias` on 25 Sep 2026 knowing this. The build
@@ -84,8 +84,14 @@ not part of the build, because a partner outage must not block a deploy.
 On 25 Sep 2026: 7 OK, 2 UNVERIFIED, 0 failed. Both unverified links were then
 checked by hand in a browser. `make` blocks every scripted request with a
 403 challenge, but a browser reaches the sign-up page with `pc=techie123`.
-`workspace` forwards in JavaScript to
-`workspace.google.com/landing/partners/referral/…&utm_content=NSRLIO3`.
+`workspace` then forwarded in JavaScript through `referworkspace.app.goo.gl`.
+Since 10 Nov 2026 it goes to the Impact advocate link
+`sharegoogleworkspace.advocate.impact.com/mQZpdHi`.
+
+**Workspace promotion codes are never published on this site.** The
+programme's terms call public distribution of codes, including posting them
+on websites, misuse, and referrals that use a posted code earn nothing. Codes
+are handed to one named person at a time, never placed on a page.
 
 `getresponse` is marked `blocksBots` in `TRACKING`. Its tracking domain,
 `try.getresponsetoday.com`, blocks automated visits, so a 403 or 429 from it

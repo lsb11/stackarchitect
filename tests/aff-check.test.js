@@ -35,7 +35,7 @@ test('a 4xx or 5xx fails, a network error fails, a loop fails', () => {
 
 test('a bot challenge and a JavaScript hop are unverified, not passed', () => {
   assert.equal(verdict('make', { status: 403, challenge: true, finalUrl: 'x' }).state, 'UNVERIFIED');
-  assert.equal(verdict('workspace', { status: 200, finalUrl: 'https://referworkspace.app.goo.gl/sy2C' }).state, 'UNVERIFIED');
+  assert.equal(verdict('workspace', { status: 200, finalUrl: 'https://sharegoogleworkspace.advocate.impact.com/mQZpdHi' }).state, 'UNVERIFIED');
   // A dead JS-hop link is still a fail.
   assert.equal(verdict('workspace', { status: 404, finalUrl: 'x' }).state, 'FAIL');
 });

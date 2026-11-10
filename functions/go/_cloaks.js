@@ -46,7 +46,7 @@ export const CLOAKS = {
   tidio:           { destination: 'https://affiliate.tidio.com/5kfhrx3ot6tf',                          subidParam: 'source', vendor: 'Tidio', vendorUrl: 'https://www.tidio.com/' },
   'tidio-ai':      { destination: 'https://affiliate.tidio.com/6zz36w6istip-yq3nec',                   subidParam: 'source', vendor: 'Tidio', vendorUrl: 'https://www.tidio.com/' },
   'tidio-pricing': { destination: 'https://affiliate.tidio.com/xwzr8x1q52z5-zlvl5g',                   subidParam: 'source', vendor: 'Tidio', vendorUrl: 'https://www.tidio.com/' },
-  workspace:       { destination: 'https://referworkspace.app.goo.gl/sy2C',                            subidParam: 'source', vendor: 'Google Workspace', vendorUrl: 'https://workspace.google.com/' },
+  workspace:       { destination: 'https://sharegoogleworkspace.advocate.impact.com/mQZpdHi',                            subidParam: 'source', vendor: 'Google Workspace', vendorUrl: 'https://workspace.google.com/' },
 };
 
 /**
