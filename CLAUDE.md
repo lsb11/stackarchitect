@@ -14,8 +14,8 @@ Measured against the build on 2026-09-28:
 |---|---|
 | HTML pages built | 122 |
 | `noindex` pages | 69 (54 × `/apps/*`, 4 × `/pro/*/`, 4 × `/pro/*/success/`, 3 × `/embed/*`, the Klaviyo migration calculator, privacy/terms/refund) |
-| **Indexable pages** | **38** (53 until 9 Nov 2026) |
-| **URLs in sitemap-0.xml** | **36** (51 until 9 Nov 2026) |
+| **Indexable pages** | **39** (53 until 9 Nov 2026, 38 until 11 Nov) |
+| **URLs in sitemap-0.xml** | **37** (51 until 9 Nov 2026, 36 until 11 Nov) |
 
 The two indexable pages absent from the sitemap are `/404.html` and
 `/sitemap-page/`, both deliberate. Reproduce the whole table with
@@ -1330,6 +1330,27 @@ Old URLs that redirected to them now redirect to the nearest indexable page
 first-hand material first (`docs/EVIDENCE-CHECKLIST.md`).
 
 Judge this by the indexed-to-known ratio over 6-8 weeks, not single counts.
+
+### 11 Nov 2026: shared Make scenarios fixed; one held guide returned
+
+- **Make renamed two error handlers.** The editor now lists Skip (was
+  Ignore), Retry (was Break), Resume, Commit and Rollback; Retry defaults to
+  3 retries, 15 minutes apart. Scenario settings has "Store incomplete
+  executions" Yes/No. Write "Retry (older guides call it Break)" in copy.
+- **Both public shared scenarios still had the fault this file describes.**
+  CAPI Shield (ID 6171333) and Stocky Swap (ID 6163985) sent their outside
+  calls to an Ignore route with incomplete executions not stored. Both now
+  use Retry with storing on; CAPI Shield's Google Ads branch was removed and
+  its listing title is "CAPI Shield: Shopify to Meta CAPI". Listing copy no
+  longer promises deduplication, setup minutes or Google.
+- **First-hand evidence on the site:** four screenshots from the owner's
+  Make account in `public/screens/make-*-2026-11-11.webp` (manifest entries
+  in `og-images.json`), shown with `.sa-evidence` figures on `/capi-shield/`,
+  `/stocky-swap/` and the reliable-automations guide.
+- **`/blog/the-complete-guide-to-reliable-shopify-automations/` left `held`**
+  on that evidence: sitemap 36 to 37, pin moved, back in `siteIndex.ts` and
+  `llms.txt`. This is the route back for the other held guides: material
+  nobody else has, not a rewrite.
 
 ### Highest-leverage open work
 

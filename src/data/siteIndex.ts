@@ -64,6 +64,7 @@ export const SITE_INDEX: SiteIndexGroup[] = [
     pages: [
       { href: '/ultimate-shopify-automation-guide/', label: 'Shopify automation guide: the whole stack' },
       { href: '/make-com-shopify/', label: 'Make.com for Shopify: free setup' },
+      { href: '/blog/the-complete-guide-to-reliable-shopify-automations/', label: 'Reliable Shopify automations: make failures visible' },
       { href: '/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/', label: 'Google Apps Script quotas: every limit and error' },
       { href: '/blog/google-sheets-custom-function-errors/', label: 'Google Sheets custom function errors fixed' },
       { href: '/autocrat-quota-fix/', label: 'Autocrat stopping mid-merge: the quota fix' },

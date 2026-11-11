@@ -23,7 +23,7 @@ const faqs: Faq[] = [
   { q: "What is chunked processing and why does it fix quota errors?",
     a: "<p>Chunked processing breaks a large batch of rows into smaller groups (50–100 rows) and processes each group as a separate execution. Instead of one long script that hits the 6-minute time limit, you run many short executions that each complete well within Google's limits. Make.com handles this automatically with no manual configuration needed.</p>" },
   { q: "What is exponential backoff and does Autocrat Quota Fix use it?",
-    a: "<p>Exponential backoff is a retry strategy where a failed request waits progressively longer before retrying. Make.com's retry option works differently: a Break error handler, with storage of incomplete executions turned on, retries a failed run a set number of times at an interval you choose. That is what this scenario uses, so a temporary Google error is retried rather than lost.</p>" },
+    a: "<p>Exponential backoff is a retry strategy where a failed request waits progressively longer before retrying. Make.com's retry option works differently: a Retry error handler (older guides call it Break), with incomplete executions stored, retries a failed run a set number of times at an interval you choose. That is what this scenario uses, so a temporary Google error is retried rather than lost.</p>" },
   { q: "Will my data be secure with Autocrat Quota Fix?",
     a: "<p>Your data flows through your own Make.com workspace: Stack Architect has zero access to your spreadsheet data or documents. Make.com connects to Google Sheets and Google Docs using your own Google account credentials via OAuth. Remove the integration at any time by disconnecting Make.com from Google.</p>" },
   { q: "How long does Autocrat Quota Fix setup take?",
@@ -183,7 +183,7 @@ const schema = JSON.stringify({
         { "@type": "HowToStep", "position": 3, "name": "Connect Google Docs template generation",
           "text": "Add the Google Docs module and point it at a copy of your Autocrat template, with each merge tag renamed from double angle brackets to double curly braces. Map your spreadsheet columns to those tags. Your output folder and file naming can stay the same." },
         { "@type": "HowToStep", "position": 4, "name": "Enable error handling and test",
-          "text": "In Make.com, add a Break error handler to the Google Docs step and turn on storing of incomplete executions in the scenario settings, so a failed document is retried rather than lost. Run a test with 100+ rows. Verify every document generates correctly. Monitor the execution log: zero errors." }
+          "text": "In Make.com, add a Retry error handler (older guides call it Break) to the Google Docs step and set Store incomplete executions to Yes in the scenario settings, so a failed document is retried rather than lost. Run a test with 100+ rows. Verify every document generates correctly. Monitor the execution log: zero errors." }
       ]
     },
     // FAQ
@@ -808,7 +808,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
       <div class="step-num" itemprop="position">4</div>
       <div>
         <div class="step-title" itemprop="name">Enable error handling and test</div>
-        <div class="step-desc" itemprop="text">In Make.com, add a Break error handler to the Google Docs step and turn on storing of incomplete executions in the scenario settings, so a failed document is retried rather than lost. Run a test with 100+ rows. Verify every document generates correctly. Monitor the execution log: you should see zero errors.</div>
+        <div class="step-desc" itemprop="text">In Make.com, add a Retry error handler (older guides call it Break) to the Google Docs step and set Store incomplete executions to Yes in the scenario settings, so a failed document is retried rather than lost. Run a test with 100+ rows. Verify every document generates correctly. Monitor the execution log: you should see zero errors.</div>
         <span class="step-tool">Make.com → Scenario settings → Error handler</span>
       </div>
     </div>

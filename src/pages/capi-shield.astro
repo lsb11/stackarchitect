@@ -98,12 +98,12 @@ const flowSteps = [
 
 // ─── Setup steps ─────────────────────────────────────────────────────────────
 const setupSteps = [
-  { pos: 1, title: "Activate Make.com free",                      tool: "make.com/en/register: free tier, no credit card",            desc: "Sign up for Make.com free: 1,000 credits/month (formerly called operations) at no cost. How many orders that covers depends on the credits one order uses in your scenario; check a run in its history. No credit card required. Make.com is your automation hub connecting Shopify to Meta and Google." },
+  { pos: 1, title: "Activate Make.com free",                      tool: "make.com/en/register: free tier, no credit card",            desc: "Sign up for Make.com free: 1,000 credits/month (formerly called operations) at no cost. How many orders that covers depends on the credits one order uses in your scenario; check a run in its history. No credit card required. Make.com is the automation hub connecting Shopify to Meta." },
   { pos: 2, title: "Create a new scenario with Webhooks trigger",  tool: "Make.com → Create scenario → Webhooks",                       desc: "In Make.com, create a new scenario. Add a Webhooks module as the trigger. Copy the generated webhook URL: you will paste this into Shopify in the next step." },
   { pos: 3, title: "Add Shopify webhook for order payment",        tool: "Shopify Admin → Settings → Notifications → Webhooks",         desc: "In Shopify Admin → Settings → Notifications → Webhooks, create a new webhook. Select “Order payment” as the event. Paste the Make.com webhook URL. Set format to JSON. Save. This is the server-to-server trigger: entirely independent of the browser." },
   { pos: 4, title: "Add the Meta Conversions API call",              tool: "Make.com → HTTP module",                      desc: "Add an HTTP module posting to Meta's Conversions API. In the URL, paste your Pixel/Dataset ID and your Conversions API access token (Events Manager → Settings → Conversions API → Generate access token). The pre-built scenario already sends event_name Purchase, event_id = order.id for deduplication, and SHA-256 hashed email, phone, name, IP and user agent. The URL also names a Graph API version: Meta retires each version about two years after release, so check it against Meta's Graph API changelog and keep it current." },
   { pos: 5, title: "Optional: add a Google Ads branch",            tool: "Make.com → Router → Google Ads",                                        desc: "Add a second branch to the same scenario using a Router module. Add the Google Ads module and select “Create a conversion”. Map order value, currency, and hashed email. Be aware before relying on it: this Google Ads module uploads a click conversion keyed on a Google click ID (gclid), and Shopify's order data has no field for one, so most orders reach Google with nothing to match on. Google is also moving this upload method, offline click conversion import, out of the Google Ads API and into its Data Manager API, and Make's Google Ads module now warns that uploads may fail for developer tokens that have not recently sent click conversions. Its two consent fields must be set to match your own consent setup." },
-  { pos: 6, title: "Test and verify",                               tool: "Meta Events Manager → Test Events",                              desc: "Place a test order. In Meta Events Manager → Test Events, verify a server Purchase event appears alongside the browser event: confirming deduplication is working. If you added the Google branch, open the run in Make and read the Google step's response rather than trusting the green tick." },
+  { pos: 6, title: "Test and verify",                               tool: "Meta Events Manager → Test Events",                              desc: "Place a test order. In Meta Events Manager → Test Events, verify a server Purchase event appears alongside the browser event, then check whether Meta counts the pair as one purchase: it merges them only when the event name and event ID match. If you added the Google branch, open the run in Make and read the Google step's response rather than trusting the green tick." },
 ];
 
 // ─── Comparison table ─────────────────────────────────────────────────────────
@@ -436,7 +436,7 @@ const tocHeadings = [
     <div class="sec-head">
       <span class="tag tag-dim" style="margin-bottom:16px;display:inline-flex;">Both platforms</span>
       <h2 id="platforms-h">Meta CAPI, and what the Google branch needs</h2>
-      <p>CAPI Shield recovers lost Meta purchase events. Its Google branch needs a Google click ID on the order, which Shopify does not provide, so it is not a Google fix as shipped. The upload method it uses is also being moved to Google's Data Manager API.</p>
+      <p>CAPI Shield sends Meta purchase events. A Google branch would need a Google click ID on the order, which Shopify does not provide, and the upload method it uses is being moved to Google's Data Manager API, so the free shared scenario no longer includes one. For Google Ads, use the Enhanced conversions setting in Shopify's Google &amp; YouTube app.</p>
     </div>
 
     <div class="platform-grid">
@@ -520,9 +520,14 @@ const tocHeadings = [
 
     <div class="callout info" style="margin-top:28px;border-left-color:var(--g);background:rgba(52,211,119,.04);">
       <div class="callout-label" style="color:var(--g);">Pre-built &amp; ready to import</div>
-      <p>Skip the manual build. This exact scenario is published free: one webhook hashes the customer data once, then a Router sends the purchase to Meta Conversions API, with a second route for Google Ads. The Google route needs a Google click ID that Shopify orders do not carry, and uses an upload method Google is moving to its Data Manager API. Its two consent fields must be set to match your own consent setup. Clone it, paste your Meta Pixel ID + token, and you're live.</p>
+      <p>Skip the manual build. This exact scenario is published free: one webhook hashes the customer data once and sends the purchase to Meta's Conversions API. Since 11 November 2026 its Meta request has a Retry error handler and the scenario stores incomplete executions, so a rejected request is retried and then kept for you to fix, instead of finishing as a green run. The Google Ads route it used to carry was removed the same day: it needed a Google click ID that Shopify orders do not carry. Clone it, paste your Meta Pixel ID and token, and place a test order.</p>
       <a href={SCENARIO_URL} target="_blank" rel="noopener" class="btn btn-sm" style="margin-top:14px;display:inline-flex;background:var(--g);">Clone the free scenario →</a>
     </div>
+
+    <figure class="sa-evidence">
+      <img src="/screens/make-capi-shield-retry-2026-11-11.webp" width="1483" height="600" loading="lazy" decoding="async" alt="The CAPI Shield scenario in Make: Webhook, Tools, Router and an HTTP request to Meta, with the HTTP module's error route going to a Retry handler." />
+      <figcaption>The shared CAPI Shield scenario in our Make account on 11 November 2026, after the change: Webhook, a Tools step that hashes the customer data, a Router, and the HTTP request to Meta, whose error route goes to Retry. Until that day the error route went to Ignore and incomplete executions were not stored.</figcaption>
+    </figure>
 
     <div class="callout info" style="margin-top:20px;border-left-color:var(--text-4);">
       <div class="callout-label">Validate your payload first</div>

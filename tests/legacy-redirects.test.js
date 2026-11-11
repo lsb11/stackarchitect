@@ -79,7 +79,7 @@ test('generated legacy map is in sync with public/_redirects', () => {
   });
 });
 
-test('the 36 sitemap pages resolve in at most one 301, to their canonical URL', async (t) => {
+test('the 37 sitemap pages resolve in at most one 301, to their canonical URL', async (t) => {
   assert.ok(sitemapPaths.length > 0, 'run `npm run build` first — dist/sitemap-0.xml is missing');
   // 62 -> 63 on 23 Sep 2026: /stocklog/, the second recorded freeze exception
   // (see CLAUDE.md, Hard rules). Moving this number is the record of a new URL.
@@ -101,7 +101,9 @@ test('the 36 sitemap pages resolve in at most one 301, to their canonical URL', 
   // 51 -> 36 on 9 Nov 2026: fifteen general guides held out of the index
   // (noindex-routes.json `held`) so Google judges the site on its original
   // work. They still return 200; no URL changed.
-  assert.equal(sitemapPaths.length, 36, 'sitemap URL count changed');
+  // 36 -> 37 on 11 Nov 2026: the reliable-automations guide returned with
+  // first-hand Make screenshots.
+  assert.equal(sitemapPaths.length, 37, 'sitemap URL count changed');
 
   let checked = 0;
   for (const path of sitemapPaths) {
