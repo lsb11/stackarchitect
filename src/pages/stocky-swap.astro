@@ -1881,10 +1881,16 @@ const tocHeadings = [
     ]}
     notes={[
       '<strong>No revenue, customer or fulfilment columns.</strong> It is a stock-movement log. Add a tab with a SUMIF over column C by SKU, seeded with one opening-stock row per SKU, to see a running count.',
-      '<strong>A row that fails to write is skipped, not retried.</strong> The Sheets module uses Make’s Ignore error handler and the scenario does not store incomplete executions. If missing rows would hurt, switch the handler to Break and turn on “Allow storing of incomplete executions” in the scenario settings, so a failed row waits for a retry.',
+      '<strong>A row that fails to write is retried, not lost.</strong> Since 11 November 2026 the shared scenario’s Sheets step uses Make’s Retry error handler and the scenario stores incomplete executions: a failed write is retried 3 times, 15 minutes apart, then kept for you to fix and re-run. A copy imported before that date used the Ignore handler; switch it to Retry and set Store incomplete executions to Yes in the scenario settings.',
       '<strong>Refunds, returns and manual adjustments are not logged,</strong> because only the Order payment webhook triggers it. Shopify Admin stays the record of stock on hand.',
     ]}
   />
+  <div style="max-width:860px;margin:0 auto;padding:0 24px;">
+    <figure class="sa-evidence">
+      <img src="/screens/make-stocky-swap-retry-2026-11-11.webp" width="1225" height="470" loading="lazy" decoding="async" alt="The Stocky Swap scenario in Make: Webhook, Iterator and Google Sheets Add a Row, with the Sheets step's error route going to a Retry handler." />
+      <figcaption>The shared Stocky Swap scenario in our Make account on 11 November 2026: Webhook, an Iterator that splits the order into line items, and Google Sheets “Add a Row”, whose error route now goes to Retry. Until that day it went to Ignore and incomplete executions were not stored.</figcaption>
+    </figure>
+  </div>
   <section class="section tex-dots">
     <div class="inner-md body-text">
       <div class="sec-head">

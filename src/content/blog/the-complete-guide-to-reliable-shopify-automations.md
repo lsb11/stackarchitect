@@ -4,7 +4,7 @@ heading: "Reliable Shopify Automations: How to Make Every Failure Visible"
 description: "Why Make.com Shopify automations fail silently, and how to stop it: error handlers that keep failed runs, order-ID deduplication and a daily count check."
 answer: "A Shopify automation is reliable when every failure is either retried or reported, never silently skipped. In Make.com that means error handlers that store failed runs instead of ignoring them, independent branches so one dead API cannot block the rest, deduplication on order ID, and a daily check that your log's order count matches Shopify's."
 publishDate: "2026-03-25"
-updatedDate: "2026-10-15"
+updatedDate: "2026-11-11"
 verifiedDate: "2026-10-15"
 category: "workflow"
 badge: "Architecture Guide"
@@ -19,7 +19,7 @@ faqs:
   - question: "What is webhook deduplication and why does it matter for Shopify?"
     answer: "Shopify asks receivers to handle duplicate webhook deliveries, so the same order can arrive more than once. Without a check, one order can write two spreadsheet rows or send two purchase events to an ad platform. Deduplication means looking up the order ID before acting and skipping it if it has already been processed."
   - question: "Which Make.com error handler should I use for Shopify automations?"
-    answer: "For calls to outside services that can fail temporarily, such as ad platform APIs, use Break with storage of incomplete executions turned on in the scenario settings, so a failed run is kept and retried rather than lost. Use Ignore only where losing the data truly does not matter, and never on a step whose failure you would want to know about."
+    answer: "For calls to outside services that can fail temporarily, such as ad platform APIs, use the Retry error handler (older guides call it Break) with Store incomplete executions set to Yes in the scenario settings, so a failed run is kept and retried rather than lost. Use Ignore only where losing the data truly does not matter, and never on a step whose failure you would want to know about."
   - question: "How do I know my Shopify automation missed an order?"
     answer: "Compare counts. Once a day, count yesterday's paid orders in Shopify and the rows your automation logged for the same day. If they differ, an order was missed or duplicated. This check catches every kind of failure, including ones that never produce an error, which is why it matters more than any single error handler."
 relatedGuides:
@@ -43,6 +43,8 @@ This site's own CAPI Shield blueprint is the clearest example we have. Its reque
 
 Each of those settings is common advice for keeping a scenario "running smoothly". Together they made a broken integration look healthy. The blueprint now uses a current version and visible failures, and the rest of this guide is built around not repeating that.
 
+We found the same pattern a second time on 11 November 2026, in the two free scenarios this site shares publicly on Make. Both CAPI Shield and Stocky Swap still sent their outside calls to an Ignore route, and neither stored incomplete executions. We changed both that day. The screenshots in Pattern 1 are from that change, in our own Make account.
+
 ## The four ways Shopify automations fail
 
 **A hidden failure.** As above: the run is green, the destination received nothing. The only defence is checking outcomes, not statuses.
@@ -55,16 +57,31 @@ Each of those settings is common advice for keeping a scenario "running smoothly
 
 ## Pattern 1: Choose error handlers by what a failure costs
 
-Make.com offers several error handlers. They behave very differently:
+Make.com offers several error handlers, and its editor has renamed two of them: when we opened our own scenarios on 11 November 2026 the handler list read Skip, Retry, Resume, Commit and Rollback. Older guides, including earlier versions of this one, call Retry "Break" and Skip "Ignore". They behave very differently:
 
 | Handler | What it does | Use it for |
 |---|---|---|
-| **Break** | Stops this run and, if incomplete executions are stored, keeps it for automatic or manual retry | Calls to outside services that fail temporarily: Meta, TikTok, Google, Sheets |
+| **Retry** (formerly Break) | Saves the failed bundle as an incomplete execution, retries it automatically a set number of times, then keeps it for you to review | Calls to outside services that fail temporarily: Meta, TikTok, Google, Sheets |
 | **Resume** | Carries on using a substitute output you define | Steps where a default value is genuinely acceptable |
-| **Ignore** | Discards the error and carries on | Only steps whose failure you would never want to know about |
+| **Skip** (formerly Ignore) | Discards the bundle that caused the error and carries on | Only steps whose failure you would never want to know about |
 | **Rollback / Commit** | Stops the run, marking it failed or successful | Rarely needed for Shopify order flows |
 
-To make Break useful, open the scenario's **Settings** and turn on **Allow storing of incomplete executions**. Failed runs then appear under the scenario's incomplete executions, where they can be retried once the outside service is back.
+To make Retry useful, open **Scenario settings** (the gear in the editor's bottom toolbar) and set **Store incomplete executions** to **Yes**. Failed runs then appear under the scenario's incomplete executions, where they can be retried once the outside service is back.
+
+<figure class="sa-evidence">
+<img src="/screens/make-retry-handler-2026-11-11.webp" width="520" height="480" loading="lazy" decoding="async" alt="Make's Flow Control panel for a Retry error handler: Retry automatically Yes, 3 retries, 15 minutes between retries, with Make's note that failed bundles are saved as incomplete executions.">
+<figcaption>The Retry handler on the Meta request in our shared CAPI Shield scenario, as set on 11 November 2026: three automatic retries, 15 minutes apart. Make's own note: failed bundles are saved as incomplete executions to retry automatically or review later.</figcaption>
+</figure>
+
+<figure class="sa-evidence">
+<img src="/screens/make-store-incomplete-executions-2026-11-11.webp" width="465" height="500" loading="lazy" decoding="async" alt="Make's Scenario settings panel with Store incomplete executions set to Yes.">
+<figcaption>Scenario settings in the same scenario, 11 November 2026. Store incomplete executions was No until that day; without it, a Retry handler has nowhere to keep the failed run.</figcaption>
+</figure>
+
+<figure class="sa-evidence">
+<img src="/screens/make-capi-shield-retry-2026-11-11.webp" width="1483" height="600" loading="lazy" decoding="async" alt="The CAPI Shield scenario in Make: Webhook, Tools, Router and an HTTP request to Meta, with the HTTP module's error route going to a Retry handler.">
+<figcaption>The shared CAPI Shield scenario after the change: the Meta request's error route now goes to Retry. The Google Ads branch it used to carry was removed the same day.</figcaption>
+</figure>
 
 On HTTP modules, leave error responses treated as errors. If a 400 or 500 response is allowed through as a success, no error handler will ever see it.
 
@@ -76,10 +93,10 @@ Put a **Router** straight after the webhook and give each destination its own br
 Shopify webhook (orders/create)
     ↓
 Router
-    ├── Branch 1: Meta Conversions API    → Break handler
-    ├── Branch 2: TikTok Events API       → Break handler
-    ├── Branch 3: Google Sheets order log → Break handler
-    └── Branch 4: P&L sheet               → Break handler
+    ├── Branch 1: Meta Conversions API    → Retry handler
+    ├── Branch 2: TikTok Events API       → Retry handler
+    ├── Branch 3: Google Sheets order log → Retry handler
+    └── Branch 4: P&L sheet               → Retry handler
 ```
 
 A failing Meta branch then cannot stop the order being logged. Put the cheapest, most important branch (usually the order log) first, because a Router runs its branches in order.
@@ -123,7 +140,7 @@ When the check finds a gap, look at the scenario's history and incomplete execut
 ## Before you call a scenario finished
 
 - [ ] Each destination is on its own Router branch.
-- [ ] Outside API calls use Break, and incomplete executions are stored.
+- [ ] Outside API calls use the Retry handler, and incomplete executions are stored.
 - [ ] No HTTP module lets error responses through as successes.
 - [ ] Order ID is checked before processing; ad platform events carry a stable event ID.
 - [ ] A daily scenario compares Shopify's paid order count with your log.
