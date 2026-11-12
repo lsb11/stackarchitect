@@ -1383,11 +1383,33 @@ Judge this by the indexed-to-known ratio over 6-8 weeks, not single counts.
 - The GitHub TikTok blueprint (`lsb11/shopify-automation-blueprints` PR #3)
   gained the Retry handler. `public/blueprints/*.json` were empty `{}` stubs
   and are now pointers to the shared scenarios.
-- **Still to do in Make (browser needed):** the shared TikTok
-  (`7wEszC7SRAl`), Google Ads (`QBl8tBAX4k1`) and P&L (`nztRUIXWcg6`)
-  scenarios have not been opened; give each output step Retry and turn on
-  Store incomplete executions, as was done for CAPI Shield and Stocky Swap.
-  None of the rebuilt files has been import-tested in Make yet.
+- Done the same evening; see the next section.
+
+### 12 Nov 2026 (evening): shared scenarios finished, two more faults found
+
+- **"Return error if HTTP request fails" was No on CAPI Shield and TikTok.**
+  That is the editor's name for `stopOnHttpError`. With it off, a Retry
+  handler never fires on a Meta or TikTok 4xx, so yesterday's CAPI Shield fix
+  was incomplete until today. Both now Yes. Check this setting whenever a
+  Retry handler is added to an HTTP module.
+- **TikTok, Google Ads and P&L shared scenarios** now use Retry (Skip removed)
+  with Store incomplete executions on; TikTok also runs "Immediately as data
+  arrives" instead of every 15 minutes. Make confirmed in its own panel that
+  with Retry "the scenario run continues", and its count/interval fields are
+  typed `uinteger`, matching the blueprints.
+- **The shared TikTok scenario and all three paid TikTok files still sent the
+  pre-18-Oct body** (customer fields nested under `context`, `event_time`
+  from `now`). Now the same body as the GitHub blueprint: top-level `user`,
+  `event_time` from `created_at`, `order_id`, phone only when present.
+- **Make marks the Google Ads "Upload a Click Conversion" module deprecated**
+  (screenshot `public/screens/make-google-ads-deprecated-2026-11-12.webp`).
+  The page no longer presents that scenario as the fix.
+- **Import tested:** a cut-down FILE_00 (Meta and order-log branches with
+  their `builtin:Break` handlers) imported into Make and showed Retry, 3,
+  15. Make's file input only accepted it when the File was built in the
+  page by script; the Chrome upload tool refuses workspace files.
+- P&L page claimed 2 credits and 500 orders a month; the scenario runs 4
+  modules per order (about 250), and Workspace does not lift Sheets limits.
 
 ### Highest-leverage open work
 

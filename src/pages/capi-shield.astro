@@ -520,7 +520,7 @@ const tocHeadings = [
 
     <div class="callout info" style="margin-top:28px;border-left-color:var(--g);background:rgba(52,211,119,.04);">
       <div class="callout-label" style="color:var(--g);">Pre-built &amp; ready to import</div>
-      <p>Skip the manual build. This exact scenario is published free: one webhook hashes the customer data once and sends the purchase to Meta's Conversions API. Since 11 November 2026 its Meta request has a Retry error handler and the scenario stores incomplete executions, so a rejected request is retried and then kept for you to fix, instead of finishing as a green run. The Google Ads route it used to carry was removed the same day: it needed a Google click ID that Shopify orders do not carry. Clone it, paste your Meta Pixel ID and token, and place a test order.</p>
+      <p>Skip the manual build. This exact scenario is published free: one webhook hashes the customer data once and sends the purchase to Meta's Conversions API. Since 11 November 2026 its Meta request has a Retry error handler and the scenario stores incomplete executions, and since 12 November the request returns an error on any 4xx or 5xx reply (until then it did not, so the handler never saw a rejection). A rejected request is now retried and then kept for you to fix, instead of finishing as a green run. The Google Ads route it used to carry was removed the same day: it needed a Google click ID that Shopify orders do not carry. Clone it, paste your Meta Pixel ID and token, and place a test order.</p>
       <a href={SCENARIO_URL} target="_blank" rel="noopener" class="btn btn-sm" style="margin-top:14px;display:inline-flex;background:var(--g);">Clone the free scenario →</a>
     </div>
 
