@@ -21,9 +21,9 @@ const faqs: Faq[] = [
   { q: "How many documents can Autocrat Quota Fix handle?",
     a: "<p>It depends on your credits, not on a daily cap. Make.com's free tier gives 1,000 credits a month, and each document uses a credit for every module it passes through, so a scenario with a trigger and a Google Docs step spends at least two per document. The Core plan is $9/month for 10,000 credits (<a href=\"https://www.make.com/en/pricing\" target=\"_blank\" rel=\"noopener\">make.com/en/pricing</a>, read 25 September 2026). Google Apps Script, by contrast, caps total run time at 90 minutes a day on free accounts.</p>" },
   { q: "What is chunked processing and why does it fix quota errors?",
-    a: "<p>Chunked processing breaks a large batch of rows into smaller groups (50–100 rows) and processes each group as a separate execution. Instead of one long script that hits the 6-minute time limit, you run many short executions that each complete well within Google's limits. Make.com handles this automatically with no manual configuration needed.</p>" },
+    a: "<p>Chunked processing breaks a large batch of rows into smaller groups (50–100 rows) and processes each group as a separate execution. Instead of one long script that hits the 6-minute time limit, you run many short executions that each complete well within Google's limits. In Make.com you set the batch size as the row limit on the Google Sheets search step, and the scenario's schedule runs the next batch.</p>" },
   { q: "What is exponential backoff and does Autocrat Quota Fix use it?",
-    a: "<p>Exponential backoff is a retry strategy where a failed request waits progressively longer before retrying. Make.com's retry option works differently: a Retry error handler (older guides call it Break), with incomplete executions stored, retries a failed run a set number of times at an interval you choose. That is what this scenario uses, so a temporary Google error is retried rather than lost.</p>" },
+    a: "<p>Exponential backoff is a retry strategy where a failed request waits progressively longer before retrying. Make.com's retry option works differently: a Retry error handler (older guides call it Break), with incomplete executions stored, retries a failed run a set number of times at an interval you choose. This guide's setup adds one to the Google Docs step, so a temporary Google error is retried rather than lost.</p>" },
   { q: "Will my data be secure with Autocrat Quota Fix?",
     a: "<p>Your data flows through your own Make.com workspace: Stack Architect has zero access to your spreadsheet data or documents. Make.com connects to Google Sheets and Google Docs using your own Google account credentials via OAuth. Remove the integration at any time by disconnecting Make.com from Google.</p>" },
   { q: "How long does Autocrat Quota Fix setup take?",
@@ -120,7 +120,7 @@ const schema = JSON.stringify({
       "featureList": [
         "Eliminates service invoked too many times errors",
         "Moves document generation outside Apps Script's six-minute runtime and daily document quota",
-        "Chunked processing with state persistence",
+        "Short scheduled batches, with a status column so no row is skipped",
         "Runs outside Apps Script quotas",
         "Free via Make.com",
         "No code required",
@@ -678,14 +678,14 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
   </div>
   <div class="body-text" style="max-width:860px;margin:0 auto;">
 
-    <h3>1. Chunked processing</h3>
-    <p>Instead of processing all pending rows in a single script run (which hits the 6-minute execution limit on large batches) Autocrat Quota Fix processes a configurable number of rows per execution (typically 50–100). Each chunk completes well within Google's time limits. Make.com schedules the next chunk automatically, so the full batch processes sequentially without any manual intervention. A store processing 2,000 orders per day runs 20–40 chunk executions automatically, each completing in under 30 seconds.</p>
+    <h3>1. Short runs instead of one long one</h3>
+    <p>An Apps Script run that works through every pending row stops at the six-minute limit, and the rows after that point are not processed. In Make, the Google Sheets search step reads a set number of rows per run (you choose the limit), and the scenario runs on a schedule, so each run handles a small batch and finishes quickly. A large backlog is cleared over several runs rather than in one that times out.</p>
 
-    <h3>2. Exponential backoff</h3>
-    <p>When a transient quota error is encountered (the "service invoked too many times in a short time" variant) Make.com's built-in error handling pauses with an exponentially increasing delay before retrying. The sequence is 1 second, 2 seconds, 4 seconds, 8 seconds, up to a maximum configured interval. Most transient quota errors resolve within the first two retry cycles. This eliminates the cascading failures that occur when a tight script loop hammers a quota-limited service repeatedly.</p>
+    <h3>2. Retries, not exponential backoff</h3>
+    <p>Make has no exponential backoff setting. What it has is the Retry error handler (older guides call it Break): when the Google Docs step fails, for example on a temporary &ldquo;service invoked too many times&rdquo; error, Make retries that run a set number of times at a fixed interval (3 times, 15 minutes apart, unless you change it). With <strong>Store incomplete executions</strong> set to Yes in the scenario settings, a run that still fails is kept for you to re-run, not discarded. Step 4 below sets both up.</p>
 
-    <h3>3. State persistence</h3>
-    <p>Make.com stores the processing position between executions using its built-in data store. If an execution is interrupted for any reason, the next execution resumes from exactly the row that was being processed when the interruption occurred. Rows are not silently skipped. This is the critical difference between Autocrat Quota Fix and simple retry approaches: if a run is interrupted, processing resumes from the exact row it stopped on rather than restarting from the beginning or abandoning the remaining rows, the way an Apps Script run does when it hits the 6-minute execution ceiling. The same principles apply to every Shopify scenario, and <a href="/blog/the-complete-guide-to-reliable-shopify-automations/" style="color:#34d377;text-decoration:underline;">the complete guide to reliable Shopify automations</a> covers them one by one.</p>
+    <h3>3. Mark each row when it is done</h3>
+    <p>Add a status column to the sheet. After the document is created, have the scenario write &ldquo;Done&rdquo; to that row, and have the search step look only for rows where the status is empty. An interrupted run then leaves its unfinished rows unmarked, and the next scheduled run picks them up, so no row is skipped and none is processed twice. The same principles apply to every Shopify scenario, and <a href="/blog/the-complete-guide-to-reliable-shopify-automations/" style="color:#34d377;text-decoration:underline;">the complete guide to reliable Shopify automations</a> covers them one by one.</p>
 
     <div class="callout info">
       <div class="callout-label">Google Workspace vs free Gmail</div>
@@ -696,7 +696,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
   <div class="section-cta">
     <div class="section-cta-left">
       <div class="cta-h">Deploy all three techniques</div>
-      <p>Free via Make.com · Chunked processing, retries on failure, state persistence</p>
+      <p>Free via Make.com · Short batches, retries on failure, a status column</p>
     </div>
     <a href="#how-it-works" class="btn btn-sm">See all three techniques →</a>
   </div>
@@ -737,12 +737,12 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
         <tr>
           <td>"Service invoked too many times" (rate error)</td>
           <td class="lose">Fixable free by batching; otherwise script stops</td>
-          <td class="win">Avoided via chunking + automatic backoff</td>
+          <td class="win">Short batches; a failed run is retried, then kept</td>
         </tr>
         <tr>
           <td>Processing on interruption</td>
-          <td class="lose">Restarts from beginning</td>
-          <td class="win">Resumes from exact row</td>
+          <td class="lose">The run stops partway</td>
+          <td class="win">Unmarked rows are picked up on the next run</td>
         </tr>
         <tr>
           <td>Concurrent execution conflicts</td>
@@ -757,7 +757,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
         <tr class="hero-row">
           <td>Document miss rate at 500+ orders/day</td>
           <td class="lose">Silently missed, with no error and no count</td>
-          <td class="win">Resumes from exact row: no silent skips</td>
+          <td class="win">Failed runs kept under Incomplete executions; unmarked rows picked up next run</td>
         </tr>
       </tbody>
     </table>
