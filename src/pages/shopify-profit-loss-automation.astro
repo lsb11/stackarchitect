@@ -182,7 +182,7 @@ const schema = JSON.stringify({
         { "@type": "Question", "name": "How do refunds appear in the automated Shopify P&L?",
           "acceptedAnswer": { "@type": "Answer", "text": "A second Make.com scenario monitors the Shopify Refund created webhook. When a refund occurs, it writes a negative revenue row to the same Order Data tab. SUMIF formulas in your P&L Summary automatically net refunds against gross revenue with no manual adjustment needed." } },
         { "@type": "Question", "name": "Do I need Google Workspace or does free Gmail work?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Free Gmail works for stores processing up to 500 orders per month. At higher volumes, Gmail API limits may throttle Make.com's Google Sheets write operations during peak periods. Google Workspace removes all limits and adds shared workspaces: recommended for high-volume stores or teams." } }
+          "acceptedAnswer": { "@type": "Answer", "text": "Free Gmail works. The scenario writes to your sheet through Google's Sheets API, and Google Workspace does not lift those Sheets limits, so upgrading your Google plan changes nothing here. The limit you will meet first is your Make plan's monthly credits: the scenario uses 4 per paid order." } }
       ]
     }
   ]
@@ -770,7 +770,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
       <div class="step-num" itemprop="position">2</div>
       <div>
         <div class="step-title" itemprop="name">Activate Make.com free</div>
-        <div class="step-desc" itemprop="text">Sign up for Make.com free: 1,000 credits/month (formerly called operations) at no cost, enough for stores processing up to 500 orders per month (each order uses 2 operations: receive webhook and write to Sheet). No credit card required.</div>
+        <div class="step-desc" itemprop="text">Sign up for Make.com free: 1,000 credits a month (formerly called operations) at no cost. The scenario runs four modules per paid order (the webhook, the fee variable, the cost lookup and the row write), so it uses 4 credits an order, about 250 orders a month on the free plan; check your own figure in the scenario's History. No credit card required.</div>
         <span class="step-tool">make.com/en/register: free tier, no credit card</span>
         <StepSignup source="shopify-profit-loss-automation-setup"><Disclosure text="Affiliate link: I earn a commission if you sign up to Make.com through it, at no cost to you. The free plan is all this setup needs." /></StepSignup>
       </div>
@@ -780,7 +780,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
       <div class="step-num" style="background:rgba(52,211,119,.2);border-color:rgba(52,211,119,.5);" itemprop="position" aria-label="Quick import">→</div>
       <div>
         <div class="step-title" itemprop="name">Import the P&amp;L scenario: one click</div>
-        <div class="step-desc" itemprop="text">One click imports the pre-built Shopify P&amp;L automation into your Make.com workspace. The scenario is already configured with the webhook trigger and Google Sheets module: no building from scratch, no technical knowledge needed.</div>
+        <div class="step-desc" itemprop="text">One click imports the pre-built Shopify P&amp;L automation into your Make.com workspace. The scenario is already configured with the webhook trigger and Google Sheets modules. Since 12 November 2026 both Sheets steps use Make's Retry error handler and the scenario stores incomplete executions, so a failed lookup or write is retried 3 times, 15 minutes apart, then kept for you to re-run.</div>
         <a href="https://eu1.make.com/public/shared-scenario/nztRUIXWcg6/shopify-live-p-l-to-google-sheets" target="_blank" rel="noopener" class="btn btn-sm" style="margin-top:12px;display:inline-flex;">Import P&amp;L scenario →</a>
       </div>
     </div>
@@ -992,7 +992,7 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
 
     <details class="faq-item-pl">
       <summary><span>Do I need Google Workspace or does free Gmail work?</span><span class="faq-ico" aria-hidden="true"></span></summary>
-      <div class="faq-ans-pl"><p>Free Gmail works for stores processing up to 500 orders per month. At higher volumes, Gmail API limits may throttle Make.com's Google Sheets write operations during peak periods. Google Workspace removes all limits and adds shared workspaces: recommended for high-volume stores or teams.</p></div>
+      <div class="faq-ans-pl"><p>Free Gmail works. The scenario writes to your sheet through Google's Sheets API, and Google Workspace does not lift those Sheets limits, so upgrading your Google plan changes nothing here. The limit you will meet first is your Make plan's monthly credits: the scenario uses 4 per paid order.</p></div>
     </details>
 
     <details class="faq-item-pl">
