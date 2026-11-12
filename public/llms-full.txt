@@ -22,13 +22,13 @@ Tools 1 to 7 below are free guides. The paid products are the Complete Kit ($19.
 
 ### Tool 1: CAPI Shield — Server-Side Tracking for Meta
 - **Canonical URL**: https://stackarchitect.xyz/capi-shield/
-- **Function**: Server-side purchase tracking for Meta Conversions API. It also carries a Google Ads route that does not match orders as shipped (see step 4).
+- **Function**: Server-side purchase tracking for Meta Conversions API. Meta only: the Google Ads route was removed on 11 November 2026 (free scenario) and 12 November 2026 (paid file), because Shopify's order payload has no gclid.
 - **Replaces**: Elevar (Core $225/mo for up to 2,000 orders and 2 destinations — verified 2026-09-25, https://www.audiense.com/products/audiense-online/pricing/ ; getelevar.com now redirects to Audiense, and the higher tiers are on that page and in the cost comparison at https://stackarchitect.xyz/shopify-attribution-tools-compared/ ), Triple Whale (publishes no paid price: Foundation and Automate are quoted after a walkthrough, read on the vendor's pricing page on 2026-10-19), Northbeam (Starter $1,500 beside a quote form — verified 2026-09-25, https://www.northbeam.io/pricing ).
 - **Execution Mechanism**:
   1. Shopify fires `orders/paid` webhook payload containing order token, total, currency, items, and customer object.
   2. Make.com webhook module parses payload and hashes `email`, `phone`, `first_name`, `last_name` using SHA-256. Email and names are `lower(trim(value))` first; the phone only has spaces removed, and an order with no phone sends the hash of an empty string.
   3. Meta CAPI HTTP request sends `Purchase` event to `https://graph.facebook.com/{version}/{pixel_id}/events` with `event_name: "Purchase"`, `event_id` set to the Shopify order ID, and user data payload. The Graph API version is pinned in the URL; Meta retires each version about two years after release, so it must be checked against Meta's Graph API changelog and kept current.
-  4. A Google Ads route uploads a click conversion keyed on a gclid. Shopify's order payload has no gclid field, so as shipped this route has nothing to match most orders on. Its consent fields must be set to match the store's own consent setup.
+  4. The Meta request has Make's Retry error handler (3 attempts, 15 minutes apart) and the scenario stores incomplete executions, so a rejected request is kept for re-running instead of finishing as a green run. For Google Ads, the free fix for most stores is enhanced conversions in Shopify's Google & YouTube app.
 - **Cost**: $0/month (runs on Make.com free tier).
 
 ### Tool 2: Stocky Swap, a free Shopify order log in Google Sheets

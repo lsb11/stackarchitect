@@ -40,9 +40,9 @@ export interface ProofShot {
 /** The /pro/ hero asset: all four scenarios in one Make.com canvas. */
 export const KIT_HERO_SHOT: ProofShot = {
   file: 'scenario-all-in-one.png',
-  alt: 'The Complete Kit scenario open in the Make.com canvas: one Shopify order webhook feeding a router that fans out to the Meta Conversions API, Google Ads Enhanced Conversions, the TikTok Events API and two Google Sheets modules.',
+  alt: 'The Complete Kit scenario open in the Make.com canvas: one Shopify order webhook feeding a router that fans out to the Meta Conversions API, the TikTok Events API and two Google Sheets branches, each output step with a Retry error handler.',
   caption:
-    'All four automations running as one scenario in Make.com: one webhook, one router, five destinations.',
+    'All four automations running as one scenario in Make.com: one webhook, one router, four branches.',
   width: 1600,
   height: 900,
 };
@@ -52,28 +52,28 @@ export const SCENARIO_SHOTS: Record<string, ProofShot> = {
   'stocky-swap': {
     file: 'scenario-stocky-swap.png',
     alt: 'The Stocky Swap scenario in the Make.com canvas: a Shopify order webhook, an iterator over the order line items, and a Google Sheets Add a Row module.',
-    caption: 'Blueprint 03 on the Make.com canvas, as it imports.',
+    caption: 'stocky_swap.json on the Make.com canvas, as it imports.',
     width: 1600,
     height: 900,
   },
   'capi-shield': {
     file: 'scenario-capi-shield.png',
-    alt: 'The CAPI Shield scenario in the Make.com canvas: a Shopify order webhook feeding a SHA-256 hashing step, then a router splitting to the Meta Conversions API and Google Ads Enhanced Conversions.',
-    caption: 'Blueprint 01 on the Make.com canvas, as it imports.',
+    alt: 'The CAPI Shield scenario in the Make.com canvas: a Shopify order webhook feeding a SHA-256 hashing step, then a router leading to the Meta Conversions API request, with a Retry error handler.',
+    caption: 'Capi_Shield.json on the Make.com canvas, as it imports.',
     width: 1600,
     height: 900,
   },
   'tiktok-capi': {
     file: 'scenario-tiktok-capi.png',
     alt: 'The TikTok CAPI scenario in the Make.com canvas: a Shopify order webhook, an Advanced Matching field mapping, and an HTTP module posting CompletePayment to TikTok’s Events API.',
-    caption: 'Blueprint 02 on the Make.com canvas, as it imports.',
+    caption: 'TikTok_CAPI.json on the Make.com canvas, as it imports.',
     width: 1600,
     height: 900,
   },
   'pnl-auto': {
     file: 'scenario-pnl-auto.png',
     alt: 'The P&L Auto scenario in the Make.com canvas: a Shopify order webhook, a COGS lookup against the template workbook, and a Google Sheets module writing revenue, fees, COGS and gross profit.',
-    caption: 'Blueprint 04 on the Make.com canvas, as it imports.',
+    caption: 'Shopify_PnL.json on the Make.com canvas, as it imports.',
     width: 1600,
     height: 900,
   },
