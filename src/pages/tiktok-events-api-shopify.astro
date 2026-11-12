@@ -579,12 +579,13 @@ const tocHeadings = [
 <BlueprintAnatomy
   title="What the free TikTok blueprint actually does"
   file="scenarios/tiktok-events-api/blueprint.json"
-  read="2026-10-19"
+  read="2026-11-12"
   caption="What each event carries"
   heads={['Field', 'Taken from', 'How']}
   modules={[
     { name: 'Custom webhook', does: 'Receives the Shopify order payload. In Shopify, add an Order payment webhook (JSON) pointing at its URL.' },
     { name: 'HTTP: Make a request', does: 'POSTs one CompletePayment event to TikTok\u2019s Events API (open_api v1.3, /event/track/) with your access token in the Access-Token header and your pixel ID as event_source_id.' },
+    { name: 'Retry error handler', does: 'Attached to the request since 12 November 2026: a request that fails with an HTTP error is retried 3 times, 15 minutes apart, then kept under the scenario\u2019s Incomplete executions.' },
   ]}
   columns={[
     { col: 'event_id', header: 'Shopify order ID', value: 'The same ID TikTok would need from the browser pixel to deduplicate.' },
@@ -596,7 +597,7 @@ const tocHeadings = [
     { col: 'ip, user_agent', header: 'Unhashed', value: 'From the order\u2019s client_details, which can be empty for orders not placed through the online store.' },
   ]}
   notes={[
-    '<strong>A rejected call is not a green run.</strong> The request stops on an HTTP error and the scenario stores incomplete executions, so a TikTok rejection shows as a failed run you can fix and retry.',
+    '<strong>An HTTP error is not a green run.</strong> The request stops on an HTTP error, Make retries it 3 times, 15 minutes apart, and then keeps it under Incomplete executions for you to fix and re-run. TikTok can also report a problem with HTTP 200 and a non-zero <code>code</code> in the reply, which Make counts as success, so read the reply on your test order: <code>"code": 0</code> means accepted.',
     '<strong>One event per order, paid orders only.</strong> Refunds and cancellations are not sent, and nothing upstream of the purchase (ViewContent, AddToCart) is, which is why it runs beside the pixel.',
     '<strong>Until 18 October 2026 it sent a fixed test event</strong> for every order. If you imported it before then, re-import it from the repository.',
   ]}

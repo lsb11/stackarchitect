@@ -197,8 +197,8 @@ export const PRODUCTS: Product[] = [
     guideIf:
       "You have built a Make scenario before and are happy to lay out the Sheet and map the columns yourself. The free guide builds the same ledger.",
     files: [
-      'Blueprint 03_Stocky_Swap_Inventory.json',
-      'SA_Template_1_Stocky_Swap_Inventory.xlsx',
+      'stocky_swap.json',
+      'Stocky_Replacement_Pro.xlsx',
     ],
     replaces: [
       { name: 'Shopify Stocky', price: 'retired' },
@@ -215,13 +215,13 @@ export const PRODUCTS: Product[] = [
       {
         time: '~1 min',
         title: 'Import the blueprint',
-        body: 'In Make.com: Create a new scenario → Import Blueprint → upload Blueprint 03_Stocky_Swap_Inventory.json. Every module and field mapping is recreated as it was built.',
+        body: 'In Make.com: Create a new scenario → Import Blueprint → upload stocky_swap.json. Every module and field mapping is recreated as it was built, including a Retry error handler on the Sheets step.',
         tool: 'Make.com · one click',
       },
       {
         time: '~2 min',
         title: 'Copy the Sheet, paste your credentials',
-        body: 'Copy SA_Template_1 into your own Drive (the six-column Inventory_Log is already laid out), then connect your Google account and your Shopify store where the blueprint marks the placeholders.',
+        body: 'Copy Stocky_Replacement_Pro.xlsx into your own Drive (the six-column Inventory_Log is already laid out), then connect your Google account and your Shopify store where the blueprint marks the placeholders.',
         tool: 'Google Sheets · your own connections',
       },
       {
@@ -251,7 +251,7 @@ export const PRODUCTS: Product[] = [
       },
       {
         title: "Turn the template into a Google Sheet",
-        body: "Upload SA_Template_1 to Drive and open it with Google Sheets so it converts; the scenario writes to a Google Sheet, not to an .xlsx file stored in Drive. Leave the tab called Inventory_Log named exactly that: the scenario finds it by name.",
+        body: "Upload Stocky_Replacement_Pro.xlsx to Drive and open it with Google Sheets so it converts; the scenario writes to a Google Sheet, not to an .xlsx file stored in Drive. Leave the tab called Inventory_Log named exactly that: the scenario finds it by name.",
       },
       {
         title: "Connect Google and pick the Sheet",
@@ -279,8 +279,8 @@ export const PRODUCTS: Product[] = [
       },
       {
         symptom: "Make shows runs, but the Sheet stops filling.",
-        cause: "The Google connection has lapsed (changing your Google password or removing Make’s access revokes it) or someone renamed the tab. The Sheets step is set to ignore errors, so the run can still finish without an alert.",
-        check: "Open the latest run and click the Sheets step. An authorisation error means reconnect Google; a message that the sheet cannot be found means the tab no longer reads Inventory_Log.",
+        cause: "The Google connection has lapsed (changing your Google password or removing Make’s access revokes it) or someone renamed the tab. The Sheets step retries a failed write 3 times, 15 minutes apart, then keeps the run under the scenario’s Incomplete executions, so the orders are not lost, but nothing reaches the Sheet until you fix the cause.",
+        check: "Open the scenario’s Incomplete executions and click the Sheets step in the latest one. An authorisation error means reconnect Google; a message that the sheet cannot be found means the tab no longer reads Inventory_Log. Fix it, then retry the stored runs so the missed rows are written.",
       },
       {
         symptom: "Rows stop partway through the month.",
@@ -328,7 +328,7 @@ export const PRODUCTS: Product[] = [
       "You advertise on Meta, Ads Manager reports fewer purchases than Shopify, and nothing else (Shopify’s own Facebook & Instagram app included) is already sending purchases to Meta from the server.",
     guideIf:
       "You want to see and adapt every field that goes to Meta, or you mainly want to understand how server-side events work. The free guide walks through the same request.",
-    files: ['Blueprint 01_CAPI_Shield.json'],
+    files: ['Capi_Shield.json'],
     replaces: [
       { name: 'Elevar', price: '$225/mo' },
       { name: 'Triple Whale', price: 'GMV-based' },
@@ -345,13 +345,13 @@ export const PRODUCTS: Product[] = [
       {
         time: '~1 min',
         title: 'Import the blueprint',
-        body: 'In Make.com: Create a new scenario → Import Blueprint → upload Blueprint 01_CAPI_Shield.json. The router that splits each purchase to Meta and to Google Ads comes with it.',
+        body: 'In Make.com: Create a new scenario → Import Blueprint → upload Capi_Shield.json. The hashing step and the Meta request come with it, with a Retry error handler on the request.',
         tool: 'Make.com · one click',
       },
       {
         time: '~3 min',
         title: 'Paste your own API credentials',
-        body: 'The blueprint ships with placeholders where your secrets go: your Meta pixel ID and Conversions API access token. Paste yours in: nothing is shared, nothing is proxied through us. Then delete the Google Ads route: as shipped it cannot match orders.',
+        body: 'The blueprint ships with placeholders where your secrets go: your Meta pixel ID and Conversions API access token. Paste yours in: nothing is shared, nothing is proxied through us.',
         tool: 'Meta Events Manager',
       },
       {
@@ -372,7 +372,7 @@ export const PRODUCTS: Product[] = [
     setup: [
       {
         title: "Import the file into a new scenario",
-        body: "Save Blueprint 01_CAPI_Shield.json from the Drive folder, then in Make start a new scenario and choose Import Blueprint from the three-dot menu in the editor. You should see one webhook, a step that prepares and hashes the customer fields, and a router with a Meta branch and a Google branch.",
+        body: "Save Capi_Shield.json from the Drive folder, then in Make start a new scenario and choose Import Blueprint from the three-dot menu in the editor. You should see one webhook, a step that prepares and hashes the customer fields, and a router leading to the Meta request, which carries a Retry error handler.",
       },
       {
         title: "Generate the Meta token",
@@ -383,23 +383,19 @@ export const PRODUCTS: Product[] = [
         body: "Open the Meta request step and replace the two placeholders, dataset ID and token, with yours. Leave the request body as it is; the field names and the hashing are what Meta checks each event against.",
       },
       {
-        title: "Delete the Google route",
-        body: "Google attributes this kind of upload by the click ID an ad visit leaves behind, and the order Shopify hands to Make does not carry one, so as shipped the Google branch finds no match for most orders. Right-click the Google step and delete it, so each order spends credits on the Meta branch alone. Keep it only if you are rebuilding it, and set its two consent fields, which ship as Unspecified, to match your own consent setup.",
-      },
-      {
         title: "Point Shopify at the webhook and switch on",
         body: "Copy the address from the webhook step. In Shopify Admin, under Settings → Notifications → Webhooks, create a webhook on Order payment in JSON with that address, save it, and turn the scenario on.",
       },
       {
         title: "Confirm it in Test Events",
-        body: "Open Test Events in Events Manager, then place an order: a cheap real one you refund, or one through Shopify’s test gateway. A Purchase should appear from the server. If your browser pixel fires as well, the pair should read as one deduplicated event, not two.",
+        body: "Open Test Events in Events Manager, then place an order: a cheap real one you refund, or one through Shopify’s test gateway. A Purchase should appear from the server. If your browser pixel fires as well, check whether Meta shows the pair as one purchase: it merges them only when the event name and event ID match, and Shopify does not document the ID its pixel sends.",
       },
     ],
     failureModes: [
       {
         symptom: "Make shows successful runs, but Meta shows no server events.",
-        cause: "The Meta step is set to carry on past an error, so a rejected request still ends as a green run in Make’s history. The usual rejection is a mistyped dataset ID, a token issued for a different business, or a Graph API version in the URL that Meta has retired.",
-        check: "Open a run, click the Meta step and read the response body. Meta answers events_received: 1 when it accepted the event; anything else comes with a message naming the problem.",
+        cause: "Meta rejected the request. Since 12 November 2026 the file treats a rejection as an error: Make retries it 3 times, 15 minutes apart, then keeps the run under Incomplete executions. A copy imported before then carried on past errors, so a rejected request ended as a green run. The usual rejection is a mistyped dataset ID, a token issued for a different business, or a Graph API version in the URL that Meta has retired.",
+        check: "Open the scenario’s Incomplete executions (or, for an older copy, a run in History), click the Meta step and read the response body. Meta answers events_received: 1 when it accepted the event; anything else comes with a message naming the problem.",
       },
       {
         symptom: "Purchases in Ads Manager jump to roughly double.",
@@ -428,7 +424,7 @@ export const PRODUCTS: Product[] = [
       },
       {
         q: 'Does it send to Google Ads as well?',
-        a: 'Not reliably, as shipped. The Google step uploads a click conversion keyed on a Google click ID, and Shopify’s order data has no field for one, so most orders reach Google with nothing to match on. Google is also moving this upload method, offline click conversion import, out of the Google Ads API and into its Data Manager API, and Make’s Google Ads module now warns that uploads may fail for developer tokens that have not recently sent click conversions. Treat CAPI Shield as a Meta product until the Google branch is rebuilt; the Meta branch does not depend on it. If you keep the Google step, its two consent fields ship as Unspecified: set them to match your own consent setup.',
+        a: 'No. The Google Ads route was removed from the file on 12 November 2026. It uploaded click conversions keyed on a Google click ID, and Shopify’s order data has no field for one, so most orders reached Google with nothing to match on. For Google Ads, turn on enhanced conversions in Shopify’s Google & YouTube app (Settings, then Google Ads settings, then Enhanced conversions).',
       },
       {
         q: 'What happens when Meta retires the Graph API version it uses?',
@@ -440,7 +436,7 @@ export const PRODUCTS: Product[] = [
       },
       {
         q: "Do I need Google Ads for it to work?",
-        a: "No. The Meta branch works on its own. Delete the Google route (as shipped, it cannot match orders anyway) and each order then makes one outbound call instead of two.",
+        a: "No. The file sends to Meta only, so each order makes one outbound call.",
       },
     ],
   },
@@ -457,7 +453,7 @@ export const PRODUCTS: Product[] = [
       "You advertise on TikTok, TikTok reports fewer purchases than Shopify, and TikTok’s own Shopify app is not already sending server events for the same pixel.",
     guideIf:
       "You would rather build the request yourself and understand each field in it. The free guide covers the same scenario end to end.",
-    files: ['Blueprint 02_TikTok_CAPI.json'],
+    files: ['TikTok_CAPI.json'],
     replaces: [
       { name: 'WeltPixel', price: '$39/mo' },
       { name: 'Analyzify', price: '$145–$275/mo' },
@@ -472,7 +468,7 @@ export const PRODUCTS: Product[] = [
       {
         time: '~1 min',
         title: 'Import the blueprint',
-        body: 'In Make.com: Create a new scenario → Import Blueprint → upload Blueprint 02_TikTok_CAPI.json. The Events API payload shape and the CompletePayment mapping arrive built.',
+        body: 'In Make.com: Create a new scenario → Import Blueprint → upload TikTok_CAPI.json. The Events API payload shape and the CompletePayment mapping arrive built.',
         tool: 'Make.com · one click',
       },
       {
@@ -499,7 +495,7 @@ export const PRODUCTS: Product[] = [
     setup: [
       {
         title: "Import the file into a new scenario",
-        body: "Save Blueprint 02_TikTok_CAPI.json from the Drive folder and import it into a fresh Make scenario from the three-dot menu in the editor. The chain is short: the webhook, a step that hashes email and phone and picks up the shopper’s IP address and browser, and one request to TikTok.",
+        body: "Save TikTok_CAPI.json from the Drive folder and import it into a fresh Make scenario from the three-dot menu in the editor. The chain is short: the webhook, a step that hashes email and phone and picks up the shopper’s IP address and browser, and one request to TikTok.",
       },
       {
         title: "Generate an Events API token",
@@ -525,7 +521,7 @@ export const PRODUCTS: Product[] = [
     failureModes: [
       {
         symptom: "Runs appear in Make, but nothing shows in TikTok.",
-        cause: "A wrong pixel code, a token issued for a different pixel, or a malformed body. TikTok answers with a non-zero code, and because the request step is set to carry on past errors, the run still looks successful in Make’s history.",
+        cause: "A wrong pixel code, a token issued for a different pixel, or a malformed body. TikTok can answer with HTTP 200 and a non-zero code in the response body. Make counts that as a success, so the Retry error handler on the request does not catch it and the run looks green.",
         check: "Open the latest run, click the request step and read TikTok’s reply. A non-zero code arrives with a message that names the field at fault.",
       },
       {
@@ -551,11 +547,11 @@ export const PRODUCTS: Product[] = [
       },
       {
         q: 'Will this double-count against my existing pixel?',
-        a: 'Not if the event IDs match, which is what deduplication is for. The blueprint sends an event ID derived from the Shopify order so TikTok can collapse the browser event and the server event into one.',
+        a: 'It can. TikTok merges a browser event and a server event only when both carry the same event ID. The blueprint sends the Shopify order ID, and Shopify’s TikTok app does not document the ID its pixel sends, so check Test Events and Diagnostics for doubled purchases after your first orders.',
       },
       {
         q: 'What happens when TikTok retires the API version it uses?',
-        a: 'Every request to it starts failing, and because the request step carries on past errors, the runs still look green in Make. The version is part of the TikTok step’s address. Check it against TikTok’s Events API documentation, change the address to a current version before yours is retired, and push one order through to check that TikTok still answers with code 0.',
+        a: 'Every request to it starts failing. If TikTok answers with an HTTP error, the Retry handler retries it and then keeps the run under Incomplete executions; if it answers with HTTP 200 and a non-zero code, the run looks green, so read the response. The version is part of the TikTok step’s address. Check it against TikTok’s Events API documentation, change the address to a current version before yours is retired, and push one order through to check that TikTok still answers with code 0.',
       },
       {
         q: 'Can I build this from the free guide instead?',
@@ -584,7 +580,7 @@ export const PRODUCTS: Product[] = [
       "You know your unit costs, most of your orders are for a single item, and you want per-order gross profit in a Sheet rather than in a monthly app.",
     guideIf:
       "You want to change the maths (cost every line item, or use your own fee model) and would rather build the scenario knowing how each step works.",
-    files: ['Blueprint 04_P_and_L_Auto.json', 'SA_Template_2_PnL_Auto.xlsx'],
+    files: ['Shopify_PnL.json', 'Shopify_PnL_Automation_Pro.xlsx'],
     replaces: [
       { name: 'TrueProfit', price: '$35+/mo' },
       { name: 'BeProfit', price: '$49+/mo' },
@@ -599,13 +595,13 @@ export const PRODUCTS: Product[] = [
       {
         time: '~1 min',
         title: 'Import the blueprint',
-        body: 'In Make.com: Create a new scenario → Import Blueprint → upload Blueprint 04_P_and_L_Auto.json. The revenue, fee and COGS lookups are already wired to the template’s tabs.',
+        body: 'In Make.com: Create a new scenario → Import Blueprint → upload Shopify_PnL.json. The revenue, fee and COGS lookups are already wired to the template’s tabs.',
         tool: 'Make.com · one click',
       },
       {
         time: '~4 min',
         title: 'Copy the workbook and fill in your COGS',
-        body: 'Copy SA_Template_2 into your Drive. It has four tabs: Order_Data, COGS_Table, a Dashboard that totals itself, and a setup tab. The only real work is putting your own unit costs into COGS_Table.',
+        body: 'Copy Shopify_PnL_Automation_Pro.xlsx into your Drive. It has four tabs: Order_Data, COGS_Table, a Dashboard that totals itself, and a setup tab. The only real work is putting your own unit costs into COGS_Table.',
         tool: 'Google Sheets · your product costs',
       },
       {
@@ -627,11 +623,11 @@ export const PRODUCTS: Product[] = [
     setup: [
       {
         title: "Import the file into a new scenario",
-        body: "Save Blueprint 04_P_and_L_Auto.json from the Drive folder and import it into a fresh Make scenario from the three-dot menu in the editor.",
+        body: "Save Shopify_PnL.json from the Drive folder and import it into a fresh Make scenario from the three-dot menu in the editor.",
       },
       {
         title: "Turn the workbook into a Google Sheet",
-        body: "Upload SA_Template_2 to Drive and open it with Google Sheets so it converts. Leave the tab names as they are: the scenario addresses Order_Data and COGS_Table by name.",
+        body: "Upload Shopify_PnL_Automation_Pro.xlsx to Drive and open it with Google Sheets so it converts. Leave the tab names as they are: the scenario addresses Order_Data and COGS_Table by name.",
       },
       {
         title: "Fill COGS_Table before anything else",

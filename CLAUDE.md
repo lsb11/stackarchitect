@@ -1352,6 +1352,43 @@ Judge this by the indexed-to-known ratio over 6-8 weeks, not single counts.
   `llms.txt`. This is the route back for the other held guides: material
   nobody else has, not a rewrite.
 
+### 12 Nov 2026: every template brought to the Retry pattern
+
+- **The paid files were never in this repo; they are in Google Drive** (the
+  four `driveUrl` folders in `products.ts`, and "Stack Architect Complete Kit",
+  folder `1MgF2XsseYquZ8kfxycuDWoev69X-sRqv`). All nine blueprints (FILE_00 to
+  FILE_04, and the four singles) still had `builtin:Ignore` on every output
+  step, `stopOnHttpError: false` and `dlq: false`, and CAPI Shield and FILE_00
+  still carried the Google Ads route. Replaced with fixed copies: every output
+  step `builtin:Break` (Make's Retry; mapper `retry: true, count: "3",
+  interval: "15"`), `stopOnHttpError: true`, `dlq: true`, Google Ads route
+  removed, FILE_03 renamed `FILE_03_Stocky_Swap_Order_Log.json`. The five
+  setup PDFs were rewritten too: they still said Graph API v19.0, "Ignore
+  handler", "EMQ typically 6-8" and that Stocky data was deleted. Old files
+  are in the kit folder's subfolder "Superseded 12 Nov 2026". The Drive
+  connector can add and move files there but not overwrite them, so a future
+  fix is: upload the new file, then move the old one into that subfolder.
+- **Credits changed with the route:** FILE_00 is 7 + 1 per line item (9 for a
+  two-item order), FILE_01 to 04 together 12 + 1 (14). Still "about a third
+  fewer". The README's table says so.
+- **Site copy now names the real files.** `/pro/` and `products.ts` had listed
+  `Blueprint 0N_…json` and `SA_Template_N`, which exist in no folder. The
+  kit folder holds FILE_00 to FILE_04, `Stocky_Replacement_Pro.xlsx`,
+  `Shopify_PnL_Automation_Pro.xlsx` and the README; the single folders hold
+  `Capi_Shield.json`, `TikTok_CAPI.json`, `stocky_swap.json`,
+  `Shopify_PnL.json`, the matching .xlsx and a setup PDF.
+- **TikTok caveat, now on every TikTok surface:** Make retries only HTTP
+  errors; TikTok can answer a bad event with HTTP 200 and a non-zero `code`,
+  which Make counts as success.
+- The GitHub TikTok blueprint (`lsb11/shopify-automation-blueprints` PR #3)
+  gained the Retry handler. `public/blueprints/*.json` were empty `{}` stubs
+  and are now pointers to the shared scenarios.
+- **Still to do in Make (browser needed):** the shared TikTok
+  (`7wEszC7SRAl`), Google Ads (`QBl8tBAX4k1`) and P&L (`nztRUIXWcg6`)
+  scenarios have not been opened; give each output step Retry and turn on
+  Store incomplete executions, as was done for CAPI Shield and Stocky Swap.
+  None of the rebuilt files has been import-tested in Make yet.
+
 ### Highest-leverage open work
 
 1. Get the iOS Attribution Gap Benchmark to N ≥ 10 real submissions so it
