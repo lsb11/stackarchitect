@@ -508,11 +508,11 @@ const tocHeadings = [
           </div>
 
           <h3>The Autocrat Quota Fix: What It Does</h3>
-          <p>Autocrat Quota Fix is a set of architectural patterns that restructure how your Google Apps Script workflows handle high-volume execution. The three core techniques are chunked processing, exponential backoff, and state persistence.</p>
+          <p>Autocrat Quota Fix is a set of architectural patterns that move high-volume document generation out of Google Apps Script and into a Make.com scenario. The three techniques are short scheduled batches, Make's Retry error handler, and a status column.</p>
           <ul>
-            <li><strong>Chunked processing</strong>: instead of processing all pending rows in a single run, the script processes a configurable batch size (typically 50–100 rows) per execution, then reschedules itself.</li>
-            <li><strong>Exponential backoff</strong>: when a service quota error is encountered, the script pauses with an exponentially increasing delay before retrying. Most transient quota errors resolve within 2–3 retry cycles.</li>
-            <li><strong>State persistence</strong>: the script stores its current processing position in a Script Property, so if an execution is interrupted it resumes from exactly where it stopped.</li>
+            <li><strong>Short batches</strong>: the scenario's Google Sheets search step reads a set number of rows per run and the scenario runs on a schedule, so no single run gets near a time limit.</li>
+            <li><strong>Retries</strong>: Make has no exponential backoff setting. A Retry error handler (older guides call it Break) on the Google Docs step retries a failed run at a fixed interval, and with Store incomplete executions on, a run that still fails is kept for you to re-run.</li>
+            <li><strong>A status column</strong>: the scenario writes &ldquo;Done&rdquo; to each row after its document is created and searches only for unmarked rows, so an interrupted run's rows are picked up on the next run and none is processed twice.</li>
           </ul>
 
           <span id="section-quota" style="display:block;height:80px;margin-top:-80px;visibility:hidden;"></span>
@@ -596,7 +596,7 @@ const tocHeadings = [
                   ["Order/workflow automation","$19.99–$69/mo (Zapier)","Make.com free tier","1,000 credits/month, instant webhooks"],
                   ["Course & digital product hosting","$39–$189/mo (Teachable)","Systeme.io free plan","Replaces Teachable, Thinkific"],
                   ["Affiliate management","Priced separately","Systeme.io free plan","Full affiliate programme manager"],
-                  ["Script stability / document automation","$9+/mo (Make Core)","Autocrat Quota Fix (Google Apps Script)","Chunked processing, exponential backoff"],
+                  ["Script stability / document automation","$9+/mo (Make Core)","Autocrat Quota Fix (Google Apps Script)","Short batches, Retry error handler"],
                 ].map(([cat, cost, replacement, notes]) => (
                   <tr><td>{cat}</td><td class="loser">{cost}</td><td class="winner">{replacement}</td><td>{notes}</td></tr>
                 ))}
