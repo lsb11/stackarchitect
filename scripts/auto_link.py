@@ -7,23 +7,7 @@ import os
 with open('src/data/apps.json', 'r') as f:
     apps = json.load(f)
 
-# Build a mapping of app names to their programmatic hub links
-app_links = {}
-for app in apps:
-    app_links[app['name'].lower()] = {
-        'name': app['name'],
-        'link': f"/apps/{app['id']}/"
-    }
-
-blog_files = glob.glob('src/content/blog/*.md')
-standalone_files = glob.glob('src/pages/*.astro')
-
-files_to_check = blog_files + [f for f in standalone_files if os.path.basename(f) not in ['index.astro', '404.astro', 'sitemap.astro', 'sitemap-page.astro']]
-
-for file_path in files_to_check:
-    with open(file_path, 'r') as f:
-        content = f.read()
-    
+def find_matches(content, app_links):
     content_lower = content.lower()
     matches = []
     
@@ -33,9 +17,9 @@ for file_path in files_to_check:
             if app_data['link'] not in content:
                 matches.append(app_data)
                 
-    if not matches:
-        continue
-        
+    return matches
+
+def inject_links(file_path, content, matches):
     # Inject links safely at the bottom of the file
     if file_path.endswith('.md'):
         # Just append to MD
@@ -65,3 +49,27 @@ for file_path in files_to_check:
             with open(file_path, 'w') as f:
                 f.write(content)
             print(f"Injected links into {file_path}")
+
+# Build a mapping of app names to their programmatic hub links
+app_links = {}
+for app in apps:
+    app_links[app['name'].lower()] = {
+        'name': app['name'],
+        'link': f"/apps/{app['id']}/"
+    }
+
+blog_files = glob.glob('src/content/blog/*.md')
+standalone_files = glob.glob('src/pages/*.astro')
+
+files_to_check = blog_files + [f for f in standalone_files if os.path.basename(f) not in ['index.astro', '404.astro', 'sitemap.astro', 'sitemap-page.astro']]
+
+for file_path in files_to_check:
+    with open(file_path, 'r') as f:
+        content = f.read()
+
+    matches = find_matches(content, app_links)
+
+    if not matches:
+        continue
+
+    inject_links(file_path, content, matches)
