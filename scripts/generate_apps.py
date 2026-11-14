@@ -80,7 +80,7 @@ def generate_savings(cost_str):
         try:
             val = int(cost_str.replace("$", "").replace("+", "").replace(",", ""))
             return f"${val * 12:,}/yr"
-        except:
+        except Exception:
             return "100% of subscription cost"
     return "100% of subscription cost"
 
