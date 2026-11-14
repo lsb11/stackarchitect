@@ -4,7 +4,7 @@ heading: "Reliable Shopify Automations: How to Make Every Failure Visible"
 description: "Why Make.com Shopify automations fail silently, and how to stop it: error handlers that keep failed runs, order-ID deduplication and a daily count check."
 answer: "A Shopify automation is reliable when every failure is either retried or reported, never silently skipped. In Make.com that means error handlers that store failed runs instead of ignoring them, independent branches so one dead API cannot block the rest, deduplication on order ID, and a daily check that your log's order count matches Shopify's."
 publishDate: "2026-03-25"
-updatedDate: "2026-11-11"
+updatedDate: "2026-11-14"
 verifiedDate: "2026-10-15"
 category: "workflow"
 badge: "Architecture Guide"
@@ -45,6 +45,8 @@ Each of those settings is common advice for keeping a scenario "running smoothly
 
 We found the same pattern a second time on 11 November 2026, in the two free scenarios this site shares publicly on Make. Both CAPI Shield and Stocky Swap still sent their outside calls to an Ignore route, and neither stored incomplete executions. We changed both that day. The screenshots in Pattern 1 are from that change, in our own Make account.
 
+The next day we found the fix had been incomplete. On the CAPI Shield and TikTok requests, the HTTP module's **Return error if HTTP request fails** setting was still **No**. With that setting off, Make treats a 400 or 500 reply as a successful run, so the new Retry handler had nothing to catch: a rejected token would still have finished green. Both are now set to **Yes**. Adding an error handler is only half the job; the step has to report the error first.
+
 ## The four ways Shopify automations fail
 
 **A hidden failure.** As above: the run is green, the destination received nothing. The only defence is checking outcomes, not statuses.
@@ -83,7 +85,9 @@ To make Retry useful, open **Scenario settings** (the gear in the editor's botto
 <figcaption>The shared CAPI Shield scenario after the change: the Meta request's error route now goes to Retry. The Google Ads branch it used to carry was removed the same day.</figcaption>
 </figure>
 
-On HTTP modules, leave error responses treated as errors. If a 400 or 500 response is allowed through as a success, no error handler will ever see it.
+On HTTP modules, open **Show advanced settings** and set **Return error if HTTP request fails** to **Yes** (Make describes it as: "The module will treat 4xx and 5xx responses as errors"). If a 400 or 500 response is allowed through as a success, no error handler will ever see it.
+
+One gap remains even then. Some APIs report a rejected event with HTTP 200 and an error inside the reply. TikTok's Events API can answer with a non-zero `code`, and Make counts that as success. For those, read the reply of a test run, or add a filter that stops the run when `code` is not 0.
 
 ## Pattern 2: Keep branches independent
 
@@ -141,7 +145,8 @@ When the check finds a gap, look at the scenario's history and incomplete execut
 
 - [ ] Each destination is on its own Router branch.
 - [ ] Outside API calls use the Retry handler, and incomplete executions are stored.
-- [ ] No HTTP module lets error responses through as successes.
+- [ ] Every HTTP module has Return error if HTTP request fails set to Yes.
+- [ ] You have tested a failure on purpose: a copy of the scenario with a wrong token should end in a warning, not a success.
 - [ ] Order ID is checked before processing; ad platform events carry a stable event ID.
 - [ ] A daily scenario compares Shopify's paid order count with your log.
 - [ ] Any pinned API version has its retirement date written down.
