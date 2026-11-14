@@ -38,7 +38,7 @@ async function getJwtClient() {
 async function forceIndexUrls(jwtClient, urls) {
   const indexing = google.indexing({ version: 'v3', auth: jwtClient });
   
-  for (const url of urls) {
+  await Promise.all(urls.map(async (url) => {
     try {
       const res = await indexing.urlNotifications.publish({
         requestBody: {
@@ -50,7 +50,7 @@ async function forceIndexUrls(jwtClient, urls) {
     } catch (err) {
       console.error(`Failed to request indexing for ${url}:`, err.message);
     }
-  }
+  }));
 }
 
 async function main() {
