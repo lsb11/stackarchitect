@@ -1,5 +1,5 @@
 // Full dist/ crawl audit: link graph, orphans, depth, metas, schema, broken links
-import { readdirSync, readFileSync, existsSync } from 'node:fs';
+import { readdirSync, readFileSync, existsSync, promises as fsPromises } from 'node:fs';
 import { join, relative } from 'node:path';
 
 const DIST = 'dist';
@@ -28,9 +28,9 @@ const norm = (href) => {
   return href;
 };
 
-for (const f of files) {
+const fileData = await Promise.all(files.map(async (f) => {
   const rel = '/' + relative(DIST, f).replace(/index\.html$/, '').replace(/\.html$/, '/');
-  const html = readFileSync(f, 'utf8');
+  const html = await fsPromises.readFile(f, 'utf8');
   const title = (html.match(/<title[^>]*>([\s\S]*?)<\/title>/) || [])[1]?.trim() || '';
   const desc = (html.match(/<meta name="description" content="([^"]*)"/) || [])[1] || '';
   const canonical = (html.match(/<link rel="canonical" href="([^"]*)"/) || [])[1] || '';
@@ -53,7 +53,11 @@ for (const f of files) {
     .flat();
   const body = html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<style[\s\S]*?<\/style>/g, '').replace(/<[^>]+>/g, ' ');
   const words = body.split(/\s+/).filter(Boolean).length;
-  pages.set(rel, { title, desc, canonical, h1, robots, links: [...new Set(links)], schemaTypes, words, file: f });
+  return { rel, data: { title, desc, canonical, h1, robots, links: [...new Set(links)], schemaTypes, words, file: f } };
+}));
+
+for (const { rel, data } of fileData) {
+  pages.set(rel, data);
 }
 
 const paths = new Set(pages.keys());
