@@ -191,6 +191,8 @@ import ToolHero from '../components/ToolHero.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import InlineOffer from '../components/InlineOffer.astro';
 import { KIT_PRICE, SINGLE_PRICE, formatPrice } from '../data/products';
+import { pressBy } from '../data/press';
+const prapi = pressBy('PRAPI Research');
 // The single blueprint this page's free method builds. The related-tools
 // card below points at /pro/<slug>/ and not the four-product hub: a reader
 // who has just followed THIS guide is choosing whether to buy THIS one, and
@@ -714,6 +716,14 @@ code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.05);pad
       </div>
     </div>
     <p>Columns A–F are mapped directly from the Shopify webhook in Make.com. For column G (Shopify fee), use <code>=D2*0.005</code> for Shopify Basic (0.5% transaction fee). Column I uses VLOOKUP against your COGS table. Column J is revenue minus all costs.</p>
+
+    <figure style="margin:24px 0;padding:18px 22px;border-left:3px solid var(--g);background:rgba(52,211,119,.04);border-radius:0 10px 10px 0;">
+      <p style="font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--g);margin:0 0 8px;">Why the cost table comes first</p>
+      <blockquote style="margin:0;">
+        <p style="font-size:15px;line-height:1.75;color:var(--text-2);margin:0 0 10px;">&ldquo;I found this out by building the automation anyway. It worked. Every week it produced a clean, confident report that was badly wrong on any product whose cost had changed during the year, and nothing in it looked wrong. [&hellip;] Automate one without fixing it and the complaints stop while the errors continue, which is a far worse place to be than where you started.&rdquo;</p>
+      </blockquote>
+      <figcaption style="font-size:14px;color:var(--text-3);line-height:1.6;">{prapi.attribution}, on building a Shopify profit report, quoted in <a href={prapi.url} target="_blank" rel="noopener">{prapi.outlet}: {prapi.title}</a>, November 2026. Fill in the COGS table, and change a cost there when your supplier's price changes, before you trust the Gross_Profit column.</figcaption>
+    </figure>
 
     <h3>Tab 2: P&amp;L Summary (formula-driven)</h3>
     <p>SUMIF formulas aggregate Tab 1 data by month. Structure it with months as columns and metrics as rows:</p>

@@ -8,7 +8,7 @@ import AuthorCard from '../components/AuthorCard.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import FeaturedIn from '../components/FeaturedIn.astro';
 import PressCitation from '../components/PressCitation.astro';
-import { PRESS } from '../data/press';
+import { PRESS, pressBy } from '../data/press';
 import {
   KIT_PRICE,
   STOCKLOG_PRICE,
@@ -20,6 +20,7 @@ import {
 const kitPrice = formatPrice(KIT_PRICE);
 
 const quote = PRESS[0];
+const prapi = pressBy('PRAPI Research');
 
 // Hero layout under evaluation: 'a' = 150px portrait stacked above the H1,
 // 'b' = two-column split with the type bottom-aligned to the portrait.
@@ -247,6 +248,18 @@ const stockLogSchema = {
           datetime="2026-08-12"
           format="18-contributor panel"
           argument="Enterprise AI pilots fail for architectural reasons rather than political ones: generative models and agentic protocols like MCP are non-deterministic, and bolting them onto legacy REST APIs that assume explicit schemas and predictable state boundaries (with no intermediate validation or event-driven orchestration) breaks at the boundary layer, leaving an operator to hand-verify every output against a brittle database until that bottleneck destroys the ROI. The fix I put forward is replacing fragile polling and middleman APIs with event-driven pipelines that enforce schema validation at ingestion."
+        />
+        {/* PRAPI Research — our contributed words only; see src/data/press.ts. */}
+        <PressCitation
+          outlet={prapi.outlet}
+          title={prapi.title}
+          url={prapi.url}
+          date="November 2026"
+          datetime={prapi.datePublished}
+          format="10-contributor research report"
+          quote={prapi.pullQuote}
+          attribution={prapi.attribution}
+          argument="Fix the process before you automate it. Automating a Shopify profit report whose product costs were wrong produced a clean, confident and wrong report every week; the cure was two weeks of giving every product a cost, which is why setting up the P&L blueprint on this site starts with filling in its cost table."
         />
         {/* MAKERSPACE — the full treatment: our contributed quote verbatim,
             the attribution line the outlet printed it under, the outlet, the
