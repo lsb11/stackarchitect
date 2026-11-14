@@ -84,36 +84,40 @@ def generate_savings(cost_str):
             return "100% of subscription cost"
     return "100% of subscription cost"
 
-output_data = []
+def main():
+    output_data = []
 
-# Load existing apps.json to preserve the original 5
-existing_path = "src/data/apps.json"
-if os.path.exists(existing_path):
-    with open(existing_path, "r") as f:
-        output_data = json.load(f)
+    # Load existing apps.json to preserve the original 5
+    existing_path = "src/data/apps.json"
+    if os.path.exists(existing_path):
+        with open(existing_path, "r") as f:
+            output_data = json.load(f)
 
-existing_ids = set(app["id"] for app in output_data)
+    existing_ids = set(app["id"] for app in output_data)
 
-for app in apps:
-    app_id = app["name"].lower().replace(" ", "-").replace(".", "")
-    if app_id in existing_ids:
-        continue
-    
-    savings = generate_savings(app["cost"])
-    
-    obj = {
-        "id": app_id,
-        "name": app["name"],
-        "category": app["category"],
-        "monthlyCost": app["cost"],
-        "replacement": app["replacement"],
-        "savings": savings,
-        "description": f"{app['name']} is a premium {app['category']} app for Shopify.",
-        "stackarchitectAlternativeLink": app["link"]
-    }
-    output_data.append(obj)
+    for app in apps:
+        app_id = app["name"].lower().replace(" ", "-").replace(".", "")
+        if app_id in existing_ids:
+            continue
 
-with open(existing_path, "w") as f:
-    json.dump(output_data, f, indent=2)
+        savings = generate_savings(app["cost"])
 
-print(f"Generated {len(output_data)} apps in {existing_path}")
+        obj = {
+            "id": app_id,
+            "name": app["name"],
+            "category": app["category"],
+            "monthlyCost": app["cost"],
+            "replacement": app["replacement"],
+            "savings": savings,
+            "description": f"{app['name']} is a premium {app['category']} app for Shopify.",
+            "stackarchitectAlternativeLink": app["link"]
+        }
+        output_data.append(obj)
+
+    with open(existing_path, "w") as f:
+        json.dump(output_data, f, indent=2)
+
+    print(f"Generated {len(output_data)} apps in {existing_path}")
+
+if __name__ == "__main__":
+    main()
