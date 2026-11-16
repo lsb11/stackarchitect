@@ -97,6 +97,7 @@ export const SITE_INDEX: SiteIndexGroup[] = [
     pages: [
       { href: '/about/', label: 'About Luke Sandelands' },
       { href: '/how-we-test/', label: 'How we test and verify every claim' },
+      { href: '/blog/indexnow-55000-urls-62-page-site/', label: 'How this site sent Bing 55,000 IndexNow URLs' },
       { href: '/', label: 'Home' },
     ],
   },

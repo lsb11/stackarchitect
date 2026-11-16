@@ -79,7 +79,7 @@ test('generated legacy map is in sync with public/_redirects', () => {
   });
 });
 
-test('the 37 sitemap pages resolve in at most one 301, to their canonical URL', async (t) => {
+test('the 38 sitemap pages resolve in at most one 301, to their canonical URL', async (t) => {
   assert.ok(sitemapPaths.length > 0, 'run `npm run build` first — dist/sitemap-0.xml is missing');
   // 62 -> 63 on 23 Sep 2026: /stocklog/, the second recorded freeze exception
   // (see CLAUDE.md, Hard rules). Moving this number is the record of a new URL.
@@ -103,7 +103,9 @@ test('the 37 sitemap pages resolve in at most one 301, to their canonical URL', 
   // work. They still return 200; no URL changed.
   // 36 -> 37 on 11 Nov 2026: the reliable-automations guide returned with
   // first-hand Make screenshots.
-  assert.equal(sitemapPaths.length, 37, 'sitemap URL count changed');
+  // 37 -> 38 on 16 Nov 2026: new post, the IndexNow post-mortem
+  // (/blog/indexnow-55000-urls-62-page-site/). No existing URL changed.
+  assert.equal(sitemapPaths.length, 38, 'sitemap URL count changed');
 
   let checked = 0;
   for (const path of sitemapPaths) {
