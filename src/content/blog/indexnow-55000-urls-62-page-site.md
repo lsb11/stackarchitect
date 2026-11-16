@@ -31,9 +31,9 @@ relatedGuides:
     href: "/blog/google-apps-script-quotas-explained-how-to-avoid-limits-and-scale-your-automations/"
 ---
 
-I run [Stack Architect](/), a static Astro site on Cloudflare Pages with free Shopify automation guides. It has 37 pages in its sitemap today and had 62 at the time. Google has indexed one of them, the homepage. For months I treated that as a mystery to solve with one more technical fix.
+I run [Stack Architect](/), a static Astro site on Cloudflare Pages with free Shopify automation guides. It has 38 pages in its sitemap today and had 62 at the time. Google has indexed one of them, the homepage. For months I treated that as a mystery to solve with one more technical fix.
 
-This is what I found instead, in the order I found it. Two of the problems were real and had been running for months. Four were tools and dashboards telling me something that wasn't true. All of it is dated, and most of it you can check on your own site in under ten minutes.
+This is what I found instead, in the order I found it. Three were real problems, two of them running for months. Four were tools and dashboards telling me something that wasn't true. All of it is dated, and most of it you can check on your own site in under ten minutes.
 
 ## The number
 
