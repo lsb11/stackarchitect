@@ -14,8 +14,8 @@ Measured against the build on 2026-09-28:
 |---|---|
 | HTML pages built | 122 |
 | `noindex` pages | 69 (54 × `/apps/*`, 4 × `/pro/*/`, 4 × `/pro/*/success/`, 3 × `/embed/*`, the Klaviyo migration calculator, privacy/terms/refund) |
-| **Indexable pages** | **39** (53 until 9 Nov 2026, 38 until 11 Nov) |
-| **URLs in sitemap-0.xml** | **37** (51 until 9 Nov 2026, 36 until 11 Nov) |
+| **Indexable pages** | **40** (53 until 9 Nov 2026, 38 until 11 Nov, 39 until 16 Nov) |
+| **URLs in sitemap-0.xml** | **38** (51 until 9 Nov 2026, 36 until 11 Nov, 37 until 16 Nov) |
 
 The two indexable pages absent from the sitemap are `/404.html` and
 `/sitemap-page/`, both deliberate. Reproduce the whole table with
@@ -1499,3 +1499,19 @@ index (Google) or not to crawl (Bing). Do not look for another technical
 cause without new evidence. Medium "Losing a Third of Its Conversions"
 (the last post with a loss figure in its title) was replaced with the
 server-side guide copy and canonicalised to it the same day.
+
+### 16 Nov 2026: syndication review and the IndexNow post-mortem
+
+- dev.to views per post, read from the dashboard API on 16 Nov: the Apps
+  Script quotas post 216; every Shopify how-to 0 to 70; the Stocky deadline
+  post 0. Medium, November to date: 80 views, 10 reads. Shopify tutorials do
+  not travel on general developer platforms; the Apps Script post is the
+  only one with a broad audience.
+- New post `/blog/indexnow-55000-urls-62-page-site/` (sitemap 37 to 38, pin
+  moved): the first-hand IndexNow and indexing post-mortem, written for a
+  general web-developer audience, with dev.to, Medium and Hashnode copies
+  canonicalised to it. Facts come from this file and git (`aa4f25d`,
+  `6ce7f4e`); keep them in step if this file corrects any of them.
+- GSC coverage export, 13 Nov: 1 indexed, 122 not (106 "Crawled - currently
+  not indexed"). The not-indexed count is falling as retired URLs drop out,
+  not because pages are being indexed.
